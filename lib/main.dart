@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:taglib_ffi_dart/taglib_ffi_dart.dart' as taglib;
 import 'dart:io';
-import 'musicbrainz_api.dart'; // Import the new API file
-import 'search_results_dialog.dart'; // Import the new dialog file
+import 'dart:typed_data'; // For Uint8List
+import 'musicbrainz_api.dart';
+import 'search_results_dialog.dart';
 import 'package:path/path.dart' as p;
-import 'settings_page.dart'; // Import the settings page
-import 'database_service.dart'; // Import the database service
-import 'edit_track_dialog.dart'; // Import the edit dialog
-import 'learning_dialog.dart'; // Import the learning dialog
+import 'settings_page.dart';
+import 'database_service.dart';
+import 'edit_track_dialog.dart';
+import 'learning_dialog.dart';
+import 'package:media_kit/media_kit.dart';
+import 'audio_player_service.dart'; // Import the player service
+import 'playback_controls.dart';   // Import the playback controls
 
 // A simple data class to hold music metadata.
 class MusicTrack {
@@ -17,6 +21,8 @@ class MusicTrack {
   final String artist;
   final String album;
   final int trackNumber;
+  final Uint8List? albumArt;
+  final String? lyrics;
 
   MusicTrack({
     required this.filePath,
@@ -24,14 +30,15 @@ class MusicTrack {
     this.artist = 'Unknown Artist',
     this.album = 'Unknown Album',
     this.trackNumber = 0,
+    this.albumArt,
+    this.lyrics,
   });
 }
 
 
 void main() async {
-  // We need to ensure that the FFI bindings are initialized before running the app.
   WidgetsFlutterBinding.ensureInitialized();
-  // Initialize the taglib library.
+  MediaKit.ensureInitialized();
   await taglib.initialize();
   runApp(const MusicTagEditorApp());
 }
@@ -63,10 +70,89 @@ class LibraryPage extends StatefulWidget {
 
 class _LibraryPageState extends State<LibraryPage> {
   final List<MusicTrack> _musicTracks = [];
+  List<Playlist> _playlists = [];
   bool _isLoading = false;
   final MusicBrainzApi _musicBrainzApi = MusicBrainzApi();
   final DatabaseService _dbService = DatabaseService();
+  final AudioPlayerService _audioPlayerService = AudioPlayerService();
   String? _currentDirectory;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPlaylists();
+  }
+
+  @override
+  void dispose() {
+    _audioPlayerService.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadPlaylists() async {
+    final playlists = await _dbService.loadPlaylists();
+    setState(() {
+      _playlists = playlists;
+    });
+  }
+
+  Future<void> _saveQueueAsPlaylist() async {
+    final sequence = _audioPlayerService.currentPlaylist;
+    if (sequence.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Queue is empty!')),
+      );
+      return;
+    }
+
+    final controller = TextEditingController();
+    final playlistName = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Save Playlist'),
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(hintText: 'Enter playlist name'),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.of(context).pop(controller.text), child: const Text('Save')),
+        ],
+      ),
+    );
+
+    if (playlistName != null && playlistName.isNotEmpty) {
+      await _dbService.savePlaylist(playlistName, sequence);
+      _loadPlaylists(); // Refresh the playlist list
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context); // Close the drawer
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Playlist "$playlistName" saved!')),
+      );
+    }
+  }
+
+  void _loadPlaylist(Playlist playlist) {
+    if (playlist.trackPaths.isEmpty) return;
+
+    final playlistTracks = playlist.trackPaths.map((path) {
+      try {
+        return _musicTracks.firstWhere((track) => track.filePath == path);
+      } catch (e) {
+        return null;
+      }
+    }).where((track) => track != null).cast<MusicTrack>().toList();
+
+
+    if (playlistTracks.isNotEmpty) {
+      _audioPlayerService.playPlaylist(playlistTracks, 0);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not find tracks for this playlist.')),
+      );
+    }
+  }
 
   Future<void> _addMusicFolder() async {
     String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
@@ -89,8 +175,8 @@ class _LibraryPageState extends State<LibraryPage> {
       final List<MusicTrack> foundTracks = [];
       await for (var entity in directory.list(recursive: true, followLinks: false)) {
         if (entity is File && entity.path.toLowerCase().endsWith('.mp3')) {
-          // Read metadata for each found mp3 file.
           final metadata = await taglib.readMetadata(entity.path);
+          final albumArt = await taglib.readAlbumArt(entity.path);
           foundTracks.add(
             MusicTrack(
               filePath: entity.path,
@@ -98,6 +184,8 @@ class _LibraryPageState extends State<LibraryPage> {
               artist: metadata.artist ?? 'Unknown Artist',
               album: metadata.album ?? 'Unknown Album',
               trackNumber: metadata.track ?? 0,
+              albumArt: albumArt,
+              lyrics: metadata.lyrics,
             )
           );
         }
@@ -107,7 +195,6 @@ class _LibraryPageState extends State<LibraryPage> {
         _musicTracks.addAll(foundTracks);
       });
     } catch (e) {
-      // Handle exceptions
       print(e);
     } finally {
       setState(() {
@@ -201,7 +288,6 @@ class _LibraryPageState extends State<LibraryPage> {
 
 
     try {
-      // Write new metadata to the file.
       await taglib.writeMetadata(
         originalTrack.filePath,
         title: newTitle,
@@ -210,10 +296,8 @@ class _LibraryPageState extends State<LibraryPage> {
         track: newTrackNumber,
       );
 
-      // Load the preferred filename format.
       final format = await _dbService.loadFilenameFormat();
 
-      // Rename the file.
       final file = File(originalTrack.filePath);
       final directory = file.parent.path;
       final extension = p.extension(file.path);
@@ -288,38 +372,76 @@ class _LibraryPageState extends State<LibraryPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            tooltip: 'Settings',
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingsPage()),
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
             },
           ),
         ],
       ),
-      body: Center(
-        child: _isLoading
-            ? const CircularProgressIndicator()
-            : _musicTracks.isEmpty
-                ? const Text('Add a folder to see your music files.')
-                : ListView.builder(
-                    itemCount: _musicTracks.length,
-                    itemBuilder: (context, index) {
-                      final track = _musicTracks[index];
-                      return ListTile(
-                        leading: const Icon(Icons.music_note),
-                        title: Text(track.title),
-                        subtitle: Text('${track.artist} - ${track.album}'),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.search),
-                          tooltip: 'Search Online',
-                          onPressed: () => _searchOnline(track),
-                        ),
-                        onLongPress: () => _editTrack(track),
-                      );
+      drawer: Drawer(
+        child: Column(
+          children: [
+            AppBar(
+              title: const Text('Playlists'),
+              automaticallyImplyLeading: false,
+            ),
+            ListTile(
+              leading: const Icon(Icons.add),
+              title: const Text('Save queue as playlist'),
+              onTap: _saveQueueAsPlaylist,
+            ),
+            const Divider(),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _playlists.length,
+                itemBuilder: (context, index) {
+                  final playlist = _playlists[index];
+                  return ListTile(
+                    leading: const Icon(Icons.queue_music),
+                    title: Text(playlist.name),
+                    onTap: () {
+                      _loadPlaylist(playlist);
+                      Navigator.pop(context);
                     },
-                  ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Center(
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : _musicTracks.isEmpty
+                      ? const Text('Add a folder to see your music files.')
+                      : ListView.builder(
+                          itemCount: _musicTracks.length,
+                          itemBuilder: (context, index) {
+                            final track = _musicTracks[index];
+                            return ListTile(
+                              leading: track.albumArt != null
+                                  ? Image.memory(track.albumArt!)
+                                  : const Icon(Icons.music_note),
+                              title: Text(track.title),
+                              subtitle: Text('${track.artist} - ${track.album}'),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.search),
+                                tooltip: 'Search Online',
+                                onPressed: () => _searchOnline(track),
+                              ),
+                              onLongPress: () => _editTrack(track),
+                              onTap: () => _audioPlayerService.playPlaylist(_musicTracks, index),
+                            );
+                          },
+                        ),
+            ),
+          ),
+          const PlaybackControls(),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addMusicFolder,
