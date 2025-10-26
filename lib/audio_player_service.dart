@@ -44,6 +44,19 @@ class AudioPlayerService {
     }
   }
 
+  // Utility method to get the duration of a file
+  Future<Duration?> getDuration(String filePath) async {
+    try {
+      final tempPlayer = AudioPlayer();
+      final duration = await tempPlayer.setFilePath(filePath);
+      await tempPlayer.dispose();
+      return duration;
+    } catch (e) {
+      print("Error getting duration: $e");
+      return null;
+    }
+  }
+
   Future<void> play() async => await _audioPlayer.play();
   Future<void> pause() async => await _audioPlayer.pause();
   Future<void> seek(Duration position) async => await _audioPlayer.seek(position);
