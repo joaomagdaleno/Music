@@ -12,15 +12,13 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
-  taglib_ffi_dart: ^0.0.3
-  taglib_ffi_dart_libs: ^0.0.3
   file_picker: ^8.0.7
   http: ^1.2.1
   sqflite: ^2.3.3
   just_audio: ^0.9.36
   just_audio_media_kit: ^0.0.1
   media_kit_libs_linux: ^1.1.2
-  media_kit_libs_windows_audio: ^1.0.9 # Corrected version
+  media_kit_libs_windows_audio: ^1.0.9
 
 dev_dependencies:
   flutter_test:
