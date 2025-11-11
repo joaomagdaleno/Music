@@ -1,0 +1,30 @@
+#define MyAppName "Music Tag Editor"
+#define MyAppVersion "1.0.0"
+#define MyAppPublisher "João Magdaleno"
+#define MyAppExeName "music_tag_editor.exe"
+
+[Setup]
+AppId={{C6B5A4A7-1F4A-4E3E-8B5A-9E3D2F8D3C7A}
+AppName={#MyAppName}
+AppVersion={#MyAppVersion}
+AppPublisher={#MyAppPublisher}
+DefaultDirName={autopf}\{#MyAppName}
+DisableProgramGroupPage=yes
+OutputBaseFilename=MusicTagEditorSetup-{#MyAppVersion}
+OutputDir=Output
+Compression=lzma
+SolidCompression=yes
+ArchitecturesInstallIn64BitMode=x64
+
+[Files]
+Source: "music_tag_editor\\build\\windows\\x64\\runner\\Release\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[Icons]
+Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+
+[Tasks]
+Name: desktopicon; Description: "Create a desktop shortcut"; GroupDescription: "Additional icons:"; Flags: unchecked
+
+[Run]
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall shellexec
