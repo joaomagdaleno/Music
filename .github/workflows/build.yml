@@ -144,6 +144,12 @@ jobs:
         working-directory: music_tag_editor
         run: flutter pub get || exit 1
 
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
+
       - name: Flutter Pub Get (Linux)
         if: runner.os == 'Linux'
         working-directory: music_tag_editor
@@ -206,6 +212,24 @@ jobs:
           name: android-apk
           path: music_tag_editor/build/app/outputs/flutter-apk/music_tag_editor-v*.apk
 
+      - name: Flutter Build Linux
+        if: runner.os == 'Linux'
+        working-directory: music_tag_editor
+        run: flutter build linux --release
+
+      - name: Package Linux Release
+        if: runner.os == 'Linux'
+        working-directory: music_tag_editor/build/linux/x64/release/bundle
+        run: |
+          tar -czvf ../../../../../music_tag_editor-linux-v${{ steps.version.outputs.base }}.tar.gz .
+
+      - name: Upload Linux Artifact
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-release
+          path: music_tag_editor/music_tag_editor-linux-v*.tar.gz
+
   release:
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
@@ -225,4 +249,5 @@ jobs:
           files: |
             artifacts/windows-installer/MusicTagEditorSetup-*.exe
             artifacts/android-apk/music_tag_editor-v*.apk
+            artifacts/linux-release/music_tag_editor-linux-v*.tar.gz
           token: ${{ secrets.GITHUB_TOKEN }}
