@@ -1,4 +1,4 @@
-name: Build & Release
+name: Build, Test & Release
 
 on:
   push:
@@ -14,7 +14,45 @@ env:
   ACTIONS_STEP_DEBUG: true
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.7'
+          cache: true
+          cache-key: flutter-3.35.7
+
+      - name: Cache Pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
+      - name: Flutter Pub Get
+        working-directory: music_tag_editor
+        run: flutter pub get
+
+      - name: Run Tests with Coverage
+        working-directory: music_tag_editor
+        run: flutter test --coverage
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: music_tag_editor/coverage/lcov.info
+
   build:
+    needs: test
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]
@@ -132,26 +170,26 @@ jobs:
         run: |
           sed -i "s/^version:.*/version: ${{ steps.version.outputs.base }}+${GITHUB_RUN_NUMBER}/" pubspec.yaml
 
-      - name: Flutter Doctor (Windows)
-        if: runner.os == 'Windows'
-        shell: cmd
-        working-directory: music_tag_editor
-        run: flutter doctor -v || exit 1
-
-      - name: Flutter Pub Get (Windows)
-        if: runner.os == 'Windows'
-        shell: cmd
-        working-directory: music_tag_editor
-        run: flutter pub get || exit 1
-
-      - name: Flutter Pub Get (Linux)
+      - name: Install Linux dependencies
         if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
+
+      - name: Flutter Pub Get
         working-directory: music_tag_editor
         run: flutter pub get
 
+      - name: Analyze code
+        working-directory: music_tag_editor
+        run: flutter analyze
+
+      - name: Check formatting
+        working-directory: music_tag_editor
+        run: flutter format --output=none --set-exit-if-changed .
+
       - name: Flutter Build Windows
         if: runner.os == 'Windows'
-        shell: cmd
         working-directory: music_tag_editor
         run: flutter build windows || exit 1
 
@@ -206,6 +244,24 @@ jobs:
           name: android-apk
           path: music_tag_editor/build/app/outputs/flutter-apk/music_tag_editor-v*.apk
 
+      - name: Flutter Build Linux
+        if: runner.os == 'Linux'
+        working-directory: music_tag_editor
+        run: flutter build linux --release
+
+      - name: Package Linux Release
+        if: runner.os == 'Linux'
+        working-directory: music_tag_editor/build/linux/x64/release/bundle
+        run: |
+          tar -czvf ../../../../../music_tag_editor-linux-v${{ steps.version.outputs.base }}.tar.gz .
+
+      - name: Upload Linux Artifact
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-release
+          path: music_tag_editor/music_tag_editor-linux-v*.tar.gz
+
   release:
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
@@ -225,4 +281,5 @@ jobs:
           files: |
             artifacts/windows-installer/MusicTagEditorSetup-*.exe
             artifacts/android-apk/music_tag_editor-v*.apk
+            artifacts/linux-release/music_tag_editor-linux-v*.tar.gz
           token: ${{ secrets.GITHUB_TOKEN }}
