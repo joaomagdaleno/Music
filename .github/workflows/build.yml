@@ -46,7 +46,7 @@ jobs:
         run: flutter test --coverage
 
       - name: Upload Coverage Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: coverage-report
           path: music_tag_editor/coverage/lcov.info
@@ -207,7 +207,7 @@ jobs:
 
       - name: Upload Installer Artifact
         if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: windows-installer
           path: Output/MusicTagEditorSetup-*.exe
@@ -239,7 +239,7 @@ jobs:
 
       - name: Upload APK Artifact
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: android-apk
           path: music_tag_editor/build/app/outputs/flutter-apk/music_tag_editor-v*.apk
@@ -257,7 +257,7 @@ jobs:
 
       - name: Upload Linux Artifact
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: linux-release
           path: music_tag_editor/music_tag_editor-linux-v*.tar.gz
