@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:taglib_ffi_dart/taglib_ffi_dart.dart' as taglib;
 import 'dart:io';
-import 'musicbrainz_api.dart'; // Import the new API file
-import 'search_results_dialog.dart'; // Import the new dialog file
+import 'musicbrainz_api.dart';
+import 'search_results_dialog.dart';
 import 'package:path/path.dart' as p;
-import 'settings_page.dart'; // Import the settings page
-import 'database_service.dart'; // Import the database service
-import 'edit_track_dialog.dart'; // Import the edit dialog
-import 'learning_dialog.dart'; // Import the learning dialog
+import 'settings_page.dart';
+import 'database_service.dart';
+import 'edit_track_dialog.dart';
+import 'learning_dialog.dart';
+import 'metadata_service.dart';
+import 'download_page.dart';
 
 // A simple data class to hold music metadata.
 class MusicTrack {
@@ -27,12 +28,8 @@ class MusicTrack {
   });
 }
 
-
 void main() async {
-  // We need to ensure that the FFI bindings are initialized before running the app.
   WidgetsFlutterBinding.ensureInitialized();
-  // Initialize the taglib library.
-  await taglib.initialize();
   runApp(const MusicTagEditorApp());
 }
 
@@ -66,6 +63,7 @@ class _LibraryPageState extends State<LibraryPage> {
   bool _isLoading = false;
   final MusicBrainzApi _musicBrainzApi = MusicBrainzApi();
   final DatabaseService _dbService = DatabaseService();
+  final MetadataService _metadataService = MetadataService();
   String? _currentDirectory;
 
   Future<void> _addMusicFolder() async {
@@ -87,19 +85,18 @@ class _LibraryPageState extends State<LibraryPage> {
     try {
       final directory = Directory(_currentDirectory!);
       final List<MusicTrack> foundTracks = [];
-      await for (var entity in directory.list(recursive: true, followLinks: false)) {
+      await for (var entity
+          in directory.list(recursive: true, followLinks: false)) {
         if (entity is File && entity.path.toLowerCase().endsWith('.mp3')) {
           // Read metadata for each found mp3 file.
-          final metadata = await taglib.readMetadata(entity.path);
-          foundTracks.add(
-            MusicTrack(
-              filePath: entity.path,
-              title: metadata.title ?? 'Unknown Title',
-              artist: metadata.artist ?? 'Unknown Artist',
-              album: metadata.album ?? 'Unknown Album',
-              trackNumber: metadata.track ?? 0,
-            )
-          );
+          final metadata = await _metadataService.readMetadata(entity.path);
+          foundTracks.add(MusicTrack(
+            filePath: entity.path,
+            title: metadata['title'] as String,
+            artist: metadata['artist'] as String,
+            album: metadata['album'] as String,
+            trackNumber: metadata['track'] as int,
+          ));
         }
       }
       setState(() {
@@ -134,7 +131,8 @@ class _LibraryPageState extends State<LibraryPage> {
         );
 
         if (selectedRecording != null) {
-          _applyTags(originalTrack: track, selectedRecording: selectedRecording);
+          _applyTags(
+              originalTrack: track, selectedRecording: selectedRecording);
         }
       } else {
         // ignore: use_build_context_synchronously
@@ -142,13 +140,13 @@ class _LibraryPageState extends State<LibraryPage> {
           const SnackBar(content: Text('No results found online.')),
         );
       }
-
     } catch (e) {
       print('Error searching online: $e');
     }
   }
 
-  String _generateFilename(String artist, String title, int trackNumber, FilenameFormat format) {
+  String _generateFilename(
+      String artist, String title, int trackNumber, FilenameFormat format) {
     switch (format) {
       case FilenameFormat.artistTitle:
         return '$artist - $title';
@@ -160,21 +158,31 @@ class _LibraryPageState extends State<LibraryPage> {
     }
   }
 
-  Future<void> _applyTags({required MusicTrack originalTrack, dynamic selectedRecording, MusicTrack? manualTrack}) async {
+  Future<void> _applyTags(
+      {required MusicTrack originalTrack,
+      dynamic selectedRecording,
+      MusicTrack? manualTrack}) async {
     String newTitle, newArtist, newAlbum;
     int newTrackNumber;
 
     if (selectedRecording != null) {
       newTitle = selectedRecording['title'] as String? ?? originalTrack.title;
-      newArtist = selectedRecording['artist-credit']?[0]?['name'] as String? ?? originalTrack.artist;
-      newAlbum = selectedRecording['releases']?[0]?['title'] as String? ?? originalTrack.album;
-      final trackNumberStr = selectedRecording['releases']?[0]?['media']?[0]?['track-offset']?.toString();
-      newTrackNumber = trackNumberStr != null ? int.tryParse(trackNumberStr) ?? originalTrack.trackNumber : originalTrack.trackNumber;
+      newArtist = selectedRecording['artist-credit']?[0]?['name'] as String? ??
+          originalTrack.artist;
+      newAlbum = selectedRecording['releases']?[0]?['title'] as String? ??
+          originalTrack.album;
+      final trackNumberStr = selectedRecording['releases']?[0]?['media']?[0]
+              ?['track-offset']
+          ?.toString();
+      newTrackNumber = trackNumberStr != null
+          ? int.tryParse(trackNumberStr) ?? originalTrack.trackNumber
+          : originalTrack.trackNumber;
 
       // Apply learning rules
       final rules = await _dbService.getLearningRules();
       for (var rule in rules) {
-        bool artistMatch = rule.choice == LearningChoice.forThisArtist && rule.artist == newArtist;
+        bool artistMatch = rule.choice == LearningChoice.forThisArtist &&
+            rule.artist == newArtist;
         bool forAll = rule.choice == LearningChoice.forAll;
 
         if (artistMatch || forAll) {
@@ -189,7 +197,6 @@ class _LibraryPageState extends State<LibraryPage> {
           }
         }
       }
-
     } else if (manualTrack != null) {
       newTitle = manualTrack.title;
       newArtist = manualTrack.artist;
@@ -199,15 +206,14 @@ class _LibraryPageState extends State<LibraryPage> {
       return; // Nothing to do
     }
 
-
     try {
-      // Write new metadata to the file.
-      await taglib.writeMetadata(
+      // Write metadata to the file using dart_tags (pure Dart, cross-platform)
+      await _metadataService.writeMetadata(
         originalTrack.filePath,
         title: newTitle,
         artist: newArtist,
         album: newAlbum,
-        track: newTrackNumber,
+        trackNumber: newTrackNumber,
       );
 
       // Load the preferred filename format.
@@ -217,11 +223,12 @@ class _LibraryPageState extends State<LibraryPage> {
       final file = File(originalTrack.filePath);
       final directory = file.parent.path;
       final extension = p.extension(file.path);
-      final newFileName = '${_generateFilename(newArtist, newTitle, newTrackNumber, format)}$extension';
+      final newFileName =
+          '${_generateFilename(newArtist, newTitle, newTrackNumber, format)}$extension';
       final newPath = p.join(directory, newFileName);
 
       if (originalTrack.filePath != newPath && !await File(newPath).exists()) {
-         await file.rename(newPath);
+        await file.rename(newPath);
       }
 
       // ignore: use_build_context_synchronously
@@ -230,7 +237,6 @@ class _LibraryPageState extends State<LibraryPage> {
       );
 
       _loadMusicFromDirectory();
-
     } catch (e) {
       print('Error applying tags: $e');
     }
@@ -257,7 +263,8 @@ class _LibraryPageState extends State<LibraryPage> {
     }
   }
 
-  void _handleManualEdit(MusicTrack track, String field, String originalValue, String correctedValue) async {
+  void _handleManualEdit(MusicTrack track, String field, String originalValue,
+      String correctedValue) async {
     final choice = await showDialog<LearningChoice>(
       context: context,
       builder: (context) => const LearningDialog(),
@@ -286,6 +293,16 @@ class _LibraryPageState extends State<LibraryPage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.download),
+            tooltip: 'Download Music',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const DownloadPage()),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.settings),
             tooltip: 'Settings',

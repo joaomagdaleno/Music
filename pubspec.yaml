@@ -12,11 +12,12 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
-  taglib_ffi_dart: ^0.0.3
-  taglib_ffi_dart_libs: ^0.0.3
+  dart_tags: ^0.4.1
   file_picker: ^8.0.7
   http: ^1.2.1
   sqflite: ^2.3.3
+  path: ^1.9.0
+  archive: ^3.6.1
 
 dev_dependencies:
   flutter_test:
