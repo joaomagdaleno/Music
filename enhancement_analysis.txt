@@ -1,0 +1,10 @@
+Analyzing 2 items...                                            
+
+   info - The private field _downloadingProgress could be 'final' - lib\search_page.dart:27:23 - prefer_final_fields
+   info - The private field _downloadingStatus could be 'final' - lib\search_page.dart:28:23 - prefer_final_fields
+   info - Don't use 'BuildContext's across async gaps - lib\search_page.dart:164:28 - use_build_context_synchronously
+   info - 'surfaceVariant' is deprecated and shouldn't be used. Use surfaceContainerHighest instead. This feature was deprecated after v3.18.0-0.1.pre - lib\search_page.dart:371:44 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\search_page.dart:371:59 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\search_page.dart:428:26 - deprecated_member_use
+
+6 issues found. (ran in 2.8s)

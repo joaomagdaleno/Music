@@ -23,6 +23,9 @@ class DatabaseService {
   static Database? _database;
   static const String _settingsTable = 'settings';
   static const String _rulesTable = 'learning_rules';
+  static const String _tracksTable = 'tracks';
+  static const String _playlistsTable = 'playlists';
+  static const String _playlistTracksTable = 'playlist_tracks';
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -34,7 +37,7 @@ class DatabaseService {
     String path = join(await getDatabasesPath(), 'music_tag_editor.db');
     return await openDatabase(
       path,
-      version: 2, // Incremented version for migration
+      version: 3, // Incremented version for library/playlists
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE $_settingsTable (
@@ -52,6 +55,37 @@ class DatabaseService {
             choice TEXT NOT NULL
           )
         ''');
+        await db.execute('''
+          CREATE TABLE $_tracksTable (
+            id TEXT PRIMARY KEY,
+            title TEXT NOT NULL,
+            artist TEXT,
+            album TEXT,
+            thumbnail TEXT,
+            duration INTEGER,
+            platform TEXT NOT NULL,
+            url TEXT NOT NULL,
+            stream_url TEXT,
+            local_path TEXT,
+            is_downloaded INTEGER DEFAULT 0
+          )
+        ''');
+        await db.execute('''
+          CREATE TABLE $_playlistsTable (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            description TEXT
+          )
+        ''');
+        await db.execute('''
+          CREATE TABLE $_playlistTracksTable (
+            playlist_id INTEGER,
+            track_id TEXT,
+            PRIMARY KEY (playlist_id, track_id),
+            FOREIGN KEY (playlist_id) REFERENCES $_playlistsTable (id) ON DELETE CASCADE,
+            FOREIGN KEY (track_id) REFERENCES $_tracksTable (id) ON DELETE CASCADE
+          )
+        ''');
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
@@ -63,6 +97,39 @@ class DatabaseService {
               originalValue TEXT NOT NULL,
               correctedValue TEXT NOT NULL,
               choice TEXT NOT NULL
+            )
+          ''');
+        }
+        if (oldVersion < 3) {
+          await db.execute('''
+            CREATE TABLE $_tracksTable (
+              id TEXT PRIMARY KEY,
+              title TEXT NOT NULL,
+              artist TEXT,
+              album TEXT,
+              thumbnail TEXT,
+              duration INTEGER,
+              platform TEXT NOT NULL,
+              url TEXT NOT NULL,
+              stream_url TEXT,
+              local_path TEXT,
+              is_downloaded INTEGER DEFAULT 0
+            )
+          ''');
+          await db.execute('''
+            CREATE TABLE $_playlistsTable (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              name TEXT NOT NULL,
+              description TEXT
+            )
+          ''');
+          await db.execute('''
+            CREATE TABLE $_playlistTracksTable (
+              playlist_id INTEGER,
+              track_id TEXT,
+              PRIMARY KEY (playlist_id, track_id),
+              FOREIGN KEY (playlist_id) REFERENCES $_playlistsTable (id) ON DELETE CASCADE,
+              FOREIGN KEY (track_id) REFERENCES $_tracksTable (id) ON DELETE CASCADE
             )
           ''');
         }
@@ -129,5 +196,59 @@ class DatabaseService {
         ),
       );
     });
+  }
+
+  // --- Track Methods ---
+
+  Future<void> saveTrack(Map<String, dynamic> track) async {
+    final db = await database;
+    await db.insert(
+      _tracksTable,
+      track,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getTracks() async {
+    final db = await database;
+    return await db.query(_tracksTable);
+  }
+
+  Future<void> deleteTrack(String id) async {
+    final db = await database;
+    await db.delete(_tracksTable, where: 'id = ?', whereArgs: [id]);
+  }
+
+  // --- Playlist Methods ---
+
+  Future<int> createPlaylist(String name, {String? description}) async {
+    final db = await database;
+    return await db.insert(_playlistsTable, {
+      'name': name,
+      'description': description,
+    });
+  }
+
+  Future<List<Map<String, dynamic>>> getPlaylists() async {
+    final db = await database;
+    return await db.query(_playlistsTable);
+  }
+
+  Future<void> addTrackToPlaylist(int playlistId, String trackId) async {
+    final db = await database;
+    await db.insert(_playlistTracksTable, {
+      'playlist_id': playlistId,
+      'track_id': trackId,
+    });
+  }
+
+  Future<List<Map<String, dynamic>>> getPlaylistTracks(int playlistId) async {
+    final db = await database;
+    final results = await db.rawQuery('''
+      SELECT t.* FROM $_tracksTable t
+      JOIN $_playlistTracksTable pt ON t.id = pt.track_id
+      WHERE pt.playlist_id = ?
+    ''', [playlistId]);
+    return results;
   }
 }

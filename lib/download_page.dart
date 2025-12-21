@@ -291,7 +291,9 @@ class _DownloadPageState extends State<DownloadPage> {
                                 if (_mediaInfo!.artist != null)
                                   Text(_mediaInfo!.artist!),
                                 const SizedBox(height: 4),
-                                Chip(label: Text(_mediaInfo!.platform)),
+                                Chip(
+                                    label: Text(_mediaInfo!.platform.name
+                                        .toUpperCase())),
                               ],
                             ),
                           ),

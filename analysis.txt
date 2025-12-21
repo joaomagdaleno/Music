@@ -1,0 +1,15 @@
+Analyzing 5 items...                                            
+
+warning - The value of the local variable 'linuxUrl' isn't used - lib\dependency_manager.dart:187:15 - unused_local_variable
+   info - Don't invoke 'print' in production code - lib\main.dart:108:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\main.dart:117:5 - avoid_print
+   info - Don't use 'BuildContext's across async gaps - lib\main.dart:127:11 - use_build_context_synchronously
+   info - Don't invoke 'print' in production code - lib\main.dart:144:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\main.dart:241:7 - avoid_print
+   info - The private field _downloadingProgress could be 'final' - lib\search_page.dart:26:23 - prefer_final_fields
+   info - The private field _downloadingStatus could be 'final' - lib\search_page.dart:27:23 - prefer_final_fields
+   info - Don't use 'BuildContext's across async gaps - lib\search_page.dart:110:28 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\search_page.dart:141:28 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\search_page.dart:145:28 - use_build_context_synchronously
+
+11 issues found. (ran in 3.0s)

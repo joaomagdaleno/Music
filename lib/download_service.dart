@@ -2,6 +2,14 @@ import 'dart:io';
 import 'dart:convert';
 import 'dependency_manager.dart';
 
+/// Platform detected from URL or search.
+enum MediaPlatform {
+  youtube,
+  youtubeMusic,
+  spotify,
+  unknown,
+}
+
 /// Available audio/video format for download.
 class DownloadFormat {
   final String formatId;
@@ -32,6 +40,36 @@ class DownloadFormat {
   String toString() => displayName;
 }
 
+/// Search result from a specific platform.
+class SearchResult {
+  final String id;
+  final String title;
+  final String artist;
+  final String? album;
+  final String? thumbnail;
+  final int? duration;
+  final String url;
+  final MediaPlatform platform;
+
+  SearchResult({
+    required this.id,
+    required this.title,
+    required this.artist,
+    this.album,
+    this.thumbnail,
+    this.duration,
+    required this.url,
+    required this.platform,
+  });
+
+  String get durationFormatted {
+    if (duration == null) return '';
+    final minutes = duration! ~/ 60;
+    final seconds = (duration! % 60).toString().padLeft(2, '0');
+    return '$minutes:$seconds';
+  }
+}
+
 /// Information about a video/track.
 class MediaInfo {
   final String title;
@@ -39,7 +77,7 @@ class MediaInfo {
   final String? album;
   final String? thumbnail;
   final int? duration;
-  final String platform;
+  final MediaPlatform platform;
   final List<DownloadFormat> formats;
 
   MediaInfo({
@@ -51,14 +89,6 @@ class MediaInfo {
     required this.platform,
     required this.formats,
   });
-}
-
-/// Platform detected from URL.
-enum MediaPlatform {
-  youtube,
-  youtubeMusic,
-  spotify,
-  unknown,
 }
 
 /// Service for downloading music from various platforms.
@@ -176,8 +206,7 @@ class DownloadService {
       album: json['album'] as String?,
       thumbnail: json['thumbnail'] as String?,
       duration: json['duration'] as int?,
-      platform:
-          platform == MediaPlatform.youtubeMusic ? 'YouTube Music' : 'YouTube',
+      platform: platform,
       formats: formats,
     );
   }
@@ -192,7 +221,7 @@ class DownloadService {
       album: null,
       thumbnail: null,
       duration: null,
-      platform: 'Spotify',
+      platform: MediaPlatform.spotify,
       formats: [
         DownloadFormat(
           formatId: 'mp3',

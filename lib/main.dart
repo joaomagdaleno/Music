@@ -9,7 +9,9 @@ import 'database_service.dart';
 import 'edit_track_dialog.dart';
 import 'learning_dialog.dart';
 import 'metadata_service.dart';
-import 'download_page.dart';
+import 'search_page.dart';
+import 'playback_service.dart';
+import 'app_shell.dart';
 
 // A simple data class to hold music metadata.
 class MusicTrack {
@@ -30,6 +32,7 @@ class MusicTrack {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await PlaybackService.instance.init();
   runApp(const MusicTagEditorApp());
 }
 
@@ -44,7 +47,7 @@ class MusicTagEditorApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
         useMaterial3: true,
       ),
-      home: const LibraryPage(title: 'Music Library'),
+      home: const AppShell(),
     );
   }
 }
@@ -299,7 +302,7 @@ class _LibraryPageState extends State<LibraryPage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const DownloadPage()),
+                MaterialPageRoute(builder: (context) => const SearchPage()),
               );
             },
           ),

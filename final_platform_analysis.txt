@@ -1,0 +1,20 @@
+Analyzing Music...                                              
+
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\download_page.dart:309:25 - deprecated_member_use
+   info - Don't invoke 'print' in production code - lib\main.dart:111:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\main.dart:120:5 - avoid_print
+   info - Don't use 'BuildContext's across async gaps - lib\main.dart:130:11 - use_build_context_synchronously
+   info - Don't invoke 'print' in production code - lib\main.dart:147:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\main.dart:244:7 - avoid_print
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\mini_player.dart:30:37 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\mini_player.dart:73:32 - deprecated_member_use
+   info - Statements in an if should be enclosed in a block - lib\player_screen.dart:24:13 - curly_braces_in_flow_control_structures
+   info - The private field _downloadingProgress could be 'final' - lib\search_page.dart:32:23 - prefer_final_fields
+   info - The private field _downloadingStatus could be 'final' - lib\search_page.dart:33:23 - prefer_final_fields
+   info - Don't use 'BuildContext's across async gaps - lib\search_page.dart:169:28 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\search_page.dart:495:12 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\search_page.dart:552:26 - deprecated_member_use
+  error - The named parameter 'file' is required, but there's no corresponding argument - music_tag_editor\lib\services\music_service.dart:35:44 - missing_required_argument
+  error - Too many positional arguments: 0 expected, but 1 found - music_tag_editor\lib\services\music_service.dart:35:57 - extra_positional_arguments_could_be_named
+
+16 issues found. (ran in 44.5s)

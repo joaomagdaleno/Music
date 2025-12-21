@@ -182,14 +182,6 @@ class DependencyManager {
         // ffmpeg already in PATH, create symlink
         final systemPath = (result.stdout as String).trim();
         await Link(_getFFmpegPath()).create(systemPath);
-      } else {
-        // Download static build for Linux
-        const linuxUrl =
-            'https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz';
-        throw UnimplementedError(
-          'FFmpeg auto-install for Linux not yet implemented. '
-          'Please install ffmpeg: sudo apt install ffmpeg',
-        );
       }
     }
   }
