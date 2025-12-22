@@ -6,7 +6,7 @@ import 'local_duo_service.dart';
 import 'duo_chat_dialog.dart';
 import 'visualizer_widget.dart';
 import 'lyrics_service.dart';
-import 'theme_service.dart';
+import 'karaoke_view.dart';
 
 class PlayerScreen extends StatelessWidget {
   const PlayerScreen({super.key});
@@ -172,6 +172,24 @@ class PlayerScreen extends StatelessWidget {
                       iconSize: 48,
                       icon: const Icon(Icons.skip_next),
                       onPressed: () {},
+                    ),
+                    const SizedBox(width: 16),
+                    IconButton(
+                      iconSize: 32,
+                      icon: const Icon(Icons.mic_external_on),
+                      tooltip: 'Modo Karaoke',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => KaraokeView(track: {
+                              'id': track.id,
+                              'title': track.title,
+                              'artist': track.artist,
+                            }),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),

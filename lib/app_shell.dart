@@ -4,6 +4,7 @@ import 'main.dart' as legacy; // To keep the metadata editor accessible
 import 'mini_player.dart';
 import 'playlists_view.dart';
 import 'my_tracks_view.dart';
+import 'home_view.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -16,6 +17,7 @@ class _AppShellState extends State<AppShell> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
+    const HomeView(),
     const SearchPage(),
     const MyTracksView(),
     const PlaylistsView(),
@@ -38,6 +40,10 @@ class _AppShellState extends State<AppShell> {
             onTap: (index) => setState(() => _selectedIndex = index),
             type: BottomNavigationBarType.fixed, // For 4+ items
             items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Início',
+              ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.search),
                 label: 'Buscar',

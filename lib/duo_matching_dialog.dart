@@ -4,6 +4,7 @@ import 'remote_library_view.dart';
 import 'database_service.dart';
 import 'playback_service.dart';
 import 'download_service.dart'; // For SearchResult
+import 'party_queue_view.dart';
 
 class DuoMatchingDialog extends StatefulWidget {
   const DuoMatchingDialog({super.key});
@@ -18,6 +19,7 @@ class _DuoMatchingDialogState extends State<DuoMatchingDialog> {
   bool _isDiscovering = false;
   String? _status;
   final List<String> _foundDevices = [];
+  final Map<String, String> _connectedGuests = {};
   List<Map<String, dynamic>> _guestHistory = [];
 
   @override
@@ -31,27 +33,43 @@ class _DuoMatchingDialogState extends State<DuoMatchingDialog> {
     };
     _service.onConnected = (id) async {
       if (mounted) {
+        final guestName = _service.getDiscoveredName(id) ?? "Convidado";
         setState(() {
-          _status = "Conectado!";
-          _isHosting = false;
-          _isDiscovering = false;
+          _connectedGuests[id] = guestName;
+          _status = "Amigos Conectados: ${_connectedGuests.length}";
+          _isHosting = _service.role == DuoRole.host;
+          _isDiscovering = _service.role == DuoRole.guest;
         });
 
-        // Restore session tracks
-        final tracks = await DatabaseService.instance.getDuoSessionTracks(id);
-        for (var t in tracks) {
-          final result = SearchResult.fromJson(
-              t); // Maps are close enough to JSON for our fromJson
-          PlaybackService.instance.addToQueue(result);
+        // Restore session tracks (only if just one guest or first connection)
+        if (_connectedGuests.length == 1) {
+          final tracks = await DatabaseService.instance.getDuoSessionTracks(id);
+          for (var t in tracks) {
+            final result = SearchResult.fromJson(t);
+            PlaybackService.instance.addToQueue(result);
+          }
         }
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(
-                  'Conectado! ${tracks.length} músicas da última sessão restauradas.')),
-        );
       }
     };
+    _service.onDisconnected = () {
+      if (mounted) {
+        _loadConnectedGuests();
+      }
+    };
+  }
+
+  void _loadConnectedGuests() {
+    setState(() {
+      _connectedGuests.clear();
+      for (var id in _service.connectedEndpoints) {
+        _connectedGuests[id] = _service.getDiscoveredName(id) ?? "Convidado";
+      }
+      if (_connectedGuests.isEmpty) {
+        _status = null;
+      } else {
+        _status = "Amigos Conectados: ${_connectedGuests.length}";
+      }
+    });
   }
 
   Future<void> _loadHistory() async {
@@ -109,16 +127,34 @@ class _DuoMatchingDialogState extends State<DuoMatchingDialog> {
               label: const Text('Entrar na Sessão'),
               onPressed: _startDiscovery,
             ),
+            const SizedBox(height: 10),
+            OutlinedButton.icon(
+              icon: const Icon(Icons.qr_code_scanner),
+              label: const Text('Fila de Festa (QR)'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const PartyQueueView()),
+                );
+              },
+            ),
           ] else ...[
-            if (_status == "Conectado!") ...[
-              const Icon(Icons.check_circle, color: Colors.green, size: 48),
+            if (_connectedGuests.isNotEmpty) ...[
+              const Icon(Icons.group, color: Colors.green, size: 48),
               const SizedBox(height: 10),
-              const Text("Modo Duo Ativo",
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Text("Broadcast Ativo (${_connectedGuests.length})",
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              ..._connectedGuests.entries.map((e) => ListTile(
+                    leading: const Icon(Icons.person, size: 20),
+                    title: Text(e.value),
+                    trailing: const Icon(Icons.check, color: Colors.green),
+                  )),
               const SizedBox(height: 20),
               ElevatedButton.icon(
                 icon: const Icon(Icons.library_music),
-                label: const Text('Ver Músicas do Amigo'),
+                label: const Text('Ver Músicas dos Amigos'),
                 onPressed: () {
                   Navigator.push(
                       context,

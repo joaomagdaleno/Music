@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'database_service.dart';
 import 'playback_service.dart';
 import 'download_service.dart';
+import 'playlist_importer_view.dart';
 
 class MyTracksView extends StatefulWidget {
   const MyTracksView({super.key});
@@ -50,7 +51,23 @@ class _MyTracksViewState extends State<MyTracksView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Minhas Músicas')),
+      appBar: AppBar(
+        title: const Text('Minhas Músicas'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.playlist_add),
+            tooltip: 'Importar Playlist',
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const PlaylistImporterView()),
+              );
+              _loadTracks(); // Refresh after import
+            },
+          ),
+        ],
+      ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _tracks.isEmpty

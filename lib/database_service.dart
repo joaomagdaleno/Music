@@ -216,6 +216,28 @@ class DatabaseService {
     }
   }
 
+  Future<int> loadCrossfadeDuration() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      _settingsTable,
+      where: 'key = ?',
+      whereArgs: ['crossfadeDuration'],
+    );
+    if (maps.isNotEmpty) {
+      return int.tryParse(maps.first['value'] as String) ?? 3;
+    }
+    return 3;
+  }
+
+  Future<void> saveCrossfadeDuration(int seconds) async {
+    final db = await database;
+    await db.insert(
+      _settingsTable,
+      {'key': 'crossfadeDuration', 'value': seconds.toString()},
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
   Future<void> saveLearningRule(LearningRule rule) async {
     final db = await database;
     await db.insert(
@@ -374,5 +396,51 @@ class DatabaseService {
       WHERE ds.guest_id = ?
       ORDER BY ds.added_at ASC
     ''', [guestId]);
+  }
+
+  // --- Mood Methods ---
+
+  Future<List<Map<String, dynamic>>> getTracksByMood(String mood) async {
+    final db = await database;
+    List<String> genres = [];
+
+    switch (mood.toLowerCase()) {
+      case 'energético':
+        genres = [
+          'rock',
+          'metal',
+          'electronic',
+          'dance',
+          'pop',
+          'punk',
+          'hip hop'
+        ];
+        break;
+      case 'relaxante':
+        genres = [
+          'classical',
+          'jazz',
+          'ambient',
+          'acoustic',
+          'lo-fi',
+          'reggae'
+        ];
+        break;
+      case 'foco':
+        genres = ['instrumental', 'soundtrack', 'deep house', 'minimal'];
+        break;
+      case 'melancólico':
+        genres = ['blues', 'soul', 'indie', 'folk', 'sad'];
+        break;
+    }
+
+    if (genres.isEmpty) return [];
+
+    final placeholders = List.filled(genres.length, '?').join(',');
+    return await db.query(
+      _tracksTable,
+      where: 'LOWER(genre) IN ($placeholders)',
+      whereArgs: genres,
+    );
   }
 }

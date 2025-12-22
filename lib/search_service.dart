@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'dependency_manager.dart';
 import 'download_service.dart';
+import 'package:path/path.dart' as p;
 
 /// Status of search on a specific platform.
 enum SearchStatus {
@@ -307,6 +308,104 @@ class SearchService {
       return match;
     } catch (e) {
       return null;
+    }
+  }
+
+  /// Import a playlist from YouTube or Spotify URL.
+  Future<List<SearchResult>> importPlaylist(String url) async {
+    if (url.contains('spotify.com')) {
+      return _importSpotifyPlaylist(url);
+    } else {
+      return _importYouTubePlaylist(url);
+    }
+  }
+
+  Future<List<SearchResult>> _importYouTubePlaylist(String url) async {
+    try {
+      final result = await Process.run(
+        _deps.ytDlpPath,
+        [
+          '--dump-json',
+          '--flat-playlist',
+          '--no-download',
+          url,
+        ],
+        stdoutEncoding: utf8,
+        stderrEncoding: utf8,
+      );
+
+      if (result.exitCode != 0) return [];
+
+      final results = <SearchResult>[];
+      final lines = (result.stdout as String).split('\n');
+
+      for (final line in lines) {
+        if (line.trim().isEmpty) continue;
+        try {
+          final json = jsonDecode(line);
+          results.add(SearchResult(
+            id: json['id'] as String? ?? '',
+            title: json['title'] as String? ?? 'Unknown',
+            artist: json['uploader'] as String? ??
+                json['channel'] as String? ??
+                'Unknown',
+            thumbnail: json['thumbnail'] as String?,
+            duration: (json['duration'] as num?)?.toInt(),
+            url: 'https://www.youtube.com/watch?v=${json['id']}',
+            platform: MediaPlatform.youtube,
+          ));
+        } catch (_) {}
+      }
+      return results;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<SearchResult>> _importSpotifyPlaylist(String url) async {
+    final tempFile = File(p.join(Directory.systemTemp.path,
+        'temp_${DateTime.now().millisecondsSinceEpoch}.spotdl'));
+    try {
+      final result = await Process.run(
+        _deps.spotdlPath,
+        [
+          'save',
+          url,
+          '--save-file',
+          tempFile.path,
+        ],
+      );
+
+      if (result.exitCode != 0) return [];
+
+      final exists = await tempFile.exists();
+      if (!exists) return [];
+
+      final content = await tempFile.readAsString();
+      final List<SearchResult> results = [];
+      final lines = content.split('\n');
+
+      for (var line in lines) {
+        if (line.trim().isEmpty) continue;
+        try {
+          final json = jsonDecode(line);
+          results.add(SearchResult(
+            id: json['url'] ?? '',
+            title: json['name'] ?? 'Unknown',
+            artist: json['artists']?[0] ?? 'Unknown',
+            album: json['album'],
+            thumbnail: json['cover_url'],
+            duration: (json['duration'] as num?)?.toInt(),
+            url: json['url'] ?? '',
+            platform: MediaPlatform.spotify,
+          ));
+        } catch (_) {}
+      }
+      return results;
+    } catch (e) {
+      return [];
+    } finally {
+      if (await tempFile.exists()) await tempFile.delete();
     }
   }
 }

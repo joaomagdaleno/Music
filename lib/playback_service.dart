@@ -22,6 +22,8 @@ class PlaybackService {
 
   SearchResult? _currentTrack;
   final List<SearchResult> _queue = [];
+  ConcatenatingAudioSource? _playlist;
+  Duration _crossfadeDuration = const Duration(seconds: 3);
   List<LyricLine> _currentLyrics = [];
   Timer? _sleepTimer;
   final _sleepTimerController = StreamController<Duration?>.broadcast();
@@ -40,23 +42,45 @@ class PlaybackService {
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.music());
 
+    // Load crossfade duration
+    final savedDuration =
+        await DatabaseService.instance.loadCrossfadeDuration();
+    _crossfadeDuration = Duration(seconds: savedDuration);
+
+    _player.currentIndexStream.listen((index) {
+      if (index != null && _queue.isNotEmpty && index < _queue.length) {
+        _onTrackChanged(_queue[index]);
+      }
+    });
+
     _player.processingStateStream.listen((state) {
       if (state == ProcessingState.completed) {
-        _playNext();
+        // Handle end of playlist if needed
       }
     });
   }
 
-  void _playNext() {
-    if (_queue.isNotEmpty) {
-      final next = _queue.removeAt(0);
-      playSearchResult(next);
-    }
+  void _onTrackChanged(SearchResult track) {
+    _currentTrack = track;
+    EqualizerService.instance.applyPresetForGenre(track.genre);
+    ThemeService.instance.updateThemeFromImage(track.thumbnail);
+    DatabaseService.instance.trackPlay(track.id);
+    _fetchLyrics(track);
   }
 
   Future<void> playSearchResult(SearchResult result,
       {bool fromRemote = false}) async {
     _currentTrack = result;
+
+    // Clear queue and start fresh for a single play
+    _queue.clear();
+    _queue.add(result);
+    _playlist =
+        ConcatenatingAudioSource(children: [await _createSource(result)]);
+
+    await _player.setAudioSource(_playlist!);
+    _onTrackChanged(result);
+    _player.play();
 
     if (!fromRemote) {
       LocalDuoService.instance.sendMessage({
@@ -67,28 +91,29 @@ class PlaybackService {
         LocalDuoService.instance.sendFile(result.localPath!);
       }
     }
+  }
 
-    if (result.localPath != null) {
-      await EqualizerService.instance.applyPresetForGenre(result.genre);
-      ThemeService.instance.updateThemeFromImage(result.thumbnail);
-      DatabaseService.instance.trackPlay(result.id);
-      _fetchLyrics(result);
-      await _player.setFilePath(result.localPath!);
-      _player.play();
-      return;
+  Future<AudioSource> _createSource(SearchResult track) async {
+    if (track.localPath != null) {
+      return AudioSource.uri(Uri.file(track.localPath!));
     }
-
-    final streamUrl = await _searchService.getStreamUrl(result.url);
+    final streamUrl = await _searchService.getStreamUrl(track.url);
     if (streamUrl != null) {
-      await EqualizerService.instance.applyPresetForGenre(result.genre);
-      ThemeService.instance.updateThemeFromImage(result.thumbnail);
-      DatabaseService.instance.trackPlay(result.id);
-      _fetchLyrics(result);
-      await _player.setUrl(streamUrl);
-      _player.play();
-    } else {
-      throw Exception('Could not get stream URL');
+      return AudioSource.uri(Uri.parse(streamUrl));
     }
+    throw Exception('Could not get stream URL');
+  }
+
+  Future<void> fadeOutAndNext() async {
+    if (_crossfadeDuration.inMilliseconds > 0) {
+      for (double i = 1.0; i >= 0; i -= 0.1) {
+        _player.setVolume(i);
+        await Future.delayed(
+            Duration(milliseconds: _crossfadeDuration.inMilliseconds ~/ 10));
+      }
+    }
+    _player.seekToNext();
+    _player.setVolume(1.0);
   }
 
   Future<void> pause({bool fromRemote = false}) async {
@@ -140,8 +165,11 @@ class PlaybackService {
     _player.play();
   }
 
-  void addToQueue(SearchResult track, {bool fromRemote = false}) {
+  Future<void> addToQueue(SearchResult track, {bool fromRemote = false}) async {
     _queue.add(track);
+    if (_playlist != null) {
+      _playlist!.add(await _createSource(track));
+    }
     if (!fromRemote) {
       LocalDuoService.instance.sendMessage({
         'type': 'add_to_queue',
@@ -186,6 +214,10 @@ class PlaybackService {
         await LyricsService.instance.fetchLyrics(track.title, track.artist);
     _currentLyrics = lyrics;
     _lyricsController.add(lyrics);
+  }
+
+  void updateCrossfadeDuration(Duration duration) {
+    _crossfadeDuration = duration;
   }
 
   void dispose() {

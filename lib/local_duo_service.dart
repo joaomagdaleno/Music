@@ -13,7 +13,7 @@ class LocalDuoService {
   LocalDuoService._internal();
 
   final Strategy strategy = Strategy.P2P_STAR;
-  String? _connectedEndpointId;
+  final Set<String> _connectedEndpoints = {};
   DuoRole role = DuoRole.none;
   final Map<String, String> _discoveredNames =
       {}; // Store names by id during discovery
@@ -21,6 +21,9 @@ class LocalDuoService {
   Function(String)? onDeviceFound;
   Function(String)? onConnected;
   Function()? onDisconnected;
+
+  Set<String> get connectedEndpoints => _connectedEndpoints;
+  String? getDiscoveredName(String id) => _discoveredNames[id];
 
   // Track ID waiting for a file payload
   SearchResult? _pendingTrack;
@@ -88,7 +91,7 @@ class LocalDuoService {
     Nearby().acceptConnection(id, onPayloadReceived: (id, payload) {
       if (payload.type == PayloadType.BYTES) {
         final str = String.fromCharCodes(payload.bytes!);
-        _handleIncomingMessage(jsonDecode(str));
+        _handleIncomingMessage(id, jsonDecode(str));
       } else if (payload.type == PayloadType.FILE) {
         if (_pendingTrack != null && payload.filePath != null) {
           PlaybackService.instance
@@ -101,35 +104,39 @@ class LocalDuoService {
 
   void _onConnectionResult(String id, Status status) {
     if (status == Status.CONNECTED) {
-      _connectedEndpointId = id;
+      _connectedEndpoints.add(id);
       onConnected?.call(id);
       final name = _discoveredNames[id] ?? "Convidado";
       DatabaseService.instance.saveGuest(id, name);
-      Nearby().stopAdvertising();
-      Nearby().stopDiscovery();
+      // In host mode, we keep advertising to allow more guests
+      if (role == DuoRole.guest) {
+        Nearby().stopDiscovery();
+      }
     }
   }
 
   void _onDisconnected(String id) {
-    _connectedEndpointId = null;
-    role = DuoRole.none;
+    _connectedEndpoints.remove(id);
+    if (_connectedEndpoints.isEmpty) {
+      role = DuoRole.none;
+    }
     onDisconnected?.call();
   }
 
   void sendMessage(Map<String, dynamic> msg) {
-    if (_connectedEndpointId != null) {
-      Nearby().sendBytesPayload(
-          _connectedEndpointId!, Uint8List.fromList(jsonEncode(msg).codeUnits));
+    final payload = Uint8List.fromList(jsonEncode(msg).codeUnits);
+    for (var id in _connectedEndpoints) {
+      Nearby().sendBytesPayload(id, payload);
     }
   }
 
   Future<void> sendFile(String path) async {
-    if (_connectedEndpointId != null) {
-      await Nearby().sendFilePayload(_connectedEndpointId!, path);
+    for (var id in _connectedEndpoints) {
+      await Nearby().sendFilePayload(id, path);
     }
   }
 
-  void _handleIncomingMessage(Map<String, dynamic> msg) {
+  void _handleIncomingMessage(String id, Map<String, dynamic> msg) {
     final type = msg['type'];
     final data = msg['data'];
 
@@ -162,12 +169,9 @@ class LocalDuoService {
         final tracks = list.map((json) => SearchResult.fromJson(json)).toList();
         onLibraryReceived?.call(tracks);
         // Automatically save remote tracks to this guest's session
-        if (_connectedEndpointId != null) {
-          for (var track in tracks) {
-            DatabaseService.instance.saveTrack(track.toJson());
-            DatabaseService.instance
-                .addTrackToDuoSession(_connectedEndpointId!, track.id);
-          }
+        for (var track in tracks) {
+          DatabaseService.instance.saveTrack(track.toJson());
+          DatabaseService.instance.addTrackToDuoSession(id, track.id);
         }
         break;
       case 'add_to_queue':
@@ -222,7 +226,7 @@ class LocalDuoService {
     Nearby().stopAllEndpoints();
     Nearby().stopAdvertising();
     Nearby().stopDiscovery();
-    _connectedEndpointId = null;
+    _connectedEndpoints.clear();
     role = DuoRole.none;
   }
 }
