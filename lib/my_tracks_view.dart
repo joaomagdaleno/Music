@@ -11,7 +11,7 @@ class MyTracksView extends StatefulWidget {
 }
 
 class _MyTracksViewState extends State<MyTracksView> {
-  final DatabaseService _dbService = DatabaseService();
+  final DatabaseService _dbService = DatabaseService.instance;
   final PlaybackService _playbackService = PlaybackService.instance;
   List<Map<String, dynamic>> _tracks = [];
   bool _isLoading = true;
@@ -42,6 +42,7 @@ class _MyTracksViewState extends State<MyTracksView> {
         (e) => e.toString() == trackData['platform'],
         orElse: () => MediaPlatform.unknown,
       ),
+      localPath: trackData['local_path'],
     );
     _playbackService.playSearchResult(result);
   }

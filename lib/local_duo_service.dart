@@ -3,7 +3,8 @@ import 'dart:typed_data';
 import 'package:nearby_connections/nearby_connections.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'playback_service.dart';
-import 'search_service.dart';
+import 'download_service.dart';
+import 'database_service.dart';
 
 enum DuoRole { host, guest, none }
 
@@ -14,10 +15,21 @@ class LocalDuoService {
   final Strategy strategy = Strategy.P2P_STAR;
   String? _connectedEndpointId;
   DuoRole role = DuoRole.none;
+  final Map<String, String> _discoveredNames =
+      {}; // Store names by id during discovery
 
   Function(String)? onDeviceFound;
   Function(String)? onConnected;
   Function()? onDisconnected;
+
+  // Track ID waiting for a file payload
+  SearchResult? _pendingTrack;
+
+  // Callback for when remote library data is received
+  Function(List<SearchResult>)? onLibraryReceived;
+
+  // Callback for when a chat message is received
+  Function(String)? onMessageReceived;
 
   Future<bool> requestPermissions() async {
     Map<Permission, PermissionStatus> statuses = await [
@@ -54,6 +66,7 @@ class LocalDuoService {
         username,
         strategy,
         onEndpointFound: (id, name, serviceId) {
+          _discoveredNames[id] = name;
           onDeviceFound?.call(name);
           Nearby().requestConnection(
             username,
@@ -76,6 +89,12 @@ class LocalDuoService {
       if (payload.type == PayloadType.BYTES) {
         final str = String.fromCharCodes(payload.bytes!);
         _handleIncomingMessage(jsonDecode(str));
+      } else if (payload.type == PayloadType.FILE) {
+        if (_pendingTrack != null && payload.filePath != null) {
+          PlaybackService.instance
+              .playLocalFile(payload.filePath!, _pendingTrack!);
+          _pendingTrack = null;
+        }
       }
     });
   }
@@ -84,6 +103,8 @@ class LocalDuoService {
     if (status == Status.CONNECTED) {
       _connectedEndpointId = id;
       onConnected?.call(id);
+      final name = _discoveredNames[id] ?? "Convidado";
+      DatabaseService.instance.saveGuest(id, name);
       Nearby().stopAdvertising();
       Nearby().stopDiscovery();
     }
@@ -99,6 +120,12 @@ class LocalDuoService {
     if (_connectedEndpointId != null) {
       Nearby().sendBytesPayload(
           _connectedEndpointId!, Uint8List.fromList(jsonEncode(msg).codeUnits));
+    }
+  }
+
+  Future<void> sendFile(String path) async {
+    if (_connectedEndpointId != null) {
+      await Nearby().sendFilePayload(_connectedEndpointId!, path);
     }
   }
 
@@ -120,9 +147,75 @@ class LocalDuoService {
         break;
       case 'track':
         final result = SearchResult.fromJson(msg['track']);
-        PlaybackService.instance.playSearchResult(result, fromRemote: true);
+        if (result.localPath != null) {
+          // It's a local track, wait for the file payload
+          _pendingTrack = result;
+        } else {
+          PlaybackService.instance.playSearchResult(result, fromRemote: true);
+        }
+        break;
+      case 'request_library':
+        _sendLocalLibrary();
+        break;
+      case 'library_data':
+        final List<dynamic> list = msg['library'];
+        final tracks = list.map((json) => SearchResult.fromJson(json)).toList();
+        onLibraryReceived?.call(tracks);
+        // Automatically save remote tracks to this guest's session
+        if (_connectedEndpointId != null) {
+          for (var track in tracks) {
+            DatabaseService.instance.saveTrack(track.toJson());
+            DatabaseService.instance
+                .addTrackToDuoSession(_connectedEndpointId!, track.id);
+          }
+        }
+        break;
+      case 'add_to_queue':
+        final track = SearchResult.fromJson(msg['track']);
+        PlaybackService.instance.addToQueue(track, fromRemote: true);
+        break;
+      case 'chat':
+        onMessageReceived?.call(msg['message']);
         break;
     }
+  }
+
+  void sendChatMessage(String message) {
+    sendMessage({
+      'type': 'chat',
+      'message': message,
+    });
+  }
+
+  Future<void> _sendLocalLibrary() async {
+    final tracksData = await DatabaseService.instance.getTracks();
+    final List<Map<String, dynamic>> tracks = [];
+
+    for (var trackData in tracksData) {
+      final result = SearchResult(
+        id: trackData['id'],
+        title: trackData['title'],
+        artist: trackData['artist'] ?? '',
+        thumbnail: trackData['thumbnail'],
+        duration: trackData['duration'],
+        url: trackData['url'],
+        platform: MediaPlatform.values.firstWhere(
+          (e) => e.toString() == trackData['platform'],
+          orElse: () => MediaPlatform.unknown,
+        ),
+        localPath: trackData['local_path'],
+      );
+      tracks.add(result.toJson());
+    }
+
+    sendMessage({
+      'type': 'library_data',
+      'library': tracks,
+    });
+  }
+
+  void requestRemoteLibrary() {
+    sendMessage({'type': 'request_library'});
   }
 
   void stopAll() {

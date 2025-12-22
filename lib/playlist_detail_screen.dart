@@ -18,7 +18,7 @@ class PlaylistDetailScreen extends StatefulWidget {
 }
 
 class _PlaylistDetailScreenState extends State<PlaylistDetailScreen> {
-  final DatabaseService _dbService = DatabaseService();
+  final DatabaseService _dbService = DatabaseService.instance;
   final PlaybackService _playbackService = PlaybackService.instance;
   List<Map<String, dynamic>> _tracks = [];
   bool _isLoading = true;

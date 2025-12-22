@@ -30,6 +30,7 @@ class MetadataService {
       'artist': tag.tags['artist'] ?? tag.tags['TPE1'] ?? 'Unknown Artist',
       'album': tag.tags['album'] ?? tag.tags['TALB'] ?? 'Unknown Album',
       'track': _parseTrackNumber(tag.tags['track'] ?? tag.tags['TRCK']),
+      'genre': tag.tags['genre'] ?? tag.tags['TCON'] ?? 'Unknown Genre',
     };
   }
 

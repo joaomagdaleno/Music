@@ -189,7 +189,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<void> _addToPlaylist(SearchResult result) async {
-    final db = DatabaseService();
+    final db = DatabaseService.instance;
     final playlistsList = await db.getPlaylists();
 
     if (!mounted) return;

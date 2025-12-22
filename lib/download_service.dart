@@ -50,6 +50,8 @@ class SearchResult {
   final int? duration;
   final String url;
   final MediaPlatform platform;
+  final String? localPath;
+  final String? genre;
 
   SearchResult({
     required this.id,
@@ -60,6 +62,8 @@ class SearchResult {
     this.duration,
     required this.url,
     required this.platform,
+    this.localPath,
+    this.genre,
   });
 
   String get durationFormatted {
@@ -79,6 +83,8 @@ class SearchResult {
       'duration': duration,
       'url': url,
       'platform': platform.index,
+      'localPath': localPath,
+      'genre': genre,
     };
   }
 
@@ -92,6 +98,8 @@ class SearchResult {
       duration: json['duration'],
       url: json['url'],
       platform: MediaPlatform.values[json['platform']],
+      localPath: json['localPath'],
+      genre: json['genre'],
     );
   }
 }

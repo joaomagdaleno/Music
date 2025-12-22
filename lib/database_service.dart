@@ -20,12 +20,17 @@ class LearningRule {
 }
 
 class DatabaseService {
+  static final DatabaseService instance = DatabaseService._internal();
+  DatabaseService._internal();
+
   static Database? _database;
   static const String _settingsTable = 'settings';
   static const String _rulesTable = 'learning_rules';
   static const String _tracksTable = 'tracks';
   static const String _playlistsTable = 'playlists';
   static const String _playlistTracksTable = 'playlist_tracks';
+  static const String _duoGuestsTable = 'duo_guests';
+  static const String _duoSessionsTable = 'duo_sessions';
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -37,7 +42,7 @@ class DatabaseService {
     String path = join(await getDatabasesPath(), 'music_tag_editor.db');
     return await openDatabase(
       path,
-      version: 3, // Incremented version for library/playlists
+      version: 5, // Incremented version for duo persistence
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE $_settingsTable (
@@ -67,7 +72,10 @@ class DatabaseService {
             url TEXT NOT NULL,
             stream_url TEXT,
             local_path TEXT,
-            is_downloaded INTEGER DEFAULT 0
+            is_downloaded INTEGER DEFAULT 0,
+            genre TEXT,
+            play_count INTEGER DEFAULT 0,
+            last_played INTEGER
           )
         ''');
         await db.execute('''
@@ -83,6 +91,23 @@ class DatabaseService {
             track_id TEXT,
             PRIMARY KEY (playlist_id, track_id),
             FOREIGN KEY (playlist_id) REFERENCES $_playlistsTable (id) ON DELETE CASCADE,
+            FOREIGN KEY (track_id) REFERENCES $_tracksTable (id) ON DELETE CASCADE
+          )
+        ''');
+        await db.execute('''
+          CREATE TABLE $_duoGuestsTable (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            last_connected INTEGER NOT NULL
+          )
+        ''');
+        await db.execute('''
+          CREATE TABLE $_duoSessionsTable (
+            guest_id TEXT,
+            track_id TEXT,
+            added_at INTEGER,
+            PRIMARY KEY (guest_id, track_id),
+            FOREIGN KEY (guest_id) REFERENCES $_duoGuestsTable (id) ON DELETE CASCADE,
             FOREIGN KEY (track_id) REFERENCES $_tracksTable (id) ON DELETE CASCADE
           )
         ''');
@@ -129,6 +154,32 @@ class DatabaseService {
               track_id TEXT,
               PRIMARY KEY (playlist_id, track_id),
               FOREIGN KEY (playlist_id) REFERENCES $_playlistsTable (id) ON DELETE CASCADE,
+              FOREIGN KEY (track_id) REFERENCES $_tracksTable (id) ON DELETE CASCADE
+            )
+          ''');
+        }
+        if (oldVersion < 4) {
+          await db.execute('ALTER TABLE $_tracksTable ADD COLUMN genre TEXT');
+          await db.execute(
+              'ALTER TABLE $_tracksTable ADD COLUMN play_count INTEGER DEFAULT 0');
+          await db.execute(
+              'ALTER TABLE $_tracksTable ADD COLUMN last_played INTEGER');
+        }
+        if (oldVersion < 5) {
+          await db.execute('''
+            CREATE TABLE $_duoGuestsTable (
+              id TEXT PRIMARY KEY,
+              name TEXT NOT NULL,
+              last_connected INTEGER NOT NULL
+            )
+          ''');
+          await db.execute('''
+            CREATE TABLE $_duoSessionsTable (
+              guest_id TEXT,
+              track_id TEXT,
+              added_at INTEGER,
+              PRIMARY KEY (guest_id, track_id),
+              FOREIGN KEY (guest_id) REFERENCES $_duoGuestsTable (id) ON DELETE CASCADE,
               FOREIGN KEY (track_id) REFERENCES $_tracksTable (id) ON DELETE CASCADE
             )
           ''');
@@ -250,5 +301,78 @@ class DatabaseService {
       WHERE pt.playlist_id = ?
     ''', [playlistId]);
     return results;
+  }
+
+  Future<void> trackPlay(String trackId) async {
+    final db = await database;
+    await db.rawUpdate('''
+      UPDATE $_tracksTable 
+      SET play_count = play_count + 1, 
+          last_played = ? 
+      WHERE id = ?
+    ''', [DateTime.now().millisecondsSinceEpoch, trackId]);
+  }
+
+  Future<List<Map<String, dynamic>>> getMostPlayed({int limit = 20}) async {
+    final db = await database;
+    return await db.query(
+      _tracksTable,
+      orderBy: 'play_count DESC',
+      limit: limit,
+      where: 'play_count > 0',
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getRecentlyPlayed({int limit = 20}) async {
+    final db = await database;
+    return await db.query(
+      _tracksTable,
+      orderBy: 'last_played DESC',
+      limit: limit,
+      where: 'last_played IS NOT NULL',
+    );
+  }
+
+  // --- Duo Methods ---
+
+  Future<void> saveGuest(String id, String name) async {
+    final db = await database;
+    await db.insert(
+      _duoGuestsTable,
+      {
+        'id': id,
+        'name': name,
+        'last_connected': DateTime.now().millisecondsSinceEpoch,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getGuestHistory() async {
+    final db = await database;
+    return await db.query(_duoGuestsTable, orderBy: 'last_connected DESC');
+  }
+
+  Future<void> addTrackToDuoSession(String guestId, String trackId) async {
+    final db = await database;
+    await db.insert(
+      _duoSessionsTable,
+      {
+        'guest_id': guestId,
+        'track_id': trackId,
+        'added_at': DateTime.now().millisecondsSinceEpoch,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getDuoSessionTracks(String guestId) async {
+    final db = await database;
+    return await db.rawQuery('''
+      SELECT t.* FROM $_tracksTable t
+      JOIN $_duoSessionsTable ds ON t.id = ds.track_id
+      WHERE ds.guest_id = ?
+      ORDER BY ds.added_at ASC
+    ''', [guestId]);
   }
 }

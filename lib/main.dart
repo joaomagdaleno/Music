@@ -12,6 +12,9 @@ import 'metadata_service.dart';
 import 'search_page.dart';
 import 'playback_service.dart';
 import 'app_shell.dart';
+import 'theme_service.dart';
+import 'my_tracks_view.dart';
+import 'smart_library_view.dart';
 
 // A simple data class to hold music metadata.
 class MusicTrack {
@@ -41,13 +44,29 @@ class MusicTagEditorApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Music Tag Editor',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-        useMaterial3: true,
-      ),
-      home: const AppShell(),
+    return AnimatedBuilder(
+      animation: ThemeService.instance,
+      builder: (context, child) {
+        final primaryColor = ThemeService.instance.primaryColor;
+        return MaterialApp(
+          title: 'Music Tag Editor',
+          theme: ThemeData(
+            useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: primaryColor,
+              brightness: Brightness.light,
+            ),
+          ),
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: primaryColor,
+              brightness: Brightness.dark,
+            ),
+          ),
+          home: const AppShell(),
+        );
+      },
     );
   }
 }
@@ -65,7 +84,7 @@ class _LibraryPageState extends State<LibraryPage> {
   final List<MusicTrack> _musicTracks = [];
   bool _isLoading = false;
   final MusicBrainzApi _musicBrainzApi = MusicBrainzApi();
-  final DatabaseService _dbService = DatabaseService();
+  final DatabaseService _dbService = DatabaseService.instance;
   final MetadataService _metadataService = MetadataService();
   String? _currentDirectory;
 
