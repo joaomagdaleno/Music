@@ -200,7 +200,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       boxShadow: isSelected
                           ? [
                               BoxShadow(
-                                  color: color.withValues(alpha: 0.5), blurRadius: 8)
+                                  color: color.withValues(alpha: 0.5),
+                                  blurRadius: 8)
                             ]
                           : null,
                     ),
@@ -226,153 +227,157 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Filename Format',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  DropdownButton<FilenameFormat>(
-                    value: _selectedFormat,
-                    onChanged: (FilenameFormat? newValue) {
-                      if (newValue != null) {
-                        setState(() {
-                          _selectedFormat = newValue;
-                        });
-                        _saveFormat(newValue);
-                      }
-                    },
-                    items: const [
-                      DropdownMenuItem(
-                        value: FilenameFormat.artistTitle,
-                        child: Text('Artist - Title.mp3'),
-                      ),
-                      DropdownMenuItem(
-                        value: FilenameFormat.titleArtist,
-                        child: Text('Title (Artist).mp3'),
-                      ),
-                      DropdownMenuItem(
-                        value: FilenameFormat.trackArtistTitle,
-                        child: Text('01. Artist - Title.mp3'),
-                      ),
-                    ],
-                  ),
-                  const Divider(height: 32),
-                  _buildThemeColorSection(),
-                  const Divider(height: 32),
-                  Text(
-                    'Manutenção da Biblioteca',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  ListTile(
-                    title: const Text('Polir Biblioteca'),
-                    subtitle: const Text(
-                        'Remove lixo dos nomes (ex: [OFFICIAL VIDEO]) e organiza gêneros.'),
-                    leading: const Icon(Icons.auto_fix_high),
-                    onTap: _cleanupLibrary,
-                  ),
-                  const Divider(height: 32),
-                  Text(
-                    'Áudio Avançado',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  ListTile(
-                    title: const Text('Duração do Crossfade'),
-                    subtitle: Text(
-                        'Transição suave de $_crossfadeSeconds segundos entre músicas.'),
-                    leading: const Icon(Icons.av_timer),
-                    trailing: SizedBox(
-                      width: 150,
-                      child: Slider(
-                        value: _crossfadeSeconds.toDouble(),
-                        min: 0,
-                        max: 10,
-                        divisions: 10,
-                        label: '$_crossfadeSeconds s',
-                        onChanged: (val) {
-                          setState(() => _crossfadeSeconds = val.toInt());
-                        },
-                        onChangeEnd: (val) async {
-                          await _dbService.saveCrossfadeDuration(val.toInt());
-                          PlaybackService.instance.updateCrossfadeDuration(
-                              Duration(seconds: val.toInt()));
-                        },
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Filename Format',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    DropdownButton<FilenameFormat>(
+                      value: _selectedFormat,
+                      onChanged: (FilenameFormat? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            _selectedFormat = newValue;
+                          });
+                          _saveFormat(newValue);
+                        }
+                      },
+                      items: const [
+                        DropdownMenuItem(
+                          value: FilenameFormat.artistTitle,
+                          child: Text('Artist - Title.mp3'),
+                        ),
+                        DropdownMenuItem(
+                          value: FilenameFormat.titleArtist,
+                          child: Text('Title (Artist).mp3'),
+                        ),
+                        DropdownMenuItem(
+                          value: FilenameFormat.trackArtistTitle,
+                          child: Text('01. Artist - Title.mp3'),
+                        ),
+                      ],
+                    ),
+                    const Divider(height: 32),
+                    _buildThemeColorSection(),
+                    const Divider(height: 32),
+                    Text(
+                      'Manutenção da Biblioteca',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    ListTile(
+                      title: const Text('Polir Biblioteca'),
+                      subtitle: const Text(
+                          'Remove lixo dos nomes (ex: [OFFICIAL VIDEO]) e organiza gêneros.'),
+                      leading: const Icon(Icons.auto_fix_high),
+                      onTap: _cleanupLibrary,
+                    ),
+                    const Divider(height: 32),
+                    Text(
+                      'Áudio Avançado',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    ListTile(
+                      title: const Text('Duração do Crossfade'),
+                      subtitle: Text(
+                          'Transição suave de $_crossfadeSeconds segundos entre músicas.'),
+                      leading: const Icon(Icons.av_timer),
+                      trailing: SizedBox(
+                        width: 150,
+                        child: Slider(
+                          value: _crossfadeSeconds.toDouble(),
+                          min: 0,
+                          max: 10,
+                          divisions: 10,
+                          label: '$_crossfadeSeconds s',
+                          onChanged: (val) {
+                            setState(() => _crossfadeSeconds = val.toInt());
+                          },
+                          onChangeEnd: (val) async {
+                            await _dbService.saveCrossfadeDuration(val.toInt());
+                            PlaybackService.instance.updateCrossfadeDuration(
+                                Duration(seconds: val.toInt()));
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                  const Divider(height: 32),
-                  Text(
-                    'Segurança de Dados',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  ListTile(
-                    title: const Text('Backup & Restauração'),
-                    subtitle: const Text(
-                        'Exporte ou importe sua biblioteca e configurações.'),
-                    leading: const Icon(Icons.backup),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const BackupView()),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  _buildCloudSyncSection(),
-                  const Divider(height: 32),
-                  Text(
-                    'Conteúdo Restrito',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  SwitchListTile(
-                    title: const Text('Sou maior de 18 anos'),
-                    subtitle: const Text(
-                        'Permite downloads de conteúdo restrito. Usa cookies do seu browser para verificar idade. Risco de conta: MUITO BAIXO (apenas leitura).'),
-                    secondary:
-                        const Icon(Icons.warning_amber, color: Colors.orange),
-                    value: _ageBypass,
-                    onChanged: (val) async {
-                      if (val) {
-                        // Show confirmation dialog
-                        final confirmed = await showDialog<bool>(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                            title: const Text('Confirmação'),
-                            content: const Text(
-                              'Ao ativar, o app usará os cookies do seu navegador Chrome para acessar conteúdo com restrição de idade.\n\n'
-                              '• Seu navegador precisa estar logado no Google\n'
-                              '• Risco para sua conta: MUITO BAIXO\n'
-                              '• O app apenas LÊ cookies, não modifica sua conta\n\n'
-                              'Deseja continuar?',
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(ctx, false),
-                                child: const Text('Cancelar'),
-                              ),
-                              ElevatedButton(
-                                onPressed: () => Navigator.pop(ctx, true),
-                                child:
-                                    const Text('Confirmo que sou maior de 18'),
-                              ),
-                            ],
-                          ),
+                    const Divider(height: 32),
+                    Text(
+                      'Segurança de Dados',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    ListTile(
+                      title: const Text('Backup & Restauração'),
+                      subtitle: const Text(
+                          'Exporte ou importe sua biblioteca e configurações.'),
+                      leading: const Icon(Icons.backup),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const BackupView()),
                         );
-                        if (confirmed != true) { return; }
-                      }
-                      setState(() => _ageBypass = val);
-                      await _dbService.saveAgeBypass(val);
-                    },
-                  ),
-                ],
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    _buildCloudSyncSection(),
+                    const Divider(height: 32),
+                    Text(
+                      'Conteúdo Restrito',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    SwitchListTile(
+                      title: const Text('Sou maior de 18 anos'),
+                      subtitle: const Text(
+                          'Permite downloads de conteúdo restrito. Usa cookies do seu browser para verificar idade. Risco de conta: MUITO BAIXO (apenas leitura).'),
+                      secondary:
+                          const Icon(Icons.warning_amber, color: Colors.orange),
+                      value: _ageBypass,
+                      onChanged: (val) async {
+                        if (val) {
+                          // Show confirmation dialog
+                          final confirmed = await showDialog<bool>(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: const Text('Confirmação'),
+                              content: const Text(
+                                'Ao ativar, o app usará os cookies do seu navegador Chrome para acessar conteúdo com restrição de idade.\n\n'
+                                '• Seu navegador precisa estar logado no Google\n'
+                                '• Risco para sua conta: MUITO BAIXO\n'
+                                '• O app apenas LÊ cookies, não modifica sua conta\n\n'
+                                'Deseja continuar?',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(ctx, false),
+                                  child: const Text('Cancelar'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () => Navigator.pop(ctx, true),
+                                  child: const Text(
+                                      'Confirmo que sou maior de 18'),
+                                ),
+                              ],
+                            ),
+                          );
+                          if (confirmed != true) {
+                            return;
+                          }
+                        }
+                        setState(() => _ageBypass = val);
+                        await _dbService.saveAgeBypass(val);
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
     );

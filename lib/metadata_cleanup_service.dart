@@ -1,9 +1,14 @@
+import 'package:meta/meta.dart';
 import 'database_service.dart';
 import 'metadata_aggregator_service.dart';
 
 class MetadataCleanupService {
-  static final MetadataCleanupService instance =
-      MetadataCleanupService._internal();
+  static MetadataCleanupService _instance = MetadataCleanupService._internal();
+  static MetadataCleanupService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(MetadataCleanupService mock) => _instance = mock;
+
   MetadataCleanupService._internal();
 
   final _db = DatabaseService.instance;

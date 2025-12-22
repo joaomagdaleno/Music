@@ -1,11 +1,17 @@
 import 'dart:async';
+import 'package:meta/meta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'database_service.dart';
 
 /// Service for syncing library data to Firebase Cloud.
 class FirebaseSyncService {
-  static final FirebaseSyncService instance = FirebaseSyncService._internal();
+  static FirebaseSyncService _instance = FirebaseSyncService._internal();
+  static FirebaseSyncService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(FirebaseSyncService mock) => _instance = mock;
+
   FirebaseSyncService._internal();
 
   final _firestore = FirebaseFirestore.instance;
