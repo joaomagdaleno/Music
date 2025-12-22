@@ -269,7 +269,7 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget _getPlatformLogo(MediaPlatform platform) {
+  Widget _getPlatformLogo(MediaPlatform platform, {String? hifiSource}) {
     switch (platform) {
       case MediaPlatform.youtube:
         return Image.network(
@@ -295,8 +295,80 @@ class _SearchPageState extends State<SearchPage> {
           errorBuilder: (_, __, ___) =>
               const Icon(Icons.music_note, color: Colors.green),
         );
+      case MediaPlatform.hifi:
+        return _getHiFiLogo(hifiSource);
       case MediaPlatform.unknown:
         return const Icon(Icons.help_outline, color: Colors.grey);
+    }
+  }
+
+  Widget _getHiFiLogo(String? source) {
+    switch (source) {
+      case 'qobuz':
+        return Image.network(
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Qobuz_Logo.svg/512px-Qobuz_Logo.svg.png',
+          width: 24,
+          height: 24,
+          errorBuilder: (_, __, ___) => Container(
+            width: 24,
+            height: 24,
+            decoration: const BoxDecoration(
+              color: Color(0xFF1A237E),
+              shape: BoxShape.circle,
+            ),
+            child: const Center(
+              child: Text('Q',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold)),
+            ),
+          ),
+        );
+      case 'tidal':
+        return Image.network(
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Tidal_logo.svg/512px-Tidal_logo.svg.png',
+          width: 24,
+          height: 24,
+          errorBuilder: (_, __, ___) => Container(
+            width: 24,
+            height: 24,
+            decoration: const BoxDecoration(
+              color: Colors.black,
+              shape: BoxShape.circle,
+            ),
+            child: const Center(
+              child: Text('T',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold)),
+            ),
+          ),
+        );
+      case 'deezer':
+        return Image.network(
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Deezer_Logo.svg/512px-Deezer_Logo.svg.png',
+          width: 24,
+          height: 24,
+          errorBuilder: (_, __, ___) => Container(
+            width: 24,
+            height: 24,
+            decoration: const BoxDecoration(
+              color: Color(0xFFFF0092),
+              shape: BoxShape.circle,
+            ),
+            child: const Center(
+              child: Text('D',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold)),
+            ),
+          ),
+        );
+      default:
+        return const Icon(Icons.high_quality, color: Colors.purple);
     }
   }
 
@@ -418,7 +490,8 @@ class _SearchPageState extends State<SearchPage> {
                                 ),
                               ],
                             ),
-                            _getPlatformLogo(result.platform),
+                            _getPlatformLogo(result.platform,
+                                hifiSource: result.hifiSource),
                           ],
                         ),
                       ),

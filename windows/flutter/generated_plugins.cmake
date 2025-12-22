@@ -3,7 +3,13 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  cloud_firestore
+  firebase_auth
+  firebase_core
   permission_handler_windows
+  screen_retriever_windows
+  system_tray
+  window_manager
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

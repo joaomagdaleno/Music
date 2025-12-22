@@ -36,6 +36,7 @@ class DependencyManager {
       ('yt-dlp', _getYtDlpPath(), _downloadYtDlp),
       ('spotdl', _getSpotdlPath(), _downloadSpotdl),
       ('ffmpeg', _getFFmpegPath(), _downloadFFmpeg),
+      ('fpcalc', _getFpcalcPath(), _downloadFpcalc),
     ];
 
     for (var i = 0; i < tools.length; i++) {
@@ -80,10 +81,17 @@ class DependencyManager {
     return p.join(_binDir, 'ffmpeg$ext');
   }
 
+  /// Get path to fpcalc (Chromaprint) executable.
+  String _getFpcalcPath() {
+    final ext = Platform.isWindows ? '.exe' : '';
+    return p.join(_binDir, 'fpcalc$ext');
+  }
+
   /// Public getters for tool paths.
   String get ytDlpPath => _getYtDlpPath();
   String get spotdlPath => _getSpotdlPath();
   String get ffmpegPath => _getFFmpegPath();
+  String get fpcalcPath => _getFpcalcPath();
 
   /// Download yt-dlp from GitHub releases.
   Future<void> _downloadYtDlp() async {
@@ -207,6 +215,39 @@ class DependencyManager {
     _binDir = await _getBinDirectory();
     return await File(_getYtDlpPath()).exists() &&
         await File(_getSpotdlPath()).exists() &&
-        await File(_getFFmpegPath()).exists();
+        await File(_getFFmpegPath()).exists() &&
+        await File(_getFpcalcPath()).exists();
+  }
+
+  /// Download fpcalc (Chromaprint) from AcoustID.
+  Future<void> _downloadFpcalc() async {
+    // Chromaprint releases: https://acoustid.org/chromaprint
+    const fpcalcUrl =
+        'https://github.com/acoustid/chromaprint/releases/download/v1.5.1/chromaprint-fpcalc-1.5.1-windows-x86_64.zip';
+
+    if (Platform.isWindows) {
+      final zipPath = p.join(_binDir, 'fpcalc.zip');
+      await downloadFile(fpcalcUrl, zipPath);
+
+      final bytes = await File(zipPath).readAsBytes();
+      final archive = ZipDecoder().decodeBytes(bytes);
+
+      for (final file in archive) {
+        if (file.name.endsWith('fpcalc.exe')) {
+          final outputPath = _getFpcalcPath();
+          await File(outputPath).writeAsBytes(file.content as List<int>);
+          break;
+        }
+      }
+
+      await File(zipPath).delete();
+    } else {
+      // Linux/macOS: try to use system fpcalc or download
+      final result = await Process.run('which', ['fpcalc']);
+      if (result.exitCode == 0) {
+        final systemPath = (result.stdout as String).trim();
+        await Link(_getFpcalcPath()).create(systemPath);
+      }
+    }
   }
 }

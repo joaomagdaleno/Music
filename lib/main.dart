@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'musicbrainz_api.dart';
+import 'metadata_aggregator_service.dart';
 import 'search_results_dialog.dart';
 import 'package:path/path.dart' as p;
 import 'settings_page.dart';
@@ -18,6 +19,7 @@ import 'smart_library_view.dart';
 import 'mood_explorer_view.dart';
 import 'ringtone_maker_view.dart';
 import 'download_service.dart';
+import 'desktop_integration_service.dart';
 
 // A simple data class to hold music metadata.
 class MusicTrack {
@@ -38,6 +40,7 @@ class MusicTrack {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await DesktopIntegrationService.instance.init();
   await PlaybackService.instance.init();
   runApp(const MusicTagEditorApp());
 }
@@ -87,6 +90,8 @@ class _LibraryPageState extends State<LibraryPage> {
   final List<MusicTrack> _musicTracks = [];
   bool _isLoading = false;
   final MusicBrainzApi _musicBrainzApi = MusicBrainzApi();
+  final MetadataAggregatorService _aggregator =
+      MetadataAggregatorService.instance;
   final DatabaseService _dbService = DatabaseService.instance;
   final MetadataService _metadataService = MetadataService();
   String? _currentDirectory;

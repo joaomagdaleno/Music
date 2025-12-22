@@ -7,6 +7,7 @@ import 'duo_chat_dialog.dart';
 import 'visualizer_widget.dart';
 import 'lyrics_service.dart';
 import 'karaoke_view.dart';
+import 'cast_dialog.dart';
 
 class PlayerScreen extends StatelessWidget {
   const PlayerScreen({super.key});
@@ -73,6 +74,16 @@ class PlayerScreen extends StatelessWidget {
               );
             },
             tooltip: 'Modo Duo',
+          ),
+          IconButton(
+            icon: const Icon(Icons.cast),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => const CastDialog(),
+              );
+            },
+            tooltip: 'Transmitir (DLNA)',
           ),
         ],
       ),

@@ -131,19 +131,18 @@ class _DownloadPageState extends State<DownloadPage> {
       case MediaPlatform.youtube:
         icon = Icons.play_circle_fill;
         color = Colors.red;
-        break;
       case MediaPlatform.youtubeMusic:
         icon = Icons.music_note;
         color = Colors.red;
-        break;
       case MediaPlatform.spotify:
         icon = Icons.music_note;
         color = Colors.green;
-        break;
+      case MediaPlatform.hifi:
+        icon = Icons.high_quality;
+        color = Colors.purple;
       case MediaPlatform.unknown:
         icon = Icons.help_outline;
         color = Colors.grey;
-        break;
     }
 
     return Icon(icon, color: color, size: 24);

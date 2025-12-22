@@ -6,9 +6,13 @@ class EqualizerService {
 
   final AndroidEqualizer _equalizer = AndroidEqualizer();
   bool _isAutoMode = true;
+  bool _normalizationEnabled = false;
+  double _targetLoudness = -14.0; // LUFS (Spotify standard)
 
   AndroidEqualizer get equalizer => _equalizer;
   bool get isAutoMode => _isAutoMode;
+  bool get normalizationEnabled => _normalizationEnabled;
+  double get targetLoudness => _targetLoudness;
 
   void setAutoMode(bool enabled) {
     _isAutoMode = enabled;
@@ -54,5 +58,30 @@ class EqualizerService {
     if (index < parameters.bands.length) {
       await parameters.bands[index].setGain(gain);
     }
+  }
+
+  /// Enable/disable volume normalization.
+  void setNormalization(bool enabled) {
+    _normalizationEnabled = enabled;
+  }
+
+  /// Set target loudness for normalization.
+  void setTargetLoudness(double lufs) {
+    _targetLoudness = lufs.clamp(-24.0, 0.0);
+  }
+
+  /// Calculate volume adjustment for a track.
+  /// In a real implementation, you'd analyze the file's LUFS with FFmpeg.
+  /// For now, this returns 1.0 (no change) as a placeholder.
+  double calculateNormalizedVolume(double? trackLufs) {
+    if (!_normalizationEnabled || trackLufs == null) return 1.0;
+
+    final adjustment = _targetLoudness - trackLufs;
+    // Convert dB to linear scale
+    return _dbToLinear(adjustment).clamp(0.1, 2.0);
+  }
+
+  double _dbToLinear(double db) {
+    return 10.0 * (db / 20.0);
   }
 }

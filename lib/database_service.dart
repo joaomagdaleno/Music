@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'settings_page.dart'; // Import the enum
 import 'learning_dialog.dart'; // Import the learning choice enum
+import 'download_service.dart'; // For SearchResult and MediaPlatform
 
 class LearningRule {
   final String? artist;
@@ -238,6 +239,29 @@ class DatabaseService {
     );
   }
 
+  // Generic setting methods for flexible key-value storage
+  Future<String?> getSetting(String key) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      _settingsTable,
+      where: 'key = ?',
+      whereArgs: [key],
+    );
+    if (maps.isNotEmpty) {
+      return maps.first['value'] as String?;
+    }
+    return null;
+  }
+
+  Future<void> saveSetting(String key, String value) async {
+    final db = await database;
+    await db.insert(
+      _settingsTable,
+      {'key': key, 'value': value},
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
   Future<void> saveLearningRule(LearningRule rule) async {
     final db = await database;
     await db.insert(
@@ -290,6 +314,28 @@ class DatabaseService {
   Future<void> deleteTrack(String id) async {
     final db = await database;
     await db.delete(_tracksTable, where: 'id = ?', whereArgs: [id]);
+  }
+
+  /// Get all tracks as SearchResult objects for use by services.
+  Future<List<SearchResult>> getAllTracks() async {
+    final tracksData = await getTracks();
+    return tracksData
+        .map((data) => SearchResult(
+              id: data['id'],
+              title: data['title'],
+              artist: data['artist'] ?? '',
+              album: data['album'],
+              thumbnail: data['thumbnail'],
+              duration: data['duration'],
+              url: data['url'] ?? '',
+              platform: MediaPlatform.values.firstWhere(
+                (e) => e.toString() == data['platform'],
+                orElse: () => MediaPlatform.unknown,
+              ),
+              localPath: data['local_path'],
+              genre: data['genre'],
+            ))
+        .toList();
   }
 
   // --- Playlist Methods ---
@@ -441,6 +487,64 @@ class DatabaseService {
       _tracksTable,
       where: 'LOWER(genre) IN ($placeholders)',
       whereArgs: genres,
+    );
+  }
+
+  // --- Backup Support Methods ---
+
+  Future<List<Map<String, dynamic>>> getPlayHistory() async {
+    final db = await database;
+    return await db.query(
+      _tracksTable,
+      where: 'play_count > 0',
+      orderBy: 'last_played DESC',
+      limit: 100,
+    );
+  }
+
+  Future<Map<String, dynamic>> getAllSettings() async {
+    final db = await database;
+    final rows = await db.query(_settingsTable);
+    final settings = <String, dynamic>{};
+    for (var row in rows) {
+      settings[row['key'] as String] = row['value'];
+    }
+    return settings;
+  }
+
+  Future<void> savePlaylist(Map<String, dynamic> playlist) async {
+    final db = await database;
+    await db.insert(
+      _playlistsTable,
+      {
+        'name': playlist['name'],
+        'description': playlist['description'],
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  // --- Age Restriction Bypass ---
+
+  Future<bool> loadAgeBypass() async {
+    final db = await database;
+    final result = await db.query(
+      _settingsTable,
+      where: 'key = ?',
+      whereArgs: ['age_bypass'],
+    );
+    if (result.isNotEmpty) {
+      return result.first['value'] == 'true';
+    }
+    return false;
+  }
+
+  Future<void> saveAgeBypass(bool enabled) async {
+    final db = await database;
+    await db.insert(
+      _settingsTable,
+      {'key': 'age_bypass', 'value': enabled.toString()},
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 }

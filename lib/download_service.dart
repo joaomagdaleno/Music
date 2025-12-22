@@ -7,6 +7,7 @@ enum MediaPlatform {
   youtube,
   youtubeMusic,
   spotify,
+  hifi, // Tidal, Qobuz, Deezer via SlavArt
   unknown,
 }
 
@@ -52,6 +53,8 @@ class SearchResult {
   final MediaPlatform platform;
   final String? localPath;
   final String? genre;
+  final String? hifiSource; // 'qobuz', 'tidal', 'deezer' for Hi-Fi results
+  final String? hifiQuality; // e.g. '24-bit/96kHz', 'FLAC 16-bit'
 
   SearchResult({
     required this.id,
@@ -64,6 +67,8 @@ class SearchResult {
     required this.platform,
     this.localPath,
     this.genre,
+    this.hifiSource,
+    this.hifiQuality,
   });
 
   String get durationFormatted {

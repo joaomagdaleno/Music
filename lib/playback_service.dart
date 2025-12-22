@@ -1,5 +1,6 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:audio_service/audio_service.dart';
 import 'download_service.dart';
 import 'search_service.dart';
 import 'local_duo_service.dart';
@@ -18,6 +19,7 @@ class PlaybackService {
       androidAudioEffects: [EqualizerService.instance.equalizer],
     ),
   );
+  late AudioHandler _audioHandler;
   final SearchService _searchService = SearchService();
 
   SearchResult? _currentTrack;
@@ -39,6 +41,15 @@ class PlaybackService {
   Duration? get sleepTimeLeft => _sleepTimeLeft;
 
   Future<void> init() async {
+    _audioHandler = await AudioService.init(
+      builder: () => MusicAudioHandler(this),
+      config: const AudioServiceConfig(
+        androidNotificationChannelId: 'com.music.app.channel.audio',
+        androidNotificationChannelName: 'Music Playback',
+        androidNotificationOngoing: true,
+      ),
+    );
+
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.music());
 
@@ -54,10 +65,41 @@ class PlaybackService {
     });
 
     _player.processingStateStream.listen((state) {
-      if (state == ProcessingState.completed) {
-        // Handle end of playlist if needed
-      }
+      _updatePlaybackState();
     });
+    _player.playingStream.listen((playing) {
+      _updatePlaybackState();
+    });
+    _player.positionStream.listen((position) {
+      _updatePlaybackState();
+    });
+  }
+
+  void _updatePlaybackState() {
+    _audioHandler.playbackState.add(PlaybackState(
+      controls: [
+        MediaControl.skipToPrevious,
+        if (_player.playing) MediaControl.pause else MediaControl.play,
+        MediaControl.stop,
+        MediaControl.skipToNext,
+      ],
+      systemActions: const {
+        MediaAction.seek,
+      },
+      androidCompactActionIndices: const [0, 1, 3],
+      processingState: const {
+        ProcessingState.idle: AudioProcessingState.idle,
+        ProcessingState.loading: AudioProcessingState.loading,
+        ProcessingState.buffering: AudioProcessingState.buffering,
+        ProcessingState.ready: AudioProcessingState.ready,
+        ProcessingState.completed: AudioProcessingState.completed,
+      }[_player.processingState]!,
+      playing: _player.playing,
+      updatePosition: _player.position,
+      bufferedPosition: _player.bufferedPosition,
+      speed: _player.speed,
+      queueIndex: _player.currentIndex,
+    ));
   }
 
   void _onTrackChanged(SearchResult track) {
@@ -66,6 +108,16 @@ class PlaybackService {
     ThemeService.instance.updateThemeFromImage(track.thumbnail);
     DatabaseService.instance.trackPlay(track.id);
     _fetchLyrics(track);
+
+    _audioHandler.mediaItem.add(MediaItem(
+      id: track.id,
+      album: track.album ?? 'Unknown Album',
+      title: track.title,
+      artist: track.artist,
+      duration:
+          track.duration != null ? Duration(seconds: track.duration!) : null,
+      artUri: track.thumbnail != null ? Uri.parse(track.thumbnail!) : null,
+    ));
   }
 
   Future<void> playSearchResult(SearchResult result,
@@ -226,4 +278,28 @@ class PlaybackService {
     _lyricsController.close();
     _player.dispose();
   }
+}
+
+class MusicAudioHandler extends BaseAudioHandler {
+  final PlaybackService _service;
+
+  MusicAudioHandler(this._service);
+
+  @override
+  Future<void> play() => _service.resume();
+
+  @override
+  Future<void> pause() => _service.pause();
+
+  @override
+  Future<void> stop() => _service.stop();
+
+  @override
+  Future<void> skipToNext() => _service._player.seekToNext();
+
+  @override
+  Future<void> skipToPrevious() => _service._player.seekToPrevious();
+
+  @override
+  Future<void> seek(Duration position) => _service.seek(position);
 }

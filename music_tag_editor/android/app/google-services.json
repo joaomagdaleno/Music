@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "823653472108",
+    "project_id": "app-music-2000",
+    "storage_bucket": "app-music-2000.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823653472108:android:e0f65720ed60d44e30c549",
+        "android_client_info": {
+          "package_name": "com.example.music_tag_editor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7cVQ7MZGDVSyCkBzb2GfADpN4EGryE3k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

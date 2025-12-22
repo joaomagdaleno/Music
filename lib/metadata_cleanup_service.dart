@@ -1,6 +1,5 @@
 import 'database_service.dart';
-import 'musicbrainz_api.dart';
-import 'lastfm_api.dart';
+import 'metadata_aggregator_service.dart';
 
 class MetadataCleanupService {
   static final MetadataCleanupService instance =
@@ -8,8 +7,7 @@ class MetadataCleanupService {
   MetadataCleanupService._internal();
 
   final _db = DatabaseService.instance;
-  final _api = MusicBrainzApi();
-  final _lastFm = LastFmApi();
+  final _aggregator = MetadataAggregatorService.instance;
 
   Future<int> cleanupLibrary() async {
     final tracks = await _db.getTracks();
@@ -20,6 +18,8 @@ class MetadataCleanupService {
       String title = trackData['title'];
       String artist = trackData['artist'] ?? '';
       String? genre = trackData['genre'];
+      String? album = trackData['album'];
+      String? thumbnail = trackData['thumbnail'];
 
       // 1. Title Cleanup
       final cleanTitle = _cleanString(title);
@@ -35,34 +35,23 @@ class MetadataCleanupService {
         modified = true;
       }
 
-      // 3. Genre Enrichment (if missing)
-      if (genre == null || genre.isEmpty) {
+      // 3. Use Aggregator for missing metadata
+      if (genre == null || genre.isEmpty || album == null || album.isEmpty) {
         try {
-          // Try MusicBrainz first
-          final results = await _api.searchMetadata(title, artist);
-          if (results.isNotEmpty) {
-            final genres = results.first['genres'] as List? ?? [];
-            if (genres.isNotEmpty) {
-              genre = genres.first.toString();
-              modified = true;
-            }
+          final metadata = await _aggregator.aggregateMetadata(title, artist);
+
+          if ((genre == null || genre.isEmpty) && metadata.genre != null) {
+            genre = metadata.genre;
+            modified = true;
           }
 
-          // Fallback to Last.fm if still missing
-          if (genre == null || genre.isEmpty) {
-            final lastFmInfo = await _lastFm.getTrackInfo(title, artist);
-            if (lastFmInfo != null) {
-              final genres = lastFmInfo['genres'] as List? ?? [];
-              if (genres.isNotEmpty) {
-                genre = genres.first.toString();
-                modified = true;
-              }
-            }
+          if ((album == null || album.isEmpty) && metadata.album != null) {
+            album = metadata.album;
+            modified = true;
           }
 
-          // Final fallback to generic Mix if absolutely nothing found but we tried
-          if (genre == null || genre.isEmpty) {
-            genre = 'Mix';
+          if (thumbnail == null && metadata.thumbnail != null) {
+            thumbnail = metadata.thumbnail;
             modified = true;
           }
         } catch (e) {
@@ -75,6 +64,8 @@ class MetadataCleanupService {
         newTrack['title'] = title;
         newTrack['artist'] = artist;
         newTrack['genre'] = genre;
+        newTrack['album'] = album;
+        newTrack['thumbnail'] = thumbnail;
         await _db.saveTrack(newTrack);
         cleanedCount++;
       }

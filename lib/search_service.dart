@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:convert';
 import 'dependency_manager.dart';
 import 'download_service.dart';
+import 'database_service.dart';
+import 'hifi_download_service.dart';
 import 'package:path/path.dart' as p;
 
 /// Status of search on a specific platform.
@@ -15,6 +17,26 @@ enum SearchStatus {
 /// Service for searching music across platforms.
 class SearchService {
   final DependencyManager _deps = DependencyManager.instance;
+  bool _ageBypassEnabled = false;
+
+  /// Initialize and load settings.
+  Future<void> init() async {
+    _ageBypassEnabled = await DatabaseService.instance.loadAgeBypass();
+  }
+
+  /// Update age bypass setting.
+  void setAgeBypass(bool enabled) {
+    _ageBypassEnabled = enabled;
+  }
+
+  /// Get base yt-dlp args (with cookies if age bypass enabled).
+  List<String> _getBaseArgs() {
+    if (_ageBypassEnabled && Platform.isWindows) {
+      // Try Chrome first, then Edge, then Firefox
+      return ['--cookies-from-browser', 'chrome'];
+    }
+    return [];
+  }
 
   /// Search across all platforms with status updates.
   Future<List<SearchResult>> searchAll(
@@ -36,6 +58,8 @@ class SearchService {
           () => searchYouTubeMusic(query), onStatusUpdate),
       _searchWithStatus(
           MediaPlatform.spotify, () => searchSpotify(query), onStatusUpdate),
+      _searchWithStatus(
+          MediaPlatform.hifi, () => searchHiFi(query), onStatusUpdate),
     ];
 
     final lists = await Future.wait(futures);
@@ -69,14 +93,17 @@ class SearchService {
   /// Search YouTube using yt-dlp.
   Future<List<SearchResult>> searchYouTube(String query) async {
     try {
+      final args = [
+        ..._getBaseArgs(),
+        'ytsearch10:$query',
+        '--dump-json',
+        '--flat-playlist',
+        '--no-download',
+      ];
+
       final result = await Process.run(
         _deps.ytDlpPath,
-        [
-          'ytsearch10:$query',
-          '--dump-json',
-          '--flat-playlist',
-          '--no-download',
-        ],
+        args,
         stdoutEncoding: utf8,
         stderrEncoding: utf8,
       );
@@ -113,15 +140,18 @@ class SearchService {
   /// Search YouTube Music using yt-dlp.
   Future<List<SearchResult>> searchYouTubeMusic(String query) async {
     try {
+      final args = [
+        ..._getBaseArgs(),
+        'https://music.youtube.com/search?q=${Uri.encodeComponent(query)}',
+        '--dump-json',
+        '--flat-playlist',
+        '--no-download',
+        '-I', '1:5', // First 5 results
+      ];
+
       final result = await Process.run(
         _deps.ytDlpPath,
-        [
-          'https://music.youtube.com/search?q=${Uri.encodeComponent(query)}',
-          '--dump-json',
-          '--flat-playlist',
-          '--no-download',
-          '-I', '1:5', // First 5 results
-        ],
+        args,
         stdoutEncoding: utf8,
         stderrEncoding: utf8,
       );
@@ -163,6 +193,31 @@ class SearchService {
     // spotdl actually handles Spotify URLs by searching YouTube automatically.
     // To show results for "Spotify", we could use a public metadata API if available.
     return [];
+  }
+
+  /// Search Hi-Fi platforms (Tidal, Qobuz, Deezer) via SlavArt.
+  Future<List<SearchResult>> searchHiFi(String query) async {
+    try {
+      final hifiService = HiFiDownloadService.instance;
+      final results = await hifiService.search(query);
+
+      return results
+          .map((r) => SearchResult(
+                id: r.id,
+                title: r.title,
+                artist: r.artist,
+                album: r.album,
+                thumbnail: r.thumbnail,
+                duration: r.duration,
+                url: r.sourceUrl,
+                platform: MediaPlatform.hifi,
+                hifiSource: r.source.name, // 'qobuz', 'tidal', 'deezer'
+                hifiQuality: r.quality, // e.g. '24-bit/96kHz'
+              ))
+          .toList();
+    } catch (e) {
+      return [];
+    }
   }
 
   /// Get available formats for a URL.
@@ -266,14 +321,17 @@ class SearchService {
   /// Get direct streaming URL for a given media URL.
   Future<String?> getStreamUrl(String url) async {
     try {
+      final args = [
+        ..._getBaseArgs(),
+        '-g',
+        '-f',
+        'bestaudio',
+        url,
+      ];
+
       final result = await Process.run(
         _deps.ytDlpPath,
-        [
-          '-g',
-          '-f',
-          'bestaudio',
-          url,
-        ],
+        args,
         stdoutEncoding: utf8,
         stderrEncoding: utf8,
       );
