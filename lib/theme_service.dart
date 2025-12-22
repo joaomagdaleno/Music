@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 import 'package:palette_generator_master/palette_generator_master.dart';
 import 'database_service.dart';
 
 class ThemeService extends ChangeNotifier {
-  static final ThemeService instance = ThemeService._internal();
+  static ThemeService _instance = ThemeService._internal();
+  static ThemeService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(ThemeService mock) => _instance = mock;
+
   ThemeService._internal();
 
   Color _primaryColor = Colors.blue;
   Color? _customColor;
   bool _useCustomColor = false;
+
+  /// For testing: allows mocking palette generation
+  @visibleForTesting
+  Future<PaletteGeneratorMaster> Function(
+    ImageProvider imageProvider, {
+    int maximumColorCount,
+    Size? size,
+    Rect? region,
+    List<PaletteFilterMaster> filters,
+    List<PaletteTargetMaster> targets,
+  }) paletteGenerator = PaletteGeneratorMaster.fromImageProvider;
 
   Color get primaryColor =>
       _useCustomColor && _customColor != null ? _customColor! : _primaryColor;
@@ -70,7 +87,7 @@ class ThemeService extends ChangeNotifier {
     }
 
     try {
-      final palette = await PaletteGeneratorMaster.fromImageProvider(
+      final palette = await paletteGenerator(
         NetworkImage(imageUrl),
         maximumColorCount: 10,
       );

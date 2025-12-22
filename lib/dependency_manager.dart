@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
 import 'dart:convert';
@@ -9,6 +10,10 @@ import 'package:archive/archive.dart';
 class DependencyManager {
   static DependencyManager? _instance;
   static DependencyManager get instance => _instance ??= DependencyManager._();
+
+  @visibleForTesting
+  static set instance(DependencyManager mock) => _instance = mock;
+
   DependencyManager._();
 
   late String _binDir;
@@ -26,7 +31,9 @@ class DependencyManager {
   Future<void> ensureDependencies({
     void Function(String status, double progress)? onProgress,
   }) async {
-    if (_initialized) { return; }
+    if (_initialized) {
+      return;
+    }
 
     _binDir = await _getBinDirectory();
     await Directory(_binDir).create(recursive: true);

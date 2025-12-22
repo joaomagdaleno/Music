@@ -1,5 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:flutter/foundation.dart';
+import 'package:meta/meta.dart';
 import 'settings_page.dart'; // Import the enum
 import 'learning_dialog.dart'; // Import the learning choice enum
 import 'download_service.dart'; // For SearchResult and MediaPlatform
@@ -21,7 +23,12 @@ class LearningRule {
 }
 
 class DatabaseService {
-  static final DatabaseService instance = DatabaseService._internal();
+  static DatabaseService _instance = DatabaseService._internal();
+  static DatabaseService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(DatabaseService mock) => _instance = mock;
+
   DatabaseService._internal();
 
   static Database? _database;
@@ -34,7 +41,9 @@ class DatabaseService {
   static const String _duoSessionsTable = 'duo_sessions';
 
   Future<Database> get database async {
-    if (_database != null) { return _database!; }
+    if (_database != null) {
+      return _database!;
+    }
     _database = await _initDB();
     return _database!;
   }
@@ -496,7 +505,9 @@ class DatabaseService {
         break;
     }
 
-    if (genres.isEmpty) { return []; }
+    if (genres.isEmpty) {
+      return [];
+    }
 
     final placeholders = List.filled(genres.length, '?').join(',');
     return await db.query(

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:meta/meta.dart';
 import 'dart:convert';
 import 'dependency_manager.dart';
 import 'download_service.dart';
@@ -18,6 +19,18 @@ enum SearchStatus {
 class SearchService {
   final DependencyManager _deps = DependencyManager.instance;
   bool _ageBypassEnabled = false;
+
+  /// For testing: allows mocking process execution
+  @visibleForTesting
+  Future<ProcessResult> Function(
+    String executable,
+    List<String> arguments, {
+    Map<String, String>? environment,
+    bool includeParentEnvironment,
+    bool runInShell,
+    Encoding? stdoutEncoding,
+    Encoding? stderrEncoding,
+  }) processRunner = Process.run;
 
   /// Initialize and load settings.
   Future<void> init() async {
@@ -101,14 +114,16 @@ class SearchService {
         '--no-download',
       ];
 
-      final result = await Process.run(
+      final result = await processRunner(
         _deps.ytDlpPath,
         args,
         stdoutEncoding: utf8,
         stderrEncoding: utf8,
       );
 
-      if (result.exitCode != 0) { return []; }
+      if (result.exitCode != 0) {
+        return [];
+      }
 
       final results = <SearchResult>[];
       final lines = (result.stdout as String).split('\n');
@@ -149,14 +164,16 @@ class SearchService {
         '-I', '1:5', // First 5 results
       ];
 
-      final result = await Process.run(
+      final result = await processRunner(
         _deps.ytDlpPath,
         args,
         stdoutEncoding: utf8,
         stderrEncoding: utf8,
       );
 
-      if (result.exitCode != 0) { return []; }
+      if (result.exitCode != 0) {
+        return [];
+      }
 
       final results = <SearchResult>[];
       final lines = (result.stdout as String).split('\n');
@@ -244,14 +261,16 @@ class SearchService {
     }
 
     try {
-      final result = await Process.run(
+      final result = await processRunner(
         _deps.ytDlpPath,
         ['--dump-json', '--no-download', url],
         stdoutEncoding: utf8,
         stderrEncoding: utf8,
       );
 
-      if (result.exitCode != 0) { return _defaultFormats(); }
+      if (result.exitCode != 0) {
+        return _defaultFormats();
+      }
 
       final json = jsonDecode(result.stdout as String);
       final formats = <DownloadFormat>[];
@@ -329,7 +348,7 @@ class SearchService {
         url,
       ];
 
-      final result = await Process.run(
+      final result = await processRunner(
         _deps.ytDlpPath,
         args,
         stdoutEncoding: utf8,
@@ -351,7 +370,9 @@ class SearchService {
       final query = '${ytResult.artist} ${ytResult.title}';
       final results = await searchSpotify(query);
 
-      if (results.isEmpty) { return null; }
+      if (results.isEmpty) {
+        return null;
+      }
 
       // Basic similarity check (can be improved)
       final ytTitle = ytResult.title.toLowerCase();
@@ -380,7 +401,7 @@ class SearchService {
 
   Future<List<SearchResult>> _importYouTubePlaylist(String url) async {
     try {
-      final result = await Process.run(
+      final result = await processRunner(
         _deps.ytDlpPath,
         [
           '--dump-json',
@@ -392,7 +413,9 @@ class SearchService {
         stderrEncoding: utf8,
       );
 
-      if (result.exitCode != 0) { return []; }
+      if (result.exitCode != 0) {
+        return [];
+      }
 
       final results = <SearchResult>[];
       final lines = (result.stdout as String).split('\n');
@@ -424,7 +447,7 @@ class SearchService {
     final tempFile = File(p.join(Directory.systemTemp.path,
         'temp_${DateTime.now().millisecondsSinceEpoch}.spotdl'));
     try {
-      final result = await Process.run(
+      final result = await processRunner(
         _deps.spotdlPath,
         [
           'save',
@@ -434,10 +457,14 @@ class SearchService {
         ],
       );
 
-      if (result.exitCode != 0) { return []; }
+      if (result.exitCode != 0) {
+        return [];
+      }
 
       final exists = await tempFile.exists();
-      if (!exists) { return []; }
+      if (!exists) {
+        return [];
+      }
 
       final content = await tempFile.readAsString();
       final List<SearchResult> results = [];

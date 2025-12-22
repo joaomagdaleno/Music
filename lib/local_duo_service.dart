@@ -5,11 +5,17 @@ import 'package:permission_handler/permission_handler.dart';
 import 'playback_service.dart';
 import 'download_service.dart';
 import 'database_service.dart';
+import 'package:meta/meta.dart';
 
 enum DuoRole { host, guest, none }
 
 class LocalDuoService {
-  static final LocalDuoService instance = LocalDuoService._internal();
+  static LocalDuoService _instance = LocalDuoService._internal();
+  static LocalDuoService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(LocalDuoService mock) => _instance = mock;
+
   LocalDuoService._internal();
 
   final Strategy strategy = Strategy.P2P_STAR;

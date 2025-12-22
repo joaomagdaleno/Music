@@ -8,18 +8,41 @@ import 'equalizer_service.dart';
 import 'theme_service.dart';
 import 'database_service.dart';
 import 'lyrics_service.dart';
+import 'package:meta/meta.dart';
 import 'dart:async';
 
 class PlaybackService {
-  static final PlaybackService instance = PlaybackService._internal();
-  PlaybackService._internal();
+  static PlaybackService? _instance;
+  static PlaybackService get instance =>
+      _instance ??= PlaybackService._internal();
 
-  final AudioPlayer _player = AudioPlayer(
-    audioPipeline: AudioPipeline(
-      androidAudioEffects: [EqualizerService.instance.equalizer],
-    ),
-  );
+  @visibleForTesting
+  static set instance(PlaybackService mock) => _instance = mock;
+
+  @visibleForTesting
+  factory PlaybackService.forTesting(
+      {AudioPlayer? player, AudioHandler? handler}) {
+    return PlaybackService._internal(player: player, handler: handler);
+  }
+
+  PlaybackService._internal({AudioPlayer? player, AudioHandler? handler}) {
+    _player = player ??
+        AudioPlayer(
+          audioPipeline: AudioPipeline(
+            androidAudioEffects: [EqualizerService.instance.equalizer],
+          ),
+        );
+    if (handler != null) _audioHandler = handler;
+  }
+
+  late AudioPlayer _player;
+
+  @visibleForTesting
+  set player(AudioPlayer mock) => _player = mock;
   late AudioHandler _audioHandler;
+
+  @visibleForTesting
+  set audioHandler(AudioHandler mock) => _audioHandler = mock;
   final SearchService _searchService = SearchService();
 
   SearchResult? _currentTrack;

@@ -1,9 +1,15 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:meta/meta.dart';
 
 class LyricsService {
-  static final LyricsService instance = LyricsService._internal();
+  static LyricsService _instance = LyricsService._internal();
+  static LyricsService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(LyricsService mock) => _instance = mock;
+
   LyricsService._internal();
 
   Future<List<LyricLine>> fetchLyrics(String title, String artist) async {

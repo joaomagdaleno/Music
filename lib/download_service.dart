@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:meta/meta.dart';
 import 'dependency_manager.dart';
 
 /// Platform detected from URL or search.
@@ -139,6 +140,35 @@ class MediaInfo {
 class DownloadService {
   final DependencyManager _deps = DependencyManager.instance;
 
+  /// For testing: allows mocking process execution
+  @visibleForTesting
+  Future<ProcessResult> Function(
+    String executable,
+    List<String> arguments, {
+    Map<String, String>? environment,
+    bool includeParentEnvironment,
+    bool runInShell,
+    Encoding? stdoutEncoding,
+    Encoding? stderrEncoding,
+  }) processRunner = Process.run;
+
+  /// For testing: allows mocking process starting
+  @visibleForTesting
+  Future<Process> Function(
+    String executable,
+    List<String> arguments, {
+    String? workingDirectory,
+    Map<String, String>? environment,
+    bool includeParentEnvironment,
+    bool runInShell,
+    ProcessStartMode mode,
+  }) processStarter = Process.start;
+
+  /// For testing: allows mocking file downloads
+  @visibleForTesting
+  Future<void> Function(String url, String path) fileDownloader =
+      DependencyManager.instance.downloadFile;
+
   /// Detect platform from URL.
   MediaPlatform detectPlatform(String url) {
     final uri = Uri.tryParse(url);
@@ -172,7 +202,7 @@ class DownloadService {
 
   /// Get YouTube/YouTube Music info using yt-dlp.
   Future<MediaInfo> _getYouTubeInfo(String url) async {
-    final result = await Process.run(
+    final result = await processRunner(
       _deps.ytDlpPath,
       [
         '--dump-json',
@@ -356,7 +386,7 @@ class DownloadService {
 
     onProgress?.call(0.0, 'Starting download...');
 
-    final process = await Process.start(
+    final process = await processStarter(
       _deps.ytDlpPath,
       args,
       mode: ProcessStartMode.normal,
@@ -402,12 +432,12 @@ class DownloadService {
   Future<void> _embedCustomThumbnail(String audioPath, String imageUrl) async {
     try {
       final imageFile = File('${audioPath}_thumb.jpg');
-      await _deps.downloadFile(imageUrl, imageFile.path);
+      await fileDownloader(imageUrl, imageFile.path);
 
       final tempOut = '${audioPath}_temp.mp3';
 
       // Use ffmpeg to embed the thumbnail
-      final result = await Process.run(_deps.ffmpegPath, [
+      final result = await processRunner(_deps.ffmpegPath, [
         '-y',
         '-i',
         audioPath,
@@ -448,7 +478,7 @@ class DownloadService {
   ) async {
     onProgress?.call(0.0, 'Starting Spotify download...');
 
-    final result = await Process.run(
+    final result = await processRunner(
       _deps.spotdlPath,
       [
         'download',

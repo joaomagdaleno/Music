@@ -1,7 +1,14 @@
+import 'dart:math' as math;
 import 'package:just_audio/just_audio.dart';
+import 'package:meta/meta.dart';
 
 class EqualizerService {
-  static final EqualizerService instance = EqualizerService._internal();
+  static EqualizerService _instance = EqualizerService._internal();
+  static EqualizerService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(EqualizerService mock) => _instance = mock;
+
   EqualizerService._internal();
 
   final AndroidEqualizer _equalizer = AndroidEqualizer();
@@ -19,7 +26,9 @@ class EqualizerService {
   }
 
   Future<void> applyPresetForGenre(String? genre) async {
-    if (!_isAutoMode) { return; }
+    if (!_isAutoMode) {
+      return;
+    }
 
     final parameters = await _equalizer.parameters;
     final bands = parameters.bands;
@@ -29,26 +38,44 @@ class EqualizerService {
       await band.setGain(0.0);
     }
 
-    if (genre == null) { return; }
+    if (genre == null) {
+      return;
+    }
 
     final g = genre.toLowerCase();
 
     if (g.contains('rock') || g.contains('metal')) {
       // Bass and Treble boost
-      if (bands.isNotEmpty) { await bands.first.setGain(3.0); }
-      if (bands.length > 4) { await bands.last.setGain(3.0); }
+      if (bands.isNotEmpty) {
+        await bands.first.setGain(3.0);
+      }
+      if (bands.length > 4) {
+        await bands.last.setGain(3.0);
+      }
     } else if (g.contains('pop') || g.contains('dance')) {
       // V-shaped but milder
-      if (bands.isNotEmpty) { await bands.first.setGain(2.0); }
-      if (bands.length > 2) { await bands[bands.length ~/ 2].setGain(-1.0); }
-      if (bands.isNotEmpty) { await bands.last.setGain(2.0); }
+      if (bands.isNotEmpty) {
+        await bands.first.setGain(2.0);
+      }
+      if (bands.length > 2) {
+        await bands[bands.length ~/ 2].setGain(-1.0);
+      }
+      if (bands.isNotEmpty) {
+        await bands.last.setGain(2.0);
+      }
     } else if (g.contains('jazz') || g.contains('classical')) {
       // Mid focus for clarity
-      if (bands.length > 2) { await bands[bands.length ~/ 2].setGain(2.0); }
+      if (bands.length > 2) {
+        await bands[bands.length ~/ 2].setGain(2.0);
+      }
     } else if (g.contains('bass') || g.contains('hip hop')) {
       // Bass focus
-      if (bands.isNotEmpty) { await bands.first.setGain(5.0); }
-      if (bands.length > 1) { await bands[1].setGain(3.0); }
+      if (bands.isNotEmpty) {
+        await bands.first.setGain(5.0);
+      }
+      if (bands.length > 1) {
+        await bands[1].setGain(3.0);
+      }
     }
   }
 
@@ -74,7 +101,9 @@ class EqualizerService {
   /// In a real implementation, you'd analyze the file's LUFS with FFmpeg.
   /// For now, this returns 1.0 (no change) as a placeholder.
   double calculateNormalizedVolume(double? trackLufs) {
-    if (!_normalizationEnabled || trackLufs == null) { return 1.0; }
+    if (!_normalizationEnabled || trackLufs == null) {
+      return 1.0;
+    }
 
     final adjustment = _targetLoudness - trackLufs;
     // Convert dB to linear scale
@@ -82,6 +111,6 @@ class EqualizerService {
   }
 
   double _dbToLinear(double db) {
-    return 10.0 * (db / 20.0);
+    return math.pow(10.0, db / 20.0).toDouble();
   }
 }
