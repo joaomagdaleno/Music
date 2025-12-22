@@ -1,9 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 import 'security_service.dart';
 
 class AuthService extends ChangeNotifier {
-  static final AuthService instance = AuthService._internal();
+  static AuthService _instance = AuthService._internal();
+  static AuthService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(AuthService mock) => _instance = mock;
+
   AuthService._internal();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -60,7 +66,9 @@ class AuthService extends ChangeNotifier {
   /// they can reset the local vault password.
   Future<bool> recoverVaultAccess(String email, String newVaultPassword) async {
     // 1. Ensure user is authenticated (they should be after logging in or via reset flow)
-    if (_user == null || _user!.email != email) { return false; }
+    if (_user == null || _user!.email != email) {
+      return false;
+    }
 
     // 2. Reset the vault password in SecurityService
     try {

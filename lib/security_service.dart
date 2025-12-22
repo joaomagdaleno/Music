@@ -2,9 +2,15 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'dart:convert';
 import 'dart:math';
+import 'package:meta/meta.dart';
 
 class SecurityService {
-  static final SecurityService instance = SecurityService._internal();
+  static SecurityService _instance = SecurityService._internal();
+  static SecurityService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(SecurityService mock) => _instance = mock;
+
   SecurityService._internal();
 
   final _storage = const FlutterSecureStorage();
@@ -17,7 +23,9 @@ class SecurityService {
   }
 
   Future<encrypt.Key> _getOrCreateMasterKey() async {
-    if (_masterKey != null) { return _masterKey!; }
+    if (_masterKey != null) {
+      return _masterKey!;
+    }
 
     String? keyString = await _storage.read(key: 'master_encryption_key');
     if (keyString == null) {
@@ -47,7 +55,9 @@ class SecurityService {
   Future<String> decryptString(String encryptedData) async {
     try {
       final parts = encryptedData.split(':');
-      if (parts.length != 2) { return encryptedData; }
+      if (parts.length != 2) {
+        return encryptedData;
+      }
 
       final key = await _getOrCreateMasterKey();
       final iv = encrypt.IV.fromBase64(parts[0]);

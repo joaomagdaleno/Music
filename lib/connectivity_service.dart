@@ -1,9 +1,15 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 
 class ConnectivityService {
-  static final ConnectivityService instance = ConnectivityService._internal();
+  static ConnectivityService _instance = ConnectivityService._internal();
+  static ConnectivityService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(ConnectivityService mock) => _instance = mock;
+
   ConnectivityService._internal();
 
   final Connectivity _connectivity = Connectivity();

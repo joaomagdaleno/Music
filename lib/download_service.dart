@@ -138,6 +138,17 @@ class MediaInfo {
 
 /// Service for downloading music from various platforms.
 class DownloadService {
+  static DownloadService _instance = DownloadService._internal();
+  static DownloadService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(DownloadService mock) => _instance = mock;
+
+  DownloadService._internal();
+
+  // For backwards compatibility
+  DownloadService() : this._internal();
+
   final DependencyManager _deps = DependencyManager.instance;
 
   /// For testing: allows mocking process execution

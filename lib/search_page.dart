@@ -17,8 +17,8 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final _searchController = TextEditingController();
-  final _searchService = SearchService();
-  final _downloadService = DownloadService();
+  final _searchService = SearchService.instance;
+  final _downloadService = DownloadService.instance;
   final _playbackService = PlaybackService.instance;
 
   List<SearchResult> _results = [];

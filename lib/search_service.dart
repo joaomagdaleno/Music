@@ -17,6 +17,16 @@ enum SearchStatus {
 
 /// Service for searching music across platforms.
 class SearchService {
+  static SearchService _instance = SearchService._internal();
+  static SearchService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(SearchService mock) => _instance = mock;
+
+  SearchService._internal();
+
+  // For backwards compatibility and internal use
+  SearchService() : this._internal();
   final DependencyManager _deps = DependencyManager.instance;
   bool _ageBypassEnabled = false;
 
