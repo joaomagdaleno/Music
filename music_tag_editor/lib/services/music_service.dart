@@ -32,7 +32,7 @@ class MusicService {
       if (file.path.endsWith('.mp3') ||
           file.path.endsWith('.flac') ||
           file.path.endsWith('.aac')) {
-        final metadata = await MetadataGod.readMetadata(file.path);
+        final metadata = await MetadataGod.readMetadata(file: file.path);
         final db = await dbService.database;
         // Check if the track already exists
         final existing = await db.query(

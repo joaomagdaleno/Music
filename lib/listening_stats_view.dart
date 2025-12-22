@@ -32,7 +32,7 @@ class _ListeningStatsViewState extends State<ListeningStatsView> {
     if (hours > 0) {
       return '${hours}h ${minutes}min';
     }
-    return '${minutes} minutos';
+    return '$minutes minutos';
   }
 
   @override

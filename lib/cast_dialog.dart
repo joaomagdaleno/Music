@@ -51,12 +51,14 @@ class _CastDialogState extends State<CastDialog> {
                           final track = PlaybackService.instance.currentTrack;
                           if (track != null && track.localPath != null) {
                             await _service.castFile(track.localPath!, device);
-                            if (mounted) { Navigator.pop(context); }
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  content:
-                                      Text('Transmitindo para ${device.name}')),
-                            );
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text(
+                                        'Transmitindo para ${device.name}')),
+                              );
+                            }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

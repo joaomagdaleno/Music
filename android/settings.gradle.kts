@@ -1,3 +1,5 @@
+rootProject.name = "music_player_android"
+
 pluginManagement {
     val flutterSdkPath =
         run {

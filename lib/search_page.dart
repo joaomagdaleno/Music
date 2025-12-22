@@ -68,7 +68,9 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<void> _performSearch() async {
     final query = _searchController.text.trim();
-    if (query.isEmpty) { return; }
+    if (query.isEmpty) {
+      return;
+    }
 
     setState(() {
       _isLoading = true;
@@ -137,7 +139,9 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<void> _startDownload(SearchResult result) async {
     final selectedFormat = _selectedFormats[result.url];
-    if (selectedFormat == null) { return; }
+    if (selectedFormat == null) {
+      return;
+    }
 
     setState(() {
       _downloadingProgress[result.url] = 0;
@@ -177,9 +181,11 @@ class _SearchPageState extends State<SearchPage> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro no download: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro no download: $e')),
+        );
+      }
     } finally {
       setState(() {
         _downloadingProgress.remove(result.url);
@@ -192,7 +198,9 @@ class _SearchPageState extends State<SearchPage> {
     final db = DatabaseService.instance;
     final playlistsList = await db.getPlaylists();
 
-    if (!mounted) { return; }
+    if (!mounted) {
+      return;
+    }
 
     if (playlistsList.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -470,8 +478,12 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                             PopupMenuButton<String>(
                               onSelected: (val) {
-                                if (val == 'playlist') { _addToPlaylist(result); }
-                                if (val == 'download') { _loadFormats(result); }
+                                if (val == 'playlist') {
+                                  _addToPlaylist(result);
+                                }
+                                if (val == 'download') {
+                                  _loadFormats(result);
+                                }
                               },
                               itemBuilder: (context) => [
                                 const PopupMenuItem(
@@ -590,7 +602,9 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget _platformStatusChip(MediaPlatform platform, String label) {
     final status = _platformStatuses[platform];
-    if (status == null) { return const SizedBox.shrink(); }
+    if (status == null) {
+      return const SizedBox.shrink();
+    }
 
     IconData icon;
     Color color;

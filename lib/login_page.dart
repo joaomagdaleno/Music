@@ -171,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
               if (email.isNotEmpty) {
                 final success =
                     await AuthService.instance.sendPasswordReset(email);
-                if (mounted) {
+                if (context.mounted) {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

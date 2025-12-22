@@ -26,7 +26,9 @@ class PlayerScreen extends StatelessWidget {
             stream: PlaybackService.instance.sleepTimerStream,
             builder: (context, snapshot) {
               final timeLeft = snapshot.data;
-              if (timeLeft == null) { return const SizedBox.shrink(); }
+              if (timeLeft == null) {
+                return const SizedBox.shrink();
+              }
               return Center(
                 child: Padding(
                   padding: const EdgeInsets.only(right: 8.0),
@@ -110,103 +112,210 @@ class PlayerScreen extends StatelessWidget {
                 ],
               ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (track.thumbnail != null)
-                  Padding(
-                    padding: const EdgeInsets.all(32.0),
-                    child: Card(
-                      elevation: 8,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.network(
-                          track.thumbnail!,
-                          width: 300,
-                          height: 300,
-                          fit: BoxFit.cover,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth > 800) {
+                  return Row(
+                    children: [
+                      // Left Side: Album Art & Visualizer
+                      Expanded(
+                        flex: 5,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (track.thumbnail != null)
+                              Padding(
+                                padding: const EdgeInsets.all(32.0),
+                                child: Card(
+                                  elevation: 8,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16)),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Image.network(
+                                      track.thumbnail!,
+                                      width: constraints.maxHeight * 0.5,
+                                      height: constraints.maxHeight * 0.5,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            VisualizerWidget(
+                              isPlaying: playing,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              track.title,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              track.artist,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(color: Colors.grey),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ),
-                const SizedBox(height: 8),
-                VisualizerWidget(
-                  isPlaying: playing,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  track.title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineSmall
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-                Text(
-                  track.artist,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(color: Colors.grey),
-                ),
-                const SizedBox(height: 32),
-                _ProgressBar(player: playback.player),
-                const SizedBox(height: 32),
-                Row(
+                      // Right Side: Controls & Lyrics
+                      Expanded(
+                        flex: 6,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 48),
+                            _ProgressBar(player: playback.player),
+                            const SizedBox(height: 32),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  iconSize: 48,
+                                  icon: const Icon(Icons.skip_previous),
+                                  onPressed: () {},
+                                ),
+                                const SizedBox(width: 16),
+                                CircleAvatar(
+                                  radius: 36,
+                                  child: IconButton(
+                                    iconSize: 48,
+                                    icon: Icon(playing
+                                        ? Icons.pause
+                                        : Icons.play_arrow),
+                                    onPressed: () {
+                                      if (playing) {
+                                        playback.pause();
+                                      } else {
+                                        playback.resume();
+                                      }
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                IconButton(
+                                  iconSize: 48,
+                                  icon: const Icon(Icons.skip_next),
+                                  onPressed: () {},
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 32),
+                            const Expanded(child: LyricsView()),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }
+
+                // Default Column Layout (Mobile)
+                return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    IconButton(
-                      iconSize: 48,
-                      icon: const Icon(Icons.skip_previous),
-                      onPressed: () {},
-                    ),
-                    const SizedBox(width: 16),
-                    CircleAvatar(
-                      radius: 36,
-                      child: IconButton(
-                        iconSize: 48,
-                        icon: Icon(playing ? Icons.pause : Icons.play_arrow),
-                        onPressed: () {
-                          if (playing) {
-                            playback.pause();
-                          } else {
-                            playback.resume();
-                          }
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    IconButton(
-                      iconSize: 48,
-                      icon: const Icon(Icons.skip_next),
-                      onPressed: () {},
-                    ),
-                    const SizedBox(width: 16),
-                    IconButton(
-                      iconSize: 32,
-                      icon: const Icon(Icons.mic_external_on),
-                      tooltip: 'Modo Karaoke',
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => KaraokeView(track: {
-                              'id': track.id,
-                              'title': track.title,
-                              'artist': track.artist,
-                            }),
+                    if (track.thumbnail != null)
+                      Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: Card(
+                          elevation: 8,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.network(
+                              track.thumbnail!,
+                              width: 300,
+                              height: 300,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        );
-                      },
+                        ),
+                      ),
+                    const SizedBox(height: 8),
+                    VisualizerWidget(
+                      isPlaying: playing,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
+                    const SizedBox(height: 8),
+                    Text(
+                      track.title,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      track.artist,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(color: Colors.grey),
+                    ),
+                    const SizedBox(height: 32),
+                    _ProgressBar(player: playback.player),
+                    const SizedBox(height: 32),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          iconSize: 48,
+                          icon: const Icon(Icons.skip_previous),
+                          onPressed: () {},
+                        ),
+                        const SizedBox(width: 16),
+                        CircleAvatar(
+                          radius: 36,
+                          child: IconButton(
+                            iconSize: 48,
+                            icon:
+                                Icon(playing ? Icons.pause : Icons.play_arrow),
+                            onPressed: () {
+                              if (playing) {
+                                playback.pause();
+                              } else {
+                                playback.resume();
+                              }
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        IconButton(
+                          iconSize: 48,
+                          icon: const Icon(Icons.skip_next),
+                          onPressed: () {},
+                        ),
+                        const SizedBox(width: 16),
+                        IconButton(
+                          iconSize: 32,
+                          icon: const Icon(Icons.mic_external_on),
+                          tooltip: 'Modo Karaoke',
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => KaraokeView(track: {
+                                  'id': track.id,
+                                  'title': track.title,
+                                  'artist': track.artist,
+                                }),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    const Flexible(child: LyricsView()),
                   ],
-                ),
-                const SizedBox(height: 16),
-                const Flexible(child: LyricsView()),
-              ],
+                );
+              },
             ),
           );
         },

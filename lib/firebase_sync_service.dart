@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'database_service.dart';
-import 'download_service.dart';
 
 /// Service for syncing library data to Firebase Cloud.
 class FirebaseSyncService {
@@ -55,7 +54,9 @@ class FirebaseSyncService {
 
   /// Sync all local data to cloud.
   Future<void> _startSync() async {
-    if (_currentUser == null) { return; }
+    if (_currentUser == null) {
+      return;
+    }
 
     await _syncTracks();
     await _syncPlaylists();
@@ -64,7 +65,9 @@ class FirebaseSyncService {
 
   /// Sync tracks to Firestore.
   Future<void> _syncTracks() async {
-    if (_currentUser == null) { return; }
+    if (_currentUser == null) {
+      return;
+    }
 
     final userId = _currentUser!.uid;
     final tracks = await _db.getTracks();
@@ -89,7 +92,9 @@ class FirebaseSyncService {
 
   /// Sync playlists to Firestore.
   Future<void> _syncPlaylists() async {
-    if (_currentUser == null) { return; }
+    if (_currentUser == null) {
+      return;
+    }
 
     final userId = _currentUser!.uid;
     final playlists = await _db.getPlaylists();
@@ -117,7 +122,9 @@ class FirebaseSyncService {
 
   /// Sync settings to Firestore.
   Future<void> _syncSettings() async {
-    if (_currentUser == null) { return; }
+    if (_currentUser == null) {
+      return;
+    }
 
     final userId = _currentUser!.uid;
     final settings = await _db.getAllSettings();
@@ -130,7 +137,9 @@ class FirebaseSyncService {
 
   /// Pull data from cloud to local.
   Future<int> pullFromCloud() async {
-    if (_currentUser == null) { return 0; }
+    if (_currentUser == null) {
+      return 0;
+    }
 
     final userId = _currentUser!.uid;
     int syncedCount = 0;

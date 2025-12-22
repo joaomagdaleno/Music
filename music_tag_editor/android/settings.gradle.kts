@@ -1,3 +1,5 @@
+rootProject.name = "tag_editor_android"
+
 pluginManagement {
     val flutterSdkPath =
         run {

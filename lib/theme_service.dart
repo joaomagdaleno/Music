@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:palette_generator/palette_generator.dart';
+import 'package:palette_generator_master/palette_generator_master.dart';
 import 'database_service.dart';
 
 class ThemeService extends ChangeNotifier {
@@ -59,7 +59,9 @@ class ThemeService extends ChangeNotifier {
 
   Future<void> updateThemeFromImage(String? imageUrl) async {
     // Only update if in auto mode
-    if (_useCustomColor) { return; }
+    if (_useCustomColor) {
+      return;
+    }
 
     if (imageUrl == null) {
       _primaryColor = Colors.blue;
@@ -68,7 +70,7 @@ class ThemeService extends ChangeNotifier {
     }
 
     try {
-      final palette = await PaletteGenerator.fromImageProvider(
+      final palette = await PaletteGeneratorMaster.fromImageProvider(
         NetworkImage(imageUrl),
         maximumColorCount: 10,
       );

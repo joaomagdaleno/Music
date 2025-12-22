@@ -30,66 +30,112 @@ class _AppShellState extends State<AppShell> {
     return ValueListenableBuilder<bool>(
       valueListenable: ConnectivityService.instance.isOffline,
       builder: (context, isOffline, child) {
-        return Scaffold(
-          body: Column(
-            children: [
-              if (isOffline)
-                Container(
-                  width: double.infinity,
-                  color: Colors.orange.withValues(alpha: 0.9),
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: const Center(
-                    child: Text(
-                      'Modo Offline Ativado',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final isWide = constraints.maxWidth >= 600;
+
+            return Scaffold(
+              body: Column(
+                children: [
+                  if (isOffline)
+                    Container(
+                      width: double.infinity,
+                      color: Colors.orange.withValues(alpha: 0.9),
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: const Center(
+                        child: Text(
+                          'Modo Offline Ativado',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
                       ),
                     ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        if (isWide)
+                          NavigationRail(
+                            extended: constraints.maxWidth >= 900,
+                            selectedIndex: _selectedIndex,
+                            onDestinationSelected: (index) =>
+                                setState(() => _selectedIndex = index),
+                            labelType: constraints.maxWidth >= 900
+                                ? NavigationRailLabelType.none
+                                : NavigationRailLabelType.all,
+                            destinations: const [
+                              NavigationRailDestination(
+                                icon: Icon(Icons.home_outlined),
+                                selectedIcon: Icon(Icons.home),
+                                label: Text('Início'),
+                              ),
+                              NavigationRailDestination(
+                                icon: Icon(Icons.search_outlined),
+                                selectedIcon: Icon(Icons.search),
+                                label: Text('Buscar'),
+                              ),
+                              NavigationRailDestination(
+                                icon: Icon(Icons.library_music_outlined),
+                                selectedIcon: Icon(Icons.library_music),
+                                label: Text('Minhas Músicas'),
+                              ),
+                              NavigationRailDestination(
+                                icon: Icon(Icons.playlist_play_outlined),
+                                selectedIcon: Icon(Icons.playlist_play),
+                                label: Text('Playlists'),
+                              ),
+                              NavigationRailDestination(
+                                icon: Icon(Icons.edit_note_outlined),
+                                selectedIcon: Icon(Icons.edit_note),
+                                label: Text('Tags'),
+                              ),
+                            ],
+                          ),
+                        Expanded(
+                          child: IndexedStack(
+                            index: _selectedIndex,
+                            children: _pages,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              Expanded(
-                child: IndexedStack(
-                  index: _selectedIndex,
-                  children: _pages,
-                ),
-              ),
-            ],
-          ),
-          bottomNavigationBar: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const MiniPlayer(),
-              BottomNavigationBar(
-                currentIndex: _selectedIndex,
-                onTap: (index) => setState(() => _selectedIndex = index),
-                type: BottomNavigationBarType.fixed, // For 4+ items
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Início',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.search),
-                    label: 'Buscar',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.library_music),
-                    label: 'Minhas Músicas',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.playlist_play),
-                    label: 'Playlists',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.edit_note),
-                    label: 'Tags',
-                  ),
+                  const MiniPlayer(),
                 ],
               ),
-            ],
-          ),
+              bottomNavigationBar: isWide
+                  ? null
+                  : BottomNavigationBar(
+                      currentIndex: _selectedIndex,
+                      onTap: (index) => setState(() => _selectedIndex = index),
+                      type: BottomNavigationBarType.fixed,
+                      items: const [
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.home),
+                          label: 'Início',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.search),
+                          label: 'Buscar',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.library_music),
+                          label: 'Minhas Músicas',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.playlist_play),
+                          label: 'Playlists',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.edit_note),
+                          label: 'Tags',
+                        ),
+                      ],
+                    ),
+            );
+          },
         );
       },
     );

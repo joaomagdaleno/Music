@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'dependency_manager.dart';
 
 /// Platform detected from URL or search.
@@ -74,7 +75,9 @@ class SearchResult {
   });
 
   String get durationFormatted {
-    if (duration == null) { return ''; }
+    if (duration == null) {
+      return '';
+    }
     final minutes = duration! ~/ 60;
     final seconds = (duration! % 60).toString().padLeft(2, '0');
     return '$minutes:$seconds';
@@ -139,7 +142,9 @@ class DownloadService {
   /// Detect platform from URL.
   MediaPlatform detectPlatform(String url) {
     final uri = Uri.tryParse(url);
-    if (uri == null) { return MediaPlatform.unknown; }
+    if (uri == null) {
+      return MediaPlatform.unknown;
+    }
 
     final host = uri.host.toLowerCase();
 
@@ -430,7 +435,7 @@ class DownloadService {
 
       if (await imageFile.exists()) await imageFile.delete();
     } catch (e) {
-      print('Error embedding custom thumbnail: $e');
+      debugPrint('Error embedding custom thumbnail: $e');
     }
   }
 

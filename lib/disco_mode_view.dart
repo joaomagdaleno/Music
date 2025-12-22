@@ -19,7 +19,7 @@ class _DiscoModeViewState extends State<DiscoModeView>
   late AnimationController _barController;
   final Random _random = Random();
 
-  List<double> _bars = List.generate(20, (i) => 0.3);
+  final List<double> _bars = List.generate(20, (i) => 0.3);
   Timer? _barTimer;
 
   @override
@@ -46,7 +46,9 @@ class _DiscoModeViewState extends State<DiscoModeView>
 
   void _startBarAnimation() {
     _barTimer = Timer.periodic(const Duration(milliseconds: 80), (_) {
-      if (!mounted) { return; }
+      if (!mounted) {
+        return;
+      }
       setState(() {
         for (int i = 0; i < _bars.length; i++) {
           // Simulate audio reactivity with random values

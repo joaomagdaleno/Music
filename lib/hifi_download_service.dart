@@ -8,11 +8,7 @@ class HiFiDownloadService {
   HiFiDownloadService._internal();
 
   final SlavArtApi _slavArt = SlavArtApi();
-  bool _preferHiFi = true;
-
-  /// Whether to prefer Hi-Fi sources over YouTube.
-  bool get preferHiFi => _preferHiFi;
-  set preferHiFi(bool value) => _preferHiFi = value;
+  bool preferHiFi = true;
 
   /// Search for a track across all Hi-Fi platforms.
   Future<List<HiFiSearchResult>> search(String query) async {
@@ -89,12 +85,16 @@ class HiFiDownloadService {
 
   /// Check if a Hi-Fi version is available for a YouTube search result.
   Future<HiFiSearchResult?> findHiFiVersion(String title, String artist) async {
-    if (!_preferHiFi) { return null; }
+    if (!preferHiFi) {
+      return null;
+    }
 
     final query = '$artist $title';
     final results = await search(query);
 
-    if (results.isEmpty) { return null; }
+    if (results.isEmpty) {
+      return null;
+    }
 
     // Find best match by title similarity
     for (final r in results) {

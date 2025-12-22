@@ -86,7 +86,7 @@ class LocalDuoService {
         final str = String.fromCharCodes(payload.bytes!);
         _handleIncomingMessage(id, jsonDecode(str));
       } else if (payload.type == PayloadType.FILE) {
-        if (_pendingTrack != null && payload.filePath != null) {
+        if (_pendingTrack != null && payload.uri != null) {
           PlaybackService.instance.playLocalFile(payload.uri!, _pendingTrack!);
           _pendingTrack = null;
         }

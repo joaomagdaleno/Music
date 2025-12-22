@@ -165,7 +165,7 @@ class _LibraryPageState extends State<LibraryPage> {
       );
 
       if (results['recordings'] != null && results['recordings'].isNotEmpty) {
-        // ignore: use_build_context_synchronously
+        if (!mounted) return;
         final selectedRecording = await showDialog<dynamic>(
           context: context,
           builder: (BuildContext context) {
@@ -178,7 +178,7 @@ class _LibraryPageState extends State<LibraryPage> {
               originalTrack: track, selectedRecording: selectedRecording);
         }
       } else {
-        // ignore: use_build_context_synchronously
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('No results found online.')),
         );

@@ -1,4 +1,4 @@
-name: music_tag_editor
+name: music_player
 description: "A new Flutter project."
 publish_to: 'none'
 
@@ -22,7 +22,6 @@ dependencies:
   audio_session: ^0.1.21
   nearby_connections: ^4.3.0
   permission_handler: ^11.0.1
-  palette_generator: ^0.3.3+7
   shared_preferences: ^2.2.3
   system_tray: ^2.0.3
   window_manager: ^0.5.1
@@ -38,11 +37,13 @@ dependencies:
   flutter_secure_storage: ^9.2.2
   local_auth: ^2.3.0
   connectivity_plus: ^6.1.1
+  palette_generator_master: ^1.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  mocktail: ^1.0.4
+  sqflite_common_ffi: ^2.3.3
   flutter_lints: ^5.0.0
 
 flutter:

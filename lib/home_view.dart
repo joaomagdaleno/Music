@@ -172,41 +172,55 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget _buildSmartLibraryCards(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: _SmartCard(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isNarrow = constraints.maxWidth < 600;
+        final cards = [
+          _SmartCard(
             title: 'Top Hits',
             icon: Icons.trending_up,
             color: Colors.orange,
             onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) =>
-                        SmartLibraryView())), // Directs to default smart view
+                context, MaterialPageRoute(builder: (_) => SmartLibraryView())),
           ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _SmartCard(
+          _SmartCard(
             title: 'Relax',
             icon: Icons.spa,
             color: Colors.teal,
             onTap: () => Navigator.push(
                 context, MaterialPageRoute(builder: (_) => MoodExplorerView())),
           ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _SmartCard(
+          _SmartCard(
             title: 'Stats',
             icon: Icons.bar_chart,
             color: Colors.deepPurple,
             onTap: () => Navigator.push(context,
                 MaterialPageRoute(builder: (_) => const ListeningStatsView())),
           ),
-        ),
-      ],
+        ];
+
+        if (isNarrow) {
+          return Column(
+            children: cards
+                .map((c) => Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: c,
+                    ))
+                .toList(),
+          );
+        }
+
+        return Row(
+          children: cards
+              .map((c) => Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: c,
+                    ),
+                  ))
+              .toList(),
+        );
+      },
     );
   }
 

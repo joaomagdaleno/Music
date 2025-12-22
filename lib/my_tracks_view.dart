@@ -102,7 +102,7 @@ class _MyTracksViewState extends State<MyTracksView> {
                             onPressed: () async {
                               await _dbService.toggleVault(track['id'], true);
                               _loadTracks();
-                              if (mounted) {
+                              if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                       content: Text(

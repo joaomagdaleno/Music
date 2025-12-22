@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'player_screen.dart';
 import 'playback_service.dart';
 
 class MiniPlayer extends StatelessWidget {
@@ -35,7 +36,10 @@ class MiniPlayer extends StatelessWidget {
           ),
           child: InkWell(
             onTap: () {
-              // TODO: Open Full Player
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PlayerScreen()),
+              );
             },
             child: Row(
               children: [

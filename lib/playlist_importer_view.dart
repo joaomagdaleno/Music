@@ -19,7 +19,9 @@ class _PlaylistImporterViewState extends State<PlaylistImporterView> {
 
   Future<void> _import() async {
     final url = _urlController.text.trim();
-    if (url.isEmpty) { return; }
+    if (url.isEmpty) {
+      return;
+    }
 
     setState(() {
       _isLoading = true;
@@ -31,8 +33,9 @@ class _PlaylistImporterViewState extends State<PlaylistImporterView> {
       final results = await _searchService.importPlaylist(url);
       setState(() {
         _tracks = results;
-        if (_tracks.isEmpty)
+        if (_tracks.isEmpty) {
           _error = "Nenhuma música encontrada nesta Playlist.";
+        }
         _isLoading = false;
       });
     } catch (e) {
