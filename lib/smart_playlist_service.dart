@@ -87,7 +87,7 @@ class SmartPlaylistService {
         }
 
         // Stop if we've reached target
-        if (totalDuration >= targetSeconds) break;
+        if (totalDuration >= targetSeconds) { break; }
       }
     }
 
@@ -136,9 +136,9 @@ class SmartPlaylistService {
         mood = 'energetic';
       if (query.contains('calmo') || query.contains('relaxante'))
         mood = 'chill';
-      if (query.contains('feliz') || query.contains('alegre')) mood = 'happy';
+      if (query.contains('feliz') { || query.contains('alegre')) mood = 'happy'; }
       if (query.contains('triste')) mood = 'sad';
-      if (query.contains('foco') || query.contains('estudar')) mood = 'focus';
+      if (query.contains('foco') { || query.contains('estudar')) mood = 'focus'; }
       if (query.contains('treino') || query.contains('academia'))
         mood = 'workout';
       if (query.contains('festa')) mood = 'party';
@@ -158,7 +158,7 @@ class SmartPlaylistService {
   }) async {
     final result = await generatePlaylist(query);
 
-    if (result.tracks.isEmpty) return null;
+    if (result.tracks.isEmpty) { return null; }
 
     final name = customName ?? 'Smart: $query';
     final playlistId = await _db.createPlaylist(name, description: query);

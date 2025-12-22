@@ -108,7 +108,7 @@ class SearchService {
         stderrEncoding: utf8,
       );
 
-      if (result.exitCode != 0) return [];
+      if (result.exitCode != 0) { return []; }
 
       final results = <SearchResult>[];
       final lines = (result.stdout as String).split('\n');
@@ -156,7 +156,7 @@ class SearchService {
         stderrEncoding: utf8,
       );
 
-      if (result.exitCode != 0) return [];
+      if (result.exitCode != 0) { return []; }
 
       final results = <SearchResult>[];
       final lines = (result.stdout as String).split('\n');
@@ -251,7 +251,7 @@ class SearchService {
         stderrEncoding: utf8,
       );
 
-      if (result.exitCode != 0) return _defaultFormats();
+      if (result.exitCode != 0) { return _defaultFormats(); }
 
       final json = jsonDecode(result.stdout as String);
       final formats = <DownloadFormat>[];
@@ -351,7 +351,7 @@ class SearchService {
       final query = '${ytResult.artist} ${ytResult.title}';
       final results = await searchSpotify(query);
 
-      if (results.isEmpty) return null;
+      if (results.isEmpty) { return null; }
 
       // Basic similarity check (can be improved)
       final ytTitle = ytResult.title.toLowerCase();
@@ -392,7 +392,7 @@ class SearchService {
         stderrEncoding: utf8,
       );
 
-      if (result.exitCode != 0) return [];
+      if (result.exitCode != 0) { return []; }
 
       final results = <SearchResult>[];
       final lines = (result.stdout as String).split('\n');
@@ -434,10 +434,10 @@ class SearchService {
         ],
       );
 
-      if (result.exitCode != 0) return [];
+      if (result.exitCode != 0) { return []; }
 
       final exists = await tempFile.exists();
-      if (!exists) return [];
+      if (!exists) { return []; }
 
       final content = await tempFile.readAsString();
       final List<SearchResult> results = [];

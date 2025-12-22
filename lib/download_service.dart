@@ -55,6 +55,7 @@ class SearchResult {
   final String? genre;
   final String? hifiSource; // 'qobuz', 'tidal', 'deezer' for Hi-Fi results
   final String? hifiQuality; // e.g. '24-bit/96kHz', 'FLAC 16-bit'
+  final bool isVault;
 
   SearchResult({
     required this.id,
@@ -69,10 +70,11 @@ class SearchResult {
     this.genre,
     this.hifiSource,
     this.hifiQuality,
+    this.isVault = false,
   });
 
   String get durationFormatted {
-    if (duration == null) return '';
+    if (duration == null) { return ''; }
     final minutes = duration! ~/ 60;
     final seconds = (duration! % 60).toString().padLeft(2, '0');
     return '$minutes:$seconds';
@@ -137,7 +139,7 @@ class DownloadService {
   /// Detect platform from URL.
   MediaPlatform detectPlatform(String url) {
     final uri = Uri.tryParse(url);
-    if (uri == null) return MediaPlatform.unknown;
+    if (uri == null) { return MediaPlatform.unknown; }
 
     final host = uri.host.toLowerCase();
 

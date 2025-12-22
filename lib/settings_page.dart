@@ -200,7 +200,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       boxShadow: isSelected
                           ? [
                               BoxShadow(
-                                  color: color.withOpacity(0.5), blurRadius: 8)
+                                  color: color.withValues(alpha: 0.5), blurRadius: 8)
                             ]
                           : null,
                     ),
@@ -366,7 +366,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             ],
                           ),
                         );
-                        if (confirmed != true) return;
+                        if (confirmed != true) { return; }
                       }
                       setState(() => _ageBypass = val);
                       await _dbService.saveAgeBypass(val);

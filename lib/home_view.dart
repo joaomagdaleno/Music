@@ -4,6 +4,8 @@ import 'playback_service.dart';
 import 'download_service.dart';
 import 'mood_explorer_view.dart';
 import 'smart_library_view.dart';
+import 'listening_stats_view.dart';
+import 'disco_mode_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -60,6 +62,16 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Início'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.auto_awesome),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const DiscoModeView()),
+            ),
+            tooltip: 'Modo Disco',
+          ),
+        ],
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -116,7 +128,7 @@ class _HomeViewState extends State<HomeView> {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -182,6 +194,16 @@ class _HomeViewState extends State<HomeView> {
             color: Colors.teal,
             onTap: () => Navigator.push(
                 context, MaterialPageRoute(builder: (_) => MoodExplorerView())),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: _SmartCard(
+            title: 'Stats',
+            icon: Icons.bar_chart,
+            color: Colors.deepPurple,
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const ListeningStatsView())),
           ),
         ),
       ],
@@ -291,7 +313,7 @@ class _MoodsWidget extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: (m['color'] as Color).withOpacity(0.1),
+                    color: (m['color'] as Color).withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child:
@@ -338,7 +360,7 @@ class _SmartCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.2),
+                color: color.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(icon, color: color),

@@ -3,6 +3,7 @@ import 'database_service.dart';
 import 'playback_service.dart';
 import 'download_service.dart';
 import 'playlist_importer_view.dart';
+import 'vault_view.dart';
 
 class MyTracksView extends StatefulWidget {
   const MyTracksView({super.key});
@@ -55,6 +56,14 @@ class _MyTracksViewState extends State<MyTracksView> {
         title: const Text('Minhas Músicas'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.lock_outline),
+            tooltip: 'Cofre Privado',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const VaultView()),
+            ),
+          ),
+          IconButton(
             icon: const Icon(Icons.playlist_add),
             tooltip: 'Importar Playlist',
             onPressed: () async {
@@ -85,9 +94,29 @@ class _MyTracksViewState extends State<MyTracksView> {
                           : const Icon(Icons.music_note),
                       title: Text(track['title']),
                       subtitle: Text(track['artist'] ?? ''),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.play_arrow),
-                        onPressed: () => _playTrack(track),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.lock),
+                            onPressed: () async {
+                              await _dbService.toggleVault(track['id'], true);
+                              _loadTracks();
+                              if (mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          '${track['title']} movida para o cofre')),
+                                );
+                              }
+                            },
+                            tooltip: 'Mover para Cofre',
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.play_arrow),
+                            onPressed: () => _playTrack(track),
+                          ),
+                        ],
                       ),
                     );
                   },

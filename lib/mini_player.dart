@@ -27,7 +27,7 @@ class MiniPlayer extends StatelessWidget {
             color: Theme.of(context).colorScheme.primaryContainer,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: Colors.black.withValues(alpha: 0.2),
                 blurRadius: 4,
                 offset: const Offset(0, -2),
               ),
@@ -70,7 +70,7 @@ class MiniPlayer extends StatelessWidget {
                           color: Theme.of(context)
                               .colorScheme
                               .onPrimaryContainer
-                              .withOpacity(0.7),
+                              .withValues(alpha: 0.7),
                         ),
                       ),
                     ],

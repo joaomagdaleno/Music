@@ -102,13 +102,13 @@ class MetadataAggregatorService {
         ['-json', filePath],
       );
 
-      if (result.exitCode != 0) return null;
+      if (result.exitCode != 0) { return null; }
 
       final fpcalcData = json.decode(result.stdout as String);
       final fingerprint = fpcalcData['fingerprint'] as String?;
       final duration = fpcalcData['duration'] as num?;
 
-      if (fingerprint == null || duration == null) return null;
+      if (fingerprint == null || duration == null) { return null; }
 
       // Query AcoustID API
       // Note: For production, register at https://acoustid.org/ for an API key
@@ -233,7 +233,7 @@ class MetadataAggregatorService {
         albumVotes.add(source['album'].toString().trim());
       if (source['year'] != null) {
         final y = int.tryParse(source['year'].toString());
-        if (y != null) yearVotes.add(y);
+        if (y != null) { yearVotes.add(y); }
       }
       if (source['thumbnail'] != null)
         thumbnails.add(source['thumbnail'].toString());
@@ -241,7 +241,7 @@ class MetadataAggregatorService {
       final genres = source['genres'];
       if (genres is List) {
         for (var g in genres) {
-          if (g != null) genreVotes.add(g.toString());
+          if (g != null) { genreVotes.add(g.toString()); }
         }
       }
     }
@@ -274,7 +274,7 @@ class MetadataAggregatorService {
   }
 
   String? _getMostCommon(List<String> votes) {
-    if (votes.isEmpty) return null;
+    if (votes.isEmpty) { return null; }
 
     final counts = <String, int>{};
     for (var v in votes) {
@@ -291,7 +291,7 @@ class MetadataAggregatorService {
   }
 
   bool _hasMajority(List<String> votes) {
-    if (votes.length < 2) return true;
+    if (votes.length < 2) { return true; }
 
     final counts = <String, int>{};
     for (var v in votes) {
@@ -304,7 +304,7 @@ class MetadataAggregatorService {
   }
 
   bool _validateDuration(List<LyricLine> lyrics, int? durationMs) {
-    if (durationMs == null || lyrics.isEmpty) return true;
+    if (durationMs == null || lyrics.isEmpty) { return true; }
 
     final lastLine = lyrics.last;
     final lyricsEndMs = lastLine.time.inMilliseconds;

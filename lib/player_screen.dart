@@ -26,7 +26,7 @@ class PlayerScreen extends StatelessWidget {
             stream: PlaybackService.instance.sleepTimerStream,
             builder: (context, snapshot) {
               final timeLeft = snapshot.data;
-              if (timeLeft == null) return const SizedBox.shrink();
+              if (timeLeft == null) { return const SizedBox.shrink(); }
               return Center(
                 child: Padding(
                   padding: const EdgeInsets.only(right: 8.0),

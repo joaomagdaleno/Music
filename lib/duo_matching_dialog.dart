@@ -79,7 +79,7 @@ class _DuoMatchingDialogState extends State<DuoMatchingDialog> {
 
   Future<void> _startHost() async {
     final granted = await _service.requestPermissions();
-    if (!granted) return;
+    if (!granted) { return; }
 
     setState(() {
       _isHosting = true;
@@ -90,7 +90,7 @@ class _DuoMatchingDialogState extends State<DuoMatchingDialog> {
 
   Future<void> _startDiscovery() async {
     final granted = await _service.requestPermissions();
-    if (!granted) return;
+    if (!granted) { return; }
 
     setState(() {
       _isDiscovering = true;

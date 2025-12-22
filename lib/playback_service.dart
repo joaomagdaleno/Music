@@ -76,30 +76,30 @@ class PlaybackService {
   }
 
   void _updatePlaybackState() {
-    _audioHandler.playbackState.add(PlaybackState(
-      controls: [
-        MediaControl.skipToPrevious,
-        if (_player.playing) MediaControl.pause else MediaControl.play,
-        MediaControl.stop,
-        MediaControl.skipToNext,
-      ],
-      systemActions: const {
-        MediaAction.seek,
-      },
-      androidCompactActionIndices: const [0, 1, 3],
-      processingState: const {
-        ProcessingState.idle: AudioProcessingState.idle,
-        ProcessingState.loading: AudioProcessingState.loading,
-        ProcessingState.buffering: AudioProcessingState.buffering,
-        ProcessingState.ready: AudioProcessingState.ready,
-        ProcessingState.completed: AudioProcessingState.completed,
-      }[_player.processingState]!,
-      playing: _player.playing,
-      updatePosition: _player.position,
-      bufferedPosition: _player.bufferedPosition,
-      speed: _player.speed,
-      queueIndex: _player.currentIndex,
-    ));
+    (_audioHandler as BaseAudioHandler).playbackState.add(PlaybackState(
+          controls: [
+            MediaControl.skipToPrevious,
+            if (_player.playing) MediaControl.pause else MediaControl.play,
+            MediaControl.stop,
+            MediaControl.skipToNext,
+          ],
+          systemActions: const {
+            MediaAction.seek,
+          },
+          androidCompactActionIndices: const [0, 1, 3],
+          processingState: const {
+            ProcessingState.idle: AudioProcessingState.idle,
+            ProcessingState.loading: AudioProcessingState.loading,
+            ProcessingState.buffering: AudioProcessingState.buffering,
+            ProcessingState.ready: AudioProcessingState.ready,
+            ProcessingState.completed: AudioProcessingState.completed,
+          }[_player.processingState]!,
+          playing: _player.playing,
+          updatePosition: _player.position,
+          bufferedPosition: _player.bufferedPosition,
+          speed: _player.speed,
+          queueIndex: _player.currentIndex,
+        ));
   }
 
   void _onTrackChanged(SearchResult track) {
@@ -109,15 +109,16 @@ class PlaybackService {
     DatabaseService.instance.trackPlay(track.id);
     _fetchLyrics(track);
 
-    _audioHandler.mediaItem.add(MediaItem(
-      id: track.id,
-      album: track.album ?? 'Unknown Album',
-      title: track.title,
-      artist: track.artist,
-      duration:
-          track.duration != null ? Duration(seconds: track.duration!) : null,
-      artUri: track.thumbnail != null ? Uri.parse(track.thumbnail!) : null,
-    ));
+    (_audioHandler as BaseAudioHandler).mediaItem.add(MediaItem(
+          id: track.id,
+          album: track.album ?? 'Unknown Album',
+          title: track.title,
+          artist: track.artist,
+          duration: track.duration != null
+              ? Duration(seconds: track.duration!)
+              : null,
+          artUri: track.thumbnail != null ? Uri.parse(track.thumbnail!) : null,
+        ));
   }
 
   Future<void> playSearchResult(SearchResult result,

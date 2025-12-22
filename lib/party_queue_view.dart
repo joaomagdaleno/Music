@@ -76,7 +76,7 @@ class _PartyQueueViewState extends State<PartyQueueView> {
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: Colors.black.withValues(alpha: 0.1),
                               blurRadius: 20,
                               spreadRadius: 5,
                             ),
@@ -101,7 +101,7 @@ class _PartyQueueViewState extends State<PartyQueueView> {
                         icon: const Icon(Icons.stop_circle_outlined),
                         label: const Text('Encerrar Festa'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red.withOpacity(0.1),
+                          backgroundColor: Colors.red.withValues(alpha: 0.1),
                           foregroundColor: Colors.red,
                         ),
                       ),

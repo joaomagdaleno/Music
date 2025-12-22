@@ -23,7 +23,7 @@ class _VisualizerWidgetState extends State<VisualizerWidget>
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500))
       ..repeat(reverse: true);
-    if (!widget.isPlaying) _controller.stop();
+    if (!widget.isPlaying) { _controller.stop(); }
   }
 
   @override
@@ -52,7 +52,7 @@ class _VisualizerWidgetState extends State<VisualizerWidget>
           painter: _VisualizerPainter(
             heights: _heights,
             progress: _controller.value,
-            color: widget.color.withOpacity(0.5),
+            color: widget.color.withValues(alpha: 0.5),
           ),
         );
       },

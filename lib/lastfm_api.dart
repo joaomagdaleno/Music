@@ -7,7 +7,7 @@ class LastFmApi {
 
   Future<Map<String, dynamic>?> getTrackInfo(
       String title, String artist) async {
-    if (_apiKey == 'YOUR_LASTFM_API_KEY') return null;
+    if (_apiKey == 'YOUR_LASTFM_API_KEY') { return null; }
 
     final url = Uri.parse(
         '$_baseUrl?method=track.getInfo&api_key=$_apiKey&artist=${Uri.encodeComponent(artist)}&track=${Uri.encodeComponent(title)}&format=json');

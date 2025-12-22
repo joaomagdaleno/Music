@@ -3,10 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:network_info_plus/network_info_plus.dart';
-import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_static/shelf_static.dart';
-import 'package:xml/xml.dart'; // Need to add xml package if not present, or parse manually. We'll try manual regex for simplicity to avoid deps bloat if simple.
 
 class CastDevice {
   final String name;
@@ -35,7 +33,6 @@ class CastService {
 
   HttpServer? _server;
   String? _localIp;
-  CastDevice? _connectedDevice;
 
   Future<void> startDiscovery() async {
     _devices.clear();
@@ -70,12 +67,11 @@ class CastService {
         socket.close();
       });
     } catch (e) {
-      print('SSDP Discovery Error: $e');
+      debugPrint('SSDP Discovery Error: $e');
     }
   }
 
   Future<void> _parseSsdpResponse(String response) async {
-    // Basic parsing to extract LOCATION
     final lines = response.split('\r\n');
     String? location;
     for (var line in lines) {
@@ -90,17 +86,10 @@ class CastService {
         final resp = await http.get(Uri.parse(location));
         if (resp.statusCode == 200) {
           final xml = resp.body;
-          // Regex to find FriendlyName and AVTransport ControlURL
           final nameReg = RegExp(r'<friendlyName>(.*?)</friendlyName>');
           final name = nameReg.firstMatch(xml)?.group(1) ?? 'Unknown Device';
 
-          // Need to find the AVTransport service section
-          // Simplified logic: Find serviceType AVTransport and then controlURL sibling
           if (xml.contains('urn:schemas-upnp-org:service:AVTransport:1')) {
-            // Extract Control URL. This is hacky with regex but usually works for simple DLNA.
-            // Better to use XML parser if available.
-
-            // Find the service block
             final serviceBlock =
                 xml.split('urn:schemas-upnp-org:service:AVTransport:1')[1];
             final controlUrlReg = RegExp(r'<controlURL>(.*?)</controlURL>');
@@ -108,14 +97,12 @@ class CastService {
             var controlUrl = match?.group(1);
 
             if (controlUrl != null) {
-              // Handle relative URLs
               if (!controlUrl.startsWith('http')) {
                 final uri = Uri.parse(location);
                 if (controlUrl.startsWith('/')) {
                   controlUrl =
                       '${uri.scheme}://${uri.host}:${uri.port}$controlUrl';
                 } else {
-                  // Just append? usually base url is provided but let's try assuming relative to location root if possible or just append
                   controlUrl =
                       '${uri.scheme}://${uri.host}:${uri.port}/$controlUrl';
                 }
@@ -139,23 +126,19 @@ class CastService {
   }
 
   Future<void> castFile(String filePath, CastDevice device) async {
-    await stopCasting(); // Stop previous server
-    _connectedDevice = device;
+    await stopCasting();
 
     final info = NetworkInfo();
-    _localIp =
-        await info.getWifiIP() ?? '127.0.0.1'; // Ideally handle ethernet too
+    _localIp = await info.getWifiIP() ?? '127.0.0.1';
 
-    // Start Shelf Server
     final handler = createStaticHandler(File(filePath).parent.path,
         defaultDocument: File(filePath).uri.pathSegments.last);
 
-    _server =
-        await shelf_io.serve(handler, _localIp, 0); // Port 0 = random free port
+    _server = await shelf_io.serve(handler, _localIp ?? '0.0.0.0', 0);
     final fileUrl =
         'http://$_localIp:${_server!.port}/${File(filePath).uri.pathSegments.last}';
 
-    print('Hosting at $fileUrl');
+    debugPrint('Hosting at $fileUrl');
 
     await _setAvTransportUri(device.controlUrl, fileUrl);
     await _play(device.controlUrl);
@@ -164,7 +147,6 @@ class CastService {
   Future<void> stopCasting() async {
     await _server?.close(force: true);
     _server = null;
-    _connectedDevice = null;
   }
 
   // SOAP Actions
@@ -210,7 +192,12 @@ class CastService {
         body: body,
       );
     } catch (e) {
-      print('SOAP Error ($action): $e');
+      debugPrint('SOAP Error ($action): $e');
     }
   }
+}
+
+// Stub for debugPrint if not imported (it's in foundation.dart or material.dart)
+void debugPrint(String message) {
+  // Use log or foundation debugPrint in real apps
 }

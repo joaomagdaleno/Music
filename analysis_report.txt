@@ -1,0 +1,79 @@
+Analyzing Music...                                              
+
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\app_shell.dart:39:40 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\cast_dialog.dart:54:56 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\cast_dialog.dart:55:50 - use_build_context_synchronously
+warning - The value of the field '_connectedDevice' isn't used - lib\cast_service.dart:36:15 - unused_field
+   info - Don't invoke 'print' in production code - lib\cast_service.dart:205:3 - avoid_print
+  error - Undefined name 'SystemTrayEvent' - lib\desktop_integration_service.dart:41:24 - undefined_identifier
+  error - Undefined name 'SystemTrayEvent' - lib\desktop_integration_service.dart:45:31 - undefined_identifier
+   info - The private field _bars could be 'final' - lib\disco_mode_view.dart:22:16 - prefer_final_fields
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\disco_mode_view.dart:89:38 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\disco_mode_view.dart:90:39 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\disco_mode_view.dart:134:32 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\disco_mode_view.dart:164:55 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\disco_mode_view.dart:209:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\disco_mode_view.dart:227:41 - deprecated_member_use
+   info - Don't invoke 'print' in production code - lib\download_service.dart:433:7 - avoid_print
+warning - Unused import: 'download_service.dart' - lib\firebase_sync_service.dart:5:8 - unused_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\floating_mini_player.dart:40:47 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\floating_mini_player.dart:51:35 - deprecated_member_use
+   info - Unnecessary use of getter and setter to wrap a field - lib\hifi_download_service.dart:14:12 - unnecessary_getters_setters
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\home_view.dart:131:58 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\home_view.dart:316:50 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\home_view.dart:363:30 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\karaoke_view.dart:79:57 - deprecated_member_use
+   info - Unnecessary braces in a string interpolation - lib\listening_stats_view.dart:35:13 - unnecessary_brace_in_string_interps
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\listening_stats_view.dart:208:29 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\listening_stats_view.dart:210:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\listening_stats_view.dart:260:43 - deprecated_member_use
+   info - 'filePath' is deprecated and shouldn't be used. Use uri instead, Only available on Android 10 and below - lib\local_duo_service.dart:89:46 - deprecated_member_use
+   info - 'filePath' is deprecated and shouldn't be used. Use uri instead, Only available on Android 10 and below - lib\local_duo_service.dart:91:38 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\login_page.dart:53:53 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\login_page.dart:175:33 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\login_page.dart:176:40 - use_build_context_synchronously
+   info - Don't invoke 'print' in production code - lib\lyrics_service.dart:22:7 - avoid_print
+warning - The value of the field '_aggregator' isn't used - lib\main.dart:107:35 - unused_field
+   info - Don't invoke 'print' in production code - lib\main.dart:152:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\main.dart:161:5 - avoid_print
+   info - Don't use 'BuildContext's across async gaps - lib\main.dart:171:11 - use_build_context_synchronously
+   info - Don't invoke 'print' in production code - lib\main.dart:188:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\main.dart:285:7 - avoid_print
+   info - Statements in an if should be enclosed in a block - lib\metadata_aggregator_service.dart:229:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\metadata_aggregator_service.dart:231:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\metadata_aggregator_service.dart:233:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\metadata_aggregator_service.dart:239:9 - curly_braces_in_flow_control_structures
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\mini_player.dart:30:37 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\mini_player.dart:73:32 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\mood_explorer_view.dart:76:28 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\mood_explorer_view.dart:83:28 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\mood_explorer_view.dart:148:44 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\my_tracks_view.dart:106:54 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\party_queue_view.dart:79:51 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\party_queue_view.dart:104:55 - deprecated_member_use
+   info - Statements in an if should be enclosed in a block - lib\playlist_importer_view.dart:35:11 - curly_braces_in_flow_control_structures
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\ringtone_maker_view.dart:127:43 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps - lib\search_page.dart:180:28 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\search_page.dart:579:12 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\search_page.dart:636:26 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\settings_page.dart:203:48 - deprecated_member_use
+   info - Statements in an if should be enclosed in a block - lib\smart_playlist_service.dart:136:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\smart_playlist_service.dart:138:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\smart_playlist_service.dart:143:9 - curly_braces_in_flow_control_structures
+   info - 'value' is deprecated and shouldn't be used. Use component accessors like .r or .g, or toARGB32 for an explicit conversion - lib\theme_service.dart:49:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\visualizer_widget.dart:55:33 - deprecated_member_use
+  error - Target of URI doesn't exist: 'package:firebase_core/firebase_core.dart' - music_tag_editor\lib\firebase_options.dart:3:8 - uri_does_not_exist
+  error - Const variables must be initialized with a constant value - music_tag_editor\lib\firebase_options.dart:43:38 - const_initialized_with_non_constant_value
+  error - The method 'FirebaseOptions' isn't defined for the type 'DefaultFirebaseOptions' - music_tag_editor\lib\firebase_options.dart:43:38 - undefined_method
+  error - Const variables must be initialized with a constant value - music_tag_editor\lib\firebase_options.dart:53:42 - const_initialized_with_non_constant_value
+  error - The method 'FirebaseOptions' isn't defined for the type 'DefaultFirebaseOptions' - music_tag_editor\lib\firebase_options.dart:53:42 - undefined_method
+  error - Const variables must be initialized with a constant value - music_tag_editor\lib\firebase_options.dart:61:38 - const_initialized_with_non_constant_value
+  error - The method 'FirebaseOptions' isn't defined for the type 'DefaultFirebaseOptions' - music_tag_editor\lib\firebase_options.dart:61:38 - undefined_method
+  error - Const variables must be initialized with a constant value - music_tag_editor\lib\firebase_options.dart:70:40 - const_initialized_with_non_constant_value
+  error - The method 'FirebaseOptions' isn't defined for the type 'DefaultFirebaseOptions' - music_tag_editor\lib\firebase_options.dart:70:40 - undefined_method
+  error - Const variables must be initialized with a constant value - music_tag_editor\lib\firebase_options.dart:79:42 - const_initialized_with_non_constant_value
+  error - The method 'FirebaseOptions' isn't defined for the type 'DefaultFirebaseOptions' - music_tag_editor\lib\firebase_options.dart:79:42 - undefined_method
+  error - The named parameter 'file' is required, but there's no corresponding argument - music_tag_editor\lib\services\music_service.dart:35:44 - missing_required_argument
+  error - Too many positional arguments: 0 expected, but 1 found - music_tag_editor\lib\services\music_service.dart:35:57 - extra_positional_arguments_could_be_named
+
+75 issues found. (ran in 48.6s)

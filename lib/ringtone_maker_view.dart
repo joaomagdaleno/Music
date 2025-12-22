@@ -51,7 +51,7 @@ class _RingtoneMakerViewState extends State<RingtoneMakerView> {
       _player.positionStream.listen((pos) {
         if (pos.inSeconds >= _currentRange.end.toInt() && _isPlayingSegment) {
           _player.pause();
-          if (mounted) setState(() => _isPlayingSegment = false);
+          if (mounted) { setState(() => _isPlayingSegment = false); }
         }
       });
     }
@@ -66,7 +66,7 @@ class _RingtoneMakerViewState extends State<RingtoneMakerView> {
     );
 
     await Future.delayed(const Duration(seconds: 2));
-    if (!mounted) return;
+    if (!mounted) { return; }
     Navigator.pop(context); // Close loading
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -124,7 +124,7 @@ class _RingtoneMakerViewState extends State<RingtoneMakerView> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
+                      color: Colors.black.withValues(alpha: 0.3),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),

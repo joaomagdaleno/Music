@@ -22,7 +22,7 @@ class SlavArtApi {
             const Duration(seconds: 15),
           );
 
-      if (response.statusCode != 200) return [];
+      if (response.statusCode != 200) { return []; }
 
       final data = jsonDecode(response.body);
       final results = <SlavArtResult>[];
@@ -52,7 +52,7 @@ class SlavArtApi {
             const Duration(seconds: 30),
           );
 
-      if (response.statusCode != 200) return null;
+      if (response.statusCode != 200) { return null; }
 
       final data = jsonDecode(response.body);
       return data['download_url'] as String?;
@@ -71,7 +71,7 @@ class SlavArtApi {
       final request = http.Request('GET', Uri.parse(downloadUrl));
       final streamedResponse = await _client.send(request);
 
-      if (streamedResponse.statusCode != 200) return null;
+      if (streamedResponse.statusCode != 200) { return null; }
 
       // Get filename from headers or generate one
       final contentDisposition =
@@ -162,8 +162,8 @@ class SlavArtResult {
         return 'FLAC';
       case 'tidal':
         final quality = json['audioQuality'];
-        if (quality == 'HI_RES') return 'MQA 24-bit';
-        if (quality == 'LOSSLESS') return 'FLAC 16-bit';
+        if (quality == 'HI_RES') { return 'MQA 24-bit'; }
+        if (quality == 'LOSSLESS') { return 'FLAC 16-bit'; }
         return quality;
       case 'deezer':
         return 'FLAC 16-bit';
@@ -178,8 +178,8 @@ class SlavArtResult {
     }
     if (json['artists'] is List && (json['artists'] as List).isNotEmpty) {
       final first = (json['artists'] as List).first;
-      if (first is Map) return first['name']?.toString() ?? 'Unknown';
-      if (first is String) return first;
+      if (first is Map) { return first['name']?.toString() ?? 'Unknown'; }
+      if (first is String) { return first; }
     }
     if (json['performer'] is Map) {
       return (json['performer'] as Map)['name']?.toString() ?? 'Unknown';

@@ -26,7 +26,7 @@ class _KaraokeViewState extends State<KaraokeView> {
 
   void _startTracking() {
     _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
-      if (!mounted) return;
+      if (!mounted) { return; }
       final pos = _playbackService.player.position.inMilliseconds;
       final lyrics = _playbackService.currentLyrics;
 
@@ -76,7 +76,7 @@ class _KaraokeViewState extends State<KaraokeView> {
                 center: const Alignment(0, -0.5),
                 radius: 1.5,
                 colors: [
-                  Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
                   Colors.black,
                 ],
               ),

@@ -46,7 +46,7 @@ class ThemeService extends ChangeNotifier {
     _customColor = color;
     _useCustomColor = true;
     await DatabaseService.instance
-        .saveSetting('customColor', color.value.toString());
+        .saveSetting('customColor', color.toARGB32().toString());
     await DatabaseService.instance.saveSetting('useCustomColor', 'true');
     notifyListeners();
   }
@@ -59,7 +59,7 @@ class ThemeService extends ChangeNotifier {
 
   Future<void> updateThemeFromImage(String? imageUrl) async {
     // Only update if in auto mode
-    if (_useCustomColor) return;
+    if (_useCustomColor) { return; }
 
     if (imageUrl == null) {
       _primaryColor = Colors.blue;

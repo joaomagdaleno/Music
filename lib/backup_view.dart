@@ -16,7 +16,7 @@ class _BackupViewState extends State<BackupView> {
 
   Future<void> _createBackup() async {
     final directory = await FilePicker.platform.getDirectoryPath();
-    if (directory == null) return;
+    if (directory == null) { return; }
 
     setState(() {
       _isLoading = true;
@@ -42,10 +42,10 @@ class _BackupViewState extends State<BackupView> {
       type: FileType.custom,
       allowedExtensions: ['zip'],
     );
-    if (result == null || result.files.isEmpty) return;
+    if (result == null || result.files.isEmpty) { return; }
 
     final path = result.files.single.path;
-    if (path == null) return;
+    if (path == null) { return; }
 
     setState(() {
       _isLoading = true;

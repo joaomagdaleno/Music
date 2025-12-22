@@ -21,7 +21,7 @@ class _FloatingMiniPlayerState extends State<FloatingMiniPlayer> {
   }
 
   Future<void> _setupWindow() async {
-    if (!Platform.isWindows) return;
+    if (!Platform.isWindows) { return; }
 
     await windowManager.ensureInitialized();
     await windowManager.setSize(const Size(320, 100));
@@ -37,7 +37,7 @@ class _FloatingMiniPlayerState extends State<FloatingMiniPlayer> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: Colors.black.withOpacity(0.9),
+        scaffoldBackgroundColor: Colors.black.withValues(alpha: 0.9),
       ),
       home: Scaffold(
         body: GestureDetector(
@@ -48,7 +48,7 @@ class _FloatingMiniPlayerState extends State<FloatingMiniPlayer> {
           },
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.95),
+              color: Colors.black.withValues(alpha: 0.95),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Colors.white24),
             ),

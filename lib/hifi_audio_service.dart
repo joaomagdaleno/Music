@@ -85,7 +85,7 @@ class HiFiAudioService {
         filePath,
       ]);
 
-      if (result.exitCode != 0) return null;
+      if (result.exitCode != 0) { return null; }
 
       final output = result.stdout as String;
       // Parse basic info from ffprobe output

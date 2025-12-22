@@ -73,14 +73,14 @@ class _MoodCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [color.withOpacity(0.7), color],
+            colors: [color.withValues(alpha: 0.7), color],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: color.withOpacity(0.3),
+              color: color.withValues(alpha: 0.3),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -145,7 +145,7 @@ class _MoodTracksSheet extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
-                    backgroundColor: color.withOpacity(0.2),
+                    backgroundColor: color.withValues(alpha: 0.2),
                     child: Icon(Icons.music_note, color: color)),
                 const SizedBox(width: 16),
                 Text(

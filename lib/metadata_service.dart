@@ -77,7 +77,7 @@ class MetadataService {
 
   /// Parses track number from various formats (e.g., "5", "5/12")
   int _parseTrackNumber(dynamic value) {
-    if (value == null) return 0;
+    if (value == null) { return 0; }
     final str = value.toString();
     // Handle "track/total" format like "5/12"
     final parts = str.split('/');

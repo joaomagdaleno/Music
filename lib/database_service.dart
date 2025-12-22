@@ -34,7 +34,7 @@ class DatabaseService {
   static const String _duoSessionsTable = 'duo_sessions';
 
   Future<Database> get database async {
-    if (_database != null) return _database!;
+    if (_database != null) { return _database!; }
     _database = await _initDB();
     return _database!;
   }
@@ -43,7 +43,7 @@ class DatabaseService {
     String path = join(await getDatabasesPath(), 'music_tag_editor.db');
     return await openDatabase(
       path,
-      version: 5, // Incremented version for duo persistence
+      version: 6, // Incremented version for vault support
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE $_settingsTable (
@@ -76,7 +76,8 @@ class DatabaseService {
             is_downloaded INTEGER DEFAULT 0,
             genre TEXT,
             play_count INTEGER DEFAULT 0,
-            last_played INTEGER
+            last_played INTEGER,
+            is_vault INTEGER DEFAULT 0
           )
         ''');
         await db.execute('''
@@ -306,9 +307,23 @@ class DatabaseService {
     );
   }
 
-  Future<List<Map<String, dynamic>>> getTracks() async {
+  Future<List<Map<String, dynamic>>> getTracks(
+      {bool includeVault = false}) async {
     final db = await database;
-    return await db.query(_tracksTable);
+    if (includeVault) {
+      return await db.query(_tracksTable);
+    }
+    return await db.query(_tracksTable, where: 'is_vault = 0');
+  }
+
+  Future<void> toggleVault(String trackId, bool inVault) async {
+    final db = await database;
+    await db.update(
+      _tracksTable,
+      {'is_vault': inVault ? 1 : 0},
+      where: 'id = ?',
+      whereArgs: [trackId],
+    );
   }
 
   Future<void> deleteTrack(String id) async {
@@ -318,7 +333,7 @@ class DatabaseService {
 
   /// Get all tracks as SearchResult objects for use by services.
   Future<List<SearchResult>> getAllTracks() async {
-    final tracksData = await getTracks();
+    final tracksData = await getTracks(includeVault: true);
     return tracksData
         .map((data) => SearchResult(
               id: data['id'],
@@ -334,6 +349,7 @@ class DatabaseService {
               ),
               localPath: data['local_path'],
               genre: data['genre'],
+              isVault: (data['is_vault'] as int?) == 1,
             ))
         .toList();
   }
@@ -480,7 +496,7 @@ class DatabaseService {
         break;
     }
 
-    if (genres.isEmpty) return [];
+    if (genres.isEmpty) { return []; }
 
     final placeholders = List.filled(genres.length, '?').join(',');
     return await db.query(

@@ -56,7 +56,7 @@ class _DownloadPageState extends State<DownloadPage> {
 
   Future<void> _fetchInfo() async {
     final url = _urlController.text.trim();
-    if (url.isEmpty) return;
+    if (url.isEmpty) { return; }
 
     setState(() {
       _isLoading = true;
@@ -79,7 +79,7 @@ class _DownloadPageState extends State<DownloadPage> {
   }
 
   Future<void> _startDownload() async {
-    if (_mediaInfo == null || _selectedFormat == null) return;
+    if (_mediaInfo == null || _selectedFormat == null) { return; }
 
     setState(() {
       _isDownloading = true;

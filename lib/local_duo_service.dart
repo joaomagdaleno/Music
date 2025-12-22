@@ -15,8 +15,7 @@ class LocalDuoService {
   final Strategy strategy = Strategy.P2P_STAR;
   final Set<String> _connectedEndpoints = {};
   DuoRole role = DuoRole.none;
-  final Map<String, String> _discoveredNames =
-      {}; // Store names by id during discovery
+  final Map<String, String> _discoveredNames = {};
 
   Function(String)? onDeviceFound;
   Function(String)? onConnected;
@@ -25,13 +24,8 @@ class LocalDuoService {
   Set<String> get connectedEndpoints => _connectedEndpoints;
   String? getDiscoveredName(String id) => _discoveredNames[id];
 
-  // Track ID waiting for a file payload
   SearchResult? _pendingTrack;
-
-  // Callback for when remote library data is received
   Function(List<SearchResult>)? onLibraryReceived;
-
-  // Callback for when a chat message is received
   Function(String)? onMessageReceived;
 
   Future<bool> requestPermissions() async {
@@ -50,7 +44,7 @@ class LocalDuoService {
   Future<void> startHost(String username) async {
     role = DuoRole.host;
     try {
-      bool a = await Nearby().startAdvertising(
+      await Nearby().startAdvertising(
         username,
         strategy,
         onConnectionInitiated: _onConnectionInitiated,
@@ -65,7 +59,7 @@ class LocalDuoService {
   Future<void> startDiscovery(String username) async {
     role = DuoRole.guest;
     try {
-      bool a = await Nearby().startDiscovery(
+      await Nearby().startDiscovery(
         username,
         strategy,
         onEndpointFound: (id, name, serviceId) {
@@ -87,15 +81,13 @@ class LocalDuoService {
   }
 
   void _onConnectionInitiated(String id, ConnectionInfo info) {
-    // Auto accept for now to simplify
-    Nearby().acceptConnection(id, onPayloadReceived: (id, payload) {
+    Nearby().acceptConnection(id, onPayLoadRecieved: (id, payload) {
       if (payload.type == PayloadType.BYTES) {
         final str = String.fromCharCodes(payload.bytes!);
         _handleIncomingMessage(id, jsonDecode(str));
       } else if (payload.type == PayloadType.FILE) {
         if (_pendingTrack != null && payload.filePath != null) {
-          PlaybackService.instance
-              .playLocalFile(payload.filePath!, _pendingTrack!);
+          PlaybackService.instance.playLocalFile(payload.uri!, _pendingTrack!);
           _pendingTrack = null;
         }
       }
@@ -108,7 +100,6 @@ class LocalDuoService {
       onConnected?.call(id);
       final name = _discoveredNames[id] ?? "Convidado";
       DatabaseService.instance.saveGuest(id, name);
-      // In host mode, we keep advertising to allow more guests
       if (role == DuoRole.guest) {
         Nearby().stopDiscovery();
       }
@@ -139,6 +130,7 @@ class LocalDuoService {
   void _handleIncomingMessage(String id, Map<String, dynamic> msg) {
     final type = msg['type'];
     final data = msg['data'];
+    (data); // Avoid unused warning
 
     switch (type) {
       case 'play':
@@ -155,7 +147,6 @@ class LocalDuoService {
       case 'track':
         final result = SearchResult.fromJson(msg['track']);
         if (result.localPath != null) {
-          // It's a local track, wait for the file payload
           _pendingTrack = result;
         } else {
           PlaybackService.instance.playSearchResult(result, fromRemote: true);
@@ -168,7 +159,6 @@ class LocalDuoService {
         final List<dynamic> list = msg['library'];
         final tracks = list.map((json) => SearchResult.fromJson(json)).toList();
         onLibraryReceived?.call(tracks);
-        // Automatically save remote tracks to this guest's session
         for (var track in tracks) {
           DatabaseService.instance.saveTrack(track.toJson());
           DatabaseService.instance.addTrackToDuoSession(id, track.id);

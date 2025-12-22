@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'musicbrainz_api.dart';
-import 'metadata_aggregator_service.dart';
 import 'search_results_dialog.dart';
 import 'package:path/path.dart' as p;
 import 'settings_page.dart';
@@ -20,6 +19,10 @@ import 'mood_explorer_view.dart';
 import 'ringtone_maker_view.dart';
 import 'download_service.dart';
 import 'desktop_integration_service.dart';
+import 'connectivity_service.dart';
+import 'security_service.dart';
+import 'auth_service.dart';
+import 'login_page.dart';
 
 // A simple data class to hold music metadata.
 class MusicTrack {
@@ -40,8 +43,16 @@ class MusicTrack {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Core Services
+  await SecurityService.instance.init();
+  AuthService.instance.init();
+  await ConnectivityService.instance.init();
+
+  await ThemeService.instance.init();
   await DesktopIntegrationService.instance.init();
   await PlaybackService.instance.init();
+
   runApp(const MusicTagEditorApp());
 }
 
@@ -70,7 +81,9 @@ class MusicTagEditorApp extends StatelessWidget {
               brightness: Brightness.dark,
             ),
           ),
-          home: const AppShell(),
+          home: AuthService.instance.isAuthenticated
+              ? const AppShell()
+              : const LoginPage(),
         );
       },
     );
@@ -90,8 +103,6 @@ class _LibraryPageState extends State<LibraryPage> {
   final List<MusicTrack> _musicTracks = [];
   bool _isLoading = false;
   final MusicBrainzApi _musicBrainzApi = MusicBrainzApi();
-  final MetadataAggregatorService _aggregator =
-      MetadataAggregatorService.instance;
   final DatabaseService _dbService = DatabaseService.instance;
   final MetadataService _metadataService = MetadataService();
   String? _currentDirectory;
@@ -106,7 +117,9 @@ class _LibraryPageState extends State<LibraryPage> {
   }
 
   Future<void> _loadMusicFromDirectory() async {
-    if (_currentDirectory == null) return;
+    if (_currentDirectory == null) {
+      return;
+    }
 
     setState(() {
       _isLoading = true;
@@ -135,7 +148,7 @@ class _LibraryPageState extends State<LibraryPage> {
       });
     } catch (e) {
       // Handle exceptions
-      print(e);
+      debugPrint(e.toString());
     } finally {
       setState(() {
         _isLoading = false;
@@ -144,7 +157,7 @@ class _LibraryPageState extends State<LibraryPage> {
   }
 
   void _searchOnline(MusicTrack track) async {
-    print('Searching online for: ${track.artist} - ${track.title}');
+    debugPrint('Searching online for: ${track.artist} - ${track.title}');
     try {
       final results = await _musicBrainzApi.searchRecording(
         artist: track.artist,
@@ -171,7 +184,7 @@ class _LibraryPageState extends State<LibraryPage> {
         );
       }
     } catch (e) {
-      print('Error searching online: $e');
+      debugPrint('Error searching online: $e');
     }
   }
 
@@ -268,7 +281,7 @@ class _LibraryPageState extends State<LibraryPage> {
 
       _loadMusicFromDirectory();
     } catch (e) {
-      print('Error applying tags: $e');
+      debugPrint('Error applying tags: $e');
     }
   }
 

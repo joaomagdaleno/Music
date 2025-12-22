@@ -74,7 +74,7 @@ class DuplicateDetectorService {
         stdoutEncoding: utf8,
       );
 
-      if (result.exitCode != 0) return null;
+      if (result.exitCode != 0) { return null; }
 
       final json = jsonDecode(result.stdout as String);
       final fingerprint = json['fingerprint'] as String?;
@@ -123,7 +123,7 @@ class DuplicateDetectorService {
     DuplicateGroup group, {
     bool keepHighestQuality = true,
   }) async {
-    if (group.tracks.length < 2) return 0;
+    if (group.tracks.length < 2) { return 0; }
 
     // Sort by quality (prefer FLAC > M4A > MP3, then by file size)
     final sorted = List<SearchResult>.from(group.tracks);
@@ -135,7 +135,7 @@ class DuplicateDetectorService {
       final aOrder = extOrder[aExt] ?? 99;
       final bOrder = extOrder[bExt] ?? 99;
 
-      if (aOrder != bOrder) return aOrder.compareTo(bOrder);
+      if (aOrder != bOrder) { return aOrder.compareTo(bOrder); }
 
       // Compare file sizes (larger = better quality)
       final aSize = a.localPath != null ? File(a.localPath!).lengthSync() : 0;
@@ -183,15 +183,15 @@ class DuplicateGroup {
 
   /// Get the recommended track to keep (highest quality).
   SearchResult get bestTrack {
-    if (tracks.length == 1) return tracks.first;
+    if (tracks.length == 1) { return tracks.first; }
 
     // Prefer FLAC, then larger files
     return tracks.reduce((best, current) {
       final bestExt = best.localPath?.split('.').last.toLowerCase() ?? '';
       final currExt = current.localPath?.split('.').last.toLowerCase() ?? '';
 
-      if (currExt == 'flac' && bestExt != 'flac') return current;
-      if (bestExt == 'flac' && currExt != 'flac') return best;
+      if (currExt == 'flac' && bestExt != 'flac') { return current; }
+      if (bestExt == 'flac' && currExt != 'flac') { return best; }
 
       final bestSize =
           best.localPath != null ? File(best.localPath!).lengthSync() : 0;

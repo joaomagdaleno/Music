@@ -19,7 +19,7 @@ class _PlaylistImporterViewState extends State<PlaylistImporterView> {
 
   Future<void> _import() async {
     final url = _urlController.text.trim();
-    if (url.isEmpty) return;
+    if (url.isEmpty) { return; }
 
     setState(() {
       _isLoading = true;

@@ -89,12 +89,12 @@ class HiFiDownloadService {
 
   /// Check if a Hi-Fi version is available for a YouTube search result.
   Future<HiFiSearchResult?> findHiFiVersion(String title, String artist) async {
-    if (!_preferHiFi) return null;
+    if (!_preferHiFi) { return null; }
 
     final query = '$artist $title';
     final results = await search(query);
 
-    if (results.isEmpty) return null;
+    if (results.isEmpty) { return null; }
 
     // Find best match by title similarity
     for (final r in results) {

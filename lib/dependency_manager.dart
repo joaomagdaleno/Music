@@ -26,7 +26,7 @@ class DependencyManager {
   Future<void> ensureDependencies({
     void Function(String status, double progress)? onProgress,
   }) async {
-    if (_initialized) return;
+    if (_initialized) { return; }
 
     _binDir = await _getBinDirectory();
     await Directory(_binDir).create(recursive: true);
