@@ -68,6 +68,32 @@ class SearchResult {
     final seconds = (duration! % 60).toString().padLeft(2, '0');
     return '$minutes:$seconds';
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'artist': artist,
+      'album': album,
+      'thumbnail': thumbnail,
+      'duration': duration,
+      'url': url,
+      'platform': platform.index,
+    };
+  }
+
+  factory SearchResult.fromJson(Map<String, dynamic> json) {
+    return SearchResult(
+      id: json['id'],
+      title: json['title'],
+      artist: json['artist'],
+      album: json['album'],
+      thumbnail: json['thumbnail'],
+      duration: json['duration'],
+      url: json['url'],
+      platform: MediaPlatform.values[json['platform']],
+    );
+  }
 }
 
 /// Information about a video/track.
@@ -251,13 +277,15 @@ class DownloadService {
     DownloadFormat format,
     String outputDir, {
     void Function(double progress, String status)? onProgress,
+    String? overrideThumbnailUrl,
   }) async {
     final platform = detectPlatform(url);
 
     if (platform == MediaPlatform.spotify) {
       return _downloadSpotify(url, format, outputDir, onProgress);
     } else {
-      return _downloadYouTube(url, format, outputDir, onProgress);
+      return _downloadYouTube(url, format, outputDir, onProgress,
+          overrideThumbnailUrl: overrideThumbnailUrl);
     }
   }
 
@@ -266,8 +294,9 @@ class DownloadService {
     String url,
     DownloadFormat format,
     String outputDir,
-    void Function(double progress, String status)? onProgress,
-  ) async {
+    void Function(double progress, String status)? onProgress, {
+    String? overrideThumbnailUrl,
+  }) async {
     final outputTemplate = '$outputDir/%(title)s.%(ext)s';
 
     final args = <String>[
@@ -279,7 +308,16 @@ class DownloadService {
       outputTemplate,
       '--no-playlist',
       '--progress',
+      '--embed-metadata',
+      '--embed-subs',
+      '--write-auto-subs',
+      '--sub-format',
+      'srt/best',
     ];
+
+    if (overrideThumbnailUrl == null || overrideThumbnailUrl.isEmpty) {
+      args.add('--embed-thumbnail');
+    }
 
     // If downloading as MP3, add conversion
     if (format.extension == 'mp3') {
@@ -288,7 +326,9 @@ class DownloadService {
         '--audio-format',
         'mp3',
         '--audio-quality',
-        '0',
+        '320k',
+        '--convert-thumbnails',
+        'jpg',
       ]);
     }
 
@@ -328,8 +368,55 @@ class DownloadService {
       throw Exception('Download failed with exit code $exitCode');
     }
 
+    if (outputFile != null &&
+        overrideThumbnailUrl != null &&
+        overrideThumbnailUrl.isNotEmpty) {
+      onProgress?.call(0.95, 'Embeeding custom thumbnail...');
+      await _embedCustomThumbnail(outputFile!, overrideThumbnailUrl);
+    }
+
     onProgress?.call(1.0, 'Complete!');
     return outputFile ?? outputDir;
+  }
+
+  Future<void> _embedCustomThumbnail(String audioPath, String imageUrl) async {
+    try {
+      final imageFile = File('${audioPath}_thumb.jpg');
+      await _deps.downloadFile(imageUrl, imageFile.path);
+
+      final tempOut = '${audioPath}_temp.mp3';
+
+      // Use ffmpeg to embed the thumbnail
+      final result = await Process.run(_deps.ffmpegPath, [
+        '-y',
+        '-i',
+        audioPath,
+        '-i',
+        imageFile.path,
+        '-map',
+        '0:0',
+        '-map',
+        '1:0',
+        '-c',
+        'copy',
+        '-id3v2_version',
+        '3',
+        '-metadata:s:v',
+        'title="Album cover"',
+        '-metadata:s:v',
+        'comment="Cover (front)"',
+        tempOut,
+      ]);
+
+      if (result.exitCode == 0) {
+        await File(audioPath).delete();
+        await File(tempOut).rename(audioPath);
+      }
+
+      if (await imageFile.exists()) await imageFile.delete();
+    } catch (e) {
+      print('Error embedding custom thumbnail: $e');
+    }
   }
 
   /// Download from Spotify using spotdl.
@@ -350,6 +437,8 @@ class DownloadService {
         outputDir,
         '--format',
         format.extension,
+        '--bitrate',
+        '320k',
         '--ffmpeg',
         _deps.ffmpegPath,
       ],

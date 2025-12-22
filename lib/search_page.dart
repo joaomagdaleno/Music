@@ -29,8 +29,8 @@ class _SearchPageState extends State<SearchPage> {
   Map<String, List<DownloadFormat>> _formatsCache = {};
   Map<String, DownloadFormat?> _selectedFormats = {};
   Map<String, bool> _isExpanding = {};
-  Map<String, double> _downloadingProgress = {};
-  Map<String, String> _downloadingStatus = {};
+  final Map<String, double> _downloadingProgress = {};
+  final Map<String, String> _downloadingStatus = {};
   bool _isInitializing = true;
   String _initStatus = 'Iniciando ferramentas...';
   double _initProgress = 0;
@@ -141,10 +141,20 @@ class _SearchPageState extends State<SearchPage> {
 
     setState(() {
       _downloadingProgress[result.url] = 0;
-      _downloadingStatus[result.url] = 'Iniciando...';
+      _downloadingStatus[result.url] = 'Buscando metadados ideais...';
     });
 
     try {
+      // Find Spotify match for better cover if it's YouTube
+      String? overrideThumbnail;
+      if (result.platform == MediaPlatform.youtube ||
+          result.platform == MediaPlatform.youtubeMusic) {
+        final match = await _searchService.findSpotifyMatch(result);
+        if (match != null) {
+          overrideThumbnail = match.thumbnail;
+        }
+      }
+
       // Use user's Music folder
       final musicDir = '${Platform.environment['USERPROFILE']}\\Music';
 
@@ -152,6 +162,7 @@ class _SearchPageState extends State<SearchPage> {
         result.url,
         selectedFormat,
         musicDir,
+        overrideThumbnailUrl: overrideThumbnail,
         onProgress: (progress, status) {
           setState(() {
             _downloadingProgress[result.url] = progress;

@@ -285,4 +285,28 @@ class SearchService {
       return null;
     }
   }
+
+  /// Search for a matching track on Spotify to get high-quality metadata/thumbnail.
+  Future<SearchResult?> findSpotifyMatch(SearchResult ytResult) async {
+    try {
+      final query = '${ytResult.artist} ${ytResult.title}';
+      final results = await searchSpotify(query);
+
+      if (results.isEmpty) return null;
+
+      // Basic similarity check (can be improved)
+      final ytTitle = ytResult.title.toLowerCase();
+      final match = results.firstWhere(
+        (s) {
+          final sTitle = s.title.toLowerCase();
+          return sTitle.contains(ytTitle) || ytTitle.contains(sTitle);
+        },
+        orElse: () => results.first,
+      );
+
+      return match;
+    } catch (e) {
+      return null;
+    }
+  }
 }

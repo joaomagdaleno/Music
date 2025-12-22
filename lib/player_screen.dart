@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'playback_service.dart';
+import 'duo_matching_dialog.dart';
+import 'local_duo_service.dart';
 
 class PlayerScreen extends StatelessWidget {
   const PlayerScreen({super.key});
@@ -14,14 +16,27 @@ class PlayerScreen extends StatelessWidget {
         title: const Text('Tocando Agora'),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.people_alt),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => const DuoMatchingDialog(),
+              );
+            },
+            tooltip: 'Modo Duo',
+          ),
+        ],
       ),
       extendBodyBehindAppBar: true,
       body: StreamBuilder<PlayerState>(
         stream: playback.player.playerStateStream,
         builder: (context, snapshot) {
           final track = playback.currentTrack;
-          if (track == null)
+          if (track == null) {
             return const Center(child: Text('Nenhuma música tocando'));
+          }
 
           final playing = snapshot.data?.playing ?? false;
 
@@ -139,7 +154,8 @@ class _ProgressBar extends StatelessWidget {
                     .toDouble()
                     .clamp(position.inMilliseconds.toDouble(), double.infinity),
                 onChanged: (val) {
-                  player.seek(Duration(milliseconds: val.toInt()));
+                  PlaybackService.instance
+                      .seek(Duration(milliseconds: val.toInt()));
                 },
               ),
               Row(

@@ -20,6 +20,8 @@ dependencies:
   archive: ^3.6.1
   just_audio: ^0.9.40
   audio_session: ^0.1.21
+  nearby_connections: ^4.3.0
+  permission_handler: ^11.0.1
 
 dev_dependencies:
   flutter_test:

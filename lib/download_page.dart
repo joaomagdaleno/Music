@@ -306,7 +306,7 @@ class _DownloadPageState extends State<DownloadPage> {
                       ),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<DownloadFormat>(
-                        value: _selectedFormat,
+                        initialValue: _selectedFormat,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                         ),

@@ -105,7 +105,7 @@ class DependencyManager {
     final asset = assets.firstWhere((a) => a['name'] == assetName);
     final downloadUrl = asset['browser_download_url'] as String;
 
-    await _downloadFile(downloadUrl, _getYtDlpPath());
+    await downloadFile(downloadUrl, _getYtDlpPath());
     await _makeExecutable(_getYtDlpPath());
   }
 
@@ -147,10 +147,10 @@ class DependencyManager {
             !(a['name'] as String).contains('.sha256'),
       );
       final downloadUrl = fallbackAsset['browser_download_url'] as String;
-      await _downloadFile(downloadUrl, _getSpotdlPath());
+      await downloadFile(downloadUrl, _getSpotdlPath());
     } else {
       final downloadUrl = asset['browser_download_url'] as String;
-      await _downloadFile(downloadUrl, _getSpotdlPath());
+      await downloadFile(downloadUrl, _getSpotdlPath());
     }
 
     await _makeExecutable(_getSpotdlPath());
@@ -160,7 +160,7 @@ class DependencyManager {
   Future<void> _downloadFFmpeg() async {
     if (Platform.isWindows) {
       final zipPath = p.join(_binDir, 'ffmpeg.zip');
-      await _downloadFile(_ffmpegUrl, zipPath);
+      await downloadFile(_ffmpegUrl, zipPath);
 
       // Extract zip
       final bytes = await File(zipPath).readAsBytes();
@@ -187,7 +187,7 @@ class DependencyManager {
   }
 
   /// Download a file from URL to local path.
-  Future<void> _downloadFile(String url, String path) async {
+  Future<void> downloadFile(String url, String path) async {
     final response = await http.get(Uri.parse(url));
     if (response.statusCode != 200) {
       throw HttpException('Failed to download: $url');
