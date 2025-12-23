@@ -38,6 +38,7 @@ dependencies:
   local_auth: ^2.3.0
   connectivity_plus: ^6.1.1
   palette_generator_master: ^1.0.1
+  meta: ^1.11.0
 
 dev_dependencies:
   flutter_test:

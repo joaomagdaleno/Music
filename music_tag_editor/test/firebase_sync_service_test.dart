@@ -15,15 +15,19 @@ class MockUser extends Mock implements User {}
 
 class MockUserCredential extends Mock implements UserCredential {}
 
+// ignore: subtype_of_sealed_class
 class MockCollectionReference extends Mock
     implements CollectionReference<Map<String, dynamic>> {}
 
+// ignore: subtype_of_sealed_class
 class MockDocumentReference extends Mock
     implements DocumentReference<Map<String, dynamic>> {}
 
+// ignore: subtype_of_sealed_class
 class MockQuerySnapshot extends Mock
     implements QuerySnapshot<Map<String, dynamic>> {}
 
+// ignore: subtype_of_sealed_class
 class MockQueryDocumentSnapshot extends Mock
     implements QueryDocumentSnapshot<Map<String, dynamic>> {}
 
@@ -96,10 +100,9 @@ void main() {
       // But we need to mock the internals.
 
       // For this test, we just inspect enableSync behavior mostly
-      final result = await service.enableSync();
+      await service.enableSync();
 
       verify(() => mockAuth.signInAnonymously()).called(1);
-      // expect(result, true); // Might fail if _startSync fails?
     });
   });
 

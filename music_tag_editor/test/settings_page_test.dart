@@ -165,10 +165,12 @@ void main() {
 
     verify(() => mockSync.pullFromCloud()).called(1);
     // Verify SnackBar content
-    final snackBarFinder = find.descendant(
-      of: find.byType(SnackBar),
-      matching: find.textContaining('10 itens sincronizados!'),
+    expect(
+      find.descendant(
+        of: find.byType(SnackBar),
+        matching: find.textContaining('10 itens sincronizados!'),
+      ),
+      findsOneWidget,
     );
-    // expect(snackBarFinder, findsOneWidget);
   });
 }
