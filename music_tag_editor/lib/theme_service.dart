@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:palette_generator_master/palette_generator_master.dart';
 import 'database_service.dart';
 

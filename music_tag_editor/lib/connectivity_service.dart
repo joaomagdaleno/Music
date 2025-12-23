@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 class ConnectivityService {
   static ConnectivityService _instance = ConnectivityService._internal();

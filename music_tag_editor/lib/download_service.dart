@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
 import 'dependency_manager.dart';
 
 /// Platform detected from URL or search.

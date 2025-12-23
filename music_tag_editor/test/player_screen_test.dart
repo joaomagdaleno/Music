@@ -10,7 +10,6 @@ import 'package:music_tag_editor/lyrics_service.dart';
 import 'package:music_tag_editor/database_service.dart';
 import 'package:music_tag_editor/theme_service.dart';
 import 'package:music_tag_editor/download_service.dart';
-import 'package:music_tag_editor/search_service.dart';
 
 class MockPlaybackService extends Mock implements PlaybackService {}
 
