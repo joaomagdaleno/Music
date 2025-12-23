@@ -120,7 +120,14 @@ void main() {
 
     when(() => mockSearch.searchAll(any(),
             onStatusUpdate: any(named: 'onStatusUpdate')))
-        .thenAnswer((_) async => results);
+        .thenAnswer((invocation) async {
+      final callback = invocation.namedArguments[#onStatusUpdate] as void
+          Function(MediaPlatform, SearchStatus)?;
+      callback?.call(MediaPlatform.youtube, SearchStatus.completed);
+      callback?.call(MediaPlatform.spotify, SearchStatus.completed);
+      callback?.call(MediaPlatform.youtubeMusic, SearchStatus.completed);
+      return results;
+    });
 
     await tester.pumpWidget(const MaterialApp(home: SearchPage()));
     await tester.pumpAndSettle();

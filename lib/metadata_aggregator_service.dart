@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:meta/meta.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -39,12 +40,29 @@ class MetadataAggregatorService {
       MetadataAggregatorService._internal();
   MetadataAggregatorService._internal();
 
-  final _musicBrainz = MusicBrainzApi();
-  final _lastFm = LastFmApi();
-  final _discogs = DiscogsApi();
-  final _genius = GeniusApi();
-  final _netease = NeteaseApi();
-  final _lrcLib = LyricsService.instance;
+  MusicBrainzApi _musicBrainz = MusicBrainzApi();
+  LastFmApi _lastFm = LastFmApi();
+  DiscogsApi _discogs = DiscogsApi();
+  GeniusApi _genius = GeniusApi();
+  NeteaseApi _netease = NeteaseApi();
+  LyricsService _lrcLib = LyricsService.instance;
+
+  @visibleForTesting
+  void setDependencies({
+    MusicBrainzApi? musicBrainz,
+    LastFmApi? lastFm,
+    DiscogsApi? discogs,
+    GeniusApi? genius,
+    NeteaseApi? netease,
+    LyricsService? lrcLib,
+  }) {
+    if (musicBrainz != null) _musicBrainz = musicBrainz;
+    if (lastFm != null) _lastFm = lastFm;
+    if (discogs != null) _discogs = discogs;
+    if (genius != null) _genius = genius;
+    if (netease != null) _netease = netease;
+    if (lrcLib != null) _lrcLib = lrcLib;
+  }
 
   /// Aggregate metadata from all sources with voting.
   Future<AggregatedMetadata> aggregateMetadata(
