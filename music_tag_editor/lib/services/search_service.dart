@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:meta/meta.dart';
 import 'dart:convert';
-import 'dependency_manager.dart';
+import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/hifi_download_service.dart';
@@ -504,4 +504,5 @@ class SearchService {
     }
   }
 }
+
 

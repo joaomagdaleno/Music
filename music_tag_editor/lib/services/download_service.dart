@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'dependency_manager.dart';
+import 'package:music_tag_editor/services/dependency_manager.dart';
 
 /// Platform detected from URL or search.
 enum MediaPlatform {
@@ -514,3 +514,4 @@ class DownloadService {
     return outputDir;
   }
 }
+

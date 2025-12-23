@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:music_tag_editor/services/database_service.dart';
-import 'dependency_manager.dart';
+import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 
 /// Service for detecting duplicate tracks using audio fingerprints.
@@ -202,4 +202,5 @@ class DuplicateGroup {
     });
   }
 }
+
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/views/search_page.dart';
-import 'main.dart' as legacy; // To keep the metadata editor accessible
+import 'package:music_tag_editor/main.dart'
+    as legacy; // To keep the metadata editor accessible
 import 'package:music_tag_editor/widgets/mini_player.dart';
 import 'package:music_tag_editor/views/playlists_view.dart';
 import 'package:music_tag_editor/views/my_tracks_view.dart';
@@ -141,4 +142,3 @@ class _AppShellState extends State<AppShell> {
     );
   }
 }
-

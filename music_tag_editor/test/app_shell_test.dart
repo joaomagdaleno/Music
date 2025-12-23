@@ -11,7 +11,7 @@ import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/views/settings_page.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
 import 'package:music_tag_editor/services/security_service.dart';
-import 'package:music_tag_editor/dependency_manager.dart';
+import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/views/search_page.dart';
@@ -152,4 +152,5 @@ void main() {
     });
   });
 }
+
 

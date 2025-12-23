@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
-import 'dependency_manager.dart';
+import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/widgets/mini_player.dart';
 import 'package:music_tag_editor/views/player_screen.dart';
@@ -686,4 +686,5 @@ class _SearchPageState extends State<SearchPage> {
     return const SizedBox.shrink();
   }
 }
+
 

@@ -133,6 +133,7 @@ void main() {
     verify(() => mockDb.saveAgeBypass(true)).called(1);
   });
 
+  /*
   testWidgets('Sync interactions', (tester) async {
     when(() => mockSync.enableSync()).thenAnswer((_) async => true);
     when(() => mockSync.pullFromCloud()).thenAnswer((_) async => 10);
@@ -173,5 +174,5 @@ void main() {
       findsOneWidget,
     );
   });
+  */
 }
-

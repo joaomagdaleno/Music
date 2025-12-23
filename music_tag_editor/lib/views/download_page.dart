@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:music_tag_editor/services/download_service.dart';
-import 'dependency_manager.dart';
+import 'package:music_tag_editor/services/dependency_manager.dart';
 
 /// Page for downloading music from YouTube, YouTube Music, and Spotify.
 class DownloadPage extends StatefulWidget {
@@ -366,4 +366,5 @@ class _DownloadPageState extends State<DownloadPage> {
     super.dispose();
   }
 }
+
 

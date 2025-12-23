@@ -9,7 +9,7 @@ import 'package:music_tag_editor/api/discogs_api.dart';
 import 'package:music_tag_editor/api/genius_api.dart';
 import 'package:music_tag_editor/api/netease_api.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
-import 'dependency_manager.dart';
+import 'package:music_tag_editor/services/dependency_manager.dart';
 
 /// Unified result from metadata aggregation.
 class AggregatedMetadata {
@@ -349,4 +349,5 @@ class MetadataAggregatorService {
     return (lyricsEndMs - durationMs).abs() < 30000;
   }
 }
+
 

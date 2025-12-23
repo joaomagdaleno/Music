@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'main.dart'; // To get MusicTrack class
+import 'package:music_tag_editor/models/music_track.dart'; // To get MusicTrack class
 
 class EditTrackDialog extends StatefulWidget {
   final MusicTrack track;
@@ -77,3 +77,4 @@ class _EditTrackDialogState extends State<EditTrackDialog> {
     );
   }
 }
+

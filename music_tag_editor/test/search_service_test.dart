@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/dependency_manager.dart';
+import 'package:music_tag_editor/services/dependency_manager.dart';
 
 class MockDependencyManager extends Mock implements DependencyManager {}
 
@@ -94,4 +94,5 @@ void main() {
     });
   });
 }
+
 
