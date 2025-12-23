@@ -1,45 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import 'musicbrainz_api.dart';
-import 'search_results_dialog.dart';
+import 'api/musicbrainz_api.dart';
+import 'widgets/search_results_dialog.dart';
 import 'package:path/path.dart' as p;
-import 'settings_page.dart';
-import 'database_service.dart';
-import 'edit_track_dialog.dart';
-import 'learning_dialog.dart';
-import 'metadata_service.dart';
-import 'search_page.dart';
-import 'playback_service.dart';
-import 'app_shell.dart';
-import 'theme_service.dart';
-import 'my_tracks_view.dart';
-import 'smart_library_view.dart';
-import 'mood_explorer_view.dart';
-import 'ringtone_maker_view.dart';
-import 'download_service.dart';
-import 'desktop_integration_service.dart';
-import 'connectivity_service.dart';
-import 'security_service.dart';
-import 'auth_service.dart';
-import 'login_page.dart';
-
-// A simple data class to hold music metadata.
-class MusicTrack {
-  final String filePath;
-  final String title;
-  final String artist;
-  final String album;
-  final int trackNumber;
-
-  MusicTrack({
-    required this.filePath,
-    this.title = 'Unknown Title',
-    this.artist = 'Unknown Artist',
-    this.album = 'Unknown Album',
-    this.trackNumber = 0,
-  });
-}
+import 'views/settings_page.dart';
+import 'services/database_service.dart';
+import 'widgets/edit_track_dialog.dart';
+import 'widgets/learning_dialog.dart';
+import 'services/metadata_service.dart';
+import 'views/search_page.dart';
+import 'services/playback_service.dart';
+import 'views/app_shell.dart';
+import 'services/theme_service.dart';
+import 'views/my_tracks_view.dart';
+import 'views/smart_library_view.dart';
+import 'views/mood_explorer_view.dart';
+import 'views/ringtone_maker_view.dart';
+import 'services/download_service.dart';
+import 'services/desktop_integration_service.dart';
+import 'services/connectivity_service.dart';
+import 'services/security_service.dart';
+import 'services/auth_service.dart';
+import 'views/login_page.dart';
+import 'models/music_track.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:music_tag_editor/mini_player.dart';
-import 'package:music_tag_editor/playback_service.dart';
-import 'package:music_tag_editor/download_service.dart';
+import 'package:music_tag_editor/widgets/mini_player.dart';
+import 'package:music_tag_editor/services/playback_service.dart';
+import 'package:music_tag_editor/services/download_service.dart';
 
 class MockPlaybackService extends Mock implements PlaybackService {}
 
@@ -82,3 +82,4 @@ void main() {
     });
   });
 }
+

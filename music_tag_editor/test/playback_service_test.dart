@@ -3,13 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:audio_service/audio_service.dart';
-import 'package:music_tag_editor/playback_service.dart';
-import 'package:music_tag_editor/search_service.dart';
-import 'package:music_tag_editor/local_duo_service.dart';
-import 'package:music_tag_editor/equalizer_service.dart';
-import 'package:music_tag_editor/theme_service.dart';
-import 'package:music_tag_editor/database_service.dart';
-import 'package:music_tag_editor/lyrics_service.dart';
+import 'package:music_tag_editor/services/playback_service.dart';
+import 'package:music_tag_editor/services/search_service.dart';
+import 'package:music_tag_editor/services/local_duo_service.dart';
+import 'package:music_tag_editor/services/equalizer_service.dart';
+import 'package:music_tag_editor/services/theme_service.dart';
+import 'package:music_tag_editor/services/database_service.dart';
+import 'package:music_tag_editor/services/lyrics_service.dart';
 
 class MockAudioPlayer extends Mock implements AudioPlayer {}
 
@@ -106,3 +106,4 @@ void main() {
     });
   });
 }
+

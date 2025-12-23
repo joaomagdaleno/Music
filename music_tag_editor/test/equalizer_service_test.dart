@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_tag_editor/equalizer_service.dart';
+import 'package:music_tag_editor/services/equalizer_service.dart';
 
 void main() {
   group('EqualizerService Tests', () {
@@ -40,3 +40,4 @@ void main() {
     });
   });
 }
+

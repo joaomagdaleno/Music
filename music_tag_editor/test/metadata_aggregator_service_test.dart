@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/metadata_aggregator_service.dart';
-import 'package:music_tag_editor/musicbrainz_api.dart';
-import 'package:music_tag_editor/lastfm_api.dart';
-import 'package:music_tag_editor/discogs_api.dart';
-import 'package:music_tag_editor/genius_api.dart';
-import 'package:music_tag_editor/netease_api.dart';
-import 'package:music_tag_editor/lyrics_service.dart';
+import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
+import 'package:music_tag_editor/api/musicbrainz_api.dart';
+import 'package:music_tag_editor/api/lastfm_api.dart';
+import 'package:music_tag_editor/api/discogs_api.dart';
+import 'package:music_tag_editor/api/genius_api.dart';
+import 'package:music_tag_editor/api/netease_api.dart';
+import 'package:music_tag_editor/services/lyrics_service.dart';
 
 class MockMusicBrainzApi extends Mock implements MusicBrainzApi {}
 
@@ -136,3 +136,4 @@ void main() {
     });
   });
 }
+

@@ -1,0 +1,144 @@
+import 'package:flutter/material.dart';
+import 'package:music_tag_editor/views/search_page.dart';
+import 'main.dart' as legacy; // To keep the metadata editor accessible
+import 'package:music_tag_editor/widgets/mini_player.dart';
+import 'package:music_tag_editor/views/playlists_view.dart';
+import 'package:music_tag_editor/views/my_tracks_view.dart';
+import 'package:music_tag_editor/views/home_view.dart';
+import 'package:music_tag_editor/services/connectivity_service.dart';
+
+class AppShell extends StatefulWidget {
+  const AppShell({super.key});
+
+  @override
+  State<AppShell> createState() => _AppShellState();
+}
+
+class _AppShellState extends State<AppShell> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    const HomeView(),
+    const SearchPage(),
+    const MyTracksView(),
+    const PlaylistsView(),
+    const legacy.LibraryPage(title: 'Editor de Tags'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: ConnectivityService.instance.isOffline,
+      builder: (context, isOffline, child) {
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final isWide = constraints.maxWidth >= 600;
+
+            return Scaffold(
+              body: Column(
+                children: [
+                  if (isOffline)
+                    Container(
+                      width: double.infinity,
+                      color: Colors.orange.withValues(alpha: 0.9),
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: const Center(
+                        child: Text(
+                          'Modo Offline Ativado',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        if (isWide)
+                          NavigationRail(
+                            extended: constraints.maxWidth >= 900,
+                            selectedIndex: _selectedIndex,
+                            onDestinationSelected: (index) =>
+                                setState(() => _selectedIndex = index),
+                            labelType: constraints.maxWidth >= 900
+                                ? NavigationRailLabelType.none
+                                : NavigationRailLabelType.all,
+                            destinations: const [
+                              NavigationRailDestination(
+                                icon: Icon(Icons.home_outlined),
+                                selectedIcon: Icon(Icons.home),
+                                label: Text('Início'),
+                              ),
+                              NavigationRailDestination(
+                                icon: Icon(Icons.search_outlined),
+                                selectedIcon: Icon(Icons.search),
+                                label: Text('Buscar'),
+                              ),
+                              NavigationRailDestination(
+                                icon: Icon(Icons.library_music_outlined),
+                                selectedIcon: Icon(Icons.library_music),
+                                label: Text('Minhas Músicas'),
+                              ),
+                              NavigationRailDestination(
+                                icon: Icon(Icons.playlist_play_outlined),
+                                selectedIcon: Icon(Icons.playlist_play),
+                                label: Text('Playlists'),
+                              ),
+                              NavigationRailDestination(
+                                icon: Icon(Icons.edit_note_outlined),
+                                selectedIcon: Icon(Icons.edit_note),
+                                label: Text('Tags'),
+                              ),
+                            ],
+                          ),
+                        Expanded(
+                          child: IndexedStack(
+                            index: _selectedIndex,
+                            children: _pages,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const MiniPlayer(),
+                ],
+              ),
+              bottomNavigationBar: isWide
+                  ? null
+                  : BottomNavigationBar(
+                      currentIndex: _selectedIndex,
+                      onTap: (index) => setState(() => _selectedIndex = index),
+                      type: BottomNavigationBarType.fixed,
+                      items: const [
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.home),
+                          label: 'Início',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.search),
+                          label: 'Buscar',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.library_music),
+                          label: 'Minhas Músicas',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.playlist_play),
+                          label: 'Playlists',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.edit_note),
+                          label: 'Tags',
+                        ),
+                      ],
+                    ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+

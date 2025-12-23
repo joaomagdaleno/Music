@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:music_tag_editor/app_shell.dart';
-import 'package:music_tag_editor/playback_service.dart';
-import 'package:music_tag_editor/connectivity_service.dart';
-import 'package:music_tag_editor/database_service.dart';
-import 'package:music_tag_editor/theme_service.dart';
-import 'package:music_tag_editor/settings_page.dart';
-import 'package:music_tag_editor/auth_service.dart';
-import 'package:music_tag_editor/security_service.dart';
+import 'package:music_tag_editor/views/app_shell.dart';
+import 'package:music_tag_editor/services/playback_service.dart';
+import 'package:music_tag_editor/services/connectivity_service.dart';
+import 'package:music_tag_editor/services/database_service.dart';
+import 'package:music_tag_editor/services/theme_service.dart';
+import 'package:music_tag_editor/views/settings_page.dart';
+import 'package:music_tag_editor/services/auth_service.dart';
+import 'package:music_tag_editor/services/security_service.dart';
 import 'package:music_tag_editor/dependency_manager.dart';
-import 'package:music_tag_editor/search_service.dart';
-import 'package:music_tag_editor/download_service.dart';
-import 'package:music_tag_editor/search_page.dart';
-import 'package:music_tag_editor/home_view.dart';
+import 'package:music_tag_editor/services/search_service.dart';
+import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/views/search_page.dart';
+import 'package:music_tag_editor/views/home_view.dart';
 
 class MockConnectivityService extends Mock implements ConnectivityService {}
 
@@ -152,3 +152,4 @@ void main() {
     });
   });
 }
+

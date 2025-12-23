@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:music_tag_editor/database_service.dart';
-import 'package:music_tag_editor/settings_page.dart';
-import 'package:music_tag_editor/learning_dialog.dart';
+import 'package:music_tag_editor/services/database_service.dart';
+import 'package:music_tag_editor/views/settings_page.dart';
+import 'package:music_tag_editor/widgets/learning_dialog.dart';
 
 void main() {
   // Setup sqflite_ffi for testing
@@ -60,3 +60,4 @@ void main() {
     });
   });
 }
+

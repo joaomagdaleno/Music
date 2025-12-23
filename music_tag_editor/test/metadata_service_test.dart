@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_tag_editor/metadata_service.dart';
+import 'package:music_tag_editor/services/metadata_service.dart';
 
 void main() {
   group('MetadataService Tests', () {
@@ -59,3 +59,4 @@ void main() {
     });
   });
 }
+

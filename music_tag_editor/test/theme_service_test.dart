@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/theme_service.dart';
-import 'package:music_tag_editor/database_service.dart';
+import 'package:music_tag_editor/services/theme_service.dart';
+import 'package:music_tag_editor/services/database_service.dart';
 import 'package:palette_generator_master/palette_generator_master.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
@@ -88,3 +88,4 @@ void main() {
     });
   });
 }
+

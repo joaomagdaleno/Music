@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:music_tag_editor/settings_page.dart';
-import 'package:music_tag_editor/database_service.dart';
-import 'package:music_tag_editor/metadata_cleanup_service.dart';
-import 'package:music_tag_editor/playback_service.dart';
-import 'package:music_tag_editor/firebase_sync_service.dart';
-import 'package:music_tag_editor/theme_service.dart';
+import 'package:music_tag_editor/views/settings_page.dart';
+import 'package:music_tag_editor/services/database_service.dart';
+import 'package:music_tag_editor/services/metadata_cleanup_service.dart';
+import 'package:music_tag_editor/services/playback_service.dart';
+import 'package:music_tag_editor/services/firebase_sync_service.dart';
+import 'package:music_tag_editor/services/theme_service.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
 
@@ -174,3 +174,4 @@ void main() {
     );
   });
 }
+
