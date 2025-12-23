@@ -4,14 +4,21 @@ import 'package:system_tray/system_tray.dart';
 import 'package:window_manager/window_manager.dart';
 
 class DesktopIntegrationService {
-  static final DesktopIntegrationService instance =
+  static DesktopIntegrationService _instance =
       DesktopIntegrationService._internal();
+  static DesktopIntegrationService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(DesktopIntegrationService mock) => _instance = mock;
+
   DesktopIntegrationService._internal();
 
   final SystemTray _systemTray = SystemTray();
 
   Future<void> init() async {
-    if (!Platform.isWindows && !Platform.isLinux && !Platform.isMacOS) { return; }
+    if (!Platform.isWindows && !Platform.isLinux && !Platform.isMacOS) {
+      return;
+    }
 
     await windowManager.ensureInitialized();
 

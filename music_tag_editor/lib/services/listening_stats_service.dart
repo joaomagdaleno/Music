@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 
 class ListeningStats {
@@ -19,8 +20,12 @@ class ListeningStats {
 }
 
 class ListeningStatsService {
-  static final ListeningStatsService instance =
-      ListeningStatsService._internal();
+  static ListeningStatsService _instance = ListeningStatsService._internal();
+  static ListeningStatsService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(ListeningStatsService mock) => _instance = mock;
+
   ListeningStatsService._internal();
 
   final DatabaseService _db = DatabaseService.instance;
@@ -77,4 +82,3 @@ class ListeningStatsService {
     );
   }
 }
-

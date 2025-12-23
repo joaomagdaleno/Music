@@ -4,15 +4,22 @@ import 'package:music_tag_editor/services/download_service.dart';
 
 class RingtoneMakerView extends StatefulWidget {
   final SearchResult track;
+  final AudioPlayer? player;
+  final ImageProvider? coverImage;
 
-  const RingtoneMakerView({super.key, required this.track});
+  const RingtoneMakerView({
+    super.key,
+    required this.track,
+    this.player,
+    this.coverImage,
+  });
 
   @override
   State<RingtoneMakerView> createState() => _RingtoneMakerViewState();
 }
 
 class _RingtoneMakerViewState extends State<RingtoneMakerView> {
-  final AudioPlayer _player = AudioPlayer();
+  late final AudioPlayer _player;
   RangeValues _currentRange = const RangeValues(0, 30);
   Duration _totalDuration = Duration.zero;
   bool _isPlayingSegment = false;
@@ -20,6 +27,7 @@ class _RingtoneMakerViewState extends State<RingtoneMakerView> {
   @override
   void initState() {
     super.initState();
+    _player = widget.player ?? AudioPlayer();
     _initPlayer();
   }
 
@@ -51,7 +59,9 @@ class _RingtoneMakerViewState extends State<RingtoneMakerView> {
       _player.positionStream.listen((pos) {
         if (pos.inSeconds >= _currentRange.end.toInt() && _isPlayingSegment) {
           _player.pause();
-          if (mounted) { setState(() => _isPlayingSegment = false); }
+          if (mounted) {
+            setState(() => _isPlayingSegment = false);
+          }
         }
       });
     }
@@ -66,7 +76,9 @@ class _RingtoneMakerViewState extends State<RingtoneMakerView> {
     );
 
     await Future.delayed(const Duration(seconds: 2));
-    if (!mounted) { return; }
+    if (!mounted) {
+      return;
+    }
     Navigator.pop(context); // Close loading
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -118,8 +130,9 @@ class _RingtoneMakerViewState extends State<RingtoneMakerView> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
-                    image: NetworkImage(widget.track.thumbnail ??
-                        'https://via.placeholder.com/150'),
+                    image: widget.coverImage ??
+                        NetworkImage(widget.track.thumbnail ??
+                            'https://via.placeholder.com/150'),
                     fit: BoxFit.cover,
                   ),
                   boxShadow: [
@@ -226,4 +239,3 @@ class _RingtoneMakerViewState extends State<RingtoneMakerView> {
     return "$twoDigitMinutes:$twoDigitSeconds";
   }
 }
-

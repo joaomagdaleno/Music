@@ -172,19 +172,6 @@ class _LibraryPageState extends State<LibraryPage> {
     }
   }
 
-  String _generateFilename(
-      String artist, String title, int trackNumber, FilenameFormat format) {
-    switch (format) {
-      case FilenameFormat.artistTitle:
-        return '$artist - $title';
-      case FilenameFormat.titleArtist:
-        return '$title ($artist)';
-      case FilenameFormat.trackArtistTitle:
-        final trackStr = trackNumber.toString().padLeft(2, '0');
-        return '$trackStr. $artist - $title';
-    }
-  }
-
   Future<void> _applyTags(
       {required MusicTrack originalTrack,
       dynamic selectedRecording,
@@ -251,7 +238,7 @@ class _LibraryPageState extends State<LibraryPage> {
       final directory = file.parent.path;
       final extension = p.extension(file.path);
       final newFileName =
-          '${_generateFilename(newArtist, newTitle, newTrackNumber, format)}$extension';
+          '${format.generateFilename(artist: newArtist, title: newTitle, trackNumber: newTrackNumber)}$extension';
       final newPath = p.join(directory, newFileName);
 
       if (originalTrack.filePath != newPath && !await File(newPath).exists()) {
