@@ -39,6 +39,7 @@ dependencies:
   connectivity_plus: ^6.1.1
   palette_generator_master: ^1.0.1
   meta: ^1.11.0
+  rxdart: ^0.27.7
 
 dev_dependencies:
   flutter_test:

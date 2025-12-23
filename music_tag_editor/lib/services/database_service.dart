@@ -31,6 +31,14 @@ class DatabaseService {
 
   DatabaseService._internal();
 
+  @visibleForTesting
+  set db(Database base) => _database = base;
+
+  @visibleForTesting
+  Future<void> initForTesting(String path) async {
+    _database = await _initDB(path: path);
+  }
+
   static Database? _database;
   static const String _settingsTable = 'settings';
   static const String _rulesTable = 'learning_rules';
@@ -48,8 +56,8 @@ class DatabaseService {
     return _database!;
   }
 
-  Future<Database> _initDB() async {
-    String path = join(await getDatabasesPath(), 'music_tag_editor.db');
+  Future<Database> _initDB({String? path}) async {
+    path ??= join(await getDatabasesPath(), 'music_tag_editor.db');
     return await openDatabase(
       path,
       version: 6, // Incremented version for vault support
@@ -575,4 +583,3 @@ class DatabaseService {
     );
   }
 }
-

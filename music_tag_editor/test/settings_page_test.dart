@@ -133,7 +133,6 @@ void main() {
     verify(() => mockDb.saveAgeBypass(true)).called(1);
   });
 
-  /*
   testWidgets('Sync interactions', (tester) async {
     when(() => mockSync.enableSync()).thenAnswer((_) async => true);
     when(() => mockSync.pullFromCloud()).thenAnswer((_) async => 10);
@@ -162,17 +161,16 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(downloadBtn);
-    await tester.pump(const Duration(seconds: 1));
+    await tester.pump(); // Start pullFromCloud
+    await tester.pump(const Duration(seconds: 1)); // Wait for result
+    await tester.pumpAndSettle(); // Finish animations and SnackBar
 
     verify(() => mockSync.pullFromCloud()).called(1);
     // Verify SnackBar content
-    expect(
-      find.descendant(
-        of: find.byType(SnackBar),
-        matching: find.textContaining('10 itens sincronizados!'),
-      ),
-      findsOneWidget,
+    final snackBarFinder = find.descendant(
+      of: find.byType(SnackBar),
+      matching: find.textContaining('10 itens sincronizados!'),
     );
+    expect(snackBarFinder, findsOneWidget);
   });
-  */
 }

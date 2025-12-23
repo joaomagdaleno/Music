@@ -43,7 +43,10 @@ class PlaybackService {
 
   @visibleForTesting
   set audioHandler(AudioHandler mock) => _audioHandler = mock;
-  final SearchService _searchService = SearchService();
+  SearchService _searchService = SearchService.instance;
+
+  @visibleForTesting
+  set searchService(SearchService mock) => _searchService = mock;
 
   SearchResult? _currentTrack;
   final List<SearchResult> _queue = [];
@@ -327,4 +330,3 @@ class MusicAudioHandler extends BaseAudioHandler {
   @override
   Future<void> seek(Duration position) => _service.seek(position);
 }
-

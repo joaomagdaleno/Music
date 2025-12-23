@@ -1,10 +1,16 @@
 import 'dart:io';
+import 'package:meta/meta.dart';
 import 'package:music_tag_editor/api/slavart_api.dart';
 import 'package:path/path.dart' as p;
 
 /// Unified Hi-Fi download service with multiple sources.
 class HiFiDownloadService {
-  static final HiFiDownloadService instance = HiFiDownloadService._internal();
+  static HiFiDownloadService _instance = HiFiDownloadService._internal();
+  static HiFiDownloadService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(HiFiDownloadService mock) => _instance = mock;
+
   HiFiDownloadService._internal();
 
   final SlavArtApi _slavArt = SlavArtApi();
@@ -191,4 +197,3 @@ class HiFiSearchResult {
   /// Check if this is Hi-Res quality (24-bit).
   bool get isHiRes => quality.contains('24-bit') || quality.contains('Hi-Res');
 }
-
