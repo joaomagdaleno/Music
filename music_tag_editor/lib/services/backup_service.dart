@@ -3,10 +3,16 @@ import 'dart:io';
 import 'package:archive/archive.dart';
 import 'package:path/path.dart' as p;
 import 'package:music_tag_editor/services/database_service.dart';
+import 'package:meta/meta.dart';
 
 /// Service for backing up and restoring user data.
 class BackupService {
-  static final BackupService instance = BackupService._internal();
+  static BackupService _instance = BackupService._internal();
+  static BackupService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(BackupService mock) => _instance = mock;
+
   BackupService._internal();
 
   final _db = DatabaseService.instance;
@@ -120,4 +126,3 @@ class BackupService {
     return json.encode(data).length;
   }
 }
-

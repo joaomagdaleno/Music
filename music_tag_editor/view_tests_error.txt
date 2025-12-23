@@ -1,0 +1,216 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView renders with no track playing
+00:01 +1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView renders mood cards
+00:01 +2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView renders mood cards
+00:01 +3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:02 +4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:03 +4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView mood sheet shows tracks when available
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following _TypeError was thrown building:
+type 'String' is not a subtype of type 'int'
+
+When the exception was thrown, this was the stack:
+#0      new SearchResult.fromJson (package:music_tag_editor/services/download_service.dart:110:42)
+#1      _MoodTracksSheet.build.<anonymous closure>.<anonymous closure> (package:music_tag_editor/views/mood_explorer_view.dart:183:48)
+#2      SliverChildBuilderDelegate.build (package:flutter/src/widgets/scroll_delegate.dart:552:22)
+#3      SliverMultiBoxAdaptorElement._build (package:flutter/src/widgets/sliver.dart:1036:28)
+#4      SliverMultiBoxAdaptorElement.createChild.<anonymous closure> (package:flutter/src/widgets/sliver.dart:1052:55)
+#5      BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#6      SliverMultiBoxAdaptorElement.createChild (package:flutter/src/widgets/sliver.dart:1042:12)
+#7      RenderSliverMultiBoxAdaptor._createOrObtainChild.<anonymous closure> (package:flutter/src/rendering/sliver_multi_box_adaptor.dart:372:23)
+#8      RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#9      PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#10     RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#11     RenderSliverMultiBoxAdaptor._createOrObtainChild (package:flutter/src/rendering/sliver_multi_box_adaptor.dart:360:5)
+#12     RenderSliverMultiBoxAdaptor.addInitialChild (package:flutter/src/rendering/sliver_multi_box_adaptor.dart:460:5)
+#13     RenderSliverList.performLayout (package:flutter/src/rendering/sliver_list.dart:79:12)
+#14     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#15     RenderSliverEdgeInsetsPadding.performLayout (package:flutter/src/rendering/sliver_padding.dart:133:12)
+#16     RenderSliverPadding.performLayout (package:flutter/src/rendering/sliver_padding.dart:371:11)
+#17     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#18     RenderViewportBase.layoutChildSequence (package:flutter/src/rendering/viewport.dart:673:13)
+#19     RenderViewport._attemptLayout (package:flutter/src/rendering/viewport.dart:1684:12)
+#20     RenderViewport.performLayout (package:flutter/src/rendering/viewport.dart:1575:20)
+#21     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#22     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#23     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#24     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#25     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#26     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#27     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#28     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#29     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#30     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#31     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#32     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#33     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#34     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#35     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#36     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#37     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#38     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#39     ChildLayoutHelper.layoutChild (package:flutter/src/rendering/layout_helper.dart:62:11)
+#40     RenderFlex._computeSizes (package:flutter/src/rendering/flex.dart:1203:26)
+#41     RenderFlex.performLayout (package:flutter/src/rendering/flex.dart:1257:32)
+#42     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#43     RenderPadding.performLayout (package:flutter/src/rendering/shifted_box.dart:243:12)
+#44     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#45     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#46     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#47     RenderConstrainedBox.performLayout (package:flutter/src/rendering/proxy_box.dart:293:14)
+#48     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#49     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#50     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#51     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#52     RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#53     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#54     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#55     _RenderCustomClip.performLayout (package:flutter/src/rendering/proxy_box.dart:1481:11)
+#56     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#57     RenderConstrainedBox.performLayout (package:flutter/src/rendering/proxy_box.dart:293:14)
+#58     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#59     RenderPositionedBox.performLayout (package:flutter/src/rendering/shifted_box.dart:465:14)
+#60     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#61     RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#62     RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#63     _RenderBottomSheetLayoutWithSizeListener.performLayout (package:flutter/src/material/bottom_sheet.dart:639:11)
+#64     RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#65     PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#66     PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#67     AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#68     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#69     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#70     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#71     AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#74     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#75     AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#76     WidgetTester.pumpAndSettle.<anonymous closure> (package:flutter_test/src/widget_tester.dart:719:23)
+<asynchronous suspension>
+#77     TestAsyncUtils.guard.<anonymous closure> (package:flutter_test/src/test_async_utils.dart:130:27)
+<asynchronous suspension>
+#78     main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart:64:7)
+<asynchronous suspension>
+#79     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#80     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 3 frames from dart:async and package:stack_trace)
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "Chill Song": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart:67:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart line 67
+The test description was:
+  mood sheet shows tracks when available
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+00:03 +4 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:03 +4 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView mood sheet shows tracks when available [E]
+  Test failed. See exception logs above.
+  The test description was: mood sheet shows tracks when available
+  
+00:03 +4 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView tapping track plays and closes sheet
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following StateError was thrown running a test:
+Bad state: A test tried to use `any` or `captureAny` on a parameter of type `SearchResult`, but
+registerFallbackValue was not previously called to register a fallback value for `SearchResult`.
+
+To fix, do:
+
+```
+void main() {
+  setUpAll(() {
+    registerFallbackValue(/* create a dummy instance of `SearchResult` */);
+  });
+}
+```
+
+This instance of `SearchResult` will only be passed around, but never be interacted with.
+Therefore, if `SearchResult` is a function, it does not have to return a valid object and
+could throw unconditionally.
+If you cannot easily create an instance of `SearchResult`, consider defining a `Fake`:
+
+```
+class MyTypeFake extends Fake implements MyType {}
+
+void main() {
+  setUpAll(() {
+    registerFallbackValue(MyTypeFake());
+  });
+}
+```
+
+Fallbacks are required because mocktail has to know of a valid `SearchResult` to prevent
+TypeErrors from being thrown in Dart's sound null safe mode, while still
+providing a convenient syntax.
+
+When the exception was thrown, this was the stack:
+#0      _getFallbackValue (package:mocktail/src/_register_matcher.dart:49:5)
+#1      _registerMatcher (package:mocktail/src/_register_matcher.dart:160:25)
+#2      any (package:mocktail/src/_register_matcher.dart:104:10)
+#3      main.<anonymous closure>.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart:81:48)
+#4      when.<anonymous closure> (package:mocktail/src/mocktail.dart:211:9)
+#5      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart:81:11)
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  tapping track plays and closes sheet
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+00:03 +4 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:03 +4 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView tapping track plays and closes sheet [E]
+  Test failed. See exception logs above.
+  The test description was: tapping track plays and closes sheet
+  
+00:03 +5 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following assertion was thrown running a test:
+pumpAndSettle timed out
+
+When the exception was thrown, this was the stack:
+#0      WidgetTester.pumpAndSettle.<anonymous closure> (package:flutter_test/src/widget_tester.dart:717:11)
+<asynchronous suspension>
+#1      TestAsyncUtils.guard.<anonymous closure> (package:flutter_test/src/test_async_utils.dart:130:27)
+<asynchronous suspension>
+#2      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart:78:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  tap closes the view
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+00:26 +5 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view [E]
+  Test failed. See exception logs above.
+  The test description was: tap closes the view
+  
+00:26 +5 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView visualizer bars animate
+00:26 +6 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView rotation animation runs
+00:26 +7 -3: Some tests failed.

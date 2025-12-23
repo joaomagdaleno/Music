@@ -16,8 +16,12 @@ class LocalDuoService {
   @visibleForTesting
   static set instance(LocalDuoService mock) => _instance = mock;
 
-  LocalDuoService._internal();
+  LocalDuoService._internal() : _nearby = Nearby();
 
+  @visibleForTesting
+  LocalDuoService.forTesting({Nearby? nearby}) : _nearby = nearby ?? Nearby();
+
+  final Nearby _nearby;
   final Strategy strategy = Strategy.P2P_STAR;
   final Set<String> _connectedEndpoints = {};
   DuoRole role = DuoRole.none;
@@ -50,7 +54,7 @@ class LocalDuoService {
   Future<void> startHost(String username) async {
     role = DuoRole.host;
     try {
-      await Nearby().startAdvertising(
+      await _nearby.startAdvertising(
         username,
         strategy,
         onConnectionInitiated: _onConnectionInitiated,
@@ -65,13 +69,13 @@ class LocalDuoService {
   Future<void> startDiscovery(String username) async {
     role = DuoRole.guest;
     try {
-      await Nearby().startDiscovery(
+      await _nearby.startDiscovery(
         username,
         strategy,
         onEndpointFound: (id, name, serviceId) {
           _discoveredNames[id] = name;
           onDeviceFound?.call(name);
-          Nearby().requestConnection(
+          _nearby.requestConnection(
             username,
             id,
             onConnectionInitiated: _onConnectionInitiated,
@@ -87,7 +91,7 @@ class LocalDuoService {
   }
 
   void _onConnectionInitiated(String id, ConnectionInfo info) {
-    Nearby().acceptConnection(id, onPayLoadRecieved: (id, payload) {
+    _nearby.acceptConnection(id, onPayLoadRecieved: (id, payload) {
       if (payload.type == PayloadType.BYTES) {
         final str = String.fromCharCodes(payload.bytes!);
         _handleIncomingMessage(id, jsonDecode(str));
@@ -107,7 +111,7 @@ class LocalDuoService {
       final name = _discoveredNames[id] ?? "Convidado";
       DatabaseService.instance.saveGuest(id, name);
       if (role == DuoRole.guest) {
-        Nearby().stopDiscovery();
+        _nearby.stopDiscovery();
       }
     }
   }
@@ -123,13 +127,13 @@ class LocalDuoService {
   void sendMessage(Map<String, dynamic> msg) {
     final payload = Uint8List.fromList(jsonEncode(msg).codeUnits);
     for (var id in _connectedEndpoints) {
-      Nearby().sendBytesPayload(id, payload);
+      _nearby.sendBytesPayload(id, payload);
     }
   }
 
   Future<void> sendFile(String path) async {
     for (var id in _connectedEndpoints) {
-      await Nearby().sendFilePayload(id, path);
+      await _nearby.sendFilePayload(id, path);
     }
   }
 
@@ -219,11 +223,10 @@ class LocalDuoService {
   }
 
   void stopAll() {
-    Nearby().stopAllEndpoints();
-    Nearby().stopAdvertising();
-    Nearby().stopDiscovery();
+    _nearby.stopAllEndpoints();
+    _nearby.stopAdvertising();
+    _nearby.stopDiscovery();
     _connectedEndpoints.clear();
     role = DuoRole.none;
   }
 }
-

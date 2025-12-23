@@ -14,7 +14,7 @@ class DownloadPage extends StatefulWidget {
 
 class _DownloadPageState extends State<DownloadPage> {
   final _urlController = TextEditingController();
-  final _downloadService = DownloadService();
+  final _downloadService = DownloadService.instance;
 
   bool _isLoading = false;
   bool _isInitializing = true;
@@ -56,7 +56,9 @@ class _DownloadPageState extends State<DownloadPage> {
 
   Future<void> _fetchInfo() async {
     final url = _urlController.text.trim();
-    if (url.isEmpty) { return; }
+    if (url.isEmpty) {
+      return;
+    }
 
     setState(() {
       _isLoading = true;
@@ -79,7 +81,9 @@ class _DownloadPageState extends State<DownloadPage> {
   }
 
   Future<void> _startDownload() async {
-    if (_mediaInfo == null || _selectedFormat == null) { return; }
+    if (_mediaInfo == null || _selectedFormat == null) {
+      return;
+    }
 
     setState(() {
       _isDownloading = true;
@@ -152,7 +156,7 @@ class _DownloadPageState extends State<DownloadPage> {
   Widget build(BuildContext context) {
     if (_isInitializing) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Download Music')),
+        appBar: AppBar(title: const Text('Download de Música')),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(32),
@@ -173,7 +177,7 @@ class _DownloadPageState extends State<DownloadPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Download Music'),
+        title: const Text('Download de Música'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: SingleChildScrollView(
@@ -189,7 +193,7 @@ class _DownloadPageState extends State<DownloadPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Paste a URL from YouTube, YouTube Music, or Spotify',
+                      'Cole uma URL do YouTube, YouTube Music ou Spotify',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 12),
@@ -224,7 +228,7 @@ class _DownloadPageState extends State<DownloadPage> {
                                       CircularProgressIndicator(strokeWidth: 2),
                                 )
                               : const Icon(Icons.search),
-                          label: const Text('Fetch'),
+                          label: const Text('Buscar Info'),
                         ),
                       ],
                     ),
@@ -366,5 +370,3 @@ class _DownloadPageState extends State<DownloadPage> {
     super.dispose();
   }
 }
-
-

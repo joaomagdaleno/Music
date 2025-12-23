@@ -1,0 +1,17 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: DependencyManager provides correct paths on Windows
+00:00 +1: DependencyManager downloadFile successful
+00:00 +2: DependencyManager downloadFile failure throws HttpException
+00:00 +3: DependencyManager areAllDependenciesInstalled returns true when files exist
+00:00 +4: DependencyManager ensureDependencies executes downloads if missing
+00:00 +4 -1: DependencyManager ensureDependencies executes downloads if missing [E]
+  No matching calls (actually, no calls at all).
+  (If you called `verify(...).called(0);`, please instead use `verifyNever(...);`.)
+  package:matcher                            fail
+  package:mocktail/src/mocktail.dart 728:7   _VerifyCall._checkWith
+  package:mocktail/src/mocktail.dart 519:18  _makeVerify.<fn>
+  test\dependency_manager_test.dart 106:13   main.<fn>.<fn>
+  
+00:00 +4 -1: (tearDownAll)
+00:00 +4 -1: Some tests failed.

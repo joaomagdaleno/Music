@@ -1,0 +1,317 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:01 +1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:01 +2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:01 +3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:01 +4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:01 +5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:01 +6: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:01 +7: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:01 +8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:01 +9: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:01 +10: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:02 +11: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Navigation switches pages
+00:03 +12: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Adapts to wide screen (NavigationRail)
+00:03 +13: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart
+00:06 +13: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart: (setUpAll)
+00:06 +13: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart: DependencyManager provides correct paths on Windows
+00:06 +14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart: DependencyManager downloadFile successful
+00:06 +15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart: DependencyManager downloadFile failure throws HttpException
+00:06 +16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart: DependencyManager areAllDependenciesInstalled returns true when files exist
+00:06 +17: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart: DependencyManager ensureDependencies executes downloads if missing
+Downloading yt-dlp...: 0.0
+Downloading spotdl...: 0.25
+Downloading ffmpeg...: 0.5
+Downloading fpcalc...: 0.75
+Ready!: 1.0
+00:06 +18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart: (tearDownAll)
+00:08 +18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView renders with no track playing
+00:09 +19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage renders initial UI
+00:10 +20: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage renders initial UI
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "Download de M├║sica": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:50:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart line 50
+The test description was:
+  renders initial UI
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+00:12 +20 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:12 +20 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage renders initial UI [E]
+  Test failed. See exception logs above.
+  The test description was: renders initial UI
+  
+00:12 +21 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:13 +21 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage has dropdown selector
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _TypeWidgetFinder:<Found 0 widgets with type "DropdownButton<dynamic>": []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:65:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart line 65
+The test description was:
+  has dropdown selector
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+00:13 +21 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:13 +21 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage has dropdown selector [E]
+  Test failed. See exception logs above.
+  The test description was: has dropdown selector
+  
+00:13 +21 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage button bar is present
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "Buscar Info": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:72:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart line 72
+The test description was:
+  button bar is present
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+00:13 +21 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:13 +21 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage button bar is present [E]
+  Test failed. See exception logs above.
+  The test description was: button bar is present
+  
+00:14 +22 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:14 +23 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:17 +24 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:17 +25 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:17 +26 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:17 +27 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:22 +28 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:22 +29 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:22 +30 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:27 +31 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:27 +32 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+test/home_view_test.dart:41:25: Error: The method 'getRecentTracks' isn't defined for the type 'MockDatabaseService'.
+ - 'MockDatabaseService' is from 'test/home_view_test.dart'.
+Try correcting the name to the name of an existing method, or defining a method named 'getRecentTracks'.
+      when(() => mockDb.getRecentTracks()).thenAnswer((_) async => []);
+                        ^^^^^^^^^^^^^^^
+test/home_view_test.dart:52:25: Error: The method 'getRecentTracks' isn't defined for the type 'MockDatabaseService'.
+ - 'MockDatabaseService' is from 'test/home_view_test.dart'.
+Try correcting the name to the name of an existing method, or defining a method named 'getRecentTracks'.
+      when(() => mockDb.getRecentTracks()).thenAnswer((_) async => []);
+                        ^^^^^^^^^^^^^^^
+test/home_view_test.dart:64:25: Error: The method 'getRecentTracks' isn't defined for the type 'MockDatabaseService'.
+ - 'MockDatabaseService' is from 'test/home_view_test.dart'.
+Try correcting the name to the name of an existing method, or defining a method named 'getRecentTracks'.
+      when(() => mockDb.getRecentTracks()).thenAnswer((_) async => []);
+                        ^^^^^^^^^^^^^^^
+test/home_view_test.dart:75:25: Error: The method 'getRecentTracks' isn't defined for the type 'MockDatabaseService'.
+ - 'MockDatabaseService' is from 'test/home_view_test.dart'.
+Try correcting the name to the name of an existing method, or defining a method named 'getRecentTracks'.
+      when(() => mockDb.getRecentTracks()).thenAnswer((_) async => []);
+                        ^^^^^^^^^^^^^^^
+test/home_view_test.dart:85:25: Error: The method 'getRecentTracks' isn't defined for the type 'MockDatabaseService'.
+ - 'MockDatabaseService' is from 'test/home_view_test.dart'.
+Try correcting the name to the name of an existing method, or defining a method named 'getRecentTracks'.
+      when(() => mockDb.getRecentTracks()).thenAnswer((_) async => [
+                        ^^^^^^^^^^^^^^^
+test/home_view_test.dart:103:25: Error: The method 'getRecentTracks' isn't defined for the type 'MockDatabaseService'.
+ - 'MockDatabaseService' is from 'test/home_view_test.dart'.
+Try correcting the name to the name of an existing method, or defining a method named 'getRecentTracks'.
+      when(() => mockDb.getRecentTracks()).thenAnswer((_) async => []);
+                        ^^^^^^^^^^^^^^^
+00:30 +32 -4: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: test/home_view_test.dart:41:25: Error: The method 'getRecentTracks' isn't defined for the type 'MockDatabaseService'.
+   - 'MockDatabaseService' is from 'test/home_view_test.dart'.
+  Try correcting the name to the name of an existing method, or defining a method named 'getRecentTracks'.
+        when(() => mockDb.getRecentTracks()).thenAnswer((_) async => []);
+                          ^^^^^^^^^^^^^^^
+  test/home_view_test.dart:52:25: Error: The method 'getRecentTracks' isn't defined for the type 'MockDatabaseService'.
+   - 'MockDatabaseService' is from 'test/home_view_test.dart'.
+  Try correcting the name to the name of an existing method, or defining a method named 'getRecentTracks'.
+        when(() => mockDb.getRecentTracks()).thenAnswer((_) async => []);
+                          ^^^^^^^^^^^^^^^
+  test/home_view_test.dart:64:25: Error: The method 'getRecentTracks' isn't defined for the type 'MockDatabaseService'.
+   - 'MockDatabaseService' is from 'test/home_view_test.dart'.
+  Try correcting the name to the name of an existing method, or defining a method named 'getRecentTracks'.
+        when(() => mockDb.getRecentTracks()).thenAnswer((_) async => []);
+                          ^^^^^^^^^^^^^^^
+  test/home_view_test.dart:75:25: Error: The method 'getRecentTracks' isn't defined for the type 'MockDatabaseService'.
+   - 'MockDatabaseService' is from 'test/home_view_test.dart'.
+  Try correcting the name to the name of an existing method, or defining a method named 'getRecentTracks'.
+        when(() => mockDb.getRecentTracks()).thenAnswer((_) async => []);
+                          ^^^^^^^^^^^^^^^
+  test/home_view_test.dart:85:25: Error: The method 'getRecentTracks' isn't defined for the type 'MockDatabaseService'.
+   - 'MockDatabaseService' is from 'test/home_view_test.dart'.
+  Try correcting the name to the name of an existing method, or defining a method named 'getRecentTracks'.
+        when(() => mockDb.getRecentTracks()).thenAnswer((_) async => [
+                          ^^^^^^^^^^^^^^^
+  test/home_view_test.dart:103:25: Error: The method 'getRecentTracks' isn't defined for the type 'MockDatabaseService'.
+   - 'MockDatabaseService' is from 'test/home_view_test.dart'.
+  Try correcting the name to the name of an existing method, or defining a method named 'getRecentTracks'.
+        when(() => mockDb.getRecentTracks()).thenAnswer((_) async => []);
+                          ^^^^^^^^^^^^^^^
+  .
+00:39 +33 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:40 +34 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:45 +35 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:45 +36 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:45 +37 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:45 +38 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:45 +39 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:45 +40 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:45 +41 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following assertion was thrown running a test:
+pumpAndSettle timed out
+
+When the exception was thrown, this was the stack:
+#0      WidgetTester.pumpAndSettle.<anonymous closure> (package:flutter_test/src/widget_tester.dart:717:11)
+<asynchronous suspension>
+#1      TestAsyncUtils.guard.<anonymous closure> (package:flutter_test/src/test_async_utils.dart:130:27)
+<asynchronous suspension>
+#2      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart:78:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  tap closes the view
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+00:50 +41 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows LoginPage when not authenticated
+00:50 +41 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view [E]
+  Test failed. See exception logs above.
+  The test description was: tap closes the view
+  
+00:50 +42 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows LoginPage when not authenticated
+00:50 +43 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows LoginPage when not authenticated
+00:52 +44 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when authenticated
+00:54 +45 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: LibraryPage displays initial empty state
+00:54 +46 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: FilenameFormat functional tests artistTitle format
+00:54 +47 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: FilenameFormat functional tests titleArtist format
+00:54 +48 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: FilenameFormat functional tests trackArtistTitle format
+00:55 +49 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/metadata_aggregator_service_test.dart: aggregateMetadata aggregates results correctly with majority vote
+00:55 +50 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/metadata_aggregator_service_test.dart: aggregateMetadata handles empty results
+00:55 +51 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/metadata_aggregator_service_test.dart: fetchSyncedLyrics returns lyrics from LrcLib if found and valid
+00:55 +52 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/metadata_aggregator_service_test.dart: fetchSyncedLyrics falls back to Netease if LrcLib empty
+00:56 +53 -5: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/metadata_service_test.dart
+01:01 +53 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/metadata_service_test.dart: MetadataService Tests Read and Write Metadata
+01:01 +54 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/metadata_service_test.dart: MetadataService Tests Read non-existent file throws exception
+01:01 +55 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/metadata_service_test.dart: MetadataService Tests Write to non-existent file throws exception
+01:02 +56 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mini_player_test.dart: MiniPlayer Widget Tests Shows nothing when no track is playing
+01:04 +57 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mini_player_test.dart: MiniPlayer Widget Tests Shows track info and controls when track is present
+01:04 +58 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mini_player_test.dart: MiniPlayer Widget Tests Pause button calls playback.pause
+01:07 +59 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: (setUpAll)
+01:07 +59 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView renders mood cards
+01:09 +60 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView tapping mood opens bottom sheet
+01:09 +61 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView mood sheet shows loading indicator
+01:09 +62 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView grid layout displays correctly
+01:10 +63 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: playSearchResult updates current track and plays
+01:10 +64 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: playSearchResult updates current track and plays
+01:10 +65 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: playSearchResult fetches lyrics and applies theme
+01:10 +66 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Queue Management addToQueue adds to list and playlist
+01:10 +67 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Queue Management clearQueue empties the list
+01:10 +68 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+01:13 +69 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/player_screen_test.dart: (setUpAll)
+01:13 +69 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer cancelSleepTimer clears timer
+01:13 +70 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/player_screen_test.dart: PlayerScreen Widget Tests Shows empty state when no track is playing
+01:13 +71 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/player_screen_test.dart: PlayerScreen Widget Tests Shows empty state when no track is playing
+01:13 +72 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/player_screen_test.dart: PlayerScreen Widget Tests Shows empty state when no track is playing
+01:15 +73 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/player_screen_test.dart: PlayerScreen Widget Tests Shows track info when playing
+01:15 +74 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/player_screen_test.dart: PlayerScreen Widget Tests Toggles play/pause
+01:16 +75 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/player_screen_test.dart: PlayerScreen Widget Tests Shows Duo chat button when in Duo mode
+01:16 +76 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/player_screen_test.dart: (tearDownAll)
+01:18 +76 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlists_view_test.dart: PlaylistsView renders empty state
+01:20 +77 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlists_view_test.dart: PlaylistsView renders playlists list
+01:20 +78 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlists_view_test.dart: PlaylistsView shows FAB for creating playlists
+01:20 +79 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlists_view_test.dart: PlaylistsView FAB opens create playlist dialog
+01:21 +80 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/ringtone_maker_view_test.dart: RingtoneMakerView displays track info and handles export
+01:22 +81 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/ringtone_maker_view_test.dart: RingtoneMakerView displays track info and handles export
+01:22 +82 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/ringtone_maker_view_test.dart: RingtoneMakerView displays track info and handles export
+01:22 +83 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/ringtone_maker_view_test.dart: RingtoneMakerView displays track info and handles export
+01:26 +84 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Shows initialization progress then content
+01:28 +85 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Performs search and displays results
+01:29 +86 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Handles play track interaction
+01:30 +87 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Shows no results message
+01:30 +88 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Shows error message on initialization failure
+01:30 +89 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: (tearDownAll)
+01:31 +89 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_service_test.dart: searchYouTube parses yt-dlp json output correctly
+01:31 +90 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_service_test.dart: searchYouTube returns empty list on process error
+01:31 +91 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_service_test.dart: searchYouTubeMusic parses yt-music output with album info
+01:31 +92 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_service_test.dart: searchHiFi delegates to HiFiDownloadService
+01:31 +93 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_service_test.dart: getStreamUrl returns trimmed stdout on success
+01:31 +94 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_service_test.dart: getStreamUrl returns null on failure
+01:31 +95 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_service_test.dart: searchAll calls all platforms and updates status
+01:32 +96 -5: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart
+01:35 +96 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: (setUpAll)
+01:35 +96 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Sync interactions
+01:35 +97 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Sync interactions
+01:35 +98 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Sync interactions
+01:36 +99 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Sync interactions
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "10 itens sincronizados!": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart:99:5)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart line 99
+The test description was:
+  Sync interactions
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+01:39 +99 -6: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Sync interactions [E]
+  Test failed. See exception logs above.
+  The test description was: Sync interactions
+  
+01:39 +99 -6: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: (tearDownAll)
+01:40 +99 -6: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/theme_service_test.dart: ThemeService Tests Initial color is blue
+01:40 +100 -6: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/theme_service_test.dart: ThemeService Tests setCustomColor updates color and saves to DB
+01:40 +101 -6: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/theme_service_test.dart: ThemeService Tests updateThemeFromImage extracts color from palette
+01:40 +102 -6: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/theme_service_test.dart: ThemeService Tests updateThemeFromImage handles error by falling back to blue
+Error extracting palette: Exception: Extraction failed
+01:42 +103 -6: Some tests failed.

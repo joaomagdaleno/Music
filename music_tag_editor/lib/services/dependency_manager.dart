@@ -8,18 +8,21 @@ import 'package:archive/archive.dart';
 /// Manages external CLI tools (yt-dlp, spotdl, FFmpeg).
 /// Auto-downloads on first run, no user intervention needed.
 class DependencyManager {
+  DependencyManager._({http.Client? client})
+      : _client = client ?? http.Client();
   static DependencyManager? _instance;
   static DependencyManager get instance => _instance ??= DependencyManager._();
 
   @visibleForTesting
   static set instance(DependencyManager mock) => _instance = mock;
 
-  @visibleForTesting
-  DependencyManager.forTesting()
-      : _initialized = true,
-        _binDir = 'test_bin';
+  final http.Client _client;
 
-  DependencyManager._();
+  @visibleForTesting
+  DependencyManager.forTesting({http.Client? client, bool initialized = true})
+      : _initialized = initialized,
+        _binDir = 'test_bin',
+        _client = client ?? http.Client();
 
   late String _binDir;
   bool _initialized = false;
@@ -107,7 +110,7 @@ class DependencyManager {
 
   /// Download yt-dlp from GitHub releases.
   Future<void> _downloadYtDlp() async {
-    final response = await http.get(Uri.parse(_ytDlpReleaseApi));
+    final response = await _client.get(Uri.parse(_ytDlpReleaseApi));
     final json = jsonDecode(response.body);
     final assets = json['assets'] as List;
 
@@ -131,7 +134,7 @@ class DependencyManager {
 
   /// Download spotdl from GitHub releases.
   Future<void> _downloadSpotdl() async {
-    final response = await http.get(Uri.parse(_spotdlReleaseApi));
+    final response = await _client.get(Uri.parse(_spotdlReleaseApi));
     final json = jsonDecode(response.body);
     final assets = json['assets'] as List;
 
@@ -208,7 +211,7 @@ class DependencyManager {
 
   /// Download a file from URL to local path.
   Future<void> downloadFile(String url, String path) async {
-    final response = await http.get(Uri.parse(url));
+    final response = await _client.get(Uri.parse(url));
     if (response.statusCode != 200) {
       throw HttpException('Failed to download: $url');
     }

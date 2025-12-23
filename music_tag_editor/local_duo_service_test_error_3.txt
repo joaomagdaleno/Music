@@ -1,0 +1,142 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/local_duo_service_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: LocalDuoService startHost sets role and starts advertising
+00:00 +1: LocalDuoService startDiscovery sets role and starts discovery
+00:00 +2: LocalDuoService stopAll cleans up state
+00:00 +3: LocalDuoService sendMessage sends bytes to all connected endpoints
+00:00 +3 -1: LocalDuoService sendMessage sends bytes to all connected endpoints [E]
+  Bad state: A test tried to use `any` or `captureAny` on a parameter of type `Uint8List`, but
+  registerFallbackValue was not previously called to register a fallback value for `Uint8List`.
+  
+  To fix, do:
+  
+  ```
+  void main() {
+    setUpAll(() {
+      registerFallbackValue(/* create a dummy instance of `Uint8List` */);
+    });
+  }
+  ```
+  
+  This instance of `Uint8List` will only be passed around, but never be interacted with.
+  Therefore, if `Uint8List` is a function, it does not have to return a valid object and
+  could throw unconditionally.
+  If you cannot easily create an instance of `Uint8List`, consider defining a `Fake`:
+  
+  ```
+  class MyTypeFake extends Fake implements MyType {}
+  
+  void main() {
+    setUpAll(() {
+      registerFallbackValue(MyTypeFake());
+    });
+  }
+  ```
+  
+  Fallbacks are required because mocktail has to know of a valid `Uint8List` to prevent
+  TypeErrors from being thrown in Dart's sound null safe mode, while still
+  providing a convenient syntax.
+  
+  package:mocktail/src/_register_matcher.dart 49:5    _getFallbackValue
+  package:mocktail/src/_register_matcher.dart 160:25  _registerMatcher
+  package:mocktail/src/_register_matcher.dart 104:10  any
+  test\local_duo_service_test.dart 99:53              main.<fn>.<fn>.<fn>
+  package:mocktail/src/mocktail.dart 211:9            when.<fn>
+  test\local_duo_service_test.dart 99:11              main.<fn>.<fn>
+  
+00:00 +3 -1: LocalDuoService sendFile sends file to all connected endpoints
+00:00 +3 -2: LocalDuoService sendFile sends file to all connected endpoints [E]
+  Invalid argument(s): An argument matcher (like `any()`) was either not used as an immediate argument to Symbol("sendFilePayload") (argument matchers can only be used as an argument for the very method being stubbed or verified), or was used as a named argument without the Mocktail "named" API (Each argument matcher that is used as a named argument needs to specify the name of the argument it is being used in. For example: `when(() => obj.fn(x: any(named: "x")))`).
+  package:mocktail/src/_is_invocation.dart 252:7   _InvocationForMatchedArguments._reconstitutePositionalArgs
+  package:mocktail/src/_is_invocation.dart 126:33  new _InvocationForMatchedArguments
+  package:mocktail/src/_is_invocation.dart 111:18  _useMatchedInvocationIfSet
+  package:mocktail/src/mocktail.dart 112:18        Mock.noSuchMethod
+  test\local_duo_service_test.dart 11:7            MockNearby.sendFilePayload
+  test\local_duo_service_test.dart 111:29          main.<fn>.<fn>.<fn>
+  package:mocktail/src/mocktail.dart 211:9         when.<fn>
+  test\local_duo_service_test.dart 111:11          main.<fn>.<fn>
+  
+00:00 +3 -2: LocalDuoService handleIncomingMessage play/pause/seek
+00:00 +3 -3: LocalDuoService handleIncomingMessage play/pause/seek [E]
+  Bad state: A test tried to use `any` or `captureAny` on a parameter of type `Duration`, but
+  registerFallbackValue was not previously called to register a fallback value for `Duration`.
+  
+  To fix, do:
+  
+  ```
+  void main() {
+    setUpAll(() {
+      registerFallbackValue(/* create a dummy instance of `Duration` */);
+    });
+  }
+  ```
+  
+  This instance of `Duration` will only be passed around, but never be interacted with.
+  Therefore, if `Duration` is a function, it does not have to return a valid object and
+  could throw unconditionally.
+  If you cannot easily create an instance of `Duration`, consider defining a `Fake`:
+  
+  ```
+  class MyTypeFake extends Fake implements MyType {}
+  
+  void main() {
+    setUpAll(() {
+      registerFallbackValue(MyTypeFake());
+    });
+  }
+  ```
+  
+  Fallbacks are required because mocktail has to know of a valid `Duration` to prevent
+  TypeErrors from being thrown in Dart's sound null safe mode, while still
+  providing a convenient syntax.
+  
+  package:mocktail/src/_register_matcher.dart 49:5    _getFallbackValue
+  package:mocktail/src/_register_matcher.dart 160:25  _registerMatcher
+  package:mocktail/src/_register_matcher.dart 104:10  any
+  test\local_duo_service_test.dart 121:46             main.<fn>.<fn>.<fn>
+  package:mocktail/src/mocktail.dart 211:9            when.<fn>
+  test\local_duo_service_test.dart 121:11             main.<fn>.<fn>
+  
+00:00 +3 -3: LocalDuoService handleIncomingMessage track/chat
+00:00 +3 -4: LocalDuoService handleIncomingMessage track/chat [E]
+  Bad state: A test tried to use `any` or `captureAny` on a parameter of type `SearchResult`, but
+  registerFallbackValue was not previously called to register a fallback value for `SearchResult`.
+  
+  To fix, do:
+  
+  ```
+  void main() {
+    setUpAll(() {
+      registerFallbackValue(/* create a dummy instance of `SearchResult` */);
+    });
+  }
+  ```
+  
+  This instance of `SearchResult` will only be passed around, but never be interacted with.
+  Therefore, if `SearchResult` is a function, it does not have to return a valid object and
+  could throw unconditionally.
+  If you cannot easily create an instance of `SearchResult`, consider defining a `Fake`:
+  
+  ```
+  class MyTypeFake extends Fake implements MyType {}
+  
+  void main() {
+    setUpAll(() {
+      registerFallbackValue(MyTypeFake());
+    });
+  }
+  ```
+  
+  Fallbacks are required because mocktail has to know of a valid `SearchResult` to prevent
+  TypeErrors from being thrown in Dart's sound null safe mode, while still
+  providing a convenient syntax.
+  
+  package:mocktail/src/_register_matcher.dart 49:5    _getFallbackValue
+  package:mocktail/src/_register_matcher.dart 160:25  _registerMatcher
+  package:mocktail/src/_register_matcher.dart 104:10  any
+  test\local_duo_service_test.dart 182:48             main.<fn>.<fn>.<fn>
+  package:mocktail/src/mocktail.dart 211:9            when.<fn>
+  test\local_duo_service_test.dart 182:11             main.<fn>.<fn>
+  
+00:00 +3 -4: (tearDownAll)
+00:00 +3 -4: Some tests failed.
