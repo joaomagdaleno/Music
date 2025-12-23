@@ -30,7 +30,7 @@ jobs:
           cache-key: flutter-3.35.7
 
       - name: Cache Pub dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.pub-cache
           key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
@@ -75,7 +75,7 @@ jobs:
 
       - name: Cache Flutter SDK (Windows)
         if: runner.os == 'Windows'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: C:\\hostedtoolcache\\windows\\flutter\\stable-3.35.7-x64
           key: flutter-win-3.35.7
@@ -89,7 +89,7 @@ jobs:
 
       - name: Cache Pub dependencies (Windows)
         if: runner.os == 'Windows'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: C:\\Users\\runneradmin\\AppData\\Local\\Pub\\Cache
           key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
@@ -98,7 +98,7 @@ jobs:
 
       - name: Cache Pub dependencies (Linux)
         if: runner.os == 'Linux'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.pub-cache
           key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
@@ -114,7 +114,7 @@ jobs:
 
       - name: Restore Gradle cache (Pull Request)
         if: runner.os == 'Linux' && github.event_name == 'pull_request'
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.gradle/caches/jars-*
@@ -127,7 +127,7 @@ jobs:
 
       - name: Save/Restore Gradle cache (Push)
         if: runner.os == 'Linux' && github.event_name != 'pull_request'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches/jars-*
