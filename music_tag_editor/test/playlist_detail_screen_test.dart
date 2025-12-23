@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -46,12 +47,17 @@ void main() {
 
   group('PlaylistDetailScreen', () {
     testWidgets('shows loading indicator initially', (tester) async {
-      when(() => mockDb.getPlaylistTracks(any())).thenAnswer((_) async => []);
+      final completer = Completer<List<Map<String, dynamic>>>();
+      when(() => mockDb.getPlaylistTracks(any()))
+          .thenAnswer((_) => completer.future);
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+      completer.complete([]);
+      await tester.pumpAndSettle();
     });
 
     testWidgets('displays playlist name in app bar', (tester) async {

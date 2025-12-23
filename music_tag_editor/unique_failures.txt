@@ -1,0 +1,5 @@
+test/backup_service_test.dart
+test/download_page_test.dart
+test/home_view_test.dart
+test/disco_mode_view_test.dart
+test/main_test.dart

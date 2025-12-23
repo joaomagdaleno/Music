@@ -101,7 +101,7 @@ class _RingtoneMakerViewState extends State<RingtoneMakerView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ringtone Maker'),
+        title: const Text('Criador de Toques'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),

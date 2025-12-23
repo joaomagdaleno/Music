@@ -82,6 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 32),
                     TextField(
+                      key: const Key('email_field'),
                       controller: _emailController,
                       decoration: const InputDecoration(
                         labelText: 'Email',
@@ -91,6 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 16),
                     TextField(
+                      key: const Key('password_field'),
                       controller: _passwordController,
                       obscureText: true,
                       decoration: const InputDecoration(
@@ -189,4 +191,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-

@@ -42,7 +42,9 @@ void main() {
 
     testWidgets('tapping generate shows QR code', (tester) async {
       await tester.pumpWidget(createTestWidget());
-      await tester.tap(find.text('Gerar QR Code da Festa'));
+      final button = find.text('Gerar QR Code da Festa');
+      await tester.ensureVisible(button);
+      await tester.tap(button);
       await tester.pump();
 
       expect(find.textContaining('Código da Sessão'), findsOneWidget);
@@ -51,9 +53,14 @@ void main() {
 
     testWidgets('tapping end party returns to initial state', (tester) async {
       await tester.pumpWidget(createTestWidget());
-      await tester.tap(find.text('Gerar QR Code da Festa'));
+      final generateButton = find.text('Gerar QR Code da Festa');
+      await tester.ensureVisible(generateButton);
+      await tester.tap(generateButton);
       await tester.pump();
-      await tester.tap(find.text('Encerrar Festa'));
+
+      final endButton = find.text('Encerrar Festa');
+      await tester.ensureVisible(endButton);
+      await tester.tap(endButton);
       await tester.pump();
 
       expect(find.text('Gerar QR Code da Festa'), findsOneWidget);

@@ -82,7 +82,8 @@ class SecurityService {
 
   String _hashPassword(String password) {
     // Simple hash for demo, in production use stronger KDF like Argon2
-    return base64Url.encode(utf8.encode(password)).substring(0, 20);
+    final hash = base64Url.encode(utf8.encode(password));
+    return hash.length > 20 ? hash.substring(0, 20) : hash;
   }
 
   Future<bool> unlockVault(String password) async {

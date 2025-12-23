@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -38,15 +39,17 @@ void main() {
 
   group('MyTracksView', () {
     testWidgets('renders loading state', (tester) async {
-      when(() => mockDb.getTracks()).thenAnswer((_) async {
-        await Future.delayed(const Duration(seconds: 1));
-        return [];
-      });
+      final completer = Completer<List<Map<String, dynamic>>>();
+      when(() => mockDb.getTracks()).thenAnswer((_) => completer.future);
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+      // Complete the future to clean up
+      completer.complete([]);
+      await tester.pumpAndSettle();
     });
 
     testWidgets('renders empty state', (tester) async {

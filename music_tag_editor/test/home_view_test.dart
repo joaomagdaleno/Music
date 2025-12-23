@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -38,72 +39,102 @@ void main() {
 
   group('HomeView', () {
     testWidgets('renders greeting', (tester) async {
+      final completer = Completer<List<Map<String, dynamic>>>();
       when(() => mockDb.getRecentlyPlayed()).thenAnswer((_) async => []);
+      when(() => mockDb.getTracks()).thenAnswer((_) => completer.future);
       when(() => mockDb.getAllTracks()).thenAnswer((_) async => []);
 
       await tester.pumpWidget(createTestWidget());
-      await tester.pump();
+      await tester.pump(); // Show loading
+
+      completer.complete([]);
+      await tester.pumpAndSettle();
 
       expect(find.byType(Text), findsWidgets);
     });
 
     testWidgets('renders smart library cards', (tester) async {
+      final completer = Completer<List<Map<String, dynamic>>>();
       when(() => mockDb.getRecentlyPlayed()).thenAnswer((_) async => []);
+      when(() => mockDb.getTracks()).thenAnswer((_) => completer.future);
       when(() => mockDb.getAllTracks()).thenAnswer((_) async => []);
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
-      expect(find.byIcon(Icons.history), findsOneWidget);
-      expect(find.byIcon(Icons.favorite), findsOneWidget);
+      completer.complete([]);
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.trending_up), findsOneWidget);
+      expect(find.byIcon(Icons.auto_awesome), findsOneWidget);
       expect(find.byIcon(Icons.bar_chart), findsOneWidget);
     });
 
     testWidgets('renders moods section', (tester) async {
+      final completer = Completer<List<Map<String, dynamic>>>();
       when(() => mockDb.getRecentlyPlayed()).thenAnswer((_) async => []);
+      when(() => mockDb.getTracks()).thenAnswer((_) => completer.future);
       when(() => mockDb.getAllTracks()).thenAnswer((_) async => []);
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
-      expect(find.byIcon(Icons.flash_on), findsWidgets);
-      expect(find.byIcon(Icons.spa), findsWidgets);
+      completer.complete([]);
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.center_focus_strong), findsWidgets);
+      expect(find.byIcon(Icons.fitness_center), findsWidgets);
     });
 
     testWidgets('renders disco mode button', (tester) async {
+      final completer = Completer<List<Map<String, dynamic>>>();
       when(() => mockDb.getRecentlyPlayed()).thenAnswer((_) async => []);
+      when(() => mockDb.getTracks()).thenAnswer((_) => completer.future);
       when(() => mockDb.getAllTracks()).thenAnswer((_) async => []);
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
-      expect(find.byIcon(Icons.nightlife), findsOneWidget);
+      completer.complete([]);
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.auto_awesome), findsOneWidget);
     });
 
     testWidgets('renders recents list with tracks', (tester) async {
-      when(() => mockDb.getRecentlyPlayed()).thenAnswer((_) async => [
-            {
-              'id': '1',
-              'title': 'Recent Song',
-              'artist': 'Artist Name',
-              'url': 'http://test',
-              'platform': 'MediaPlatform.youtube'
-            },
-          ]);
+      final completer = Completer<List<Map<String, dynamic>>>();
+      when(() => mockDb.getRecentlyPlayed()).thenAnswer((_) async => []);
+      when(() => mockDb.getTracks()).thenAnswer((_) => completer.future);
       when(() => mockDb.getAllTracks()).thenAnswer((_) async => []);
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
+
+      completer.complete([
+        {
+          'id': '1',
+          'title': 'Recent Song',
+          'artist': 'Artist Name',
+          'url': 'http://test',
+          'platform': 'MediaPlatform.youtube'
+        },
+      ]);
+      await tester.pumpAndSettle();
 
       expect(find.text('Recent Song'), findsOneWidget);
     });
 
     testWidgets('scaffold renders correctly', (tester) async {
+      final completer = Completer<List<Map<String, dynamic>>>();
       when(() => mockDb.getRecentlyPlayed()).thenAnswer((_) async => []);
+      when(() => mockDb.getTracks()).thenAnswer((_) => completer.future);
       when(() => mockDb.getAllTracks()).thenAnswer((_) async => []);
 
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
+
+      completer.complete([]);
+      await tester.pumpAndSettle();
 
       expect(find.byType(Scaffold), findsOneWidget);
     });

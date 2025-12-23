@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -31,7 +32,7 @@ void main() {
   group('MusicTagEditorApp', () {
     testWidgets('renders MaterialApp', (tester) async {
       await tester.pumpWidget(const MusicTagEditorApp());
-      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.byType(MaterialApp), findsOneWidget);
     });
@@ -40,16 +41,16 @@ void main() {
       when(() => mockAuth.isAuthenticated).thenReturn(false);
 
       await tester.pumpWidget(const MusicTagEditorApp());
-      await tester.pump();
+      await tester.pumpAndSettle();
 
-      expect(find.textContaining('Login'), findsWidgets);
+      expect(find.textContaining('Bem-vindo'), findsWidgets);
     });
 
     testWidgets('uses theme color from ThemeService', (tester) async {
       when(() => mockTheme.primaryColor).thenReturn(Colors.purple);
 
       await tester.pumpWidget(const MusicTagEditorApp());
-      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       final MaterialApp app =
           tester.widget<MaterialApp>(find.byType(MaterialApp));
@@ -64,7 +65,7 @@ void main() {
           home: LibraryPage(title: 'Test Library'),
         ),
       );
-      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('Test Library'), findsOneWidget);
     });
@@ -75,7 +76,7 @@ void main() {
           home: LibraryPage(title: 'Library'),
         ),
       );
-      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.byType(DefaultTabController), findsOneWidget);
     });
@@ -86,7 +87,7 @@ void main() {
           home: LibraryPage(title: 'Library'),
         ),
       );
-      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.byType(TabBar), findsOneWidget);
       expect(find.text('Pastas Local'), findsOneWidget);
@@ -101,7 +102,7 @@ void main() {
           home: LibraryPage(title: 'Library'),
         ),
       );
-      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.byIcon(Icons.settings), findsOneWidget);
     });
@@ -112,7 +113,7 @@ void main() {
           home: LibraryPage(title: 'Library'),
         ),
       );
-      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.byIcon(Icons.download), findsOneWidget);
     });
@@ -123,7 +124,7 @@ void main() {
           home: LibraryPage(title: 'Library'),
         ),
       );
-      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('Nenhuma pasta selecionada.'), findsOneWidget);
       expect(find.text('Selecionar Pasta'), findsOneWidget);

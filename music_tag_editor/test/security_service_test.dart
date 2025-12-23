@@ -1,8 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:music_tag_editor/services/security_service.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('SecurityService', () {
+    setUp(() {
+      FlutterSecureStorage.setMockInitialValues({});
+      // Reset instance for clean state if needed, though simpler to just ensure storage is mocked
+      // SecurityService.instance might be a singleton, so mocking storage affects it globally for this run
+    });
+
     test('instance is accessible', () {
       expect(SecurityService.instance, isNotNull);
     });
@@ -50,6 +59,18 @@ void main() {
 
       final result = await service.unlockVault('anypassword');
       expect(result, isFalse);
+    });
+
+    test('setupVaultPassword allows unlocking', () async {
+      final service = SecurityService.instance;
+      await service.init();
+
+      await service.setupVaultPassword('mypassword');
+      final success = await service.unlockVault('mypassword');
+      final fail = await service.unlockVault('wrong');
+
+      expect(success, isTrue);
+      expect(fail, isFalse);
     });
   });
 }

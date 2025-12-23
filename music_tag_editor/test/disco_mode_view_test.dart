@@ -75,12 +75,14 @@ void main() {
       ));
 
       await tester.tap(find.text('Open Disco'));
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.byType(DiscoModeView), findsOneWidget);
 
       await tester.tap(find.byType(GestureDetector).first);
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.byType(DiscoModeView), findsNothing);
     });

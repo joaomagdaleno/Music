@@ -247,24 +247,15 @@ class _HomeViewState extends State<HomeView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        image: DecorationImage(
-                          image: NetworkImage(track['thumbnail'] ??
-                              'https://via.placeholder.com/150'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: Center(
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.black45,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(Icons.play_arrow,
-                              color: Colors.white, size: 24),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        track['thumbnail'] ?? 'https://via.placeholder.com/150',
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: Colors.grey[900],
+                          child: const Icon(Icons.music_note,
+                              color: Colors.white54),
                         ),
                       ),
                     ),
@@ -389,4 +380,3 @@ class _SmartCard extends StatelessWidget {
     );
   }
 }
-
