@@ -1,0 +1,221 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:music_tag_editor/search_page.dart';
+import 'package:music_tag_editor/search_service.dart';
+import 'package:music_tag_editor/download_service.dart';
+import 'package:music_tag_editor/database_service.dart';
+import 'package:music_tag_editor/dependency_manager.dart';
+import 'package:music_tag_editor/playback_service.dart';
+import 'package:music_tag_editor/theme_service.dart';
+
+class MockSearchService extends Mock implements SearchService {}
+
+class MockDownloadService extends Mock implements DownloadService {}
+
+class MockDatabaseService extends Mock implements DatabaseService {}
+
+class MockDependencyManager extends Mock implements DependencyManager {}
+
+class MockPlaybackService extends Mock implements PlaybackService {}
+
+class MockAudioPlayer extends Mock implements AudioPlayer {}
+
+class MockThemeService extends Mock implements ThemeService {}
+
+void main() {
+  late MockSearchService mockSearch;
+  late MockDownloadService mockDownload;
+  late MockDatabaseService mockDb;
+  late MockDependencyManager mockDeps;
+  late MockPlaybackService mockPlayback;
+  late MockAudioPlayer mockPlayer;
+
+  setUpAll(() {
+    registerFallbackValue(SearchResult(
+        id: 'id',
+        title: 'title',
+        artist: 'artist',
+        platform: MediaPlatform.youtube,
+        url: 'url'));
+    registerFallbackValue(MediaPlatform.youtube);
+  });
+
+  setUp(() {
+    mockSearch = MockSearchService();
+    mockDownload = MockDownloadService();
+    mockDb = MockDatabaseService();
+    mockDeps = MockDependencyManager();
+    mockPlayback = MockPlaybackService();
+    mockPlayer = MockAudioPlayer();
+
+    SearchService.instance = mockSearch;
+    DownloadService.instance = mockDownload;
+    DatabaseService.instance = mockDb;
+    DependencyManager.instance = mockDeps;
+    PlaybackService.instance = mockPlayback;
+    ThemeService.instance = MockThemeService();
+
+    when(() => mockPlayback.player).thenReturn(mockPlayer);
+    when(() => mockPlayback.currentTrack).thenReturn(null);
+    when(() => mockPlayer.playerStateStream).thenAnswer(
+        (_) => Stream.value(PlayerState(false, ProcessingState.idle)));
+    when(() => mockPlayer.positionStream)
+        .thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockPlayer.duration).thenReturn(Duration.zero);
+
+    // Default DependencyManager behavior: success immediately
+    when(() =>
+            mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
+        .thenAnswer((invocation) async {
+      final callback = invocation.namedArguments[#onProgress] as void Function(
+          String, double)?;
+      callback?.call('Done', 1.0);
+    });
+  });
+
+  testWidgets('Shows initialization progress then content', (tester) async {
+    // Simulate slow initialization
+    when(() =>
+            mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
+        .thenAnswer((invocation) async {
+      final callback = invocation.namedArguments[#onProgress] as void Function(
+          String, double)?;
+      callback?.call('Loading...', 0.5);
+      await Future.delayed(const Duration(milliseconds: 100));
+      callback?.call('Done', 1.0);
+    });
+
+    await tester.pumpWidget(const MaterialApp(home: SearchPage()));
+    await tester.pump(); // Start init
+
+    expect(find.text('Loading...'), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+    await tester.pump(const Duration(milliseconds: 100)); // Finish init
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TextField), findsOneWidget);
+    expect(find.text('Busca de Músicas'), findsOneWidget);
+  });
+
+  testWidgets('Performs search and displays results', (tester) async {
+    final results = [
+      SearchResult(
+        id: '1',
+        title: 'Song 1',
+        artist: 'Artist 1',
+        url: 'http://1',
+        platform: MediaPlatform.youtube,
+      ),
+      SearchResult(
+        id: '2',
+        title: 'Song 2',
+        artist: 'Artist 2',
+        url: 'http://2',
+        platform: MediaPlatform.spotify,
+      ),
+    ];
+
+    when(() => mockSearch.searchAll(any(),
+            onStatusUpdate: any(named: 'onStatusUpdate')))
+        .thenAnswer((invocation) async {
+      final callback = invocation.namedArguments[#onStatusUpdate] as void
+          Function(MediaPlatform, SearchStatus)?;
+      callback?.call(MediaPlatform.youtube, SearchStatus.completed);
+      callback?.call(MediaPlatform.spotify, SearchStatus.completed);
+      callback?.call(MediaPlatform.youtubeMusic, SearchStatus.completed);
+      return results;
+    });
+
+    await tester.pumpWidget(const MaterialApp(home: SearchPage()));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'test query');
+    await tester.tap(find.text('Buscar'));
+    await tester.pump();
+
+    // Verify loading/searching state if needed, but here we just wait for results
+    await tester.pumpAndSettle();
+
+    expect(find.text('Song 1'), findsOneWidget);
+    expect(find.text('Artist 1 • '),
+        findsWidgets); // Duration is usually formatted
+    expect(find.text('Song 2'), findsOneWidget);
+  });
+
+  testWidgets('Handles play track interaction', (tester) async {
+    final result = SearchResult(
+      id: '1',
+      title: 'Song 1',
+      artist: 'Artist 1',
+      url: 'http://1',
+      platform: MediaPlatform.youtube,
+    );
+
+    when(() => mockSearch.searchAll(any(),
+            onStatusUpdate: any(named: 'onStatusUpdate')))
+        .thenAnswer((invocation) async {
+      final callback = invocation.namedArguments[#onStatusUpdate] as void
+          Function(MediaPlatform, SearchStatus)?;
+      callback?.call(MediaPlatform.youtube, SearchStatus.completed);
+      callback?.call(MediaPlatform.spotify, SearchStatus.completed);
+      callback?.call(MediaPlatform.youtubeMusic, SearchStatus.completed);
+      return [result];
+    });
+    when(() => mockPlayback.playSearchResult(any()))
+        .thenAnswer((_) async => Future.value());
+
+    await tester.pumpWidget(const MaterialApp(home: SearchPage()));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'test');
+    await tester.tap(find.text('Buscar'));
+    await tester.pump();
+    await tester.pump(); // For status updates
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.play_arrow));
+    await tester.pump(); // Start animation
+    await tester.pump(const Duration(milliseconds: 100)); // Show SnackBar
+
+    verify(() => mockPlayback.playSearchResult(result)).called(1);
+    expect(find.text('Carregando áudio de "Song 1"...'), findsOneWidget);
+  });
+
+  testWidgets('Shows no results message', (tester) async {
+    when(() => mockSearch.searchAll(any(),
+            onStatusUpdate: any(named: 'onStatusUpdate')))
+        .thenAnswer((invocation) async {
+      final callback = invocation.namedArguments[#onStatusUpdate] as void
+          Function(MediaPlatform, SearchStatus)?;
+      callback?.call(MediaPlatform.youtube, SearchStatus.completed);
+      callback?.call(MediaPlatform.spotify, SearchStatus.completed);
+      callback?.call(MediaPlatform.youtubeMusic, SearchStatus.completed);
+      return [];
+    });
+
+    await tester.pumpWidget(const MaterialApp(home: SearchPage()));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'unknown');
+    await tester.tap(find.text('Buscar'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Nenhuma música encontrada nas plataformas selecionadas.'),
+        findsOneWidget);
+  });
+
+  testWidgets('Shows error message on initialization failure', (tester) async {
+    when(() =>
+            mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
+        .thenThrow('Init failed');
+
+    await tester.pumpWidget(const MaterialApp(home: SearchPage()));
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('Erro ao inicializar: Init failed'),
+        findsOneWidget);
+  });
+}

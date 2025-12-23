@@ -1,0 +1,13 @@
+# Lefthook configuration
+# Refer to https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md
+
+pre-commit:
+  commands:
+    analyze:
+      root: music_tag_editor/
+      glob: "*.dart"
+      run: flutter analyze
+    test:
+      root: music_tag_editor/
+      glob: "{lib,test}/**/*.dart"
+      run: flutter test

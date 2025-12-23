@@ -1,5 +1,0 @@
-C:\Users\joaom\Documents\GitHub\Music\all_tests.txt
-C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\test
-C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\build\unit_test_assets
-C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\build\native_assets\flutter-tester
-C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\test\widget_test.dart

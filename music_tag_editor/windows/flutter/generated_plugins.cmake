@@ -3,15 +3,19 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  cloud_firestore
+  connectivity_plus
+  firebase_auth
   firebase_core
-  media_kit_libs_windows_video
-  media_kit_video
-  url_launcher_windows
-  volume_controller
+  flutter_secure_storage_windows
+  local_auth_windows
+  permission_handler_windows
+  screen_retriever_windows
+  system_tray
+  window_manager
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
-  metadata_god
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)
