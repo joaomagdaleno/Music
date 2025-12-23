@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
@@ -30,7 +30,7 @@ jobs:
           cache-key: flutter-3.35.7
 
       - name: Cache Pub dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.pub-cache
           key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
@@ -46,7 +46,7 @@ jobs:
         run: flutter test --coverage
 
       - name: Upload Coverage Report
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: coverage-report
           path: music_tag_editor/coverage/lcov.info
@@ -62,20 +62,20 @@ jobs:
     steps:
       - name: Checkout (para branches)
         if: "!startsWith(github.ref, 'refs/tags/')"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           fetch-tags: true
 
       - name: Checkout (para tags)
         if: "startsWith(github.ref, 'refs/tags/')"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
       - name: Cache Flutter SDK (Windows)
         if: runner.os == 'Windows'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: C:\\hostedtoolcache\\windows\\flutter\\stable-3.35.7-x64
           key: flutter-win-3.35.7
@@ -89,7 +89,7 @@ jobs:
 
       - name: Cache Pub dependencies (Windows)
         if: runner.os == 'Windows'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: C:\\Users\\runneradmin\\AppData\\Local\\Pub\\Cache
           key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
@@ -98,7 +98,7 @@ jobs:
 
       - name: Cache Pub dependencies (Linux)
         if: runner.os == 'Linux'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.pub-cache
           key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
@@ -114,7 +114,7 @@ jobs:
 
       - name: Restore Gradle cache (Pull Request)
         if: runner.os == 'Linux' && github.event_name == 'pull_request'
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.gradle/caches/jars-*
@@ -127,7 +127,7 @@ jobs:
 
       - name: Save/Restore Gradle cache (Push)
         if: runner.os == 'Linux' && github.event_name != 'pull_request'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches/jars-*
@@ -207,7 +207,7 @@ jobs:
 
       - name: Upload Installer Artifact
         if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: windows-installer
           path: Output/MusicTagEditorSetup-*.exe
@@ -239,7 +239,7 @@ jobs:
 
       - name: Upload APK Artifact
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: android-apk
           path: music_tag_editor/build/app/outputs/flutter-apk/music_tag_editor-v*.apk
@@ -257,7 +257,7 @@ jobs:
 
       - name: Upload Linux Artifact
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: linux-release
           path: music_tag_editor/music_tag_editor-linux-v*.tar.gz
@@ -270,7 +270,7 @@ jobs:
       contents: write
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           path: artifacts
 
