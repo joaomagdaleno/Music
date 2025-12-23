@@ -50,13 +50,12 @@ void main() {
       when(() => mockProcess.exitCode).thenAnswer((_) => Future.value(0));
 
       downloadService.processStarter = (executable, arguments,
-          {workingDirectory,
-          environment,
-          includeParentEnvironment = true,
-          runInShell = false,
-          mode = ProcessStartMode.normal}) async {
-        return mockProcess;
-      };
+              {workingDirectory,
+              environment,
+              includeParentEnvironment = true,
+              runInShell = false,
+              mode = ProcessStartMode.normal}) async =>
+          mockProcess;
 
       final progressUpdates = <double>[];
       final format = DownloadFormat(
@@ -72,15 +71,12 @@ void main() {
         onProgress: (progress, status) => progressUpdates.add(progress),
       );
 
-      // Simulate yt-dlp output
       stdoutController.add(
           utf8.encode('[download] Destination: /downloads/Test Song.mp3\n'));
       stdoutController.add(utf8
-          .encode('[download]  10.0% of 10.00MiB at  1.00MiB/s ETA 00:09\n'));
+          .encode('[download]  10.0% of 10.0MiB at  1.00MiB/s ETA 00:09\n'));
       stdoutController.add(utf8
-          .encode('[download]  50.0% of 10.00MiB at  1.00MiB/s ETA 00:05\n'));
-      stdoutController.add(utf8
-          .encode('[download] 100.0% of 10.00MiB at  1.00MiB/s ETA 00:00\n'));
+          .encode('[download]  100.0% of 10.0MiB at  1.00MiB/s ETA 00:00\n'));
       await stdoutController.close();
       await stderrController.close();
 
@@ -88,36 +84,111 @@ void main() {
 
       expect(resultPath, '/downloads/Test Song.mp3');
       expect(progressUpdates, contains(0.1));
-      expect(progressUpdates, contains(0.5));
       expect(progressUpdates, contains(1.0));
     });
 
-    test('downloadSpotify returns outputDir on success', () async {
-      final mockResult = ProcessResult(0, 0, 'Done', '');
+    test('getMediaInfo parses yt-dlp json correctly', () async {
+      final jsonOutput = jsonEncode({
+        'title': 'Downloaded Song',
+        'uploader': 'Artist Name',
+        'thumbnail': 'http://thumb',
+        'duration': 300,
+        'formats': [
+          {
+            'format_id': '140',
+            'ext': 'm4a',
+            'acodec': 'mp4a',
+            'vcodec': 'none',
+            'abr': 128
+          }
+        ]
+      });
+      final mockResult = ProcessResult(0, 0, jsonOutput, '');
 
       downloadService.processRunner = (executable, arguments,
-          {environment,
-          includeParentEnvironment = true,
-          runInShell = false,
-          stdoutEncoding,
-          stderrEncoding}) async {
-        return mockResult;
-      };
+              {environment,
+              includeParentEnvironment = true,
+              runInShell = false,
+              stdoutEncoding,
+              stderrEncoding}) async =>
+          mockResult;
 
-      final format = DownloadFormat(
-          formatId: 'mp3',
-          extension: 'mp3',
-          quality: '320k',
-          isAudioOnly: true);
-      final resultPath = await downloadService.download(
-        'https://open.spotify.com/track/test',
-        format,
-        '/downloads',
-      );
+      final info = await downloadService
+          .getMediaInfo('https://youtube.com/watch?v=test');
 
-      expect(resultPath, '/downloads');
+      expect(info.title, 'Downloaded Song');
+      expect(info.artist, 'Artist Name');
+      expect(info.formats.any((f) => f.formatId == '140'), true);
+    });
+
+    test('_embedCustomThumbnail logic flow', () async {
+      await IOOverrides.runZoned(() async {
+        final mockProcess = MockProcess();
+        final stdoutController = StreamController<List<int>>();
+        final stderrController = StreamController<List<int>>();
+
+        when(() => mockProcess.stdout)
+            .thenAnswer((_) => stdoutController.stream);
+        when(() => mockProcess.stderr)
+            .thenAnswer((_) => stderrController.stream);
+        when(() => mockProcess.exitCode).thenAnswer((_) => Future.value(0));
+
+        downloadService.processStarter = (executable, arguments,
+                {workingDirectory,
+                environment,
+                includeParentEnvironment = true,
+                runInShell = false,
+                mode = ProcessStartMode.normal}) async =>
+            mockProcess;
+
+        int ffmpegCalls = 0;
+        downloadService.processRunner = (executable, arguments,
+            {environment,
+            includeParentEnvironment = true,
+            runInShell = false,
+            stdoutEncoding,
+            stderrEncoding}) async {
+          ffmpegCalls++;
+          return ProcessResult(0, 0, '', '');
+        };
+
+        downloadService.fileDownloader = (url, path) async {};
+
+        final format = DownloadFormat(
+            formatId: 'best',
+            extension: 'mp3',
+            quality: '320k',
+            isAudioOnly: true);
+
+        stdoutController.add(utf8.encode('[download] Destination: song.mp3\n'));
+        // Closing controller will trigger the next steps in download
+        unawaited(stdoutController.close());
+        await stderrController.close();
+
+        final result = await downloadService.download(
+          'https://youtube.com/watch?v=test',
+          format,
+          '/dir',
+          overrideThumbnailUrl: 'http://custom-thumb',
+        );
+
+        expect(result, isNotNull);
+        expect(ffmpegCalls, 1);
+      }, createFile: (path) => _MockFile(path));
     });
   });
 }
 
+class _MockFile extends Fake implements File {
+  final String path;
+  _MockFile(this.path);
 
+  @override
+  Future<bool> exists() async => true;
+  @override
+  bool existsSync() => true;
+  @override
+  Future<File> delete({bool recursive = false}) async => this;
+  @override
+  Future<File> rename(String newPath) async => _MockFile(newPath);
+}

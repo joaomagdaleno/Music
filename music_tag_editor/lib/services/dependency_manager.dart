@@ -14,6 +14,11 @@ class DependencyManager {
   @visibleForTesting
   static set instance(DependencyManager mock) => _instance = mock;
 
+  @visibleForTesting
+  DependencyManager.forTesting()
+      : _initialized = true,
+        _binDir = 'test_bin';
+
   DependencyManager._();
 
   late String _binDir;
