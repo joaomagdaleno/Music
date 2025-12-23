@@ -14,9 +14,25 @@ class FirebaseSyncService {
 
   FirebaseSyncService._internal();
 
-  final _firestore = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
-  final _db = DatabaseService.instance;
+  FirebaseFirestore? _firestoreOverride;
+  FirebaseAuth? _authOverride;
+  DatabaseService? _dbOverride;
+
+  FirebaseFirestore get _firestore =>
+      _firestoreOverride ?? FirebaseFirestore.instance;
+  FirebaseAuth get _auth => _authOverride ?? FirebaseAuth.instance;
+  DatabaseService get _db => _dbOverride ?? DatabaseService.instance;
+
+  @visibleForTesting
+  void setDependencies({
+    FirebaseFirestore? firestore,
+    FirebaseAuth? auth,
+    DatabaseService? db,
+  }) {
+    _firestoreOverride = firestore;
+    _authOverride = auth;
+    _dbOverride = db;
+  }
 
   bool _syncEnabled = false;
   User? _currentUser;
