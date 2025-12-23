@@ -69,3 +69,7 @@ windows/runner/Profile/
 # Linux
 linux/flutter/generated_plugins.cmake
 linux/flutter/ephemeral/
+
+# Firebase options
+music_tag_editor/lib/firebase_options.dart
+music_tag_editor/android/app/google-services.json
