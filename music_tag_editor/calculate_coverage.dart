@@ -3,6 +3,7 @@ import 'dart:io';
 void main() {
   final lcovFile = File('coverage/lcov.info');
   if (!lcovFile.existsSync()) {
+    // ignore: avoid_print
     print(
         'Error: coverage/lcov.info not found. Run "flutter test --coverage" first.');
     exit(1);
@@ -34,6 +35,7 @@ void main() {
     }
   }
 
+  // ignore: avoid_print
   print('Coverage Breakdown (Top 20 files by size):');
   final sortedFiles = fileCoverage.entries.toList()
     ..sort((a, b) => b.value[1].compareTo(a.value[1]));
@@ -42,11 +44,15 @@ void main() {
     final covered = entry.value[0];
     final total = entry.value[1];
     final pct = (covered / total * 100).toStringAsFixed(1);
+    // ignore: avoid_print
     print('${entry.key}: $pct% ($covered/$total)');
   }
 
   final totalPct = (coveredLines / totalLines * 100).toStringAsFixed(2);
+  // ignore: avoid_print
   print('\nTotal Lines: $totalLines');
+  // ignore: avoid_print
   print('Covered Lines: $coveredLines');
+  // ignore: avoid_print
   print('Total Coverage: $totalPct%');
 }

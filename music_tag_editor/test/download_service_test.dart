@@ -161,16 +161,18 @@ void main() {
             isAudioOnly: true);
 
         stdoutController.add(utf8.encode('[download] Destination: song.mp3\n'));
-        // Closing controller will trigger the next steps in download
-        unawaited(stdoutController.close());
-        await stderrController.close();
 
-        final result = await downloadService.download(
+        final downloadFuture = downloadService.download(
           'https://youtube.com/watch?v=test',
           format,
           '/dir',
           overrideThumbnailUrl: 'http://custom-thumb',
         );
+
+        await stdoutController.close();
+        await stderrController.close();
+
+        final result = await downloadFuture;
 
         expect(result, isNotNull);
         expect(ffmpegCalls, 1);
@@ -180,6 +182,7 @@ void main() {
 }
 
 class _MockFile extends Fake implements File {
+  @override
   final String path;
   _MockFile(this.path);
 

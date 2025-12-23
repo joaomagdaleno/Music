@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 
 void main() {
@@ -38,6 +37,7 @@ void main() {
 }
 
 class _MockFile extends Fake implements File {
+  @override
   final String path;
   final bool existsResult;
   _MockFile(this.path, {this.existsResult = true});
