@@ -1,3 +1,6 @@
+@Tags(['widget'])
+library;
+
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';

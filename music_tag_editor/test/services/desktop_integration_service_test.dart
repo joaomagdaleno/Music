@@ -1,3 +1,6 @@
+@Tags(['unit'])
+library;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/services/desktop_integration_service.dart';

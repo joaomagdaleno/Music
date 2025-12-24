@@ -1,3 +1,6 @@
+@Tags(['widget'])
+library;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -94,7 +97,7 @@ void main() {
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
     await tester.pump(const Duration(milliseconds: 100)); // Finish init
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 200));
 
     expect(find.byType(TextField), findsOneWidget);
     expect(find.text('Busca de Músicas'), findsOneWidget);
@@ -130,14 +133,14 @@ void main() {
     });
 
     await tester.pumpWidget(const MaterialApp(home: SearchPage()));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 200));
 
     await tester.enterText(find.byType(TextField), 'test query');
     await tester.tap(find.text('Buscar'));
     await tester.pump();
 
     // Verify loading/searching state if needed, but here we just wait for results
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 200));
 
     expect(find.text('Song 1'), findsOneWidget);
     expect(find.text('Artist 1 • '),
@@ -168,13 +171,13 @@ void main() {
         .thenAnswer((_) async => Future.value());
 
     await tester.pumpWidget(const MaterialApp(home: SearchPage()));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 200));
 
     await tester.enterText(find.byType(TextField), 'test');
     await tester.tap(find.text('Buscar'));
     await tester.pump();
     await tester.pump(); // For status updates
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 200));
 
     await tester.tap(find.byIcon(Icons.play_arrow));
     await tester.pump(); // Start animation
@@ -197,11 +200,11 @@ void main() {
     });
 
     await tester.pumpWidget(const MaterialApp(home: SearchPage()));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 200));
 
     await tester.enterText(find.byType(TextField), 'unknown');
     await tester.tap(find.text('Buscar'));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 200));
 
     expect(find.text('Nenhuma música encontrada nas plataformas selecionadas.'),
         findsOneWidget);
@@ -213,11 +216,9 @@ void main() {
         .thenThrow('Init failed');
 
     await tester.pumpWidget(const MaterialApp(home: SearchPage()));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 200));
 
     expect(find.textContaining('Erro ao inicializar: Init failed'),
         findsOneWidget);
   });
 }
-
-

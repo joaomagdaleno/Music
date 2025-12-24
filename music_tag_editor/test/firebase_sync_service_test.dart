@@ -1,3 +1,6 @@
+@Tags(['unit'])
+library;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -1,3 +1,6 @@
+@Tags(['widget'])
+library;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:music_tag_editor/models/music_track.dart';

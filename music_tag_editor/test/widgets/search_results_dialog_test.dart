@@ -1,3 +1,6 @@
+@Tags(['widget'])
+library;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:music_tag_editor/widgets/search_results_dialog.dart';
@@ -37,7 +40,7 @@ void main() {
     ));
 
     await tester.tap(find.text('Show Dialog'));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
 
     expect(find.byType(SearchResultsDialog), findsOneWidget);
     expect(find.text('Track 1'), findsOneWidget);
@@ -46,7 +49,7 @@ void main() {
 
     // Select the first item
     await tester.tap(find.text('Track 1'));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
 
     expect(find.byType(SearchResultsDialog), findsNothing);
     expect(selectedRecording, equals(recordings[0]));
@@ -71,10 +74,10 @@ void main() {
     ));
 
     await tester.tap(find.text('Show Dialog'));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
 
     await tester.tap(find.text('Cancel'));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
 
     expect(find.byType(SearchResultsDialog), findsNothing);
     expect(result, isNull);

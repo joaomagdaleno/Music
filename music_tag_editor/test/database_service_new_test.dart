@@ -1,3 +1,6 @@
+@Tags(['unit'])
+library;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/views/settings_page.dart'; // For FilenameFormat
