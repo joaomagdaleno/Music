@@ -23,6 +23,7 @@ import 'services/connectivity_service.dart';
 import 'services/security_service.dart';
 import 'services/auth_service.dart';
 import 'views/login_page.dart';
+import 'services/persona_service.dart';
 import 'models/music_track.dart';
 
 void main() async {
@@ -32,6 +33,7 @@ void main() async {
   await SecurityService.instance.init();
   AuthService.instance.init();
   await ConnectivityService.instance.init();
+  await PersonaService.instance.init();
 
   await ThemeService.instance.init();
   await DesktopIntegrationService.instance.init();

@@ -44,7 +44,7 @@ When the exception was thrown, this was the stack:
 
 Handler: "onTap"
 Recognizer:
-  TapGestureRecognizer#64aef
+  TapGestureRecognizer#ed6e5
 ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
 ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
 The following _TypeError was thrown running a test:
@@ -70,11 +70,11 @@ The following message was thrown:
 Multiple exceptions (2) were detected during the running of the current test, and at least one was
 unexpected.
 ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-00:04 +1 -1: SettingsPage Persona Selection Switching persona updates PersonaService [E]
+00:03 +1 -1: SettingsPage Persona Selection Switching persona updates PersonaService [E]
   Test failed. See exception logs above.
   The test description was: Switching persona updates PersonaService
   
-00:04 +1 -1: AppShell Persona Integration AppShell shows Home navigation for Listener persona
+00:03 +1 -1: AppShell Persona Integration AppShell shows Home navigation for Listener persona
 ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
 The following _TypeError was thrown building MiniPlayer(dirty):
 type 'Null' is not a subtype of type 'AudioPlayer'
@@ -343,11 +343,11 @@ This is considered an error condition because it indicates that there is content
 seen. If the content is legitimately bigger than the available space, consider clipping it with a
 ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
 like a ListView.
-The specific RenderFlex in question is: RenderFlex#762b3 relayoutBoundary=up1 OVERFLOWING:
+The specific RenderFlex in question is: RenderFlex#9cd6f relayoutBoundary=up1 OVERFLOWING:
   needs compositing
-  creator: Column ÔåÉ KeyedSubtree-[GlobalKey#7199d] ÔåÉ _BodyBuilder ÔåÉ MediaQuery ÔåÉ
+  creator: Column ÔåÉ KeyedSubtree-[GlobalKey#f6b96] ÔåÉ _BodyBuilder ÔåÉ MediaQuery ÔåÉ
     LayoutId-[<_ScaffoldSlot.body>] ÔåÉ CustomMultiChildLayout ÔåÉ _ActionsScope ÔåÉ Actions ÔåÉ
-    AnimatedBuilder ÔåÉ DefaultTextStyle ÔåÉ AnimatedDefaultTextStyle ÔåÉ _InkFeatures-[GlobalKey#d137d ink
+    AnimatedBuilder ÔåÉ DefaultTextStyle ÔåÉ AnimatedDefaultTextStyle ÔåÉ _InkFeatures-[GlobalKey#921f7 ink
     renderer] ÔåÉ Ôï»
   parentData: offset=Offset(0.0, 0.0); id=_ScaffoldSlot.body (can use size)
   constraints: BoxConstraints(0.0<=w<=800.0, 0.0<=h<=600.0)

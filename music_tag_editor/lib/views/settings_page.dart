@@ -6,6 +6,9 @@ import 'package:music_tag_editor/views/backup_view.dart';
 import 'package:music_tag_editor/services/firebase_sync_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
 
+import 'package:music_tag_editor/services/persona_service.dart';
+import 'package:music_tag_editor/models/persona_model.dart';
+
 // Enum to represent the different filename formats.
 enum FilenameFormat {
   artistTitle,
@@ -79,6 +82,79 @@ class _SettingsPageState extends State<SettingsPage> {
     // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('$count músicas foram polidas e organizadas!')),
+    );
+  }
+
+  Widget _buildPersonaSection() {
+    return ListenableBuilder(
+      listenable: PersonaService.instance,
+      builder: (context, child) {
+        final activePersona = PersonaService.instance.activePersona;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Modo do Sistema (Persona)',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Escolha o "sistema" que deseja utilizar. Cada persona transforma a aplicação para um objetivo específico.',
+              style: TextStyle(color: Colors.grey, fontSize: 13),
+            ),
+            const SizedBox(height: 16),
+            _buildPersonaTile(
+              AppPersona.listener,
+              'O Ouvinte',
+              'Sistema de Streaming e Playlists (Estilo Spotify).',
+              Icons.headphones,
+              activePersona == AppPersona.listener,
+            ),
+            _buildPersonaTile(
+              AppPersona.librarian,
+              'O Bibliotecário',
+              'Sistema de Gerenciamento de Arquivos e Tags (Estilo Mp3Tag).',
+              Icons.folder_shared,
+              activePersona == AppPersona.librarian,
+            ),
+            _buildPersonaTile(
+              AppPersona.host,
+              'O Anfitrião',
+              'Sistema de Entretenimento e Karaoke (Estilo Party Station).',
+              Icons.celebration,
+              activePersona == AppPersona.host,
+            ),
+            _buildPersonaTile(
+              AppPersona.artisan,
+              'O Artesão',
+              'Sistema de Utilitários e Segurança (Estilo Audio Lab).',
+              Icons.architecture,
+              activePersona == AppPersona.artisan,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildPersonaTile(AppPersona persona, String title, String subtitle,
+      IconData icon, bool isSelected) {
+    return Card(
+      elevation: isSelected ? 4 : 1,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: isSelected
+            ? BorderSide(color: Theme.of(context).colorScheme.primary, width: 2)
+            : BorderSide.none,
+      ),
+      child: ListTile(
+        leading: Icon(icon,
+            color: isSelected ? Theme.of(context).colorScheme.primary : null),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        subtitle: Text(subtitle),
+        selected: isSelected,
+        onTap: () => PersonaService.instance.setPersona(persona),
+      ),
     );
   }
 
@@ -251,6 +327,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    _buildPersonaSection(),
+                    const Divider(height: 32),
                     Text(
                       'Filename Format',
                       style: Theme.of(context).textTheme.titleLarge,
