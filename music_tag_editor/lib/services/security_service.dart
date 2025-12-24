@@ -7,9 +7,8 @@ import 'package:meta/meta.dart';
 class SecurityService {
   static SecurityService _instance = SecurityService._internal();
   static SecurityService get instance => _instance;
-
-  @visibleForTesting
-  static set instance(SecurityService mock) => _instance = mock;
+  static set instance(SecurityService value) => _instance = value;
+  static void resetInstance() => _instance = SecurityService._internal();
 
   SecurityService._internal();
 

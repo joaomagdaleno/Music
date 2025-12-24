@@ -12,7 +12,11 @@ import 'widgets/edit_track_dialog_test.dart' as edit;
 import 'widgets/search_results_dialog_test.dart' as search;
 // learning_choice_unit_test is already unit tagged and fast
 
+import 'test_helper.dart';
+
 void main() {
+  setUp(() async => await setupMusicTest());
+
   // Run all widget tests in a single process
   cast.main();
   duo.main();

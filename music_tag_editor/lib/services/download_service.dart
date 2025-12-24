@@ -139,9 +139,8 @@ class MediaInfo {
 class DownloadService {
   static DownloadService _instance = DownloadService._internal();
   static DownloadService get instance => _instance;
-
-  @visibleForTesting
-  static set instance(DownloadService mock) => _instance = mock;
+  static set instance(DownloadService value) => _instance = value;
+  static void resetInstance() => _instance = DownloadService._internal();
 
   DownloadService._internal();
 
@@ -514,4 +513,3 @@ class DownloadService {
     return outputDir;
   }
 }
-

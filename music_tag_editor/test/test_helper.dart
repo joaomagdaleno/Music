@@ -32,31 +32,23 @@ Future<void> setupMusicTestEnvironment() async {
 }
 
 Future<void> setupMusicTest() async {
-  // Reset all singletons with mocks or fresh instances
-  AuthService.instance = MockAuthService();
-  DatabaseService.instance = MockDatabaseService();
-  ThemeService.instance = MockThemeService();
-  ConnectivityService.instance = MockConnectivityService();
-  PlaybackService.instance = MockPlaybackService();
-  SecurityService.instance = MockSecurityService();
-  DependencyManager.instance = MockDependencyManager();
-  SearchService.instance = MockSearchService();
-  DownloadService.instance = MockDownloadService();
+  // Reset ALL core singletons to their REAL internal state
+  AuthService.resetInstance();
+  DatabaseService.resetInstance();
+  ThemeService.resetInstance();
+  ConnectivityService.resetInstance();
+  PlaybackService.resetInstance();
+  SecurityService.resetInstance();
+  DependencyManager.resetInstance();
+  SearchService.resetInstance();
+  DownloadService.resetInstance();
 
-  // Add common stubs to prevent "Null is not a subtype of Future" errors
-  when(() => AuthService.instance.logout()).thenAnswer((_) async {});
-
-  when(() => SecurityService.instance.logout()).thenAnswer((_) async {});
-  when(() => SecurityService.instance.init()).thenAnswer((_) async {});
-
-  when(() => ThemeService.instance.init()).thenAnswer((_) async {});
-  when(() => ThemeService.instance.setAutoMode()).thenAnswer((_) async {});
-
-  when(() => DatabaseService.instance.initForTesting(any()))
-      .thenAnswer((_) async {});
-
-  when(() => DependencyManager.instance.ensureDependencies(
-      onProgress: any(named: 'onProgress'))).thenAnswer((_) async {});
-
-  when(() => PlaybackService.instance.init()).thenAnswer((_) async {});
+  // Register common fakes only once
+  if (!_registerFallbackValueWasCalled) {
+    registerFallbackValue(Uri.parse('http://test.com'));
+    registerFallbackValue(const Color(0xFF000000));
+    _registerFallbackValueWasCalled = true;
+  }
 }
+
+bool _registerFallbackValueWasCalled = false;

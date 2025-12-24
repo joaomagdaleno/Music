@@ -12,9 +12,8 @@ class DependencyManager {
       : _client = client ?? http.Client();
   static DependencyManager? _instance;
   static DependencyManager get instance => _instance ??= DependencyManager._();
-
-  @visibleForTesting
-  static set instance(DependencyManager mock) => _instance = mock;
+  static set instance(DependencyManager value) => _instance = value;
+  static void resetInstance() => _instance = null;
 
   final http.Client _client;
 

@@ -19,9 +19,8 @@ enum SearchStatus {
 class SearchService {
   static SearchService _instance = SearchService._internal();
   static SearchService get instance => _instance;
-
-  @visibleForTesting
-  static set instance(SearchService mock) => _instance = mock;
+  static set instance(SearchService value) => _instance = value;
+  static void resetInstance() => _instance = SearchService._internal();
 
   SearchService._internal();
 
@@ -504,5 +503,3 @@ class SearchService {
     }
   }
 }
-
-

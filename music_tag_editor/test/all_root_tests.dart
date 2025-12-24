@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
+import 'dart:ui';
 
 import 'auth_service_test.dart' as auth;
 import 'backup_service_test.dart' as backup;
@@ -23,7 +24,35 @@ import 'search_service_test.dart' as search;
 import 'security_service_test.dart' as security;
 import 'theme_service_test.dart' as theme;
 
+import 'package:mocktail/mocktail.dart';
+import 'package:music_tag_editor/services/auth_service.dart';
+import 'package:music_tag_editor/services/database_service.dart';
+import 'package:music_tag_editor/services/theme_service.dart';
+import 'package:music_tag_editor/services/connectivity_service.dart';
+import 'package:music_tag_editor/services/playback_service.dart';
+import 'package:music_tag_editor/services/security_service.dart';
+import 'package:music_tag_editor/services/dependency_manager.dart';
+import 'package:music_tag_editor/services/search_service.dart';
+import 'package:music_tag_editor/services/download_service.dart';
+
+Future<void> _setupMusicTest() async {
+  AuthService.resetInstance();
+  DatabaseService.resetInstance();
+  ThemeService.resetInstance();
+  ConnectivityService.resetInstance();
+  PlaybackService.resetInstance();
+  SecurityService.resetInstance();
+  DependencyManager.resetInstance();
+  SearchService.resetInstance();
+  DownloadService.resetInstance();
+
+  registerFallbackValue(Uri.parse('http://test.com'));
+  registerFallbackValue(const Color(0xFF000000));
+}
+
 void main() {
+  setUp(() async => await _setupMusicTest());
+
   auth.main();
   backup.main();
   connectivity.main();

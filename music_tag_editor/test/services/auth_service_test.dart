@@ -6,6 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
 import 'package:music_tag_editor/services/security_service.dart';
+import '../test_helper.dart';
 
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
