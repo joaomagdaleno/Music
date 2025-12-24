@@ -5,10 +5,11 @@ import 'dart:math';
 import 'package:meta/meta.dart';
 
 class SecurityService {
-  static SecurityService _instance = SecurityService._internal();
-  static SecurityService get instance => _instance;
+  static SecurityService? _instance;
+  static SecurityService get instance =>
+      _instance ??= SecurityService._internal();
   static set instance(SecurityService value) => _instance = value;
-  static void resetInstance() => _instance = SecurityService._internal();
+  static void resetInstance() => _instance = null;
 
   SecurityService._internal();
 

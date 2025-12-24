@@ -15,9 +15,8 @@ class PlaybackService {
   static PlaybackService? _instance;
   static PlaybackService get instance =>
       _instance ??= PlaybackService._internal();
-
-  @visibleForTesting
-  static set instance(PlaybackService mock) => _instance = mock;
+  static set instance(PlaybackService value) => _instance = value;
+  static void resetInstance() => _instance = null;
 
   @visibleForTesting
   factory PlaybackService.forTesting(

@@ -8,9 +8,8 @@ import 'package:music_tag_editor/services/database_service.dart';
 class FirebaseSyncService {
   static FirebaseSyncService _instance = FirebaseSyncService._internal();
   static FirebaseSyncService get instance => _instance;
-
-  @visibleForTesting
-  static set instance(FirebaseSyncService mock) => _instance = mock;
+  static set instance(FirebaseSyncService value) => _instance = value;
+  static void resetInstance() => _instance = FirebaseSyncService._internal();
 
   FirebaseSyncService._internal();
 
@@ -232,4 +231,3 @@ class FirebaseSyncService {
     _authSubscription?.cancel();
   }
 }
-

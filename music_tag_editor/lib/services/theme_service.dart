@@ -3,14 +3,14 @@ import 'package:palette_generator_master/palette_generator_master.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 
 class ThemeService extends ChangeNotifier {
-  static ThemeService _instance = ThemeService._internal();
-  static ThemeService get instance => _instance;
+  static ThemeService? _instance;
+  static ThemeService get instance => _instance ??= ThemeService._internal();
 
   @visibleForTesting
   static set instance(ThemeService mock) => _instance = mock;
 
   @visibleForTesting
-  static void resetInstance() => _instance = ThemeService._internal();
+  static void resetInstance() => _instance = null;
 
   ThemeService._internal();
 

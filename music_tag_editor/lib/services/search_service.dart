@@ -17,10 +17,10 @@ enum SearchStatus {
 
 /// Service for searching music across platforms.
 class SearchService {
-  static SearchService _instance = SearchService._internal();
-  static SearchService get instance => _instance;
+  static SearchService? _instance;
+  static SearchService get instance => _instance ??= SearchService._internal();
   static set instance(SearchService value) => _instance = value;
-  static void resetInstance() => _instance = SearchService._internal();
+  static void resetInstance() => _instance = null;
 
   SearchService._internal();
 

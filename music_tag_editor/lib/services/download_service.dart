@@ -137,10 +137,11 @@ class MediaInfo {
 
 /// Service for downloading music from various platforms.
 class DownloadService {
-  static DownloadService _instance = DownloadService._internal();
-  static DownloadService get instance => _instance;
+  static DownloadService? _instance;
+  static DownloadService get instance =>
+      _instance ??= DownloadService._internal();
   static set instance(DownloadService value) => _instance = value;
-  static void resetInstance() => _instance = DownloadService._internal();
+  static void resetInstance() => _instance = null;
 
   DownloadService._internal();
 

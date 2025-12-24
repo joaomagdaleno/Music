@@ -10,7 +10,7 @@ class AuthService extends ChangeNotifier {
   static set instance(AuthService mock) => _instance = mock;
 
   @visibleForTesting
-  static void resetInstance() => _instance = AuthService._internal();
+  static void resetInstance() => _instance = null;
 
   AuthService._internal({FirebaseAuth? auth, SecurityService? securityService})
       : _auth = auth ?? FirebaseAuth.instance,

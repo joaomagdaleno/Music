@@ -3,14 +3,15 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 class ConnectivityService {
-  static ConnectivityService _instance = ConnectivityService._internal();
-  static ConnectivityService get instance => _instance;
+  static ConnectivityService? _instance;
+  static ConnectivityService get instance =>
+      _instance ??= ConnectivityService._internal();
 
   @visibleForTesting
   static set instance(ConnectivityService mock) => _instance = mock;
 
   @visibleForTesting
-  static void resetInstance() => _instance = ConnectivityService._internal();
+  static void resetInstance() => _instance = null;
 
   final Connectivity _connectivity;
   final ValueNotifier<bool> isOffline = ValueNotifier<bool>(false);
