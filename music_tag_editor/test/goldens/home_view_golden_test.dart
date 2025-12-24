@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:async';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
@@ -17,6 +20,7 @@ import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/firebase_sync_service.dart';
 import 'package:music_tag_editor/services/local_duo_service.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
+import 'golden_helper.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
 
@@ -125,6 +129,15 @@ void main() {
             }
           ]);
       when(() => mockPlayback.currentTrack).thenReturn(null);
+      when(() => mockTheme.primaryColor).thenReturn(Colors.blue);
+      when(() => mockTheme.customColor).thenReturn(null);
+      when(() => mockTheme.useCustomColor).thenReturn(false);
+
+      HttpOverrides.global = MockHttpOverrides();
+    });
+
+    tearDown(() {
+      HttpOverrides.global = null;
     });
 
     testGoldens('HomeView initial state', (tester) async {

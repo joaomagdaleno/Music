@@ -1,9 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:mocktail/mocktail.dart';
+import 'golden_helper.dart';
 import 'package:music_tag_editor/views/disco_mode_view.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
+import 'package:music_tag_editor/services/download_service.dart'; // For SearchResult
 import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
 import 'package:music_tag_editor/services/connectivity_service.dart';
@@ -13,7 +16,6 @@ import 'package:music_tag_editor/services/equalizer_service.dart';
 import 'package:music_tag_editor/services/desktop_integration_service.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/firebase_sync_service.dart';
 import 'package:music_tag_editor/services/local_duo_service.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
@@ -102,10 +104,22 @@ void main() {
       final isOffline = ValueNotifier<bool>(false);
       when(() => mockConnectivity.isOffline).thenReturn(isOffline);
       when(() => mockDuo.role).thenReturn(DuoRole.none);
-      when(() => mockPlayback.currentTrack).thenReturn({
-        'title': 'Disco Party',
-        'artist': 'Flashy Artist',
-      });
+      when(() => mockPlayback.currentTrack).thenReturn(SearchResult(
+        id: '1',
+        title: 'Disco Party',
+        artist: 'Flashy Artist',
+        url: 'https://example.com/disco.mp3',
+        platform: MediaPlatform.unknown,
+      ));
+      when(() => mockTheme.primaryColor).thenReturn(Colors.purple);
+      when(() => mockTheme.customColor).thenReturn(null);
+      when(() => mockTheme.useCustomColor).thenReturn(false);
+
+      HttpOverrides.global = MockHttpOverrides();
+    });
+
+    tearDown(() {
+      HttpOverrides.global = null;
     });
 
     testGoldens('DiscoModeView initial state', (tester) async {
@@ -120,8 +134,11 @@ void main() {
 
       await tester.pumpDeviceBuilder(builder);
       // Use a single pump instead of pumpAndSettle to avoid animation issues in goldens
-      await tester.pump(const Duration(milliseconds: 100));
-      await screenMatchesGolden(tester, 'disco_mode_view_initial');
+      await screenMatchesGolden(
+        tester,
+        'disco_mode_view_initial',
+        customPump: (tester) => tester.pump(const Duration(milliseconds: 100)),
+      );
     });
   });
 }
