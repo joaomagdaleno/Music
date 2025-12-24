@@ -122,11 +122,15 @@ void main() {
       'DiscoModeView initial state',
       fileName: 'disco_mode_view_initial',
       builder: () => GoldenTestGroup(
+        columns: 1,
         children: [
           GoldenTestScenario(
             name: 'phone',
-            constraints: const BoxConstraints(maxWidth: 375, maxHeight: 1500),
-            child: const DiscoModeView(),
+            constraints: BoxConstraints.tight(const Size(400, 1000)),
+            child: MediaQuery(
+              data: const MediaQueryData(size: Size(400, 1000)),
+              child: const DiscoModeView(),
+            ),
           ),
         ],
       ),
