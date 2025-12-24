@@ -29,6 +29,9 @@ class DatabaseService {
   @visibleForTesting
   static set instance(DatabaseService mock) => _instance = mock;
 
+  @visibleForTesting
+  static void resetInstance() => _instance = DatabaseService._internal();
+
   DatabaseService._internal();
 
   @visibleForTesting

@@ -9,6 +9,9 @@ class ConnectivityService {
   @visibleForTesting
   static set instance(ConnectivityService mock) => _instance = mock;
 
+  @visibleForTesting
+  static void resetInstance() => _instance = ConnectivityService._internal();
+
   final Connectivity _connectivity;
   final ValueNotifier<bool> isOffline = ValueNotifier<bool>(false);
   StreamSubscription<List<ConnectivityResult>>? _subscription;

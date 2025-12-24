@@ -32,6 +32,8 @@ void main() {
       auth: mockAuth,
       securityService: mockSecurityService,
     );
+
+    when(() => mockSecurityService.logout()).thenAnswer((_) async {});
   });
 
   group('AuthService', () {

@@ -9,6 +9,9 @@ class ThemeService extends ChangeNotifier {
   @visibleForTesting
   static set instance(ThemeService mock) => _instance = mock;
 
+  @visibleForTesting
+  static void resetInstance() => _instance = ThemeService._internal();
+
   ThemeService._internal();
 
   Color _primaryColor = Colors.blue;
@@ -100,4 +103,3 @@ class ThemeService extends ChangeNotifier {
     }
   }
 }
-

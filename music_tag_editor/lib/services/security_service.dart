@@ -96,4 +96,9 @@ class SecurityService {
     await _storage.write(
         key: 'vault_password_hash', value: _hashPassword(newPassword));
   }
+
+  Future<void> logout() async {
+    _masterKey = null;
+    await _storage.deleteAll();
+  }
 }

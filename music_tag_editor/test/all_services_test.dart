@@ -15,7 +15,11 @@ import 'services/hifi_download_service_test.dart' as hifi;
 import 'services/listening_stats_service_test.dart' as stats;
 import 'services/theme_service_test.dart' as theme;
 
+import 'test_helper.dart';
+
 void main() {
+  setUp(() async => await setupMusicTest());
+
   // Run all service tests in a single process
   auth.main();
   cast.main();
