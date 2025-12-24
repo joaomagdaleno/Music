@@ -36,8 +36,12 @@ class AggregatedMetadata {
 
 /// Multi-source metadata aggregator with voting and fallback logic.
 class MetadataAggregatorService {
-  static final MetadataAggregatorService instance =
+  static MetadataAggregatorService _instance =
       MetadataAggregatorService._internal();
+  static MetadataAggregatorService get instance => _instance;
+
+  @visibleForTesting
+  static set instance(MetadataAggregatorService mock) => _instance = mock;
   MetadataAggregatorService._internal();
 
   MusicBrainzApi _musicBrainz = MusicBrainzApi();
@@ -349,5 +353,3 @@ class MetadataAggregatorService {
     return (lyricsEndMs - durationMs).abs() < 30000;
   }
 }
-
-

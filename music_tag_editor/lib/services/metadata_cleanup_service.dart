@@ -11,8 +11,9 @@ class MetadataCleanupService {
 
   MetadataCleanupService._internal();
 
-  final _db = DatabaseService.instance;
-  final _aggregator = MetadataAggregatorService.instance;
+  DatabaseService get _db => DatabaseService.instance;
+  MetadataAggregatorService get _aggregator =>
+      MetadataAggregatorService.instance;
 
   Future<int> cleanupLibrary() async {
     final tracks = await _db.getTracks();
@@ -104,4 +105,3 @@ class MetadataCleanupService {
     return output.trim();
   }
 }
-

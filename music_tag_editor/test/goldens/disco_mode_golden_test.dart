@@ -125,7 +125,7 @@ void main() {
         children: [
           GoldenTestScenario(
             name: 'phone',
-            constraints: const BoxConstraints(maxWidth: 375, maxHeight: 667),
+            constraints: const BoxConstraints(maxWidth: 375, maxHeight: 1500),
             child: const DiscoModeView(),
           ),
         ],
