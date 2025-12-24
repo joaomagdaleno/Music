@@ -53,7 +53,7 @@ void main() {
   group('DownloadPage', () {
     testWidgets('renders initial UI', (tester) async {
       await tester.pumpWidget(createTestWidget());
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 200));
 
       expect(find.text('Download de Música'), findsOneWidget);
       expect(find.byType(TextField), findsOneWidget);
@@ -61,7 +61,7 @@ void main() {
 
     testWidgets('shows paste button', (tester) async {
       await tester.pumpWidget(createTestWidget());
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 200));
 
       expect(find.byIcon(Icons.paste), findsOneWidget);
     });
@@ -83,12 +83,12 @@ void main() {
               ));
 
       await tester.pumpWidget(createTestWidget());
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 200));
 
       await tester.enterText(
           find.byType(TextField), 'https://youtube.com/watch?v=test');
       await tester.tap(find.text('Buscar Info'));
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 200));
 
       expect(
           find.byType(DropdownButtonFormField<DownloadFormat>), findsOneWidget);
@@ -96,14 +96,14 @@ void main() {
 
     testWidgets('button bar is present', (tester) async {
       await tester.pumpWidget(createTestWidget());
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 200));
 
       expect(find.text('Buscar Info'), findsOneWidget);
     });
 
     testWidgets('url input accepts text', (tester) async {
       await tester.pumpWidget(createTestWidget());
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 200));
 
       await tester.enterText(
           find.byType(TextField).first, 'https://youtube.com/watch?v=test');
@@ -114,7 +114,7 @@ void main() {
 
     testWidgets('scaffold renders', (tester) async {
       await tester.pumpWidget(createTestWidget());
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 200));
 
       expect(find.byType(Scaffold), findsOneWidget);
     });

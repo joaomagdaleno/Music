@@ -176,7 +176,7 @@ void main() {
       await tester.enterText(emailField, 'test@test.com');
       await tester.enterText(passwordField, 'password');
       await tester.tap(find.text('Entrar'));
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 200));
 
       verify(() => mockAuth.login('test@test.com', 'password')).called(1);
     });

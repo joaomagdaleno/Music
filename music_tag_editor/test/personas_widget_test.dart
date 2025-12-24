@@ -137,14 +137,14 @@ void main() {
 
     testWidgets('Switching persona updates PersonaService', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest(const SettingsPage()));
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 200));
 
       // Default persona is listener
       expect(PersonaService.instance.activePersona, AppPersona.listener);
 
       // Tap on Librarian
       await tester.tap(find.text('O Bibliotecário'));
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 200));
 
       expect(PersonaService.instance.activePersona, AppPersona.librarian);
 

@@ -168,7 +168,7 @@ void main() {
 
     await tester.pumpWidget(const MusicTagEditorApp());
     await tester.pump();
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 200));
 
     expect(find.byType(AppShell), findsOneWidget);
     expect(find.byType(LoginPage), findsNothing);
