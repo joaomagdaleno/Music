@@ -6,10 +6,11 @@ import 'package:music_tag_editor/services/database_service.dart';
 
 /// Service for syncing library data to Firebase Cloud.
 class FirebaseSyncService {
-  static FirebaseSyncService _instance = FirebaseSyncService._internal();
-  static FirebaseSyncService get instance => _instance;
+  static FirebaseSyncService? _instance;
+  static FirebaseSyncService get instance =>
+      _instance ??= FirebaseSyncService._internal();
   static set instance(FirebaseSyncService value) => _instance = value;
-  static void resetInstance() => _instance = FirebaseSyncService._internal();
+  static void resetInstance() => _instance = null;
 
   FirebaseSyncService._internal();
 
