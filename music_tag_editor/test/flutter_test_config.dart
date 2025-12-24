@@ -22,7 +22,7 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
 class _TolerantComparator extends LocalFileComparator {
   final double threshold;
 
-  _TolerantComparator(Uri basedir, this.threshold) : super(basedir);
+  _TolerantComparator(super.basedir, this.threshold);
 
   @override
   Future<bool> compare(Uint8List imageBytes, Uri golden) async {
