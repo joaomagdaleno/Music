@@ -22,6 +22,22 @@ android {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
+    // Load signing data if present
+    val keystoreProps = java.util.Properties()
+    val keystorePropsFile = rootProject.file("key.properties")
+    if (keystorePropsFile.exists()) {
+        keystoreProps.load(java.io.FileInputStream(keystorePropsFile))
+    }
+
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProps.getProperty("keyAlias")
+            keyPassword = keystoreProps.getProperty("keyPassword")
+            storeFile = if (keystoreProps.getProperty("storeFile") != null) file(keystoreProps.getProperty("storeFile")) else null
+            storePassword = keystoreProps.getProperty("storePassword")
+        }
+    }
+
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.music_player"
@@ -35,9 +51,10 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
+            minifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 }
