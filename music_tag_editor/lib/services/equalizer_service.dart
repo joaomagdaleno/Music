@@ -9,12 +9,18 @@ class EqualizerService {
   @visibleForTesting
   static set instance(EqualizerService mock) => _instance = mock;
 
-  EqualizerService._internal();
-
-  final AndroidEqualizer _equalizer = AndroidEqualizer();
+  final AndroidEqualizer _equalizer;
   bool _isAutoMode = true;
   bool _normalizationEnabled = false;
   double _targetLoudness = -14.0; // LUFS (Spotify standard)
+
+  EqualizerService._internal({AndroidEqualizer? equalizer})
+      : _equalizer = equalizer ?? AndroidEqualizer();
+
+  @visibleForTesting
+  factory EqualizerService.test({AndroidEqualizer? equalizer}) {
+    return EqualizerService._internal(equalizer: equalizer);
+  }
 
   AndroidEqualizer get equalizer => _equalizer;
   bool get isAutoMode => _isAutoMode;

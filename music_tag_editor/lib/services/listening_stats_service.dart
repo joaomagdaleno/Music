@@ -26,9 +26,15 @@ class ListeningStatsService {
   @visibleForTesting
   static set instance(ListeningStatsService mock) => _instance = mock;
 
-  ListeningStatsService._internal();
+  ListeningStatsService._internal({DatabaseService? db})
+      : _db = db ?? DatabaseService.instance;
 
-  final DatabaseService _db = DatabaseService.instance;
+  @visibleForTesting
+  factory ListeningStatsService.test({DatabaseService? db}) {
+    return ListeningStatsService._internal(db: db);
+  }
+
+  final DatabaseService _db;
 
   Future<ListeningStats> getStats() async {
     final tracks = await _db.getTracks();

@@ -9,11 +9,17 @@ class ConnectivityService {
   @visibleForTesting
   static set instance(ConnectivityService mock) => _instance = mock;
 
-  ConnectivityService._internal();
-
-  final Connectivity _connectivity = Connectivity();
+  final Connectivity _connectivity;
   final ValueNotifier<bool> isOffline = ValueNotifier<bool>(false);
   StreamSubscription<List<ConnectivityResult>>? _subscription;
+
+  ConnectivityService._internal({Connectivity? connectivity})
+      : _connectivity = connectivity ?? Connectivity();
+
+  @visibleForTesting
+  factory ConnectivityService.test({Connectivity? connectivity}) {
+    return ConnectivityService._internal(connectivity: connectivity);
+  }
 
   Future<void> init() async {
     final results = await _connectivity.checkConnectivity();

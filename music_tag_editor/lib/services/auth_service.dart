@@ -9,9 +9,18 @@ class AuthService extends ChangeNotifier {
   @visibleForTesting
   static set instance(AuthService mock) => _instance = mock;
 
-  AuthService._internal();
+  AuthService._internal({FirebaseAuth? auth, SecurityService? securityService})
+      : _auth = auth ?? FirebaseAuth.instance,
+        _securityService = securityService ?? SecurityService.instance;
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  @visibleForTesting
+  factory AuthService.test(
+      {FirebaseAuth? auth, SecurityService? securityService}) {
+    return AuthService._internal(auth: auth, securityService: securityService);
+  }
+
+  final FirebaseAuth _auth;
+  final SecurityService _securityService;
   User? _user;
 
   User? get user => _user;
@@ -71,11 +80,10 @@ class AuthService extends ChangeNotifier {
 
     // 2. Reset the vault password in SecurityService
     try {
-      await SecurityService.instance.resetVaultPassword(newVaultPassword);
+      await _securityService.resetVaultPassword(newVaultPassword);
       return true;
     } catch (e) {
       return false;
     }
   }
 }
-

@@ -7,6 +7,10 @@ class GeniusApi {
   // For now, we use public search endpoint.
   static const String _baseUrl = 'https://api.genius.com';
 
+  final http.Client _client;
+
+  GeniusApi({http.Client? client}) : _client = client ?? http.Client();
+
   Future<Map<String, dynamic>?> searchSong(String title, String artist) async {
     try {
       // Genius public search (limited without token)
@@ -15,7 +19,7 @@ class GeniusApi {
 
       // Without access token, we can only get limited results
       // For full support, user would need to provide their own token
-      final response = await http.get(url, headers: {
+      final response = await _client.get(url, headers: {
         'User-Agent': 'MusicTagEditor/1.0',
       });
 

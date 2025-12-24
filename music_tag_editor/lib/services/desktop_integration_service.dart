@@ -11,16 +11,36 @@ class DesktopIntegrationService {
   @visibleForTesting
   static set instance(DesktopIntegrationService mock) => _instance = mock;
 
-  DesktopIntegrationService._internal();
+  final SystemTray _systemTray;
+  final WindowManager _windowManager;
+  final Menu Function() _menuFactory;
 
-  final SystemTray _systemTray = SystemTray();
+  DesktopIntegrationService._internal(
+      {SystemTray? systemTray,
+      WindowManager? manager,
+      Menu Function()? menuFactory})
+      : _systemTray = systemTray ?? SystemTray(),
+        _windowManager = manager ?? windowManager,
+        _menuFactory = menuFactory ?? (() => Menu());
+
+  @visibleForTesting
+  factory DesktopIntegrationService.test(
+      {SystemTray? systemTray,
+      WindowManager? windowManager,
+      Menu Function()? menuFactory}) {
+    return DesktopIntegrationService._internal(
+      systemTray: systemTray,
+      manager: windowManager,
+      menuFactory: menuFactory,
+    );
+  }
 
   Future<void> init() async {
     if (!Platform.isWindows && !Platform.isLinux && !Platform.isMacOS) {
       return;
     }
 
-    await windowManager.ensureInitialized();
+    await _windowManager.ensureInitialized();
 
     const String iconPath = 'windows/runner/resources/app_icon.ico';
 
@@ -30,15 +50,15 @@ class DesktopIntegrationService {
     );
 
     // Create the menu
-    final Menu menu = Menu();
+    final Menu menu = _menuFactory();
     await menu.buildFrom([
       MenuItemLabel(
-          label: 'Mostrar', onClicked: (menuItem) => windowManager.show()),
+          label: 'Mostrar', onClicked: (menuItem) => _windowManager.show()),
       MenuItemLabel(
-          label: 'Ocultar', onClicked: (menuItem) => windowManager.hide()),
+          label: 'Ocultar', onClicked: (menuItem) => _windowManager.hide()),
       MenuSeparator(),
       MenuItemLabel(
-          label: 'Sair', onClicked: (menuItem) => windowManager.close()),
+          label: 'Sair', onClicked: (menuItem) => _windowManager.close()),
     ]);
 
     await _systemTray.setContextMenu(menu);
@@ -47,12 +67,12 @@ class DesktopIntegrationService {
     _systemTray.registerSystemTrayEventHandler((eventName) {
       if (eventName == 'leftClick' || eventName == 'click') {
         Platform.isWindows
-            ? windowManager.show()
+            ? _windowManager.show()
             : _systemTray.popUpContextMenu();
       } else if (eventName == 'rightClick') {
         Platform.isWindows
             ? _systemTray.popUpContextMenu()
-            : windowManager.show();
+            : _windowManager.show();
       }
     });
 
@@ -65,13 +85,13 @@ class DesktopIntegrationService {
       titleBarStyle: TitleBarStyle.normal,
     );
 
-    await windowManager.waitUntilReadyToShow(windowOptions, () async {
-      await windowManager.show();
-      await windowManager.focus();
+    await _windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await _windowManager.show();
+      await _windowManager.focus();
     });
   }
 
   Future<void> hideToTray() async {
-    await windowManager.hide();
+    await _windowManager.hide();
   }
 }

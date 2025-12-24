@@ -4,6 +4,10 @@ import 'dart:convert';
 class MusicBrainzApi {
   static const String _baseUrl = 'https://musicbrainz.org/ws/2/';
 
+  final http.Client _client;
+
+  MusicBrainzApi({http.Client? client}) : _client = client ?? http.Client();
+
   Future<Map<String, dynamic>> searchRecording({
     required String artist,
     required String title,
@@ -12,7 +16,7 @@ class MusicBrainzApi {
     final query = 'artist:"$artist" AND recording:"$title"';
     final url = Uri.parse('${_baseUrl}recording?query=$query&fmt=json');
 
-    final response = await http.get(
+    final response = await _client.get(
       url,
       // MusicBrainz API requires a User-Agent header.
       headers: {
@@ -32,7 +36,7 @@ class MusicBrainzApi {
     final query = 'artist:"$artist" AND recording:"$title"';
     final url = Uri.parse('${_baseUrl}recording?query=$query&fmt=json');
 
-    final response = await http.get(
+    final response = await _client.get(
       url,
       headers: {
         'User-Agent': 'MusicTagEditor/1.0.0 ( your-email@example.com )'

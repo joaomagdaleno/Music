@@ -8,13 +8,17 @@ class DiscogsApi {
   static const String _baseUrl = 'https://api.discogs.com';
   static const String _userAgent = 'MusicTagEditor/1.0';
 
+  final http.Client _client;
+
+  DiscogsApi({http.Client? client}) : _client = client ?? http.Client();
+
   Future<Map<String, dynamic>?> searchRelease(
       String title, String artist) async {
     try {
       final query = Uri.encodeComponent('$artist $title');
       final url = Uri.parse('$_baseUrl/database/search?q=$query&type=release');
 
-      final response = await http.get(url, headers: {
+      final response = await _client.get(url, headers: {
         'User-Agent': _userAgent,
       });
 

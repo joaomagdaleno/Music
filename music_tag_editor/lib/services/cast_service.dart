@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_static/shelf_static.dart';
+import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
 
 class CastDevice {
   final String name;
@@ -23,8 +25,28 @@ class CastDevice {
 }
 
 class CastService {
-  static final CastService instance = CastService._internal();
-  CastService._internal();
+  static CastService? _instance;
+  static CastService get instance => _instance ??= CastService._internal();
+
+  @visibleForTesting
+  static set instance(CastService mock) => _instance = mock;
+
+  final http.Client _client;
+  final NetworkInfo _networkInfo;
+
+  CastService._internal({http.Client? client, NetworkInfo? networkInfo})
+      : _client = client ?? http.Client(),
+        _networkInfo = networkInfo ?? NetworkInfo();
+
+  @visibleForTesting
+  factory CastService.test({http.Client? client, NetworkInfo? networkInfo}) {
+    return CastService._internal(client: client, networkInfo: networkInfo);
+  }
+
+  @visibleForTesting
+  static void reset() {
+    _instance = null;
+  }
 
   final List<CastDevice> _devices = [];
   final StreamController<List<CastDevice>> _devicesController =
@@ -47,7 +69,7 @@ class CastService {
           final datagram = socket.receive();
           if (datagram != null) {
             final msg = utf8.decode(datagram.data);
-            _parseSsdpResponse(msg);
+            parseSsdpResponse(msg);
           }
         }
       });
@@ -71,7 +93,8 @@ class CastService {
     }
   }
 
-  Future<void> _parseSsdpResponse(String response) async {
+  @visibleForTesting
+  Future<void> parseSsdpResponse(String response) async {
     final lines = response.split('\r\n');
     String? location;
     for (var line in lines) {
@@ -83,7 +106,7 @@ class CastService {
 
     if (location != null) {
       try {
-        final resp = await http.get(Uri.parse(location));
+        final resp = await _client.get(Uri.parse(location));
         if (resp.statusCode == 200) {
           final xml = resp.body;
           final nameReg = RegExp(r'<friendlyName>(.*?)</friendlyName>');
@@ -128,8 +151,7 @@ class CastService {
   Future<void> castFile(String filePath, CastDevice device) async {
     await stopCasting();
 
-    final info = NetworkInfo();
-    _localIp = await info.getWifiIP() ?? '127.0.0.1';
+    _localIp = await _networkInfo.getWifiIP() ?? '127.0.0.1';
 
     final handler = createStaticHandler(File(filePath).parent.path,
         defaultDocument: File(filePath).uri.pathSegments.last);
@@ -163,7 +185,7 @@ class CastService {
         </s:Body>
       </s:Envelope>
     ''';
-    await _sendSoap(controlUrl, 'SetAVTransportURI', body);
+    await sendSoap(controlUrl, 'SetAVTransportURI', body);
   }
 
   Future<void> _play(String controlUrl) async {
@@ -178,12 +200,13 @@ class CastService {
         </s:Body>
       </s:Envelope>
     ''';
-    await _sendSoap(controlUrl, 'Play', body);
+    await sendSoap(controlUrl, 'Play', body);
   }
 
-  Future<void> _sendSoap(String url, String action, String body) async {
+  @visibleForTesting
+  Future<void> sendSoap(String url, String action, String body) async {
     try {
-      await http.post(
+      await _client.post(
         Uri.parse(url),
         headers: {
           'Content-Type': 'text/xml; charset="utf-8"',
@@ -195,9 +218,4 @@ class CastService {
       debugPrint('SOAP Error ($action): $e');
     }
   }
-}
-
-// Stub for debugPrint if not imported (it's in foundation.dart or material.dart)
-void debugPrint(String message) {
-  // Use log or foundation debugPrint in real apps
 }

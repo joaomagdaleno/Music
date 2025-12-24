@@ -3,17 +3,24 @@ import 'dart:convert';
 
 class LastFmApi {
   static const String _baseUrl = 'http://ws.audioscrobbler.com/2.0/';
-  static const String _apiKey = 'YOUR_LASTFM_API_KEY'; // Placeholder
+  final http.Client _client;
+  final String _apiKey;
+
+  LastFmApi({http.Client? client, String apiKey = 'YOUR_LASTFM_API_KEY'})
+      : _client = client ?? http.Client(),
+        _apiKey = apiKey;
 
   Future<Map<String, dynamic>?> getTrackInfo(
       String title, String artist) async {
-    if (_apiKey == 'YOUR_LASTFM_API_KEY') { return null; }
+    if (_apiKey == 'YOUR_LASTFM_API_KEY') {
+      return null;
+    }
 
     final url = Uri.parse(
         '$_baseUrl?method=track.getInfo&api_key=$_apiKey&artist=${Uri.encodeComponent(artist)}&track=${Uri.encodeComponent(title)}&format=json');
 
     try {
-      final response = await http.get(url);
+      final response = await _client.get(url);
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['track'] != null) {

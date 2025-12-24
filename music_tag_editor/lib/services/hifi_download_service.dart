@@ -11,9 +11,15 @@ class HiFiDownloadService {
   @visibleForTesting
   static set instance(HiFiDownloadService mock) => _instance = mock;
 
-  HiFiDownloadService._internal();
+  HiFiDownloadService._internal({SlavArtApi? slavArt})
+      : _slavArt = slavArt ?? SlavArtApi();
 
-  final SlavArtApi _slavArt = SlavArtApi();
+  @visibleForTesting
+  factory HiFiDownloadService.test({SlavArtApi? slavArt}) {
+    return HiFiDownloadService._internal(slavArt: slavArt);
+  }
+
+  final SlavArtApi _slavArt;
   bool preferHiFi = true;
 
   /// Search for a track across all Hi-Fi platforms.
