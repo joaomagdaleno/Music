@@ -2,6 +2,19 @@ name: Build and Package
 
 on:
   workflow_call:
+    secrets:
+      FIREBASE_OPTIONS_DART:
+        required: false
+      GOOGLE_SERVICES_JSON:
+        required: false
+      UPLOAD_SIGNING_KEY:
+        required: false
+      UPLOAD_STORE_PASSWORD:
+        required: false
+      UPLOAD_KEY_PASSWORD:
+        required: false
+      UPLOAD_KEY_ALIAS:
+        required: false
 
 jobs:
   build:

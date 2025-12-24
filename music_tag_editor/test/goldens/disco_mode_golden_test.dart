@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:alchemist/alchemist.dart';
 import 'package:mocktail/mocktail.dart';
 import 'golden_helper.dart';
 import 'package:music_tag_editor/views/disco_mode_view.dart';
@@ -66,10 +66,6 @@ void main() {
     late MockLocalDuoService mockDuo;
     late MockLyricsService mockLyrics;
 
-    setUpAll(() async {
-      await loadAppFonts();
-    });
-
     setUp(() {
       mockPlayback = MockPlaybackService();
       mockTheme = MockThemeService();
@@ -122,23 +118,21 @@ void main() {
       HttpOverrides.global = null;
     });
 
-    testGoldens('DiscoModeView initial state', (tester) async {
-      final builder = DeviceBuilder()
-        ..overrideDevicesForAllScenarios(devices: [
-          Device.phone,
-        ])
-        ..addScenario(
-          name: 'initial',
-          widget: const DiscoModeView(),
-        );
-
-      await tester.pumpDeviceBuilder(builder);
-      // Use a single pump instead of pumpAndSettle to avoid animation issues in goldens
-      await screenMatchesGolden(
-        tester,
-        'disco_mode_view_initial',
-        customPump: (tester) => tester.pump(const Duration(milliseconds: 100)),
-      );
-    });
+    goldenTest(
+      'DiscoModeView initial state',
+      fileName: 'disco_mode_view_initial',
+      builder: () => GoldenTestGroup(
+        children: [
+          GoldenTestScenario(
+            name: 'phone',
+            constraints: const BoxConstraints(maxWidth: 375, maxHeight: 667),
+            child: const DiscoModeView(),
+          ),
+        ],
+      ),
+      pumpBeforeTest: (tester) async {
+        await tester.pump(const Duration(milliseconds: 100));
+      },
+    );
   });
 }

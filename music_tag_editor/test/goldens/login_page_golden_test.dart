@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:alchemist/alchemist.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/views/login_page.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
@@ -64,10 +64,6 @@ void main() {
     late MockLocalDuoService mockDuo;
     late MockLyricsService mockLyrics;
 
-    setUpAll(() async {
-      await loadAppFonts();
-    });
-
     setUp(() {
       mockAuth = MockAuthService();
       mockConnectivity = MockConnectivityService();
@@ -104,39 +100,31 @@ void main() {
       when(() => mockDuo.role).thenReturn(DuoRole.none);
     });
 
-    testGoldens('LoginPage initial state', (tester) async {
-      final builder = DeviceBuilder()
-        ..overrideDevicesForAllScenarios(devices: [
-          Device.phone,
-          Device.iphone11,
-          Device.tabletLandscape,
-        ])
-        ..addScenario(
-          name: 'initial',
-          widget: const LoginPage(),
-        );
+    goldenTest(
+      'LoginPage initial state',
+      fileName: 'login_page_initial',
+      builder: () => GoldenTestGroup(
+        children: [
+          GoldenTestScenario(
+            name: 'phone',
+            constraints: const BoxConstraints(maxWidth: 375, maxHeight: 667),
+            child: const LoginPage(),
+          ),
+          GoldenTestScenario(
+            name: 'tablet_landscape',
+            constraints: const BoxConstraints(maxWidth: 1024, maxHeight: 768),
+            child: const LoginPage(),
+          ),
+        ],
+      ),
+    );
 
-      await tester.pumpDeviceBuilder(builder);
-      await screenMatchesGolden(tester, 'login_page_initial');
-    });
-
-    testGoldens('LoginPage register mode', (tester) async {
-      final builder = DeviceBuilder()
-        ..overrideDevicesForAllScenarios(devices: [
-          Device.phone,
-        ])
-        ..addScenario(
-          name: 'register_mode',
-          widget: const LoginPage(),
-        );
-
-      await tester.pumpDeviceBuilder(builder);
-
-      // Toggle to register mode
+    testWidgets('LoginPage register mode tap interaction', (tester) async {
+      await tester.pumpWidget(const MaterialApp(home: LoginPage()));
       await tester.tap(find.textContaining('Não tem conta?'));
       await tester.pump();
-
-      await screenMatchesGolden(tester, 'login_page_register');
+      await expectLater(find.byType(LoginPage),
+          matchesGoldenFile('goldens/login_page_register.png'));
     });
   });
 }

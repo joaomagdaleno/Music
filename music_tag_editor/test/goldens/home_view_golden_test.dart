@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:alchemist/alchemist.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/views/home_view.dart';
 import 'package:music_tag_editor/services/database_service.dart';
@@ -65,10 +65,6 @@ void main() {
     late MockFirebaseSyncService mockSync;
     late MockLocalDuoService mockDuo;
     late MockLyricsService mockLyrics;
-
-    setUpAll(() async {
-      await loadAppFonts();
-    });
 
     setUp(() {
       mockDb = MockDatabaseService();
@@ -138,19 +134,23 @@ void main() {
       HttpOverrides.global = null;
     });
 
-    testGoldens('HomeView initial state', (tester) async {
-      final builder = DeviceBuilder()
-        ..overrideDevicesForAllScenarios(devices: [
-          Device.phone,
-          Device.tabletLandscape,
-        ])
-        ..addScenario(
-          name: 'initial',
-          widget: const HomeView(),
-        );
-
-      await tester.pumpDeviceBuilder(builder);
-      await screenMatchesGolden(tester, 'home_view_initial');
-    });
+    goldenTest(
+      'HomeView initial state',
+      fileName: 'home_view_initial',
+      builder: () => GoldenTestGroup(
+        children: [
+          GoldenTestScenario(
+            name: 'phone',
+            constraints: const BoxConstraints(maxWidth: 375, maxHeight: 667),
+            child: const HomeView(),
+          ),
+          GoldenTestScenario(
+            name: 'tablet_landscape',
+            constraints: const BoxConstraints(maxWidth: 1024, maxHeight: 768),
+            child: const HomeView(),
+          ),
+        ],
+      ),
+    );
   });
 }
