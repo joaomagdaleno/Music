@@ -112,31 +112,32 @@ class _DiscoModeViewState extends State<DiscoModeView>
                   final value = entry.value;
                   final hue = (i / _bars.length * 60) +
                       (primaryColor.computeLuminance() * 180);
-                  return AnimatedContainer(
-                    duration: const Duration(milliseconds: 80),
-                    width: MediaQuery.of(context).size.width / _bars.length - 4,
-                    height: value * 180,
-                    margin: const EdgeInsets.symmetric(horizontal: 2),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                        colors: [
-                          HSLColor.fromAHSL(1, hue, 0.8, 0.5).toColor(),
-                          HSLColor.fromAHSL(1, hue + 30, 0.9, 0.6).toColor(),
+                  return Expanded(
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 80),
+                      height: value * 180,
+                      margin: const EdgeInsets.symmetric(horizontal: 2),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [
+                            HSLColor.fromAHSL(1, hue, 0.8, 0.5).toColor(),
+                            HSLColor.fromAHSL(1, hue + 30, 0.9, 0.6).toColor(),
+                          ],
+                        ),
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(4),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: HSLColor.fromAHSL(1, hue, 0.8, 0.5)
+                                .toColor()
+                                .withValues(alpha: 0.5),
+                            blurRadius: 8,
+                          ),
                         ],
                       ),
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(4),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: HSLColor.fromAHSL(1, hue, 0.8, 0.5)
-                              .toColor()
-                              .withValues(alpha: 0.5),
-                          blurRadius: 8,
-                        ),
-                      ],
                     ),
                   );
                 }).toList(),
@@ -249,4 +250,3 @@ class _DiscoModeViewState extends State<DiscoModeView>
     );
   }
 }
-

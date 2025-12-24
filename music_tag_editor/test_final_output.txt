@@ -1,0 +1,46 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/persona_service_test.dart
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/persona_service_test.dart: PersonaService Unit Tests Default persona should be listener
+00:00 +1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/persona_service_test.dart: PersonaService Unit Tests setPersona updates activePersona and notifies listeners
+00:02 +2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart: SettingsPage Persona Selection Displays all persona options in SettingsPage
+00:04 +3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart: SettingsPage Persona Selection Switching persona updates PersonaService
+00:05 +4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart: AppShell Persona Integration AppShell shows Home navigation for Listener persona
+00:06 +5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart: AppShell Persona Integration AppShell shows Tags navigation for Librarian persona
+00:06 +6: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart: AppShell Persona Integration AppShell shows Disco and Karaoke for Host persona
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞═════════════════════════════════════════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 104 pixels on the right.
+
+The relevant error-causing widget was:
+  Row
+  Row:file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/lib/views/disco_mode_view.dart:107:22
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in the rendering with a yellow and
+black striped pattern. This is usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget) to force the children of the
+RenderFlex to fit within the available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that there is content that cannot be
+seen. If the content is legitimately bigger than the available space, consider clipping it with a
+ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
+like a ListView.
+The specific RenderFlex in question is: RenderFlex#ef620 OVERFLOWING:
+  creator: Row ← Positioned ← Stack ← Listener ← _GestureSemantics ← RawGestureDetector ←
+    GestureDetector ← KeyedSubtree-[GlobalKey#87462] ← _BodyBuilder ← MediaQuery ←
+    LayoutId-[<_ScaffoldSlot.body>] ← CustomMultiChildLayout ← ⋯
+  parentData: right=0.0; bottom=0.0; left=0.0; height=200.0; offset=Offset(0.0, 400.0) (can use size)
+  constraints: BoxConstraints(w=696.5, h=200.0)
+  size: Size(696.5, 200.0)
+  direction: horizontal
+  mainAxisAlignment: spaceEvenly
+  mainAxisSize: max
+  crossAxisAlignment: end
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:07 +6 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart: AppShell Persona Integration AppShell shows Disco and Karaoke for Host persona [E]
+  Test failed. See exception logs above.
+  The test description was: AppShell shows Disco and Karaoke for Host persona
+  
+00:07 +6 -1: Some tests failed.
