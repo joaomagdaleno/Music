@@ -73,7 +73,15 @@ void main() {
 
       final ytDlpJson = jsonEncode({
         'assets': [
-          {'name': 'yt-dlp.exe', 'browser_download_url': 'http://yt-dlp-url'}
+          {'name': 'yt-dlp.exe', 'browser_download_url': 'http://yt-dlp-url'},
+          {
+            'name': 'yt-dlp_linux',
+            'browser_download_url': 'http://yt-dlp-url-linux'
+          },
+          {
+            'name': 'yt-dlp_macos',
+            'browser_download_url': 'http://yt-dlp-url-macos'
+          },
         ]
       });
       final spotDtlJson = jsonEncode({
@@ -81,6 +89,14 @@ void main() {
           {
             'name': 'spotdl-win32-x64.exe',
             'browser_download_url': 'http://spotdl-url'
+          },
+          {
+            'name': 'spotdl-linux-x64',
+            'browser_download_url': 'http://spotdl-url-linux'
+          },
+          {
+            'name': 'spotdl-darwin-x64',
+            'browser_download_url': 'http://spotdl-url-macos'
           }
         ]
       });
