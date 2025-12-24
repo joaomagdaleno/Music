@@ -15,7 +15,7 @@ class BackupService {
 
   BackupService._internal();
 
-  final _db = DatabaseService.instance;
+  DatabaseService get _db => DatabaseService.instance;
 
   /// Create a backup of all user data.
   Future<String> createBackup(String destinationPath) async {

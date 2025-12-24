@@ -33,7 +33,12 @@ void main() {
     DownloadService.instance = mockDownload;
     DependencyManager.instance = mockDeps;
 
-    when(() => mockDeps.ensureDependencies()).thenAnswer((_) async => {});
+    when(() => mockDownload.detectPlatform(any()))
+        .thenReturn(MediaPlatform.unknown);
+
+    when(() =>
+            mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
+        .thenAnswer((_) async => {});
     when(() => mockDeps.areAllDependenciesInstalled())
         .thenAnswer((_) async => true);
   });
@@ -58,11 +63,32 @@ void main() {
       expect(find.byIcon(Icons.paste), findsOneWidget);
     });
 
-    testWidgets('has dropdown selector', (tester) async {
+    testWidgets('has dropdown selector after search', (tester) async {
+      when(() => mockDownload.getMediaInfo(any()))
+          .thenAnswer((_) async => MediaInfo(
+                title: 'Test Song',
+                artist: 'Test Artist',
+                platform: MediaPlatform.youtube,
+                formats: [
+                  DownloadFormat(
+                    formatId: '1',
+                    extension: 'mp3',
+                    quality: '320kbps',
+                    isAudioOnly: true,
+                  ),
+                ],
+              ));
+
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.byType(DropdownButton), findsWidgets);
+      await tester.enterText(
+          find.byType(TextField), 'https://youtube.com/watch?v=test');
+      await tester.tap(find.text('Buscar Info'));
+      await tester.pumpAndSettle();
+
+      expect(
+          find.byType(DropdownButtonFormField<DownloadFormat>), findsOneWidget);
     });
 
     testWidgets('button bar is present', (tester) async {
