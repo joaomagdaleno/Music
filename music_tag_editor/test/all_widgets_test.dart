@@ -6,10 +6,10 @@ library;
 import 'package:flutter_test/flutter_test.dart';
 
 // Import all widget tests
-import 'widgets/cast_dialog_test.dart' as cast;
-import 'widgets/duo_matching_dialog_test.dart' as duo;
-import 'widgets/edit_track_dialog_test.dart' as edit;
-import 'widgets/search_results_dialog_test.dart' as search;
+import 'widgets/cast_dialog.suite.dart' as cast;
+import 'widgets/duo_matching_dialog.suite.dart' as duo;
+import 'widgets/edit_track_dialog.suite.dart' as edit;
+import 'widgets/search_results_dialog.suite.dart' as search;
 // learning_choice_unit_test is already unit tagged and fast
 
 import 'test_helper.dart';
