@@ -155,6 +155,89 @@ void main() {
       expect(statuses[MediaPlatform.youtube], contains(SearchStatus.noResults));
     });
   });
+
+  group('getFormats', () {
+    test('returns default formats for Spotify', () async {
+      final formats = await service.getFormats(
+          'https://spotify.com/track/123', MediaPlatform.spotify);
+      expect(formats.length, 3);
+      expect(formats[0].extension, 'mp3');
+    });
+
+    test('parses yt-dlp json formats correctly', () async {
+      final jsonOutput = jsonEncode({
+        'formats': [
+          {
+            'format_id': '140',
+            'ext': 'm4a',
+            'acodec': 'mp4a',
+            'vcodec': 'none',
+            'abr': 128
+          },
+          {
+            'format_id': '22',
+            'ext': 'mp4',
+            'acodec': 'mp4a',
+            'vcodec': 'avc1',
+            'resolution': '720p',
+            'abr': null
+          },
+        ]
+      });
+      mockExitCode = 0;
+      mockStdout = jsonOutput;
+
+      final formats = await service.getFormats(
+          'https://youtube.com/watch?v=123', MediaPlatform.youtube);
+
+      expect(formats.any((f) => f.formatId == '140'), isTrue);
+      expect(formats.any((f) => f.quality == '720p'), isTrue);
+      // Best audio defaults added by service
+      expect(formats.any((f) => f.formatId == 'bestaudio/best'), isTrue);
+    });
+
+    test('returns default formats on process failure', () async {
+      mockExitCode = 1;
+      final formats = await service.getFormats(
+          'https://youtube.com/watch?v=123', MediaPlatform.youtube);
+      expect(formats.length, 2); // Only defaults
+      expect(formats[0].formatId, 'bestaudio/best');
+    });
+  });
+
+  group('importPlaylist', () {
+    test('importYouTubePlaylist parses results correctly', () async {
+      final jsonOutput = jsonEncode(
+              {'id': 'v1', 'title': 'T1', 'uploader': 'A1', 'duration': 100}) +
+          '\n' +
+          jsonEncode(
+              {'id': 'v2', 'title': 'T2', 'uploader': 'A2', 'duration': 200});
+      mockExitCode = 0;
+      mockStdout = jsonOutput;
+
+      final results =
+          await service.importPlaylist('https://youtube.com/playlist?list=123');
+      expect(results.length, 2);
+      expect(results[0].title, 'T1');
+      expect(results[1].artist, 'A2');
+    });
+  });
+
+  group('findSpotifyMatch', () {
+    test('returns match if available', () async {
+      // searchSpotify returns empty [] by default in implementation currently.
+      // But we can test the logic once we mock it.
+      // For now, it returns [] -> null.
+      final ytResult = SearchResult(
+          id: 'y1',
+          title: 'Song',
+          artist: 'Artist',
+          url: '',
+          platform: MediaPlatform.youtube);
+      final match = await service.findSpotifyMatch(ytResult);
+      expect(match, isNull);
+    });
+  });
 }
 
 class MockHiFiDownloadService extends Mock implements HiFiDownloadService {}

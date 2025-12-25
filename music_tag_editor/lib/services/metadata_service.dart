@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:meta/meta.dart';
 import 'package:dart_tags/dart_tags.dart';
 
 /// Service for reading and writing audio metadata using pure Dart.
@@ -29,7 +30,7 @@ class MetadataService {
       'title': tag.tags['title'] ?? tag.tags['TIT2'] ?? 'Unknown Title',
       'artist': tag.tags['artist'] ?? tag.tags['TPE1'] ?? 'Unknown Artist',
       'album': tag.tags['album'] ?? tag.tags['TALB'] ?? 'Unknown Album',
-      'track': _parseTrackNumber(tag.tags['track'] ?? tag.tags['TRCK']),
+      'track': parseTrackNumber(tag.tags['track'] ?? tag.tags['TRCK']),
       'genre': tag.tags['genre'] ?? tag.tags['TCON'] ?? 'Unknown Genre',
     };
   }
@@ -76,8 +77,11 @@ class MetadataService {
   }
 
   /// Parses track number from various formats (e.g., "5", "5/12")
-  int _parseTrackNumber(dynamic value) {
-    if (value == null) { return 0; }
+  @visibleForTesting
+  int parseTrackNumber(dynamic value) {
+    if (value == null) {
+      return 0;
+    }
     final str = value.toString();
     // Handle "track/total" format like "5/12"
     final parts = str.split('/');

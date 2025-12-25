@@ -44,6 +44,12 @@ void main() {
       final enabled = await service.loadAgeBypass();
       expect(enabled, true);
     });
+
+    test('generic saveSetting and getSetting', () async {
+      await service.saveSetting('test_key', 'test_value');
+      final val = await service.getSetting('test_key');
+      expect(val, 'test_value');
+    });
   });
 
   group('Tracks', () {

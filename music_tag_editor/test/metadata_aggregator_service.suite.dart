@@ -114,10 +114,10 @@ void main() {
       when(() => mockLyrics.fetchLyrics(any(), any()))
           .thenAnswer((_) async => lyrics);
 
-      final result =
+      final resultFromLyrics =
           await service.fetchSyncedLyrics('Title', 'Artist', durationMs: 10000);
 
-      expect(result, lyrics);
+      expect(resultFromLyrics, lyrics);
       verify(() => mockLyrics.fetchLyrics(any(), any())).called(1);
       verifyNever(() => mockNetease.fetchSyncedLyrics(any(), any()));
     });
@@ -137,6 +137,22 @@ void main() {
       verify(() => mockLyrics.fetchLyrics(any(), any())).called(1);
       verify(() => mockNetease.fetchSyncedLyrics(any(), any())).called(1);
     });
+
+    test('validates duration mismatch', () async {
+      final lyrics = [
+        LyricLine(time: Duration(seconds: 400), text: 'Out of range')
+      ];
+      when(() => mockLyrics.fetchLyrics(any(), any()))
+          .thenAnswer((_) async => lyrics);
+
+      // Fallback if mismatch
+      when(() => mockNetease.fetchSyncedLyrics(any(), any()))
+          .thenAnswer((_) async => []);
+
+      await service.fetchSyncedLyrics('Title', 'Artist', durationMs: 10000);
+
+      // Should have checked Netease too
+      verify(() => mockNetease.fetchSyncedLyrics(any(), any())).called(1);
+    });
   });
 }
-

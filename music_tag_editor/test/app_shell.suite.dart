@@ -1,11 +1,9 @@
 @Tags(['widget'])
 library;
 
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
 import 'package:music_tag_editor/views/settings_page.dart';
 import 'package:music_tag_editor/views/search_page.dart';

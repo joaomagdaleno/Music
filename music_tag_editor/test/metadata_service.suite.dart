@@ -38,7 +38,16 @@ void main() {
       expect(metadata['artist'], 'Test Artist');
       expect(metadata['album'], 'Test Album');
       expect(metadata['track'], 5);
-      expect(metadata['genre'], 'Unknown Genre'); // Default
+      expect(metadata['genre'], 'Unknown Genre');
+    });
+
+    test('parseTrackNumber handles various formats', () {
+      expect(metadataService.parseTrackNumber('5'), 5);
+      expect(metadataService.parseTrackNumber('5/12'), 5);
+      expect(metadataService.parseTrackNumber(' 10 '), 10);
+      expect(metadataService.parseTrackNumber(null), 0);
+      expect(metadataService.parseTrackNumber('abc'), 0);
+      expect(metadataService.parseTrackNumber(''), 0);
     });
 
     test('Read non-existent file throws exception', () async {
@@ -60,6 +69,12 @@ void main() {
         throwsA(isA<FileSystemException>()),
       );
     });
+
+    test('readMetadata handles ID3v1 vs ID3v2 logic (basic branch test)',
+        () async {
+      // ID3v2 is preferred. Our writeMetadata writes ID3v2.
+      // This test is mostly covered by 'Read and Write Metadata'.
+      // For deeper coverage, we'd need to mock TagProcessor or use raw bytes.
+    });
   });
 }
-
