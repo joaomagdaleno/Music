@@ -24,13 +24,17 @@ class LearningRule {
 
 class DatabaseService {
   static DatabaseService? _instance;
-  static DatabaseService get instance => _instance ??= DatabaseService._internal();
+  static DatabaseService get instance =>
+      _instance ??= DatabaseService._internal();
 
   @visibleForTesting
   static set instance(DatabaseService mock) => _instance = mock;
 
   @visibleForTesting
-  static void resetInstance() => _instance = null;
+  static void resetInstance() {
+    _instance = null;
+    _database = null;
+  }
 
   DatabaseService._internal();
 
@@ -40,6 +44,11 @@ class DatabaseService {
   @visibleForTesting
   Future<void> initForTesting(String path) async {
     _database = await _initDB(path: path);
+  }
+
+  Future<void> close() async {
+    await _database?.close();
+    _database = null;
   }
 
   static Database? _database;

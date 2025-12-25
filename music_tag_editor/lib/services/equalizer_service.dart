@@ -3,9 +3,14 @@ import 'package:just_audio/just_audio.dart';
 import 'package:meta/meta.dart';
 
 class EqualizerService {
-  static EqualizerService _instance = EqualizerService._internal();
-  static EqualizerService get instance => _instance;
+  static EqualizerService? _instance;
+  static EqualizerService get instance =>
+      _instance ??= EqualizerService._internal();
 
+  @visibleForTesting
+  static void resetInstance() => _instance = null;
+
+  @visibleForTesting
   @visibleForTesting
   static set instance(EqualizerService mock) => _instance = mock;
 

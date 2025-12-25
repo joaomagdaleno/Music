@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:music_tag_editor/services/security_service.dart';
 
 class AuthService extends ChangeNotifier {
-  static AuthService _instance = AuthService._internal();
-  static AuthService get instance => _instance;
+  static AuthService? _instance;
+  static AuthService get instance => _instance ??= AuthService._internal();
 
   @visibleForTesting
   static set instance(AuthService mock) => _instance = mock;
 
   @visibleForTesting
-  static void resetInstance() => _instance = null;
+  static void resetInstance() {
+    _instance = null;
+  }
 
   AuthService._internal({FirebaseAuth? auth, SecurityService? securityService})
       : _auth = auth ?? FirebaseAuth.instance,
@@ -61,7 +63,6 @@ class AuthService extends ChangeNotifier {
     await _auth.signOut();
   }
 
-  /// Sends a password reset email. This is the first step for 2FA/Email recovery.
   Future<bool> sendPasswordReset(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
@@ -72,16 +73,11 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  /// Flow for recovering the Vault password using the authenticated session.
-  /// This ensures that if a user has access to their email/account via 2FA,
-  /// they can reset the local vault password.
   Future<bool> recoverVaultAccess(String email, String newVaultPassword) async {
-    // 1. Ensure user is authenticated (they should be after logging in or via reset flow)
     if (_user == null || _user!.email != email) {
       return false;
     }
 
-    // 2. Reset the vault password in SecurityService
     try {
       await _securityService.resetVaultPassword(newVaultPassword);
       return true;

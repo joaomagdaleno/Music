@@ -10,9 +10,14 @@ import 'package:meta/meta.dart';
 enum DuoRole { host, guest, none }
 
 class LocalDuoService {
-  static LocalDuoService _instance = LocalDuoService._internal();
-  static LocalDuoService get instance => _instance;
+  static LocalDuoService? _instance;
+  static LocalDuoService get instance =>
+      _instance ??= LocalDuoService._internal();
 
+  @visibleForTesting
+  static void resetInstance() => _instance = null;
+
+  @visibleForTesting
   @visibleForTesting
   static set instance(LocalDuoService mock) => _instance = mock;
 

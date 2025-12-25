@@ -6,6 +6,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/views/settings_page.dart';
 import 'package:music_tag_editor/widgets/learning_dialog.dart';
+import 'test_helper.dart';
 
 void main() {
   late DatabaseService service;
@@ -16,8 +17,13 @@ void main() {
   });
 
   setUp(() async {
+    await setupMusicTest();
     service = DatabaseService.instance;
     await service.initForTesting(inMemoryDatabasePath);
+  });
+
+  tearDown(() async {
+    await service.close();
   });
 
   group('Settings', () {

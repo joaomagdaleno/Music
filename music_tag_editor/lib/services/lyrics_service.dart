@@ -3,9 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class LyricsService {
-  static LyricsService _instance = LyricsService._internal();
-  static LyricsService get instance => _instance;
+  static LyricsService? _instance;
+  static LyricsService get instance => _instance ??= LyricsService._internal();
 
+  @visibleForTesting
+  static void resetInstance() => _instance = null;
+
+  @visibleForTesting
   @visibleForTesting
   static set instance(LyricsService mock) => _instance = mock;
 

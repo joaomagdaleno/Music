@@ -16,10 +16,6 @@ void main() {
   late DependencyManager manager;
   late MockHttpClient mockClient;
 
-  setUpAll(() {
-    registerFallbackValue(Uri.parse('http://example.com'));
-  });
-
   setUp(() {
     mockClient = MockHttpClient();
     manager = DependencyManager.forTesting(client: mockClient);

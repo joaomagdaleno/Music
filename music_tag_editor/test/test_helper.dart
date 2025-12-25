@@ -1,13 +1,19 @@
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/services/auth_service.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/theme_service.dart';
-import 'package:music_tag_editor/services/connectivity_service.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/security_service.dart';
-import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import '../lib/services/auth_service.dart';
+import '../lib/services/database_service.dart';
+import '../lib/services/theme_service.dart';
+import '../lib/services/connectivity_service.dart';
+import '../lib/services/playback_service.dart';
+import '../lib/services/security_service.dart';
+import '../lib/services/dependency_manager.dart';
+import '../lib/services/search_service.dart';
+import '../lib/services/download_service.dart';
+import '../lib/services/lyrics_service.dart';
+import '../lib/services/local_duo_service.dart';
+import '../lib/services/equalizer_service.dart';
+import '../lib/services/firebase_sync_service.dart';
+import 'package:flutter/material.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class MockAuthService extends Mock implements AuthService {}
 
@@ -27,11 +33,19 @@ class MockSearchService extends Mock implements SearchService {}
 
 class MockDownloadService extends Mock implements DownloadService {}
 
-Future<void> setupMusicTestEnvironment() async {
-  // Global setup if needed
-}
+class MockLyricsService extends Mock implements LyricsService {}
+
+class MockLocalDuoService extends Mock implements LocalDuoService {}
+
+class MockEqualizerService extends Mock implements EqualizerService {}
+
+class MockFirebaseSyncService extends Mock implements FirebaseSyncService {}
 
 Future<void> setupMusicTest() async {
+  // Initialize SQLite FFI once
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
+
   // Reset ALL core singletons to their REAL internal state
   AuthService.resetInstance();
   DatabaseService.resetInstance();
@@ -42,6 +56,10 @@ Future<void> setupMusicTest() async {
   DependencyManager.resetInstance();
   SearchService.resetInstance();
   DownloadService.resetInstance();
+  EqualizerService.resetInstance();
+  LyricsService.resetInstance();
+  LocalDuoService.resetInstance();
+  FirebaseSyncService.resetInstance();
 
   // Register common fakes only once
   if (!_registerFallbackValueWasCalled) {
