@@ -33,32 +33,33 @@ import 'services/listening_stats_service.suite.dart' as stats;
 import 'services/theme_service.suite.dart' as theme;
 
 void main() {
+  // Global baseline setup
   setUp(() async => await setupMusicTest());
 
-  auth.main();
-  backup.main();
-  connectivity_root.main();
-  database.main();
-  database_new.main();
-  download.main();
-  equalizer_root.main();
-  firebase_sync.main();
-  local_duo.main();
-  lyrics.main();
-  metadata_agg.main();
-  metadata_clean.main();
-  metadata.main();
-  persona_svc.main();
-  playback.main();
-  search.main();
-  security.main();
-  theme_root.main();
+  group('AuthService', () => auth.main());
+  group('BackupService', () => backup.main());
+  group('ConnectivityRoot', () => connectivity_root.main());
+  group('DatabaseService', () => database.main());
+  group('DatabaseServiceNew', () => database_new.main());
+  group('DownloadService', () => download.main());
+  group('EqualizerRoot', () => equalizer_root.main());
+  group('FirebaseSync', () => firebase_sync.main());
+  group('LocalDuoService', () => local_duo.main());
+  group('LyricsService', () => lyrics.main());
+  group('MetadataAggregator', () => metadata_agg.main());
+  group('MetadataCleanup', () => metadata_clean.main());
+  group('MetadataService', () => metadata.main());
+  group('PersonaService', () => persona_svc.main());
+  group('PlaybackService', () => playback.main());
+  group('SearchService', () => search.main());
+  group('SecurityService', () => security.main());
+  group('ThemeRoot', () => theme_root.main());
 
-  cast.main();
-  connectivity.main();
-  desktop.main();
-  equalizer.main();
-  hifi.main();
-  stats.main();
-  theme.main();
+  group('CastService', () => cast.main());
+  group('ConnectivityService', () => connectivity.main());
+  group('DesktopIntegration', () => desktop.main());
+  group('EqualizerService', () => equalizer.main());
+  group('HifiDownload', () => hifi.main());
+  group('ListeningStats', () => stats.main());
+  group('ThemeService', () => theme.main());
 }

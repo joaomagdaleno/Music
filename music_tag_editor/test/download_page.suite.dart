@@ -6,44 +6,22 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/views/download_page.dart';
 import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/services/dependency_manager.dart';
-
-class MockDownloadService extends Mock implements DownloadService {}
-
-class MockDependencyManager extends Mock implements DependencyManager {}
+import 'test_helper.dart';
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
-
-  late MockDownloadService mockDownload;
-  late MockDependencyManager mockDeps;
-
-  setUpAll(() {
-    registerFallbackValue(Uri.parse('http://test'));
-    registerFallbackValue(SearchResult(
-      id: 'fallback',
-      title: 'Fallback',
-      artist: 'Fallback',
-      url: 'http://fallback',
-      platform: MediaPlatform.youtube,
-    ));
-  });
-
-  setUp(() {
-    mockDownload = MockDownloadService();
-    mockDeps = MockDependencyManager();
-
-    DownloadService.instance = mockDownload;
-    DependencyManager.instance = mockDeps;
+  setUp(() async {
+    await setupMusicTest();
 
     when(() => mockDownload.detectPlatform(any()))
         .thenReturn(MediaPlatform.unknown);
 
     when(() =>
             mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
-        .thenAnswer((_) async => {});
-    when(() => mockDeps.areAllDependenciesInstalled())
-        .thenAnswer((_) async => true);
+        .thenAnswer((invocation) async {
+      final callback = invocation.namedArguments[#onProgress] as void Function(
+          String, double)?;
+      callback?.call('Done', 1.0);
+    });
   });
 
   Widget createTestWidget() {

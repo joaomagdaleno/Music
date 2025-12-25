@@ -4,8 +4,11 @@ library;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:music_tag_editor/services/connectivity_service.dart';
 import 'package:flutter/foundation.dart';
+import 'test_helper.dart';
 
 void main() {
+  setUp(() async => await setupMusicTest(mockConnectivityInstance: false));
+
   group('ConnectivityService', () {
     test('instance is accessible', () {
       expect(ConnectivityService.instance, isNotNull);

@@ -6,11 +6,13 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
+import 'test_helper.dart';
 
 void main() {
   late DownloadService service;
 
-  setUp(() {
+  setUp(() async {
+    await setupMusicTest(mockDownloadInstance: false);
     DependencyManager.instance = DependencyManager.forTesting();
     service = DownloadService.instance;
   });

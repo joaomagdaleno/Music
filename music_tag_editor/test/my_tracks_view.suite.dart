@@ -6,34 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/views/my_tracks_view.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
-
-class MockDatabaseService extends Mock implements DatabaseService {}
-
-class MockPlaybackService extends Mock implements PlaybackService {}
+import 'test_helper.dart';
 
 void main() {
-  late MockDatabaseService mockDb;
-  late MockPlaybackService mockPlayback;
-
-  setUpAll(() {
-    registerFallbackValue(SearchResult(
-      id: 'fallback',
-      title: 'Fallback',
-      artist: 'Fallback',
-      url: 'http://fallback',
-      platform: MediaPlatform.youtube,
-    ));
-  });
-
-  setUp(() {
-    mockDb = MockDatabaseService();
-    mockPlayback = MockPlaybackService();
-
-    DatabaseService.instance = mockDb;
-    PlaybackService.instance = mockPlayback;
+  setUp(() async {
+    await setupMusicTest();
   });
 
   Widget createTestWidget() {

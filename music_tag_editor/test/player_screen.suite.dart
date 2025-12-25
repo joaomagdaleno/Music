@@ -7,59 +7,23 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_tag_editor/views/player_screen.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/local_duo_service.dart';
-import 'package:music_tag_editor/services/lyrics_service.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
-
-class MockPlaybackService extends Mock implements PlaybackService {}
-
-class MockAudioPlayer extends Mock implements AudioPlayer {}
-
-class MockLocalDuoService extends Mock implements LocalDuoService {}
-
-class MockLyricsService extends Mock implements LyricsService {}
-
-class MockDatabaseService extends Mock implements DatabaseService {}
-
-class MockThemeService extends Mock implements ThemeService {}
+import 'package:music_tag_editor/services/local_duo_service.dart';
+import 'test_helper.dart';
 
 void main() {
-  setUpAll(() {
-    registerFallbackValue(Duration.zero);
-  });
-
   group('PlayerScreen Widget Tests', () {
-    late MockPlaybackService mockPlayback;
-    late MockAudioPlayer mockPlayer;
-    late MockLocalDuoService mockDuo;
-    late MockLyricsService mockLyrics;
-    late MockDatabaseService mockDb;
     late StreamController<PlayerState> playerStateController;
     late StreamController<Duration> positionController;
 
-    setUp(() {
-      mockPlayback = MockPlaybackService();
-      mockPlayer = MockAudioPlayer();
-      mockDuo = MockLocalDuoService();
-      mockLyrics = MockLyricsService();
-      mockDb = MockDatabaseService();
+    setUp(() async {
+      await setupMusicTest();
       playerStateController = StreamController<PlayerState>.broadcast();
       positionController = StreamController<Duration>.broadcast();
 
-      PlaybackService.instance = mockPlayback;
-      LocalDuoService.instance = mockDuo;
-      LyricsService.instance = mockLyrics;
-      DatabaseService.instance = mockDb;
-      ThemeService.instance = MockThemeService();
-
-      when(() => mockPlayback.player).thenReturn(mockPlayer);
       when(() => mockPlayback.sleepTimerStream)
           .thenAnswer((_) => Stream.value(null));
       when(() => mockPlayback.lyricsStream).thenAnswer((_) => Stream.value([]));
-      when(() => mockPlayback.queue).thenReturn([]);
       when(() => mockPlayback.resume()).thenAnswer((_) async => Future.value());
       when(() => mockPlayback.pause()).thenAnswer((_) async => Future.value());
       when(() => mockPlayback.seek(any()))
@@ -70,7 +34,6 @@ void main() {
           .thenAnswer((_) => playerStateController.stream);
       when(() => mockPlayer.positionStream)
           .thenAnswer((_) => positionController.stream);
-      when(() => mockPlayer.duration).thenReturn(Duration.zero);
     });
 
     tearDown(() {
@@ -162,4 +125,3 @@ void main() {
     });
   });
 }
-

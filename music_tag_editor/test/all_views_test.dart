@@ -30,29 +30,30 @@ import 'smart_library_view.suite.dart' as smart_lib;
 import 'vault_view.suite.dart' as vault;
 
 void main() {
+  // Global baseline setup
   setUp(() async => await setupMusicTest());
 
-  app_shell.main();
-  backup_view.main();
-  disco_mode.main();
-  download_page.main();
-  home.main();
-  karaoke.main();
-  listening_stats.main();
-  login.main();
-  mini_player.main();
-  mood_explorer.main();
-  my_tracks.main();
-  party_queue.main();
-  personas_widget.main();
-  player.main();
-  playlist_detail.main();
-  playlist_importer.main();
-  playlists.main();
-  remote_lib.main();
-  ringtone_maker.main();
-  search_page.main();
-  settings.main();
-  smart_lib.main();
-  vault.main();
+  group('AppShell', () => app_shell.main());
+  group('BackupView', () => backup_view.main());
+  group('DiscoMode', () => disco_mode.main());
+  group('DownloadPage', () => download_page.main());
+  group('HomeView', () => home.main());
+  group('KaraokeView', () => karaoke.main());
+  group('ListeningStats', () => listening_stats.main());
+  group('LoginPage', () => login.main());
+  group('MiniPlayer', () => mini_player.main());
+  group('MoodExplorer', () => mood_explorer.main());
+  group('MyTracks', () => my_tracks.main());
+  group('PartyQueue', () => party_queue.main());
+  group('PersonasWidget', () => personas_widget.main());
+  group('PlayerScreen', () => player.main());
+  group('PlaylistDetail', () => playlist_detail.main());
+  group('PlaylistImporter', () => playlist_importer.main());
+  group('PlaylistsView', () => playlists.main());
+  group('RemoteLibrary', () => remote_lib.main());
+  group('RingtoneMaker', () => ringtone_maker.main());
+  group('SearchPage', () => search_page.main());
+  group('SettingsPage', () => settings.main());
+  group('SmartLibrary', () => smart_lib.main());
+  group('VaultView', () => vault.main());
 }

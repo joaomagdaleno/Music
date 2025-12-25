@@ -4,69 +4,14 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:music_tag_editor/views/search_page.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/theme_service.dart';
-
-class MockSearchService extends Mock implements SearchService {}
-
-class MockDownloadService extends Mock implements DownloadService {}
-
-class MockDatabaseService extends Mock implements DatabaseService {}
-
-class MockDependencyManager extends Mock implements DependencyManager {}
-
-class MockPlaybackService extends Mock implements PlaybackService {}
-
-class MockAudioPlayer extends Mock implements AudioPlayer {}
-
-class MockThemeService extends Mock implements ThemeService {}
+import 'test_helper.dart';
 
 void main() {
-  late MockSearchService mockSearch;
-  late MockDownloadService mockDownload;
-  late MockDatabaseService mockDb;
-  late MockDependencyManager mockDeps;
-  late MockPlaybackService mockPlayback;
-  late MockAudioPlayer mockPlayer;
-
-  setUpAll(() {
-    registerFallbackValue(SearchResult(
-        id: 'id',
-        title: 'title',
-        artist: 'artist',
-        platform: MediaPlatform.youtube,
-        url: 'url'));
-    registerFallbackValue(MediaPlatform.youtube);
-  });
-
-  setUp(() {
-    mockSearch = MockSearchService();
-    mockDownload = MockDownloadService();
-    mockDb = MockDatabaseService();
-    mockDeps = MockDependencyManager();
-    mockPlayback = MockPlaybackService();
-    mockPlayer = MockAudioPlayer();
-
-    SearchService.instance = mockSearch;
-    DownloadService.instance = mockDownload;
-    DatabaseService.instance = mockDb;
-    DependencyManager.instance = mockDeps;
-    PlaybackService.instance = mockPlayback;
-    ThemeService.instance = MockThemeService();
-
-    when(() => mockPlayback.player).thenReturn(mockPlayer);
-    when(() => mockPlayback.currentTrack).thenReturn(null);
-    when(() => mockPlayer.playerStateStream).thenAnswer(
-        (_) => Stream.value(PlayerState(false, ProcessingState.idle)));
-    when(() => mockPlayer.positionStream)
-        .thenAnswer((_) => Stream.value(Duration.zero));
-    when(() => mockPlayer.duration).thenReturn(Duration.zero);
+  setUp(() async {
+    await setupMusicTest();
 
     // Default DependencyManager behavior: success immediately
     when(() =>
@@ -143,8 +88,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 200));
 
     expect(find.text('Song 1'), findsOneWidget);
-    expect(find.text('Artist 1 • '),
-        findsWidgets); // Duration is usually formatted
+    expect(find.text('Artist 1 • '), findsWidgets);
     expect(find.text('Song 2'), findsOneWidget);
   });
 

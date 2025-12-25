@@ -17,7 +17,7 @@ void main() {
   });
 
   setUp(() async {
-    await setupMusicTest();
+    await setupMusicTest(mockDbInstance: false);
     service = DatabaseService.instance;
     await service.initForTesting(inMemoryDatabasePath);
   });

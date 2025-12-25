@@ -4,8 +4,11 @@ library;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:flutter/material.dart';
+import 'test_helper.dart';
 
 void main() {
+  setUp(() async => await setupMusicTest(mockThemeInstance: false));
+
   group('ThemeService', () {
     test('instance is accessible', () {
       expect(ThemeService.instance, isNotNull);
@@ -17,12 +20,10 @@ void main() {
     });
 
     test('setCustomColor updates color', () async {
-      // Note: We cannot easily verify the change without mocking DatabaseService
-      // because setCustomColor calls DatabaseService.saveSetting.
-      // But we can check if the method exists and runs.
-      // Since we don't mock database here, it might throw.
-      // For coverage purpose, checking instance existence is key.
-      expect(ThemeService.instance.setCustomColor, isNotNull);
+      // Note: ThemeService.setCustomColor calls DatabaseService.instance.saveSetting
+      // setupMusicTest mocks DatabaseService by default, so this should work.
+      await ThemeService.instance.setCustomColor(Colors.red);
+      expect(ThemeService.instance.primaryColor, equals(Colors.red));
     });
 
     test('ThemeService is a ChangeNotifier', () {

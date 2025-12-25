@@ -6,39 +6,32 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/hifi_download_service.dart';
-
-class MockDependencyManager extends Mock implements DependencyManager {}
-
-class MockDatabaseService extends Mock implements DatabaseService {}
-
-class MockHiFiDownloadService extends Mock implements HiFiDownloadService {}
+import 'test_helper.dart';
 
 void main() {
   late SearchService service;
-  late MockDependencyManager mockDeps;
-  late MockDatabaseService mockDb;
-  late MockHiFiDownloadService mockHiFi;
+  late MockDependencyManager sMockDeps;
+  late MockDatabaseService sMockDb;
+  late MockHiFiDownloadService sMockHiFi;
 
   int mockExitCode = 0;
   String mockStdout = '';
   String mockStderr = '';
 
-  setUp(() {
-    mockDeps = MockDependencyManager();
-    mockDb = MockDatabaseService();
-    mockHiFi = MockHiFiDownloadService();
+  setUp(() async {
+    await setupMusicTest(mockSearchInstance: false);
+
+    sMockDeps = mockDeps;
+    sMockDb = mockDb;
+    sMockHiFi = MockHiFiDownloadService();
 
     mockExitCode = 0;
     mockStdout = '';
     mockStderr = '';
 
-    DependencyManager.instance = mockDeps;
-    DatabaseService.instance = mockDb;
-    HiFiDownloadService.instance = mockHiFi;
+    HiFiDownloadService.instance = sMockHiFi;
 
     service = SearchService.instance;
 
@@ -55,8 +48,8 @@ void main() {
       return ProcessResult(0, mockExitCode, mockStdout, mockStderr);
     };
 
-    when(() => mockDeps.ytDlpPath).thenReturn('yt-dlp');
-    when(() => mockDb.loadAgeBypass()).thenAnswer((_) async => false);
+    when(() => sMockDeps.ytDlpPath).thenReturn('yt-dlp');
+    when(() => sMockDb.loadAgeBypass()).thenAnswer((_) async => false);
   });
 
   group('searchYouTube', () {
@@ -113,7 +106,7 @@ void main() {
 
   group('searchHiFi', () {
     test('delegates to HiFiDownloadService', () async {
-      when(() => mockHiFi.search(any())).thenAnswer((_) async => [
+      when(() => sMockHiFi.search(any())).thenAnswer((_) async => [
             HiFiSearchResult(
               id: 'h1',
               title: 'H Title',
@@ -150,7 +143,7 @@ void main() {
     test('calls all platforms and updates status', () async {
       mockExitCode = 0;
       mockStdout = ''; // Empty results for simplicity
-      when(() => mockHiFi.search(any())).thenAnswer((_) async => []);
+      when(() => sMockHiFi.search(any())).thenAnswer((_) async => []);
 
       final statuses = <MediaPlatform, List<SearchStatus>>{};
       await service.searchAll('query', onStatusUpdate: (p, s) {
@@ -163,3 +156,5 @@ void main() {
     });
   });
 }
+
+class MockHiFiDownloadService extends Mock implements HiFiDownloadService {}

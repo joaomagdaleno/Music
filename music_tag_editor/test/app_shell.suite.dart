@@ -7,99 +7,31 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/connectivity_service.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/views/settings_page.dart';
-import 'package:music_tag_editor/services/auth_service.dart';
-import 'package:music_tag_editor/services/security_service.dart';
-import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/views/search_page.dart';
 import 'package:music_tag_editor/views/home_view.dart';
-
-class MockConnectivityService extends Mock implements ConnectivityService {}
-
-class MockPlaybackService extends Mock implements PlaybackService {}
-
-class MockAudioPlayer extends Mock implements AudioPlayer {}
-
-class MockDatabaseService extends Mock implements DatabaseService {}
-
-class MockThemeService extends Mock implements ThemeService {}
-
-class MockAuthService extends Mock implements AuthService {}
-
-class MockSecurityService extends Mock implements SecurityService {}
-
-class MockDependencyManager extends Mock implements DependencyManager {}
-
-class MockSearchService extends Mock implements SearchService {}
-
-class MockDownloadService extends Mock implements DownloadService {}
+import 'test_helper.dart';
 
 void main() {
   group('AppShell Widget Tests', () {
-    late MockConnectivityService mockConnectivity;
-    late MockPlaybackService mockPlayback;
-    late MockAudioPlayer mockPlayer;
-    late MockDatabaseService mockDb;
-    late MockAuthService mockAuth;
-    late MockSecurityService mockSecurity;
-    late MockDependencyManager mockDeps;
-    late MockSearchService mockSearch;
-    late MockDownloadService mockDownload;
     late ValueNotifier<bool> isOffline;
 
-    setUp(() {
-      mockConnectivity = MockConnectivityService();
-      mockPlayback = MockPlaybackService();
-      mockPlayer = MockAudioPlayer();
-      mockDb = MockDatabaseService();
-      mockAuth = MockAuthService();
-      mockSecurity = MockSecurityService();
-      mockDeps = MockDependencyManager();
-      mockSearch = MockSearchService();
-      mockDownload = MockDownloadService();
+    setUp(() async {
+      await setupMusicTest();
       isOffline = ValueNotifier<bool>(false);
 
-      ConnectivityService.instance = mockConnectivity;
-      PlaybackService.instance = mockPlayback;
-      DatabaseService.instance = mockDb;
-      ThemeService.instance = MockThemeService();
-      AuthService.instance = mockAuth;
-      SecurityService.instance = mockSecurity;
-      DependencyManager.instance = mockDeps;
-      SearchService.instance = mockSearch;
-      DownloadService.instance = mockDownload;
-
       when(() => mockConnectivity.isOffline).thenReturn(isOffline);
-      when(() => mockPlayback.player).thenReturn(mockPlayer);
-      when(() => mockPlayback.currentTrack).thenReturn(null);
-      when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(
-            PlayerState(false, ProcessingState.idle),
-          ));
 
-      // Mocks for sub-pages
-      when(() => mockDb.getTracks()).thenAnswer((_) async => []);
-      when(() => mockDb.getTracks(includeVault: any(named: 'includeVault')))
-          .thenAnswer((_) async => []);
+      // Additional stubs specific to AppShell
       when(() => mockDb.getSetting(any())).thenAnswer((_) async => null);
       when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
       when(() => mockDb.getGuestHistory()).thenAnswer((_) async => []);
       when(() => mockDb.loadFilenameFormat())
           .thenAnswer((_) async => FilenameFormat.artistTitle);
       when(() => mockDb.getLearningRules()).thenAnswer((_) async => []);
-      when(() => mockDb.getRecentlyPlayed()).thenAnswer((_) async => []);
       when(() => mockDb.getMostPlayed()).thenAnswer((_) async => []);
 
       when(() => mockAuth.isAuthenticated).thenReturn(true);
-
-      when(() =>
-              mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
-          .thenAnswer((_) async => Future.value());
     });
 
     testWidgets('Shows offline banner when offline', (tester) async {
@@ -112,7 +44,6 @@ void main() {
     });
 
     testWidgets('Navigation switches pages', (tester) async {
-      // Ensure mobile-size viewport
       tester.view.physicalSize = const Size(400, 800);
       tester.view.devicePixelRatio = 1.0;
 
@@ -121,7 +52,6 @@ void main() {
 
       expect(find.byType(HomeView), findsOneWidget);
 
-      // Directly invoke the onTap callback for index 1 (Search)
       final bottomNavBarFinder = find.byType(BottomNavigationBar);
       expect(bottomNavBarFinder, findsOneWidget);
 
@@ -133,7 +63,6 @@ void main() {
       await tester.pump(const Duration(milliseconds: 300));
       await tester.pumpAndSettle();
 
-      // SearchPage should be present
       expect(find.byType(SearchPage), findsOneWidget);
 
       tester.view.resetPhysicalSize();
@@ -155,5 +84,3 @@ void main() {
     });
   });
 }
-
-
