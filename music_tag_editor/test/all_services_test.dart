@@ -6,7 +6,7 @@ library;
 import 'package:flutter_test/flutter_test.dart';
 
 // Import all service tests
-import 'services/auth_service_test.dart' as auth;
+import 'auth_service_test.dart' as auth;
 import 'services/cast_service_test.dart' as cast;
 import 'services/connectivity_service_test.dart' as connectivity;
 import 'services/desktop_integration_service_test.dart' as desktop;

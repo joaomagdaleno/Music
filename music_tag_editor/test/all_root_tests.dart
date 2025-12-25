@@ -5,24 +5,24 @@ library;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-// Import all root tests
-import 'root/auth_test.dart' as auth;
-import 'root/backup_test.dart' as backup;
-import 'root/connectivity_test.dart' as connectivity;
-import 'root/database_test.dart' as database;
-import 'root/dependency_manager_test.dart' as dependency;
-import 'root/equalizer_test.dart' as equalizer;
-import 'root/firebase_sync_test.dart' as firebase_sync;
-import 'root/local_dual_auth_test.dart' as local_duo;
-import 'root/lyrics_test.dart' as lyrics;
-import 'root/metadata_aggregator_test.dart' as metadata_agg;
-import 'root/metadata_cleanup_service_test.dart' as metadata_clean;
-import 'root/metadata_service_test.dart' as metadata;
-import 'root/persona_service_test.dart' as persona;
-import 'root/playback_service_test.dart' as playback;
-import 'root/search_service_test.dart' as search;
-import 'root/security_service_test.dart' as security;
-import 'root/theme_service_test.dart' as theme;
+// Import all root tests from test/ directory
+import 'auth_service_test.dart' as auth;
+import 'backup_service_test.dart' as backup;
+import 'connectivity_service_test.dart' as connectivity;
+import 'database_service_test.dart' as database;
+import 'dependency_manager_test.dart' as dependency;
+import 'equalizer_service_test.dart' as equalizer;
+import 'firebase_sync_service_test.dart' as firebase_sync;
+import 'local_duo_service_test.dart' as local_duo;
+import 'lyrics_service_test.dart' as lyrics;
+import 'metadata_aggregator_service_test.dart' as metadata_agg;
+import 'metadata_cleanup_service_test.dart' as metadata_clean;
+import 'metadata_service_test.dart' as metadata;
+import 'persona_service_test.dart' as persona;
+import 'playback_service_test.dart' as playback;
+import 'search_service_test.dart' as search;
+import 'security_service_test.dart' as security;
+import 'theme_service_test.dart' as theme;
 
 // Global Mocks for state isolation
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -65,7 +65,7 @@ void main() {
   });
 
   group('Root Tests', () {
-    // Commented out problematic Firebase suites for initial pass
+    // Commented out problematic suites for initial stability pass
     // auth.main();
     // backup.main();
     connectivity.main();
