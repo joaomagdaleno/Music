@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 // Script to add @Tags annotations to test files
 // Run with: dart run test/add_tags.dart
 

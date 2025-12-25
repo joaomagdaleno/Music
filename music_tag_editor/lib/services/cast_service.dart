@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_static/shelf_static.dart';
-import 'package:meta/meta.dart';
 import 'package:flutter/foundation.dart';
 
 class CastDevice {

@@ -6,7 +6,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/services/backup_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
-import 'package:path/path.dart' as p;
 
 class MockDatabaseService extends Mock implements DatabaseService {}
 

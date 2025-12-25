@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:audio_service/audio_service.dart';
+import 'package: audio_service/audio_service.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
@@ -41,10 +41,13 @@ class MockAudioHandler extends Mock implements BaseAudioHandler {
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const MethodChannel('plugins.flutter.io/path_provider')
-      .setMockMethodCallHandler((MethodCall methodCall) async {
-    return '.';
-  });
+  TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+      .setMockMethodCallHandler(
+    const MethodChannel('plugins.flutter.io/path_provider'),
+    (MethodCall methodCall) async {
+      return '.';
+    },
+  );
 
   late MockDatabaseService mockDb;
   late MockLocalDuoService mockDuo;

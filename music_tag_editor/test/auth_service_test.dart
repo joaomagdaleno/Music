@@ -6,7 +6,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
 import 'package:music_tag_editor/services/security_service.dart';
-import 'test_helper.dart';
 
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
@@ -20,13 +19,11 @@ void main() {
   late AuthService authService;
   late MockFirebaseAuth mockAuth;
   late MockSecurityService mockSecurityService;
-  late MockUser mockUser;
   late MockUserCredential mockUserCredential;
 
   setUp(() {
     mockAuth = MockFirebaseAuth();
     mockSecurityService = MockSecurityService();
-    mockUser = MockUser();
     mockUserCredential = MockUserCredential();
 
     authService = AuthService.test(

@@ -1,7 +1,6 @@
 @Tags(['widget'])
 library;
 
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -11,10 +10,15 @@ import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/widgets/duo_matching_dialog.dart';
 
 class FakeLocalDuoService extends Fake implements LocalDuoService {
+  @override
   Function(String)? onDeviceFound;
+  @override
   Function(String)? onConnected;
+  @override
   Function()? onDisconnected;
+  @override
   DuoRole role = DuoRole.none;
+  @override
   final Set<String> connectedEndpoints = {};
 
   // Methods to simulate internal state

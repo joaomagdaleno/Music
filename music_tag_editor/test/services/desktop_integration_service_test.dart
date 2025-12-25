@@ -6,7 +6,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/services/desktop_integration_service.dart';
 import 'package:system_tray/system_tray.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:flutter/services.dart';
 
 class MockSystemTray extends Mock implements SystemTray {}
 
