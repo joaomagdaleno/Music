@@ -1,4 +1,4 @@
-?/// Consolidated service tests for Music - reduces startup overhead (8 files → 1)
+/// Consolidated service tests for Music - reduces startup overhead (8 files → 1)
 /// Run with: flutter test test/all_services_test.dart
 @Tags(['unit'])
 library;
