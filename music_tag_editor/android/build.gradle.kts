@@ -24,6 +24,19 @@ subprojects {
                 // Enforce Java 17 for kotlinOptions
                 val kotlinOptions = android.javaClass.getMethod("getKotlinOptions").invoke(android)
                 kotlinOptions!!.javaClass.getMethod("setJvmTarget", String::class.java).invoke(kotlinOptions, "17")
+
+                // Definitive Namespace Fix: Inject namespace if missing
+                try {
+                    val getNamespace = android.javaClass.getMethod("getNamespace")
+                    val setNamespace = android.javaClass.getMethod("setNamespace", String::class.java)
+                    val currentNamespace = getNamespace.invoke(android)
+                    if (currentNamespace == null) {
+                        val namespace = "com.music_tag_editor.${project.name.replace("-", "_").replace(".", "_")}"
+                        setNamespace.invoke(android, namespace)
+                    }
+                } catch (e: Exception) {
+                    // Fallback for missing methods or unexpected API versions
+                }
             } catch (e: Exception) {
                 // Ignore errors related to reflection or missing methods
             }
