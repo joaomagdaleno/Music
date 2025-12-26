@@ -34,22 +34,34 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
 
     // Initialize Telemetry
-    await TelemetryService.instance.init();
+    try {
+      await TelemetryService.instance.init();
+    } catch (e) {
+      debugPrint('Telemetry init failed: $e');
+    }
 
     // Initialize Core Services
-    await SecurityService.instance.init();
-    AuthService.instance.init();
-    await ConnectivityService.instance.init();
-    await PersonaService.instance.init();
+    try {
+      await SecurityService.instance.init();
+      AuthService.instance.init();
+      await ConnectivityService.instance.init();
+      await PersonaService.instance.init();
 
-    await ThemeService.instance.init();
-    await DesktopIntegrationService.instance.init();
-    await PlaybackService.instance.init();
+      await ThemeService.instance.init();
+      await DesktopIntegrationService.instance.init();
+      await PlaybackService.instance.init();
+    } catch (e) {
+      debugPrint('Service initialization failed: $e');
+    }
 
     runApp(const MusicTagEditorApp());
   }, (error, stack) {
     debugPrint('Fatal error: $error');
-    TelemetryService.instance.recordError(error, stack);
+    try {
+      TelemetryService.instance.recordError(error, stack);
+    } catch (e) {
+      debugPrint('Fallback recordError failed: $e');
+    }
   });
 }
 
