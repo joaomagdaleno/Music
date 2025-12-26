@@ -1,0 +1,25 @@
+Coverage Breakdown (Top 20 files by size):
+lib\views\search_page.dart: 47.8% (131/274)
+lib\views\player_screen.dart: 40.3% (96/238)
+lib\services\search_service.dart: 48.3% (102/211)
+lib\services\database_service.dart: 62.1% (126/203)
+lib\main.dart: 20.3% (36/177)
+lib\services\playback_service.dart: 51.2% (85/166)
+lib\views\settings_page.dart: 71.2% (111/156)
+lib\services\download_service.dart: 68.9% (104/151)
+lib\views\home_view.dart: 65.3% (96/147)
+lib\services\metadata_aggregator_service.dart: 77.2% (112/145)
+lib\services\dependency_manager.dart: 23.6% (29/123)
+lib\services\local_duo_service.dart: 2.6% (3/117)
+lib\widgets\duo_matching_dialog.dart: 0.9% (1/111)
+lib\views\ringtone_maker_view.dart: 83.8% (93/111)
+lib\services\firebase_sync_service.dart: 63.8% (67/105)
+lib\views\listening_stats_view.dart: 1.0% (1/103)
+lib\views\disco_mode_view.dart: 1.0% (1/102)
+lib\views\mood_explorer_view.dart: 1.1% (1/89)
+lib\api\slavart_api.dart: 68.8% (55/80)
+lib\views\login_page.dart: 52.6% (41/78)
+
+Total Lines: 4320
+Covered Lines: 1537
+Total Coverage: 35.58%

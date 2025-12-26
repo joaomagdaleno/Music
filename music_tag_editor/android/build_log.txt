@@ -1,0 +1,48 @@
+> Task :gradle:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :gradle:pluginDescriptors
+> Task :gradle:processResources
+> Task :gradle:compileKotlin
+e: The daemon has terminated unexpectedly on startup attempt #1 with error code: 0. The daemon process output:
+    1. Kotlin compile daemon is ready
+w: file:///C:/Flutter/flutter/packages/flutter_tools/gradle/src/main/kotlin/FlutterPlugin.kt:11:37 'ApkVariant' is deprecated. Deprecated in Java
+w: file:///C:/Flutter/flutter/packages/flutter_tools/gradle/src/main/kotlin/FlutterPlugin.kt:609:69 'ApkVariant' is deprecated. Deprecated in Java
+w: file:///C:/Flutter/flutter/packages/flutter_tools/gradle/src/main/kotlin/plugins/PluginHandler.kt:186:64 Unchecked cast: NamedDomainObjectContainer<out BuildType> to NamedDomainObjectContainer<BuildType>
+w: file:///C:/Flutter/flutter/packages/flutter_tools/gradle/src/main/kotlin/plugins/PluginHandler.kt:187:69 Unchecked cast: NamedDomainObjectContainer<out BuildType> to NamedDomainObjectContainer<BuildType>
+
+> Task :gradle:compileJava NO-SOURCE
+> Task :gradle:compileGroovy NO-SOURCE
+> Task :gradle:classes
+> Task :gradle:jar
+
+> Configure project :app
+e: file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/android/app/build.gradle.kts:26:30: Unresolved reference: util
+e: file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/android/app/build.gradle.kts:29:33: Unresolved reference: io
+e: file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/android/app/build.gradle.kts:55:13: Unresolved reference: minifyEnabled
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\build.gradle.kts' line: 26
+
+* What went wrong:
+Script compilation errors:
+
+  Line 26:     val keystoreProps = java.util.Properties()
+                                        ^ Unresolved reference: util
+
+  Line 29:         keystoreProps.load(java.io.FileInputStream(keystorePropsFile))
+                                           ^ Unresolved reference: io
+
+  Line 55:             minifyEnabled = true
+                       ^ Unresolved reference: minifyEnabled
+
+3 errors
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 4m 22s
+4 actionable tasks: 4 executed

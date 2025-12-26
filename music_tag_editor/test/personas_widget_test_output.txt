@@ -1,0 +1,790 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart
+00:00 +0: SettingsPage Persona Selection Displays all persona options in SettingsPage
+00:02 +1: SettingsPage Persona Selection Switching persona updates PersonaService
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY GESTURE Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following _TypeError was thrown while handling a gesture:
+type 'Null' is not a subtype of type 'Future<void>'
+
+When the exception was thrown, this was the stack:
+#0      MockDatabaseService.saveSetting (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:21:7)
+#1      PersonaService.setPersona (package:music_tag_editor/services/persona_service.dart:32:30)
+#2      _SettingsPageState._buildPersonaTile.<anonymous closure> (package:music_tag_editor/views/settings_page.dart:156:46)
+#3      _InkResponseState.handleTap (package:flutter/src/material/ink_well.dart:1222:21)
+#4      GestureRecognizer.invokeCallback (package:flutter/src/gestures/recognizer.dart:345:24)
+#5      TapGestureRecognizer.handleTapUp (package:flutter/src/gestures/tap.dart:758:11)
+#6      BaseTapGestureRecognizer._checkUp (package:flutter/src/gestures/tap.dart:383:5)
+#7      BaseTapGestureRecognizer.acceptGesture (package:flutter/src/gestures/tap.dart:353:7)
+#8      GestureArenaManager.sweep (package:flutter/src/gestures/arena.dart:173:27)
+#9      GestureBinding.handleEvent (package:flutter/src/gestures/binding.dart:532:20)
+#10     GestureBinding.dispatchEvent (package:flutter/src/gestures/binding.dart:498:22)
+#11     RendererBinding.dispatchEvent (package:flutter/src/rendering/binding.dart:473:11)
+#12     GestureBinding._handlePointerEventImmediately (package:flutter/src/gestures/binding.dart:437:7)
+#13     GestureBinding.handlePointerEvent (package:flutter/src/gestures/binding.dart:394:5)
+#14     TestWidgetsFlutterBinding.handlePointerEventForSource.<anonymous closure> (package:flutter_test/src/binding.dart:678:42)
+#15     TestWidgetsFlutterBinding.withPointerEventSource (package:flutter_test/src/binding.dart:688:11)
+#16     TestWidgetsFlutterBinding.handlePointerEventForSource (package:flutter_test/src/binding.dart:678:5)
+#17     WidgetTester.sendEventToBinding.<anonymous closure> (package:flutter_test/src/widget_tester.dart:869:15)
+#20     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#21     WidgetTester.sendEventToBinding (package:flutter_test/src/widget_tester.dart:868:27)
+#22     TestGesture.up.<anonymous closure> (package:flutter_test/src/test_pointer.dart:538:26)
+#25     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#26     TestGesture.up (package:flutter_test/src/test_pointer.dart:531:27)
+#27     WidgetController.tapAt.<anonymous closure> (package:flutter_test/src/controller.dart:1117:21)
+<asynchronous suspension>
+#28     TestAsyncUtils.guard.<anonymous closure> (package:flutter_test/src/test_async_utils.dart:130:27)
+<asynchronous suspension>
+#29     main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:117:7)
+<asynchronous suspension>
+#30     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#31     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+Handler: "onTap"
+Recognizer:
+  TapGestureRecognizer#ed6e5
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following _TypeError was thrown running a test:
+type 'Null' is not a subtype of type 'Future<void>'
+
+When the exception was thrown, this was the stack:
+#0      MockDatabaseService.saveSetting (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:21:7)
+#1      PersonaService.setPersona (package:music_tag_editor/services/persona_service.dart:32:30)
+#2      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:123:31)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  Switching persona updates PersonaService
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+00:03 +1 -1: SettingsPage Persona Selection Switching persona updates PersonaService [E]
+  Test failed. See exception logs above.
+  The test description was: Switching persona updates PersonaService
+  
+00:03 +1 -1: AppShell Persona Integration AppShell shows Home navigation for Listener persona
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following _TypeError was thrown building MiniPlayer(dirty):
+type 'Null' is not a subtype of type 'AudioPlayer'
+
+The relevant error-causing widget was:
+  MiniPlayer
+  MiniPlayer:file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/lib/views/search_page.dart:580:22
+
+When the exception was thrown, this was the stack:
+#0      MockPlaybackService.player (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:31:7)
+#1      MiniPlayer.build (package:music_tag_editor/widgets/mini_player.dart:14:24)
+#2      StatelessElement.build (package:flutter/src/widgets/framework.dart:5892:49)
+#3      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#4      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#5      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#6      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (99 frames)
+#105    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#106    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#107    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (151 frames)
+#258    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#259    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#260    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (13 frames)
+#273    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#274    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#275    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (7 frames)
+#282    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#283    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#284    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (25 frames)
+#309    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#310    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#311    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (105 frames)
+#416    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#417    Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#418    _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#419    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#420    _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#421    RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#422    RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#423    RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#424    PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#425    RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#426    RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#427    _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#428    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#429    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#430    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#431    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#432    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#433    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#434    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#435    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#436    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#437    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#438    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#439    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#440    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#441    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#442    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#443    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#444    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#445    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#446    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#447    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#448    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#449    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#450    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#451    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#452    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#453    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#454    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#455    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#456    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#457    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#458    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#459    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#460    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#461    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#462    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#463    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#464    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#465    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#466    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#467    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#468    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#469    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#470    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#471    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#472    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#473    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#474    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#475    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#476    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#477    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#478    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#479    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#480    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#481    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#482    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#483    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#484    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#485    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#486    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#487    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#488    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#489    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#490    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#491    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#492    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#493    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#494    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#495    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#496    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#499    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#500    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#501    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#504    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#505    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#506    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:132:20)
+#507    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#508    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY WIDGETS LIBRARY Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following _TypeError was thrown building MiniPlayer(dirty):
+type 'Null' is not a subtype of type 'AudioPlayer'
+
+The relevant error-causing widget was:
+  MiniPlayer
+  MiniPlayer:file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/lib/views/app_shell.dart:57:29
+
+When the exception was thrown, this was the stack:
+#0      MockPlaybackService.player (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:31:7)
+#1      MiniPlayer.build (package:music_tag_editor/widgets/mini_player.dart:14:24)
+#2      StatelessElement.build (package:flutter/src/widgets/framework.dart:5892:49)
+#3      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#4      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#5      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#6      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+#7      Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#8      MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#9      MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (25 frames)
+#34     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#35     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#36     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (105 frames)
+#141    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#142    Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#143    _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#144    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#145    _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#146    RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#147    RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#148    RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#149    PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#150    RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#151    RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#152    _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#153    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#154    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#155    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#156    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#157    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#158    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#159    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#160    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#161    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#162    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#163    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#164    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#165    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#166    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#167    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#168    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#169    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#170    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#171    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#172    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#173    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#174    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#175    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#176    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#177    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#178    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#179    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#180    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#181    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#182    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#183    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#184    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#185    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#186    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#187    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#188    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#189    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#190    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#191    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#192    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#193    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#194    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#195    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#196    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#197    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#198    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#199    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#200    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#201    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#202    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#203    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#204    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#205    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#206    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#207    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#208    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#209    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#210    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#211    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#212    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#213    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#214    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#215    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#216    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#217    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#218    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#219    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#220    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#221    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#224    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#225    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#226    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#229    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#230    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#231    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:132:20)
+#232    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#233    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY RENDERING LIBRARY Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 99400 pixels on the bottom.
+
+The relevant error-causing widget was:
+  Column
+  Column:file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/lib/views/app_shell.dart:46:25
+
+The overflowing RenderFlex has an orientation of Axis.vertical.
+The edge of the RenderFlex that is overflowing has been marked in the rendering with a yellow and
+black striped pattern. This is usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget) to force the children of the
+RenderFlex to fit within the available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that there is content that cannot be
+seen. If the content is legitimately bigger than the available space, consider clipping it with a
+ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
+like a ListView.
+The specific RenderFlex in question is: RenderFlex#9cd6f relayoutBoundary=up1 OVERFLOWING:
+  needs compositing
+  creator: Column ÔåÉ KeyedSubtree-[GlobalKey#f6b96] ÔåÉ _BodyBuilder ÔåÉ MediaQuery ÔåÉ
+    LayoutId-[<_ScaffoldSlot.body>] ÔåÉ CustomMultiChildLayout ÔåÉ _ActionsScope ÔåÉ Actions ÔåÉ
+    AnimatedBuilder ÔåÉ DefaultTextStyle ÔåÉ AnimatedDefaultTextStyle ÔåÉ _InkFeatures-[GlobalKey#921f7 ink
+    renderer] ÔåÉ Ôï»
+  parentData: offset=Offset(0.0, 0.0); id=_ScaffoldSlot.body (can use size)
+  constraints: BoxConstraints(0.0<=w<=800.0, 0.0<=h<=600.0)
+  size: Size(800.0, 600.0)
+  direction: vertical
+  mainAxisAlignment: start
+  mainAxisSize: max
+  crossAxisAlignment: center
+  verticalDirection: down
+  spacing: 0.0
+ÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñÔùóÔùñ
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following _TypeError was thrown running a test:
+type 'Null' is not a subtype of type 'Future<List<Map<String, dynamic>>>'
+
+When the exception was thrown, this was the stack:
+#0      MockDatabaseService.getTracks (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:21:7)
+#1      _HomeViewState._loadData (package:music_tag_editor/views/home_view.dart:30:37)
+#2      _HomeViewState.initState (package:music_tag_editor/views/home_view.dart:26:5)
+#3      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5953:55)
+#4      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (39 frames)
+#43     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#44     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#45     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (13 frames)
+#58     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#59     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#60     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (7 frames)
+#67     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#68     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#69     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (25 frames)
+#94     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#95     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#96     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (105 frames)
+#201    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#202    Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#203    _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#204    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#205    _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#206    RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#207    RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#208    RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#209    PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#210    RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#211    RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#212    _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#213    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#214    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#215    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#216    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#217    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#218    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#219    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#220    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#221    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#222    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#223    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#224    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#225    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#226    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#227    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#228    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#229    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#230    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#231    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#232    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#233    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#234    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#235    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#236    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#237    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#238    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#239    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#240    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#241    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#242    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#243    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#244    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#245    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#246    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#247    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#248    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#249    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#250    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#251    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#252    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#253    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#254    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#255    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#256    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#257    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#258    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#259    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#260    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#261    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#262    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#263    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#264    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#265    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#266    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#267    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#268    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#269    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#270    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#271    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#272    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#273    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#274    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#275    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#276    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#277    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#278    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#279    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#280    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#281    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#284    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#285    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#286    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#289    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#290    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#291    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:132:20)
+#292    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#293    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+The test description was:
+  AppShell shows Home navigation for Listener persona
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following message was thrown:
+Multiple exceptions (4) were detected during the running of the current test, and at least one was
+unexpected.
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+00:05 +1 -2: AppShell Persona Integration AppShell shows Home navigation for Listener persona [E]
+  Test failed. See exception logs above.
+  The test description was: AppShell shows Home navigation for Listener persona
+  
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following _TypeError was thrown running a test (but after the test had completed):
+type 'Null' is not a subtype of type 'Future<List<Map<String, dynamic>>>'
+
+When the exception was thrown, this was the stack:
+#0      MockDatabaseService.getTracks (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:21:7)
+#1      _MyTracksViewState._loadTracks (package:music_tag_editor/views/my_tracks_view.dart:28:37)
+#2      _MyTracksViewState.initState (package:music_tag_editor/views/my_tracks_view.dart:24:5)
+#3      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5953:55)
+#4      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (39 frames)
+#43     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#44     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#45     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (13 frames)
+#58     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#59     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#60     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (7 frames)
+#67     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#68     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#69     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (25 frames)
+#94     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#95     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#96     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (105 frames)
+#201    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#202    Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#203    _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#204    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#205    _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#206    RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#207    RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#208    RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#209    PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#210    RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#211    RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#212    _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#213    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#214    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#215    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#216    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#217    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#218    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#219    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#220    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#221    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#222    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#223    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#224    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#225    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#226    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#227    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#228    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#229    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#230    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#231    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#232    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#233    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#234    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#235    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#236    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#237    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#238    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#239    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#240    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#241    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#242    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#243    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#244    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#245    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#246    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#247    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#248    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#249    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#250    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#251    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#252    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#253    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#254    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#255    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#256    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#257    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#258    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#259    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#260    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#261    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#262    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#263    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#264    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#265    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#266    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#267    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#268    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#269    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#270    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#271    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#272    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#273    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#274    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#275    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#276    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#277    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#278    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#279    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#280    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#281    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#284    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#285    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#286    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#289    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#290    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#291    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:132:20)
+#292    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#293    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+  Test failed. See exception logs above.
+  The test description was: AppShell shows Home navigation for Listener persona
+  
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following _TypeError was thrown running a test (but after the test had completed):
+type 'Null' is not a subtype of type 'Future<List<Map<String, dynamic>>>'
+
+When the exception was thrown, this was the stack:
+#0      MockDatabaseService.getPlaylists (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:21:7)
+#1      _PlaylistsViewState._loadPlaylists (package:music_tag_editor/views/playlists_view.dart:23:40)
+#2      _PlaylistsViewState.initState (package:music_tag_editor/views/playlists_view.dart:19:5)
+#3      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5953:55)
+#4      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (39 frames)
+#43     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#44     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#45     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (13 frames)
+#58     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#59     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#60     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (7 frames)
+#67     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#68     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#69     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (25 frames)
+#94     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#95     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#96     MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (105 frames)
+#201    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#202    Element.updateChild (package:flutter/src/widgets/framework.dart:4059:18)
+#203    _LayoutBuilderElement._rebuildWithConstraints.updateChildCallback (package:flutter/src/widgets/layout_builder.dart:248:18)
+#204    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3101:19)
+#205    _LayoutBuilderElement._rebuildWithConstraints (package:flutter/src/widgets/layout_builder.dart:271:12)
+#206    RenderAbstractLayoutBuilderMixin.layoutCallback (package:flutter/src/widgets/layout_builder.dart:334:38)
+#207    RenderObjectWithLayoutCallbackMixin.runLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:4169:33)
+#208    RenderObject.invokeLayoutCallback.<anonymous closure> (package:flutter/src/rendering/object.dart:2894:17)
+#209    PipelineOwner._enableMutationsToDirtySubtrees (package:flutter/src/rendering/object.dart:1219:15)
+#210    RenderObject.invokeLayoutCallback (package:flutter/src/rendering/object.dart:2893:14)
+#211    RenderObjectWithLayoutCallbackMixin.runLayoutCallback (package:flutter/src/rendering/object.dart:4169:5)
+#212    _RenderLayoutBuilder.performLayout (package:flutter/src/widgets/layout_builder.dart:448:5)
+#213    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#214    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#215    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#216    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#217    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#218    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#219    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#220    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#221    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#222    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#223    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#224    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#225    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#226    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#227    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#228    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#229    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#230    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#231    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#232    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#233    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#234    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#235    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#236    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#237    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#238    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#239    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#240    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#241    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#242    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#243    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#244    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#245    RenderOffstage.performLayout (package:flutter/src/rendering/proxy_box.dart:3848:13)
+#246    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#247    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#248    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#249    _RenderTheaterMixin.layoutChild (package:flutter/src/widgets/overlay.dart:1084:13)
+#250    _RenderTheater.performLayout (package:flutter/src/widgets/overlay.dart:1429:9)
+#251    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#252    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#253    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#254    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#255    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#256    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#257    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#258    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#259    RenderCustomPaint.performLayout (package:flutter/src/rendering/custom_paint.dart:574:11)
+#260    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#261    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#262    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#263    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#264    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#265    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#266    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#267    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#268    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#269    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#270    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#271    RenderProxyBoxMixin.performLayout (package:flutter/src/rendering/proxy_box.dart:115:18)
+#272    RenderObject.layout (package:flutter/src/rendering/object.dart:2775:7)
+#273    RenderView.performLayout (package:flutter/src/rendering/view.dart:294:12)
+#274    RenderObject._layoutWithoutResize (package:flutter/src/rendering/object.dart:2623:7)
+#275    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1170:18)
+#276    PipelineOwner.flushLayout (package:flutter/src/rendering/object.dart:1183:15)
+#277    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1508:27)
+#278    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#279    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#280    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#281    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#284    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#285    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#286    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#289    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#290    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#291    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:132:20)
+#292    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#293    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+  Test failed. See exception logs above.
+  The test description was: AppShell shows Home navigation for Listener persona
+  
+00:05 +1 -2: AppShell Persona Integration AppShell shows Tags navigation for Librarian persona
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following _TypeError was thrown running a test:
+type 'Null' is not a subtype of type 'Future<void>'
+
+When the exception was thrown, this was the stack:
+#0      MockDatabaseService.saveSetting (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:21:7)
+#1      PersonaService.setPersona (package:music_tag_editor/services/persona_service.dart:32:30)
+#2      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:141:31)
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  AppShell shows Tags navigation for Librarian persona
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+00:05 +1 -3: AppShell Persona Integration AppShell shows Tags navigation for Librarian persona [E]
+  Test failed. See exception logs above.
+  The test description was: AppShell shows Tags navigation for Librarian persona
+  
+00:05 +1 -3: AppShell Persona Integration AppShell shows Disco and Karaoke for Host persona
+ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+The following _TypeError was thrown running a test:
+type 'Null' is not a subtype of type 'Future<void>'
+
+When the exception was thrown, this was the stack:
+#0      MockDatabaseService.saveSetting (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:21:7)
+#1      PersonaService.setPersona (package:music_tag_editor/services/persona_service.dart:32:30)
+#2      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart:153:31)
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  AppShell shows Disco and Karaoke for Host persona
+ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+00:05 +1 -4: AppShell Persona Integration AppShell shows Disco and Karaoke for Host persona [E]
+  Test failed. See exception logs above.
+  The test description was: AppShell shows Disco and Karaoke for Host persona
+  
+00:05 +1 -4: Some tests failed.

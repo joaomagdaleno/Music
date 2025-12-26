@@ -1,0 +1,9 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/persona_service_test.dart
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/persona_service_test.dart: PersonaService Unit Tests Default persona should be listener
+00:00 +1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/persona_service_test.dart: PersonaService Unit Tests setPersona updates activePersona and notifies listeners
+00:02 +2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart: SettingsPage Persona Selection Displays all persona options in SettingsPage
+00:05 +3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart: SettingsPage Persona Selection Switching persona updates PersonaService
+00:06 +4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart: AppShell Persona Integration AppShell shows Home navigation for Listener persona
+00:07 +5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart: AppShell Persona Integration AppShell shows Tags navigation for Librarian persona
+00:08 +6: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/personas_widget_test.dart: AppShell Persona Integration AppShell shows Disco and Karaoke for Host persona
+00:08 +7: All tests passed!

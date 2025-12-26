@@ -1,0 +1,921 @@
+[ +410 ms] Artifact Instance of 'MaterialFonts' is not required, skipping update.
+[        ] Artifact Instance of 'GradleWrapper' is not required, skipping update.
+[        ] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterSdk' is not required, skipping update.
+[        ] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FontSubsetArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'PubDependencies' is not required, skipping update.
+[   +1 ms] executing: [C:\Flutter\flutter/] git -c log.showSignature=false log HEAD -n 1 --pretty=format:%ad --date=iso
+[ +266 ms] Exit code 0 from: git -c log.showSignature=false log HEAD -n 1 --pretty=format:%ad --date=iso
+[        ] 2025-12-03 14:56:10 -0800
+[  +24 ms] Found 1 files which will be executed as Widget Tests.
+[  +13 ms] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterEngineStamp' is not required, skipping update.
+[        ] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[   +4 ms] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[ +180 ms] Artifact Instance of 'MaterialFonts' is not required, skipping update.
+[        ] Artifact Instance of 'GradleWrapper' is not required, skipping update.
+[        ] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterEngineStamp' is not required, skipping update.
+[        ] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterSdk' is not required, skipping update.
+[        ] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FontSubsetArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'PubDependencies' is not required, skipping update.
+[  +83 ms] Skipping pub get: version match.
+[ +340 ms] Found plugin window_manager at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\window_manager-0.5.1\
+[  +16 ms] Found plugin screen_retriever at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever-0.2.0\
+[   +3 ms] Found plugin screen_retriever_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_windows-0.2.0\
+[  +15 ms] Found plugin screen_retriever_macos at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_macos-0.2.0\
+[   +4 ms] Found plugin screen_retriever_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_linux-0.2.0\
+[   +8 ms] Found plugin system_tray at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\system_tray-2.0.3\
+[  +11 ms] Found plugin sqflite at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite-2.4.2\
+[   +8 ms] Found plugin sqflite_darwin at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_darwin-2.4.2\
+[  +22 ms] Found plugin sqflite_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_android-2.4.2+2\
+[  +17 ms] Found plugin shared_preferences at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.4\
+[   +3 ms] Found plugin shared_preferences_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[   +7 ms] Found plugin path_provider_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[  +75 ms] Found plugin shared_preferences_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[   +6 ms] Found plugin shared_preferences_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[   +3 ms] Found plugin path_provider_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.1\
+[   +5 ms] Found plugin shared_preferences_foundation at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[   +3 ms] Found plugin shared_preferences_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\
+[   +4 ms] Found plugin permission_handler at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler-11.4.0\
+[   +3 ms] Found plugin permission_handler_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_windows-0.2.1\
+[   +4 ms] Found plugin permission_handler_html at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_html-0.1.3+5\
+[   +2 ms] Found plugin permission_handler_apple at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_apple-9.4.7\
+[  +59 ms] Found plugin permission_handler_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_android-12.1.0\
+[  +23 ms] Found plugin network_info_plus at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\network_info_plus-7.0.0\
+[  +68 ms] Found plugin nearby_connections at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\nearby_connections-4.3.0\
+[   +5 ms] Found plugin local_auth at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth-2.3.0\
+[   +4 ms] Found plugin local_auth_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_windows-1.0.11\
+[  +42 ms] Found plugin local_auth_darwin at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_darwin-1.6.1\
+[   +5 ms] Found plugin local_auth_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_android-1.0.56\
+[   +3 ms] Found plugin flutter_plugin_android_lifecycle at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.33\
+[   +4 ms] Found plugin just_audio at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio-0.9.46\
+[   +3 ms] Found plugin path_provider at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider-2.1.5\
+[   +4 ms] Found plugin path_provider_foundation at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_foundation-2.5.1\
+[   +3 ms] Found plugin path_provider_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\
+[   +3 ms] Found plugin just_audio_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio_web-0.4.16\
+[  +40 ms] Found plugin audio_session at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_session-0.1.25\
+[   +8 ms] Found plugin flutter_secure_storage at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage-9.2.4\
+[   +3 ms] Found plugin flutter_secure_storage_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_windows-3.1.2\
+[   +6 ms] Found plugin flutter_secure_storage_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_web-1.2.1\
+[   +5 ms] Found plugin flutter_secure_storage_macos at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_macos-3.1.3\
+[   +3 ms] Found plugin flutter_secure_storage_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_linux-1.2.3\
+[   +3 ms] Found plugin firebase_core at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-3.15.2\
+[  +32 ms] Found plugin firebase_core_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core_web-2.24.1\
+[   +9 ms] Found plugin firebase_auth at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.7.0\
+[   +3 ms] Found plugin firebase_auth_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth_web-5.15.3\
+[  +10 ms] Found plugin file_picker at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.3.7\
+[  +66 ms] Found plugin connectivity_plus at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\connectivity_plus-6.1.5\
+[   +6 ms] Found plugin cloud_firestore at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.12\
+[  +20 ms] Found plugin cloud_firestore_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore_web-4.4.12\
+[   +4 ms] Found plugin audio_service at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service-0.18.18\
+[   +5 ms] Found plugin audio_service_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service_web-0.1.4\
+[ +370 ms] Found plugin window_manager at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\window_manager-0.5.1\
+[  +20 ms] Found plugin screen_retriever at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever-0.2.0\
+[  +47 ms] Found plugin screen_retriever_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_windows-0.2.0\
+[   +8 ms] Found plugin screen_retriever_macos at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_macos-0.2.0\
+[   +2 ms] Found plugin screen_retriever_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_linux-0.2.0\
+[   +2 ms] Found plugin system_tray at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\system_tray-2.0.3\
+[   +3 ms] Found plugin sqflite at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite-2.4.2\
+[   +5 ms] Found plugin sqflite_darwin at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_darwin-2.4.2\
+[   +2 ms] Found plugin sqflite_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_android-2.4.2+2\
+[  +15 ms] Found plugin shared_preferences at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.4\
+[   +2 ms] Found plugin shared_preferences_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[   +3 ms] Found plugin path_provider_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[   +4 ms] Found plugin shared_preferences_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[   +3 ms] Found plugin shared_preferences_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[   +3 ms] Found plugin path_provider_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.1\
+[   +3 ms] Found plugin shared_preferences_foundation at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[   +1 ms] Found plugin shared_preferences_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\
+[   +3 ms] Found plugin permission_handler at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler-11.4.0\
+[   +1 ms] Found plugin permission_handler_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_windows-0.2.1\
+[   +3 ms] Found plugin permission_handler_html at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_html-0.1.3+5\
+[   +1 ms] Found plugin permission_handler_apple at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_apple-9.4.7\
+[  +29 ms] Found plugin permission_handler_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_android-12.1.0\
+[   +3 ms] Found plugin network_info_plus at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\network_info_plus-7.0.0\
+[  +11 ms] Found plugin nearby_connections at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\nearby_connections-4.3.0\
+[   +2 ms] Found plugin local_auth at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth-2.3.0\
+[   +2 ms] Found plugin local_auth_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_windows-1.0.11\
+[   +3 ms] Found plugin local_auth_darwin at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_darwin-1.6.1\
+[   +3 ms] Found plugin local_auth_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_android-1.0.56\
+[   +4 ms] Found plugin flutter_plugin_android_lifecycle at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.33\
+[   +7 ms] Found plugin just_audio at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio-0.9.46\
+[   +2 ms] Found plugin path_provider at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider-2.1.5\
+[  +49 ms] Found plugin path_provider_foundation at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_foundation-2.5.1\
+[   +2 ms] Found plugin path_provider_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\
+[   +2 ms] Found plugin just_audio_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio_web-0.4.16\
+[   +3 ms] Found plugin audio_session at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_session-0.1.25\
+[   +3 ms] Found plugin flutter_secure_storage at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage-9.2.4\
+[   +2 ms] Found plugin flutter_secure_storage_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_windows-3.1.2\
+[   +6 ms] Found plugin flutter_secure_storage_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_web-1.2.1\
+[   +4 ms] Found plugin flutter_secure_storage_macos at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_macos-3.1.3\
+[   +5 ms] Found plugin flutter_secure_storage_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_linux-1.2.3\
+[   +2 ms] Found plugin firebase_core at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-3.15.2\
+[   +2 ms] Found plugin firebase_core_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core_web-2.24.1\
+[   +7 ms] Found plugin firebase_auth at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.7.0\
+[   +7 ms] Found plugin firebase_auth_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth_web-5.15.3\
+[   +6 ms] Found plugin file_picker at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.3.7\
+[  +15 ms] Found plugin connectivity_plus at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\connectivity_plus-6.1.5\
+[   +3 ms] Found plugin cloud_firestore at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.12\
+[   +2 ms] Found plugin cloud_firestore_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore_web-4.4.12\
+[   +3 ms] Found plugin audio_service at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service-0.18.18\
+[   +5 ms] Found plugin audio_service_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service_web-0.1.4\
+[  +22 ms] Generating C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\src\main\java\io\flutter\plugins\GeneratedPluginRegistrant.java
+[  +25 ms] Skipping generating GeneratedPluginRegistrant.java because it is up-to-date.
+[  +11 ms] Skipping generating generated_plugin_registrant.h because it is up-to-date.
+[   +2 ms] Skipping generating generated_plugin_registrant.cc because it is up-to-date.
+[   +3 ms] Skipping generating generated_plugins.cmake because it is up-to-date.
+[   +5 ms] Skipping generating generated_plugin_registrant.h because it is up-to-date.
+[   +2 ms] Skipping generating generated_plugin_registrant.cc because it is up-to-date.
+[   +2 ms] Skipping generating generated_plugins.cmake because it is up-to-date.
+[ +400 ms] executing: C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -format json -products * -utf8 -latest -version 16 -requires Microsoft.VisualStudio.Workload.NativeDesktop Microsoft.VisualStudio.Component.VC.Tools.x86.x64 Microsoft.VisualStudio.Component.VC.CMake.Project
+[ +546 ms] Exit code 0 from: C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -format json -products * -utf8 -latest -version 16 -requires Microsoft.VisualStudio.Workload.NativeDesktop Microsoft.VisualStudio.Component.VC.Tools.x86.x64 Microsoft.VisualStudio.Component.VC.CMake.Project
+[        ] [
+             {
+               "instanceId": "1e8af2bd",
+               "installDate": "2025-12-15T01:09:15Z",
+               "installationName": "VisualStudio/18.1.0+11304.174",
+               "installationPath": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community",
+               "installationVersion": "18.1.11304.174",
+               "productId": "Microsoft.VisualStudio.Product.Community",
+               "productPath": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\devenv.exe",
+               "state": 4294967295,
+               "isComplete": true,
+               "isLaunchable": true,
+               "isPrerelease": false,
+               "isRebootRequired": false,
+               "displayName": "Visual Studio Community 2026",
+               "description": "Tudo o que voc├¬ precisa para criar aplicativos modernos ÔÇô gratuitos para voc├¬, feitos para causar impacto.",
+               "channelId": "VisualStudio.18.Release",
+               "channelUri": "https://aka.ms/vs/18/stable/channel",
+               "enginePath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\resources\\app\\ServiceHub\\Services\\Microsoft.VisualStudio.Setup.Service",
+               "expirationDate": "2026-01-23T17:00:00+00:00",
+               "installedChannelId": "VisualStudio.18.Release",
+               "installedChannelUri": "https://aka.ms/vs/18/stable/channel",
+               "releaseNotes": "https://docs.microsoft.com/en-us/visualstudio/releases/18/release-notes-v18.1#18.1.0",
+               "resolvedInstallationPath": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community",
+               "retirementDate": "2026-02-17T17:00:00+00:00",
+               "thirdPartyNotices": "https://go.microsoft.com/fwlink/?LinkId=661480",
+               "updateDate": "2025-12-15T01:09:15.4957359Z",
+               "catalog": {
+                 "buildBranch": "d18.0",
+                 "buildVersion": "18.1.11304.174",
+                 "featureReleaseMonth": "12",
+                 "featureReleaseYear": "2025",
+                 "id": "VisualStudio/18.1.0+11304.174",
+                 "includeBuildVersionInDisplayVersion": "False",
+                 "localBuild": "build-lab",
+                 "manifestName": "VisualStudio",
+                 "manifestType": "installer",
+                 "productDisplayVersion": "18.1.0",
+                 "productLine": "Dev18",
+                 "productLineVersion": "18",
+                 "productMilestone": "RTW",
+                 "productMilestoneIsPreRelease": "False",
+                 "productName": "Visual Studio",
+                 "productPatchVersion": "0",
+                 "productPreReleaseMilestoneSuffix": "1.0",
+                 "productRelease": "RTW",
+                 "productSemanticVersion": "18.1.0+11304.174",
+                 "requiredEngineVersion": "4.0.2167.44905"
+               },
+               "properties": {
+                 "appLocalWPF": "false",
+                 "campaignId": "2500:38602d8caa884c4a9aba6e86e14dfdde",
+                 "channelManifestId": "VisualStudio.18.Release/18.1.0+11304.174",
+                 "includeRecommended": "1",
+                 "nickname": "",
+                 "setupEngineFilePath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\setup.exe"
+               }
+             }
+           ]
+[  +15 ms] Building native assets for windows_x64.
+[ +247 ms] input.json contents:
+           {
+             "assets": {},
+             "config": {
+               "build_asset_types": [
+                 "code_assets/code"
+               ],
+               "extensions": {
+                 "code_assets": {
+                   "c_compiler": {
+                     "ar": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\lib.exe",
+                     "cc": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\cl.exe",
+                     "ld": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\link.exe",
+                     "windows": {
+                       "developer_command_prompt": {
+                         "arguments": [],
+                         "script": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
+                       }
+                     }
+                   },
+                   "link_mode_preference": "dynamic",
+                   "target_architecture": "x64",
+                   "target_os": "windows"
+                 }
+               },
+               "linking_enabled": false
+             },
+             "out_dir_shared": "C:\\Users\\joaom\\Documents\\GitHub\\Music\\music_tag_editor\\.dart_tool\\hooks_runner\\shared\\sqlite3\\build\\",
+             "out_file": "C:\\Users\\joaom\\Documents\\GitHub\\Music\\music_tag_editor\\.dart_tool\\hooks_runner\\sqlite3\\7b521f47a946c99ed67b1e1562bc0b25\\output.json",
+             "package_name": "sqlite3",
+             "package_root": "C:\\Users\\joaom\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\sqlite3-3.1.1\\",
+             "user_defines": {}
+           }
+[  +20 ms] output.json contents:
+           {
+             "assets": [
+               {
+                 "encoding": {
+                   "file": "C:\\Users\\joaom\\Documents\\GitHub\\Music\\music_tag_editor\\.dart_tool\\hooks_runner\\shared\\sqlite3\\build\\download-15567566\\sqlite3.x64.windows.dll",
+                   "id": "package:sqlite3/src/ffi/libsqlite3.g.dart",
+                   "link_mode": {
+                     "type": "dynamic_loading_bundle"
+                   }
+                 },
+                 "type": "code_assets/code"
+               }
+             ],
+             "assets_for_linking": {},
+             "status": "success",
+             "timestamp": "2025-12-24 20:12:00.000"
+           }
+[   +7 ms] Skipping build for sqlite3 in C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\.dart_tool\hooks_runner\sqlite3\7b521f47a946c99ed67b1e1562bc0b25\. Last build on 2025-12-24 20:12:00.000.
+[  +31 ms] Note: You are using the dart build hooks feature which is currently in preview. Please see https://dart.dev/interop/c-interop#native-assets for more details.
+[        ] Building native assets for windows_x64 done.
+[   +6 ms] Copying native assets to C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\build\native_assets\windows\.
+[ +173 ms] Copying native assets done.
+[   +1 ms] Writing native assets json to file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/build/native_assets/windows/native_assets.json.
+[   +6 ms] Writing C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\build\native_assets\windows\native_assets.json done.
+[ +747 ms] running test package with arguments: [--no-color, --chain-stack-traces, --, file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_root_tests.dart?]
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_root_tests.dart
+[ +646 ms] test 0: starting test C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_root_tests.dart
+[ +168 ms] Discovered flutter_test_config.dart in C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\test
+[   +9 ms] Compiler will use the following file as its incremental dill file: C:\Users\joaom\AppData\Local\Temp\flutter_tools.c2d40f0d\flutter_test_compiler.148fbb77\output.dill
+[        ] Listening to compiler controller...
+[  +54 ms] Compiling file:///C:/Users/joaom/AppData/Local/Temp/flutter_tools.c2d40f0d/flutter_test_listener.bbba2a2f/listener.dart
+[ +232 ms] Found plugin window_manager at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\window_manager-0.5.1\
+[   +2 ms] Found plugin screen_retriever at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever-0.2.0\
+[   +6 ms] Found plugin screen_retriever_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_windows-0.2.0\
+[  +13 ms] Found plugin screen_retriever_macos at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_macos-0.2.0\
+[   +2 ms] Found plugin screen_retriever_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_linux-0.2.0\
+[   +2 ms] Found plugin system_tray at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\system_tray-2.0.3\
+[   +5 ms] Found plugin sqflite at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite-2.4.2\
+[   +7 ms] Found plugin sqflite_darwin at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_darwin-2.4.2\
+[   +2 ms] Found plugin sqflite_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_android-2.4.2+2\
+[  +15 ms] Found plugin shared_preferences at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.4\
+[   +2 ms] Found plugin shared_preferences_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[  +10 ms] Found plugin path_provider_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[   +4 ms] Found plugin shared_preferences_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[   +4 ms] Found plugin shared_preferences_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[   +2 ms] Found plugin path_provider_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.1\
+[   +3 ms] Found plugin shared_preferences_foundation at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[   +2 ms] Found plugin shared_preferences_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\
+[   +4 ms] Found plugin permission_handler at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler-11.4.0\
+[   +3 ms] Found plugin permission_handler_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_windows-0.2.1\
+[  +17 ms] Found plugin permission_handler_html at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_html-0.1.3+5\
+[   +2 ms] Found plugin permission_handler_apple at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_apple-9.4.7\
+[   +2 ms] Found plugin permission_handler_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_android-12.1.0\
+[   +4 ms] Found plugin network_info_plus at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\network_info_plus-7.0.0\
+[  +20 ms] Found plugin nearby_connections at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\nearby_connections-4.3.0\
+[   +2 ms] Found plugin local_auth at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth-2.3.0\
+[   +2 ms] Found plugin local_auth_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_windows-1.0.11\
+[   +3 ms] Found plugin local_auth_darwin at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_darwin-1.6.1\
+[   +4 ms] Found plugin local_auth_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_android-1.0.56\
+[   +5 ms] Found plugin flutter_plugin_android_lifecycle at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.33\
+[   +2 ms] Found plugin just_audio at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio-0.9.46\
+[   +2 ms] Found plugin path_provider at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider-2.1.5\
+[   +2 ms] Found plugin path_provider_foundation at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_foundation-2.5.1\
+[   +2 ms] Found plugin path_provider_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\
+[   +2 ms] Found plugin just_audio_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio_web-0.4.16\
+[   +3 ms] Found plugin audio_session at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_session-0.1.25\
+[  +20 ms] Found plugin flutter_secure_storage at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage-9.2.4\
+[   +2 ms] Found plugin flutter_secure_storage_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_windows-3.1.2\
+[   +4 ms] Found plugin flutter_secure_storage_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_web-1.2.1\
+[   +4 ms] Found plugin flutter_secure_storage_macos at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_macos-3.1.3\
+[   +4 ms] Found plugin flutter_secure_storage_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_linux-1.2.3\
+[  +14 ms] Found plugin firebase_core at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-3.15.2\
+[   +3 ms] Found plugin firebase_core_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core_web-2.24.1\
+[   +4 ms] Found plugin firebase_auth at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.7.0\
+[   +2 ms] Found plugin firebase_auth_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth_web-5.15.3\
+[   +6 ms] Found plugin file_picker at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.3.7\
+[  +14 ms] Found plugin connectivity_plus at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\connectivity_plus-6.1.5\
+[   +5 ms] Found plugin cloud_firestore at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.12\
+[   +4 ms] Found plugin cloud_firestore_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore_web-4.4.12\
+[   +4 ms] Found plugin audio_service at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service-0.18.18\
+[   +5 ms] Found plugin audio_service_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service_web-0.1.4\
+[  +13 ms] Skipping generating dart_plugin_registrant.dart because it is up-to-date.
+[   +8 ms] C:\Flutter\flutter\bin\cache\dart-sdk\bin\dartaotruntime.exe C:\Flutter\flutter\bin\cache\dart-sdk\bin\snapshots\frontend_server_aot.dart.snapshot --sdk-root C:\Flutter\flutter\bin\cache\artifacts\engine\common\flutter_patched_sdk/ --incremental --no-print-incremental-dependencies --target=flutter --experimental-emit-debug-metadata -DFLUTTER_VERSION=3.38.4 -DFLUTTER_CHANNEL=stable -DFLUTTER_GIT_URL=https://github.com/flutter/flutter.git -DFLUTTER_FRAMEWORK_REVISION=66dd93f9a2 -DFLUTTER_ENGINE_REVISION=a5cb96369e -DFLUTTER_DART_VERSION=3.10.3 --output-dill C:\Users\joaom\AppData\Local\Temp\flutter_tools.c2d40f0d\flutter_test_compiler.148fbb77\output.dill --packages C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\.dart_tool\package_config.json -Ddart.vm.profile=false -Ddart.vm.product=false --enable-asserts --track-widget-creation --initialize-from-dill C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\build\test_cache\build\07dde02958c6c3f720ba69942e639b42.cache.dill.track.dill --verbosity=error
+[ +129 ms] <- compile file:///C:/Users/joaom/AppData/Local/Temp/flutter_tools.c2d40f0d/flutter_test_listener.bbba2a2f/listener.dart
+[+7034 ms] <- accept
+[        ] <- reset
+[        ] Compiling file:///C:/Users/joaom/AppData/Local/Temp/flutter_tools.c2d40f0d/flutter_test_listener.bbba2a2f/listener.dart took 7702ms
+[   +2 ms] test 0: starting test device
+[  +11 ms] test 0: awaiting connection to test device
+[   +3 ms] test 0: VM Service uri is not available
+[   +8 ms] test 0: test harness socket server is running at port:51035
+[   +3 ms] Using this directory for fonts configuration: C:\Users\joaom\AppData\Local\Temp\flutter_tools.c2d40f0d\flutter_test_fonts.5caaeb6d
+[   +4 ms] test 0: Starting flutter_tester process with command=[C:\Flutter\flutter\bin\cache\artifacts\engine\windows-x64\flutter_tester.exe, --disable-vm-service, --enable-checked-mode, --verify-entry-points, --enable-software-rendering, --skia-deterministic-rendering, --enable-dart-profiling, --non-interactive, --use-test-fonts, --disable-asset-fonts, --packages=C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\.dart_tool\package_config.json, --flutter-assets-dir=C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\build\unit_test_assets, C:\Users\joaom\AppData\Local\Temp\flutter_tools.c2d40f0d\flutter_test_listener.bbba2a2f\listener.dart.dill], environment={FLUTTER_TEST: true, FONTCONFIG_FILE: C:\Users\joaom\AppData\Local\Temp\flutter_tools.c2d40f0d\flutter_test_fonts.5caaeb6d/fonts.conf, SERVER_PORT: 51035, APP_NAME: music_tag_editor, UNIT_TEST_ASSETS: C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\build\unit_test_assets, PATH: C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\build\native_assets\windows\;C:\Program Files\PowerShell\7;C:\Flutter\flutter\bin\;C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot\bin;C:\Python314\Scripts\;C:\Python314\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files\PowerShell\7\;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\Android\Sdk\cmdline-tools\latest\bin;C:\Android\Sdk\platform-tools;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Users\joaom\AppData\Local\Microsoft\WindowsApps;C:\Users\joaom\AppData\Local\PowerToys\DSCModules\;C:\Users\joaom\AppData\Local\Programs\Microsoft VS Code\bin;C:\Flutter\flutter\bin;C:\Users\joaom\AppData\Roaming\npm;C:\Users\joaom\AppData\Local\Pub\Cache\bin;C:\Users\joaom\AppData\Local\Programs\Antigravity\bin;c:\Users\joaom\.antigravity\extensions\ms-python.debugpy-2025.18.0-win32-x64\bundled\scripts\noConfigScripts;c:\Users\joaom\.antigravity\extensions\vscjava.vscode-java-debug-0.58.3-universal\bundled\scripts\noConfigScripts}
+[  +28 ms] test 0: Started flutter_tester process at pid 21212
+[+1283 ms] test 0: connected to test device, now awaiting test result
+[   +1 ms] test 0: Waiting for test harness or tests to finish
+Warning: A tag was used that wasn't specified in dart_test.yaml.
+  root was used in the suite itself
+
+00:00 +0: Root Tests (setUpAll)
+00:00 +0: Root Tests AuthService login success returns true
+00:01 +0 -1: Root Tests AuthService login success returns true [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -1: Root Tests AuthService login failure returns false
+00:01 +0 -2: Root Tests AuthService login failure returns false [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -2: Root Tests AuthService register success returns true
+00:01 +0 -3: Root Tests AuthService register success returns true [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -3: Root Tests AuthService logout calls signOut
+00:01 +0 -4: Root Tests AuthService logout calls signOut [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -4: Root Tests AuthService recoverVaultAccess returns true if user matches
+00:01 +0 -5: Root Tests AuthService recoverVaultAccess returns true if user matches [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -5: Root Tests BackupService createBackup creates a zip file with data
+00:01 +0 -6: Root Tests BackupService createBackup creates a zip file with data [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -6: Root Tests BackupService restoreBackup restores data from zip
+00:01 +0 -7: Root Tests BackupService restoreBackup restores data from zip [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -7: Root Tests BackupService estimateBackupSize returns valid size
+00:01 +0 -8: Root Tests BackupService estimateBackupSize returns valid size [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -8: Root Tests ConnectivityService instance is accessible
+00:01 +0 -9: Root Tests ConnectivityService instance is accessible [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -9: Root Tests ConnectivityService isOffline is a ValueNotifier
+00:01 +0 -10: Root Tests ConnectivityService isOffline is a ValueNotifier [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -10: Root Tests ConnectivityService init completes without error
+00:01 +0 -11: Root Tests ConnectivityService init completes without error [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -11: Root Tests Settings save and load filename format
+00:01 +0 -12: Root Tests Settings save and load filename format [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -12: Root Tests Settings save and load crossfade duration
+00:01 +0 -13: Root Tests Settings save and load crossfade duration [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -13: Root Tests Settings save and load age bypass
+00:01 +0 -14: Root Tests Settings save and load age bypass [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -14: Root Tests Tracks save and retrieve tracks
+00:01 +0 -15: Root Tests Tracks save and retrieve tracks [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -15: Root Tests Tracks toggle vault
+00:01 +0 -16: Root Tests Tracks toggle vault [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -16: Root Tests Tracks trackPlay increments count and sets lastPlayed
+00:01 +0 -17: Root Tests Tracks trackPlay increments count and sets lastPlayed [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -17: Root Tests Playlists create playlist and add tracks
+00:01 +0 -18: Root Tests Playlists create playlist and add tracks [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -18: Root Tests Duo save guest and add session tracks
+00:01 +0 -19: Root Tests Duo save guest and add session tracks [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -19: Root Tests Moods getTracksByMood returns matching genres
+00:01 +0 -20: Root Tests Moods getTracksByMood returns matching genres [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -20: Root Tests Learning Rules save and get learning rules
+00:01 +0 -21: Root Tests Learning Rules save and get learning rules [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -21: Root Tests DependencyManager provides correct paths on Windows
+00:01 +0 -22: Root Tests DependencyManager provides correct paths on Windows [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -22: Root Tests DependencyManager downloadFile successful
+00:01 +0 -23: Root Tests DependencyManager downloadFile successful [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -23: Root Tests DependencyManager downloadFile failure throws HttpException
+00:01 +0 -24: Root Tests DependencyManager downloadFile failure throws HttpException [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -24: Root Tests DependencyManager areAllDependenciesInstalled returns true when files exist
+00:01 +0 -25: Root Tests DependencyManager areAllDependenciesInstalled returns true when files exist [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -25: Root Tests DependencyManager ensureDependencies executes downloads if missing
+00:01 +0 -26: Root Tests DependencyManager ensureDependencies executes downloads if missing [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -26: Root Tests EqualizerService Tests Normalization calculation
+00:01 +0 -27: Root Tests EqualizerService Tests Normalization calculation [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -27: Root Tests EqualizerService Tests Normalization disabled returns 1.0
+00:01 +0 -28: Root Tests EqualizerService Tests Normalization disabled returns 1.0 [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -28: Root Tests EqualizerService Tests Auto mode state
+00:01 +0 -29: Root Tests EqualizerService Tests Auto mode state [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -29: Root Tests enableSync signs in anonymously if not signed in
+00:01 +0 -30: Root Tests enableSync signs in anonymously if not signed in [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -30: Root Tests pullFromCloud pulls tracks and playlists
+00:01 +0 -31: Root Tests pullFromCloud pulls tracks and playlists [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -31: Root Tests LocalDuoService startHost sets role and starts advertising
+00:01 +0 -32: Root Tests LocalDuoService startHost sets role and starts advertising [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -32: Root Tests LocalDuoService startDiscovery sets role and starts discovery
+00:01 +0 -33: Root Tests LocalDuoService startDiscovery sets role and starts discovery [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -33: Root Tests LocalDuoService stopAll cleans up state
+00:01 +0 -34: Root Tests LocalDuoService stopAll cleans up state [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -34: Root Tests LocalDuoService sendMessage sends bytes to all connected endpoints
+00:01 +0 -35: Root Tests LocalDuoService sendMessage sends bytes to all connected endpoints [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -35: Root Tests LocalDuoService sendFile sends file to all connected endpoints
+00:01 +0 -36: Root Tests LocalDuoService sendFile sends file to all connected endpoints [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -36: Root Tests LocalDuoService handleIncomingMessage play/pause/seek
+00:01 +0 -37: Root Tests LocalDuoService handleIncomingMessage play/pause/seek [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -37: Root Tests LocalDuoService handleIncomingMessage track/chat
+00:01 +0 -38: Root Tests LocalDuoService handleIncomingMessage track/chat [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -38: Root Tests LyricsService fetchLyrics returns empty list on network error
+00:01 +0 -39: Root Tests LyricsService fetchLyrics returns empty list on network error [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -39: Root Tests LyricsService _parseLrc parses valid LRC format
+00:01 +0 -40: Root Tests LyricsService _parseLrc parses valid LRC format [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -40: Root Tests LyricsService LyricLine has correct structure
+00:01 +0 -41: Root Tests LyricsService LyricLine has correct structure [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -41: Root Tests LyricsService multiple LyricLines can be created
+00:01 +0 -42: Root Tests LyricsService multiple LyricLines can be created [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -42: Root Tests aggregateMetadata aggregates results correctly with majority vote
+00:01 +0 -43: Root Tests aggregateMetadata aggregates results correctly with majority vote [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -43: Root Tests aggregateMetadata handles empty results
+00:01 +0 -44: Root Tests aggregateMetadata handles empty results [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -44: Root Tests fetchSyncedLyrics returns lyrics from LrcLib if found and valid
+00:01 +0 -45: Root Tests fetchSyncedLyrics returns lyrics from LrcLib if found and valid [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:01 +0 -45: Root Tests fetchSyncedLyrics falls back to Netease if LrcLib empty
+00:02 +0 -46: Root Tests fetchSyncedLyrics falls back to Netease if LrcLib empty [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -46: Root Tests MetadataCleanupService cleanupLibrary cleans dirty titles and artists
+00:02 +0 -47: Root Tests MetadataCleanupService cleanupLibrary cleans dirty titles and artists [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -47: Root Tests MetadataCleanupService cleanupLibrary fetches missing metadata
+00:02 +0 -48: Root Tests MetadataCleanupService cleanupLibrary fetches missing metadata [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -48: Root Tests MetadataCleanupService cleanupLibrary handles aggregator errors gracefully
+00:02 +0 -49: Root Tests MetadataCleanupService cleanupLibrary handles aggregator errors gracefully [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -49: Root Tests MetadataService Tests Read and Write Metadata
+00:02 +0 -50: Root Tests MetadataService Tests Read and Write Metadata [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+  LateInitializationError: Local 'tempFile' has not been initialized.
+  dart:_internal                   LateError._throwLocalNotInitialized
+  test\metadata_service_test.dart  main.<fn>.<fn>
+  
+00:02 +0 -50: Root Tests MetadataService Tests Read non-existent file throws exception
+00:02 +0 -51: Root Tests MetadataService Tests Read non-existent file throws exception [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+  LateInitializationError: Local 'tempFile' has not been initialized.
+  dart:_internal                   LateError._throwLocalNotInitialized
+  test\metadata_service_test.dart  main.<fn>.<fn>
+  
+00:02 +0 -51: Root Tests MetadataService Tests Write to non-existent file throws exception
+00:02 +0 -52: Root Tests MetadataService Tests Write to non-existent file throws exception [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+  LateInitializationError: Local 'tempFile' has not been initialized.
+  dart:_internal                   LateError._throwLocalNotInitialized
+  test\metadata_service_test.dart  main.<fn>.<fn>
+  
+00:02 +0 -52: Root Tests PersonaService Unit Tests Default persona should be listener
+00:02 +0 -53: Root Tests PersonaService Unit Tests Default persona should be listener [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -53: Root Tests PersonaService Unit Tests setPersona updates activePersona and notifies listeners
+00:02 +0 -54: Root Tests PersonaService Unit Tests setPersona updates activePersona and notifies listeners [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -54: Root Tests PlaybackService - Core Logic playSearchResult sets source and plays
+00:02 +0 -55: Root Tests PlaybackService - Core Logic playSearchResult sets source and plays [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -55: Root Tests PlaybackService - Core Logic pause calls player pause and sends message
+00:02 +0 -56: Root Tests PlaybackService - Core Logic pause calls player pause and sends message [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -56: Root Tests PlaybackService - Core Logic resume calls player play and sends message
+00:02 +0 -57: Root Tests PlaybackService - Core Logic resume calls player play and sends message [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -57: Root Tests PlaybackService - Core Logic stop calls player stop
+00:02 +0 -58: Root Tests PlaybackService - Core Logic stop calls player stop [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -58: Root Tests PlaybackService - Core Logic seek calls player seek and sends message
+00:02 +0 -59: Root Tests PlaybackService - Core Logic seek calls player seek and sends message [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -59: Root Tests PlaybackService - Core Logic addToQueue adds track and notifies remote
+00:02 +0 -60: Root Tests PlaybackService - Core Logic addToQueue adds track and notifies remote [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -60: Root Tests PlaybackService - Core Logic clearQueue empties the queue
+00:02 +0 -61: Root Tests PlaybackService - Core Logic clearQueue empties the queue [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -61: Root Tests PlaybackService - Core Logic setSleepTimer stops playback after duration
+00:02 +0 -62: Root Tests PlaybackService - Core Logic setSleepTimer stops playback after duration [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -62: Root Tests PlaybackService - Core Logic cancelSleepTimer resets status
+00:02 +0 -63: Root Tests PlaybackService - Core Logic cancelSleepTimer resets status [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -63: Root Tests searchYouTube parses yt-dlp json output correctly
+00:02 +0 -64: Root Tests searchYouTube parses yt-dlp json output correctly [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -64: Root Tests searchYouTube returns empty list on process error
+00:02 +0 -65: Root Tests searchYouTube returns empty list on process error [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -65: Root Tests searchYouTubeMusic parses yt-music output with album info
+00:02 +0 -66: Root Tests searchYouTubeMusic parses yt-music output with album info [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -66: Root Tests searchHiFi delegates to HiFiDownloadService
+00:02 +0 -67: Root Tests searchHiFi delegates to HiFiDownloadService [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -67: Root Tests getStreamUrl returns trimmed stdout on success
+00:02 +0 -68: Root Tests getStreamUrl returns trimmed stdout on success [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -68: Root Tests getStreamUrl returns null on failure
+00:02 +0 -69: Root Tests getStreamUrl returns null on failure [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -69: Root Tests searchAll calls all platforms and updates status
+00:02 +0 -70: Root Tests searchAll calls all platforms and updates status [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -70: Root Tests SecurityService instance is accessible
+00:02 +0 -71: Root Tests SecurityService instance is accessible [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -71: Root Tests SecurityService encryptString returns encrypted format
+00:02 +0 -72: Root Tests SecurityService encryptString returns encrypted format [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -72: Root Tests SecurityService decryptString returns original text
+00:02 +0 -73: Root Tests SecurityService decryptString returns original text [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -73: Root Tests SecurityService decryptString handles invalid format gracefully
+00:02 +0 -74: Root Tests SecurityService decryptString handles invalid format gracefully [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -74: Root Tests SecurityService _hashPassword produces consistent hash
+00:02 +0 -75: Root Tests SecurityService _hashPassword produces consistent hash [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -75: Root Tests SecurityService unlockVault returns false without setup
+00:02 +0 -76: Root Tests SecurityService unlockVault returns false without setup [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -76: Root Tests SecurityService setupVaultPassword allows unlocking
+00:02 +0 -77: Root Tests SecurityService setupVaultPassword allows unlocking [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -77: Root Tests ThemeService instance is accessible
+00:02 +0 -78: Root Tests ThemeService instance is accessible [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -78: Root Tests ThemeService primaryColor returns a Color
+00:02 +0 -79: Root Tests ThemeService primaryColor returns a Color [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -79: Root Tests ThemeService setCustomColor updates color
+00:02 +0 -80: Root Tests ThemeService setCustomColor updates color [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -80: Root Tests ThemeService ThemeService is a ChangeNotifier
+00:02 +0 -81: Root Tests ThemeService ThemeService is a ChangeNotifier [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\backup_service_test.dart 11:7     MockDatabaseService.initForTesting
+  test\database_service_test.dart 20:19  main.<fn>
+  
+00:02 +0 -81: Root Tests (tearDownAll)
+[+3188 ms] test 0: Test harness is no longer needed by test process
+[   +1 ms] test 0: finished
+[   +2 ms] test 0: cleaning up...
+[        ] test 0: ensuring test device is terminated.
+[        ] test 0: Terminating flutter_tester process
+[        ] test 0: Shutting down DevTools server
+[        ] test 0: Test process is no longer needed by test harness
+[   +2 ms] test 0: Shutting down test harness socket server
+[  +59 ms] test 0: flutter_tester process at pid 21212 exited with code=-1
+[        ] test 0: deleting temporary directory
+[  +14 ms] test 0: finished
+00:02 +0 -81: Some tests failed.
+[  +16 ms] Deleting C:\Users\joaom\AppData\Local\Temp\flutter_tools.c2d40f0d\flutter_test_compiler.148fbb77...
+[  +18 ms] killing pid 12576
+[ +102 ms] Deleting C:\Users\joaom\AppData\Local\Temp\flutter_tools.c2d40f0d\flutter_test_fonts.5caaeb6d...
+[   +6 ms] test package returned with exit code 1
+[   +1 ms] Runtime for phase TestRunner: Wall-clock: 0:00:13.378233; combined: 0:00:13.378285.
+[        ] Runtime for phase Compile: Wall-clock: 0:00:07.704350; combined: 0:00:07.704406.
+[        ] Runtime for phase Run: Wall-clock: 0:00:04.530226; combined: 0:00:04.530240.
+[        ] Runtime for phase CoverageTotal: Wall-clock: 0:00:00.000000; combined: 0:00:00.000000.
+[        ] Runtime for phase CoverageCollect: Wall-clock: 0:00:00.000000; combined: 0:00:00.000000.
+[        ] Runtime for phase CoverageParseJson: Wall-clock: 0:00:00.000000; combined: 0:00:00.000000.
+[        ] Runtime for phase CoverageAddHitmap: Wall-clock: 0:00:00.000000; combined: 0:00:00.000000.
+[        ] Runtime for phase CoverageDataCollect: Wall-clock: 0:00:00.000000; combined: 0:00:00.000000.
+[        ] Runtime for phase WatcherFinishedTest: Wall-clock: 0:00:00.001191; combined: 0:00:00.001194.
+[   +2 ms] "flutter test" took 17.686ms.
+[   +3 ms] Running 3 shutdown hooks
+[ +214 ms] 
+           #0      throwToolExit (package:flutter_tools/src/base/common.dart:34:3)
+           #1      TestCommand.runCommand (package:flutter_tools/src/commands/test.dart:714:7)
+           <asynchronous suspension>
+           #2      FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart:1559:27)
+           <asynchronous suspension>
+           #3      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
+           <asynchronous suspension>
+           #4      CommandRunner.runCommand (package:args/command_runner.dart:212:13)
+           <asynchronous suspension>
+           #5      FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart:487:9)
+           <asynchronous suspension>
+           #6      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
+           <asynchronous suspension>
+           #7      FlutterCommandRunner.runCommand (package:flutter_tools/src/runner/flutter_command_runner.dart:422:5)
+           <asynchronous suspension>
+           #8      run.<anonymous closure>.<anonymous closure> (package:flutter_tools/runner.dart:104:11)
+           <asynchronous suspension>
+           #9      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
+           <asynchronous suspension>
+           #10     main (package:flutter_tools/executable.dart:103:3)
+           <asynchronous suspension>
+
+
+[  +11 ms] Shutdown hooks complete
+[ +208 ms] exiting with code 1

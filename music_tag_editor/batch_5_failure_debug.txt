@@ -1,0 +1,96 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: PlaybackService instance is accessible
+00:00 +0 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: PlaybackService instance is accessible [E]
+  'package:flutter/src/services/platform_channel.dart': Failed assertion: line 590 pos 7: '_binaryMessenger != null || BindingBase.debugBindingType() != null': Cannot set the method call handler before the binary messenger has been initialized. This happens when you call setMethodCallHandler() before the WidgetsFlutterBinding has been initialized. You can fix this by either calling WidgetsFlutterBinding.ensureInitialized() before this or by passing a custom BinaryMessenger instance to MethodChannel().
+  dart:core                                                      _AssertionError._throwNew
+  package:flutter/src/services/platform_channel.dart 590:7       MethodChannel.setMethodCallHandler
+  package:audio_session/src/core.dart 150:14                     new AudioSession._
+  package:audio_session/src/core.dart 28:32                      AudioSession.instance
+  package:just_audio/just_audio.dart 303:20                      new AudioPlayer
+  package:music_tag_editor/services/playback_service.dart 30:9   new PlaybackService._internal
+  package:music_tag_editor/services/playback_service.dart 17:37  PlaybackService.instance
+  test\playback_service_test.dart 8:30                           main.<fn>.<fn>
+  ===== asynchronous gap ===========================
+  dart:async                                                     Future._asyncCompleteError
+  package:just_audio/just_audio.dart 303:20                      new AudioPlayer
+  package:music_tag_editor/services/playback_service.dart 30:9   new PlaybackService._internal
+  package:music_tag_editor/services/playback_service.dart 17:37  PlaybackService.instance
+  test\playback_service_test.dart 8:30                           main.<fn>.<fn>
+  
+00:00 +0 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: PlaybackService queue is a list
+00:00 +1 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: PlaybackService currentTrack is nullable SearchResult
+00:00 +2 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: PlaybackService sleepTimerStream is a stream
+00:00 +3 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: PlaybackService lyricsStream is a stream
+00:00 +4 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: PlaybackService addToQueue does not throw
+00:00 +4 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: PlaybackService addToQueue does not throw [E]
+  Binding has not yet been initialized.
+  The "instance" getter on the ServicesBinding binding mixin is only available once that binding has been initialized.
+  Typically, this is done by calling "WidgetsFlutterBinding.ensureInitialized()" or "runApp()" (the latter calls the former). Typically this call is done in the "void main()" method. The "ensureInitialized" method is idempotent; calling it multiple times is not harmful. After calling that method, the "instance" getter will return the binding.
+  In a test, one can call "TestWidgetsFlutterBinding.ensureInitialized()" as the first line in the test's "main()" method to initialize the binding.
+  If ServicesBinding is a custom binding mixin, there must also be a custom binding class, like WidgetsFlutterBinding, but that mixes in the selected binding, and that is the class that must be constructed before using the "instance" getter.
+  package:flutter/src/foundation/binding.dart 314:9               BindingBase.checkInstance.<fn>
+  package:flutter/src/foundation/binding.dart 401:6               BindingBase.checkInstance
+  package:flutter/src/services/binding.dart 73:54                 ServicesBinding.instance
+  package:flutter/src/services/platform_channel.dart 179:25       _findBinaryMessenger
+  package:flutter/src/services/platform_channel.dart 678:62       EventChannel.binaryMessenger
+  package:flutter/src/services/platform_channel.dart 699:9        EventChannel.receiveBroadcastStream.<fn>
+  dart:async                                                      _StreamImpl.listen
+  package:nearby_connections/src/nearby.dart 23:44                new Nearby._
+  package:nearby_connections/src/nearby.dart 18:26                new Nearby
+  package:music_tag_editor/services/local_duo_service.dart 19:43  new LocalDuoService._internal
+  package:music_tag_editor/services/local_duo_service.dart 13:54  LocalDuoService._instance
+  package:music_tag_editor/services/local_duo_service.dart        LocalDuoService._instance
+  package:music_tag_editor/services/local_duo_service.dart 14:42  LocalDuoService.instance
+  package:music_tag_editor/services/playback_service.dart 253:23  PlaybackService.addToQueue
+  test\playback_service_test.dart 42:45                           main.<fn>.<fn>.<fn>
+  package:matcher                                                 expect
+  package:flutter_test/src/widget_tester.dart 473:18              expect
+  test\playback_service_test.dart 42:7                            main.<fn>.<fn>
+  ===== asynchronous gap ===========================
+  dart:async                                                      _StreamImpl.listen
+  package:nearby_connections/src/nearby.dart 23:44                new Nearby._
+  package:nearby_connections/src/nearby.dart 18:26                new Nearby
+  package:music_tag_editor/services/local_duo_service.dart 19:43  new LocalDuoService._internal
+  package:music_tag_editor/services/local_duo_service.dart 13:54  LocalDuoService._instance
+  package:music_tag_editor/services/local_duo_service.dart        LocalDuoService._instance
+  package:music_tag_editor/services/local_duo_service.dart 14:42  LocalDuoService.instance
+  package:music_tag_editor/services/playback_service.dart 253:23  PlaybackService.addToQueue
+  test\playback_service_test.dart 42:45                           main.<fn>.<fn>.<fn>
+  package:matcher                                                 expect
+  package:flutter_test/src/widget_tester.dart 473:18              expect
+  test\playback_service_test.dart 42:7                            main.<fn>.<fn>
+  
+00:01 +4 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart: (setUpAll)
+00:01 +4 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart: PlaylistDetailScreen shows loading indicator initially
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TypeWidgetFinder:<Found 0 widgets with type "CircularProgressIndicator": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart:54:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart line 54
+The test description was:
+  shows loading indicator initially
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +4 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart: PlaylistDetailScreen shows loading indicator initially [E]
+  Test failed. See exception logs above.
+  The test description was: shows loading indicator initially
+  
+00:02 +4 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart: PlaylistDetailScreen displays playlist name in app bar
+00:02 +5 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart: PlaylistDetailScreen shows empty state when no tracks
+00:02 +6 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart: PlaylistDetailScreen shows track list when tracks exist
+00:02 +7 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart: PlaylistDetailScreen has play button for each track
+00:03 +8 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart: PlaylistDetailScreen calls playSearchResult on play button tap
+00:03 +9 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart: (tearDownAll)
+00:03 +9 -3: Some tests failed.

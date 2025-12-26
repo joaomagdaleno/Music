@@ -1,0 +1,124 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart
+00:00 +0: AuthService AuthService login success returns true
+00:00 +1: AuthService AuthService login failure returns false
+Login error: [firebase_auth/user-not-found] null
+00:00 +2: AuthService AuthService register success returns true
+00:00 +3: AuthService AuthService logout calls signOut
+00:00 +4: AuthService AuthService recoverVaultAccess returns true if user matches
+00:00 +5: BackupService BackupService createBackup creates a zip file with data
+00:00 +6: BackupService BackupService restoreBackup restores data from zip
+00:00 +7: BackupService BackupService estimateBackupSize returns valid size
+00:00 +8: ConnectivityRoot ConnectivityService instance is accessible
+00:00 +9: ConnectivityRoot ConnectivityService isOffline is a ValueNotifier
+00:00 +10: ConnectivityRoot ConnectivityService init completes without error
+00:00 +11: DatabaseService (setUpAll)
+00:00 +11: DatabaseService Settings save and load filename format
+00:00 +12: DatabaseService Settings save and load crossfade duration
+00:00 +13: DatabaseService Settings save and load age bypass
+00:00 +14: DatabaseService Tracks save and retrieve tracks
+00:00 +15: DatabaseService Tracks toggle vault
+00:00 +16: DatabaseService Tracks trackPlay increments count and sets lastPlayed
+00:00 +17: DatabaseService Playlists create playlist and add tracks
+00:01 +18: DatabaseService Duo save guest and add session tracks
+00:01 +19: DatabaseService Moods getTracksByMood returns matching genres
+00:01 +20: DatabaseService Learning Rules save and get learning rules
+00:01 +21: DatabaseService (tearDownAll)
+00:01 +21: DatabaseServiceNew DatabaseService instance is accessible
+00:01 +22: DatabaseServiceNew FilenameFormat generateFilename returns string
+00:01 +23: DatabaseServiceNew FilenameFormat generateFilename handles titleArtist
+00:01 +24: DatabaseServiceNew LearningChoice has expected values
+00:01 +25: DownloadService DownloadService - Platform Detection detects YouTube correctly
+00:01 +26: DownloadService DownloadService - Platform Detection detects YouTube Music correctly
+00:01 +27: DownloadService DownloadService - Platform Detection detects Spotify correctly
+00:01 +28: DownloadService DownloadService - Platform Detection returns unknown for invalid URLs
+00:01 +29: DownloadService DownloadService - Media Info getMediaInfo returns YouTube info correctly
+00:01 +30: DownloadService DownloadService - Media Info getMediaInfo returns Spotify info correctly
+00:01 +31: EqualizerRoot EqualizerService Tests Normalization calculation
+00:01 +32: EqualizerRoot EqualizerService Tests Normalization disabled returns 1.0
+00:01 +33: EqualizerRoot EqualizerService Tests Auto mode state
+00:01 +34: FirebaseSync (setUpAll)
+00:01 +34: FirebaseSync enableSync signs in anonymously if not signed in
+00:01 +35: FirebaseSync pullFromCloud pulls tracks and playlists
+00:01 +36: FirebaseSync (tearDownAll)
+00:01 +36: LocalDuoService (setUpAll)
+00:01 +36: LocalDuoService LocalDuoService startHost sets role and starts advertising
+00:01 +37: LocalDuoService LocalDuoService startDiscovery sets role and starts discovery
+00:01 +38: LocalDuoService LocalDuoService stopAll cleans up state
+00:01 +39: LocalDuoService LocalDuoService sendMessage sends bytes to all connected endpoints
+00:01 +40: LocalDuoService LocalDuoService sendFile sends file to all connected endpoints
+00:01 +41: LocalDuoService LocalDuoService handleIncomingMessage play/pause/seek
+00:01 +42: LocalDuoService LocalDuoService handleIncomingMessage track/chat
+00:01 +43: LocalDuoService (tearDownAll)
+00:01 +43: LyricsService LyricsService fetchLyrics returns empty list on network error
+00:01 +44: LyricsService LyricsService _parseLrc parses valid LRC format
+00:01 +45: LyricsService LyricsService LyricLine has correct structure
+00:01 +46: LyricsService LyricsService multiple LyricLines can be created
+00:01 +47: MetadataAggregator aggregateMetadata aggregates results correctly with majority vote
+00:01 +48: MetadataAggregator aggregateMetadata handles empty results
+00:01 +49: MetadataAggregator fetchSyncedLyrics returns lyrics from LrcLib if found and valid
+00:01 +50: MetadataAggregator fetchSyncedLyrics falls back to Netease if LrcLib empty
+00:01 +51: MetadataCleanup MetadataCleanupService cleanupLibrary cleans dirty titles and artists
+00:01 +52: MetadataCleanup MetadataCleanupService cleanupLibrary fetches missing metadata
+00:01 +53: MetadataCleanup MetadataCleanupService cleanupLibrary handles aggregator errors gracefully
+00:01 +54: MetadataService MetadataService Tests Read and Write Metadata
+00:01 +55: MetadataService MetadataService Tests Read non-existent file throws exception
+00:01 +56: MetadataService MetadataService Tests Write to non-existent file throws exception
+00:01 +57: PersonaService PersonaService Unit Tests Default persona should be listener
+00:01 +58: PersonaService PersonaService Unit Tests setPersona updates activePersona and notifies listeners
+00:01 +59: PlaybackService PlaybackService - Core Logic playSearchResult sets source and plays
+00:01 +60: PlaybackService PlaybackService - Core Logic pause calls player pause and sends message
+00:01 +61: PlaybackService PlaybackService - Core Logic resume calls player play and sends message
+00:01 +62: PlaybackService PlaybackService - Core Logic stop calls player stop
+00:01 +63: PlaybackService PlaybackService - Core Logic seek calls player seek and sends message
+00:01 +64: PlaybackService PlaybackService - Core Logic addToQueue adds track and notifies remote
+00:01 +65: PlaybackService PlaybackService - Core Logic clearQueue empties the queue
+00:01 +66: PlaybackService PlaybackService - Core Logic setSleepTimer stops playback after duration
+00:01 +67: PlaybackService PlaybackService - Core Logic cancelSleepTimer resets status
+00:01 +68: SearchService searchYouTube parses yt-dlp json output correctly
+00:01 +69: SearchService searchYouTube returns empty list on process error
+00:01 +70: SearchService searchYouTubeMusic parses yt-music output with album info
+00:01 +71: SearchService searchHiFi delegates to HiFiDownloadService
+00:01 +72: SearchService getStreamUrl returns trimmed stdout on success
+00:01 +73: SearchService getStreamUrl returns null on failure
+00:01 +74: SearchService searchAll calls all platforms and updates status
+00:01 +75: SecurityService SecurityService instance is accessible
+00:01 +76: SecurityService SecurityService encryptString returns encrypted format
+00:02 +77: SecurityService SecurityService decryptString returns original text
+00:02 +78: SecurityService SecurityService decryptString handles invalid format gracefully
+00:02 +79: SecurityService SecurityService _hashPassword produces consistent hash
+00:02 +80: SecurityService SecurityService unlockVault returns false without setup
+00:02 +81: SecurityService SecurityService setupVaultPassword allows unlocking
+00:02 +82: ThemeRoot ThemeService instance is accessible
+00:02 +83: ThemeRoot ThemeService primaryColor returns a Color
+00:02 +84: ThemeRoot ThemeService setCustomColor updates color
+00:02 +84 -1: ThemeRoot ThemeService setCustomColor updates color [E]
+  type 'Null' is not a subtype of type 'Future<void>'
+  test\test_helper.dart 29:7                                  MockDatabaseService.saveSetting
+  package:music_tag_editor/services/theme_service.dart 68:10  ThemeService.setCustomColor
+  test\theme_service.suite.dart 25:35                         main.<fn>.<fn>
+  
+00:02 +84 -1: ThemeRoot ThemeService ThemeService is a ChangeNotifier
+00:02 +85 -1: CastService (setUpAll)
+00:02 +85 -1: CastService CastService parseSsdpResponse adds device to stream on valid XML
+00:02 +86 -1: CastService CastService sendSoap sends correct POST request
+00:02 +87 -1: CastService CastService parseSsdpResponse handles partial URLs in controlURL
+00:02 +88 -1: CastService (tearDownAll)
+00:02 +88 -1: ConnectivityService ConnectivityService init updates isOffline status correctly
+00:02 +89 -1: ConnectivityService ConnectivityService Becomes online when wifi connected
+00:02 +90 -1: DesktopIntegration (setUpAll)
+00:02 +90 -1: DesktopIntegration init calls initialization methods
+00:02 +91 -1: DesktopIntegration hideToTray calls windowManager.hide()
+00:02 +92 -1: DesktopIntegration (tearDownAll)
+00:02 +92 -1: EqualizerService EqualizerService applyPresetForGenre sets bands correctly for Rock
+00:02 +93 -1: EqualizerService EqualizerService calculateNormalizedVolume calculates gain adjustment
+00:02 +94 -1: HifiDownload HiFiDownloadService search returns sorted results
+00:02 +95 -1: HifiDownload HiFiDownloadService download handles success
+00:02 +96 -1: HifiDownload HiFiDownloadService download handles failure to get link
+00:02 +97 -1: HifiDownload HiFiDownloadService findHiFiVersion finds match
+00:02 +98 -1: ListeningStats ListeningStatsService getStats calculates basic totals correctly
+00:02 +99 -1: ListeningStats ListeningStatsService getStats identifies top items correctly
+00:02 +100 -1: ListeningStats ListeningStatsService getStats handles empty database
+00:02 +101 -1: ThemeService ThemeService init loads settings from DB
+00:02 +102 -1: ThemeService ThemeService setCustomColor saves to DB and updates state
+00:02 +103 -1: ThemeService ThemeService updateThemeFromImage updates primary color from palette
+00:02 +104 -1: Some tests failed.

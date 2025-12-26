@@ -1,0 +1,63 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart
+test/dependency_manager_test.dart:131:10: Error: Type 'Uint8List' not found.
+  Future<Uint8List> readAsBytes() async =>
+         ^^^^^^^^^
+test/dependency_manager_test.dart:134:16: Error: The return type of the method '_MockFile.delete' is 'Future<void>', which does not match the return type, 'Future<FileSystemEntity>', of the overridden method, 'File.delete'.
+ - 'Future' is from 'dart:async'.
+ - 'FileSystemEntity' is from 'dart:io'.
+Change to a subtype of 'Future<FileSystemEntity>'.
+  Future<void> delete({bool recursive = false}) async {}
+               ^
+org-dartlang-sdk:///flutter/third_party/dart/sdk/lib/io/file.dart:334:28: Context: This is the overridden method ('delete').
+  Future<FileSystemEntity> delete({bool recursive = false});
+                           ^
+test/dependency_manager_test.dart:33:43: Error: No named parameter with the name 'bytes'.
+            http.Response('content', 200, bytes: utf8.encode('content')),
+                                          ^^^^^
+../../../../AppData/Local/Pub/Cache/hosted/pub.dev/http-1.6.0/lib/src/response.dart:33:3: Context: Found this candidate, but the arguments don't match.
+  Response(String body, int statusCode,
+  ^^^^^^^^
+test/dependency_manager_test.dart:97:15: Error: No named parameter with the name 'bytes'.
+              bytes: utf8.encode('binary_content')));
+              ^^^^^
+../../../../AppData/Local/Pub/Cache/hosted/pub.dev/http-1.6.0/lib/src/response.dart:33:3: Context: Found this candidate, but the arguments don't match.
+  Response(String body, int statusCode,
+  ^^^^^^^^
+test/dependency_manager_test.dart:132:7: Error: The getter 'Uint8List' isn't defined for the type '_MockFile'.
+ - '_MockFile' is from 'test/dependency_manager_test.dart'.
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'Uint8List'.
+      Uint8List.fromList(utf8.encode('dummy_zip_or_exe'));
+      ^^^^^^^^^
+00:00 +0 -1: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart: test/dependency_manager_test.dart:131:10: Error: Type 'Uint8List' not found.
+    Future<Uint8List> readAsBytes() async =>
+           ^^^^^^^^^
+  test/dependency_manager_test.dart:134:16: Error: The return type of the method '_MockFile.delete' is 'Future<void>', which does not match the return type, 'Future<FileSystemEntity>', of the overridden method, 'File.delete'.
+   - 'Future' is from 'dart:async'.
+   - 'FileSystemEntity' is from 'dart:io'.
+  Change to a subtype of 'Future<FileSystemEntity>'.
+    Future<void> delete({bool recursive = false}) async {}
+                 ^
+  org-dartlang-sdk:///flutter/third_party/dart/sdk/lib/io/file.dart:334:28: Context: This is the overridden method ('delete').
+    Future<FileSystemEntity> delete({bool recursive = false});
+                             ^
+  test/dependency_manager_test.dart:33:43: Error: No named parameter with the name 'bytes'.
+              http.Response('content', 200, bytes: utf8.encode('content')),
+                                            ^^^^^
+  ../../../../AppData/Local/Pub/Cache/hosted/pub.dev/http-1.6.0/lib/src/response.dart:33:3: Context: Found this candidate, but the arguments don't match.
+    Response(String body, int statusCode,
+    ^^^^^^^^
+  test/dependency_manager_test.dart:97:15: Error: No named parameter with the name 'bytes'.
+                bytes: utf8.encode('binary_content')));
+                ^^^^^
+  ../../../../AppData/Local/Pub/Cache/hosted/pub.dev/http-1.6.0/lib/src/response.dart:33:3: Context: Found this candidate, but the arguments don't match.
+    Response(String body, int statusCode,
+    ^^^^^^^^
+  test/dependency_manager_test.dart:132:7: Error: The getter 'Uint8List' isn't defined for the type '_MockFile'.
+   - '_MockFile' is from 'test/dependency_manager_test.dart'.
+  Try correcting the name to the name of an existing getter, or defining a getter or field named 'Uint8List'.
+        Uint8List.fromList(utf8.encode('dummy_zip_or_exe'));
+        ^^^^^^^^^
+  .
+00:00 +0 -1: Some tests failed.

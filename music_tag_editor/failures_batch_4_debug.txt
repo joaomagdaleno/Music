@@ -1,0 +1,1943 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:01 +1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:01 +2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:01 +3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:01 +4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:01 +5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:03 +6: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:03 +6 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:03 +6 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/backup_service_test.dart: BackupService estimateBackupSize returns int [E]
+  type 'Null' is not a subtype of type 'Future<List<Map<String, dynamic>>>'
+  test\backup_service_test.dart 6:7                             MockDatabaseService.getTracks
+  package:music_tag_editor/services/backup_service.dart 117:30  BackupService.estimateBackupSize
+  test\backup_service_test.dart 25:49                           main.<fn>.<fn>
+  
+00:03 +6 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Shows offline banner when offline
+00:03 +6 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/backup_service_test.dart: BackupService estimateBackupSize increases with data [E]
+  type 'Null' is not a subtype of type 'Future<List<Map<String, dynamic>>>'
+  test\backup_service_test.dart 6:7                             MockDatabaseService.getTracks
+  package:music_tag_editor/services/backup_service.dart 117:30  BackupService.estimateBackupSize
+  test\backup_service_test.dart 39:49                           main.<fn>.<fn>
+  
+00:04 +7 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Navigation switches pages
+00:04 +8 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/app_shell_test.dart: AppShell Widget Tests Adapts to wide screen (NavigationRail)
+00:06 +9 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/backup_view_test.dart: BackupView renders app bar
+00:07 +10 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/backup_view_test.dart: BackupView renders app bar
+00:07 +11 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/backup_view_test.dart: BackupView renders app bar
+00:07 +12 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/backup_view_test.dart: BackupView renders app bar
+00:08 +13 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/backup_view_test.dart: BackupView renders create backup card
+00:08 +14 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/backup_view_test.dart: BackupView renders restore backup card
+00:08 +15 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/backup_view_test.dart: BackupView shows backup size estimate
+00:09 +16 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_new_test.dart: DatabaseService instance is accessible
+00:09 +17 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_new_test.dart: FilenameFormat generateFilename returns string
+00:09 +18 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_new_test.dart: FilenameFormat generateFilename handles titleArtist
+00:09 +19 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_new_test.dart: LearningChoice has expected values
+00:11 +20 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: (setUpAll)
+00:12 +20 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: Settings save and load filename format
+00:12 +21 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: Settings save and load crossfade duration
+00:12 +22 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: Settings save and load age bypass
+00:12 +23 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: Tracks save and retrieve tracks
+00:12 +24 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: Tracks toggle vault
+00:12 +25 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: Tracks trackPlay increments count and sets lastPlayed
+00:12 +26 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: Playlists create playlist and add tracks
+00:12 +27 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: Duo save guest and add session tracks
+00:12 +28 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: Moods getTracksByMood returns matching genres
+00:12 +29 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: Learning Rules save and get learning rules
+00:12 +30 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: (tearDownAll)
+00:13 +30 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart: (setUpAll)
+00:13 +30 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart: DependencyManager provides correct paths on Windows
+00:13 +31 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart: DependencyManager downloadFile successful
+00:13 +32 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart: DependencyManager downloadFile failure throws HttpException
+00:13 +33 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart: DependencyManager areAllDependenciesInstalled returns true when files exist
+00:13 +34 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart: DependencyManager ensureDependencies executes downloads if missing
+Downloading yt-dlp...: 0.0
+Downloading spotdl...: 0.25
+Downloading ffmpeg...: 0.5
+Downloading fpcalc...: 0.75
+Ready!: 1.0
+00:13 +35 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager_test.dart: (tearDownAll)
+00:14 +35 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/discogs_api_test.dart: DiscogsApi searchRelease returns null on empty query
+00:18 +36 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/discogs_api_test.dart: DiscogsApi searchRelease handles network errors gracefully
+00:19 +37 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/discogs_api_test.dart: DiscogsApi DiscogsApi can be instantiated
+00:19 +38 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView renders with no track playing
+00:21 +39 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage renders initial UI
+00:21 +40 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage renders initial UI
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following _TypeError was thrown building DownloadPage(dirty, dependencies:
+[InheritedCupertinoTheme, _InheritedTheme, _LocalizationsScope-[GlobalKey#25f72]], state:
+_DownloadPageState#93ddc):
+type 'Null' is not a subtype of type 'MediaPlatform'
+
+The relevant error-causing widget was:
+  DownloadPage
+  DownloadPage:file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:42:36
+
+When the exception was thrown, this was the stack:
+#0      MockDownloadService.detectPlatform (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:8:7)
+#1      _DownloadPageState.build (package:music_tag_editor/views/download_page.dart:209:36)
+#2      StatefulElement.build (package:flutter/src/widgets/framework.dart:5934:27)
+#3      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#4      StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#5      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#6      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#7      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5976:11)
+#8      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (260 frames)
+#268    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#269    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#270    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (465 frames)
+#735    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#736    Element.updateChild (package:flutter/src/widgets/framework.dart:4053:20)
+#737    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#738    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#739    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#740    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#741    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#742    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#743    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#744    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#745    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#746    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#747    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#748    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#749    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#750    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#751    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#752    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#753    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#754    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#755    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#756    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#757    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#758    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#759    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#760    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#761    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#762    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#763    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#764    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#765    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#766    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#767    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#768    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#769    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#770    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#771    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#772    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#773    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#774    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#775    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#776    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#777    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#778    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#779    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#780    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#781    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#782    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#783    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#784    StatelessElement.update (package:flutter/src/widgets/framework.dart:5898:5)
+#785    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#786    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#787    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#788    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#789    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#790    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#791    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1782:16)
+#792    RootElement.update (package:flutter/src/widgets/binding.dart:1760:5)
+#793    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1774:7)
+#794    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#795    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2750:15)
+#796    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2807:11)
+#797    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3111:18)
+#798    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#799    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#800    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#801    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#802    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#805    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#806    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#807    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#810    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#811    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#812    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:47:20)
+#813    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#814    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "Download de Música": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:50:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart line 50
+The test description was:
+  renders initial UI
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:23 +40 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:23 +40 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage renders initial UI [E]
+  Test failed. See exception logs above.
+  The test description was: renders initial UI
+  
+00:23 +40 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage shows paste button
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following _TypeError was thrown building DownloadPage(dirty, dependencies:
+[InheritedCupertinoTheme, _InheritedTheme, _LocalizationsScope-[GlobalKey#38a0a]], state:
+_DownloadPageState#efdb6):
+type 'Null' is not a subtype of type 'MediaPlatform'
+
+The relevant error-causing widget was:
+  DownloadPage
+  DownloadPage:file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:42:36
+
+When the exception was thrown, this was the stack:
+#0      MockDownloadService.detectPlatform (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:8:7)
+#1      _DownloadPageState.build (package:music_tag_editor/views/download_page.dart:209:36)
+#2      StatefulElement.build (package:flutter/src/widgets/framework.dart:5934:27)
+#3      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#4      StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#5      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#6      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#7      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5976:11)
+#8      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (260 frames)
+#268    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#269    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#270    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (465 frames)
+#735    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#736    Element.updateChild (package:flutter/src/widgets/framework.dart:4053:20)
+#737    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#738    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#739    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#740    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#741    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#742    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#743    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#744    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#745    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#746    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#747    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#748    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#749    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#750    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#751    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#752    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#753    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#754    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#755    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#756    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#757    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#758    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#759    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#760    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#761    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#762    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#763    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#764    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#765    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#766    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#767    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#768    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#769    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#770    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#771    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#772    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#773    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#774    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#775    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#776    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#777    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#778    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#779    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#780    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#781    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#782    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#783    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#784    StatelessElement.update (package:flutter/src/widgets/framework.dart:5898:5)
+#785    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#786    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#787    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#788    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#789    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#790    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#791    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1782:16)
+#792    RootElement.update (package:flutter/src/widgets/binding.dart:1760:5)
+#793    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1774:7)
+#794    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#795    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2750:15)
+#796    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2807:11)
+#797    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3111:18)
+#798    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#799    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#800    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#801    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#802    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#805    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#806    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#807    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#810    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#811    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#812    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:55:20)
+#813    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#814    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _IconWidgetFinder:<Found 0 widgets with icon "IconData(U+0E192)": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:58:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart line 58
+The test description was:
+  shows paste button
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:23 +40 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:23 +40 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage shows paste button [E]
+  Test failed. See exception logs above.
+  The test description was: shows paste button
+  
+00:24 +40 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage has dropdown selector
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following _TypeError was thrown building DownloadPage(dirty, dependencies:
+[InheritedCupertinoTheme, _InheritedTheme, _LocalizationsScope-[GlobalKey#0a5ed]], state:
+_DownloadPageState#a154a):
+type 'Null' is not a subtype of type 'MediaPlatform'
+
+The relevant error-causing widget was:
+  DownloadPage
+  DownloadPage:file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:42:36
+
+When the exception was thrown, this was the stack:
+#0      MockDownloadService.detectPlatform (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:8:7)
+#1      _DownloadPageState.build (package:music_tag_editor/views/download_page.dart:209:36)
+#2      StatefulElement.build (package:flutter/src/widgets/framework.dart:5934:27)
+#3      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#4      StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#5      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#6      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#7      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5976:11)
+#8      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (260 frames)
+#268    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#269    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#270    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (465 frames)
+#735    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#736    Element.updateChild (package:flutter/src/widgets/framework.dart:4053:20)
+#737    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#738    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#739    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#740    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#741    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#742    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#743    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#744    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#745    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#746    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#747    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#748    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#749    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#750    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#751    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#752    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#753    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#754    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#755    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#756    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#757    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#758    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#759    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#760    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#761    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#762    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#763    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#764    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#765    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#766    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#767    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#768    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#769    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#770    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#771    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#772    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#773    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#774    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#775    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#776    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#777    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#778    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#779    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#780    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#781    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#782    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#783    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#784    StatelessElement.update (package:flutter/src/widgets/framework.dart:5898:5)
+#785    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#786    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#787    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#788    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#789    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#790    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#791    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1782:16)
+#792    RootElement.update (package:flutter/src/widgets/binding.dart:1760:5)
+#793    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1774:7)
+#794    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#795    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2750:15)
+#796    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2807:11)
+#797    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3111:18)
+#798    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#799    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#800    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#801    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#802    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#805    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#806    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#807    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#810    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#811    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#812    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:62:20)
+#813    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#814    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _TypeWidgetFinder:<Found 0 widgets with type "DropdownButton<dynamic>": []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:65:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart line 65
+The test description was:
+  has dropdown selector
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:24 +40 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:24 +40 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage has dropdown selector [E]
+  Test failed. See exception logs above.
+  The test description was: has dropdown selector
+  
+00:24 +40 -5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage button bar is present
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following _TypeError was thrown building DownloadPage(dirty, dependencies:
+[InheritedCupertinoTheme, _InheritedTheme, _LocalizationsScope-[GlobalKey#a63c3]], state:
+_DownloadPageState#eec9e):
+type 'Null' is not a subtype of type 'MediaPlatform'
+
+The relevant error-causing widget was:
+  DownloadPage
+  DownloadPage:file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:42:36
+
+When the exception was thrown, this was the stack:
+#0      MockDownloadService.detectPlatform (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:8:7)
+#1      _DownloadPageState.build (package:music_tag_editor/views/download_page.dart:209:36)
+#2      StatefulElement.build (package:flutter/src/widgets/framework.dart:5934:27)
+#3      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#4      StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#5      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#6      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#7      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5976:11)
+#8      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (260 frames)
+#268    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#269    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#270    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (465 frames)
+#735    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#736    Element.updateChild (package:flutter/src/widgets/framework.dart:4053:20)
+#737    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#738    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#739    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#740    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#741    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#742    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#743    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#744    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#745    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#746    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#747    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#748    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#749    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#750    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#751    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#752    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#753    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#754    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#755    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#756    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#757    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#758    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#759    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#760    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#761    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#762    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#763    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#764    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#765    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#766    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#767    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#768    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#769    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#770    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#771    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#772    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#773    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#774    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#775    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#776    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#777    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#778    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#779    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#780    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#781    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#782    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#783    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#784    StatelessElement.update (package:flutter/src/widgets/framework.dart:5898:5)
+#785    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#786    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#787    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#788    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#789    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#790    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#791    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1782:16)
+#792    RootElement.update (package:flutter/src/widgets/binding.dart:1760:5)
+#793    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1774:7)
+#794    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#795    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2750:15)
+#796    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2807:11)
+#797    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3111:18)
+#798    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#799    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#800    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#801    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#802    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#805    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#806    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#807    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#810    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#811    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#812    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:69:20)
+#813    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#814    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "Buscar Info": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:72:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart line 72
+The test description was:
+  button bar is present
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:24 +40 -6: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:24 +40 -6: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage button bar is present [E]
+  Test failed. See exception logs above.
+  The test description was: button bar is present
+  
+00:24 +40 -6: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage url input accepts text
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following _TypeError was thrown building DownloadPage(dirty, dependencies:
+[InheritedCupertinoTheme, _InheritedTheme, _LocalizationsScope-[GlobalKey#044a0]], state:
+_DownloadPageState#88205):
+type 'Null' is not a subtype of type 'MediaPlatform'
+
+The relevant error-causing widget was:
+  DownloadPage
+  DownloadPage:file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:42:36
+
+When the exception was thrown, this was the stack:
+#0      MockDownloadService.detectPlatform (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:8:7)
+#1      _DownloadPageState.build (package:music_tag_editor/views/download_page.dart:209:36)
+#2      StatefulElement.build (package:flutter/src/widgets/framework.dart:5934:27)
+#3      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#4      StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#5      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#6      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#7      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5976:11)
+#8      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (260 frames)
+#268    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#269    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#270    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (465 frames)
+#735    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#736    Element.updateChild (package:flutter/src/widgets/framework.dart:4053:20)
+#737    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#738    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#739    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#740    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#741    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#742    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#743    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#744    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#745    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#746    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#747    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#748    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#749    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#750    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#751    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#752    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#753    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#754    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#755    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#756    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#757    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#758    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#759    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#760    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#761    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#762    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#763    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#764    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#765    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#766    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#767    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#768    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#769    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#770    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#771    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#772    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#773    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#774    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#775    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#776    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#777    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#778    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#779    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#780    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#781    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#782    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#783    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#784    StatelessElement.update (package:flutter/src/widgets/framework.dart:5898:5)
+#785    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#786    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#787    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#788    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#789    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#790    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#791    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1782:16)
+#792    RootElement.update (package:flutter/src/widgets/binding.dart:1760:5)
+#793    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1774:7)
+#794    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#795    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2750:15)
+#796    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2807:11)
+#797    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3111:18)
+#798    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#799    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#800    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#801    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#802    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#805    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#806    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#807    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#810    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#811    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#812    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:76:20)
+#813    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#814    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following StateError was thrown running a test:
+Bad state: No element
+
+When the exception was thrown, this was the stack:
+#0      Iterable.first (dart:core/iterable.dart:663:7)
+#1      _FirstFinderMixin.filter (package:flutter_test/src/finders.dart:1332:28)
+#3      ExpandIterator.moveNext (dart:_internal/iterable.dart:506:21)
+#4      SetBase.addAll (dart:collection/set.dart:58:23)
+#5      _Set.addAll (dart:_compact_hash:1190:11)
+#6      new LinkedHashSet.of (dart:collection/linked_hash_set.dart:193:27)
+#7      Iterable.toSet (dart:core/iterable.dart:532:21)
+#8      _DescendantFinderMixin.allCandidates (package:flutter_test/src/finders.dart:1731:10)
+#9      FinderBase.evaluate (package:flutter_test/src/finders.dart:979:76)
+#10     WidgetController.state (package:flutter_test/src/controller.dart:912:31)
+#11     WidgetTester.showKeyboard.<anonymous closure> (package:flutter_test/src/widget_tester.dart:1125:42)
+#14     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#15     WidgetTester.showKeyboard (package:flutter_test/src/widget_tester.dart:1124:27)
+#16     WidgetTester.enterText.<anonymous closure> (package:flutter_test/src/widget_tester.dart:1160:13)
+#19     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#20     WidgetTester.enterText (package:flutter_test/src/widget_tester.dart:1159:27)
+#21     main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:79:20)
+<asynchronous suspension>
+#22     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#23     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 6 frames from dart:async, dart:async-patch, and package:stack_trace)
+
+The test description was:
+  url input accepts text
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:24 +40 -7: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:24 +40 -7: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage url input accepts text [E]
+  Test failed. See exception logs above.
+  The test description was: url input accepts text
+  
+00:24 +40 -7: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage scaffold renders
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following _TypeError was thrown building DownloadPage(dirty, dependencies:
+[InheritedCupertinoTheme, _InheritedTheme, _LocalizationsScope-[GlobalKey#f389f]], state:
+_DownloadPageState#516c2):
+type 'Null' is not a subtype of type 'MediaPlatform'
+
+The relevant error-causing widget was:
+  DownloadPage
+  DownloadPage:file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:42:36
+
+When the exception was thrown, this was the stack:
+#0      MockDownloadService.detectPlatform (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:8:7)
+#1      _DownloadPageState.build (package:music_tag_editor/views/download_page.dart:209:36)
+#2      StatefulElement.build (package:flutter/src/widgets/framework.dart:5934:27)
+#3      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5820:15)
+#4      StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#5      Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#6      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5802:5)
+#7      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5976:11)
+#8      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (260 frames)
+#268    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#269    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#270    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (465 frames)
+#735    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#736    Element.updateChild (package:flutter/src/widgets/framework.dart:4053:20)
+#737    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#738    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#739    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#740    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#741    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#742    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#743    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#744    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#745    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#746    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#747    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#748    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#749    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#750    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#751    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#752    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#753    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#754    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#755    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#756    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#757    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#758    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#759    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#760    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#761    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#762    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#763    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#764    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#765    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#766    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#767    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#768    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#769    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#770    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#771    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#772    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#773    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#774    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#775    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#776    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#777    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#778    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#779    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#780    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#781    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#782    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#783    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#784    StatelessElement.update (package:flutter/src/widgets/framework.dart:5898:5)
+#785    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#786    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#787    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#788    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#789    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#790    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#791    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1782:16)
+#792    RootElement.update (package:flutter/src/widgets/binding.dart:1760:5)
+#793    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1774:7)
+#794    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#795    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2750:15)
+#796    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2807:11)
+#797    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3111:18)
+#798    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#799    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#800    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#801    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#802    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#805    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#806    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#807    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#810    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#811    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#812    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:87:20)
+#813    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#814    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TypeWidgetFinder:<Found 0 widgets with type "Scaffold": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart:90:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart line 90
+The test description was:
+  scaffold renders
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:24 +40 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:24 +40 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/download_page_test.dart: DownloadPage scaffold renders [E]
+  Test failed. See exception logs above.
+  The test description was: scaffold renders
+  
+00:24 +40 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:28 +41 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:28 +42 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:28 +43 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:28 +44 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:28 +45 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:28 +46 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:30 +47 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:30 +48 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:30 +49 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:32 +50 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:32 +51 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:35 +52 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:36 +53 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:36 +54 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:41 +54 -8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders greeting
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following _TypeError was thrown running a test:
+type 'Null' is not a subtype of type 'Future<List<Map<String, dynamic>>>'
+
+When the exception was thrown, this was the stack:
+#0      MockDatabaseService.getTracks (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:9:7)
+#1      _HomeViewState._loadData (package:music_tag_editor/views/home_view.dart:30:37)
+#2      _HomeViewState.initState (package:music_tag_editor/views/home_view.dart:26:5)
+#3      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5953:55)
+#4      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (260 frames)
+#264    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#265    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#266    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (465 frames)
+#731    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#732    Element.updateChild (package:flutter/src/widgets/framework.dart:4053:20)
+#733    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#734    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#735    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#736    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#737    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#738    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#739    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#740    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#741    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#742    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#743    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#744    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#745    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#746    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#747    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#748    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#749    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#750    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#751    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#752    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#753    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#754    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#755    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#756    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#757    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#758    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#759    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#760    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#761    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#762    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#763    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#764    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#765    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#766    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#767    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#768    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#769    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#770    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#771    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#772    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#773    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#774    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#775    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#776    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#777    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#778    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#779    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#780    StatelessElement.update (package:flutter/src/widgets/framework.dart:5898:5)
+#781    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#782    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#783    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#784    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#785    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#786    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#787    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1782:16)
+#788    RootElement.update (package:flutter/src/widgets/binding.dart:1760:5)
+#789    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1774:7)
+#790    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#791    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2750:15)
+#792    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2807:11)
+#793    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3111:18)
+#794    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#795    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#796    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#797    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#798    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#801    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#802    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#803    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#806    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#807    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#808    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:44:20)
+#809    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#810    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+The test description was:
+  renders greeting
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:41 +54 -9: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:41 +54 -9: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders greeting [E]
+  Test failed. See exception logs above.
+  The test description was: renders greeting
+  
+00:41 +54 -9: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders smart library cards
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following _TypeError was thrown running a test:
+type 'Null' is not a subtype of type 'Future<List<Map<String, dynamic>>>'
+
+When the exception was thrown, this was the stack:
+#0      MockDatabaseService.getTracks (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:9:7)
+#1      _HomeViewState._loadData (package:music_tag_editor/views/home_view.dart:30:37)
+#2      _HomeViewState.initState (package:music_tag_editor/views/home_view.dart:26:5)
+#3      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5953:55)
+#4      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (260 frames)
+#264    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#265    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#266    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (465 frames)
+#731    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#732    Element.updateChild (package:flutter/src/widgets/framework.dart:4053:20)
+#733    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#734    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#735    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#736    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#737    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#738    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#739    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#740    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#741    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#742    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#743    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#744    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#745    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#746    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#747    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#748    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#749    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#750    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#751    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#752    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#753    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#754    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#755    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#756    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#757    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#758    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#759    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#760    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#761    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#762    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#763    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#764    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#765    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#766    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#767    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#768    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#769    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#770    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#771    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#772    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#773    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#774    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#775    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#776    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#777    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#778    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#779    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#780    StatelessElement.update (package:flutter/src/widgets/framework.dart:5898:5)
+#781    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#782    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#783    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#784    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#785    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#786    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#787    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1782:16)
+#788    RootElement.update (package:flutter/src/widgets/binding.dart:1760:5)
+#789    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1774:7)
+#790    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#791    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2750:15)
+#792    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2807:11)
+#793    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3111:18)
+#794    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#795    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#796    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#797    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#798    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#801    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#802    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#803    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#806    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#807    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#808    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:54:20)
+#809    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#810    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+The test description was:
+  renders smart library cards
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:41 +54 -10: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:41 +54 -10: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders smart library cards [E]
+  Test failed. See exception logs above.
+  The test description was: renders smart library cards
+  
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test (but after the test had completed):
+Expected: exactly one matching candidate
+  Actual: _IconWidgetFinder:<Found 0 widgets with icon "IconData(U+0E314)": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:149:31)
+#1      _expect (package:matcher/src/expect/expect.dart:144:3)
+#2      expect (package:matcher/src/expect/expect.dart:56:3)
+#3      expect (package:flutter_test/src/widget_tester.dart:473:18)
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:57:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  Test failed. See exception logs above.
+  The test description was: renders smart library cards
+  
+00:41 +54 -10: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders moods section
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following _TypeError was thrown running a test:
+type 'Null' is not a subtype of type 'Future<List<Map<String, dynamic>>>'
+
+When the exception was thrown, this was the stack:
+#0      MockDatabaseService.getTracks (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:9:7)
+#1      _HomeViewState._loadData (package:music_tag_editor/views/home_view.dart:30:37)
+#2      _HomeViewState.initState (package:music_tag_editor/views/home_view.dart:26:5)
+#3      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5953:55)
+#4      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (260 frames)
+#264    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#265    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#266    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (465 frames)
+#731    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#732    Element.updateChild (package:flutter/src/widgets/framework.dart:4053:20)
+#733    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#734    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#735    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#736    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#737    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#738    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#739    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#740    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#741    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#742    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#743    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#744    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#745    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#746    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#747    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#748    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#749    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#750    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#751    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#752    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#753    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#754    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#755    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#756    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#757    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#758    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#759    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#760    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#761    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#762    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#763    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#764    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#765    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#766    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#767    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#768    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#769    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#770    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#771    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#772    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#773    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#774    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#775    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#776    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#777    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#778    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#779    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#780    StatelessElement.update (package:flutter/src/widgets/framework.dart:5898:5)
+#781    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#782    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#783    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#784    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#785    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#786    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#787    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1782:16)
+#788    RootElement.update (package:flutter/src/widgets/binding.dart:1760:5)
+#789    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1774:7)
+#790    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#791    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2750:15)
+#792    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2807:11)
+#793    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3111:18)
+#794    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#795    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#796    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#797    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#798    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#801    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#802    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#803    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#806    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#807    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#808    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:66:20)
+#809    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#810    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+The test description was:
+  renders moods section
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:41 +54 -11: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:41 +54 -11: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders moods section [E]
+  Test failed. See exception logs above.
+  The test description was: renders moods section
+  
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test (but after the test had completed):
+Expected: at least one matching candidate
+  Actual: _IconWidgetFinder:<Found 0 widgets with icon "IconData(U+0E293)": []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:149:31)
+#1      _expect (package:matcher/src/expect/expect.dart:144:3)
+#2      expect (package:matcher/src/expect/expect.dart:56:3)
+#3      expect (package:flutter_test/src/widget_tester.dart:473:18)
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:69:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  Test failed. See exception logs above.
+  The test description was: renders moods section
+  
+00:42 +54 -11: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders disco mode button
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following _TypeError was thrown running a test:
+type 'Null' is not a subtype of type 'Future<List<Map<String, dynamic>>>'
+
+When the exception was thrown, this was the stack:
+#0      MockDatabaseService.getTracks (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:9:7)
+#1      _HomeViewState._loadData (package:music_tag_editor/views/home_view.dart:30:37)
+#2      _HomeViewState.initState (package:music_tag_editor/views/home_view.dart:26:5)
+#3      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5953:55)
+#4      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (260 frames)
+#264    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#265    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#266    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (465 frames)
+#731    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#732    Element.updateChild (package:flutter/src/widgets/framework.dart:4053:20)
+#733    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#734    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#735    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#736    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#737    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#738    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#739    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#740    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#741    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#742    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#743    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#744    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#745    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#746    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#747    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#748    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#749    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#750    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#751    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#752    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#753    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#754    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#755    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#756    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#757    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#758    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#759    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#760    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#761    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#762    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#763    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#764    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#765    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#766    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#767    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#768    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#769    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#770    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#771    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#772    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#773    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#774    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#775    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#776    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#777    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#778    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#779    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#780    StatelessElement.update (package:flutter/src/widgets/framework.dart:5898:5)
+#781    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#782    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#783    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#784    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#785    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#786    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#787    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1782:16)
+#788    RootElement.update (package:flutter/src/widgets/binding.dart:1760:5)
+#789    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1774:7)
+#790    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#791    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2750:15)
+#792    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2807:11)
+#793    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3111:18)
+#794    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#795    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#796    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#797    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#798    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#801    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#802    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#803    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#806    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#807    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#808    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:77:20)
+#809    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#810    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+The test description was:
+  renders disco mode button
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:42 +54 -12: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:42 +54 -12: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders disco mode button [E]
+  Test failed. See exception logs above.
+  The test description was: renders disco mode button
+  
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test (but after the test had completed):
+Expected: exactly one matching candidate
+  Actual: _IconWidgetFinder:<Found 0 widgets with icon "IconData(U+0E42D)": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:149:31)
+#1      _expect (package:matcher/src/expect/expect.dart:144:3)
+#2      expect (package:matcher/src/expect/expect.dart:56:3)
+#3      expect (package:flutter_test/src/widget_tester.dart:473:18)
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:80:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  Test failed. See exception logs above.
+  The test description was: renders disco mode button
+  
+00:42 +54 -12: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders recents list with tracks
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following _TypeError was thrown running a test:
+type 'Null' is not a subtype of type 'Future<List<Map<String, dynamic>>>'
+
+When the exception was thrown, this was the stack:
+#0      MockDatabaseService.getTracks (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:9:7)
+#1      _HomeViewState._loadData (package:music_tag_editor/views/home_view.dart:30:37)
+#2      _HomeViewState.initState (package:music_tag_editor/views/home_view.dart:26:5)
+#3      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5953:55)
+#4      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (260 frames)
+#264    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#265    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#266    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (465 frames)
+#731    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#732    Element.updateChild (package:flutter/src/widgets/framework.dart:4053:20)
+#733    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#734    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#735    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#736    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#737    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#738    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#739    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#740    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#741    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#742    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#743    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#744    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#745    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#746    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#747    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#748    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#749    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#750    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#751    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#752    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#753    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#754    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#755    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#756    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#757    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#758    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#759    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#760    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#761    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#762    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#763    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#764    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#765    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#766    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#767    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#768    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#769    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#770    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#771    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#772    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#773    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#774    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#775    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#776    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#777    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#778    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#779    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#780    StatelessElement.update (package:flutter/src/widgets/framework.dart:5898:5)
+#781    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#782    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#783    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#784    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#785    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#786    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#787    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1782:16)
+#788    RootElement.update (package:flutter/src/widgets/binding.dart:1760:5)
+#789    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1774:7)
+#790    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#791    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2750:15)
+#792    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2807:11)
+#793    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3111:18)
+#794    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#795    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#796    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#797    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#798    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#801    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#802    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#803    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#806    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#807    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#808    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:95:20)
+#809    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#810    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+The test description was:
+  renders recents list with tracks
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:42 +54 -13: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:42 +54 -13: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders recents list with tracks [E]
+  Test failed. See exception logs above.
+  The test description was: renders recents list with tracks
+  
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test (but after the test had completed):
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "Recent Song": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:149:31)
+#1      _expect (package:matcher/src/expect/expect.dart:144:3)
+#2      expect (package:matcher/src/expect/expect.dart:56:3)
+#3      expect (package:flutter_test/src/widget_tester.dart:473:18)
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:98:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  Test failed. See exception logs above.
+  The test description was: renders recents list with tracks
+  
+00:42 +54 -13: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView scaffold renders correctly
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following _TypeError was thrown running a test:
+type 'Null' is not a subtype of type 'Future<List<Map<String, dynamic>>>'
+
+When the exception was thrown, this was the stack:
+#0      MockDatabaseService.getTracks (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:9:7)
+#1      _HomeViewState._loadData (package:music_tag_editor/views/home_view.dart:30:37)
+#2      _HomeViewState.initState (package:music_tag_editor/views/home_view.dart:26:5)
+#3      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5953:55)
+#4      ComponentElement.mount (package:flutter/src/widgets/framework.dart:5796:5)
+...     Normal element mounting (260 frames)
+#264    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#265    MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7269:36)
+#266    MultiChildRenderObjectElement.mount (package:flutter/src/widgets/framework.dart:7285:32)
+...     Normal element mounting (465 frames)
+#731    Element.inflateWidget (package:flutter/src/widgets/framework.dart:4590:20)
+#732    Element.updateChild (package:flutter/src/widgets/framework.dart:4053:20)
+#733    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#734    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#735    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#736    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#737    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#738    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#739    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#740    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#741    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#742    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#743    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#744    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#745    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#746    _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#747    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#748    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#749    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#750    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#751    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#752    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#753    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#754    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#755    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#756    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#757    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#758    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#759    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#760    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#761    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#762    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#763    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#764    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#765    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#766    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#767    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#768    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#769    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#770    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#771    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#772    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#773    ProxyElement.update (package:flutter/src/widgets/framework.dart:6152:5)
+#774    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#775    _RawViewElement._updateChild (package:flutter/src/widgets/view.dart:481:16)
+#776    _RawViewElement.update (package:flutter/src/widgets/view.dart:568:5)
+#777    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#778    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#779    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#780    StatelessElement.update (package:flutter/src/widgets/framework.dart:5898:5)
+#781    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#782    ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5844:16)
+#783    StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5985:11)
+#784    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#785    StatefulElement.update (package:flutter/src/widgets/framework.dart:6010:5)
+#786    Element.updateChild (package:flutter/src/widgets/framework.dart:4037:15)
+#787    RootElement._rebuild (package:flutter/src/widgets/binding.dart:1782:16)
+#788    RootElement.update (package:flutter/src/widgets/binding.dart:1760:5)
+#789    RootElement.performRebuild (package:flutter/src/widgets/binding.dart:1774:7)
+#790    Element.rebuild (package:flutter/src/widgets/framework.dart:5532:7)
+#791    BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2750:15)
+#792    BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2807:11)
+#793    BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3111:18)
+#794    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:1506:19)
+#795    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:495:5)
+#796    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1434:15)
+#797    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1347:9)
+#798    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:1335:9)
+#801    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#802    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:1324:27)
+#803    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#806    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#807    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#808    main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:105:20)
+#809    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#810    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+The test description was:
+  scaffold renders correctly
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:42 +54 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:42 +54 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView scaffold renders correctly [E]
+  Test failed. See exception logs above.
+  The test description was: scaffold renders correctly
+  
+00:42 +54 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:47 +55 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:48 +56 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:48 +57 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:48 +58 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:48 +59 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:49 +60 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:51 +61 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:51 +62 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:51 +63 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:56 +64 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:57 +65 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:59 +66 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:59 +67 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:59 +68 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:59 +69 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:59 +70 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:59 +71 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+00:59 +72 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+01:04 +73 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+01:04 +74 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+01:05 +75 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+01:05 +76 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+01:07 +77 -14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+pumpAndSettle timed out
+
+When the exception was thrown, this was the stack:
+#0      WidgetTester.pumpAndSettle.<anonymous closure> (package:flutter_test/src/widget_tester.dart:717:11)
+<asynchronous suspension>
+#1      TestAsyncUtils.guard.<anonymous closure> (package:flutter_test/src/test_async_utils.dart:130:27)
+<asynchronous suspension>
+#2      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart:78:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  tap closes the view
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:10 +77 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView tap closes the view [E]
+  Test failed. See exception logs above.
+  The test description was: tap closes the view
+  
+01:10 +77 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView visualizer bars animate
+01:10 +78 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/disco_mode_view_test.dart: DiscoModeView rotation animation runs
+01:10 +79 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/lyrics_service_test.dart: LyricsService fetchLyrics returns empty list on network error
+01:14 +80 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows LoginPage when not authenticated
+01:14 +81 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows LoginPage when not authenticated
+01:14 +82 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows LoginPage when not authenticated
+01:14 +83 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows LoginPage when not authenticated
+01:14 +84 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when authenticated
+01:15 +85 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: LibraryPage displays initial empty state
+01:16 +86 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: FilenameFormat functional tests artistTitle format
+01:16 +87 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: FilenameFormat functional tests titleArtist format
+01:16 +88 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: FilenameFormat functional tests trackArtistTitle format
+01:16 +89 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+01:18 +90 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+01:18 +91 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+01:18 +92 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+01:18 +93 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+01:19 +94 -15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp shows LoginPage when not authenticated
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _TextContainingWidgetFinder:<Found 0 widgets with text containing Login: []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart:45:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart line 45
+The test description was:
+  shows LoginPage when not authenticated
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:20 +94 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp shows LoginPage when not authenticated [E]
+  Test failed. See exception logs above.
+  The test description was: shows LoginPage when not authenticated
+  
+01:20 +94 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp uses theme color from ThemeService
+01:20 +95 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage renders with title
+01:20 +96 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage renders with title
+01:20 +97 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage renders with title
+01:21 +98 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage renders with title
+01:21 +99 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage has DefaultTabController
+01:21 +100 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage renders tab bar with tabs
+01:21 +101 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage has settings button in app bar
+01:21 +102 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage has download button in app bar
+01:22 +103 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage shows empty folder message
+01:23 +104 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mini_player_test.dart: MiniPlayer Widget Tests Shows nothing when no track is playing
+01:25 +105 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mini_player_test.dart: MiniPlayer Widget Tests Shows track info and controls when track is present
+01:25 +106 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mini_player_test.dart: MiniPlayer Widget Tests Pause button calls playback.pause
+01:29 +107 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: (setUpAll)
+01:29 +107 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView renders mood cards
+01:30 +108 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/musicbrainz_api_test.dart: MusicBrainzApi searchRecording returns map on query
+01:31 +109 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView tapping mood opens bottom sheet
+01:31 +110 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/musicbrainz_api_test.dart: MusicBrainzApi searchRecording handles empty strings
+01:31 +111 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView mood sheet shows loading indicator
+01:31 +112 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView mood sheet shows loading indicator
+01:31 +113 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView grid layout displays correctly
+01:31 +114 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: MoodExplorerView mood icons are displayed
+01:32 +115 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/mood_explorer_view_test.dart: (tearDownAll)
+01:34 +115 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/my_tracks_view_test.dart: (setUpAll)
+01:34 +115 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/my_tracks_view_test.dart: MyTracksView renders loading state
+01:36 +116 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/netease_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+01:36 +117 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/netease_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+01:36 +118 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/netease_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+01:37 +119 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/netease_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+01:37 +120 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/netease_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+01:37 +121 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/netease_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+01:38 +122 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/netease_api_test.dart: NeteaseApi fetchSyncedLyrics handles empty strings
+01:39 +123 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/party_queue_view_test.dart: PartyQueueView renders app bar
+01:39 +124 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/party_queue_view_test.dart: PartyQueueView renders app bar
+01:41 +125 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/party_queue_view_test.dart: PartyQueueView renders start party UI
+01:41 +126 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/party_queue_view_test.dart: PartyQueueView renders description text
+01:41 +127 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/party_queue_view_test.dart: PartyQueueView has generate QR button
+01:41 +128 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/party_queue_view_test.dart: PartyQueueView has scan button
+01:41 +129 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/party_queue_view_test.dart: PartyQueueView tapping generate shows QR code
+01:42 +130 -16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: PlaybackService instance is accessible
+01:42 +130 -17: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/party_queue_view_test.dart: PartyQueueView tapping end party returns to initial state
+01:42 +130 -17: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: PlaybackService instance is accessible [E]
+  'package:flutter/src/services/platform_channel.dart': Failed assertion: line 590 pos 7: '_binaryMessenger != null || BindingBase.debugBindingType() != null': Cannot set the method call handler before the binary messenger has been initialized. This happens when you call setMethodCallHandler() before the WidgetsFlutterBinding has been initialized. You can fix this by either calling WidgetsFlutterBinding.ensureInitialized() before this or by passing a custom BinaryMessenger instance to MethodChannel().
+  dart:core                                                      _AssertionError._throwNew
+  package:flutter/src/services/platform_channel.dart 590:7       MethodChannel.setMethodCallHandler
+  package:audio_session/src/core.dart 150:14                     new AudioSession._
+  package:audio_session/src/core.dart 28:32                      AudioSession.instance
+  package:just_audio/just_audio.dart 303:20                      new AudioPlayer
+  package:music_tag_editor/services/playback_service.dart 30:9   new PlaybackService._internal
+  package:music_tag_editor/services/playback_service.dart 17:37  PlaybackService.instance
+  test\playback_service_test.dart 8:30                           main.<fn>.<fn>
+  ===== asynchronous gap ===========================
+  dart:async                                                     Future._asyncCompleteError
+  package:just_audio/just_audio.dart 303:20                      new AudioPlayer
+  package:music_tag_editor/services/playback_service.dart 30:9   new PlaybackService._internal
+  package:music_tag_editor/services/playback_service.dart 17:37  PlaybackService.instance
+  test\playback_service_test.dart 8:30                           main.<fn>.<fn>
+  
+01:42 +131 -17: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/party_queue_view_test.dart: PartyQueueView tapping end party returns to initial state
+01:42 +132 -17: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: PlaybackService currentTrack is nullable SearchResult
+01:42 +133 -17: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: PlaybackService sleepTimerStream is a stream
+01:42 +134 -17: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: PlaybackService lyricsStream is a stream
+01:42 +135 -17: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: PlaybackService addToQueue does not throw
+01:42 +135 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: PlaybackService addToQueue does not throw [E]
+  Binding has not yet been initialized.
+  The "instance" getter on the ServicesBinding binding mixin is only available once that binding has been initialized.
+  Typically, this is done by calling "WidgetsFlutterBinding.ensureInitialized()" or "runApp()" (the latter calls the former). Typically this call is done in the "void main()" method. The "ensureInitialized" method is idempotent; calling it multiple times is not harmful. After calling that method, the "instance" getter will return the binding.
+  In a test, one can call "TestWidgetsFlutterBinding.ensureInitialized()" as the first line in the test's "main()" method to initialize the binding.
+  If ServicesBinding is a custom binding mixin, there must also be a custom binding class, like WidgetsFlutterBinding, but that mixes in the selected binding, and that is the class that must be constructed before using the "instance" getter.
+  package:flutter/src/foundation/binding.dart 314:9               BindingBase.checkInstance.<fn>
+  package:flutter/src/foundation/binding.dart 401:6               BindingBase.checkInstance
+  package:flutter/src/services/binding.dart 73:54                 ServicesBinding.instance
+  package:flutter/src/services/platform_channel.dart 179:25       _findBinaryMessenger
+  package:flutter/src/services/platform_channel.dart 678:62       EventChannel.binaryMessenger
+  package:flutter/src/services/platform_channel.dart 699:9        EventChannel.receiveBroadcastStream.<fn>
+  dart:async                                                      _StreamImpl.listen
+  package:nearby_connections/src/nearby.dart 23:44                new Nearby._
+  package:nearby_connections/src/nearby.dart 18:26                new Nearby
+  package:music_tag_editor/services/local_duo_service.dart 19:43  new LocalDuoService._internal
+  package:music_tag_editor/services/local_duo_service.dart 13:54  LocalDuoService._instance
+  package:music_tag_editor/services/local_duo_service.dart        LocalDuoService._instance
+  package:music_tag_editor/services/local_duo_service.dart 14:42  LocalDuoService.instance
+  package:music_tag_editor/services/playback_service.dart 253:23  PlaybackService.addToQueue
+  test\playback_service_test.dart 42:45                           main.<fn>.<fn>.<fn>
+  package:matcher                                                 expect
+  package:flutter_test/src/widget_tester.dart 473:18              expect
+  test\playback_service_test.dart 42:7                            main.<fn>.<fn>
+  ===== asynchronous gap ===========================
+  dart:async                                                      _StreamImpl.listen
+  package:nearby_connections/src/nearby.dart 23:44                new Nearby._
+  package:nearby_connections/src/nearby.dart 18:26                new Nearby
+  package:music_tag_editor/services/local_duo_service.dart 19:43  new LocalDuoService._internal
+  package:music_tag_editor/services/local_duo_service.dart 13:54  LocalDuoService._instance
+  package:music_tag_editor/services/local_duo_service.dart        LocalDuoService._instance
+  package:music_tag_editor/services/local_duo_service.dart 14:42  LocalDuoService.instance
+  package:music_tag_editor/services/playback_service.dart 253:23  PlaybackService.addToQueue
+  test\playback_service_test.dart 42:45                           main.<fn>.<fn>.<fn>
+  package:matcher                                                 expect
+  package:flutter_test/src/widget_tester.dart 473:18              expect
+  test\playback_service_test.dart 42:7                            main.<fn>.<fn>
+  
+01:42 +135 -18: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/player_screen_test.dart
+01:44 +135 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/player_screen_test.dart: (setUpAll)
+01:44 +135 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/player_screen_test.dart: PlayerScreen Widget Tests Shows empty state when no track is playing
+01:46 +136 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlists_view_test.dart: PlaylistsView renders empty state
+01:47 +137 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlists_view_test.dart: PlaylistsView renders empty state
+01:47 +138 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/player_screen_test.dart: PlayerScreen Widget Tests Toggles play/pause
+01:47 +139 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlists_view_test.dart: PlaylistsView renders playlists list
+01:47 +140 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/player_screen_test.dart: PlayerScreen Widget Tests Shows Duo chat button when in Duo mode
+01:48 +141 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlists_view_test.dart: PlaylistsView shows FAB for creating playlists
+01:48 +142 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/player_screen_test.dart: (tearDownAll)
+01:48 +142 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlists_view_test.dart: PlaylistsView FAB opens create playlist dialog
+01:49 +143 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlists_view_test.dart: PlaylistsView cancel dialog closes without creating
+01:50 +144 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlists_view_test.dart: PlaylistsView playlist items have correct icons
+01:50 +145 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlists_view_test.dart: PlaylistsView app bar renders correctly
+01:50 +146 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart: (setUpAll)
+01:50 +146 -18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart: PlaylistDetailScreen shows loading indicator initially
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TypeWidgetFinder:<Found 0 widgets with type "CircularProgressIndicator": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart:54:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart line 54
+The test description was:
+  shows loading indicator initially
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:53 +146 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_importer_view_test.dart: (setUpAll)
+01:53 +146 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart: PlaylistDetailScreen shows loading indicator initially [E]
+  Test failed. See exception logs above.
+  The test description was: shows loading indicator initially
+  
+01:53 +146 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_detail_screen_test.dart: PlaylistDetailScreen displays playlist name in app bar
+01:53 +147 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_importer_view_test.dart: PlaylistImporterView renders correctly
+01:53 +148 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_importer_view_test.dart: PlaylistImporterView renders correctly
+01:54 +149 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_importer_view_test.dart: PlaylistImporterView renders correctly
+01:54 +150 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_importer_view_test.dart: PlaylistImporterView renders correctly
+01:54 +151 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_importer_view_test.dart: PlaylistImporterView renders correctly
+01:55 +152 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_importer_view_test.dart: PlaylistImporterView has text field for URL
+01:55 +153 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_importer_view_test.dart: PlaylistImporterView displays correct app bar title
+01:55 +154 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_importer_view_test.dart: PlaylistImporterView shows placeholder text
+01:55 +155 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_importer_view_test.dart: PlaylistImporterView has download icon button
+01:56 +156 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_importer_view_test.dart: PlaylistImporterView text field accepts input
+01:56 +157 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playlist_importer_view_test.dart: (tearDownAll)
+01:56 +157 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/remote_library_view_test.dart: (setUpAll)
+01:56 +157 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/remote_library_view_test.dart: RemoteLibraryView shows loading indicator initially
+01:58 +158 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/remote_library_view_test.dart: RemoteLibraryView has refresh button in app bar
+01:58 +159 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/ringtone_maker_view_test.dart: RingtoneMakerView renders Scaffold
+01:58 +160 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/ringtone_maker_view_test.dart: RingtoneMakerView renders Scaffold
+01:59 +161 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/ringtone_maker_view_test.dart: RingtoneMakerView renders Scaffold
+02:00 +162 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/ringtone_maker_view_test.dart: RingtoneMakerView displays track title
+02:01 +163 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/ringtone_maker_view_test.dart: RingtoneMakerView has play/pause button
+02:01 +164 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/ringtone_maker_view_test.dart: RingtoneMakerView has app bar with title
+02:01 +165 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Shows initialization progress then content
+02:03 +166 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Shows initialization progress then content
+02:03 +167 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Shows initialization progress then content
+02:03 +168 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Shows initialization progress then content
+02:03 +169 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Shows initialization progress then content
+02:03 +170 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Shows initialization progress then content
+02:03 +171 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Shows initialization progress then content
+02:03 +172 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Shows initialization progress then content
+02:04 +173 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Performs search and displays results
+02:05 +174 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Handles play track interaction
+02:06 +175 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Shows no results message
+02:06 +176 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/security_service_test.dart: SecurityService instance is accessible
+02:06 +177 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_page_test.dart: Shows error message on initialization failure
+02:06 +178 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/security_service_test.dart: SecurityService encryptString returns encrypted format
+02:06 +179 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/security_service_test.dart: SecurityService decryptString returns original text
+02:06 +180 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/security_service_test.dart: SecurityService decryptString handles invalid format gracefully
+02:06 +181 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/security_service_test.dart: SecurityService _hashPassword produces consistent hash
+02:06 +182 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/security_service_test.dart: SecurityService unlockVault returns false without setup
+02:06 +183 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/security_service_test.dart: SecurityService setupVaultPassword allows unlocking
+02:08 +184 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: SettingsPage renders Scaffold
+02:09 +185 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: SettingsPage renders Scaffold
+02:09 +186 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: SettingsPage renders Scaffold
+02:09 +187 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: SettingsPage renders Scaffold
+02:11 +188 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: SettingsPage loads settings on init
+02:16 +189 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/smart_library_view_test.dart: (setUpAll)
+02:16 +189 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/smart_library_view_test.dart: SmartLibraryView renders tab bar
+02:16 +190 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/smart_library_view_test.dart: SmartLibraryView renders tab bar
+02:16 +191 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/smart_library_view_test.dart: SmartLibraryView renders tab bar
+02:16 +192 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/smart_library_view_test.dart: SmartLibraryView renders tab bar
+02:16 +193 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/smart_library_view_test.dart: SmartLibraryView renders tab bar
+02:18 +194 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/smart_library_view_test.dart: SmartLibraryView shows loading indicator
+02:18 +195 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/smart_library_view_test.dart: SmartLibraryView shows empty top hits message
+02:18 +196 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/smart_library_view_test.dart: SmartLibraryView shows top hits list
+02:19 +197 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/vault_view_test.dart: (setUpAll)
+02:19 +197 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/vault_view_test.dart: VaultView renders locked state
+02:20 +198 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/vault_view_test.dart: VaultView has password field
+02:21 +199 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/vault_view_test.dart: VaultView has unlock button
+02:21 +200 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/vault_view_test.dart: VaultView calls unlockVault on button press
+02:21 +201 -19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/vault_view_test.dart: (tearDownAll)
+02:21 +201 -19: Some tests failed.

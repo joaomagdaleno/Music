@@ -1,0 +1,121 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: (setUpAll)
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders greeting
+00:02 +1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:03 +1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders smart library cards
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _IconWidgetFinder:<Found 0 widgets with icon "IconData(U+0E314)": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:59:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart line 59
+The test description was:
+  renders smart library cards
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:03 +1 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:03 +1 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders smart library cards [E]
+  Test failed. See exception logs above.
+  The test description was: renders smart library cards
+  
+00:04 +1 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders moods section
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _IconWidgetFinder:<Found 0 widgets with icon "IconData(U+0E293)": []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:72:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart line 72
+The test description was:
+  renders moods section
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +1 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:04 +1 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders moods section [E]
+  Test failed. See exception logs above.
+  The test description was: renders moods section
+  
+00:04 +2 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders disco mode button
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _IconWidgetFinder:<Found 0 widgets with icon "IconData(U+0E42D)": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:84:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart line 84
+The test description was:
+  renders disco mode button
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:05 +2 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp shows LoginPage when not authenticated
+00:05 +2 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders disco mode button [E]
+  Test failed. See exception logs above.
+  The test description was: renders disco mode button
+  
+00:05 +3 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders recents list with tracks
+00:05 +4 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders recents list with tracks
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "Recent Song": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart:103:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart line 103
+The test description was:
+  renders recents list with tracks
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:06 +4 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage renders with title
+00:06 +4 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: HomeView renders recents list with tracks [E]
+  Test failed. See exception logs above.
+  The test description was: renders recents list with tracks
+  
+00:06 +5 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage renders with title
+00:06 +6 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/home_view_test.dart: (tearDownAll)
+00:06 +6 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage has DefaultTabController
+00:06 +7 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage renders tab bar with tabs
+00:07 +8 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage has settings button in app bar
+00:07 +9 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage has download button in app bar
+00:07 +10 -4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryPage shows empty folder message
+00:07 +11 -4: Some tests failed.

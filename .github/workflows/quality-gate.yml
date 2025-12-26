@@ -1,0 +1,136 @@
+name: Quality Gate
+
+on:
+  workflow_call:
+    inputs:
+      min_coverage:
+        description: 'Minimum code coverage percentage'
+        required: false
+        default: '80'
+        type: string
+
+jobs:
+  quality:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Free up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.7'
+          cache: true
+
+      - name: Flutter Pub Get
+        working-directory: music_tag_editor
+        run: flutter pub get
+
+      - name: Run Flutter Analyzer
+        working-directory: music_tag_editor
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Run Tests
+        working-directory: music_tag_editor
+        run: flutter test --coverage
+
+      - name: Generate HTML coverage report
+        working-directory: music_tag_editor
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov
+          genhtml coverage/lcov.info -o coverage/html
+
+      - name: Upload HTML coverage report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-html
+          path: music_tag_editor/coverage/html
+          retention-days: 15
+
+      - name: Upload lcov artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-lcov
+          path: music_tag_editor/coverage/lcov.info
+          retention-days: 1
+
+      - name: Calculate code coverage
+        id: coverage
+        run: |
+          HIT=$(grep "^LH:" music_tag_editor/coverage/lcov.info | awk '{s+=$2} END {print s}' FS=":")
+          FOUND=$(grep "^LF:" music_tag_editor/coverage/lcov.info | awk '{s+=$2} END {print s}' FS=":")
+          if [ "$FOUND" -eq 0 ]; then
+            COVERAGE="0.0"
+          else
+            COVERAGE=$(echo "scale=2; 100 * $HIT / $FOUND" | bc)
+          fi
+          echo "percentage=${COVERAGE}" >> $GITHUB_OUTPUT
+
+  update-coverage-data:
+    name: Update Coverage Data Branch
+    needs: quality
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Download lcov artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-lcov
+          path: coverage
+
+      - name: Install lcov-parse tool
+        run: npm install -g lcov-parse
+
+      - name: Convert lcov to json
+        run: lcov-parse coverage/lcov.info > coverage-list.json
+
+      - name: Restructure coverage JSON
+        id: restructure
+        run: |
+          jq '{
+            totalLines: (map(.lines.found) | add),
+            totalHit: (map(.lines.hit) | add),
+            percentage: ((map(.lines.hit) | add) / (map(.lines.found) | add) * 100),
+            files: .
+          }' coverage-list.json > coverage.json
+
+      - name: Commit coverage.json
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+          git clone --branch coverage-data --single-branch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} coverage-data || \
+          (git init coverage-data && \
+           cd coverage-data && \
+           git checkout -b coverage-data && \
+           git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} && \
+           echo "{}" > coverage.json && \
+           git add coverage.json && \
+           git commit -m "feat: Initial commit for coverage data" && \
+           git push -u origin coverage-data)
+
+          mv coverage.json coverage-data/coverage.json
+          cd coverage-data
+          git add coverage.json
+          if ! git diff --staged --quiet; then
+            git commit -m "docs: Update code coverage report"
+            git push
+          else
+            echo "No changes to coverage data."
+          fi

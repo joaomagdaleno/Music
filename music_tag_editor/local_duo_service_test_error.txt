@@ -1,0 +1,105 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/local_duo_service_test.dart
+test/local_duo_service_test.dart:25:35: Error: Member not found: 'Payload.fromBytes'.
+    registerFallbackValue(Payload.fromBytes(Uint8List(0)));
+                                  ^^^^^^^^^
+test/local_duo_service_test.dart:27:29: Error: Too many positional arguments: 3 allowed, but 4 found.
+Try removing the extra positional arguments.
+        const ConnectionInfo('id', 'name', 'serviceId', true));
+                            ^
+../../../../AppData/Local/Pub/Cache/hosted/pub.dev/nearby_connections-4.3.0/lib/src/classes.dart:58:3: Context: Found this candidate, but the arguments don't match.
+  ConnectionInfo(
+  ^^^^^^^^^^^^^^
+test/local_duo_service_test.dart:143:33: Error: Too many positional arguments: 3 allowed, but 4 found.
+Try removing the extra positional arguments.
+            const ConnectionInfo('endpoint1', 'Name', 'Service', true));
+                                ^
+../../../../AppData/Local/Pub/Cache/hosted/pub.dev/nearby_connections-4.3.0/lib/src/classes.dart:58:3: Context: Found this candidate, but the arguments don't match.
+  ConnectionInfo(
+  ^^^^^^^^^^^^^^
+test/local_duo_service_test.dart:155:19: Error: Member not found: 'Payload.fromBytes'.
+          Payload.fromBytes(Uint8List.fromList(playMsg.codeUnits)));
+                  ^^^^^^^^^
+test/local_duo_service_test.dart:163:19: Error: Member not found: 'Payload.fromBytes'.
+          Payload.fromBytes(Uint8List.fromList(pauseMsg.codeUnits)));
+                  ^^^^^^^^^
+test/local_duo_service_test.dart:169:19: Error: Member not found: 'Payload.fromBytes'.
+          Payload.fromBytes(Uint8List.fromList(seekMsg.codeUnits)));
+                  ^^^^^^^^^
+test/local_duo_service_test.dart:193:33: Error: Too many positional arguments: 3 allowed, but 4 found.
+Try removing the extra positional arguments.
+            const ConnectionInfo('endpoint1', 'Name', 'Service', true));
+                                ^
+../../../../AppData/Local/Pub/Cache/hosted/pub.dev/nearby_connections-4.3.0/lib/src/classes.dart:58:3: Context: Found this candidate, but the arguments don't match.
+  ConnectionInfo(
+  ^^^^^^^^^^^^^^
+test/local_duo_service_test.dart:200:33: Error: Required named parameter 'url' must be provided.
+      final track = SearchResult(
+                                ^
+lib/services/download_service.dart:61:3: Context: Found this candidate, but the arguments don't match.
+  SearchResult({
+  ^^^^^^^^^^^^
+test/local_duo_service_test.dart:207:19: Error: Member not found: 'Payload.fromBytes'.
+          Payload.fromBytes(Uint8List.fromList(trackMsg.codeUnits)));
+                  ^^^^^^^^^
+test/local_duo_service_test.dart:216:19: Error: Member not found: 'Payload.fromBytes'.
+          Payload.fromBytes(Uint8List.fromList(chatMsg.codeUnits)));
+                  ^^^^^^^^^
+test/local_duo_service_test.dart:112:36: Error: A value of type 'Map<dynamic, dynamic>' can't be returned from an async function with return type 'Future<int>'.
+ - 'Map' is from 'dart:core'.
+ - 'Future' is from 'dart:async'.
+          .thenAnswer((_) async => {});
+                                   ^
+00:00 +0 -1: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/local_duo_service_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/local_duo_service_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/local_duo_service_test.dart: test/local_duo_service_test.dart:25:35: Error: Member not found: 'Payload.fromBytes'.
+      registerFallbackValue(Payload.fromBytes(Uint8List(0)));
+                                    ^^^^^^^^^
+  test/local_duo_service_test.dart:27:29: Error: Too many positional arguments: 3 allowed, but 4 found.
+  Try removing the extra positional arguments.
+          const ConnectionInfo('id', 'name', 'serviceId', true));
+                              ^
+  ../../../../AppData/Local/Pub/Cache/hosted/pub.dev/nearby_connections-4.3.0/lib/src/classes.dart:58:3: Context: Found this candidate, but the arguments don't match.
+    ConnectionInfo(
+    ^^^^^^^^^^^^^^
+  test/local_duo_service_test.dart:143:33: Error: Too many positional arguments: 3 allowed, but 4 found.
+  Try removing the extra positional arguments.
+              const ConnectionInfo('endpoint1', 'Name', 'Service', true));
+                                  ^
+  ../../../../AppData/Local/Pub/Cache/hosted/pub.dev/nearby_connections-4.3.0/lib/src/classes.dart:58:3: Context: Found this candidate, but the arguments don't match.
+    ConnectionInfo(
+    ^^^^^^^^^^^^^^
+  test/local_duo_service_test.dart:155:19: Error: Member not found: 'Payload.fromBytes'.
+            Payload.fromBytes(Uint8List.fromList(playMsg.codeUnits)));
+                    ^^^^^^^^^
+  test/local_duo_service_test.dart:163:19: Error: Member not found: 'Payload.fromBytes'.
+            Payload.fromBytes(Uint8List.fromList(pauseMsg.codeUnits)));
+                    ^^^^^^^^^
+  test/local_duo_service_test.dart:169:19: Error: Member not found: 'Payload.fromBytes'.
+            Payload.fromBytes(Uint8List.fromList(seekMsg.codeUnits)));
+                    ^^^^^^^^^
+  test/local_duo_service_test.dart:193:33: Error: Too many positional arguments: 3 allowed, but 4 found.
+  Try removing the extra positional arguments.
+              const ConnectionInfo('endpoint1', 'Name', 'Service', true));
+                                  ^
+  ../../../../AppData/Local/Pub/Cache/hosted/pub.dev/nearby_connections-4.3.0/lib/src/classes.dart:58:3: Context: Found this candidate, but the arguments don't match.
+    ConnectionInfo(
+    ^^^^^^^^^^^^^^
+  test/local_duo_service_test.dart:200:33: Error: Required named parameter 'url' must be provided.
+        final track = SearchResult(
+                                  ^
+  lib/services/download_service.dart:61:3: Context: Found this candidate, but the arguments don't match.
+    SearchResult({
+    ^^^^^^^^^^^^
+  test/local_duo_service_test.dart:207:19: Error: Member not found: 'Payload.fromBytes'.
+            Payload.fromBytes(Uint8List.fromList(trackMsg.codeUnits)));
+                    ^^^^^^^^^
+  test/local_duo_service_test.dart:216:19: Error: Member not found: 'Payload.fromBytes'.
+            Payload.fromBytes(Uint8List.fromList(chatMsg.codeUnits)));
+                    ^^^^^^^^^
+  test/local_duo_service_test.dart:112:36: Error: A value of type 'Map<dynamic, dynamic>' can't be returned from an async function with return type 'Future<int>'.
+   - 'Map' is from 'dart:core'.
+   - 'Future' is from 'dart:async'.
+            .thenAnswer((_) async => {});
+                                     ^
+  .
+00:00 +0 -1: Some tests failed.

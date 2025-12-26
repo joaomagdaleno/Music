@@ -1,0 +1,39 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/local_duo_service_test.dart
+test/local_duo_service_test.dart:27:33: Error: Cannot invoke a non-'const' constructor where a const expression is expected.
+Try using a constructor or factory that is 'const'.
+    registerFallbackValue(const ConnectionInfo('name', 'serviceId', true));
+                                ^^^^^^^^^^^^^^
+test/local_duo_service_test.dart:139:35: Error: Cannot invoke a non-'const' constructor where a const expression is expected.
+Try using a constructor or factory that is 'const'.
+        onInit('endpoint1', const ConnectionInfo('Name', 'Service', true));
+                                  ^^^^^^^^^^^^^^
+test/local_duo_service_test.dart:199:35: Error: Cannot invoke a non-'const' constructor where a const expression is expected.
+Try using a constructor or factory that is 'const'.
+        onInit('endpoint1', const ConnectionInfo('Name', 'Service', true));
+                                  ^^^^^^^^^^^^^^
+test/local_duo_service_test.dart:112:36: Error: A value of type 'Map<dynamic, dynamic>' can't be returned from an async function with return type 'Future<int>'.
+ - 'Map' is from 'dart:core'.
+ - 'Future' is from 'dart:async'.
+          .thenAnswer((_) async => {});
+                                   ^
+00:00 +0 -1: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/local_duo_service_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/local_duo_service_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/local_duo_service_test.dart: test/local_duo_service_test.dart:27:33: Error: Cannot invoke a non-'const' constructor where a const expression is expected.
+  Try using a constructor or factory that is 'const'.
+      registerFallbackValue(const ConnectionInfo('name', 'serviceId', true));
+                                  ^^^^^^^^^^^^^^
+  test/local_duo_service_test.dart:139:35: Error: Cannot invoke a non-'const' constructor where a const expression is expected.
+  Try using a constructor or factory that is 'const'.
+          onInit('endpoint1', const ConnectionInfo('Name', 'Service', true));
+                                    ^^^^^^^^^^^^^^
+  test/local_duo_service_test.dart:199:35: Error: Cannot invoke a non-'const' constructor where a const expression is expected.
+  Try using a constructor or factory that is 'const'.
+          onInit('endpoint1', const ConnectionInfo('Name', 'Service', true));
+                                    ^^^^^^^^^^^^^^
+  test/local_duo_service_test.dart:112:36: Error: A value of type 'Map<dynamic, dynamic>' can't be returned from an async function with return type 'Future<int>'.
+   - 'Map' is from 'dart:core'.
+   - 'Future' is from 'dart:async'.
+            .thenAnswer((_) async => {});
+                                     ^
+  .
+00:00 +0 -1: Some tests failed.
