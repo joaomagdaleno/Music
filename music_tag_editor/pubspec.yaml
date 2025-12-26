@@ -36,7 +36,7 @@ dependencies:
   firebase_analytics: ^11.3.3
   firebase_crashlytics: ^4.2.0
   encrypt: ^5.0.3
-  flutter_secure_storage: ^9.2.2
+  flutter_secure_storage: ^10.0.0
   local_auth: ^2.3.0
   connectivity_plus: ^6.1.1
   palette_generator_master: ^1.0.1
