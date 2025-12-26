@@ -17,7 +17,7 @@ dependencies:
   http: ^1.2.1
   sqflite: ^2.3.3
   path: ^1.9.0
-  archive: ^3.6.1
+  archive: ^4.0.7
   just_audio: ^0.9.40
   audio_session: ^0.1.21
   nearby_connections: ^4.3.0
