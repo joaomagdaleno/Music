@@ -38,7 +38,7 @@ dependencies:
   encrypt: ^5.0.3
   flutter_secure_storage: ^9.2.2
   local_auth: ^2.3.0
-  connectivity_plus: ^6.1.1
+  connectivity_plus: ^7.0.0
   palette_generator_master: ^1.0.1
   meta: ^1.11.0
   rxdart: ^0.27.7
