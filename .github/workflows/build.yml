@@ -16,6 +16,9 @@ env:
 jobs:
   quality_gate:
     name: Quality Gate
+    permissions:
+      contents: write
+      pull-requests: write
     uses: ./.github/workflows/quality-gate.yml
     secrets: inherit
 
