@@ -26,20 +26,31 @@ import 'package:music_tag_editor/views/login_page.dart';
 import 'package:music_tag_editor/services/persona_service.dart';
 import 'package:music_tag_editor/models/music_track.dart';
 
+import 'package:music_tag_editor/services/telemetry_service.dart';
+import 'dart:async';
+
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Core Services
-  await SecurityService.instance.init();
-  AuthService.instance.init();
-  await ConnectivityService.instance.init();
-  await PersonaService.instance.init();
+    // Initialize Telemetry
+    await TelemetryService.instance.init();
 
-  await ThemeService.instance.init();
-  await DesktopIntegrationService.instance.init();
-  await PlaybackService.instance.init();
+    // Initialize Core Services
+    await SecurityService.instance.init();
+    AuthService.instance.init();
+    await ConnectivityService.instance.init();
+    await PersonaService.instance.init();
 
-  runApp(const MusicTagEditorApp());
+    await ThemeService.instance.init();
+    await DesktopIntegrationService.instance.init();
+    await PlaybackService.instance.init();
+
+    runApp(const MusicTagEditorApp());
+  }, (error, stack) {
+    debugPrint('Fatal error: $error');
+    TelemetryService.instance.recordError(error, stack);
+  });
 }
 
 class MusicTagEditorApp extends StatelessWidget {
