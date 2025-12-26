@@ -29,7 +29,6 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /usr/local/lib/android
           sudo rm -rf /opt/ghc
           sudo rm -rf "/usr/local/share/boost"
           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
@@ -90,7 +89,9 @@ jobs:
       - name: Flutter Build Windows
         if: runner.os == 'Windows'
         working-directory: music_tag_editor
-        run: flutter build windows
+        run: |
+          flutter clean
+          flutter build windows
 
       - name: Install Inno Setup
         if: runner.os == 'Windows'
