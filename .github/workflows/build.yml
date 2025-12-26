@@ -41,6 +41,8 @@ jobs:
     name: Pre-release
     if: github.event_name == 'push' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/beta')
     needs: build
+    permissions:
+      contents: write
     uses: ./.github/workflows/prerelease.yml
     secrets: inherit
 
