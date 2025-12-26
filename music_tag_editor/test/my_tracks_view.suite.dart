@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/views/my_tracks_view.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+
 import 'test_helper.dart';
 
 void main() {
