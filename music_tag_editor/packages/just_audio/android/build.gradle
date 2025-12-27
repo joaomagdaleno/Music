@@ -1,0 +1,54 @@
+group 'com.ryanheise.just_audio'
+version '1.0'
+def args = ["-Xlint:deprecation","-Xlint:unchecked"]
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.9.1'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+project.getTasks().withType(JavaCompile) {
+    options.compilerArgs.addAll(args)
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    namespace 'com.ryanheise.just_audio'
+    compileSdk 36
+
+    defaultConfig {
+        minSdk 16
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    lintOptions {
+        disable 'AndroidGradlePluginVersion', 'InvalidPackage', 'GradleDependency', 'NewerVersionAvailable'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    dependencies {
+        def exoplayer_version = "1.4.1"
+        implementation "androidx.media3:media3-exoplayer:$exoplayer_version"
+        implementation "androidx.media3:media3-exoplayer-dash:$exoplayer_version"
+        implementation "androidx.media3:media3-exoplayer-hls:$exoplayer_version"
+        implementation "androidx.media3:media3-exoplayer-smoothstreaming:$exoplayer_version"
+    }
+}

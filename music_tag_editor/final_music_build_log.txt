@@ -1,0 +1,724 @@
+[+3428 ms] Artifact Instance of 'MaterialFonts' is not required, skipping update.
+[   +2 ms] Artifact Instance of 'GradleWrapper' is not required, skipping update.
+[   +4 ms] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[   +4 ms] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[   +4 ms] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[   +2 ms] Artifact Instance of 'FlutterSdk' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[   +5 ms] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FontSubsetArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'PubDependencies' is not required, skipping update.
+[   +7 ms] executing: [C:\Flutter\flutter/] git -c log.showSignature=false log HEAD -n 1 --pretty=format:%ad --date=iso
+[ +611 ms] Exit code 0 from: git -c log.showSignature=false log HEAD -n 1 --pretty=format:%ad --date=iso
+[        ] 2025-12-03 14:56:10 -0800
+[  +37 ms] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[   +3 ms] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterEngineStamp' is not required, skipping update.
+[        ] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[   +9 ms] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[ +577 ms] Artifact Instance of 'MaterialFonts' is not required, skipping update.
+[        ] Artifact Instance of 'GradleWrapper' is not required, skipping update.
+[   +6 ms] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[   +3 ms] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterEngineStamp' is not required, skipping update.
+[        ] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterSdk' is not required, skipping update.
+[        ] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FontSubsetArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'PubDependencies' is not required, skipping update.
+[ +436 ms] Skipping pub get: version match.
+[ +838 ms] Found plugin window_manager at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\window_manager-0.5.1\
+[  +25 ms] Found plugin screen_retriever at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever-0.2.0\
+[   +4 ms] Found plugin screen_retriever_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_windows-0.2.0\
+[  +34 ms] Found plugin screen_retriever_macos at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_macos-0.2.0\
+[   +7 ms] Found plugin screen_retriever_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_linux-0.2.0\
+[  +17 ms] Found plugin system_tray at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\system_tray-2.0.3\
+[   +8 ms] Found plugin sqflite at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite-2.4.2\
+[  +27 ms] Found plugin sqflite_darwin at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_darwin-2.4.2\
+[  +15 ms] Found plugin sqflite_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_android-2.4.2+2\
+[  +32 ms] Found plugin shared_preferences at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.4\
+[  +30 ms] Found plugin shared_preferences_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[   +6 ms] Found plugin path_provider_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[  +12 ms] Found plugin shared_preferences_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[   +7 ms] Found plugin shared_preferences_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[   +7 ms] Found plugin path_provider_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.1\
+[  +71 ms] Found plugin shared_preferences_foundation at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[  +14 ms] Found plugin shared_preferences_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\
+[  +11 ms] Found plugin permission_handler at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler-11.4.0\
+[   +4 ms] Found plugin permission_handler_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_windows-0.2.1\
+[   +7 ms] Found plugin permission_handler_html at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_html-0.1.3+5\
+[   +6 ms] Found plugin permission_handler_apple at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_apple-9.4.7\
+[  +76 ms] Found plugin permission_handler_android at C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\permission_handler_android\
+[  +16 ms] Found plugin network_info_plus at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\network_info_plus-7.0.0\
+[ +125 ms] Found plugin nearby_connections at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\nearby_connections-4.3.0\
+[  +10 ms] Found plugin local_auth at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth-2.3.0\
+[   +8 ms] Found plugin local_auth_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_windows-1.0.11\
+[  +11 ms] Found plugin local_auth_darwin at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_darwin-1.6.1\
+[  +77 ms] Found plugin local_auth_android at C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\local_auth_android\
+[  +13 ms] Found plugin flutter_plugin_android_lifecycle at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.33\
+[  +10 ms] Found plugin just_audio at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio-0.9.46\
+[   +5 ms] Found plugin path_provider at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider-2.1.5\
+[   +3 ms] Found plugin path_provider_foundation at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_foundation-2.5.1\
+[  +12 ms] Found plugin path_provider_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\
+[   +4 ms] Found plugin just_audio_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio_web-0.4.16\
+[  +23 ms] Found plugin audio_session at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_session-0.1.25\
+[   +8 ms] Found plugin flutter_secure_storage at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage-9.2.4\
+[   +5 ms] Found plugin flutter_secure_storage_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_windows-3.1.2\
+[  +10 ms] Found plugin flutter_secure_storage_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_web-1.2.1\
+[  +10 ms] Found plugin flutter_secure_storage_macos at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_macos-3.1.3\
+[   +3 ms] Found plugin flutter_secure_storage_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_linux-1.2.3\
+[  +16 ms] Found plugin firebase_crashlytics at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_crashlytics-4.3.10\
+[  +13 ms] Found plugin firebase_core at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-3.15.2\
+[   +3 ms] Found plugin firebase_core_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core_web-2.24.1\
+[  +12 ms] Found plugin firebase_auth at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.7.0\
+[   +4 ms] Found plugin firebase_auth_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth_web-5.15.3\
+[  +14 ms] Found plugin firebase_analytics at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_analytics-11.6.0\
+[  +35 ms] Found plugin firebase_analytics_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_analytics_web-0.5.10+16\
+[  +12 ms] Found plugin file_picker at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.3.7\
+[  +35 ms] Found plugin connectivity_plus at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\connectivity_plus-6.1.5\
+[  +14 ms] Found plugin cloud_firestore at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.12\
+[  +19 ms] Found plugin cloud_firestore_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore_web-4.4.12\
+[   +6 ms] Found plugin audio_service at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service-0.18.18\
+[  +10 ms] Found plugin audio_service_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service_web-0.1.4\
+[ +446 ms] Found plugin window_manager at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\window_manager-0.5.1\
+[   +3 ms] Found plugin screen_retriever at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever-0.2.0\
+[  +16 ms] Found plugin screen_retriever_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_windows-0.2.0\
+[  +13 ms] Found plugin screen_retriever_macos at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_macos-0.2.0\
+[   +3 ms] Found plugin screen_retriever_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_linux-0.2.0\
+[   +5 ms] Found plugin system_tray at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\system_tray-2.0.3\
+[  +11 ms] Found plugin sqflite at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite-2.4.2\
+[  +11 ms] Found plugin sqflite_darwin at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_darwin-2.4.2\
+[   +4 ms] Found plugin sqflite_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_android-2.4.2+2\
+[  +30 ms] Found plugin shared_preferences at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.4\
+[   +8 ms] Found plugin shared_preferences_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[  +13 ms] Found plugin path_provider_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[  +10 ms] Found plugin shared_preferences_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[   +4 ms] Found plugin shared_preferences_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[   +2 ms] Found plugin path_provider_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.1\
+[  +18 ms] Found plugin shared_preferences_foundation at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[  +24 ms] Found plugin shared_preferences_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\
+[   +5 ms] Found plugin permission_handler at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler-11.4.0\
+[   +2 ms] Found plugin permission_handler_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_windows-0.2.1\
+[  +13 ms] Found plugin permission_handler_html at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_html-0.1.3+5\
+[   +3 ms] Found plugin permission_handler_apple at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_apple-9.4.7\
+[   +7 ms] Found plugin permission_handler_android at C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\permission_handler_android\
+[   +5 ms] Found plugin network_info_plus at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\network_info_plus-7.0.0\
+[  +29 ms] Found plugin nearby_connections at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\nearby_connections-4.3.0\
+[   +2 ms] Found plugin local_auth at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth-2.3.0\
+[   +2 ms] Found plugin local_auth_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_windows-1.0.11\
+[  +10 ms] Found plugin local_auth_darwin at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_darwin-1.6.1\
+[   +5 ms] Found plugin local_auth_android at C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\local_auth_android\
+[   +2 ms] Found plugin flutter_plugin_android_lifecycle at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.33\
+[   +8 ms] Found plugin just_audio at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio-0.9.46\
+[   +3 ms] Found plugin path_provider at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider-2.1.5\
+[   +5 ms] Found plugin path_provider_foundation at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_foundation-2.5.1\
+[   +7 ms] Found plugin path_provider_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\
+[  +14 ms] Found plugin just_audio_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio_web-0.4.16\
+[   +8 ms] Found plugin audio_session at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_session-0.1.25\
+[   +9 ms] Found plugin flutter_secure_storage at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage-9.2.4\
+[   +4 ms] Found plugin flutter_secure_storage_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_windows-3.1.2\
+[   +5 ms] Found plugin flutter_secure_storage_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_web-1.2.1\
+[  +12 ms] Found plugin flutter_secure_storage_macos at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_macos-3.1.3\
+[   +4 ms] Found plugin flutter_secure_storage_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_linux-1.2.3\
+[   +6 ms] Found plugin firebase_crashlytics at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_crashlytics-4.3.10\
+[   +9 ms] Found plugin firebase_core at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-3.15.2\
+[   +7 ms] Found plugin firebase_core_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core_web-2.24.1\
+[  +16 ms] Found plugin firebase_auth at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.7.0\
+[   +3 ms] Found plugin firebase_auth_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth_web-5.15.3\
+[   +4 ms] Found plugin firebase_analytics at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_analytics-11.6.0\
+[   +2 ms] Found plugin firebase_analytics_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_analytics_web-0.5.10+16\
+[   +7 ms] Found plugin file_picker at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.3.7\
+[  +37 ms] Found plugin connectivity_plus at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\connectivity_plus-6.1.5\
+[   +5 ms] Found plugin cloud_firestore at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.12\
+[   +6 ms] Found plugin cloud_firestore_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore_web-4.4.12\
+[  +14 ms] Found plugin audio_service at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service-0.18.18\
+[   +6 ms] Found plugin audio_service_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service_web-0.1.4\
+[  +46 ms] Generating C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\src\main\java\io\flutter\plugins\GeneratedPluginRegistrant.java
+[  +57 ms] Skipping generating GeneratedPluginRegistrant.java because it is up-to-date.
+[  +97 ms] Skipping generating generated_plugin_registrant.h because it is up-to-date.
+[   +3 ms] Skipping generating generated_plugin_registrant.cc because it is up-to-date.
+[  +30 ms] Skipping generating generated_plugins.cmake because it is up-to-date.
+[  +11 ms] Skipping generating generated_plugin_registrant.h because it is up-to-date.
+[   +5 ms] Skipping generating generated_plugin_registrant.cc because it is up-to-date.
+[   +3 ms] Skipping generating generated_plugins.cmake because it is up-to-date.
+[ +297 ms] Top-level Gradle build file not found, skipping migration of task "clean".
+[   +2 ms] Android Studio version could not be detected, skipping Gradle-Java version compatibility check.
+[  +93 ms] CMake project not found, skipping support Android 15 16k page size migration.
+[  +29 ms] Using gradle from C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\gradlew.bat.
+[  +70 ms] LocalFile: 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\build.gradle.kts' provides AGP version from classpath: 8.7.2
+[ +105 ms] Running Gradle task 'assembleDebug'...
+[  +12 ms] executing: [C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android/] C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\gradlew.bat --full-stacktrace --info -Pverbose=true -Ptarget-platform=android-arm,android-arm64,android-x64 -Ptarget=lib\main.dart -Pbase-application-name=android.app.Application -Pdart-defines=RkxVVFRFUl9WRVJTSU9OPTMuMzguNA==,RkxVVFRFUl9DSEFOTkVMPXN0YWJsZQ==,RkxVVFRFUl9HSVRfVVJMPWh0dHBzOi8vZ2l0aHViLmNvbS9mbHV0dGVyL2ZsdXR0ZXIuZ2l0,RkxVVFRFUl9GUkFNRVdPUktfUkVWSVNJT049NjZkZDkzZjlhMg==,RkxVVFRFUl9FTkdJTkVfUkVWSVNJT049YTVjYjk2MzY5ZQ==,RkxVVFRFUl9EQVJUX1ZFUlNJT049My4xMC4z -Pdart-obfuscation=false -Ptrack-widget-creation=true -Ptree-shake-icons=false assembleDebug
+[+12912 ms] Initialized native services in: C:\Users\joaom\.gradle\native
+[   +1 ms] Initialized jansi services in: C:\Users\joaom\.gradle\native
+[+3489 ms] Found daemon DaemonInfo{pid=19940, address=[b739c6b8-dddb-4396-a1bf-800fe98a3397 port:64416, addresses:[/127.0.0.1]], state=Idle, lastBusy=1766862701438, context=DefaultDaemonContext[uid=c50be65f-da7f-42e8-acb0-cf8724b78059,javaHome=C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot,javaVersion=17,javaVendor=Eclipse Adoptium,daemonRegistryDir=C:\Users\joaom\.gradle\daemon,pid=19940,idleTimeout=10800000,priority=NORMAL,applyInstrumentationAgent=true,nativeServicesMode=ENABLED,daemonOpts=-XX:+UseParallelGC,-XX:MaxMetaspaceSize=512m,-Xmx4g,-Dfile.encoding=UTF-8,-Duser.country=BR,-Duser.language=pt,-Duser.variant]} however its context does not match the desired criteria.
+[        ] At least one daemon option is different.
+[        ] Wanted: DaemonRequestContext{jvmCriteria=C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot (no JDK specified, using current Java home), daemonOpts=[-XX:MaxMetaspaceSize=4G, -XX:ReservedCodeCacheSize=512m, -XX:+HeapDumpOnOutOfMemoryError, -Xmx8G, -Dfile.encoding=windows-1252, -Duser.country=BR, -Duser.language=pt, -Duser.variant], applyInstrumentationAgent=true, nativeServicesMode=ENABLED, priority=NORMAL}
+[   +4 ms] Actual: DefaultDaemonContext[uid=c50be65f-da7f-42e8-acb0-cf8724b78059,javaHome=C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot,javaVersion=17,javaVendor=Eclipse Adoptium,daemonRegistryDir=C:\Users\joaom\.gradle\daemon,pid=19940,idleTimeout=10800000,priority=NORMAL,applyInstrumentationAgent=true,nativeServicesMode=ENABLED,daemonOpts=-XX:+UseParallelGC,-XX:MaxMetaspaceSize=512m,-Xmx4g,-Dfile.encoding=UTF-8,-Duser.country=BR,-Duser.language=pt,-Duser.variant]
+[        ]   Looking for a different daemon...
+[        ] Removing daemon from the registry due to communication failure. Daemon information: DaemonInfo{pid=19492, address=[2dae2e3e-b28d-4295-9507-561b48ae2cc4 port:63807, addresses:[/127.0.0.1]], state=Idle, lastBusy=1766806213934, context=DefaultDaemonContext[uid=fb6623b8-6caf-406d-89ae-5f76b14873a3,javaHome=C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot,javaVersion=17,javaVendor=Eclipse Adoptium,daemonRegistryDir=C:\Users\joaom\.gradle\daemon,pid=19492,idleTimeout=10800000,priority=NORMAL,applyInstrumentationAgent=true,nativeServicesMode=ENABLED,daemonOpts=-XX:MaxMetaspaceSize=4G,-XX:ReservedCodeCacheSize=512m,-XX:+HeapDumpOnOutOfMemoryError,-Xmx8G,-Dfile.encoding=windows-1252,-Duser.country=BR,-Duser.language=pt,-Duser.variant]}
+[ +631 ms] Removing 1 daemon stop events from registry
+[  +19 ms] Previous Daemon (8568) stopped at Sat Dec 27 15:51:49 BRT 2025 after being idle for 38 minutes and not recently used and to reclaim system physical memory
+[  +11 ms] Previous Daemon (19492) stopped at Sat Dec 27 16:14:28 BRT 2025 by user or operating system
+[   +1 ms] Starting a Gradle Daemon, 5 busy and 2 incompatible and 2 stopped Daemons could not be reused, use --status for details
+[+1070 ms] Starting process 'Gradle build daemon'. Working directory: C:\Users\joaom\.gradle\daemon\8.13 Command: C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot\bin\java.exe --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.xml/javax.xml.namespace=ALL-UNNAMED -XX:MaxMetaspaceSize=4G -XX:ReservedCodeCacheSize=512m -XX:+HeapDumpOnOutOfMemoryError -Xmx8G -Dfile.encoding=windows-1252 -Duser.country=BR -Duser.language=pt -Duser.variant -cp C:\Users\joaom\.gradle\wrapper\dists\gradle-8.13-all\54h0s9kvb6g2sinako7ub77ku\gradle-8.13\lib\gradle-daemon-main-8.13.jar -javaagent:C:\Users\joaom\.gradle\wrapper\dists\gradle-8.13-all\54h0s9kvb6g2sinako7ub77ku\gradle-8.13\lib\agents\gradle-instrumentation-agent-8.13.jar org.gradle.launcher.daemon.bootstrap.GradleDaemon 8.13
+[ +237 ms] Successfully started process 'Gradle build daemon'
+[+21737 ms] An attempt to start the daemon took 21.989 secs.
+[+1065 ms] The client will now receive all logging from the daemon (pid: 6728). The daemon log file: C:\Users\joaom\.gradle\daemon\8.13\daemon-6728.out.log
+[        ] Starting build in new daemon [memory: 8 GiB]
+[+6346 ms] Using 4 worker leases.
+[+3796 ms] Received JVM installation metadata from 'C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot': {JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot, JAVA_VERSION=17.0.17, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=17.0.17+10, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=17.0.17+10, VM_VENDOR=Eclipse Adoptium, OS_ARCH=amd64}
+[+5903 ms] Watching the file system is configured to be enabled if available
+[ +200 ms] Now considering [C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android] as hierarchies to watch
+[        ] File system watching is active
+[+6699 ms] Starting Build
+[+7904 ms] Now considering [C:\Flutter\flutter\packages\flutter_tools\gradle, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android] as hierarchies to watch
+[ +588 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +109 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+4332 ms] > Configure project :gradle
+[   +1 ms] Evaluating project ':gradle' using build file 'C:\Flutter\flutter\packages\flutter_tools\gradle\build.gradle.kts'.
+[ +289 ms] Resolved plugin [id: 'org.gradle.java-gradle-plugin']
+[   +1 ms] Resolved plugin [id: 'org.gradle.groovy']
+[+2860 ms] Resolved plugin [id: 'org.gradle.kotlin.kotlin-dsl', version: '5.2.0']
+[        ] Resolved plugin [id: 'org.jetbrains.kotlin.jvm', version: '1.9.20']
+[+13111 ms] Using Kotlin Gradle Plugin gradle85 variant
+[+9286 ms] kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+[ +907 ms] kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+[+9606 ms] file or directory 'C:\Flutter\flutter\packages\flutter_tools\gradle\src\main\java', not found
+[+2298 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +505 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+2492 ms] Resolved plugin [id: 'dev.flutter.flutter-plugin-loader', version: '1.0.0']
+[ +200 ms] Resolved plugin [id: 'com.android.application', version: '8.7.2', apply: false]
+[   +1 ms] Resolved plugin [id: 'com.google.gms.google-services', version: '4.4.2', apply: false]
+[        ] Resolved plugin [id: 'org.jetbrains.kotlin.android', version: '2.1.10', apply: false]
+[        ] Resolved plugin [id: 'com.google.firebase.crashlytics', version: '3.0.2', apply: false]
+[+2959 ms] Resolve mutations for :gradle:checkKotlinGradlePluginConfigurationErrors (Thread[included builds,5,main]) started.
+[  +59 ms] :gradle:checkKotlinGradlePluginConfigurationErrors (Thread[included builds,5,main]) started.
+[ +979 ms] > Task :gradle:checkKotlinGradlePluginConfigurationErrors SKIPPED
+[        ] Skipping task ':gradle:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+[        ] Resolve mutations for :gradle:compileKotlin (Thread[included builds,5,main]) started.
+[  +39 ms] :gradle:compileKotlin (Thread[included builds,5,main]) started.
+[+2074 ms] > Task :gradle:compileKotlin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +518 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +3 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +916 ms] Caching disabled for task ':gradle:compileKotlin' because:
+[  +78 ms]   Build cache is disabled
+[ +220 ms] Skipping task ':gradle:compileKotlin' as it is up-to-date.
+[        ] > Task :gradle:compileKotlin UP-TO-DATE
+[        ] Resolve mutations for :gradle:compileJava (Thread[included builds,5,main]) started.
+[        ] :gradle:compileJava (Thread[included builds,5,main]) started.
+[ +142 ms] > Task :gradle:compileJava NO-SOURCE
+[        ] Skipping task ':gradle:compileJava' as it has no source files and no previous output files.
+[ +101 ms] Resolve mutations for :gradle:compileGroovy (Thread[included builds,5,main]) started.
+[ +103 ms] :gradle:compileGroovy (Thread[included builds,5,main]) started.
+[  +94 ms] > Task :gradle:compileGroovy NO-SOURCE
+[   +2 ms] Skipping task ':gradle:compileGroovy' as it has no source files and no previous output files.
+[        ] Resolve mutations for :gradle:pluginDescriptors (Thread[included builds,5,main]) started.
+[   +1 ms] :gradle:pluginDescriptors (Thread[included builds,5,main]) started.
+[        ] > Task :gradle:pluginDescriptors UP-TO-DATE
+[        ] Caching disabled for task ':gradle:pluginDescriptors' because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching
+[        ] Skipping task ':gradle:pluginDescriptors' as it is up-to-date.
+[        ] Resolve mutations for :gradle:processResources (Thread[included builds,5,main]) started.
+[        ] :gradle:processResources (Thread[included builds,5,main]) started.
+[  +99 ms] > Task :gradle:processResources UP-TO-DATE
+[        ] Caching disabled for task ':gradle:processResources' because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching
+[        ] Skipping task ':gradle:processResources' as it is up-to-date.
+[        ] Resolve mutations for :gradle:classes (Thread[included builds,5,main]) started.
+[        ] :gradle:classes (Thread[included builds,5,main]) started.
+[        ] > Task :gradle:classes UP-TO-DATE
+[        ] Skipping task ':gradle:classes' as it has no actions.
+[        ] Resolve mutations for :gradle:jar (Thread[included builds,5,main]) started.
+[        ] :gradle:jar (Thread[included builds,5,main]) started.
+[        ] > Task :gradle:jar UP-TO-DATE
+[        ] Caching disabled for task ':gradle:jar' because:
+[   +3 ms]   Build cache is disabled
+[   +1 ms]   Not worth caching
+[        ] Skipping task ':gradle:jar' as it is up-to-date.
+[+1684 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +292 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+1510 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+2987 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +319 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+3590 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +202 ms] Settings evaluated using settings file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\settings.gradle.kts'.
+[ +788 ms] Projects loaded. Root project using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\build.gradle.kts'.
+[        ] Included projects: [root project 'music_player_android', project ':app', project ':audio_service', project ':audio_session', project ':cloud_firestore', project ':connectivity_plus', project ':file_picker', project ':firebase_analytics', project ':firebase_auth', project ':firebase_core', project ':firebase_crashlytics', project ':flutter_plugin_android_lifecycle', project ':flutter_secure_storage', project ':just_audio', project ':local_auth_android', project ':nearby_connections', project ':network_info_plus', project ':path_provider_android', project ':permission_handler_android', project ':shared_preferences_android', project ':sqflite_android']
+[+1896 ms] > Configure project :
+[        ] Evaluating root project 'music_player_android' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\build.gradle.kts'.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+2414 ms] > Configure project :app
+[        ] Evaluating project ':app' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\build.gradle.kts'.
+[        ] Resolved plugin [id: 'com.android.application']
+[        ] Resolved plugin [id: 'com.google.gms.google-services']
+[        ] Resolved plugin [id: 'kotlin-android']
+[        ] Resolved plugin [id: 'dev.flutter.flutter-gradle-plugin']
+[   +2 ms] Resolved plugin [id: 'com.google.firebase.crashlytics']
+[+11288 ms] Using default execution profile
+[+2337 ms] Using Kotlin Gradle Plugin gradle85 variant
+[+3886 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +3 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +110 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+2270 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[   +2 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +595 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+8188 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +4 ms] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[ +103 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[   +1 ms] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[ +184 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[ +200 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +5 ms] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[ +102 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[   +2 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +1 ms] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[  +86 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +1 ms] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[ +288 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[ +200 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[   +4 ms] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[ +399 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[ +108 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[   +3 ms] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[   +1 ms] C/C++: sdkFolder is C:\Android\Sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[ +284 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[   +1 ms] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[  +95 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[   +2 ms] C/C++: sdkFolder is C:\Android\Sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[  +82 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[+6210 ms] > Configure project :audio_service
+[   +2 ms] Evaluating project ':audio_service' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service-0.18.18\android\build.gradle'.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+10885 ms] Using default execution profile
+[+8664 ms] > Configure project :audio_session
+[   +2 ms] Evaluating project ':audio_session' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_session-0.1.25\android\build.gradle'.
+[+3843 ms] Using default execution profile
+[+3003 ms] > Configure project :cloud_firestore
+[        ] Evaluating project ':cloud_firestore' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.12\android\build.gradle'.
+[+2090 ms] Using default execution profile
+[+6507 ms] > Configure project :connectivity_plus
+[        ] Evaluating project ':connectivity_plus' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\connectivity_plus-6.1.5\android\build.gradle'.
+[+6497 ms] Using default execution profile
+[+3288 ms] > Configure project :file_picker
+[        ] Evaluating project ':file_picker' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.3.7\android\build.gradle'.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[   +5 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+1900 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +401 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+2597 ms] Using default execution profile
+[+3602 ms] > Configure project :firebase_analytics
+[        ] Evaluating project ':firebase_analytics' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_analytics-11.6.0\android\build.gradle'.
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+4454 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +289 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[ +284 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+2992 ms] Using default execution profile
+[+1689 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+3387 ms] Using Kotlin Gradle Plugin gradle85 variant
+[+2195 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +102 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+5289 ms] > Configure project :firebase_auth
+[        ] Evaluating project ':firebase_auth' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.7.0\android\build.gradle'.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[   +4 ms] Using default execution profile
+[ +705 ms] > Configure project :firebase_core
+[        ] Evaluating project ':firebase_core' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-3.15.2\android\build.gradle'.
+[   +3 ms] Using default execution profile
+[ +599 ms] > Configure project :firebase_crashlytics
+[        ] Evaluating project ':firebase_crashlytics' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_crashlytics-4.3.10\android\build.gradle'.
+[        ] Using default execution profile
+[+2029 ms] > Configure project :flutter_plugin_android_lifecycle
+[   +1 ms] Evaluating project ':flutter_plugin_android_lifecycle' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.33\android\build.gradle'.
+[+2053 ms] Using default execution profile
+[+3309 ms] > Configure project :flutter_secure_storage
+[        ] Evaluating project ':flutter_secure_storage' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage-9.2.4\android\build.gradle'.
+[+2104 ms] Using default execution profile
+[+2599 ms] > Configure project :just_audio
+[        ] Evaluating project ':just_audio' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio-0.9.46\android\build.gradle'.
+[+2794 ms] Using default execution profile
+[+3249 ms] > Configure project :local_auth_android
+[        ] Evaluating project ':local_auth_android' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\local_auth_android\android\build.gradle'.
+[+1540 ms] Using default execution profile
+[+3117 ms] > Configure project :nearby_connections
+[  +28 ms] Evaluating project ':nearby_connections' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\nearby_connections-4.3.0\android\build.gradle'.
+[ +613 ms] Using default execution profile
+[+2570 ms] > Configure project :network_info_plus
+[   +1 ms] Evaluating project ':network_info_plus' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\network_info_plus-7.0.0\android\build.gradle'.
+[+1394 ms] Using default execution profile
+[ +152 ms] Using Kotlin Gradle Plugin gradle85 variant
+[+1720 ms] > Configure project :path_provider_android
+[   +1 ms] Evaluating project ':path_provider_android' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\android\build.gradle'.
+[   +1 ms] Using default execution profile
+[+1010 ms] > Configure project :permission_handler_android
+[        ] Evaluating project ':permission_handler_android' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\permission_handler_android\android\build.gradle'.
+[        ] Using default execution profile
+[+1994 ms] > Configure project :shared_preferences_android
+[        ] Evaluating project ':shared_preferences_android' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\android\build.gradle'.
+[+1305 ms] Using default execution profile
+[        ] Using Kotlin Gradle Plugin gradle85 variant
+[+2685 ms] > Configure project :sqflite_android
+[        ] Evaluating project ':sqflite_android' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_android-2.4.2+2\android\build.gradle'.
+[ +199 ms] Using default execution profile
+[ +412 ms] All projects evaluated.
+[+3398 ms] Task name matched 'assembleDebug'
+[        ] Selected primary task 'assembleDebug' from project :
+[+3696 ms] WARNING: We recommend using a newer Android Gradle plugin to use compileSdk = 36
+[   +1 ms] This Android Gradle plugin (8.7.2) was tested up to compileSdk = 35.
+[   +1 ms] You are strongly encouraged to update your project to use a newer
+[        ] Android Gradle plugin that has been tested with compileSdk = 36.
+[        ] If you are already using the latest version of the Android Gradle plugin,
+[        ] you may need to wait until a newer version with support for compileSdk = 36 is available.
+[        ] For more information refer to the compatibility table:
+[        ] https://d.android.com/r/tools/api-level-support
+[        ] To suppress this warning, add/update
+[   +1 ms]     android.suppressUnsupportedCompileSdk=36
+[        ] to this project's gradle.properties.
+[+10196 ms] [Incubating] Problems report is available at: file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/android/build/reports/problems/problems-report.html
+[ +151 ms] FAILURE: Build failed with an exception.
+[ +103 ms] * What went wrong:
+[   +6 ms] Could not determine the dependencies of task ':audio_service:compileDebugJavaWithJavac'.
+[        ] > Cannot query the value of this provider because it has no value available.
+[        ] * Try:
+[        ] > Run with --debug option to get more log output.
+[        ] > Run with --scan to get full insights.
+[        ] > Get more help at https://help.gradle.org.
+[   +8 ms] * Exception is:
+[        ] org.gradle.api.internal.tasks.TaskDependencyResolveException: Could not determine the dependencies of task ':audio_service:compileDebugJavaWithJavac'.
+[        ] 	at org.gradle.api.internal.tasks.CachingTaskDependencyResolveContext.getDependencies(CachingTaskDependencyResolveContext.java:70)
+[        ] 	at org.gradle.execution.plan.TaskDependencyResolver.resolveDependenciesFor(TaskDependencyResolver.java:49)
+[   +1 ms] 	at org.gradle.execution.plan.LocalTaskNode.getDependencies(LocalTaskNode.java:151)
+[        ] 	at org.gradle.execution.plan.LocalTaskNode.resolveDependencies(LocalTaskNode.java:125)
+[   +1 ms] 	at org.gradle.execution.plan.DefaultExecutionPlan.discoverNodeRelationships(DefaultExecutionPlan.java:182)
+[   +1 ms] 	at org.gradle.execution.plan.DefaultExecutionPlan.doAddEntryNodes(DefaultExecutionPlan.java:154)
+[  +16 ms] 	at org.gradle.execution.plan.DefaultExecutionPlan.addEntryTasks(DefaultExecutionPlan.java:129)
+[        ] 	at org.gradle.execution.plan.DefaultExecutionPlan.addEntryTasks(DefaultExecutionPlan.java:121)
+[        ] 	at org.gradle.execution.TaskNameResolvingBuildTaskScheduler.scheduleRequestedTasks(TaskNameResolvingBuildTaskScheduler.java:61)
+[   +2 ms] 	at org.gradle.execution.DefaultTasksBuildTaskScheduler.scheduleRequestedTasks(DefaultTasksBuildTaskScheduler.java:72)
+[        ] 	at org.gradle.initialization.DefaultTaskExecutionPreparer.lambda$scheduleRequestedTasks$0(DefaultTaskExecutionPreparer.java:48)
+[        ] 	at org.gradle.internal.Factories$1.create(Factories.java:31)
+[        ] 	at org.gradle.internal.work.DefaultWorkerLeaseService.withReplacedLocks(DefaultWorkerLeaseService.java:359)
+[        ] 	at org.gradle.api.internal.project.DefaultProjectStateRegistry$DefaultBuildProjectRegistry.withMutableStateOfAllProjects(DefaultProjectStateRegistry.java:239)
+[  +19 ms] 	at org.gradle.api.internal.project.DefaultProjectStateRegistry$DefaultBuildProjectRegistry.withMutableStateOfAllProjects(DefaultProjectStateRegistry.java:232)
+[        ] 	at org.gradle.initialization.DefaultTaskExecutionPreparer.scheduleRequestedTasks(DefaultTaskExecutionPreparer.java:47)
+[   +5 ms] 	at org.gradle.initialization.VintageBuildModelController.lambda$scheduleRequestedTasks$0(VintageBuildModelController.java:76)
+[   +3 ms] 	at org.gradle.internal.model.StateTransitionController.lambda$inState$1(StateTransitionController.java:99)
+[   +1 ms] 	at org.gradle.internal.model.StateTransitionController.lambda$inState$2(StateTransitionController.java:114)
+[        ] 	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+[  +17 ms] 	at org.gradle.internal.model.StateTransitionController.inState(StateTransitionController.java:110)
+[   +1 ms] 	at org.gradle.internal.model.StateTransitionController.inState(StateTransitionController.java:98)
+[        ] 	at org.gradle.initialization.VintageBuildModelController.scheduleRequestedTasks(VintageBuildModelController.java:76)
+[        ] 	at org.gradle.internal.build.DefaultBuildLifecycleController$DefaultWorkGraphBuilder.addRequestedTasks(DefaultBuildLifecycleController.java:404)
+[   +3 ms] 	at org.gradle.internal.buildtree.DefaultBuildTreeWorkPreparer.lambda$scheduleRequestedTasks$0(DefaultBuildTreeWorkPreparer.java:41)
+[   +8 ms] 	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$populateWorkGraph$7(DefaultBuildLifecycleController.java:189)
+[        ] 	at org.gradle.internal.build.DefaultBuildWorkPreparer.populateWorkGraph(DefaultBuildWorkPreparer.java:42)
+[   +3 ms] 	at org.gradle.internal.build.BuildOperationFiringBuildWorkPreparer$PopulateWorkGraph.populateTaskGraph(BuildOperationFiringBuildWorkPreparer.java:106)
+[  +17 ms] 	at org.gradle.internal.build.BuildOperationFiringBuildWorkPreparer$PopulateWorkGraph.run(BuildOperationFiringBuildWorkPreparer.java:92)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+[  +34 ms] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+[   +1 ms] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+[   +7 ms] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+[   +1 ms] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:48)
+[   +4 ms] 	at org.gradle.internal.build.BuildOperationFiringBuildWorkPreparer.populateWorkGraph(BuildOperationFiringBuildWorkPreparer.java:67)
+[        ] 	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$populateWorkGraph$8(DefaultBuildLifecycleController.java:189)
+[        ] 	at org.gradle.internal.model.StateTransitionController.lambda$inState$1(StateTransitionController.java:99)
+[        ] 	at org.gradle.internal.model.StateTransitionController.lambda$inState$2(StateTransitionController.java:114)
+[        ] 	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+[        ] 	at org.gradle.internal.model.StateTransitionController.inState(StateTransitionController.java:110)
+[ +113 ms] 	at org.gradle.internal.model.StateTransitionController.inState(StateTransitionController.java:98)
+[        ] 	at org.gradle.internal.build.DefaultBuildLifecycleController.populateWorkGraph(DefaultBuildLifecycleController.java:189)
+[        ] 	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.populateWorkGraph(DefaultBuildWorkGraphController.java:169)
+[        ] 	at org.gradle.composite.internal.DefaultBuildController.populateWorkGraph(DefaultBuildController.java:76)
+[        ] 	at org.gradle.composite.internal.DefaultIncludedBuildTaskGraph$DefaultBuildTreeWorkGraphBuilder.withWorkGraph(DefaultIncludedBuildTaskGraph.java:153)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildTreeWorkPreparer.lambda$scheduleRequestedTasks$1(DefaultBuildTreeWorkPreparer.java:41)
+[        ] 	at org.gradle.composite.internal.DefaultIncludedBuildTaskGraph$DefaultBuildTreeWorkGraph$1.run(DefaultIncludedBuildTaskGraph.java:209)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
+[  +50 ms] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+[   +5 ms] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:48)
+[        ] 	at org.gradle.composite.internal.DefaultIncludedBuildTaskGraph$DefaultBuildTreeWorkGraph.scheduleWork(DefaultIncludedBuildTaskGraph.java:204)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildTreeWorkPreparer.scheduleRequestedTasks(DefaultBuildTreeWorkPreparer.java:37)
+[        ] 	at org.gradle.internal.cc.impl.VintageBuildTreeWorkController$scheduleAndRunRequestedTasks$1.apply(VintageBuildTreeWorkController.kt:36)
+[        ] 	at org.gradle.internal.cc.impl.VintageBuildTreeWorkController$scheduleAndRunRequestedTasks$1.apply(VintageBuildTreeWorkController.kt:35)
+[  +35 ms] 	at org.gradle.composite.internal.DefaultIncludedBuildTaskGraph.withNewWorkGraph(DefaultIncludedBuildTaskGraph.java:112)
+[   +1 ms] 	at org.gradle.internal.cc.impl.VintageBuildTreeWorkController.scheduleAndRunRequestedTasks(VintageBuildTreeWorkController.kt:35)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildTreeLifecycleController.lambda$scheduleAndRunTasks$1(DefaultBuildTreeLifecycleController.java:77)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildTreeLifecycleController.lambda$runBuild$4(DefaultBuildTreeLifecycleController.java:120)
+[        ] 	at org.gradle.internal.model.StateTransitionController.lambda$transition$6(StateTransitionController.java:169)
+[        ] 	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+[        ] 	at org.gradle.internal.model.StateTransitionController.lambda$transition$7(StateTransitionController.java:169)
+[        ] 	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+[        ] 	at org.gradle.internal.model.StateTransitionController.transition(StateTransitionController.java:169)
+[  +16 ms] 	at org.gradle.internal.buildtree.DefaultBuildTreeLifecycleController.runBuild(DefaultBuildTreeLifecycleController.java:117)
+[   +1 ms] 	at org.gradle.internal.buildtree.DefaultBuildTreeLifecycleController.scheduleAndRunTasks(DefaultBuildTreeLifecycleController.java:77)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildTreeLifecycleController.scheduleAndRunTasks(DefaultBuildTreeLifecycleController.java:72)
+[        ] 	at org.gradle.tooling.internal.provider.ExecuteBuildActionRunner.run(ExecuteBuildActionRunner.java:31)
+[        ] 	at org.gradle.launcher.exec.ChainingBuildActionRunner.run(ChainingBuildActionRunner.java:35)
+[        ] 	at org.gradle.internal.buildtree.ProblemReportingBuildActionRunner.run(ProblemReportingBuildActionRunner.java:49)
+[        ] 	at org.gradle.launcher.exec.BuildOutcomeReportingBuildActionRunner.run(BuildOutcomeReportingBuildActionRunner.java:71)
+[        ] 	at org.gradle.tooling.internal.provider.FileSystemWatchingBuildActionRunner.run(FileSystemWatchingBuildActionRunner.java:135)
+[        ] 	at org.gradle.launcher.exec.BuildCompletionNotifyingBuildActionRunner.run(BuildCompletionNotifyingBuildActionRunner.java:41)
+[  +15 ms] 	at org.gradle.launcher.exec.RootBuildLifecycleBuildActionExecutor.lambda$execute$0(RootBuildLifecycleBuildActionExecutor.java:54)
+[        ] 	at org.gradle.composite.internal.DefaultRootBuildState.run(DefaultRootBuildState.java:130)
+[        ] 	at org.gradle.launcher.exec.RootBuildLifecycleBuildActionExecutor.execute(RootBuildLifecycleBuildActionExecutor.java:54)
+[        ] 	at org.gradle.internal.buildtree.InitDeprecationLoggingActionExecutor.execute(InitDeprecationLoggingActionExecutor.java:62)
+[   +4 ms] 	at org.gradle.internal.buildtree.InitProblems.execute(InitProblems.java:36)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildTreeContext.execute(DefaultBuildTreeContext.java:40)
+[        ] 	at org.gradle.launcher.exec.BuildTreeLifecycleBuildActionExecutor.lambda$execute$0(BuildTreeLifecycleBuildActionExecutor.java:71)
+[        ] 	at org.gradle.internal.buildtree.BuildTreeState.run(BuildTreeState.java:60)
+[        ] 	at org.gradle.launcher.exec.BuildTreeLifecycleBuildActionExecutor.execute(BuildTreeLifecycleBuildActionExecutor.java:71)
+[        ] 	at org.gradle.launcher.exec.RunAsBuildOperationBuildActionExecutor$2.call(RunAsBuildOperationBuildActionExecutor.java:67)
+[  +16 ms] 	at org.gradle.launcher.exec.RunAsBuildOperationBuildActionExecutor$2.call(RunAsBuildOperationBuildActionExecutor.java:63)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+[        ] 	at org.gradle.launcher.exec.RunAsBuildOperationBuildActionExecutor.execute(RunAsBuildOperationBuildActionExecutor.java:63)
+[   +6 ms] 	at org.gradle.launcher.exec.RunAsWorkerThreadBuildActionExecutor.lambda$execute$0(RunAsWorkerThreadBuildActionExecutor.java:36)
+[        ] 	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+[        ] 	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+[        ] 	at org.gradle.launcher.exec.RunAsWorkerThreadBuildActionExecutor.execute(RunAsWorkerThreadBuildActionExecutor.java:36)
+[        ] 	at org.gradle.tooling.internal.provider.continuous.ContinuousBuildActionExecutor.execute(ContinuousBuildActionExecutor.java:110)
+[        ] 	at org.gradle.tooling.internal.provider.SubscribableBuildActionExecutor.execute(SubscribableBuildActionExecutor.java:64)
+[        ] 	at org.gradle.internal.session.DefaultBuildSessionContext.execute(DefaultBuildSessionContext.java:46)
+[        ] 	at org.gradle.internal.buildprocess.execution.BuildSessionLifecycleBuildActionExecutor$ActionImpl.apply(BuildSessionLifecycleBuildActionExecutor.java:92)
+[   +4 ms] 	at org.gradle.internal.buildprocess.execution.BuildSessionLifecycleBuildActionExecutor$ActionImpl.apply(BuildSessionLifecycleBuildActionExecutor.java:80)
+[   +7 ms] 	at org.gradle.internal.session.BuildSessionState.run(BuildSessionState.java:73)
+[   +1 ms] 	at org.gradle.internal.buildprocess.execution.BuildSessionLifecycleBuildActionExecutor.execute(BuildSessionLifecycleBuildActionExecutor.java:62)
+[        ] 	at org.gradle.internal.buildprocess.execution.BuildSessionLifecycleBuildActionExecutor.execute(BuildSessionLifecycleBuildActionExecutor.java:41)
+[        ] 	at org.gradle.internal.buildprocess.execution.StartParamsValidatingActionExecutor.execute(StartParamsValidatingActionExecutor.java:64)
+[        ] 	at org.gradle.internal.buildprocess.execution.StartParamsValidatingActionExecutor.execute(StartParamsValidatingActionExecutor.java:32)
+[        ] 	at org.gradle.internal.buildprocess.execution.SessionFailureReportingActionExecutor.execute(SessionFailureReportingActionExecutor.java:51)
+[        ] 	at org.gradle.internal.buildprocess.execution.SessionFailureReportingActionExecutor.execute(SessionFailureReportingActionExecutor.java:39)
+[   +7 ms] 	at org.gradle.internal.buildprocess.execution.SetupLoggingActionExecutor.execute(SetupLoggingActionExecutor.java:47)
+[  +26 ms] 	at org.gradle.internal.buildprocess.execution.SetupLoggingActionExecutor.execute(SetupLoggingActionExecutor.java:31)
+[  +43 ms] 	at org.gradle.launcher.daemon.server.exec.ExecuteBuild.doBuild(ExecuteBuild.java:70)
+[   +3 ms] 	at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:37)
+[        ] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.WatchForDisconnection.execute(WatchForDisconnection.java:39)
+[        ] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.ResetDeprecationLogger.execute(ResetDeprecationLogger.java:29)
+[   +1 ms] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[   +7 ms] 	at org.gradle.launcher.daemon.server.exec.RequestStopIfSingleUsedDaemon.execute(RequestStopIfSingleUsedDaemon.java:35)
+[ +120 ms] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.ForwardClientInput.lambda$execute$0(ForwardClientInput.java:40)
+[        ] 	at org.gradle.internal.daemon.clientinput.ClientInputForwarder.forwardInput(ClientInputForwarder.java:80)
+[        ] 	at org.gradle.launcher.daemon.server.exec.ForwardClientInput.execute(ForwardClientInput.java:37)
+[        ] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.LogAndCheckHealth.execute(LogAndCheckHealth.java:64)
+[        ] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[   +1 ms] 	at org.gradle.launcher.daemon.server.exec.LogToClient.doBuild(LogToClient.java:63)
+[   +1 ms] 	at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:37)
+[   +4 ms] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[   +1 ms] 	at org.gradle.launcher.daemon.server.exec.EstablishBuildEnvironment.doBuild(EstablishBuildEnvironment.java:84)
+[        ] 	at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:37)
+[  +22 ms] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.StartBuildOrRespondWithBusy$1.run(StartBuildOrRespondWithBusy.java:52)
+[        ] 	at org.gradle.launcher.daemon.server.DaemonStateCoordinator.lambda$runCommand$0(DaemonStateCoordinator.java:321)
+[        ] 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+[        ] 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+[   +1 ms] 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+[   +1 ms] 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+[   +1 ms] 	at java.base/java.lang.Thread.run(Thread.java:840)
+[   +4 ms] Caused by: org.gradle.api.internal.provider.MissingValueException: Cannot query the value of this provider because it has no value available.
+[        ] 	at org.gradle.api.internal.provider.AbstractMinimalProvider.calculateOwnPresentValue(AbstractMinimalProvider.java:84)
+[        ] 	at org.gradle.api.internal.provider.AbstractMinimalProvider.get(AbstractMinimalProvider.java:102)
+[        ] 	at org.gradle.api.internal.provider.ProviderResolutionStrategy$2.resolve(ProviderResolutionStrategy.java:33)
+[        ] 	at org.gradle.api.internal.file.collections.ProviderBackedFileCollection.visitDependencies(ProviderBackedFileCollection.java:57)
+[        ] 	at org.gradle.api.internal.AbstractTaskDependencyContainerVisitingContext.add(AbstractTaskDependencyContainerVisitingContext.java:46)
+[   +1 ms] 	at org.gradle.api.internal.file.collections.UnpackingVisitor.add(UnpackingVisitor.java:77)
+[   +1 ms] 	at org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection$UnresolvedItemsCollector.visitContents(DefaultConfigurableFileCollection.java:616)
+[        ] 	at org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection.visitChildren(DefaultConfigurableFileCollection.java:433)
+[   +1 ms] 	at org.gradle.api.internal.file.CompositeFileCollection.visitDependencies(CompositeFileCollection.java:102)
+[        ] 	at org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection.visitDependencies(DefaultConfigurableFileCollection.java:439)
+[   +1 ms] 	at org.gradle.api.internal.AbstractTaskDependencyContainerVisitingContext.add(AbstractTaskDependencyContainerVisitingContext.java:46)
+[        ] 	at org.gradle.api.internal.file.AbstractFileCollection.lambda$getBuildDependencies$0(AbstractFileCollection.java:98)
+[        ] 	at org.gradle.api.internal.tasks.DefaultTaskDependency.visitDependencies(DefaultTaskDependency.java:151)
+[   +1 ms] 	at org.gradle.api.internal.AbstractTaskDependencyContainerVisitingContext.add(AbstractTaskDependencyContainerVisitingContext.java:46)
+[        ] 	at org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact.LocalFileDependencyBackedArtifactSet.visitDependencies(LocalFileDependencyBackedArtifactSet.java:180)
+[        ] 	at org.gradle.api.internal.AbstractTaskDependencyContainerVisitingContext.add(AbstractTaskDependencyContainerVisitingContext.java:46)
+[        ] 	at org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact.DefaultSelectedArtifactSet.visitDependencies(DefaultSelectedArtifactSet.java:47)
+[   +8 ms] 	at org.gradle.api.internal.artifacts.configurations.ResolutionResultProviderBackedSelectedArtifactSet.visitDependencies(ResolutionResultProviderBackedSelectedArtifactSet.java:44)
+[        ] 	at org.gradle.api.internal.artifacts.configurations.ResolutionBackedFileCollection.visitDependencies(ResolutionBackedFileCollection.java:58)
+[        ] 	at org.gradle.api.internal.provider.BuildableBackedProvider$1.visitDependencies(BuildableBackedProvider.java:57)
+[        ] 	at org.gradle.api.internal.file.collections.ProviderBackedFileCollection.visitDependencies(ProviderBackedFileCollection.java:53)
+[   +1 ms] 	at org.gradle.api.internal.tasks.CachingTaskDependencyResolveContext$TaskGraphImpl.getNodeValues(CachingTaskDependencyResolveContext.java:108)
+[        ] 	at org.gradle.internal.graph.CachingDirectedGraphWalker$GraphWithEmptyEdges.getNodeValues(CachingDirectedGraphWalker.java:219)
+[   +1 ms] 	at org.gradle.internal.graph.CachingDirectedGraphWalker.doSearch(CachingDirectedGraphWalker.java:127)
+[        ] 	at org.gradle.internal.graph.CachingDirectedGraphWalker.findValues(CachingDirectedGraphWalker.java:79)
+[        ] 	at org.gradle.api.internal.tasks.CachingTaskDependencyResolveContext.getDependencies(CachingTaskDependencyResolveContext.java:67)
+[        ] 	... 142 more
+[        ] Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+[        ] You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+[   +1 ms] For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+[        ] 4 actionable tasks: 4 up-to-date
+[   +2 ms] Watched directory hierarchies: [C:\Flutter\flutter\packages\flutter_tools\gradle]
+[  +13 ms] BUILD FAILED in 5m 3s
+[+2975 ms] Running Gradle task 'assembleDebug'... (completed in 313,3s)
+[ +739 ms] "flutter apk" took 318.791ms.
+[ +419 ms] Gradle task assembleDebug failed with exit code 1
+[   +5 ms] 
+           #0      throwToolExit (package:flutter_tools/src/base/common.dart:34:3)
+           #1      AndroidGradleBuilder.buildGradleApp (package:flutter_tools/src/android/gradle.dart:592:7)
+           <asynchronous suspension>
+           #2      AndroidGradleBuilder.buildApk (package:flutter_tools/src/android/gradle.dart:234:5)
+           <asynchronous suspension>
+           #3      BuildApkCommand.runCommand (package:flutter_tools/src/commands/build_apk.dart:131:5)
+           <asynchronous suspension>
+           #4      FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart:1559:27)
+           <asynchronous suspension>
+           #5      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
+           <asynchronous suspension>
+           #6      CommandRunner.runCommand (package:args/command_runner.dart:212:13)
+           <asynchronous suspension>
+           #7      FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart:487:9)
+           <asynchronous suspension>
+           #8      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
+           <asynchronous suspension>
+           #9      FlutterCommandRunner.runCommand (package:flutter_tools/src/runner/flutter_command_runner.dart:422:5)
+           <asynchronous suspension>
+           #10     run.<anonymous closure>.<anonymous closure> (package:flutter_tools/runner.dart:104:11)
+           <asynchronous suspension>
+           #11     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
+           <asynchronous suspension>
+           #12     main (package:flutter_tools/executable.dart:103:3)
+           <asynchronous suspension>
+
+
+[        ] Running 1 shutdown hook
+[   +3 ms] Shutdown hooks complete
+[ +244 ms] exiting with code 1
