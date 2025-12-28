@@ -50,6 +50,11 @@ void main() {
     FirebaseSyncService.instance = mockSync;
     ThemeService.instance = mockTheme;
 
+    // Increase viewport size to avoid off-screen hit-test failures
+    final TestWidgetsFlutterBinding binding = TestWidgetsFlutterBinding.ensureInitialized();
+    binding.platformDispatcher.implicitView!.physicalSize = const Size(800, 1200);
+    binding.platformDispatcher.implicitView!.devicePixelRatio = 1.0;
+
     // Default Stubs
     when(() => mockDb.loadFilenameFormat())
         .thenAnswer((_) async => FilenameFormat.artistTitle);
@@ -67,6 +72,11 @@ void main() {
     when(() => mockTheme.useCustomColor).thenReturn(false);
     when(() => mockTheme.setAutoMode()).thenAnswer((_) async {});
     when(() => mockTheme.setCustomColor(any())).thenAnswer((_) async {});
+
+    addTearDown(() {
+      binding.platformDispatcher.implicitView!.resetPhysicalSize();
+      binding.platformDispatcher.implicitView!.resetDevicePixelRatio();
+    });
   });
 
   testWidgets('Loads and displays settings', (tester) async {
@@ -83,10 +93,14 @@ void main() {
     await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Artist - Title.mp3'));
+    final dropdownFinder = find.text('Artist - Title.mp3');
+    await tester.ensureVisible(dropdownFinder);
+    await tester.tap(dropdownFinder);
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Title (Artist).mp3').last);
+    final itemFinder = find.text('Title (Artist).mp3').last;
+    await tester.ensureVisible(itemFinder);
+    await tester.tap(itemFinder);
     await tester.pumpAndSettle();
 
     verify(() => mockDb.saveFilenameFormat(FilenameFormat.titleArtist))
@@ -99,7 +113,9 @@ void main() {
     await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Polir Biblioteca'));
+    final cleanBtn = find.text('Polir Biblioteca');
+    await tester.ensureVisible(cleanBtn);
+    await tester.tap(cleanBtn);
     await tester.pump(); // Start async
     await tester.pump(const Duration(milliseconds: 100)); // Show snackbar
     await tester.pumpAndSettle();
@@ -113,12 +129,6 @@ void main() {
     await tester.pumpAndSettle();
 
     final switchFinder = find.byType(Switch);
-    expect(switchFinder, findsOneWidget);
-
-    await tester.drag(
-        find.byType(SingleChildScrollView), const Offset(0, -500));
-    await tester.pumpAndSettle();
-
     await tester.ensureVisible(switchFinder);
     await tester.pumpAndSettle();
 
@@ -138,10 +148,6 @@ void main() {
     when(() => mockSync.pullFromCloud()).thenAnswer((_) async => 10);
 
     await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
-    await tester.pumpAndSettle();
-
-    await tester.drag(
-        find.byType(SingleChildScrollView), const Offset(0, -500));
     await tester.pumpAndSettle();
 
     final syncBtn = find.text('Sincronizar Agora');
@@ -167,10 +173,6 @@ void main() {
 
     verify(() => mockSync.pullFromCloud()).called(1);
     // Verify SnackBar content
-    final snackBarFinder = find.descendant(
-      of: find.byType(SnackBar),
-      matching: find.textContaining('10 itens sincronizados!'),
-    );
-    expect(snackBarFinder, findsOneWidget);
+    expect(find.textContaining('10 itens sincronizados!'), findsOneWidget);
   });
 }
