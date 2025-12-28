@@ -50,11 +50,6 @@ void main() {
     FirebaseSyncService.instance = mockSync;
     ThemeService.instance = mockTheme;
 
-    // Increase viewport size to avoid off-screen hit-test failures
-    final TestWidgetsFlutterBinding binding = TestWidgetsFlutterBinding.ensureInitialized();
-    binding.platformDispatcher.implicitView!.physicalSize = const Size(800, 1200);
-    binding.platformDispatcher.implicitView!.devicePixelRatio = 1.0;
-
     // Default Stubs
     when(() => mockDb.loadFilenameFormat())
         .thenAnswer((_) async => FilenameFormat.artistTitle);
@@ -72,14 +67,19 @@ void main() {
     when(() => mockTheme.useCustomColor).thenReturn(false);
     when(() => mockTheme.setAutoMode()).thenAnswer((_) async {});
     when(() => mockTheme.setCustomColor(any())).thenAnswer((_) async {});
-
-    addTearDown(() {
-      binding.platformDispatcher.implicitView!.resetPhysicalSize();
-      binding.platformDispatcher.implicitView!.resetDevicePixelRatio();
-    });
   });
 
+  void _setupViewport(WidgetTester tester) {
+    tester.view.physicalSize = const Size(800, 1200);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+  }
+
   testWidgets('Loads and displays settings', (tester) async {
+    _setupViewport(tester);
     await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
     await tester.pump(); // init load
     await tester.pumpAndSettle();
@@ -90,16 +90,18 @@ void main() {
   });
 
   testWidgets('Changes Filename Format', (tester) async {
+    _setupViewport(tester);
     await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
     await tester.pumpAndSettle();
 
     final dropdownFinder = find.text('Artist - Title.mp3');
     await tester.ensureVisible(dropdownFinder);
+    await tester.pumpAndSettle();
+    
     await tester.tap(dropdownFinder);
     await tester.pumpAndSettle();
 
     final itemFinder = find.text('Title (Artist).mp3').last;
-    await tester.ensureVisible(itemFinder);
     await tester.tap(itemFinder);
     await tester.pumpAndSettle();
 
@@ -108,6 +110,7 @@ void main() {
   });
 
   testWidgets('Clean Library interaction', (tester) async {
+    _setupViewport(tester);
     when(() => mockCleanup.cleanupLibrary()).thenAnswer((_) async => 5);
 
     await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
@@ -115,6 +118,8 @@ void main() {
 
     final cleanBtn = find.text('Polir Biblioteca');
     await tester.ensureVisible(cleanBtn);
+    await tester.pumpAndSettle();
+    
     await tester.tap(cleanBtn);
     await tester.pump(); // Start async
     await tester.pump(const Duration(milliseconds: 100)); // Show snackbar
@@ -125,6 +130,7 @@ void main() {
   });
 
   testWidgets('Age bypass requires confirmation', (tester) async {
+    _setupViewport(tester);
     await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
     await tester.pumpAndSettle();
 
@@ -144,6 +150,7 @@ void main() {
   });
 
   testWidgets('Sync interactions', (tester) async {
+    _setupViewport(tester);
     when(() => mockSync.enableSync()).thenAnswer((_) async => true);
     when(() => mockSync.pullFromCloud()).thenAnswer((_) async => 10);
 
