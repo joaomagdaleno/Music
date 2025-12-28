@@ -1,0 +1,327 @@
+Initialized native services in: C:\Users\joaom\.gradle\native
+Initialized jansi services in: C:\Users\joaom\.gradle\native
+The client will now receive all logging from the daemon (pid: 16372). The daemon log file: C:\Users\joaom\.gradle\daemon\8.13\daemon-16372.out.log
+Starting 2nd build in daemon [uptime: 4 mins 42.33 secs, performance: 100%, GC rate: 0.00/s, heap usage: 0% of 8 GiB, non-heap usage: 2% of 4 GiB]
+Using 4 worker leases.
+Now considering [C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android, C:\Flutter\flutter\packages\flutter_tools\gradle] as hierarchies to watch
+Watching the file system is configured to be enabled if available
+File system watching is active
+Starting Build
+Now considering [C:\Flutter\flutter\packages\flutter_tools\gradle, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android] as hierarchies to watch
+
+> Configure project :gradle
+Evaluating project ':gradle' using build file 'C:\Flutter\flutter\packages\flutter_tools\gradle\build.gradle.kts'.
+Resolved plugin [id: 'org.gradle.java-gradle-plugin']
+Resolved plugin [id: 'org.gradle.groovy']
+Resolved plugin [id: 'org.gradle.kotlin.kotlin-dsl', version: '5.2.0']
+Resolved plugin [id: 'org.jetbrains.kotlin.jvm', version: '1.9.20']
+Using Kotlin Gradle Plugin gradle85 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+file or directory 'C:\Flutter\flutter\packages\flutter_tools\gradle\src\main\java', not found
+Resolved plugin [id: 'dev.flutter.flutter-plugin-loader', version: '1.0.0']
+Resolved plugin [id: 'com.android.application', version: '8.9.1', apply: false]
+Resolved plugin [id: 'com.google.gms.google-services', version: '4.4.2', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlin.android', version: '2.1.10', apply: false]
+Resolved plugin [id: 'com.google.firebase.crashlytics', version: '3.0.2', apply: false]
+Resolve mutations for :gradle:checkKotlinGradlePluginConfigurationErrors (Thread[included builds,5,main]) started.
+:gradle:checkKotlinGradlePluginConfigurationErrors (Thread[included builds,5,main]) started.
+
+> Task :gradle:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':gradle:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+Resolve mutations for :gradle:compileKotlin (Thread[Execution worker,5,main]) started.
+:gradle:compileKotlin (Thread[Execution worker,5,main]) started.
+
+> Task :gradle:compileKotlin UP-TO-DATE
+Caching disabled for task ':gradle:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':gradle:compileKotlin' as it is up-to-date.
+Resolve mutations for :gradle:compileJava (Thread[Execution worker,5,main]) started.
+:gradle:compileJava (Thread[Execution worker,5,main]) started.
+
+> Task :gradle:compileJava NO-SOURCE
+Skipping task ':gradle:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :gradle:compileGroovy (Thread[Execution worker,5,main]) started.
+:gradle:compileGroovy (Thread[Execution worker,5,main]) started.
+
+> Task :gradle:compileGroovy NO-SOURCE
+Skipping task ':gradle:compileGroovy' as it has no source files and no previous output files.
+Resolve mutations for :gradle:pluginDescriptors (Thread[Execution worker,5,main]) started.
+:gradle:pluginDescriptors (Thread[Execution worker,5,main]) started.
+
+> Task :gradle:pluginDescriptors UP-TO-DATE
+Caching disabled for task ':gradle:pluginDescriptors' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':gradle:pluginDescriptors' as it is up-to-date.
+Resolve mutations for :gradle:processResources (Thread[Execution worker,5,main]) started.
+:gradle:processResources (Thread[Execution worker,5,main]) started.
+
+> Task :gradle:processResources UP-TO-DATE
+Caching disabled for task ':gradle:processResources' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':gradle:processResources' as it is up-to-date.
+Resolve mutations for :gradle:classes (Thread[Execution worker Thread 3,5,main]) started.
+:gradle:classes (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :gradle:classes UP-TO-DATE
+Skipping task ':gradle:classes' as it has no actions.
+Resolve mutations for :gradle:jar (Thread[Execution worker Thread 3,5,main]) started.
+:gradle:jar (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :gradle:jar UP-TO-DATE
+Caching disabled for task ':gradle:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':gradle:jar' as it is up-to-date.
+Settings evaluated using settings file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\settings.gradle.kts'.
+Projects loaded. Root project using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\build.gradle.kts'.
+Included projects: [root project 'music_player_android', project ':app', project ':audio_service', project ':audio_session', project ':cloud_firestore', project ':connectivity_plus', project ':file_picker', project ':firebase_analytics', project ':firebase_auth', project ':firebase_core', project ':firebase_crashlytics', project ':flutter_plugin_android_lifecycle', project ':flutter_secure_storage', project ':just_audio', project ':local_auth_android', project ':nearby_connections', project ':network_info_plus', project ':path_provider_android', project ':permission_handler_android', project ':shared_preferences_android', project ':sqflite_android']
+
+> Configure project :
+Evaluating root project 'music_player_android' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\build.gradle.kts'.
+
+> Configure project :app
+Evaluating project ':app' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\build.gradle.kts'.
+Resolved plugin [id: 'com.android.application']
+Resolved plugin [id: 'com.google.gms.google-services']
+Resolved plugin [id: 'kotlin-android']
+Resolved plugin [id: 'dev.flutter.flutter-gradle-plugin']
+Resolved plugin [id: 'com.google.firebase.crashlytics']
+Using default execution profile
+Using Kotlin Gradle Plugin gradle85 variant
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+
+> Configure project :audio_service
+Evaluating project ':audio_service' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\audio_service\android\build.gradle'.
+Using default execution profile
+
+> Configure project :audio_session
+Evaluating project ':audio_session' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_session-0.1.25\android\build.gradle'.
+Using default execution profile
+
+> Configure project :cloud_firestore
+Evaluating project ':cloud_firestore' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.12\android\build.gradle'.
+Using default execution profile
+
+> Configure project :connectivity_plus
+Evaluating project ':connectivity_plus' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\connectivity_plus-6.1.5\android\build.gradle'.
+Using default execution profile
+
+> Configure project :file_picker
+Evaluating project ':file_picker' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.3.7\android\build.gradle'.
+Using default execution profile
+
+> Configure project :firebase_analytics
+Evaluating project ':firebase_analytics' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_analytics-11.6.0\android\build.gradle'.
+Using default execution profile
+Using Kotlin Gradle Plugin gradle85 variant
+
+> Configure project :firebase_auth
+Evaluating project ':firebase_auth' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.7.0\android\build.gradle'.
+Using default execution profile
+
+> Configure project :firebase_core
+Evaluating project ':firebase_core' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-3.15.2\android\build.gradle'.
+Using default execution profile
+
+> Configure project :firebase_crashlytics
+Evaluating project ':firebase_crashlytics' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_crashlytics-4.3.10\android\build.gradle'.
+Using default execution profile
+
+> Configure project :flutter_plugin_android_lifecycle
+Evaluating project ':flutter_plugin_android_lifecycle' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.33\android\build.gradle'.
+Using default execution profile
+
+> Configure project :flutter_secure_storage
+Evaluating project ':flutter_secure_storage' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage-9.2.4\android\build.gradle'.
+Using default execution profile
+
+> Configure project :just_audio
+Evaluating project ':just_audio' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\just_audio\android\build.gradle'.
+Using default execution profile
+
+> Configure project :local_auth_android
+Evaluating project ':local_auth_android' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\local_auth_android\android\build.gradle'.
+Using default execution profile
+
+> Configure project :nearby_connections
+Evaluating project ':nearby_connections' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\nearby_connections\android\build.gradle'.
+Using default execution profile
+
+> Configure project :network_info_plus
+Evaluating project ':network_info_plus' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\network_info_plus-7.0.0\android\build.gradle'.
+Using default execution profile
+Using Kotlin Gradle Plugin gradle85 variant
+
+> Configure project :path_provider_android
+Evaluating project ':path_provider_android' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\android\build.gradle'.
+Using default execution profile
+
+> Configure project :permission_handler_android
+Evaluating project ':permission_handler_android' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\permission_handler_android\android\build.gradle'.
+Using default execution profile
+
+> Configure project :shared_preferences_android
+Evaluating project ':shared_preferences_android' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\android\build.gradle'.
+Using default execution profile
+Using Kotlin Gradle Plugin gradle85 variant
+
+> Configure project :sqflite_android
+Evaluating project ':sqflite_android' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_android-2.4.2+2\android\build.gradle'.
+Using default execution profile
+All projects evaluated.
+Task name matched 'projects'
+Selected primary task 'projects' from project :
+Tasks to be executed: [task ':projects']
+Tasks that were excluded: []
+Resolve mutations for :projects (Thread[included builds,5,main]) started.
+:projects (Thread[included builds,5,main]) started.
+
+> Task :projects
+Caching disabled for task ':projects' because:
+  Build cache is disabled
+Task ':projects' is not up-to-date because:
+  Task is untracked because: Uses the whole project state as an input
+
+Projects:
+
+------------------------------------------------------------
+Root project 'music_player_android'
+------------------------------------------------------------
+
+Root project 'music_player_android'
++--- Project ':app'
++--- Project ':audio_service'
++--- Project ':audio_session'
++--- Project ':cloud_firestore'
++--- Project ':connectivity_plus'
++--- Project ':file_picker'
++--- Project ':firebase_analytics'
++--- Project ':firebase_auth'
++--- Project ':firebase_core'
++--- Project ':firebase_crashlytics'
++--- Project ':flutter_plugin_android_lifecycle'
++--- Project ':flutter_secure_storage'
++--- Project ':just_audio'
++--- Project ':local_auth_android'
++--- Project ':nearby_connections'
++--- Project ':network_info_plus'
++--- Project ':path_provider_android'
++--- Project ':permission_handler_android'
++--- Project ':shared_preferences_android'
+\--- Project ':sqflite_android'
+
+Included builds:
+
+\--- Included build ':gradle'
+
+To see a list of the tasks of a project, run gradlew <project-path>:tasks
+For example, try running gradlew :app:tasks
+
+[Incubating] Problems report is available at: file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/android/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 18s
+5 actionable tasks: 1 executed, 4 up-to-date
+Watched directory hierarchies: [C:\Flutter\flutter\packages\flutter_tools\gradle, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android]

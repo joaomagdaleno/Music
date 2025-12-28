@@ -1,0 +1,51 @@
+group = "com.ryanheise.audio_session"
+version "1.0"
+def args = ["-Xlint:deprecation","-Xlint:unchecked"]
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.9.1")
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+project.getTasks().withType(JavaCompile) {
+    options.compilerArgs.addAll(args)
+}
+
+apply plugin: "com.android.library"
+
+android {
+    namespace = "com.ryanheise.audio_session"
+    compileSdk = 36
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    defaultConfig {
+        minSdk = 19
+    }
+
+    lintOptions {
+        checkAllWarnings true
+        warningsAsErrors true
+        disable 'AndroidGradlePluginVersion', 'InvalidPackage', 'GradleDependency', 'NewerVersionAvailable'
+    }
+}
+
+dependencies {
+    implementation "androidx.media:media:1.7.0"
+}

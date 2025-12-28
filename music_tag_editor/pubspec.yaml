@@ -5,7 +5,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.5.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -50,6 +50,21 @@ dev_dependencies:
   sqflite_common_ffi: ^2.3.3
   flutter_lints: ^6.0.0
   alchemist: ^0.13.0
+
+dependency_overrides:
+  local_auth: ^2.3.0
+  permission_handler_android:
+    path: packages/permission_handler_android
+  local_auth_android:
+    path: packages/local_auth_android
+  nearby_connections:
+    path: packages/nearby_connections
+  audio_service:
+    path: packages/audio_service
+  just_audio:
+    path: packages/just_audio
+  audio_session:
+    path: packages/audio_session
 
 flutter:
   uses-material-design: true

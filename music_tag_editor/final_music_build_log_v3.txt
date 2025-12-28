@@ -1,0 +1,1018 @@
+[+2200 ms] Artifact Instance of 'MaterialFonts' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'GradleWrapper' is not required, skipping update.
+[        ] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterSdk' is not required, skipping update.
+[        ] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[   +2 ms] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FontSubsetArtifacts' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'PubDependencies' is not required, skipping update.
+[   +3 ms] executing: [C:\Flutter\flutter/] git -c log.showSignature=false log HEAD -n 1 --pretty=format:%ad --date=iso
+[+5049 ms] Exit code 0 from: git -c log.showSignature=false log HEAD -n 1 --pretty=format:%ad --date=iso
+[        ] 2025-12-03 14:56:10 -0800
+[  +33 ms] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterEngineStamp' is not required, skipping update.
+[        ] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[  +14 ms] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[   +3 ms] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[ +444 ms] Artifact Instance of 'MaterialFonts' is not required, skipping update.
+[        ] Artifact Instance of 'GradleWrapper' is not required, skipping update.
+[  +15 ms] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterEngineStamp' is not required, skipping update.
+[        ] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterSdk' is not required, skipping update.
+[        ] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[   +2 ms] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'FontSubsetArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'PubDependencies' is not required, skipping update.
+[ +656 ms] Skipping pub get: version match.
+[+1155 ms] Found plugin window_manager at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\window_manager-0.5.1\
+[  +87 ms] Found plugin screen_retriever at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever-0.2.0\
+[   +5 ms] Found plugin screen_retriever_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_windows-0.2.0\
+[ +148 ms] Found plugin screen_retriever_macos at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_macos-0.2.0\
+[   +9 ms] Found plugin screen_retriever_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_linux-0.2.0\
+[  +18 ms] Found plugin system_tray at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\system_tray-2.0.3\
+[  +14 ms] Found plugin sqflite at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite-2.4.2\
+[ +119 ms] Found plugin sqflite_darwin at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_darwin-2.4.2\
+[   +7 ms] Found plugin sqflite_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_android-2.4.2+2\
+[  +22 ms] Found plugin shared_preferences at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.4\
+[   +4 ms] Found plugin shared_preferences_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[ +194 ms] Found plugin path_provider_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[ +216 ms] Found plugin shared_preferences_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[   +6 ms] Found plugin shared_preferences_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[   +7 ms] Found plugin path_provider_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.1\
+[   +6 ms] Found plugin shared_preferences_foundation at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[   +3 ms] Found plugin shared_preferences_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\
+[  +44 ms] Found plugin permission_handler at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler-11.4.0\
+[   +4 ms] Found plugin permission_handler_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_windows-0.2.1\
+[  +10 ms] Found plugin permission_handler_html at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_html-0.1.3+5\
+[   +4 ms] Found plugin permission_handler_apple at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_apple-9.4.7\
+[   +3 ms] Found plugin permission_handler_android at C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\permission_handler_android\
+[  +17 ms] Found plugin network_info_plus at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\network_info_plus-7.0.0\
+[  +83 ms] Found plugin nearby_connections at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\nearby_connections-4.3.0\
+[  +13 ms] Found plugin local_auth at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth-2.3.0\
+[   +8 ms] Found plugin local_auth_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_windows-1.0.11\
+[   +9 ms] Found plugin local_auth_darwin at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_darwin-1.6.1\
+[  +92 ms] Found plugin local_auth_android at C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\local_auth_android\
+[   +3 ms] Found plugin flutter_plugin_android_lifecycle at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.33\
+[  +12 ms] Found plugin just_audio at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio-0.9.46\
+[   +4 ms] Found plugin path_provider at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider-2.1.5\
+[   +6 ms] Found plugin path_provider_foundation at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_foundation-2.5.1\
+[   +7 ms] Found plugin path_provider_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\
+[   +6 ms] Found plugin just_audio_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio_web-0.4.16\
+[  +66 ms] Found plugin audio_session at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_session-0.1.25\
+[  +12 ms] Found plugin flutter_secure_storage at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage-9.2.4\
+[  +11 ms] Found plugin flutter_secure_storage_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_windows-3.1.2\
+[   +8 ms] Found plugin flutter_secure_storage_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_web-1.2.1\
+[   +8 ms] Found plugin flutter_secure_storage_macos at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_macos-3.1.3\
+[   +3 ms] Found plugin flutter_secure_storage_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_linux-1.2.3\
+[ +103 ms] Found plugin firebase_crashlytics at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_crashlytics-4.3.10\
+[  +13 ms] Found plugin firebase_core at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-3.15.2\
+[   +3 ms] Found plugin firebase_core_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core_web-2.24.1\
+[  +15 ms] Found plugin firebase_auth at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.7.0\
+[   +6 ms] Found plugin firebase_auth_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth_web-5.15.3\
+[  +11 ms] Found plugin firebase_analytics at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_analytics-11.6.0\
+[  +35 ms] Found plugin firebase_analytics_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_analytics_web-0.5.10+16\
+[  +14 ms] Found plugin file_picker at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.3.7\
+[ +120 ms] Found plugin connectivity_plus at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\connectivity_plus-6.1.5\
+[  +22 ms] Found plugin cloud_firestore at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.12\
+[   +5 ms] Found plugin cloud_firestore_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore_web-4.4.12\
+[ +223 ms] Found plugin audio_service at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service-0.18.18\
+[  +10 ms] Found plugin audio_service_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service_web-0.1.4\
+[+1774 ms] Found plugin window_manager at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\window_manager-0.5.1\
+[   +6 ms] Found plugin screen_retriever at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever-0.2.0\
+[   +9 ms] Found plugin screen_retriever_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_windows-0.2.0\
+[  +24 ms] Found plugin screen_retriever_macos at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_macos-0.2.0\
+[   +4 ms] Found plugin screen_retriever_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\screen_retriever_linux-0.2.0\
+[  +10 ms] Found plugin system_tray at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\system_tray-2.0.3\
+[  +56 ms] Found plugin sqflite at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite-2.4.2\
+[  +10 ms] Found plugin sqflite_darwin at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_darwin-2.4.2\
+[   +3 ms] Found plugin sqflite_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_android-2.4.2+2\
+[  +20 ms] Found plugin shared_preferences at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.4\
+[   +7 ms] Found plugin shared_preferences_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[  +59 ms] Found plugin path_provider_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[   +5 ms] Found plugin shared_preferences_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[   +5 ms] Found plugin shared_preferences_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[   +3 ms] Found plugin path_provider_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.1\
+[   +7 ms] Found plugin shared_preferences_foundation at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[   +3 ms] Found plugin shared_preferences_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\
+[   +4 ms] Found plugin permission_handler at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler-11.4.0\
+[   +2 ms] Found plugin permission_handler_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_windows-0.2.1\
+[  +40 ms] Found plugin permission_handler_html at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_html-0.1.3+5\
+[   +3 ms] Found plugin permission_handler_apple at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_apple-9.4.7\
+[   +3 ms] Found plugin permission_handler_android at C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\permission_handler_android\
+[   +6 ms] Found plugin network_info_plus at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\network_info_plus-7.0.0\
+[  +18 ms] Found plugin nearby_connections at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\nearby_connections-4.3.0\
+[   +3 ms] Found plugin local_auth at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth-2.3.0\
+[   +2 ms] Found plugin local_auth_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_windows-1.0.11\
+[ +116 ms] Found plugin local_auth_darwin at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\local_auth_darwin-1.6.1\
+[   +5 ms] Found plugin local_auth_android at C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\local_auth_android\
+[   +6 ms] Found plugin flutter_plugin_android_lifecycle at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.33\
+[   +4 ms] Found plugin just_audio at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio-0.9.46\
+[   +3 ms] Found plugin path_provider at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider-2.1.5\
+[   +2 ms] Found plugin path_provider_foundation at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_foundation-2.5.1\
+[   +5 ms] Found plugin path_provider_android at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\
+[   +3 ms] Found plugin just_audio_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio_web-0.4.16\
+[   +6 ms] Found plugin audio_session at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_session-0.1.25\
+[   +9 ms] Found plugin flutter_secure_storage at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage-9.2.4\
+[   +3 ms] Found plugin flutter_secure_storage_windows at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_windows-3.1.2\
+[   +3 ms] Found plugin flutter_secure_storage_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_web-1.2.1\
+[   +7 ms] Found plugin flutter_secure_storage_macos at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_macos-3.1.3\
+[   +2 ms] Found plugin flutter_secure_storage_linux at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage_linux-1.2.3\
+[   +3 ms] Found plugin firebase_crashlytics at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_crashlytics-4.3.10\
+[   +8 ms] Found plugin firebase_core at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-3.15.2\
+[   +3 ms] Found plugin firebase_core_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core_web-2.24.1\
+[ +298 ms] Found plugin firebase_auth at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.7.0\
+[   +2 ms] Found plugin firebase_auth_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth_web-5.15.3\
+[   +5 ms] Found plugin firebase_analytics at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_analytics-11.6.0\
+[  +10 ms] Found plugin firebase_analytics_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_analytics_web-0.5.10+16\
+[   +6 ms] Found plugin file_picker at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.3.7\
+[  +24 ms] Found plugin connectivity_plus at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\connectivity_plus-6.1.5\
+[ +484 ms] Found plugin cloud_firestore at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.12\
+[   +4 ms] Found plugin cloud_firestore_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore_web-4.4.12\
+[   +9 ms] Found plugin audio_service at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service-0.18.18\
+[   +7 ms] Found plugin audio_service_web at C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service_web-0.1.4\
+[  +74 ms] Generating C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\src\main\java\io\flutter\plugins\GeneratedPluginRegistrant.java
+[ +120 ms] Skipping generating GeneratedPluginRegistrant.java because it is up-to-date.
+[  +17 ms] Skipping generating generated_plugin_registrant.h because it is up-to-date.
+[  +53 ms] Skipping generating generated_plugin_registrant.cc because it is up-to-date.
+[   +4 ms] Skipping generating generated_plugins.cmake because it is up-to-date.
+[   +9 ms] Skipping generating generated_plugin_registrant.h because it is up-to-date.
+[   +4 ms] Skipping generating generated_plugin_registrant.cc because it is up-to-date.
+[   +5 ms] Skipping generating generated_plugins.cmake because it is up-to-date.
+[ +471 ms] Top-level Gradle build file not found, skipping migration of task "clean".
+[   +1 ms] Android Studio version could not be detected, skipping Gradle-Java version compatibility check.
+[  +72 ms] CMake project not found, skipping support Android 15 16k page size migration.
+[  +13 ms] Using gradle from C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\gradlew.bat.
+[  +62 ms] LocalFile: 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\build.gradle.kts' provides AGP version from classpath: 8.9.1
+[ +186 ms] Running Gradle task 'assembleDebug'...
+[  +20 ms] executing: [C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android/] C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\gradlew.bat --full-stacktrace --info -Pverbose=true -Ptarget-platform=android-arm,android-arm64,android-x64 -Ptarget=lib\main.dart -Pbase-application-name=android.app.Application -Pdart-defines=RkxVVFRFUl9WRVJTSU9OPTMuMzguNA==,RkxVVFRFUl9DSEFOTkVMPXN0YWJsZQ==,RkxVVFRFUl9HSVRfVVJMPWh0dHBzOi8vZ2l0aHViLmNvbS9mbHV0dGVyL2ZsdXR0ZXIuZ2l0,RkxVVFRFUl9GUkFNRVdPUktfUkVWSVNJT049NjZkZDkzZjlhMg==,RkxVVFRFUl9FTkdJTkVfUkVWSVNJT049YTVjYjk2MzY5ZQ==,RkxVVFRFUl9EQVJUX1ZFUlNJT049My4xMC4z -Pdart-obfuscation=false -Ptrack-widget-creation=true -Ptree-shake-icons=false assembleDebug
+[+17529 ms] Initialized native services in: C:\Users\joaom\.gradle\native
+[   +1 ms] Initialized jansi services in: C:\Users\joaom\.gradle\native
+[+8064 ms] Found daemon DaemonInfo{pid=4268, address=[6081b869-94ac-429a-9031-9e1ac004cc29 port:61745, addresses:[/127.0.0.1]], state=Idle, lastBusy=1766865355131, context=DefaultDaemonContext[uid=9f7762ab-9338-4136-bfdc-aadafb386638,javaHome=C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot,javaVersion=17,javaVendor=Eclipse Adoptium,daemonRegistryDir=C:\Users\joaom\.gradle\daemon,pid=4268,idleTimeout=10800000,priority=NORMAL,applyInstrumentationAgent=true,nativeServicesMode=ENABLED,daemonOpts=-XX:MaxMetaspaceSize=4G,-XX:ReservedCodeCacheSize=512m,-XX:+HeapDumpOnOutOfMemoryError,-Xmx8G,-Dfile.encoding=UTF-8,-Duser.country=BR,-Duser.language=pt,-Duser.variant]} however its context does not match the desired criteria.
+[   +1 ms] At least one daemon option is different.
+[        ] Wanted: DaemonRequestContext{jvmCriteria=C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot (no JDK specified, using current Java home), daemonOpts=[-XX:MaxMetaspaceSize=4G, -XX:ReservedCodeCacheSize=512m, -XX:+HeapDumpOnOutOfMemoryError, -Xmx8G, -Dfile.encoding=windows-1252, -Duser.country=BR, -Duser.language=pt, -Duser.variant], applyInstrumentationAgent=true, nativeServicesMode=ENABLED, priority=NORMAL}
+[   +1 ms] Actual: DefaultDaemonContext[uid=9f7762ab-9338-4136-bfdc-aadafb386638,javaHome=C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot,javaVersion=17,javaVendor=Eclipse Adoptium,daemonRegistryDir=C:\Users\joaom\.gradle\daemon,pid=4268,idleTimeout=10800000,priority=NORMAL,applyInstrumentationAgent=true,nativeServicesMode=ENABLED,daemonOpts=-XX:MaxMetaspaceSize=4G,-XX:ReservedCodeCacheSize=512m,-XX:+HeapDumpOnOutOfMemoryError,-Xmx8G,-Dfile.encoding=UTF-8,-Duser.country=BR,-Duser.language=pt,-Duser.variant]
+[        ]   Looking for a different daemon...
+[+3235 ms] The client will now receive all logging from the daemon (pid: 6728). The daemon log file: C:\Users\joaom\.gradle\daemon\8.13\daemon-6728.out.log
+[   +6 ms] Starting 3rd build in daemon [uptime: 54 mins 3.851 secs, performance: 100%, GC rate: 0.00/s, heap usage: 0% of 8 GiB, non-heap usage: 2% of 4 GiB]
+[ +835 ms] Using 4 worker leases.
+[+1215 ms] Now considering [C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android, C:\Flutter\flutter\packages\flutter_tools\gradle] as hierarchies to watch
+[ +374 ms] Watching the file system is configured to be enabled if available
+[ +510 ms] File system watching is active
+[ +703 ms] Starting Build
+[+6296 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[  +89 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1105 ms] Caching disabled for Kotlin DSL script compilation (Settings/TopLevel/stage1) because:
+[        ]   Build cache is disabled
+[+90304 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+1202 ms] Now considering [C:\Flutter\flutter\packages\flutter_tools\gradle, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android] as hierarchies to watch
+[  +94 ms] Invalidating in-memory cache of C:\Flutter\flutter\packages\flutter_tools\gradle\.gradle\buildOutputCleanup\outputFiles.bin
+[+2524 ms] > Configure project :gradle
+[        ] Evaluating project ':gradle' using build file 'C:\Flutter\flutter\packages\flutter_tools\gradle\build.gradle.kts'.
+[        ] Resolved plugin [id: 'org.gradle.java-gradle-plugin']
+[        ] Resolved plugin [id: 'org.gradle.groovy']
+[        ] Resolved plugin [id: 'org.gradle.kotlin.kotlin-dsl', version: '5.2.0']
+[  +11 ms] Resolved plugin [id: 'org.jetbrains.kotlin.jvm', version: '1.9.20']
+[  +14 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[  +94 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +2 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[  +33 ms] Using Kotlin Gradle Plugin gradle85 variant
+[   +1 ms] kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+[   +1 ms] kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+[ +713 ms] file or directory 'C:\Flutter\flutter\packages\flutter_tools\gradle\src\main\java', not found
+[+1305 ms] Resolved plugin [id: 'dev.flutter.flutter-plugin-loader', version: '1.0.0']
+[   +1 ms] Resolved plugin [id: 'com.android.application', version: '8.9.1', apply: false]
+[   +9 ms] Resolved plugin [id: 'com.google.gms.google-services', version: '4.4.2', apply: false]
+[        ] Resolved plugin [id: 'org.jetbrains.kotlin.android', version: '2.1.10', apply: false]
+[        ] Resolved plugin [id: 'com.google.firebase.crashlytics', version: '3.0.2', apply: false]
+[ +727 ms] Resolve mutations for :gradle:checkKotlinGradlePluginConfigurationErrors (Thread[Execution worker,5,main]) started.
+[ +111 ms] :gradle:checkKotlinGradlePluginConfigurationErrors (Thread[Execution worker,5,main]) started.
+[ +261 ms] Invalidating in-memory cache of C:\Flutter\flutter\packages\flutter_tools\gradle\.gradle\8.13\executionHistory\executionHistory.bin
+[   +2 ms] > Task :gradle:checkKotlinGradlePluginConfigurationErrors SKIPPED
+[   +3 ms] Skipping task ':gradle:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+[   +1 ms] Resolve mutations for :gradle:compileKotlin (Thread[Execution worker,5,main]) started.
+[ +282 ms] :gradle:compileKotlin (Thread[Execution worker,5,main]) started.
+[+1509 ms] > Task :gradle:compileKotlin UP-TO-DATE
+[ +117 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[   +1 ms] Caching disabled for task ':gradle:compileKotlin' because:
+[        ]   Build cache is disabled
+[   +1 ms] Skipping task ':gradle:compileKotlin' as it is up-to-date.
+[        ] Resolve mutations for :gradle:compileJava (Thread[Execution worker,5,main]) started.
+[ +163 ms] :gradle:compileJava (Thread[Execution worker Thread 3,5,main]) started.
+[   +3 ms] > Task :gradle:compileJava NO-SOURCE
+[ +197 ms] Skipping task ':gradle:compileJava' as it has no source files and no previous output files.
+[ +188 ms] Resolve mutations for :gradle:compileGroovy (Thread[Execution worker Thread 3,5,main]) started.
+[ +157 ms] :gradle:compileGroovy (Thread[Execution worker Thread 3,5,main]) started.
+[   +1 ms] > Task :gradle:compileGroovy NO-SOURCE
+[   +7 ms] Skipping task ':gradle:compileGroovy' as it has no source files and no previous output files.
+[        ] Resolve mutations for :gradle:pluginDescriptors (Thread[Execution worker Thread 3,5,main]) started.
+[        ] :gradle:pluginDescriptors (Thread[Execution worker Thread 3,5,main]) started.
+[        ] > Task :gradle:pluginDescriptors UP-TO-DATE
+[        ] Caching disabled for task ':gradle:pluginDescriptors' because:
+[   +4 ms]   Build cache is disabled
+[   +2 ms]   Not worth caching
+[   +1 ms] Skipping task ':gradle:pluginDescriptors' as it is up-to-date.
+[   +1 ms] Resolve mutations for :gradle:processResources (Thread[Execution worker Thread 3,5,main]) started.
+[        ] :gradle:processResources (Thread[Execution worker Thread 3,5,main]) started.
+[  +20 ms] > Task :gradle:processResources
+[        ] Caching disabled for task ':gradle:processResources' because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching
+[        ] Task ':gradle:processResources' is not up-to-date because:
+[        ]   Value of input property 'rootSpec$1.filteringCharset' has changed for task ':gradle:processResources'
+[        ]   Value of input property 'rootSpec$2.filteringCharset' has changed for task ':gradle:processResources'
+[   +1 ms] file or directory 'C:\Flutter\flutter\packages\flutter_tools\gradle\src\main\resources', not found
+[   +4 ms] Resolve mutations for :gradle:classes (Thread[Execution worker Thread 3,5,main]) started.
+[        ] :gradle:classes (Thread[Execution worker Thread 3,5,main]) started.
+[        ] > Task :gradle:classes
+[        ] Skipping task ':gradle:classes' as it has no actions.
+[        ] Resolve mutations for :gradle:jar (Thread[Execution worker Thread 3,5,main]) started.
+[        ] :gradle:jar (Thread[Execution worker Thread 3,5,main]) started.
+[+1802 ms] > Task :gradle:jar
+[   +1 ms] Caching disabled for task ':gradle:jar' because:
+[   +1 ms]   Build cache is disabled
+[        ]   Not worth caching
+[        ] Task ':gradle:jar' is not up-to-date because:
+[        ]   Value of input property 'rootSpec$1.filteringCharset' has changed for task ':gradle:jar'
+[        ]   Value of input property 'rootSpec$2$1.filteringCharset' has changed for task ':gradle:jar'
+[        ]   Value of input property 'rootSpec$2.filteringCharset' has changed for task ':gradle:jar'
+[        ] file or directory 'C:\Flutter\flutter\packages\flutter_tools\gradle\build\classes\java\main', not found
+[        ] file or directory 'C:\Flutter\flutter\packages\flutter_tools\gradle\build\classes\groovy\main', not found
+[+6196 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +294 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+8104 ms] Caching disabled for Kotlin DSL script compilation (Settings/TopLevel/stage2) because:
+[        ]   Build cache is disabled
+[+18793 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+1502 ms] Settings evaluated using settings file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\settings.gradle.kts'.
+[ +701 ms] Projects loaded. Root project using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\build.gradle.kts'.
+[        ] Included projects: [root project 'music_player_android', project ':app', project ':audio_service', project ':audio_session', project ':cloud_firestore', project ':connectivity_plus', project ':file_picker', project ':firebase_analytics', project ':firebase_auth', project ':firebase_core', project ':firebase_crashlytics', project ':flutter_plugin_android_lifecycle', project ':flutter_secure_storage', project ':just_audio', project ':local_auth_android', project ':nearby_connections', project ':network_info_plus', project ':path_provider_android', project ':permission_handler_android', project ':shared_preferences_android', project ':sqflite_android']
+[+1998 ms] > Configure project :
+[   +1 ms] Evaluating root project 'music_player_android' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\build.gradle.kts'.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+8394 ms] > Configure project :app
+[        ] Evaluating project ':app' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\build.gradle.kts'.
+[        ] Caching disabled for Kotlin DSL script compilation (Project/TopLevel/stage1) because:
+[        ]   Build cache is disabled
+[        ] Resolved plugin [id: 'com.android.application']
+[        ] Resolved plugin [id: 'com.google.gms.google-services']
+[        ] Resolved plugin [id: 'kotlin-android']
+[        ] Resolved plugin [id: 'dev.flutter.flutter-gradle-plugin']
+[        ] Resolved plugin [id: 'com.google.firebase.crashlytics']
+[+20488 ms] Using default execution profile
+[+5100 ms] Using Kotlin Gradle Plugin gradle85 variant
+[+5302 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +7 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +101 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+6390 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +2 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[   +2 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Caching disabled for Kotlin DSL accessors for project ':app' because:
+[        ]   Build cache is disabled
+[+15103 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+3719 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[  +10 ms] Caching disabled for Kotlin DSL script compilation (Project/TopLevel/stage2) because:
+[   +2 ms]   Build cache is disabled
+[+33768 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +5 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+12692 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +2 ms] C/C++: android.ndkPath from module build.gradle is not set
+[   +3 ms] C/C++: ndk.dir in local.properties is not set
+[   +1 ms] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[   +1 ms] C/C++: sdkFolder is C:\Android\Sdk
+[ +106 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[   +1 ms] C/C++: ndk.dir in local.properties is not set
+[   +2 ms] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[ +278 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[  +56 ms] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[   +1 ms] C/C++: sdkFolder is C:\Android\Sdk
+[ +474 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[  +41 ms] C/C++: android.ndkPath from module build.gradle is not set
+[   +4 ms] C/C++: ndk.dir in local.properties is not set
+[   +2 ms] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[   +1 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +1 ms] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[   +5 ms] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[ +557 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +2 ms] C/C++: android.ndkPath from module build.gradle is not set
+[   +2 ms] C/C++: ndk.dir in local.properties is not set
+[   +3 ms] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +4 ms] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[   +1 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +1 ms] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[   +2 ms] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[ +100 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +7 ms] C/C++: android.ndkPath from module build.gradle is not set
+[   +2 ms] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[   +2 ms] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[ +133 ms] C/C++: sdkFolder is C:\Android\Sdk
+[   +6 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +2 ms] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[ +133 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +3 ms] C/C++: android.ndkPath from module build.gradle is not set
+[  +10 ms] C/C++: ndk.dir in local.properties is not set
+[   +5 ms] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[  +47 ms] C/C++: sdkFolder is C:\Android\Sdk
+[ +117 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +1 ms] C/C++: android.ndkPath from module build.gradle is not set
+[   +1 ms] C/C++: ndk.dir in local.properties is not set
+[   +1 ms] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[   +1 ms] C/C++: sdkFolder is C:\Android\Sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[   +7 ms] C/C++: ndk.dir in local.properties is not set
+[   +1 ms] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[ +348 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[  +30 ms] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[   +3 ms] C/C++: sdkFolder is C:\Android\Sdk
+[ +209 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[  +89 ms] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[   +2 ms] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\Android\Sdk
+[+8779 ms] > Configure project :audio_service
+[   +1 ms] Evaluating project ':audio_service' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service-0.18.18\android\build.gradle'.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Caching disabled for Groovy DSL script compilation (cp_proj) because:
+[   +1 ms]   Build cache is disabled
+[        ]   Not worth caching.
+[   +1 ms] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service-0.18.18\android\build.gradle' using SubsetScriptTransformer.
+[+15068 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +3 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[  +87 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+4595 ms] > Configure project :audio_service
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +703 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +194 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[   +1 ms] Caching disabled for Groovy DSL script compilation (proj) because:
+[        ]   Build cache is disabled
+[   +1 ms]   Not worth caching.
+[        ] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service-0.18.18\android\build.gradle' using BuildScriptTransformer.
+[+2297 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +302 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1694 ms] > Configure project :audio_service
+[        ] Using default execution profile
+[+6508 ms] > Configure project :audio_session
+[        ] Evaluating project ':audio_session' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_session-0.1.25\android\build.gradle'.
+[   +8 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[   +1 ms] Caching disabled for Groovy DSL script compilation (cp_proj) because:
+[   +1 ms]   Build cache is disabled
+[        ]   Not worth caching.
+[   +1 ms] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_session-0.1.25\android\build.gradle' using SubsetScriptTransformer.
+[+2946 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +2 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +400 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+2120 ms] > Configure project :audio_session
+[   +7 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +325 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[   +4 ms] Caching disabled for Groovy DSL script compilation (proj) because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching.
+[   +1 ms] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_session-0.1.25\android\build.gradle' using BuildScriptTransformer.
+[+2765 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +198 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1435 ms] > Configure project :audio_session
+[  +18 ms] Using default execution profile
+[+1844 ms] > Configure project :cloud_firestore
+[        ] Evaluating project ':cloud_firestore' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.12\android\build.gradle'.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[   +2 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +593 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +498 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +403 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +612 ms] > Configure project :cloud_firestore
+[   +1 ms] Using default execution profile
+[        ] Caching disabled for Groovy DSL script compilation (cp_dsl) because:
+[        ]   Build cache is disabled
+[   +5 ms]   Not worth caching.
+[   +1 ms] Compiling script 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.12\android\local-config.gradle' using SubsetScriptTransformer.
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[        ] Caching disabled for Groovy DSL script compilation (dsl) because:
+[        ]   Build cache is disabled
+[   +5 ms]   Not worth caching.
+[        ] Compiling script 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.12\android\local-config.gradle' using BuildScriptTransformer.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1769 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +900 ms] > Configure project :connectivity_plus
+[   +1 ms] Evaluating project ':connectivity_plus' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\connectivity_plus-6.1.5\android\build.gradle'.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Caching disabled for Groovy DSL script compilation (cp_proj) because:
+[   +1 ms]   Build cache is disabled
+[        ]   Not worth caching.
+[   +1 ms] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\connectivity_plus-6.1.5\android\build.gradle' using SubsetScriptTransformer.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+2293 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +393 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +300 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[   +1 ms] Caching disabled for Groovy DSL script compilation (proj) because:
+[   +2 ms]   Build cache is disabled
+[        ]   Not worth caching.
+[        ] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\connectivity_plus-6.1.5\android\build.gradle' using BuildScriptTransformer.
+[+1286 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +208 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1014 ms] > Configure project :connectivity_plus
+[        ] Using default execution profile
+[+1922 ms] > Configure project :file_picker
+[  +69 ms] Evaluating project ':file_picker' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.3.7\android\build.gradle'.
+[  +42 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[   +2 ms] Caching disabled for Groovy DSL script compilation (cp_proj) because:
+[   +4 ms]   Build cache is disabled
+[        ]   Not worth caching.
+[        ] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.3.7\android\build.gradle' using SubsetScriptTransformer.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[  +10 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +129 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1824 ms] > Configure project :file_picker
+[   +8 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[   +3 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[   +5 ms] Caching disabled for Groovy DSL script compilation (proj) because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching.
+[        ] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.3.7\android\build.gradle' using BuildScriptTransformer.
+[+3149 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +146 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1260 ms] > Configure project :file_picker
+[        ] Using default execution profile
+[+2008 ms] > Configure project :firebase_analytics
+[        ] Evaluating project ':firebase_analytics' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_analytics-11.6.0\android\build.gradle'.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[   +5 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +183 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1803 ms] > Configure project :firebase_analytics
+[        ] Using default execution profile
+[        ] Using Kotlin Gradle Plugin gradle85 variant
+[ +788 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +200 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+2308 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +456 ms] > Configure project :firebase_analytics
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +259 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+2951 ms] > Configure project :firebase_auth
+[        ] Evaluating project ':firebase_auth' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.7.0\android\build.gradle'.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[  +14 ms] Caching disabled for Groovy DSL script compilation (cp_proj) because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching.
+[   +1 ms] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.7.0\android\build.gradle' using SubsetScriptTransformer.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[  +26 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1798 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +253 ms] > Configure project :firebase_auth
+[        ] Caching disabled for Groovy DSL script compilation (proj) because:
+[        ]   Build cache is disabled
+[   +1 ms]   Not worth caching.
+[   +1 ms] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.7.0\android\build.gradle' using BuildScriptTransformer.
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[ +120 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[        ] Using default execution profile
+[ +675 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[   +2 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+2349 ms] > Configure project :firebase_core
+[   +9 ms] Evaluating project ':firebase_core' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-3.15.2\android\build.gradle'.
+[   +1 ms] Using default execution profile
+[+1690 ms] > Configure project :firebase_crashlytics
+[        ] Evaluating project ':firebase_crashlytics' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_crashlytics-4.3.10\android\build.gradle'.
+[+1778 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +133 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +179 ms] Using default execution profile
+[+3157 ms] > Configure project :flutter_plugin_android_lifecycle
+[        ] Evaluating project ':flutter_plugin_android_lifecycle' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.33\android\build.gradle'.
+[   +7 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +197 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +550 ms] Using default execution profile
+[+2909 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[  +78 ms] > Configure project :flutter_secure_storage
+[   +5 ms] Evaluating project ':flutter_secure_storage' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage-9.2.4\android\build.gradle'.
+[   +6 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Caching disabled for Groovy DSL script compilation (cp_proj) because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching.
+[        ] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage-9.2.4\android\build.gradle' using SubsetScriptTransformer.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +697 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +2 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +100 ms] Caching disabled for Groovy DSL script compilation (proj) because:
+[   +1 ms]   Build cache is disabled
+[        ]   Not worth caching.
+[        ] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage-9.2.4\android\build.gradle' using BuildScriptTransformer.
+[+2165 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +2 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +193 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1299 ms] > Configure project :flutter_secure_storage
+[        ] Using default execution profile
+[ +699 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1301 ms] > Configure project :just_audio
+[   +1 ms] Evaluating project ':just_audio' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio-0.9.46\android\build.gradle'.
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Caching disabled for Groovy DSL script compilation (cp_proj) because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching.
+[        ] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio-0.9.46\android\build.gradle' using SubsetScriptTransformer.
+[   +2 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +4 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[   +2 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[        ] Caching disabled for Groovy DSL script compilation (proj) because:
+[        ]   Build cache is disabled
+[   +1 ms]   Not worth caching.
+[        ] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio-0.9.46\android\build.gradle' using BuildScriptTransformer.
+[+4837 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +133 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1607 ms] > Configure project :just_audio
+[        ] Using default execution profile
+[+2003 ms] > Configure project :local_auth_android
+[   +3 ms] Evaluating project ':local_auth_android' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\local_auth_android\android\build.gradle'.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Caching disabled for Groovy DSL script compilation (cp_proj) because:
+[   +4 ms]   Build cache is disabled
+[   +2 ms]   Not worth caching.
+[        ] Compiling build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\local_auth_android\android\build.gradle' using SubsetScriptTransformer.
+[+9386 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +2 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+1196 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+9338 ms] > Configure project :local_auth_android
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +562 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +494 ms] Caching disabled for Groovy DSL script compilation (proj) because:
+[        ]   Build cache is disabled
+[   +1 ms]   Not worth caching.
+[   +1 ms] Compiling build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\local_auth_android\android\build.gradle' using BuildScriptTransformer.
+[+4656 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +3 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +407 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1135 ms] > Configure project :local_auth_android
+[ +359 ms] Using default execution profile
+[+1692 ms] > Configure project :nearby_connections
+[   +6 ms] Evaluating project ':nearby_connections' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\nearby_connections-4.3.0\android\build.gradle'.
+[   +5 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[   +1 ms] Caching disabled for Groovy DSL script compilation (cp_proj) because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching.
+[        ] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\nearby_connections-4.3.0\android\build.gradle' using SubsetScriptTransformer.
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +7 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +153 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+2315 ms] > Configure project :nearby_connections
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[        ] Caching disabled for Groovy DSL script compilation (proj) because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching.
+[   +1 ms] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\nearby_connections-4.3.0\android\build.gradle' using BuildScriptTransformer.
+[+2213 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +232 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1299 ms] > Configure project :nearby_connections
+[  +53 ms] Using default execution profile
+[+2088 ms] > Configure project :network_info_plus
+[        ] Evaluating project ':network_info_plus' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\network_info_plus-7.0.0\android\build.gradle'.
+[+2163 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Caching disabled for Groovy DSL script compilation (cp_proj) because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching.
+[   +1 ms] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\network_info_plus-7.0.0\android\build.gradle' using SubsetScriptTransformer.
+[+3889 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +100 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1911 ms] > Configure project :network_info_plus
+[   +2 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +184 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +5 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+4218 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[  +78 ms] Caching disabled for Groovy DSL script compilation (proj) because:
+[  +21 ms]   Build cache is disabled
+[  +14 ms]   Not worth caching.
+[  +53 ms] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\network_info_plus-7.0.0\android\build.gradle' using BuildScriptTransformer.
+[+5307 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +299 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1708 ms] > Configure project :network_info_plus
+[        ] Using default execution profile
+[        ] Using Kotlin Gradle Plugin gradle85 variant
+[+3393 ms] > Configure project :path_provider_android
+[        ] Evaluating project ':path_provider_android' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\android\build.gradle'.
+[   +3 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Caching disabled for Groovy DSL script compilation (cp_proj) because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching.
+[        ] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\android\build.gradle' using SubsetScriptTransformer.
+[+1288 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +575 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+4727 ms] > Configure project :path_provider_android
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Caching disabled for Groovy DSL script compilation (proj) because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching.
+[        ] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\android\build.gradle' using BuildScriptTransformer.
+[+2497 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +203 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +868 ms] > Configure project :path_provider_android
+[   +1 ms] Using default execution profile
+[+2284 ms] > Configure project :permission_handler_android
+[  +62 ms] Evaluating project ':permission_handler_android' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\permission_handler_android\android\build.gradle'.
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Caching disabled for Groovy DSL script compilation (cp_proj) because:
+[   +7 ms]   Build cache is disabled
+[        ]   Not worth caching.
+[   +9 ms] Compiling build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\permission_handler_android\android\build.gradle' using SubsetScriptTransformer.
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[  +13 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[        ] Caching disabled for Groovy DSL script compilation (proj) because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching.
+[        ] Compiling build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\permission_handler_android\android\build.gradle' using BuildScriptTransformer.
+[+2964 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +2 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +472 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1505 ms] > Configure project :permission_handler_android
+[  +87 ms] Using default execution profile
+[+2411 ms] > Configure project :shared_preferences_android
+[   +2 ms] Evaluating project ':shared_preferences_android' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\android\build.gradle'.
+[        ] Caching disabled for Groovy DSL script compilation (cp_proj) because:
+[   +2 ms]   Build cache is disabled
+[        ]   Not worth caching.
+[        ] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\android\build.gradle' using SubsetScriptTransformer.
+[+1189 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +818 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1783 ms] > Configure project :shared_preferences_android
+[        ] Caching disabled for Groovy DSL script compilation (proj) because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching.
+[+3431 ms] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\android\build.gradle' using BuildScriptTransformer.
+[+6907 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[  +23 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[+2333 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +702 ms] > Configure project :shared_preferences_android
+[   +3 ms] Using default execution profile
+[ +108 ms] Using Kotlin Gradle Plugin gradle85 variant
+[+5810 ms] > Configure project :sqflite_android
+[        ] Evaluating project ':sqflite_android' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_android-2.4.2+2\android\build.gradle'.
+[   +5 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[  +16 ms] Caching disabled for Groovy DSL script compilation (cp_proj) because:
+[   +6 ms]   Build cache is disabled
+[        ]   Not worth caching.
+[   +1 ms] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_android-2.4.2+2\android\build.gradle' using SubsetScriptTransformer.
+[+4947 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[        ] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +999 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+5902 ms] > Configure project :sqflite_android
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+2096 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1389 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+2549 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[ +441 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +4 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +247 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[   +1 ms] Caching disabled for Groovy DSL script compilation (proj) because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching.
+[  +93 ms] Compiling build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_android-2.4.2+2\android\build.gradle' using BuildScriptTransformer.
+[+5856 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\fileHashes.bin
+[   +1 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\8.13\fileHashes\resourceHashesCache.bin
+[ +265 ms] Invalidating in-memory cache of C:\Users\joaom\.gradle\caches\journal-1\file-access.bin
+[+1642 ms] > Configure project :sqflite_android
+[        ] Using default execution profile
+[+2052 ms] All projects evaluated.
+[+3254 ms] Task name matched 'assembleDebug'
+[        ] Selected primary task 'assembleDebug' from project :
+[+25697 ms] Adding -Xuse-inline-scopes-numbers Kotlin compiler flag for task :app:compileDebugKotlin
+[+23600 ms] [Incubating] Problems report is available at: file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/android/build/reports/problems/problems-report.html
+[ +433 ms] FAILURE: Build failed with an exception.
+[ +552 ms] * What went wrong:
+[        ] Could not determine the dependencies of task ':audio_service:compileDebugJavaWithJavac'.
+[        ] > Cannot query the value of this provider because it has no value available.
+[  +50 ms] * Try:
+[  +12 ms] > Run with --debug option to get more log output.
+[        ] > Run with --scan to get full insights.
+[        ] > Get more help at https://help.gradle.org.
+[        ] * Exception is:
+[        ] org.gradle.api.internal.tasks.TaskDependencyResolveException: Could not determine the dependencies of task ':audio_service:compileDebugJavaWithJavac'.
+[        ] 	at org.gradle.api.internal.tasks.CachingTaskDependencyResolveContext.getDependencies(CachingTaskDependencyResolveContext.java:70)
+[   +1 ms] 	at org.gradle.execution.plan.TaskDependencyResolver.resolveDependenciesFor(TaskDependencyResolver.java:49)
+[        ] 	at org.gradle.execution.plan.LocalTaskNode.getDependencies(LocalTaskNode.java:151)
+[   +2 ms] 	at org.gradle.execution.plan.LocalTaskNode.resolveDependencies(LocalTaskNode.java:125)
+[   +4 ms] 	at org.gradle.execution.plan.DefaultExecutionPlan.discoverNodeRelationships(DefaultExecutionPlan.java:182)
+[        ] 	at org.gradle.execution.plan.DefaultExecutionPlan.doAddEntryNodes(DefaultExecutionPlan.java:154)
+[   +1 ms] 	at org.gradle.execution.plan.DefaultExecutionPlan.addEntryTasks(DefaultExecutionPlan.java:129)
+[        ] 	at org.gradle.execution.plan.DefaultExecutionPlan.addEntryTasks(DefaultExecutionPlan.java:121)
+[        ] 	at org.gradle.execution.TaskNameResolvingBuildTaskScheduler.scheduleRequestedTasks(TaskNameResolvingBuildTaskScheduler.java:61)
+[        ] 	at org.gradle.execution.DefaultTasksBuildTaskScheduler.scheduleRequestedTasks(DefaultTasksBuildTaskScheduler.java:72)
+[   +2 ms] 	at org.gradle.initialization.DefaultTaskExecutionPreparer.lambda$scheduleRequestedTasks$0(DefaultTaskExecutionPreparer.java:48)
+[   +1 ms] 	at org.gradle.internal.Factories$1.create(Factories.java:31)
+[        ] 	at org.gradle.internal.work.DefaultWorkerLeaseService.withReplacedLocks(DefaultWorkerLeaseService.java:359)
+[        ] 	at org.gradle.api.internal.project.DefaultProjectStateRegistry$DefaultBuildProjectRegistry.withMutableStateOfAllProjects(DefaultProjectStateRegistry.java:239)
+[   +1 ms] 	at org.gradle.api.internal.project.DefaultProjectStateRegistry$DefaultBuildProjectRegistry.withMutableStateOfAllProjects(DefaultProjectStateRegistry.java:232)
+[   +4 ms] 	at org.gradle.initialization.DefaultTaskExecutionPreparer.scheduleRequestedTasks(DefaultTaskExecutionPreparer.java:47)
+[   +1 ms] 	at org.gradle.initialization.VintageBuildModelController.lambda$scheduleRequestedTasks$0(VintageBuildModelController.java:76)
+[        ] 	at org.gradle.internal.model.StateTransitionController.lambda$inState$1(StateTransitionController.java:99)
+[        ] 	at org.gradle.internal.model.StateTransitionController.lambda$inState$2(StateTransitionController.java:114)
+[   +1 ms] 	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+[        ] 	at org.gradle.internal.model.StateTransitionController.inState(StateTransitionController.java:110)
+[   +2 ms] 	at org.gradle.internal.model.StateTransitionController.inState(StateTransitionController.java:98)
+[        ] 	at org.gradle.initialization.VintageBuildModelController.scheduleRequestedTasks(VintageBuildModelController.java:76)
+[        ] 	at org.gradle.internal.build.DefaultBuildLifecycleController$DefaultWorkGraphBuilder.addRequestedTasks(DefaultBuildLifecycleController.java:404)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildTreeWorkPreparer.lambda$scheduleRequestedTasks$0(DefaultBuildTreeWorkPreparer.java:41)
+[        ] 	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$populateWorkGraph$7(DefaultBuildLifecycleController.java:189)
+[        ] 	at org.gradle.internal.build.DefaultBuildWorkPreparer.populateWorkGraph(DefaultBuildWorkPreparer.java:42)
+[        ] 	at org.gradle.internal.build.BuildOperationFiringBuildWorkPreparer$PopulateWorkGraph.populateTaskGraph(BuildOperationFiringBuildWorkPreparer.java:106)
+[+1147 ms] 	at org.gradle.internal.build.BuildOperationFiringBuildWorkPreparer$PopulateWorkGraph.run(BuildOperationFiringBuildWorkPreparer.java:92)
+[   +9 ms] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
+[   +1 ms] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:48)
+[        ] 	at org.gradle.internal.build.BuildOperationFiringBuildWorkPreparer.populateWorkGraph(BuildOperationFiringBuildWorkPreparer.java:67)
+[  +88 ms] 	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$populateWorkGraph$8(DefaultBuildLifecycleController.java:189)
+[        ] 	at org.gradle.internal.model.StateTransitionController.lambda$inState$1(StateTransitionController.java:99)
+[        ] 	at org.gradle.internal.model.StateTransitionController.lambda$inState$2(StateTransitionController.java:114)
+[        ] 	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+[        ] 	at org.gradle.internal.model.StateTransitionController.inState(StateTransitionController.java:110)
+[        ] 	at org.gradle.internal.model.StateTransitionController.inState(StateTransitionController.java:98)
+[        ] 	at org.gradle.internal.build.DefaultBuildLifecycleController.populateWorkGraph(DefaultBuildLifecycleController.java:189)
+[        ] 	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.populateWorkGraph(DefaultBuildWorkGraphController.java:169)
+[        ] 	at org.gradle.composite.internal.DefaultBuildController.populateWorkGraph(DefaultBuildController.java:76)
+[ +200 ms] 	at org.gradle.composite.internal.DefaultIncludedBuildTaskGraph$DefaultBuildTreeWorkGraphBuilder.withWorkGraph(DefaultIncludedBuildTaskGraph.java:153)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildTreeWorkPreparer.lambda$scheduleRequestedTasks$1(DefaultBuildTreeWorkPreparer.java:41)
+[        ] 	at org.gradle.composite.internal.DefaultIncludedBuildTaskGraph$DefaultBuildTreeWorkGraph$1.run(DefaultIncludedBuildTaskGraph.java:209)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+[ +140 ms] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:48)
+[        ] 	at org.gradle.composite.internal.DefaultIncludedBuildTaskGraph$DefaultBuildTreeWorkGraph.scheduleWork(DefaultIncludedBuildTaskGraph.java:204)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildTreeWorkPreparer.scheduleRequestedTasks(DefaultBuildTreeWorkPreparer.java:37)
+[        ] 	at org.gradle.internal.cc.impl.VintageBuildTreeWorkController$scheduleAndRunRequestedTasks$1.apply(VintageBuildTreeWorkController.kt:36)
+[        ] 	at org.gradle.internal.cc.impl.VintageBuildTreeWorkController$scheduleAndRunRequestedTasks$1.apply(VintageBuildTreeWorkController.kt:35)
+[   +2 ms] 	at org.gradle.composite.internal.DefaultIncludedBuildTaskGraph.withNewWorkGraph(DefaultIncludedBuildTaskGraph.java:112)
+[        ] 	at org.gradle.internal.cc.impl.VintageBuildTreeWorkController.scheduleAndRunRequestedTasks(VintageBuildTreeWorkController.kt:35)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildTreeLifecycleController.lambda$scheduleAndRunTasks$1(DefaultBuildTreeLifecycleController.java:77)
+[ +138 ms] 	at org.gradle.internal.buildtree.DefaultBuildTreeLifecycleController.lambda$runBuild$4(DefaultBuildTreeLifecycleController.java:120)
+[  +29 ms] 	at org.gradle.internal.model.StateTransitionController.lambda$transition$6(StateTransitionController.java:169)
+[        ] 	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+[        ] 	at org.gradle.internal.model.StateTransitionController.lambda$transition$7(StateTransitionController.java:169)
+[        ] 	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+[        ] 	at org.gradle.internal.model.StateTransitionController.transition(StateTransitionController.java:169)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildTreeLifecycleController.runBuild(DefaultBuildTreeLifecycleController.java:117)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildTreeLifecycleController.scheduleAndRunTasks(DefaultBuildTreeLifecycleController.java:77)
+[   +1 ms] 	at org.gradle.internal.buildtree.DefaultBuildTreeLifecycleController.scheduleAndRunTasks(DefaultBuildTreeLifecycleController.java:72)
+[  +70 ms] 	at org.gradle.tooling.internal.provider.ExecuteBuildActionRunner.run(ExecuteBuildActionRunner.java:31)
+[        ] 	at org.gradle.launcher.exec.ChainingBuildActionRunner.run(ChainingBuildActionRunner.java:35)
+[        ] 	at org.gradle.internal.buildtree.ProblemReportingBuildActionRunner.run(ProblemReportingBuildActionRunner.java:49)
+[        ] 	at org.gradle.launcher.exec.BuildOutcomeReportingBuildActionRunner.run(BuildOutcomeReportingBuildActionRunner.java:71)
+[        ] 	at org.gradle.tooling.internal.provider.FileSystemWatchingBuildActionRunner.run(FileSystemWatchingBuildActionRunner.java:135)
+[        ] 	at org.gradle.launcher.exec.BuildCompletionNotifyingBuildActionRunner.run(BuildCompletionNotifyingBuildActionRunner.java:41)
+[        ] 	at org.gradle.launcher.exec.RootBuildLifecycleBuildActionExecutor.lambda$execute$0(RootBuildLifecycleBuildActionExecutor.java:54)
+[        ] 	at org.gradle.composite.internal.DefaultRootBuildState.run(DefaultRootBuildState.java:130)
+[        ] 	at org.gradle.launcher.exec.RootBuildLifecycleBuildActionExecutor.execute(RootBuildLifecycleBuildActionExecutor.java:54)
+[  +16 ms] 	at org.gradle.internal.buildtree.InitDeprecationLoggingActionExecutor.execute(InitDeprecationLoggingActionExecutor.java:62)
+[        ] 	at org.gradle.internal.buildtree.InitProblems.execute(InitProblems.java:36)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildTreeContext.execute(DefaultBuildTreeContext.java:40)
+[        ] 	at org.gradle.launcher.exec.BuildTreeLifecycleBuildActionExecutor.lambda$execute$0(BuildTreeLifecycleBuildActionExecutor.java:71)
+[        ] 	at org.gradle.internal.buildtree.BuildTreeState.run(BuildTreeState.java:60)
+[        ] 	at org.gradle.launcher.exec.BuildTreeLifecycleBuildActionExecutor.execute(BuildTreeLifecycleBuildActionExecutor.java:71)
+[        ] 	at org.gradle.launcher.exec.RunAsBuildOperationBuildActionExecutor$2.call(RunAsBuildOperationBuildActionExecutor.java:67)
+[        ] 	at org.gradle.launcher.exec.RunAsBuildOperationBuildActionExecutor$2.call(RunAsBuildOperationBuildActionExecutor.java:63)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+[  +29 ms] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+[   +1 ms] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+[   +1 ms] 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+[   +5 ms] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+[        ] 	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+[        ] 	at org.gradle.launcher.exec.RunAsBuildOperationBuildActionExecutor.execute(RunAsBuildOperationBuildActionExecutor.java:63)
+[        ] 	at org.gradle.launcher.exec.RunAsWorkerThreadBuildActionExecutor.lambda$execute$0(RunAsWorkerThreadBuildActionExecutor.java:36)
+[        ] 	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+[        ] 	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+[  +96 ms] 	at org.gradle.launcher.exec.RunAsWorkerThreadBuildActionExecutor.execute(RunAsWorkerThreadBuildActionExecutor.java:36)
+[        ] 	at org.gradle.tooling.internal.provider.continuous.ContinuousBuildActionExecutor.execute(ContinuousBuildActionExecutor.java:110)
+[        ] 	at org.gradle.tooling.internal.provider.SubscribableBuildActionExecutor.execute(SubscribableBuildActionExecutor.java:64)
+[        ] 	at org.gradle.internal.session.DefaultBuildSessionContext.execute(DefaultBuildSessionContext.java:46)
+[        ] 	at org.gradle.internal.buildprocess.execution.BuildSessionLifecycleBuildActionExecutor$ActionImpl.apply(BuildSessionLifecycleBuildActionExecutor.java:92)
+[        ] 	at org.gradle.internal.buildprocess.execution.BuildSessionLifecycleBuildActionExecutor$ActionImpl.apply(BuildSessionLifecycleBuildActionExecutor.java:80)
+[        ] 	at org.gradle.internal.session.BuildSessionState.run(BuildSessionState.java:73)
+[        ] 	at org.gradle.internal.buildprocess.execution.BuildSessionLifecycleBuildActionExecutor.execute(BuildSessionLifecycleBuildActionExecutor.java:62)
+[  +42 ms] 	at org.gradle.internal.buildprocess.execution.BuildSessionLifecycleBuildActionExecutor.execute(BuildSessionLifecycleBuildActionExecutor.java:41)
+[        ] 	at org.gradle.internal.buildprocess.execution.StartParamsValidatingActionExecutor.execute(StartParamsValidatingActionExecutor.java:64)
+[        ] 	at org.gradle.internal.buildprocess.execution.StartParamsValidatingActionExecutor.execute(StartParamsValidatingActionExecutor.java:32)
+[        ] 	at org.gradle.internal.buildprocess.execution.SessionFailureReportingActionExecutor.execute(SessionFailureReportingActionExecutor.java:51)
+[        ] 	at org.gradle.internal.buildprocess.execution.SessionFailureReportingActionExecutor.execute(SessionFailureReportingActionExecutor.java:39)
+[        ] 	at org.gradle.internal.buildprocess.execution.SetupLoggingActionExecutor.execute(SetupLoggingActionExecutor.java:47)
+[   +1 ms] 	at org.gradle.internal.buildprocess.execution.SetupLoggingActionExecutor.execute(SetupLoggingActionExecutor.java:31)
+[        ] 	at org.gradle.launcher.daemon.server.exec.ExecuteBuild.doBuild(ExecuteBuild.java:70)
+[        ] 	at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:37)
+[  +30 ms] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[   +1 ms] 	at org.gradle.launcher.daemon.server.exec.WatchForDisconnection.execute(WatchForDisconnection.java:39)
+[        ] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.ResetDeprecationLogger.execute(ResetDeprecationLogger.java:29)
+[        ] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.RequestStopIfSingleUsedDaemon.execute(RequestStopIfSingleUsedDaemon.java:35)
+[        ] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.ForwardClientInput.lambda$execute$0(ForwardClientInput.java:40)
+[        ] 	at org.gradle.internal.daemon.clientinput.ClientInputForwarder.forwardInput(ClientInputForwarder.java:80)
+[        ] 	at org.gradle.launcher.daemon.server.exec.ForwardClientInput.execute(ForwardClientInput.java:37)
+[  +18 ms] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[   +1 ms] 	at org.gradle.launcher.daemon.server.exec.LogAndCheckHealth.execute(LogAndCheckHealth.java:64)
+[        ] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[   +1 ms] 	at org.gradle.launcher.daemon.server.exec.LogToClient.doBuild(LogToClient.java:63)
+[        ] 	at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:37)
+[        ] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.EstablishBuildEnvironment.doBuild(EstablishBuildEnvironment.java:84)
+[        ] 	at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:37)
+[        ] 	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.StartBuildOrRespondWithBusy$1.run(StartBuildOrRespondWithBusy.java:52)
+[  +35 ms] 	at org.gradle.launcher.daemon.server.DaemonStateCoordinator.lambda$runCommand$0(DaemonStateCoordinator.java:321)
+[        ] 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+[        ] 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+[        ] 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+[        ] 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+[        ] 	at java.base/java.lang.Thread.run(Thread.java:840)
+[        ] Caused by: org.gradle.api.internal.provider.MissingValueException: Cannot query the value of this provider because it has no value available.
+[        ] 	at org.gradle.api.internal.provider.AbstractMinimalProvider.calculateOwnPresentValue(AbstractMinimalProvider.java:84)
+[        ] 	at org.gradle.api.internal.provider.AbstractMinimalProvider.get(AbstractMinimalProvider.java:102)
+[        ] 	at org.gradle.api.internal.provider.ProviderResolutionStrategy$2.resolve(ProviderResolutionStrategy.java:33)
+[  +17 ms] 	at org.gradle.api.internal.file.collections.ProviderBackedFileCollection.visitDependencies(ProviderBackedFileCollection.java:57)
+[        ] 	at org.gradle.api.internal.AbstractTaskDependencyContainerVisitingContext.add(AbstractTaskDependencyContainerVisitingContext.java:46)
+[        ] 	at org.gradle.api.internal.file.collections.UnpackingVisitor.add(UnpackingVisitor.java:77)
+[        ] 	at org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection$UnresolvedItemsCollector.visitContents(DefaultConfigurableFileCollection.java:616)
+[        ] 	at org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection.visitChildren(DefaultConfigurableFileCollection.java:433)
+[        ] 	at org.gradle.api.internal.file.CompositeFileCollection.visitDependencies(CompositeFileCollection.java:102)
+[        ] 	at org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection.visitDependencies(DefaultConfigurableFileCollection.java:439)
+[        ] 	at org.gradle.api.internal.AbstractTaskDependencyContainerVisitingContext.add(AbstractTaskDependencyContainerVisitingContext.java:46)
+[  +42 ms] 	at org.gradle.api.internal.file.AbstractFileCollection.lambda$getBuildDependencies$0(AbstractFileCollection.java:98)
+[        ] 	at org.gradle.api.internal.tasks.DefaultTaskDependency.visitDependencies(DefaultTaskDependency.java:151)
+[        ] 	at org.gradle.api.internal.AbstractTaskDependencyContainerVisitingContext.add(AbstractTaskDependencyContainerVisitingContext.java:46)
+[        ] 	at org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact.LocalFileDependencyBackedArtifactSet.visitDependencies(LocalFileDependencyBackedArtifactSet.java:180)
+[   +1 ms] 	at org.gradle.api.internal.AbstractTaskDependencyContainerVisitingContext.add(AbstractTaskDependencyContainerVisitingContext.java:46)
+[        ] 	at org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact.DefaultSelectedArtifactSet.visitDependencies(DefaultSelectedArtifactSet.java:47)
+[        ] 	at org.gradle.api.internal.artifacts.configurations.ResolutionResultProviderBackedSelectedArtifactSet.visitDependencies(ResolutionResultProviderBackedSelectedArtifactSet.java:44)
+[  +73 ms] 	at org.gradle.api.internal.artifacts.configurations.ResolutionBackedFileCollection.visitDependencies(ResolutionBackedFileCollection.java:58)
+[        ] 	at org.gradle.api.internal.provider.BuildableBackedProvider$1.visitDependencies(BuildableBackedProvider.java:57)
+[   +1 ms] 	at org.gradle.api.internal.file.collections.ProviderBackedFileCollection.visitDependencies(ProviderBackedFileCollection.java:53)
+[        ] 	at org.gradle.api.internal.tasks.CachingTaskDependencyResolveContext$TaskGraphImpl.getNodeValues(CachingTaskDependencyResolveContext.java:108)
+[        ] 	at org.gradle.internal.graph.CachingDirectedGraphWalker$GraphWithEmptyEdges.getNodeValues(CachingDirectedGraphWalker.java:219)
+[        ] 	at org.gradle.internal.graph.CachingDirectedGraphWalker.doSearch(CachingDirectedGraphWalker.java:127)
+[        ] 	at org.gradle.internal.graph.CachingDirectedGraphWalker.findValues(CachingDirectedGraphWalker.java:79)
+[        ] 	at org.gradle.api.internal.tasks.CachingTaskDependencyResolveContext.getDependencies(CachingTaskDependencyResolveContext.java:67)
+[        ] 	... 142 more
+[        ] BUILD FAILED in 9m 44s
+[        ] Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+[        ] You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+[        ] For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+[        ] 4 actionable tasks: 2 executed, 2 up-to-date
+[  +52 ms] Watched directory hierarchies: [C:\Flutter\flutter\packages\flutter_tools\gradle]
+[+7913 ms] Running Gradle task 'assembleDebug'... (completed in 603,2s)
+[+5284 ms] "flutter apk" took 617.014ms.
+[+1851 ms] Gradle task assembleDebug failed with exit code 1
+[   +5 ms] 
+           #0      throwToolExit (package:flutter_tools/src/base/common.dart:34:3)
+           #1      AndroidGradleBuilder.buildGradleApp (package:flutter_tools/src/android/gradle.dart:592:7)
+           <asynchronous suspension>
+           #2      AndroidGradleBuilder.buildApk (package:flutter_tools/src/android/gradle.dart:234:5)
+           <asynchronous suspension>
+           #3      BuildApkCommand.runCommand (package:flutter_tools/src/commands/build_apk.dart:131:5)
+           <asynchronous suspension>
+           #4      FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart:1559:27)
+           <asynchronous suspension>
+           #5      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
+           <asynchronous suspension>
+           #6      CommandRunner.runCommand (package:args/command_runner.dart:212:13)
+           <asynchronous suspension>
+           #7      FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart:487:9)
+           <asynchronous suspension>
+           #8      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
+           <asynchronous suspension>
+           #9      FlutterCommandRunner.runCommand (package:flutter_tools/src/runner/flutter_command_runner.dart:422:5)
+           <asynchronous suspension>
+           #10     run.<anonymous closure>.<anonymous closure> (package:flutter_tools/runner.dart:104:11)
+           <asynchronous suspension>
+           #11     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:154:19)
+           <asynchronous suspension>
+           #12     main (package:flutter_tools/executable.dart:103:3)
+           <asynchronous suspension>
+
+
+[   +3 ms] Running 1 shutdown hook
+[   +4 ms] Shutdown hooks complete
+[ +441 ms] exiting with code 1

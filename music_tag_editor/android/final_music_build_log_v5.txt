@@ -1,0 +1,1494 @@
+Initialized native services in: C:\Users\joaom\.gradle\native
+Initialized jansi services in: C:\Users\joaom\.gradle\native
+Removing 0 daemon stop events from registry
+Previous Daemon (15612) stopped at Sat Dec 27 18:11:45 BRT 2025 stop command received
+Previous Daemon (7084) stopped at Sat Dec 27 18:11:45 BRT 2025 stop command received
+Previous Daemon (4036) stopped at Sat Dec 27 18:11:45 BRT 2025 stop command received
+Previous Daemon (4268) stopped at Sat Dec 27 17:20:04 BRT 2025 after being idle for 24 minutes and not recently used and to reclaim system virtual memory
+Previous Daemon (6728) stopped at Sat Dec 27 17:20:43 BRT 2025 after being idle for 2 minutes and not recently used and to reclaim system virtual memory
+Previous Daemon (19940) stopped at Sat Dec 27 17:25:55 BRT 2025 other compatible daemons were started and after being idle for 7 minutes and not recently used
+Previous Daemon (21436) stopped at Sat Dec 27 17:41:40 BRT 2025 other compatible daemons were started and after being idle for 2 minutes and not recently used
+Previous Daemon (15896) stopped at Sat Dec 27 17:47:21 BRT 2025 after being idle for 21 minutes and not recently used and to reclaim system virtual memory
+Previous Daemon (14376) stopped at Sat Dec 27 18:02:19 BRT 2025 after being idle for 15 minutes and not recently used and to reclaim system virtual memory
+Previous Daemon (16972) stopped at Sat Dec 27 18:09:53 BRT 2025 other compatible daemons were started and after being idle for 5 minutes and not recently used
+Previous Daemon (16568) stopped at Sat Dec 27 18:11:43 BRT 2025 by user or operating system
+Previous Daemon (7096) stopped at Sat Dec 27 18:11:43 BRT 2025 by user or operating system
+Previous Daemon (16912) stopped at Sat Dec 27 18:11:43 BRT 2025 by user or operating system
+Starting a Gradle Daemon, 13 stopped Daemons could not be reused, use --status for details
+Starting process 'Gradle build daemon'. Working directory: C:\Users\joaom\.gradle\daemon\8.13 Command: C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot\bin\java.exe --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.xml/javax.xml.namespace=ALL-UNNAMED -XX:MaxMetaspaceSize=4G -XX:ReservedCodeCacheSize=512m -XX:+HeapDumpOnOutOfMemoryError -Xmx8G -Dfile.encoding=windows-1252 -Duser.country=BR -Duser.language=pt -Duser.variant -cp C:\Users\joaom\.gradle\wrapper\dists\gradle-8.13-all\54h0s9kvb6g2sinako7ub77ku\gradle-8.13\lib\gradle-daemon-main-8.13.jar -javaagent:C:\Users\joaom\.gradle\wrapper\dists\gradle-8.13-all\54h0s9kvb6g2sinako7ub77ku\gradle-8.13\lib\agents\gradle-instrumentation-agent-8.13.jar org.gradle.launcher.daemon.bootstrap.GradleDaemon 8.13
+Successfully started process 'Gradle build daemon'
+An attempt to start the daemon took 7.291 secs.
+The client will now receive all logging from the daemon (pid: 5036). The daemon log file: C:\Users\joaom\.gradle\daemon\8.13\daemon-5036.out.log
+Starting build in new daemon [memory: 8 GiB]
+Using 4 worker leases.
+Received JVM installation metadata from 'C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot': {JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot, JAVA_VERSION=17.0.17, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=17.0.17+10, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=17.0.17+10, VM_VENDOR=Eclipse Adoptium, OS_ARCH=amd64}
+Watching the file system is configured to be enabled if available
+Now considering [C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android] as hierarchies to watch
+File system watching is active
+Starting Build
+Now considering [C:\Flutter\flutter\packages\flutter_tools\gradle, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android] as hierarchies to watch
+
+> Configure project :gradle
+Evaluating project ':gradle' using build file 'C:\Flutter\flutter\packages\flutter_tools\gradle\build.gradle.kts'.
+Resolved plugin [id: 'org.gradle.java-gradle-plugin']
+Resolved plugin [id: 'org.gradle.groovy']
+Resolved plugin [id: 'org.gradle.kotlin.kotlin-dsl', version: '5.2.0']
+Resolved plugin [id: 'org.jetbrains.kotlin.jvm', version: '1.9.20']
+Using Kotlin Gradle Plugin gradle85 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+file or directory 'C:\Flutter\flutter\packages\flutter_tools\gradle\src\main\java', not found
+Resolved plugin [id: 'dev.flutter.flutter-plugin-loader', version: '1.0.0']
+Resolved plugin [id: 'com.android.application', version: '8.9.1', apply: false]
+Resolved plugin [id: 'com.google.gms.google-services', version: '4.4.2', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlin.android', version: '2.1.10', apply: false]
+Resolved plugin [id: 'com.google.firebase.crashlytics', version: '3.0.2', apply: false]
+Resolve mutations for :gradle:checkKotlinGradlePluginConfigurationErrors (Thread[included builds,5,main]) started.
+:gradle:checkKotlinGradlePluginConfigurationErrors (Thread[included builds,5,main]) started.
+
+> Task :gradle:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':gradle:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+Resolve mutations for :gradle:compileKotlin (Thread[included builds,5,main]) started.
+:gradle:compileKotlin (Thread[included builds,5,main]) started.
+
+> Task :gradle:compileKotlin UP-TO-DATE
+Caching disabled for task ':gradle:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':gradle:compileKotlin' as it is up-to-date.
+Resolve mutations for :gradle:compileJava (Thread[included builds,5,main]) started.
+:gradle:compileJava (Thread[included builds,5,main]) started.
+
+> Task :gradle:compileJava NO-SOURCE
+Skipping task ':gradle:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :gradle:compileGroovy (Thread[included builds,5,main]) started.
+:gradle:compileGroovy (Thread[included builds,5,main]) started.
+
+> Task :gradle:compileGroovy NO-SOURCE
+Skipping task ':gradle:compileGroovy' as it has no source files and no previous output files.
+Resolve mutations for :gradle:pluginDescriptors (Thread[included builds,5,main]) started.
+:gradle:pluginDescriptors (Thread[included builds,5,main]) started.
+
+> Task :gradle:pluginDescriptors UP-TO-DATE
+Caching disabled for task ':gradle:pluginDescriptors' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':gradle:pluginDescriptors' as it is up-to-date.
+Resolve mutations for :gradle:processResources (Thread[included builds,5,main]) started.
+:gradle:processResources (Thread[included builds,5,main]) started.
+
+> Task :gradle:processResources UP-TO-DATE
+Caching disabled for task ':gradle:processResources' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':gradle:processResources' as it is up-to-date.
+Resolve mutations for :gradle:classes (Thread[included builds,5,main]) started.
+:gradle:classes (Thread[included builds,5,main]) started.
+
+> Task :gradle:classes UP-TO-DATE
+Skipping task ':gradle:classes' as it has no actions.
+Resolve mutations for :gradle:jar (Thread[included builds,5,main]) started.
+:gradle:jar (Thread[included builds,5,main]) started.
+
+> Task :gradle:jar UP-TO-DATE
+Caching disabled for task ':gradle:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':gradle:jar' as it is up-to-date.
+Settings evaluated using settings file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\settings.gradle.kts'.
+Projects loaded. Root project using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\build.gradle.kts'.
+Included projects: [root project 'music_player_android', project ':app', project ':audio_service', project ':audio_session', project ':cloud_firestore', project ':connectivity_plus', project ':file_picker', project ':firebase_analytics', project ':firebase_auth', project ':firebase_core', project ':firebase_crashlytics', project ':flutter_plugin_android_lifecycle', project ':flutter_secure_storage', project ':just_audio', project ':local_auth_android', project ':nearby_connections', project ':network_info_plus', project ':path_provider_android', project ':permission_handler_android', project ':shared_preferences_android', project ':sqflite_android']
+
+> Configure project :
+Evaluating root project 'music_player_android' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\build.gradle.kts'.
+
+> Configure project :app
+Evaluating project ':app' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\build.gradle.kts'.
+Resolved plugin [id: 'com.android.application']
+Resolved plugin [id: 'com.google.gms.google-services']
+Resolved plugin [id: 'kotlin-android']
+Resolved plugin [id: 'dev.flutter.flutter-gradle-plugin']
+Resolved plugin [id: 'com.google.firebase.crashlytics']
+Using default execution profile
+Using Kotlin Gradle Plugin gradle85 variant
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+C/C++: android.ndkPath from module build.gradle is not set
+C/C++: ndk.dir in local.properties is not set
+C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+C/C++: sdkFolder is C:\Android\Sdk
+
+> Configure project :audio_service
+Evaluating project ':audio_service' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_service-0.18.18\android\build.gradle'.
+Using default execution profile
+
+> Configure project :audio_session
+Evaluating project ':audio_session' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\audio_session-0.1.25\android\build.gradle'.
+Using default execution profile
+
+> Configure project :cloud_firestore
+Evaluating project ':cloud_firestore' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.12\android\build.gradle'.
+Using default execution profile
+
+> Configure project :connectivity_plus
+Evaluating project ':connectivity_plus' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\connectivity_plus-6.1.5\android\build.gradle'.
+Using default execution profile
+
+> Configure project :file_picker
+Evaluating project ':file_picker' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.3.7\android\build.gradle'.
+Using default execution profile
+
+> Configure project :firebase_analytics
+Evaluating project ':firebase_analytics' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_analytics-11.6.0\android\build.gradle'.
+Using default execution profile
+Using Kotlin Gradle Plugin gradle85 variant
+
+> Configure project :firebase_auth
+Evaluating project ':firebase_auth' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.7.0\android\build.gradle'.
+Using default execution profile
+
+> Configure project :firebase_core
+Evaluating project ':firebase_core' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-3.15.2\android\build.gradle'.
+Using default execution profile
+
+> Configure project :firebase_crashlytics
+Evaluating project ':firebase_crashlytics' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_crashlytics-4.3.10\android\build.gradle'.
+Using default execution profile
+
+> Configure project :flutter_plugin_android_lifecycle
+Evaluating project ':flutter_plugin_android_lifecycle' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.33\android\build.gradle'.
+Using default execution profile
+
+> Configure project :flutter_secure_storage
+Evaluating project ':flutter_secure_storage' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage-9.2.4\android\build.gradle'.
+Using default execution profile
+
+> Configure project :just_audio
+Evaluating project ':just_audio' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\just_audio-0.9.46\android\build.gradle'.
+Using default execution profile
+
+> Configure project :local_auth_android
+Evaluating project ':local_auth_android' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\local_auth_android\android\build.gradle'.
+Using default execution profile
+
+> Configure project :nearby_connections
+Evaluating project ':nearby_connections' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\nearby_connections-4.3.0\android\build.gradle'.
+Using default execution profile
+
+> Configure project :network_info_plus
+Evaluating project ':network_info_plus' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\network_info_plus-7.0.0\android\build.gradle'.
+Using default execution profile
+Using Kotlin Gradle Plugin gradle85 variant
+
+> Configure project :path_provider_android
+Evaluating project ':path_provider_android' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\android\build.gradle'.
+Using default execution profile
+
+> Configure project :permission_handler_android
+Evaluating project ':permission_handler_android' using build file 'C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\packages\permission_handler_android\android\build.gradle'.
+Using default execution profile
+
+> Configure project :shared_preferences_android
+Evaluating project ':shared_preferences_android' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\android\build.gradle'.
+Using default execution profile
+Using Kotlin Gradle Plugin gradle85 variant
+
+> Configure project :sqflite_android
+Evaluating project ':sqflite_android' using build file 'C:\Users\joaom\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_android-2.4.2+2\android\build.gradle'.
+Using default execution profile
+All projects evaluated.
+Task name matched 'assembleDebug'
+Selected primary task 'assembleDebug' from project :
+Adding -Xuse-inline-scopes-numbers Kotlin compiler flag for task :app:compileDebugKotlin
+Tasks to be executed: [task ':app:DebugMinSdkCheck', task ':app:preBuild', task ':app:preDebugBuild', task ':app:mergeDebugNativeDebugMetadata', task ':app:checkKotlinGradlePluginConfigurationErrors', task ':app:compileFlutterBuildDebug', task ':app:packJniLibsflutterBuildDebug', task ':audio_service:preBuild', task ':audio_service:preDebugBuild', task ':audio_service:writeDebugAarMetadata', task ':audio_session:preBuild', task ':audio_session:preDebugBuild', task ':audio_session:writeDebugAarMetadata', task ':cloud_firestore:preBuild', task ':cloud_firestore:preDebugBuild', task ':cloud_firestore:writeDebugAarMetadata', task ':connectivity_plus:preBuild', task ':connectivity_plus:preDebugBuild', task ':connectivity_plus:writeDebugAarMetadata', task ':file_picker:preBuild', task ':file_picker:preDebugBuild', task ':file_picker:writeDebugAarMetadata', task ':firebase_analytics:preBuild', task ':firebase_analytics:preDebugBuild', task ':firebase_analytics:writeDebugAarMetadata', task ':firebase_auth:preBuild', task ':firebase_auth:preDebugBuild', task ':firebase_auth:writeDebugAarMetadata', task ':firebase_core:preBuild', task ':firebase_core:preDebugBuild', task ':firebase_core:writeDebugAarMetadata', task ':firebase_crashlytics:preBuild', task ':firebase_crashlytics:preDebugBuild', task ':firebase_crashlytics:writeDebugAarMetadata', task ':flutter_plugin_android_lifecycle:preBuild', task ':flutter_plugin_android_lifecycle:preDebugBuild', task ':flutter_plugin_android_lifecycle:writeDebugAarMetadata', task ':flutter_secure_storage:preBuild', task ':flutter_secure_storage:preDebugBuild', task ':flutter_secure_storage:writeDebugAarMetadata', task ':just_audio:preBuild', task ':just_audio:preDebugBuild', task ':just_audio:writeDebugAarMetadata', task ':local_auth_android:preBuild', task ':local_auth_android:preDebugBuild', task ':local_auth_android:writeDebugAarMetadata', task ':nearby_connections:preBuild', task ':nearby_connections:preDebugBuild', task ':nearby_connections:writeDebugAarMetadata', task ':network_info_plus:preBuild', task ':network_info_plus:preDebugBuild', task ':network_info_plus:writeDebugAarMetadata', task ':path_provider_android:preBuild', task ':path_provider_android:preDebugBuild', task ':path_provider_android:writeDebugAarMetadata', task ':permission_handler_android:preBuild', task ':permission_handler_android:preDebugBuild', task ':permission_handler_android:writeDebugAarMetadata', task ':shared_preferences_android:preBuild', task ':shared_preferences_android:preDebugBuild', task ':shared_preferences_android:writeDebugAarMetadata', task ':sqflite_android:preBuild', task ':sqflite_android:preDebugBuild', task ':sqflite_android:writeDebugAarMetadata', task ':app:checkDebugAarMetadata', task ':app:cleanMergeDebugAssets', task ':app:mergeDebugShaders', task ':app:compileDebugShaders', task ':app:generateDebugAssets', task ':audio_service:mergeDebugShaders', task ':audio_service:compileDebugShaders', task ':audio_service:generateDebugAssets', task ':audio_service:mergeDebugAssets', task ':audio_session:mergeDebugShaders', task ':audio_session:compileDebugShaders', task ':audio_session:generateDebugAssets', task ':audio_session:mergeDebugAssets', task ':cloud_firestore:mergeDebugShaders', task ':cloud_firestore:compileDebugShaders', task ':cloud_firestore:generateDebugAssets', task ':cloud_firestore:mergeDebugAssets', task ':connectivity_plus:mergeDebugShaders', task ':connectivity_plus:compileDebugShaders', task ':connectivity_plus:generateDebugAssets', task ':connectivity_plus:mergeDebugAssets', task ':file_picker:mergeDebugShaders', task ':file_picker:compileDebugShaders', task ':file_picker:generateDebugAssets', task ':file_picker:mergeDebugAssets', task ':firebase_analytics:mergeDebugShaders', task ':firebase_analytics:compileDebugShaders', task ':firebase_analytics:generateDebugAssets', task ':firebase_analytics:mergeDebugAssets', task ':firebase_auth:mergeDebugShaders', task ':firebase_auth:compileDebugShaders', task ':firebase_auth:generateDebugAssets', task ':firebase_auth:mergeDebugAssets', task ':firebase_core:mergeDebugShaders', task ':firebase_core:compileDebugShaders', task ':firebase_core:generateDebugAssets', task ':firebase_core:mergeDebugAssets', task ':firebase_crashlytics:mergeDebugShaders', task ':firebase_crashlytics:compileDebugShaders', task ':firebase_crashlytics:generateDebugAssets', task ':firebase_crashlytics:mergeDebugAssets', task ':flutter_plugin_android_lifecycle:mergeDebugShaders', task ':flutter_plugin_android_lifecycle:compileDebugShaders', task ':flutter_plugin_android_lifecycle:generateDebugAssets', task ':flutter_plugin_android_lifecycle:mergeDebugAssets', task ':flutter_secure_storage:mergeDebugShaders', task ':flutter_secure_storage:compileDebugShaders', task ':flutter_secure_storage:generateDebugAssets', task ':flutter_secure_storage:mergeDebugAssets', task ':just_audio:mergeDebugShaders', task ':just_audio:compileDebugShaders', task ':just_audio:generateDebugAssets', task ':just_audio:mergeDebugAssets', task ':local_auth_android:mergeDebugShaders', task ':local_auth_android:compileDebugShaders', task ':local_auth_android:generateDebugAssets', task ':local_auth_android:mergeDebugAssets', task ':nearby_connections:mergeDebugShaders', task ':nearby_connections:compileDebugShaders', task ':nearby_connections:generateDebugAssets', task ':nearby_connections:mergeDebugAssets', task ':network_info_plus:mergeDebugShaders', task ':network_info_plus:compileDebugShaders', task ':network_info_plus:generateDebugAssets', task ':network_info_plus:mergeDebugAssets', task ':path_provider_android:mergeDebugShaders', task ':path_provider_android:compileDebugShaders', task ':path_provider_android:generateDebugAssets', task ':path_provider_android:mergeDebugAssets', task ':permission_handler_android:mergeDebugShaders', task ':permission_handler_android:compileDebugShaders', task ':permission_handler_android:generateDebugAssets', task ':permission_handler_android:mergeDebugAssets', task ':shared_preferences_android:mergeDebugShaders', task ':shared_preferences_android:compileDebugShaders', task ':shared_preferences_android:generateDebugAssets', task ':shared_preferences_android:mergeDebugAssets', task ':sqflite_android:mergeDebugShaders', task ':sqflite_android:compileDebugShaders', task ':sqflite_android:generateDebugAssets', task ':sqflite_android:mergeDebugAssets', task ':app:mergeDebugAssets', task ':app:copyFlutterAssetsDebug', task ':app:generateDebugResValues', task ':app:injectCrashlyticsMappingFileIdDebug', task ':app:processDebugGoogleServices', task ':audio_service:generateDebugResValues', task ':audio_service:generateDebugResources', task ':audio_service:packageDebugResources', task ':audio_session:generateDebugResValues', task ':audio_session:generateDebugResources', task ':audio_session:packageDebugResources', task ':cloud_firestore:generateDebugResValues', task ':cloud_firestore:generateDebugResources', task ':cloud_firestore:packageDebugResources', task ':connectivity_plus:generateDebugResValues', task ':connectivity_plus:generateDebugResources', task ':connectivity_plus:packageDebugResources', task ':file_picker:generateDebugResValues', task ':file_picker:generateDebugResources', task ':file_picker:packageDebugResources', task ':firebase_analytics:generateDebugResValues', task ':firebase_analytics:generateDebugResources', task ':firebase_analytics:packageDebugResources', task ':firebase_auth:generateDebugResValues', task ':firebase_auth:generateDebugResources', task ':firebase_auth:packageDebugResources', task ':firebase_core:generateDebugResValues', task ':firebase_core:generateDebugResources', task ':firebase_core:packageDebugResources', task ':firebase_crashlytics:generateDebugResValues', task ':firebase_crashlytics:generateDebugResources', task ':firebase_crashlytics:packageDebugResources', task ':flutter_plugin_android_lifecycle:generateDebugResValues', task ':flutter_plugin_android_lifecycle:generateDebugResources', task ':flutter_plugin_android_lifecycle:packageDebugResources', task ':flutter_secure_storage:generateDebugResValues', task ':flutter_secure_storage:generateDebugResources', task ':flutter_secure_storage:packageDebugResources', task ':just_audio:generateDebugResValues', task ':just_audio:generateDebugResources', task ':just_audio:packageDebugResources', task ':local_auth_android:generateDebugResValues', task ':local_auth_android:generateDebugResources', task ':local_auth_android:packageDebugResources', task ':nearby_connections:generateDebugResValues', task ':nearby_connections:generateDebugResources', task ':nearby_connections:packageDebugResources', task ':network_info_plus:generateDebugResValues', task ':network_info_plus:generateDebugResources', task ':network_info_plus:packageDebugResources', task ':path_provider_android:generateDebugResValues', task ':path_provider_android:generateDebugResources', task ':path_provider_android:packageDebugResources', task ':permission_handler_android:generateDebugResValues', task ':permission_handler_android:generateDebugResources', task ':permission_handler_android:packageDebugResources', task ':shared_preferences_android:generateDebugResValues', task ':shared_preferences_android:generateDebugResources', task ':shared_preferences_android:packageDebugResources', task ':sqflite_android:generateDebugResValues', task ':sqflite_android:generateDebugResources', task ':sqflite_android:packageDebugResources', task ':app:mapDebugSourceSetPaths', task ':app:generateDebugResources', task ':app:mergeDebugResources', task ':app:packageDebugResources', task ':app:parseDebugLocalResources', task ':app:createDebugCompatibleScreenManifests', task ':app:extractDeepLinksDebug', task ':audio_service:extractDeepLinksDebug', task ':audio_service:processDebugManifest', task ':audio_session:extractDeepLinksDebug', task ':audio_session:processDebugManifest', task ':cloud_firestore:extractDeepLinksDebug', task ':cloud_firestore:processDebugManifest', task ':connectivity_plus:extractDeepLinksDebug', task ':connectivity_plus:processDebugManifest', task ':file_picker:extractDeepLinksDebug', task ':file_picker:processDebugManifest', task ':firebase_analytics:extractDeepLinksDebug', task ':firebase_analytics:processDebugManifest', task ':firebase_auth:extractDeepLinksDebug', task ':firebase_auth:processDebugManifest', task ':firebase_core:extractDeepLinksDebug', task ':firebase_core:processDebugManifest', task ':firebase_crashlytics:extractDeepLinksDebug', task ':firebase_crashlytics:processDebugManifest', task ':flutter_plugin_android_lifecycle:extractDeepLinksDebug', task ':flutter_plugin_android_lifecycle:processDebugManifest', task ':flutter_secure_storage:extractDeepLinksDebug', task ':flutter_secure_storage:processDebugManifest', task ':just_audio:extractDeepLinksDebug', task ':just_audio:processDebugManifest', task ':local_auth_android:extractDeepLinksDebug', task ':local_auth_android:processDebugManifest', task ':nearby_connections:extractDeepLinksDebug', task ':nearby_connections:processDebugManifest', task ':network_info_plus:extractDeepLinksDebug', task ':network_info_plus:processDebugManifest', task ':path_provider_android:extractDeepLinksDebug', task ':path_provider_android:processDebugManifest', task ':permission_handler_android:extractDeepLinksDebug', task ':permission_handler_android:processDebugManifest', task ':shared_preferences_android:extractDeepLinksDebug', task ':shared_preferences_android:processDebugManifest', task ':sqflite_android:extractDeepLinksDebug', task ':sqflite_android:processDebugManifest', task ':app:processDebugMainManifest', task ':app:outputDebugAppLinkSettings', task ':app:processDebugManifest', task ':app:processDebugManifestForPackage', task ':audio_service:compileDebugLibraryResources', task ':audio_service:parseDebugLocalResources', task ':audio_service:generateDebugRFile', task ':audio_session:compileDebugLibraryResources', task ':audio_session:parseDebugLocalResources', task ':audio_session:generateDebugRFile', task ':cloud_firestore:compileDebugLibraryResources', task ':cloud_firestore:parseDebugLocalResources', task ':cloud_firestore:generateDebugRFile', task ':connectivity_plus:compileDebugLibraryResources', task ':connectivity_plus:parseDebugLocalResources', task ':connectivity_plus:generateDebugRFile', task ':file_picker:compileDebugLibraryResources', task ':file_picker:parseDebugLocalResources', task ':file_picker:generateDebugRFile', task ':firebase_analytics:compileDebugLibraryResources', task ':firebase_analytics:parseDebugLocalResources', task ':firebase_analytics:generateDebugRFile', task ':firebase_auth:compileDebugLibraryResources', task ':firebase_auth:parseDebugLocalResources', task ':firebase_auth:generateDebugRFile', task ':firebase_core:compileDebugLibraryResources', task ':firebase_core:parseDebugLocalResources', task ':firebase_core:generateDebugRFile', task ':firebase_crashlytics:compileDebugLibraryResources', task ':firebase_crashlytics:parseDebugLocalResources', task ':firebase_crashlytics:generateDebugRFile', task ':flutter_plugin_android_lifecycle:compileDebugLibraryResources', task ':flutter_plugin_android_lifecycle:parseDebugLocalResources', task ':flutter_plugin_android_lifecycle:generateDebugRFile', task ':flutter_secure_storage:compileDebugLibraryResources', task ':flutter_secure_storage:parseDebugLocalResources', task ':flutter_secure_storage:generateDebugRFile', task ':just_audio:compileDebugLibraryResources', task ':just_audio:parseDebugLocalResources', task ':just_audio:generateDebugRFile', task ':local_auth_android:compileDebugLibraryResources', task ':local_auth_android:parseDebugLocalResources', task ':local_auth_android:generateDebugRFile', task ':nearby_connections:compileDebugLibraryResources', task ':nearby_connections:parseDebugLocalResources', task ':nearby_connections:generateDebugRFile', task ':network_info_plus:compileDebugLibraryResources', task ':network_info_plus:parseDebugLocalResources', task ':network_info_plus:generateDebugRFile', task ':path_provider_android:compileDebugLibraryResources', task ':path_provider_android:parseDebugLocalResources', task ':path_provider_android:generateDebugRFile', task ':permission_handler_android:compileDebugLibraryResources', task ':permission_handler_android:parseDebugLocalResources', task ':permission_handler_android:generateDebugRFile', task ':shared_preferences_android:compileDebugLibraryResources', task ':shared_preferences_android:parseDebugLocalResources', task ':shared_preferences_android:generateDebugRFile', task ':sqflite_android:compileDebugLibraryResources', task ':sqflite_android:parseDebugLocalResources', task ':sqflite_android:generateDebugRFile', task ':app:processDebugResources', task ':audio_service:javaPreCompileDebug', task ':audio_session:javaPreCompileDebug', task ':audio_session:compileDebugJavaWithJavac', task ':audio_session:bundleLibCompileToJarDebug', task ':audio_service:compileDebugJavaWithJavac', task ':audio_service:bundleLibCompileToJarDebug', task ':cloud_firestore:generateDebugBuildConfig', task ':cloud_firestore:javaPreCompileDebug', task ':firebase_core:generateDebugBuildConfig', task ':firebase_core:javaPreCompileDebug', task ':firebase_core:compileDebugJavaWithJavac', task ':firebase_core:bundleLibCompileToJarDebug', task ':cloud_firestore:compileDebugJavaWithJavac', task ':cloud_firestore:bundleLibCompileToJarDebug', task ':connectivity_plus:javaPreCompileDebug', task ':connectivity_plus:compileDebugJavaWithJavac', task ':connectivity_plus:bundleLibCompileToJarDebug', task ':file_picker:javaPreCompileDebug', task ':flutter_plugin_android_lifecycle:javaPreCompileDebug', task ':flutter_plugin_android_lifecycle:compileDebugJavaWithJavac', task ':flutter_plugin_android_lifecycle:bundleLibCompileToJarDebug', task ':file_picker:compileDebugJavaWithJavac', task ':file_picker:bundleLibCompileToJarDebug', task ':firebase_analytics:checkKotlinGradlePluginConfigurationErrors', task ':firebase_analytics:generateDebugBuildConfig', task ':firebase_analytics:compileDebugKotlin', task ':firebase_analytics:javaPreCompileDebug', task ':firebase_analytics:compileDebugJavaWithJavac', task ':firebase_analytics:bundleLibCompileToJarDebug', task ':firebase_auth:generateDebugBuildConfig', task ':firebase_auth:javaPreCompileDebug', task ':firebase_auth:compileDebugJavaWithJavac', task ':firebase_auth:bundleLibCompileToJarDebug', task ':firebase_crashlytics:generateDebugBuildConfig', task ':firebase_crashlytics:javaPreCompileDebug', task ':firebase_crashlytics:compileDebugJavaWithJavac', task ':firebase_crashlytics:bundleLibCompileToJarDebug', task ':flutter_secure_storage:generateDebugBuildConfig', task ':flutter_secure_storage:javaPreCompileDebug', task ':flutter_secure_storage:compileDebugJavaWithJavac', task ':flutter_secure_storage:bundleLibCompileToJarDebug', task ':just_audio:javaPreCompileDebug', task ':just_audio:compileDebugJavaWithJavac', task ':just_audio:bundleLibCompileToJarDebug', task ':local_auth_android:javaPreCompileDebug', task ':local_auth_android:compileDebugJavaWithJavac', task ':local_auth_android:bundleLibCompileToJarDebug', task ':nearby_connections:javaPreCompileDebug', task ':nearby_connections:compileDebugJavaWithJavac', task ':nearby_connections:bundleLibCompileToJarDebug', task ':network_info_plus:checkKotlinGradlePluginConfigurationErrors', task ':network_info_plus:compileDebugKotlin', task ':network_info_plus:javaPreCompileDebug', task ':network_info_plus:compileDebugJavaWithJavac', task ':network_info_plus:bundleLibCompileToJarDebug', task ':path_provider_android:javaPreCompileDebug', task ':path_provider_android:compileDebugJavaWithJavac', task ':path_provider_android:bundleLibCompileToJarDebug', task ':permission_handler_android:javaPreCompileDebug', task ':permission_handler_android:compileDebugJavaWithJavac', task ':permission_handler_android:bundleLibCompileToJarDebug', task ':shared_preferences_android:checkKotlinGradlePluginConfigurationErrors', task ':shared_preferences_android:compileDebugKotlin', task ':shared_preferences_android:javaPreCompileDebug', task ':shared_preferences_android:compileDebugJavaWithJavac', task ':shared_preferences_android:bundleLibCompileToJarDebug', task ':sqflite_android:javaPreCompileDebug', task ':sqflite_android:compileDebugJavaWithJavac', task ':sqflite_android:bundleLibCompileToJarDebug', task ':app:compileDebugKotlin', task ':app:javaPreCompileDebug', task ':app:compileDebugJavaWithJavac', task ':app:compressDebugAssets', task ':audio_service:bundleLibRuntimeToJarDebug', task ':just_audio:bundleLibRuntimeToJarDebug', task ':audio_session:bundleLibRuntimeToJarDebug', task ':cloud_firestore:bundleLibRuntimeToJarDebug', task ':connectivity_plus:bundleLibRuntimeToJarDebug', task ':file_picker:bundleLibRuntimeToJarDebug', task ':firebase_analytics:bundleLibRuntimeToJarDebug', task ':firebase_auth:bundleLibRuntimeToJarDebug', task ':firebase_crashlytics:bundleLibRuntimeToJarDebug', task ':firebase_core:bundleLibRuntimeToJarDebug', task ':local_auth_android:bundleLibRuntimeToJarDebug', task ':flutter_plugin_android_lifecycle:bundleLibRuntimeToJarDebug', task ':flutter_secure_storage:bundleLibRuntimeToJarDebug', task ':nearby_connections:bundleLibRuntimeToJarDebug', task ':network_info_plus:bundleLibRuntimeToJarDebug', task ':path_provider_android:bundleLibRuntimeToJarDebug', task ':permission_handler_android:bundleLibRuntimeToJarDebug', task ':shared_preferences_android:bundleLibRuntimeToJarDebug', task ':sqflite_android:bundleLibRuntimeToJarDebug', task ':app:desugarDebugFileDependencies', task ':app:dexBuilderDebug', task ':app:mergeDebugGlobalSynthetics', task ':app:processDebugJavaRes', task ':audio_service:processDebugJavaRes', task ':audio_session:processDebugJavaRes', task ':cloud_firestore:processDebugJavaRes', task ':connectivity_plus:processDebugJavaRes', task ':file_picker:processDebugJavaRes', task ':firebase_analytics:processDebugJavaRes', task ':firebase_auth:processDebugJavaRes', task ':firebase_core:processDebugJavaRes', task ':firebase_crashlytics:processDebugJavaRes', task ':flutter_plugin_android_lifecycle:processDebugJavaRes', task ':flutter_secure_storage:processDebugJavaRes', task ':just_audio:processDebugJavaRes', task ':local_auth_android:processDebugJavaRes', task ':nearby_connections:processDebugJavaRes', task ':network_info_plus:processDebugJavaRes', task ':path_provider_android:processDebugJavaRes', task ':permission_handler_android:processDebugJavaRes', task ':shared_preferences_android:processDebugJavaRes', task ':sqflite_android:processDebugJavaRes', task ':app:mergeDebugJavaResource', task ':app:checkDebugDuplicateClasses', task ':app:mergeExtDexDebug', task ':audio_service:bundleLibRuntimeToDirDebug', task ':just_audio:bundleLibRuntimeToDirDebug', task ':audio_session:bundleLibRuntimeToDirDebug', task ':cloud_firestore:bundleLibRuntimeToDirDebug', task ':connectivity_plus:bundleLibRuntimeToDirDebug', task ':file_picker:bundleLibRuntimeToDirDebug', task ':firebase_analytics:bundleLibRuntimeToDirDebug', task ':firebase_auth:bundleLibRuntimeToDirDebug', task ':firebase_crashlytics:bundleLibRuntimeToDirDebug', task ':firebase_core:bundleLibRuntimeToDirDebug', task ':local_auth_android:bundleLibRuntimeToDirDebug', task ':flutter_plugin_android_lifecycle:bundleLibRuntimeToDirDebug', task ':flutter_secure_storage:bundleLibRuntimeToDirDebug', task ':nearby_connections:bundleLibRuntimeToDirDebug', task ':network_info_plus:bundleLibRuntimeToDirDebug', task ':path_provider_android:bundleLibRuntimeToDirDebug', task ':permission_handler_android:bundleLibRuntimeToDirDebug', task ':shared_preferences_android:bundleLibRuntimeToDirDebug', task ':sqflite_android:bundleLibRuntimeToDirDebug', task ':app:mergeLibDexDebug', task ':app:mergeProjectDexDebug', task ':app:configureCMakeDebug[arm64-v8a]', task ':app:buildCMakeDebug[arm64-v8a]', task ':app:configureCMakeDebug[armeabi-v7a]', task ':app:buildCMakeDebug[armeabi-v7a]', task ':app:configureCMakeDebug[x86_64]', task ':app:buildCMakeDebug[x86_64]', task ':app:mergeDebugJniLibFolders', task ':audio_service:mergeDebugJniLibFolders', task ':audio_service:mergeDebugNativeLibs', task ':audio_service:copyDebugJniLibsProjectOnly', task ':audio_session:mergeDebugJniLibFolders', task ':audio_session:mergeDebugNativeLibs', task ':audio_session:copyDebugJniLibsProjectOnly', task ':cloud_firestore:mergeDebugJniLibFolders', task ':cloud_firestore:mergeDebugNativeLibs', task ':cloud_firestore:copyDebugJniLibsProjectOnly', task ':connectivity_plus:mergeDebugJniLibFolders', task ':connectivity_plus:mergeDebugNativeLibs', task ':connectivity_plus:copyDebugJniLibsProjectOnly', task ':file_picker:mergeDebugJniLibFolders', task ':file_picker:mergeDebugNativeLibs', task ':file_picker:copyDebugJniLibsProjectOnly', task ':firebase_analytics:mergeDebugJniLibFolders', task ':firebase_analytics:mergeDebugNativeLibs', task ':firebase_analytics:copyDebugJniLibsProjectOnly', task ':firebase_auth:mergeDebugJniLibFolders', task ':firebase_auth:mergeDebugNativeLibs', task ':firebase_auth:copyDebugJniLibsProjectOnly', task ':firebase_core:mergeDebugJniLibFolders', task ':firebase_core:mergeDebugNativeLibs', task ':firebase_core:copyDebugJniLibsProjectOnly', task ':firebase_crashlytics:mergeDebugJniLibFolders', task ':firebase_crashlytics:mergeDebugNativeLibs', task ':firebase_crashlytics:copyDebugJniLibsProjectOnly', task ':flutter_plugin_android_lifecycle:mergeDebugJniLibFolders', task ':flutter_plugin_android_lifecycle:mergeDebugNativeLibs', task ':flutter_plugin_android_lifecycle:copyDebugJniLibsProjectOnly', task ':flutter_secure_storage:mergeDebugJniLibFolders', task ':flutter_secure_storage:mergeDebugNativeLibs', task ':flutter_secure_storage:copyDebugJniLibsProjectOnly', task ':just_audio:mergeDebugJniLibFolders', task ':just_audio:mergeDebugNativeLibs', task ':just_audio:copyDebugJniLibsProjectOnly', task ':local_auth_android:mergeDebugJniLibFolders', task ':local_auth_android:mergeDebugNativeLibs', task ':local_auth_android:copyDebugJniLibsProjectOnly', task ':nearby_connections:mergeDebugJniLibFolders', task ':nearby_connections:mergeDebugNativeLibs', task ':nearby_connections:copyDebugJniLibsProjectOnly', task ':network_info_plus:mergeDebugJniLibFolders', task ':network_info_plus:mergeDebugNativeLibs', task ':network_info_plus:copyDebugJniLibsProjectOnly', task ':path_provider_android:mergeDebugJniLibFolders', task ':path_provider_android:mergeDebugNativeLibs', task ':path_provider_android:copyDebugJniLibsProjectOnly', task ':permission_handler_android:mergeDebugJniLibFolders', task ':permission_handler_android:mergeDebugNativeLibs', task ':permission_handler_android:copyDebugJniLibsProjectOnly', task ':shared_preferences_android:mergeDebugJniLibFolders', task ':shared_preferences_android:mergeDebugNativeLibs', task ':shared_preferences_android:copyDebugJniLibsProjectOnly', task ':sqflite_android:mergeDebugJniLibFolders', task ':sqflite_android:mergeDebugNativeLibs', task ':sqflite_android:copyDebugJniLibsProjectOnly', task ':app:mergeDebugNativeLibs', task ':app:stripDebugDebugSymbols', task ':app:validateSigningDebug', task ':app:writeDebugAppMetadata', task ':app:writeDebugSigningConfigVersions', task ':app:packageDebug', task ':app:createDebugApkListingFileRedirect', task ':app:assembleDebug', task ':audio_service:stripDebugDebugSymbols', task ':audio_service:copyDebugJniLibsProjectAndLocalJars', task ':audio_service:extractDebugAnnotations', task ':audio_service:extractDeepLinksForAarDebug', task ':audio_service:mergeDebugGeneratedProguardFiles', task ':audio_service:mergeDebugConsumerProguardFiles', task ':audio_service:prepareDebugArtProfile', task ':audio_service:prepareLintJarForPublish', task ':audio_service:mergeDebugJavaResource', task ':audio_service:syncDebugLibJars', task ':audio_service:bundleDebugAar', task ':audio_service:assembleDebug', task ':audio_session:stripDebugDebugSymbols', task ':audio_session:copyDebugJniLibsProjectAndLocalJars', task ':audio_session:extractDebugAnnotations', task ':audio_session:extractDeepLinksForAarDebug', task ':audio_session:mergeDebugGeneratedProguardFiles', task ':audio_session:mergeDebugConsumerProguardFiles', task ':audio_session:prepareDebugArtProfile', task ':audio_session:prepareLintJarForPublish', task ':audio_session:mergeDebugJavaResource', task ':audio_session:syncDebugLibJars', task ':audio_session:bundleDebugAar', task ':audio_session:assembleDebug', task ':cloud_firestore:stripDebugDebugSymbols', task ':cloud_firestore:copyDebugJniLibsProjectAndLocalJars', task ':cloud_firestore:extractDebugAnnotations', task ':cloud_firestore:extractDeepLinksForAarDebug', task ':cloud_firestore:mergeDebugGeneratedProguardFiles', task ':cloud_firestore:mergeDebugConsumerProguardFiles', task ':cloud_firestore:prepareDebugArtProfile', task ':cloud_firestore:prepareLintJarForPublish', task ':cloud_firestore:mergeDebugJavaResource', task ':cloud_firestore:syncDebugLibJars', task ':cloud_firestore:bundleDebugAar', task ':cloud_firestore:assembleDebug', task ':connectivity_plus:stripDebugDebugSymbols', task ':connectivity_plus:copyDebugJniLibsProjectAndLocalJars', task ':connectivity_plus:extractDebugAnnotations', task ':connectivity_plus:extractDeepLinksForAarDebug', task ':connectivity_plus:mergeDebugGeneratedProguardFiles', task ':connectivity_plus:mergeDebugConsumerProguardFiles', task ':connectivity_plus:prepareDebugArtProfile', task ':connectivity_plus:prepareLintJarForPublish', task ':connectivity_plus:mergeDebugJavaResource', task ':connectivity_plus:syncDebugLibJars', task ':connectivity_plus:bundleDebugAar', task ':connectivity_plus:assembleDebug', task ':file_picker:stripDebugDebugSymbols', task ':file_picker:copyDebugJniLibsProjectAndLocalJars', task ':file_picker:extractDebugAnnotations', task ':file_picker:extractDeepLinksForAarDebug', task ':file_picker:mergeDebugGeneratedProguardFiles', task ':file_picker:mergeDebugConsumerProguardFiles', task ':file_picker:prepareDebugArtProfile', task ':file_picker:prepareLintJarForPublish', task ':file_picker:mergeDebugJavaResource', task ':file_picker:syncDebugLibJars', task ':file_picker:bundleDebugAar', task ':file_picker:assembleDebug', task ':firebase_analytics:stripDebugDebugSymbols', task ':firebase_analytics:copyDebugJniLibsProjectAndLocalJars', task ':firebase_analytics:extractDebugAnnotations', task ':firebase_analytics:extractDeepLinksForAarDebug', task ':firebase_analytics:mergeDebugGeneratedProguardFiles', task ':firebase_analytics:mergeDebugConsumerProguardFiles', task ':firebase_analytics:prepareDebugArtProfile', task ':firebase_analytics:prepareLintJarForPublish', task ':firebase_analytics:mergeDebugJavaResource', task ':firebase_analytics:syncDebugLibJars', task ':firebase_analytics:bundleDebugAar', task ':firebase_analytics:assembleDebug', task ':firebase_auth:stripDebugDebugSymbols', task ':firebase_auth:copyDebugJniLibsProjectAndLocalJars', task ':firebase_auth:extractDebugAnnotations', task ':firebase_auth:extractDeepLinksForAarDebug', task ':firebase_auth:mergeDebugGeneratedProguardFiles', task ':firebase_auth:mergeDebugConsumerProguardFiles', task ':firebase_auth:prepareDebugArtProfile', task ':firebase_auth:prepareLintJarForPublish', task ':firebase_auth:mergeDebugJavaResource', task ':firebase_auth:syncDebugLibJars', task ':firebase_auth:bundleDebugAar', task ':firebase_auth:assembleDebug', task ':firebase_core:stripDebugDebugSymbols', task ':firebase_core:copyDebugJniLibsProjectAndLocalJars', task ':firebase_core:extractDebugAnnotations', task ':firebase_core:extractDeepLinksForAarDebug', task ':firebase_core:mergeDebugGeneratedProguardFiles', task ':firebase_core:mergeDebugConsumerProguardFiles', task ':firebase_core:prepareDebugArtProfile', task ':firebase_core:prepareLintJarForPublish', task ':firebase_core:mergeDebugJavaResource', task ':firebase_core:syncDebugLibJars', task ':firebase_core:bundleDebugAar', task ':firebase_core:assembleDebug', task ':firebase_crashlytics:stripDebugDebugSymbols', task ':firebase_crashlytics:copyDebugJniLibsProjectAndLocalJars', task ':firebase_crashlytics:extractDebugAnnotations', task ':firebase_crashlytics:extractDeepLinksForAarDebug', task ':firebase_crashlytics:mergeDebugGeneratedProguardFiles', task ':firebase_crashlytics:mergeDebugConsumerProguardFiles', task ':firebase_crashlytics:prepareDebugArtProfile', task ':firebase_crashlytics:prepareLintJarForPublish', task ':firebase_crashlytics:mergeDebugJavaResource', task ':firebase_crashlytics:syncDebugLibJars', task ':firebase_crashlytics:bundleDebugAar', task ':firebase_crashlytics:assembleDebug', task ':flutter_plugin_android_lifecycle:stripDebugDebugSymbols', task ':flutter_plugin_android_lifecycle:copyDebugJniLibsProjectAndLocalJars', task ':flutter_plugin_android_lifecycle:extractDebugAnnotations', task ':flutter_plugin_android_lifecycle:extractDeepLinksForAarDebug', task ':flutter_plugin_android_lifecycle:mergeDebugGeneratedProguardFiles', task ':flutter_plugin_android_lifecycle:mergeDebugConsumerProguardFiles', task ':flutter_plugin_android_lifecycle:prepareDebugArtProfile', task ':flutter_plugin_android_lifecycle:prepareLintJarForPublish', task ':flutter_plugin_android_lifecycle:mergeDebugJavaResource', task ':flutter_plugin_android_lifecycle:syncDebugLibJars', task ':flutter_plugin_android_lifecycle:bundleDebugAar', task ':flutter_plugin_android_lifecycle:assembleDebug', task ':flutter_secure_storage:stripDebugDebugSymbols', task ':flutter_secure_storage:copyDebugJniLibsProjectAndLocalJars', task ':flutter_secure_storage:extractDebugAnnotations', task ':flutter_secure_storage:extractDeepLinksForAarDebug', task ':flutter_secure_storage:mergeDebugGeneratedProguardFiles', task ':flutter_secure_storage:mergeDebugConsumerProguardFiles', task ':flutter_secure_storage:prepareDebugArtProfile', task ':flutter_secure_storage:prepareLintJarForPublish', task ':flutter_secure_storage:mergeDebugJavaResource', task ':flutter_secure_storage:syncDebugLibJars', task ':flutter_secure_storage:bundleDebugAar', task ':flutter_secure_storage:assembleDebug', task ':just_audio:stripDebugDebugSymbols', task ':just_audio:copyDebugJniLibsProjectAndLocalJars', task ':just_audio:extractDebugAnnotations', task ':just_audio:extractDeepLinksForAarDebug', task ':just_audio:mergeDebugGeneratedProguardFiles', task ':just_audio:mergeDebugConsumerProguardFiles', task ':just_audio:prepareDebugArtProfile', task ':just_audio:prepareLintJarForPublish', task ':just_audio:mergeDebugJavaResource', task ':just_audio:syncDebugLibJars', task ':just_audio:bundleDebugAar', task ':just_audio:assembleDebug', task ':local_auth_android:stripDebugDebugSymbols', task ':local_auth_android:copyDebugJniLibsProjectAndLocalJars', task ':local_auth_android:extractDebugAnnotations', task ':local_auth_android:extractDeepLinksForAarDebug', task ':local_auth_android:mergeDebugGeneratedProguardFiles', task ':local_auth_android:mergeDebugConsumerProguardFiles', task ':local_auth_android:prepareDebugArtProfile', task ':local_auth_android:prepareLintJarForPublish', task ':local_auth_android:mergeDebugJavaResource', task ':local_auth_android:syncDebugLibJars', task ':local_auth_android:bundleDebugAar', task ':local_auth_android:assembleDebug', task ':nearby_connections:stripDebugDebugSymbols', task ':nearby_connections:copyDebugJniLibsProjectAndLocalJars', task ':nearby_connections:extractDebugAnnotations', task ':nearby_connections:extractDeepLinksForAarDebug', task ':nearby_connections:mergeDebugGeneratedProguardFiles', task ':nearby_connections:mergeDebugConsumerProguardFiles', task ':nearby_connections:prepareDebugArtProfile', task ':nearby_connections:prepareLintJarForPublish', task ':nearby_connections:mergeDebugJavaResource', task ':nearby_connections:syncDebugLibJars', task ':nearby_connections:bundleDebugAar', task ':nearby_connections:assembleDebug', task ':network_info_plus:stripDebugDebugSymbols', task ':network_info_plus:copyDebugJniLibsProjectAndLocalJars', task ':network_info_plus:extractDebugAnnotations', task ':network_info_plus:extractDeepLinksForAarDebug', task ':network_info_plus:mergeDebugGeneratedProguardFiles', task ':network_info_plus:mergeDebugConsumerProguardFiles', task ':network_info_plus:prepareDebugArtProfile', task ':network_info_plus:prepareLintJarForPublish', task ':network_info_plus:mergeDebugJavaResource', task ':network_info_plus:syncDebugLibJars', task ':network_info_plus:bundleDebugAar', task ':network_info_plus:assembleDebug', task ':path_provider_android:stripDebugDebugSymbols', task ':path_provider_android:copyDebugJniLibsProjectAndLocalJars', task ':path_provider_android:extractDebugAnnotations', task ':path_provider_android:extractDeepLinksForAarDebug', task ':path_provider_android:mergeDebugGeneratedProguardFiles', task ':path_provider_android:mergeDebugConsumerProguardFiles', task ':path_provider_android:prepareDebugArtProfile', task ':path_provider_android:prepareLintJarForPublish', task ':path_provider_android:mergeDebugJavaResource', task ':path_provider_android:syncDebugLibJars', task ':path_provider_android:bundleDebugAar', task ':path_provider_android:assembleDebug', task ':permission_handler_android:stripDebugDebugSymbols', task ':permission_handler_android:copyDebugJniLibsProjectAndLocalJars', task ':permission_handler_android:extractDebugAnnotations', task ':permission_handler_android:extractDeepLinksForAarDebug', task ':permission_handler_android:mergeDebugGeneratedProguardFiles', task ':permission_handler_android:mergeDebugConsumerProguardFiles', task ':permission_handler_android:prepareDebugArtProfile', task ':permission_handler_android:prepareLintJarForPublish', task ':permission_handler_android:mergeDebugJavaResource', task ':permission_handler_android:syncDebugLibJars', task ':permission_handler_android:bundleDebugAar', task ':permission_handler_android:assembleDebug', task ':shared_preferences_android:stripDebugDebugSymbols', task ':shared_preferences_android:copyDebugJniLibsProjectAndLocalJars', task ':shared_preferences_android:extractDebugAnnotations', task ':shared_preferences_android:extractDeepLinksForAarDebug', task ':shared_preferences_android:mergeDebugGeneratedProguardFiles', task ':shared_preferences_android:mergeDebugConsumerProguardFiles', task ':shared_preferences_android:prepareDebugArtProfile', task ':shared_preferences_android:prepareLintJarForPublish', task ':shared_preferences_android:mergeDebugJavaResource', task ':shared_preferences_android:syncDebugLibJars', task ':shared_preferences_android:bundleDebugAar', task ':shared_preferences_android:assembleDebug', task ':sqflite_android:stripDebugDebugSymbols', task ':sqflite_android:copyDebugJniLibsProjectAndLocalJars', task ':sqflite_android:extractDebugAnnotations', task ':sqflite_android:extractDeepLinksForAarDebug', task ':sqflite_android:mergeDebugGeneratedProguardFiles', task ':sqflite_android:mergeDebugConsumerProguardFiles', task ':sqflite_android:prepareDebugArtProfile', task ':sqflite_android:prepareLintJarForPublish', task ':sqflite_android:mergeDebugJavaResource', task ':sqflite_android:syncDebugLibJars', task ':sqflite_android:bundleDebugAar', task ':sqflite_android:assembleDebug']
+Tasks that were excluded: []
+work action Parameters of IdentityTransform (Thread[Execution worker,5,main]) started.
+work action Parameters of DexingNoClasspathTransform (Thread[Execution worker,5,main]) started.
+work action Parameters of DexingOutputSplitTransform (Thread[Execution worker,5,main]) started.
+work action Parameters of ClassesDirToClassesTransform (Thread[Execution worker,5,main]) started.
+work action Parameters of DexingOutputSplitTransform (Thread[Execution worker,5,main]) started.
+Resolve mutations for :app:DebugMinSdkCheck (Thread[Execution worker,5,main]) started.
+:app:DebugMinSdkCheck (Thread[Execution worker,5,main]) started.
+
+> Task :app:DebugMinSdkCheck
+Caching disabled for task ':app:DebugMinSdkCheck' because:
+  Build cache is disabled
+Task ':app:DebugMinSdkCheck' is not up-to-date because:
+  Task has not declared any outputs despite executing actions.
+Resolve mutations for :app:preBuild (Thread[Execution worker,5,main]) started.
+:app:preBuild (Thread[Execution worker,5,main]) started.
+
+> Task :app:preBuild UP-TO-DATE
+Skipping task ':app:preBuild' as it has no actions.
+Resolve mutations for :app:preDebugBuild (Thread[Execution worker,5,main]) started.
+:app:preDebugBuild (Thread[Execution worker,5,main]) started.
+
+> Task :app:preDebugBuild UP-TO-DATE
+Skipping task ':app:preDebugBuild' as it has no actions.
+Resolve mutations for :app:mergeDebugNativeDebugMetadata (Thread[Execution worker,5,main]) started.
+:app:mergeDebugNativeDebugMetadata (Thread[Execution worker,5,main]) started.
+
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+Skipping task ':app:mergeDebugNativeDebugMetadata' as it has no source files and no previous output files.
+Resolve mutations for :app:checkKotlinGradlePluginConfigurationErrors (Thread[Execution worker,5,main]) started.
+:app:checkKotlinGradlePluginConfigurationErrors (Thread[included builds Thread 2,5,main]) started.
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':app:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+Resolve mutations for :app:compileFlutterBuildDebug (Thread[included builds Thread 2,5,main]) started.
+:app:compileFlutterBuildDebug (Thread[included builds Thread 2,5,main]) started.
+
+> Task :app:compileFlutterBuildDebug
+Caching disabled for task ':app:compileFlutterBuildDebug' because:
+  Build cache is disabled
+  Caching has not been enabled for the task
+Task ':app:compileFlutterBuildDebug' is not up-to-date because:
+  Value of input property 'dartDefines' has changed for task ':app:compileFlutterBuildDebug'
+  Value of input property 'targetPath' has changed for task ':app:compileFlutterBuildDebug'
+  Value of input property 'verbose' has changed for task ':app:compileFlutterBuildDebug'
+Starting process 'command 'C:\Flutter\flutter\bin\flutter.bat''. Working directory: C:\Users\joaom\Documents\GitHub\Music\music_tag_editor Command: C:\Flutter\flutter\bin\flutter.bat --quiet assemble --no-version-check --depfile C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\build\intermediates\flutter\debug/flutter_build.d --output C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\build\intermediates\flutter\debug -dTargetFile=lib/main.dart -dTargetPlatform=android -dBuildMode=debug -dTrackWidgetCreation=true -dFlavor= -dAndroidArchs=android-arm android-arm64 android-x64 -dMinSdkVersion=24 debug_android_application
+Successfully started process 'command 'C:\Flutter\flutter\bin\flutter.bat''
+Resolve mutations for :app:packJniLibsflutterBuildDebug (Thread[included builds Thread 2,5,main]) started.
+:app:packJniLibsflutterBuildDebug (Thread[included builds Thread 2,5,main]) started.
+
+> Task :app:packJniLibsflutterBuildDebug UP-TO-DATE
+Caching disabled for task ':app:packJniLibsflutterBuildDebug' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':app:packJniLibsflutterBuildDebug' as it is up-to-date.
+Resolve mutations for :audio_service:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+:audio_service:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :audio_service:preBuild UP-TO-DATE
+Skipping task ':audio_service:preBuild' as it has no actions.
+Resolve mutations for :audio_service:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+:audio_service:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :audio_service:preDebugBuild UP-TO-DATE
+Skipping task ':audio_service:preDebugBuild' as it has no actions.
+Resolve mutations for :audio_service:writeDebugAarMetadata (Thread[Execution worker Thread 3,5,main]) started.
+:audio_service:writeDebugAarMetadata (Thread[Execution worker,5,main]) started.
+
+> Task :audio_service:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':audio_service:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':audio_service:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :audio_service) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :audio_session:preBuild (Thread[Execution worker,5,main]) started.
+:audio_session:preBuild (Thread[Execution worker,5,main]) started.
+
+> Task :audio_session:preBuild UP-TO-DATE
+Skipping task ':audio_session:preBuild' as it has no actions.
+Resolve mutations for :audio_session:preDebugBuild (Thread[Execution worker,5,main]) started.
+:audio_session:preDebugBuild (Thread[Execution worker,5,main]) started.
+
+> Task :audio_session:preDebugBuild UP-TO-DATE
+Skipping task ':audio_session:preDebugBuild' as it has no actions.
+Resolve mutations for :audio_session:writeDebugAarMetadata (Thread[Execution worker,5,main]) started.
+:audio_session:writeDebugAarMetadata (Thread[Execution worker,5,main]) started.
+
+> Task :audio_session:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':audio_session:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':audio_session:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :audio_session) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :cloud_firestore:preBuild (Thread[Execution worker,5,main]) started.
+:cloud_firestore:preBuild (Thread[Execution worker,5,main]) started.
+
+> Task :cloud_firestore:preBuild UP-TO-DATE
+Skipping task ':cloud_firestore:preBuild' as it has no actions.
+Resolve mutations for :cloud_firestore:preDebugBuild (Thread[Execution worker,5,main]) started.
+:cloud_firestore:preDebugBuild (Thread[Execution worker,5,main]) started.
+
+> Task :cloud_firestore:preDebugBuild UP-TO-DATE
+Skipping task ':cloud_firestore:preDebugBuild' as it has no actions.
+Resolve mutations for :cloud_firestore:writeDebugAarMetadata (Thread[Execution worker,5,main]) started.
+:cloud_firestore:writeDebugAarMetadata (Thread[Execution worker,5,main]) started.
+
+> Task :cloud_firestore:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':cloud_firestore:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':cloud_firestore:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :cloud_firestore) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :connectivity_plus:preBuild (Thread[Execution worker,5,main]) started.
+:connectivity_plus:preBuild (Thread[Execution worker,5,main]) started.
+
+> Task :connectivity_plus:preBuild UP-TO-DATE
+Skipping task ':connectivity_plus:preBuild' as it has no actions.
+Resolve mutations for :connectivity_plus:preDebugBuild (Thread[Execution worker,5,main]) started.
+:connectivity_plus:preDebugBuild (Thread[Execution worker,5,main]) started.
+
+> Task :connectivity_plus:preDebugBuild UP-TO-DATE
+Skipping task ':connectivity_plus:preDebugBuild' as it has no actions.
+Resolve mutations for :connectivity_plus:writeDebugAarMetadata (Thread[Execution worker,5,main]) started.
+:connectivity_plus:writeDebugAarMetadata (Thread[Execution worker,5,main]) started.
+
+> Task :connectivity_plus:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':connectivity_plus:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':connectivity_plus:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :connectivity_plus) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :file_picker:preBuild (Thread[Execution worker,5,main]) started.
+:file_picker:preBuild (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :file_picker:preBuild UP-TO-DATE
+Skipping task ':file_picker:preBuild' as it has no actions.
+Resolve mutations for :file_picker:preDebugBuild (Thread[Execution worker Thread 2,5,main]) started.
+:file_picker:preDebugBuild (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :file_picker:preDebugBuild UP-TO-DATE
+Skipping task ':file_picker:preDebugBuild' as it has no actions.
+Resolve mutations for :file_picker:writeDebugAarMetadata (Thread[Execution worker Thread 2,5,main]) started.
+:file_picker:writeDebugAarMetadata (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :file_picker:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':file_picker:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':file_picker:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :file_picker) (Thread[Execution worker Thread 2,5,main]) started.
+Resolve mutations for :firebase_analytics:preBuild (Thread[Execution worker Thread 2,5,main]) started.
+:firebase_analytics:preBuild (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :firebase_analytics:preBuild UP-TO-DATE
+Skipping task ':firebase_analytics:preBuild' as it has no actions.
+Resolve mutations for :firebase_analytics:preDebugBuild (Thread[Execution worker Thread 2,5,main]) started.
+:firebase_analytics:preDebugBuild (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :firebase_analytics:preDebugBuild UP-TO-DATE
+Skipping task ':firebase_analytics:preDebugBuild' as it has no actions.
+Resolve mutations for :firebase_analytics:writeDebugAarMetadata (Thread[Execution worker Thread 2,5,main]) started.
+:firebase_analytics:writeDebugAarMetadata (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :firebase_analytics:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':firebase_analytics:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':firebase_analytics:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :firebase_analytics) (Thread[Execution worker Thread 2,5,main]) started.
+Resolve mutations for :firebase_auth:preBuild (Thread[Execution worker Thread 2,5,main]) started.
+:firebase_auth:preBuild (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :firebase_auth:preBuild UP-TO-DATE
+Skipping task ':firebase_auth:preBuild' as it has no actions.
+Resolve mutations for :firebase_auth:preDebugBuild (Thread[Execution worker Thread 2,5,main]) started.
+:firebase_auth:preDebugBuild (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :firebase_auth:preDebugBuild UP-TO-DATE
+Skipping task ':firebase_auth:preDebugBuild' as it has no actions.
+Resolve mutations for :firebase_auth:writeDebugAarMetadata (Thread[Execution worker,5,main]) started.
+:firebase_auth:writeDebugAarMetadata (Thread[Execution worker,5,main]) started.
+
+> Task :firebase_auth:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':firebase_auth:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':firebase_auth:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :firebase_auth) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :firebase_core:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+:firebase_core:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :firebase_core:preBuild UP-TO-DATE
+Skipping task ':firebase_core:preBuild' as it has no actions.
+Resolve mutations for :firebase_core:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+:firebase_core:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :firebase_core:preDebugBuild UP-TO-DATE
+Skipping task ':firebase_core:preDebugBuild' as it has no actions.
+Resolve mutations for :firebase_core:writeDebugAarMetadata (Thread[Execution worker Thread 3,5,main]) started.
+:firebase_core:writeDebugAarMetadata (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :firebase_core:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':firebase_core:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':firebase_core:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :firebase_core) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :firebase_crashlytics:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+:firebase_crashlytics:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :firebase_crashlytics:preBuild UP-TO-DATE
+Skipping task ':firebase_crashlytics:preBuild' as it has no actions.
+Resolve mutations for :firebase_crashlytics:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+:firebase_crashlytics:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :firebase_crashlytics:preDebugBuild UP-TO-DATE
+Skipping task ':firebase_crashlytics:preDebugBuild' as it has no actions.
+Resolve mutations for :firebase_crashlytics:writeDebugAarMetadata (Thread[Execution worker Thread 3,5,main]) started.
+:firebase_crashlytics:writeDebugAarMetadata (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :firebase_crashlytics:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':firebase_crashlytics:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':firebase_crashlytics:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :firebase_crashlytics) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :flutter_plugin_android_lifecycle:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+:flutter_plugin_android_lifecycle:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :flutter_plugin_android_lifecycle:preBuild UP-TO-DATE
+Skipping task ':flutter_plugin_android_lifecycle:preBuild' as it has no actions.
+Resolve mutations for :flutter_plugin_android_lifecycle:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+:flutter_plugin_android_lifecycle:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :flutter_plugin_android_lifecycle:preDebugBuild UP-TO-DATE
+Skipping task ':flutter_plugin_android_lifecycle:preDebugBuild' as it has no actions.
+Resolve mutations for :flutter_plugin_android_lifecycle:writeDebugAarMetadata (Thread[Execution worker Thread 3,5,main]) started.
+:flutter_plugin_android_lifecycle:writeDebugAarMetadata (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :flutter_plugin_android_lifecycle:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':flutter_plugin_android_lifecycle:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':flutter_plugin_android_lifecycle:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :flutter_plugin_android_lifecycle) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :flutter_secure_storage:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+:flutter_secure_storage:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :flutter_secure_storage:preBuild UP-TO-DATE
+Skipping task ':flutter_secure_storage:preBuild' as it has no actions.
+Resolve mutations for :flutter_secure_storage:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+:flutter_secure_storage:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :flutter_secure_storage:preDebugBuild UP-TO-DATE
+Skipping task ':flutter_secure_storage:preDebugBuild' as it has no actions.
+Resolve mutations for :flutter_secure_storage:writeDebugAarMetadata (Thread[Execution worker Thread 3,5,main]) started.
+:flutter_secure_storage:writeDebugAarMetadata (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :flutter_secure_storage:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':flutter_secure_storage:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':flutter_secure_storage:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :flutter_secure_storage) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :just_audio:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+:just_audio:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :just_audio:preBuild UP-TO-DATE
+Skipping task ':just_audio:preBuild' as it has no actions.
+Resolve mutations for :just_audio:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+:just_audio:preDebugBuild (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :just_audio:preDebugBuild UP-TO-DATE
+Skipping task ':just_audio:preDebugBuild' as it has no actions.
+Resolve mutations for :just_audio:writeDebugAarMetadata (Thread[Execution worker Thread 2,5,main]) started.
+:just_audio:writeDebugAarMetadata (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :just_audio:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':just_audio:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':just_audio:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :just_audio) (Thread[Execution worker Thread 2,5,main]) started.
+Resolve mutations for :local_auth_android:preBuild (Thread[Execution worker Thread 2,5,main]) started.
+:local_auth_android:preBuild (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :local_auth_android:preBuild UP-TO-DATE
+Skipping task ':local_auth_android:preBuild' as it has no actions.
+Resolve mutations for :local_auth_android:preDebugBuild (Thread[Execution worker Thread 2,5,main]) started.
+:local_auth_android:preDebugBuild (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :local_auth_android:preDebugBuild UP-TO-DATE
+Skipping task ':local_auth_android:preDebugBuild' as it has no actions.
+Resolve mutations for :local_auth_android:writeDebugAarMetadata (Thread[Execution worker,5,main]) started.
+:local_auth_android:writeDebugAarMetadata (Thread[Execution worker,5,main]) started.
+
+> Task :local_auth_android:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':local_auth_android:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':local_auth_android:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :local_auth_android) (Thread[Execution worker Thread 2,5,main]) started.
+Resolve mutations for :nearby_connections:preBuild (Thread[Execution worker Thread 2,5,main]) started.
+:nearby_connections:preBuild (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :nearby_connections:preBuild UP-TO-DATE
+Skipping task ':nearby_connections:preBuild' as it has no actions.
+Resolve mutations for :nearby_connections:preDebugBuild (Thread[Execution worker Thread 2,5,main]) started.
+:nearby_connections:preDebugBuild (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :nearby_connections:preDebugBuild UP-TO-DATE
+Skipping task ':nearby_connections:preDebugBuild' as it has no actions.
+Resolve mutations for :nearby_connections:writeDebugAarMetadata (Thread[Execution worker Thread 2,5,main]) started.
+:nearby_connections:writeDebugAarMetadata (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :nearby_connections:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':nearby_connections:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':nearby_connections:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :nearby_connections) (Thread[Execution worker Thread 2,5,main]) started.
+Resolve mutations for :network_info_plus:preBuild (Thread[Execution worker Thread 2,5,main]) started.
+:network_info_plus:preBuild (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :network_info_plus:preBuild UP-TO-DATE
+Skipping task ':network_info_plus:preBuild' as it has no actions.
+Resolve mutations for :network_info_plus:preDebugBuild (Thread[Execution worker Thread 2,5,main]) started.
+:network_info_plus:preDebugBuild (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :network_info_plus:preDebugBuild UP-TO-DATE
+Skipping task ':network_info_plus:preDebugBuild' as it has no actions.
+Resolve mutations for :network_info_plus:writeDebugAarMetadata (Thread[Execution worker Thread 2,5,main]) started.
+:network_info_plus:writeDebugAarMetadata (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :network_info_plus:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':network_info_plus:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':network_info_plus:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :network_info_plus) (Thread[Execution worker Thread 2,5,main]) started.
+Resolve mutations for :path_provider_android:preBuild (Thread[Execution worker,5,main]) started.
+:path_provider_android:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :path_provider_android:preBuild UP-TO-DATE
+Skipping task ':path_provider_android:preBuild' as it has no actions.
+Resolve mutations for :path_provider_android:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+:path_provider_android:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :path_provider_android:preDebugBuild UP-TO-DATE
+Skipping task ':path_provider_android:preDebugBuild' as it has no actions.
+Resolve mutations for :path_provider_android:writeDebugAarMetadata (Thread[Execution worker Thread 3,5,main]) started.
+:path_provider_android:writeDebugAarMetadata (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :path_provider_android:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':path_provider_android:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':path_provider_android:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :path_provider_android) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :permission_handler_android:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+:permission_handler_android:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :permission_handler_android:preBuild UP-TO-DATE
+Skipping task ':permission_handler_android:preBuild' as it has no actions.
+Resolve mutations for :permission_handler_android:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+:permission_handler_android:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :permission_handler_android:preDebugBuild UP-TO-DATE
+Skipping task ':permission_handler_android:preDebugBuild' as it has no actions.
+Resolve mutations for :permission_handler_android:writeDebugAarMetadata (Thread[Execution worker Thread 3,5,main]) started.
+:permission_handler_android:writeDebugAarMetadata (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :permission_handler_android:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':permission_handler_android:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':permission_handler_android:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :permission_handler_android) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :shared_preferences_android:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+:shared_preferences_android:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :shared_preferences_android:preBuild UP-TO-DATE
+Skipping task ':shared_preferences_android:preBuild' as it has no actions.
+Resolve mutations for :shared_preferences_android:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+:shared_preferences_android:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :shared_preferences_android:preDebugBuild UP-TO-DATE
+Skipping task ':shared_preferences_android:preDebugBuild' as it has no actions.
+Resolve mutations for :shared_preferences_android:writeDebugAarMetadata (Thread[Execution worker Thread 3,5,main]) started.
+:shared_preferences_android:writeDebugAarMetadata (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :shared_preferences_android:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':shared_preferences_android:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':shared_preferences_android:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :shared_preferences_android) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :sqflite_android:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+:sqflite_android:preBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :sqflite_android:preBuild UP-TO-DATE
+Skipping task ':sqflite_android:preBuild' as it has no actions.
+Resolve mutations for :sqflite_android:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+:sqflite_android:preDebugBuild (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :sqflite_android:preDebugBuild UP-TO-DATE
+Skipping task ':sqflite_android:preDebugBuild' as it has no actions.
+Resolve mutations for :sqflite_android:writeDebugAarMetadata (Thread[Execution worker,5,main]) started.
+:sqflite_android:writeDebugAarMetadata (Thread[Execution worker,5,main]) started.
+
+> Task :sqflite_android:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':sqflite_android:writeDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':sqflite_android:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project :sqflite_android) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :app:checkDebugAarMetadata (Thread[Execution worker,5,main]) started.
+:app:checkDebugAarMetadata (Thread[Execution worker,5,main]) started.
+
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':app:checkDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Skipping task ':app:checkDebugAarMetadata' as it is up-to-date.
+Resolve mutations for :app:cleanMergeDebugAssets (Thread[Execution worker,5,main]) started.
+:app:cleanMergeDebugAssets (Thread[Execution worker,5,main]) started.
+
+> Task :app:cleanMergeDebugAssets
+Caching disabled for task ':app:cleanMergeDebugAssets' because:
+  Build cache is disabled
+Task ':app:cleanMergeDebugAssets' is not up-to-date because:
+  Task has not declared any outputs despite executing actions.
+Resolve mutations for :app:mergeDebugShaders (Thread[Execution worker,5,main]) started.
+:app:mergeDebugShaders (Thread[Execution worker,5,main]) started.
+
+> Task :app:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':app:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':app:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :app:compileDebugShaders (Thread[Execution worker,5,main]) started.
+:app:compileDebugShaders (Thread[Execution worker,5,main]) started.
+
+> Task :app:compileDebugShaders NO-SOURCE
+Skipping task ':app:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :app:generateDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+:app:generateDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :app:generateDebugAssets UP-TO-DATE
+Skipping task ':app:generateDebugAssets' as it has no actions.
+Resolve mutations for :audio_service:mergeDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+:audio_service:mergeDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :audio_service:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':audio_service:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':audio_service:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :audio_service:compileDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+:audio_service:compileDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :audio_service:compileDebugShaders NO-SOURCE
+Skipping task ':audio_service:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :audio_service:generateDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+:audio_service:generateDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :audio_service:generateDebugAssets UP-TO-DATE
+Skipping task ':audio_service:generateDebugAssets' as it has no actions.
+Resolve mutations for :audio_service:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+:audio_service:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :audio_service:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':audio_service:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':audio_service:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :audio_service) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :audio_session:mergeDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+:audio_session:mergeDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :audio_session:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':audio_session:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':audio_session:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :audio_session:compileDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+:audio_session:compileDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :audio_session:compileDebugShaders NO-SOURCE
+Skipping task ':audio_session:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :audio_session:generateDebugAssets (Thread[Execution worker,5,main]) started.
+:audio_session:generateDebugAssets (Thread[Execution worker,5,main]) started.
+
+> Task :audio_session:generateDebugAssets UP-TO-DATE
+Skipping task ':audio_session:generateDebugAssets' as it has no actions.
+Resolve mutations for :audio_session:mergeDebugAssets (Thread[Execution worker,5,main]) started.
+:audio_session:mergeDebugAssets (Thread[Execution worker,5,main]) started.
+
+> Task :audio_session:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':audio_session:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':audio_session:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :audio_session) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :cloud_firestore:mergeDebugShaders (Thread[Execution worker,5,main]) started.
+:cloud_firestore:mergeDebugShaders (Thread[Execution worker,5,main]) started.
+
+> Task :cloud_firestore:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':cloud_firestore:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':cloud_firestore:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :cloud_firestore:compileDebugShaders (Thread[Execution worker,5,main]) started.
+:cloud_firestore:compileDebugShaders (Thread[Execution worker,5,main]) started.
+
+> Task :cloud_firestore:compileDebugShaders NO-SOURCE
+Skipping task ':cloud_firestore:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :cloud_firestore:generateDebugAssets (Thread[Execution worker,5,main]) started.
+:cloud_firestore:generateDebugAssets (Thread[Execution worker,5,main]) started.
+
+> Task :cloud_firestore:generateDebugAssets UP-TO-DATE
+Skipping task ':cloud_firestore:generateDebugAssets' as it has no actions.
+Resolve mutations for :cloud_firestore:mergeDebugAssets (Thread[Execution worker,5,main]) started.
+:cloud_firestore:mergeDebugAssets (Thread[Execution worker,5,main]) started.
+
+> Task :cloud_firestore:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':cloud_firestore:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':cloud_firestore:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :cloud_firestore) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :connectivity_plus:mergeDebugShaders (Thread[Execution worker,5,main]) started.
+:connectivity_plus:mergeDebugShaders (Thread[Execution worker,5,main]) started.
+
+> Task :connectivity_plus:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':connectivity_plus:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':connectivity_plus:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :connectivity_plus:compileDebugShaders (Thread[Execution worker,5,main]) started.
+:connectivity_plus:compileDebugShaders (Thread[Execution worker,5,main]) started.
+
+> Task :connectivity_plus:compileDebugShaders NO-SOURCE
+Skipping task ':connectivity_plus:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :connectivity_plus:generateDebugAssets (Thread[Execution worker,5,main]) started.
+:connectivity_plus:generateDebugAssets (Thread[Execution worker,5,main]) started.
+
+> Task :connectivity_plus:generateDebugAssets UP-TO-DATE
+Skipping task ':connectivity_plus:generateDebugAssets' as it has no actions.
+Resolve mutations for :connectivity_plus:mergeDebugAssets (Thread[Execution worker,5,main]) started.
+:connectivity_plus:mergeDebugAssets (Thread[Execution worker,5,main]) started.
+
+> Task :connectivity_plus:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':connectivity_plus:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':connectivity_plus:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :connectivity_plus) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :file_picker:mergeDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+:file_picker:mergeDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :file_picker:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':file_picker:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':file_picker:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :file_picker:compileDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+:file_picker:compileDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :file_picker:compileDebugShaders NO-SOURCE
+Skipping task ':file_picker:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :file_picker:generateDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+:file_picker:generateDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :file_picker:generateDebugAssets UP-TO-DATE
+Skipping task ':file_picker:generateDebugAssets' as it has no actions.
+Resolve mutations for :file_picker:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+:file_picker:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :file_picker:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':file_picker:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':file_picker:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :file_picker) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :firebase_analytics:mergeDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+:firebase_analytics:mergeDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :firebase_analytics:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':firebase_analytics:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':firebase_analytics:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :firebase_analytics:compileDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+:firebase_analytics:compileDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :firebase_analytics:compileDebugShaders NO-SOURCE
+Skipping task ':firebase_analytics:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :firebase_analytics:generateDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+:firebase_analytics:generateDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :firebase_analytics:generateDebugAssets UP-TO-DATE
+Skipping task ':firebase_analytics:generateDebugAssets' as it has no actions.
+Resolve mutations for :firebase_analytics:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+:firebase_analytics:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :firebase_analytics:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':firebase_analytics:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':firebase_analytics:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :firebase_analytics) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :firebase_auth:mergeDebugShaders (Thread[included builds Thread 2,5,main]) started.
+:firebase_auth:mergeDebugShaders (Thread[included builds Thread 2,5,main]) started.
+
+> Task :firebase_auth:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':firebase_auth:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':firebase_auth:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :firebase_auth:compileDebugShaders (Thread[included builds Thread 2,5,main]) started.
+:firebase_auth:compileDebugShaders (Thread[included builds Thread 2,5,main]) started.
+
+> Task :firebase_auth:compileDebugShaders NO-SOURCE
+Skipping task ':firebase_auth:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :firebase_auth:generateDebugAssets (Thread[included builds Thread 2,5,main]) started.
+:firebase_auth:generateDebugAssets (Thread[included builds Thread 2,5,main]) started.
+
+> Task :firebase_auth:generateDebugAssets UP-TO-DATE
+Skipping task ':firebase_auth:generateDebugAssets' as it has no actions.
+Resolve mutations for :firebase_auth:mergeDebugAssets (Thread[included builds Thread 2,5,main]) started.
+:firebase_auth:mergeDebugAssets (Thread[included builds Thread 2,5,main]) started.
+
+> Task :firebase_auth:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':firebase_auth:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':firebase_auth:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :firebase_auth) (Thread[included builds Thread 2,5,main]) started.
+Resolve mutations for :firebase_core:mergeDebugShaders (Thread[included builds Thread 2,5,main]) started.
+:firebase_core:mergeDebugShaders (Thread[included builds Thread 2,5,main]) started.
+
+> Task :firebase_core:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':firebase_core:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':firebase_core:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :firebase_core:compileDebugShaders (Thread[included builds Thread 2,5,main]) started.
+:firebase_core:compileDebugShaders (Thread[included builds Thread 2,5,main]) started.
+
+> Task :firebase_core:compileDebugShaders NO-SOURCE
+Skipping task ':firebase_core:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :firebase_core:generateDebugAssets (Thread[included builds Thread 2,5,main]) started.
+:firebase_core:generateDebugAssets (Thread[included builds Thread 2,5,main]) started.
+
+> Task :firebase_core:generateDebugAssets UP-TO-DATE
+Skipping task ':firebase_core:generateDebugAssets' as it has no actions.
+Resolve mutations for :firebase_core:mergeDebugAssets (Thread[included builds Thread 2,5,main]) started.
+:firebase_core:mergeDebugAssets (Thread[included builds Thread 2,5,main]) started.
+
+> Task :firebase_core:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':firebase_core:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':firebase_core:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :firebase_core) (Thread[included builds Thread 2,5,main]) started.
+Resolve mutations for :firebase_crashlytics:mergeDebugShaders (Thread[included builds Thread 2,5,main]) started.
+:firebase_crashlytics:mergeDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :firebase_crashlytics:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':firebase_crashlytics:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':firebase_crashlytics:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :firebase_crashlytics:compileDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+:firebase_crashlytics:compileDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :firebase_crashlytics:compileDebugShaders NO-SOURCE
+Skipping task ':firebase_crashlytics:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :firebase_crashlytics:generateDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+:firebase_crashlytics:generateDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :firebase_crashlytics:generateDebugAssets UP-TO-DATE
+Skipping task ':firebase_crashlytics:generateDebugAssets' as it has no actions.
+Resolve mutations for :firebase_crashlytics:mergeDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+:firebase_crashlytics:mergeDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :firebase_crashlytics:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':firebase_crashlytics:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':firebase_crashlytics:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :firebase_crashlytics) (Thread[Execution worker Thread 2,5,main]) started.
+Resolve mutations for :flutter_plugin_android_lifecycle:mergeDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+:flutter_plugin_android_lifecycle:mergeDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :flutter_plugin_android_lifecycle:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':flutter_plugin_android_lifecycle:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':flutter_plugin_android_lifecycle:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :flutter_plugin_android_lifecycle:compileDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+:flutter_plugin_android_lifecycle:compileDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :flutter_plugin_android_lifecycle:compileDebugShaders NO-SOURCE
+Skipping task ':flutter_plugin_android_lifecycle:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :flutter_plugin_android_lifecycle:generateDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+:flutter_plugin_android_lifecycle:generateDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :flutter_plugin_android_lifecycle:generateDebugAssets UP-TO-DATE
+Skipping task ':flutter_plugin_android_lifecycle:generateDebugAssets' as it has no actions.
+Resolve mutations for :flutter_plugin_android_lifecycle:mergeDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+:flutter_plugin_android_lifecycle:mergeDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :flutter_plugin_android_lifecycle:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':flutter_plugin_android_lifecycle:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':flutter_plugin_android_lifecycle:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :flutter_plugin_android_lifecycle) (Thread[Execution worker Thread 2,5,main]) started.
+Resolve mutations for :flutter_secure_storage:mergeDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+:flutter_secure_storage:mergeDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :flutter_secure_storage:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':flutter_secure_storage:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':flutter_secure_storage:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :flutter_secure_storage:compileDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+:flutter_secure_storage:compileDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :flutter_secure_storage:compileDebugShaders NO-SOURCE
+Skipping task ':flutter_secure_storage:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :flutter_secure_storage:generateDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+:flutter_secure_storage:generateDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :flutter_secure_storage:generateDebugAssets UP-TO-DATE
+Skipping task ':flutter_secure_storage:generateDebugAssets' as it has no actions.
+Resolve mutations for :flutter_secure_storage:mergeDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+:flutter_secure_storage:mergeDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :flutter_secure_storage:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':flutter_secure_storage:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':flutter_secure_storage:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :flutter_secure_storage) (Thread[Execution worker Thread 2,5,main]) started.
+Resolve mutations for :just_audio:mergeDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+:just_audio:mergeDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :just_audio:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':just_audio:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':just_audio:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :just_audio:compileDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+:just_audio:compileDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :just_audio:compileDebugShaders NO-SOURCE
+Skipping task ':just_audio:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :just_audio:generateDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+:just_audio:generateDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :just_audio:generateDebugAssets UP-TO-DATE
+Skipping task ':just_audio:generateDebugAssets' as it has no actions.
+Resolve mutations for :just_audio:mergeDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+:just_audio:mergeDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :just_audio:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':just_audio:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':just_audio:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :just_audio) (Thread[Execution worker Thread 2,5,main]) started.
+Resolve mutations for :local_auth_android:mergeDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+:local_auth_android:mergeDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :local_auth_android:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':local_auth_android:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':local_auth_android:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :local_auth_android:compileDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+:local_auth_android:compileDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :local_auth_android:compileDebugShaders NO-SOURCE
+Skipping task ':local_auth_android:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :local_auth_android:generateDebugAssets (Thread[included builds Thread 2,5,main]) started.
+:local_auth_android:generateDebugAssets (Thread[included builds Thread 2,5,main]) started.
+
+> Task :local_auth_android:generateDebugAssets UP-TO-DATE
+Skipping task ':local_auth_android:generateDebugAssets' as it has no actions.
+Resolve mutations for :local_auth_android:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+:local_auth_android:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :local_auth_android:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':local_auth_android:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':local_auth_android:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :local_auth_android) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :nearby_connections:mergeDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+:nearby_connections:mergeDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :nearby_connections:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':nearby_connections:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':nearby_connections:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :nearby_connections:compileDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+:nearby_connections:compileDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :nearby_connections:compileDebugShaders NO-SOURCE
+Skipping task ':nearby_connections:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :nearby_connections:generateDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+:nearby_connections:generateDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :nearby_connections:generateDebugAssets UP-TO-DATE
+Skipping task ':nearby_connections:generateDebugAssets' as it has no actions.
+Resolve mutations for :nearby_connections:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+:nearby_connections:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :nearby_connections:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':nearby_connections:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':nearby_connections:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :nearby_connections) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :network_info_plus:mergeDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+:network_info_plus:mergeDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :network_info_plus:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':network_info_plus:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':network_info_plus:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :network_info_plus:compileDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+:network_info_plus:compileDebugShaders (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :network_info_plus:compileDebugShaders NO-SOURCE
+Skipping task ':network_info_plus:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :network_info_plus:generateDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+:network_info_plus:generateDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :network_info_plus:generateDebugAssets UP-TO-DATE
+Skipping task ':network_info_plus:generateDebugAssets' as it has no actions.
+Resolve mutations for :network_info_plus:mergeDebugAssets (Thread[Execution worker Thread 2,5,main]) started.
+:network_info_plus:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :network_info_plus:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':network_info_plus:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':network_info_plus:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :network_info_plus) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :path_provider_android:mergeDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+:path_provider_android:mergeDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :path_provider_android:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':path_provider_android:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':path_provider_android:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :path_provider_android:compileDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+:path_provider_android:compileDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :path_provider_android:compileDebugShaders NO-SOURCE
+Skipping task ':path_provider_android:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :path_provider_android:generateDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+:path_provider_android:generateDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :path_provider_android:generateDebugAssets UP-TO-DATE
+Skipping task ':path_provider_android:generateDebugAssets' as it has no actions.
+Resolve mutations for :path_provider_android:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+:path_provider_android:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :path_provider_android:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':path_provider_android:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':path_provider_android:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :path_provider_android) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :permission_handler_android:mergeDebugShaders (Thread[Execution worker,5,main]) started.
+:permission_handler_android:mergeDebugShaders (Thread[Execution worker,5,main]) started.
+
+> Task :permission_handler_android:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':permission_handler_android:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':permission_handler_android:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :permission_handler_android:compileDebugShaders (Thread[Execution worker,5,main]) started.
+:permission_handler_android:compileDebugShaders (Thread[Execution worker,5,main]) started.
+
+> Task :permission_handler_android:compileDebugShaders NO-SOURCE
+Skipping task ':permission_handler_android:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :permission_handler_android:generateDebugAssets (Thread[Execution worker,5,main]) started.
+:permission_handler_android:generateDebugAssets (Thread[Execution worker,5,main]) started.
+
+> Task :permission_handler_android:generateDebugAssets UP-TO-DATE
+Skipping task ':permission_handler_android:generateDebugAssets' as it has no actions.
+Resolve mutations for :permission_handler_android:mergeDebugAssets (Thread[Execution worker,5,main]) started.
+:permission_handler_android:mergeDebugAssets (Thread[Execution worker,5,main]) started.
+
+> Task :permission_handler_android:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':permission_handler_android:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':permission_handler_android:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :permission_handler_android) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :shared_preferences_android:mergeDebugShaders (Thread[Execution worker,5,main]) started.
+:shared_preferences_android:mergeDebugShaders (Thread[Execution worker,5,main]) started.
+
+> Task :shared_preferences_android:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':shared_preferences_android:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':shared_preferences_android:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :shared_preferences_android:compileDebugShaders (Thread[Execution worker,5,main]) started.
+:shared_preferences_android:compileDebugShaders (Thread[Execution worker,5,main]) started.
+
+> Task :shared_preferences_android:compileDebugShaders NO-SOURCE
+Skipping task ':shared_preferences_android:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :shared_preferences_android:generateDebugAssets (Thread[Execution worker,5,main]) started.
+:shared_preferences_android:generateDebugAssets (Thread[Execution worker,5,main]) started.
+
+> Task :shared_preferences_android:generateDebugAssets UP-TO-DATE
+Skipping task ':shared_preferences_android:generateDebugAssets' as it has no actions.
+Resolve mutations for :shared_preferences_android:mergeDebugAssets (Thread[Execution worker,5,main]) started.
+:shared_preferences_android:mergeDebugAssets (Thread[Execution worker,5,main]) started.
+
+> Task :shared_preferences_android:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':shared_preferences_android:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':shared_preferences_android:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :shared_preferences_android) (Thread[Execution worker,5,main]) started.
+Resolve mutations for :sqflite_android:mergeDebugShaders (Thread[Execution worker,5,main]) started.
+:sqflite_android:mergeDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :sqflite_android:mergeDebugShaders UP-TO-DATE
+Caching disabled for task ':sqflite_android:mergeDebugShaders' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':sqflite_android:mergeDebugShaders' as it is up-to-date.
+Resolve mutations for :sqflite_android:compileDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+:sqflite_android:compileDebugShaders (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :sqflite_android:compileDebugShaders NO-SOURCE
+Skipping task ':sqflite_android:compileDebugShaders' as it has no source files and no previous output files.
+Resolve mutations for :sqflite_android:generateDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+:sqflite_android:generateDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :sqflite_android:generateDebugAssets UP-TO-DATE
+Skipping task ':sqflite_android:generateDebugAssets' as it has no actions.
+Resolve mutations for :sqflite_android:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+:sqflite_android:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :sqflite_android:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':sqflite_android:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Skipping task ':sqflite_android:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project :sqflite_android) (Thread[Execution worker Thread 3,5,main]) started.
+Resolve mutations for :app:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+:app:mergeDebugAssets (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :app:mergeDebugAssets
+Caching disabled for task ':app:mergeDebugAssets' because:
+  Build cache is disabled
+  Simple merging task
+Task ':app:mergeDebugAssets' is not up-to-date because:
+  Output property 'outputDir' file C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\build\intermediates\assets\debug\mergeDebugAssets has been removed.
+The input changes require a full rebuild for incremental task ':app:mergeDebugAssets'.
+Resolve mutations for :app:copyFlutterAssetsDebug (Thread[Execution worker Thread 3,5,main]) started.
+:app:copyFlutterAssetsDebug (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :app:copyFlutterAssetsDebug
+Caching disabled for task ':app:copyFlutterAssetsDebug' because:
+  Build cache is disabled
+  Not worth caching
+Task ':app:copyFlutterAssetsDebug' is not up-to-date because:
+  Output property 'destinationDir' file C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\build\intermediates\assets\debug\mergeDebugAssets\flutter_assets has been removed.
+  Output property 'destinationDir' file C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\build\intermediates\assets\debug\mergeDebugAssets\flutter_assets\AssetManifest.bin has been removed.
+  Output property 'destinationDir' file C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\build\intermediates\assets\debug\mergeDebugAssets\flutter_assets\FontManifest.json has been removed.
+  and more...
+Resolve mutations for :app:generateDebugResValues (Thread[Execution worker Thread 3,5,main]) started.
+:app:generateDebugResValues (Thread[Execution worker Thread 3,5,main]) started.
+
+> Task :app:generateDebugResValues UP-TO-DATE
+Caching disabled for task ':app:generateDebugResValues' because:
+  Build cache is disabled
+Skipping task ':app:generateDebugResValues' as it is up-to-date.
+Resolve mutations for :app:injectCrashlyticsMappingFileIdDebug (Thread[Execution worker Thread 3,5,main]) started.
+:app:injectCrashlyticsMappingFileIdDebug (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :app:injectCrashlyticsMappingFileIdDebug UP-TO-DATE
+Caching disabled for task ':app:injectCrashlyticsMappingFileIdDebug' because:
+  Build cache is disabled
+  Caching has not been enabled for the task
+Skipping task ':app:injectCrashlyticsMappingFileIdDebug' as it is up-to-date.
+Resolve mutations for :app:processDebugGoogleServices (Thread[Execution worker Thread 2,5,main]) started.
+:app:processDebugGoogleServices (Thread[Execution worker Thread 2,5,main]) started.
+
+> Task :app:processDebugGoogleServices FAILED
+Caching disabled for task ':app:processDebugGoogleServices' because:
+  Build cache is disabled
+Task ':app:processDebugGoogleServices' is not up-to-date because:
+  Task has failed previously.
+
+[Incubating] Problems report is available at: file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:processDebugGoogleServices'.
+> File google-services.json is missing. 
+  The Google Services Plugin cannot function without it. 
+  Searched locations: C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\src\debug\google-services.json, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\src\debug\google-services.json, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\src\google-services.json, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\src\debug\google-services.json, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\src\Debug\google-services.json, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\google-services.json
+
+* Try:
+> Run with --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:processDebugGoogleServices'.
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
+	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:40)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: org.gradle.api.GradleException: File google-services.json is missing. 
+The Google Services Plugin cannot function without it. 
+Searched locations: C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\src\debug\google-services.json, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\src\debug\google-services.json, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\src\google-services.json, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\src\debug\google-services.json, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\src\Debug\google-services.json, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android\app\google-services.json
+	at com.google.gms.googleservices.GoogleServicesTask.action(GoogleServicesTask.kt:77)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.gradle.internal.reflect.JavaMethod.invoke(JavaMethod.java:125)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.doExecute(StandardTaskAction.java:58)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:51)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:29)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:244)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:48)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeAction(TaskExecution.java:229)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeActions(TaskExecution.java:212)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeWithPreviousOutputFiles(TaskExecution.java:195)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.execute(TaskExecution.java:162)
+	at org.gradle.internal.execution.steps.ExecuteStep.executeInternal(ExecuteStep.java:105)
+	at org.gradle.internal.execution.steps.ExecuteStep.access$000(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:59)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:56)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:56)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.CancelExecutionStep.execute(CancelExecutionStep.java:42)
+	at org.gradle.internal.execution.steps.TimeoutStep.executeWithoutTimeout(TimeoutStep.java:75)
+	at org.gradle.internal.execution.steps.TimeoutStep.execute(TimeoutStep.java:55)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:50)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:28)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:67)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:37)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:61)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:26)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:69)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:46)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:40)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:29)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheStep.java:189)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$1(BuildCacheStep.java:75)
+	at org.gradle.internal.Either$Right.fold(Either.java:175)
+	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:73)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:48)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:46)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:35)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.executeBecause(SkipUpToDateStep.java:75)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.lambda$execute$2(SkipUpToDateStep.java:53)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:35)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:37)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:27)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:49)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:27)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:71)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:39)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:65)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:36)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:107)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:56)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:64)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:43)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.executeWithNonEmptySources(AbstractSkipEmptyWorkStep.java:125)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:56)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:36)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:36)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:23)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:75)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:41)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$execute$0(AssignMutableWorkspaceStep.java:35)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution.java:289)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:31)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:22)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:40)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:23)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$execute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:48)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:35)
+	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:61)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:127)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:40)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 4m 1s
+72 actionable tasks: 6 executed, 66 up-to-date
+Watched directory hierarchies: [C:\Flutter\flutter\packages\flutter_tools\gradle, C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\android]
