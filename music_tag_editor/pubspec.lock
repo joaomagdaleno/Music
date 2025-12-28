@@ -52,9 +52,10 @@ packages:
   audio_service:
     dependency: "direct main"
     description:
-      path: "packages/audio_service"
-      relative: true
-    source: path
+      name: audio_service
+      sha256: cb122c7c2639d2a992421ef96b67948ad88c5221da3365ccef1031393a76e044
+      url: "https://pub.dev"
+    source: hosted
     version: "0.18.18"
   audio_service_platform_interface:
     dependency: transitive
@@ -75,9 +76,10 @@ packages:
   audio_session:
     dependency: "direct main"
     description:
-      path: "packages/audio_session"
-      relative: true
-    source: path
+      name: audio_session
+      sha256: "2b7fff16a552486d078bfc09a8cde19f426dc6d6329262b684182597bec5b1ac"
+      url: "https://pub.dev"
+    source: hosted
     version: "0.1.25"
   boolean_selector:
     dependency: transitive
@@ -489,10 +491,11 @@ packages:
   just_audio:
     dependency: "direct main"
     description:
-      path: "packages/just_audio"
-      relative: true
-    source: path
-    version: "0.9.46"
+      name: just_audio
+      sha256: "9694e4734f515f2a052493d1d7e0d6de219ee0427c7c29492e246ff32a219908"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.5"
   just_audio_platform_interface:
     dependency: transitive
     description:
@@ -545,25 +548,26 @@ packages:
     dependency: "direct main"
     description:
       name: local_auth
-      sha256: "434d854cf478f17f12ab29a76a02b3067f86a63a6d6c4eb8fbfdcfe4879c1b7b"
+      sha256: a4f1bf57f0236a4aeb5e8f0ec180e197f4b112a3456baa6c1e73b546630b0422
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.0"
+    version: "3.0.0"
   local_auth_android:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "packages/local_auth_android"
-      relative: true
-    source: path
+      name: local_auth_android
+      sha256: "162b8e177fd9978c4620da2a8002a5c6bed4d20f0c6daf5137e72e9a8b767d2e"
+      url: "https://pub.dev"
+    source: hosted
     version: "2.0.4"
   local_auth_darwin:
     dependency: transitive
     description:
       name: local_auth_darwin
-      sha256: "699873970067a40ef2f2c09b4c72eb1cfef64224ef041b3df9fdc5c4c1f91f49"
+      sha256: "668ea65edaab17380956e9713f57e34f78ede505ca0cfd8d39db34e2f260bfee"
       url: "https://pub.dev"
     source: hosted
-    version: "1.6.1"
+    version: "2.0.1"
   local_auth_platform_interface:
     dependency: transitive
     description:
@@ -576,10 +580,10 @@ packages:
     dependency: transitive
     description:
       name: local_auth_windows
-      sha256: bc4e66a29b0fdf751aafbec923b5bed7ad6ed3614875d8151afe2578520b2ab5
+      sha256: be12c5b8ba5e64896983123655c5f67d2484ecfcc95e367952ad6e3bff94cb16
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.11"
+    version: "2.0.1"
   logging:
     dependency: transitive
     description:
@@ -639,9 +643,10 @@ packages:
   nearby_connections:
     dependency: "direct main"
     description:
-      path: "packages/nearby_connections"
-      relative: true
-    source: path
+      name: nearby_connections
+      sha256: "94d500bdb11f9a3db3b1cb2949ab438107e581f0142380efc17ecc8038e99369"
+      url: "https://pub.dev"
+    source: hosted
     version: "4.3.0"
   network_info_plus:
     dependency: "direct main"
@@ -740,11 +745,12 @@ packages:
     source: hosted
     version: "12.0.1"
   permission_handler_android:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "packages/permission_handler_android"
-      relative: true
-    source: path
+      name: permission_handler_android
+      sha256: "1e3bc410ca1bf84662104b100eb126e066cb55791b7451307f9708d4007350e6"
+      url: "https://pub.dev"
+    source: hosted
     version: "13.0.1"
   permission_handler_apple:
     dependency: transitive
