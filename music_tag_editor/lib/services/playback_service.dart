@@ -49,6 +49,7 @@ class PlaybackService {
 
   SearchResult? _currentTrack;
   final List<SearchResult> _queue = [];
+  // ignore: deprecated_member_use
   ConcatenatingAudioSource? _playlist;
   Duration _crossfadeDuration = const Duration(seconds: 3);
   List<LyricLine> _currentLyrics = [];
@@ -154,6 +155,7 @@ class PlaybackService {
     _queue.clear();
     _queue.add(result);
     _playlist =
+        // ignore: deprecated_member_use
         ConcatenatingAudioSource(children: [await _createSource(result)]);
 
     await _player.setAudioSource(_playlist!);

@@ -69,7 +69,7 @@ void main() {
     when(() => mockTheme.setCustomColor(any())).thenAnswer((_) async {});
   });
 
-  void _setupViewport(WidgetTester tester) {
+  void setupViewport(WidgetTester tester) {
     tester.view.physicalSize = const Size(800, 1200);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(() {
@@ -79,7 +79,7 @@ void main() {
   }
 
   testWidgets('Loads and displays settings', (tester) async {
-    _setupViewport(tester);
+    setupViewport(tester);
     await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
     await tester.pump(); // init load
     await tester.pumpAndSettle();
@@ -90,7 +90,7 @@ void main() {
   });
 
   testWidgets('Changes Filename Format', (tester) async {
-    _setupViewport(tester);
+    setupViewport(tester);
     await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
     await tester.pumpAndSettle();
 
@@ -110,7 +110,7 @@ void main() {
   });
 
   testWidgets('Clean Library interaction', (tester) async {
-    _setupViewport(tester);
+    setupViewport(tester);
     when(() => mockCleanup.cleanupLibrary()).thenAnswer((_) async => 5);
 
     await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
@@ -130,7 +130,7 @@ void main() {
   });
 
   testWidgets('Age bypass requires confirmation', (tester) async {
-    _setupViewport(tester);
+    setupViewport(tester);
     await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
     await tester.pumpAndSettle();
 
@@ -150,7 +150,7 @@ void main() {
   });
 
   testWidgets('Sync interactions', (tester) async {
-    _setupViewport(tester);
+    setupViewport(tester);
     when(() => mockSync.enableSync()).thenAnswer((_) async => true);
     when(() => mockSync.pullFromCloud()).thenAnswer((_) async => 10);
 
