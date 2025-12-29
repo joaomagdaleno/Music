@@ -169,17 +169,31 @@ void main() {
     verify(() => mockSync.enableSync()).called(1);
     expect(find.text('Sincronização ativada!'), findsOneWidget);
 
+    // Clear SnackBar so the next one can appear immediately
+    ScaffoldMessenger.of(tester.element(find.byType(SettingsPage)))
+        .removeCurrentSnackBar();
+    await tester.pumpAndSettle();
+
     final downloadBtn = find.byIcon(Icons.cloud_download);
     await tester.ensureVisible(downloadBtn);
     await tester.pumpAndSettle();
 
     await tester.tap(downloadBtn);
-    await tester.pump(); // Start pullFromCloud
-    await tester.pump(const Duration(seconds: 1)); // Wait for result
-    await tester.pumpAndSettle(); // Finish animations and SnackBar
+    await tester.pump(); // Start
+    await tester.pump(const Duration(milliseconds: 100)); // Process await
+    await tester.pump(); // Trigger SnackBar
+    await tester.pump(const Duration(milliseconds: 100)); // Show it
 
     verify(() => mockSync.pullFromCloud()).called(1);
-    // Verify SnackBar content
-    expect(find.textContaining('10 itens sincronizados!'), findsOneWidget);
+    
+    // Check if ANY SnackBar is there
+    final snackBarFinder = find.byType(SnackBar);
+    expect(snackBarFinder, findsOneWidget);
+    
+    final textFinder = find.descendant(of: snackBarFinder, matching: find.byType(Text));
+    final Text textWidget = tester.widget<Text>(textFinder);
+    expect(textWidget.data, '10 itens sincronizados!');
+
+    await tester.pumpAndSettle();
   });
 }
