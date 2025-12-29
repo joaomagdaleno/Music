@@ -93,7 +93,7 @@ jobs:
 
     steps:
       - name: Checkout coverage-data branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: coverage-data
           token: ${{ secrets.GITHUB_TOKEN }}
