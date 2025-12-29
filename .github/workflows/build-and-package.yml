@@ -99,13 +99,13 @@ jobs:
           & "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" installer.iss
 
       - name: Upload Installer Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: windows-installer
           path: Output/MusicTagEditorSetup-*.exe
 
       - name: Upload Version Artifact (Windows)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: version-info
           path: music_tag_editor/version.txt
@@ -200,7 +200,7 @@ jobs:
         run: flutter build apk --release --target-platform=android-arm64
 
       - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: android-apk
           path: music_tag_editor/build/app/outputs/flutter-apk/app-release.apk
@@ -215,7 +215,7 @@ jobs:
           tar -czvf ../../../../../music_tag_editor-linux-v${{ steps.generate_version.outputs.full_version }}.tar.gz .
 
       - name: Upload Linux Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: linux-release
           path: music_tag_editor/music_tag_editor-linux-v*.tar.gz
