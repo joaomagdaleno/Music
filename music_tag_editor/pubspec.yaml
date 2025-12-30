@@ -13,7 +13,7 @@ dependencies:
 
   cupertino_icons: ^1.0.8
   dart_tags: ^0.4.1
-  file_picker: ^8.0.7
+  file_picker: ^10.3.8
   http: ^1.2.1
   sqflite: ^2.3.3
   path: ^1.9.0
