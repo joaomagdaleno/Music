@@ -71,7 +71,7 @@ jobs:
         run: flutter pub get
 
       - name: Cache Windows Build Artifacts
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             music_tag_editor/build
