@@ -4,7 +4,8 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/disco_mode_view.dart';
+import 'package:music_tag_editor/screens/disco/disco_mode_screen.dart';
+
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
@@ -30,10 +31,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: DiscoModeView());
+    return const MaterialApp(home: DiscoModeScreen());
   }
 
-  group('DiscoModeView', () {
+  group('DiscoModeScreen', () {
     testWidgets('renders with no track playing', (tester) async {
       when(() => mockPlayback.currentTrack).thenReturn(null);
 
@@ -70,7 +71,7 @@ void main() {
           builder: (context) => ElevatedButton(
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => const DiscoModeView()),
+              MaterialPageRoute(builder: (_) => const DiscoModeScreen()),
             ),
             child: const Text('Open Disco'),
           ),
@@ -81,13 +82,13 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
 
-      expect(find.byType(DiscoModeView), findsOneWidget);
+      expect(find.byType(DiscoModeScreen), findsOneWidget);
 
       await tester.tap(find.byType(GestureDetector).first);
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
 
-      expect(find.byType(DiscoModeView), findsNothing);
+      expect(find.byType(DiscoModeScreen), findsNothing);
     });
 
     testWidgets('visualizer bars animate', (tester) async {

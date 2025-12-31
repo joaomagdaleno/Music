@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/vault_view.dart';
+import 'package:music_tag_editor/screens/vault/vault_screen.dart';
 import 'package:music_tag_editor/services/security_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
@@ -46,10 +46,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: VaultView());
+    return const MaterialApp(home: VaultScreen());
   }
 
-  group('VaultView', () {
+  group('VaultScreen', () {
     testWidgets('renders locked state', (tester) async {
       await tester.pumpWidget(createTestWidget());
 

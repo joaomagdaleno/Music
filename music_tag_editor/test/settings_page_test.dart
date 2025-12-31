@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:music_tag_editor/views/settings_page.dart';
+import 'package:music_tag_editor/models/filename_format.dart';
+import 'package:music_tag_editor/screens/settings/settings_screen.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/metadata_cleanup_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
@@ -80,7 +81,7 @@ void main() {
 
   testWidgets('Loads and displays settings', (tester) async {
     setupViewport(tester);
-    await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
+    await tester.pumpWidget(const MaterialApp(home: SettingsScreen()));
     await tester.pump(); // init load
     await tester.pumpAndSettle();
 
@@ -91,7 +92,7 @@ void main() {
 
   testWidgets('Changes Filename Format', (tester) async {
     setupViewport(tester);
-    await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
+    await tester.pumpWidget(const MaterialApp(home: SettingsScreen()));
     await tester.pumpAndSettle();
 
     final dropdownFinder = find.text('Artist - Title.mp3');
@@ -113,7 +114,7 @@ void main() {
     setupViewport(tester);
     when(() => mockCleanup.cleanupLibrary()).thenAnswer((_) async => 5);
 
-    await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
+    await tester.pumpWidget(const MaterialApp(home: SettingsScreen()));
     await tester.pumpAndSettle();
 
     final cleanBtn = find.text('Polir Biblioteca');
@@ -131,7 +132,7 @@ void main() {
 
   testWidgets('Age bypass requires confirmation', (tester) async {
     setupViewport(tester);
-    await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
+    await tester.pumpWidget(const MaterialApp(home: SettingsScreen()));
     await tester.pumpAndSettle();
 
     final switchFinder = find.byType(Switch);
@@ -154,7 +155,7 @@ void main() {
     when(() => mockSync.enableSync()).thenAnswer((_) async => true);
     when(() => mockSync.pullFromCloud()).thenAnswer((_) async => 10);
 
-    await tester.pumpWidget(const MaterialApp(home: SettingsPage()));
+    await tester.pumpWidget(const MaterialApp(home: SettingsScreen()));
     await tester.pumpAndSettle();
 
     final syncBtn = find.text('Sincronizar Agora');
@@ -170,7 +171,7 @@ void main() {
     expect(find.text('Sincronização ativada!'), findsOneWidget);
 
     // Clear SnackBar so the next one can appear immediately
-    ScaffoldMessenger.of(tester.element(find.byType(SettingsPage)))
+    ScaffoldMessenger.of(tester.element(find.byType(SettingsScreen)))
         .removeCurrentSnackBar();
     await tester.pumpAndSettle();
 

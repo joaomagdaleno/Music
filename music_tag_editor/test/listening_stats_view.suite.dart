@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/listening_stats_view.dart';
+import 'package:music_tag_editor/screens/stats/listening_stats_screen.dart';
 import 'package:music_tag_editor/services/listening_stats_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
 
@@ -29,10 +29,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return MaterialApp(home: Scaffold(body: const ListeningStatsView()));
+    return MaterialApp(home: Scaffold(body: const ListeningStatsScreen()));
   }
 
-  group('ListeningStatsView', () {
+  group('ListeningStatsScreen', () {
     testWidgets('renders all sections when data is available', (tester) async {
       final stats = ListeningStats(
         totalTracks: 10,

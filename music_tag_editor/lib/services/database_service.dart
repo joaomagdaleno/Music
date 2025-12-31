@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
-import 'package:music_tag_editor/views/settings_page.dart'; // Import the enum
+import 'package:music_tag_editor/models/filename_format.dart'; // Import the enum
 import 'package:music_tag_editor/widgets/learning_dialog.dart'; // Import the learning choice enum
 import 'package:music_tag_editor/services/download_service.dart'; // For SearchResult and MediaPlatform
 

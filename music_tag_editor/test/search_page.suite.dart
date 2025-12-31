@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/search_page.dart';
+import 'package:music_tag_editor/screens/search/search_screen.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'test_helper.dart';
@@ -35,7 +35,7 @@ void main() {
       callback?.call('Done', 1.0);
     });
 
-    await tester.pumpWidget(const MaterialApp(home: SearchPage()));
+    await tester.pumpWidget(const MaterialApp(home: SearchScreen()));
     await tester.pump(); // Start init
 
     expect(find.text('Loading...'), findsOneWidget);
@@ -77,7 +77,7 @@ void main() {
       return results;
     });
 
-    await tester.pumpWidget(const MaterialApp(home: SearchPage()));
+    await tester.pumpWidget(const MaterialApp(home: SearchScreen()));
     await tester.pump(const Duration(milliseconds: 200));
 
     await tester.enterText(find.byType(TextField), 'test query');
@@ -114,7 +114,7 @@ void main() {
     when(() => mockPlayback.playSearchResult(any()))
         .thenAnswer((_) async => Future.value());
 
-    await tester.pumpWidget(const MaterialApp(home: SearchPage()));
+    await tester.pumpWidget(const MaterialApp(home: SearchScreen()));
     await tester.pump(const Duration(milliseconds: 200));
 
     await tester.enterText(find.byType(TextField), 'test');
@@ -143,7 +143,7 @@ void main() {
       return [];
     });
 
-    await tester.pumpWidget(const MaterialApp(home: SearchPage()));
+    await tester.pumpWidget(const MaterialApp(home: SearchScreen()));
     await tester.pump(const Duration(milliseconds: 200));
 
     await tester.enterText(find.byType(TextField), 'unknown');
@@ -159,7 +159,7 @@ void main() {
             mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
         .thenThrow('Init failed');
 
-    await tester.pumpWidget(const MaterialApp(home: SearchPage()));
+    await tester.pumpWidget(const MaterialApp(home: SearchScreen()));
     await tester.pump(const Duration(milliseconds: 200));
 
     expect(find.textContaining('Erro ao inicializar: Init failed'),

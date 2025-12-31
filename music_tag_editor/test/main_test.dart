@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/main.dart';
+import 'package:music_tag_editor/screens/library/library_screen.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
 
@@ -60,11 +61,11 @@ void main() {
     });
   });
 
-  group('LibraryPage', () {
+  group('LibraryScreen', () {
     testWidgets('renders with title', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: LibraryPage(title: 'Test Library'),
+          home: LibraryScreen(title: 'Test Library'),
         ),
       );
       await tester.pump(const Duration(milliseconds: 100));
@@ -75,7 +76,7 @@ void main() {
     testWidgets('has DefaultTabController', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: LibraryPage(title: 'Library'),
+          home: LibraryScreen(title: 'Library'),
         ),
       );
       await tester.pump(const Duration(milliseconds: 100));
@@ -86,7 +87,7 @@ void main() {
     testWidgets('renders tab bar with tabs', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: LibraryPage(title: 'Library'),
+          home: LibraryScreen(title: 'Library'),
         ),
       );
       await tester.pump(const Duration(milliseconds: 100));
@@ -101,7 +102,7 @@ void main() {
     testWidgets('has settings button in app bar', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: LibraryPage(title: 'Library'),
+          home: LibraryScreen(title: 'Library'),
         ),
       );
       await tester.pump(const Duration(milliseconds: 100));
@@ -112,7 +113,7 @@ void main() {
     testWidgets('has download button in app bar', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: LibraryPage(title: 'Library'),
+          home: LibraryScreen(title: 'Library'),
         ),
       );
       await tester.pump(const Duration(milliseconds: 100));
@@ -123,7 +124,7 @@ void main() {
     testWidgets('shows empty folder message', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: LibraryPage(title: 'Library'),
+          home: LibraryScreen(title: 'Library'),
         ),
       );
       await tester.pump(const Duration(milliseconds: 100));

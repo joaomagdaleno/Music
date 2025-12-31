@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:alchemist/alchemist.dart';
 import 'package:mocktail/mocktail.dart';
 import 'golden_helper.dart';
-import 'package:music_tag_editor/views/disco_mode_view.dart';
+import 'package:music_tag_editor/screens/disco/disco_mode_screen.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/download_service.dart'; // For SearchResult
 import 'package:music_tag_editor/services/theme_service.dart';
@@ -53,7 +53,7 @@ class MockLocalDuoService extends Mock implements LocalDuoService {}
 class MockLyricsService extends Mock implements LyricsService {}
 
 void main() {
-  group('DiscoModeView Golden Tests', () {
+  group('DiscoModeScreen Golden Tests', () {
     late MockPlaybackService mockPlayback;
     late MockThemeService mockTheme;
     late MockAuthService mockAuth;
@@ -122,7 +122,7 @@ void main() {
     });
 
     goldenTest(
-      'DiscoModeView initial state',
+      'DiscoModeScreen initial state',
       fileName: 'disco_mode_view_initial',
       builder: () => GoldenTestGroup(
         columns: 1,
@@ -132,7 +132,7 @@ void main() {
             constraints: BoxConstraints.tight(const Size(400, 1000)),
             child: MediaQuery(
               data: const MediaQueryData(size: Size(400, 1000)),
-              child: const DiscoModeView(),
+              child: const DiscoModeScreen(),
             ),
           ),
         ],

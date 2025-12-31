@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_tag_editor/main.dart';
+import 'package:music_tag_editor/screens/library/library_screen.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
@@ -19,9 +20,9 @@ import 'package:music_tag_editor/services/desktop_integration_service.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/views/settings_page.dart';
+import 'package:music_tag_editor/models/filename_format.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
-import 'package:music_tag_editor/views/login_page.dart';
+import 'package:music_tag_editor/screens/login/login_screen.dart';
 
 class MockAuthService extends Mock implements AuthService {}
 
@@ -151,7 +152,7 @@ void main() {
     await tester.pumpWidget(const MusicTagEditorApp());
     await tester.pump();
 
-    expect(find.byType(LoginPage), findsOneWidget);
+    expect(find.byType(LoginScreen), findsOneWidget);
     expect(find.byType(AppShell), findsNothing);
   });
 
@@ -171,15 +172,15 @@ void main() {
     await tester.pump(const Duration(milliseconds: 200));
 
     expect(find.byType(AppShell), findsOneWidget);
-    expect(find.byType(LoginPage), findsNothing);
+    expect(find.byType(LoginScreen), findsNothing);
   });
 
-  testWidgets('LibraryPage displays initial empty state', (tester) async {
+  testWidgets('LibraryScreen displays initial empty state', (tester) async {
     when(() => mockDb.loadFilenameFormat())
         .thenAnswer((_) async => FilenameFormat.artistTitle);
 
     await tester.pumpWidget(
-        const MaterialApp(home: LibraryPage(title: 'Test Library')));
+        const MaterialApp(home: LibraryScreen(title: 'Test Library')));
     await tester.pump();
 
     expect(find.text('Nenhuma pasta selecionada.'), findsOneWidget);

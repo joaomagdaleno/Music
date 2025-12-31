@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:alchemist/alchemist.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/login_page.dart';
+import 'package:music_tag_editor/screens/login/login_screen.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
 import 'package:music_tag_editor/services/connectivity_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
@@ -51,7 +51,7 @@ class MockLocalDuoService extends Mock implements LocalDuoService {}
 class MockLyricsService extends Mock implements LyricsService {}
 
 void main() {
-  group('LoginPage Golden Tests', () {
+  group('LoginScreen Golden Tests', () {
     late MockAuthService mockAuth;
     late MockConnectivityService mockConnectivity;
     late MockPlaybackService mockPlayback;
@@ -104,29 +104,29 @@ void main() {
     });
 
     goldenTest(
-      'LoginPage initial state',
+      'LoginScreen initial state',
       fileName: 'login_page_initial',
       builder: () => GoldenTestGroup(
         children: [
           GoldenTestScenario(
             name: 'phone',
             constraints: const BoxConstraints(maxWidth: 375, maxHeight: 667),
-            child: const LoginPage(),
+            child: const LoginScreen(),
           ),
           GoldenTestScenario(
             name: 'tablet_landscape',
             constraints: const BoxConstraints(maxWidth: 1024, maxHeight: 768),
-            child: const LoginPage(),
+            child: const LoginScreen(),
           ),
         ],
       ),
     );
 
-    testWidgets('LoginPage register mode tap interaction', (tester) async {
-      await tester.pumpWidget(const MaterialApp(home: LoginPage()));
+    testWidgets('LoginScreen register mode tap interaction', (tester) async {
+      await tester.pumpWidget(const MaterialApp(home: LoginScreen()));
       await tester.tap(find.textContaining('Não tem conta?'));
       await tester.pump();
-      await expectLater(find.byType(LoginPage),
+      await expectLater(find.byType(LoginScreen),
           matchesGoldenFile('goldens/login_page_register.png'));
     });
   });

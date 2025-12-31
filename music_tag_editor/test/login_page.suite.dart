@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/login_page.dart';
+import 'package:music_tag_editor/screens/login/login_screen.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
 
 import 'package:music_tag_editor/services/connectivity_service.dart';
@@ -133,10 +133,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: LoginPage());
+    return const MaterialApp(home: LoginScreen());
   }
 
-  group('LoginPage', () {
+  group('LoginScreen', () {
     testWidgets('renders Scaffold', (tester) async {
       await tester.pumpWidget(createTestWidget());
 

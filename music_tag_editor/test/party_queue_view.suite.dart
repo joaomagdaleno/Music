@@ -3,14 +3,14 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_tag_editor/views/party_queue_view.dart';
+import 'package:music_tag_editor/screens/disco/party_queue_screen.dart';
 
 void main() {
   Widget createTestWidget() {
-    return const MaterialApp(home: PartyQueueView());
+    return const MaterialApp(home: PartyQueueScreen());
   }
 
-  group('PartyQueueView', () {
+  group('PartyQueueScreen', () {
     testWidgets('renders app bar', (tester) async {
       await tester.pumpWidget(createTestWidget());
 

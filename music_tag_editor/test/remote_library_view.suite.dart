@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/remote_library_view.dart';
+import 'package:music_tag_editor/screens/library/remote_library_screen.dart';
 import 'package:music_tag_editor/services/local_duo_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
@@ -40,10 +40,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: RemoteLibraryView());
+    return const MaterialApp(home: RemoteLibraryScreen());
   }
 
-  group('RemoteLibraryView', () {
+  group('RemoteLibraryScreen', () {
     testWidgets('shows loading indicator initially', (tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pump();

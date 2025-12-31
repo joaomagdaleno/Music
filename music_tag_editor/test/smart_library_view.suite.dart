@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/smart_library_view.dart';
+import 'package:music_tag_editor/screens/library/smart_library_screen.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
@@ -39,10 +39,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: Scaffold(body: SmartLibraryView()));
+    return const MaterialApp(home: Scaffold(body: SmartLibraryScreen()));
   }
 
-  group('SmartLibraryView', () {
+  group('SmartLibraryScreen', () {
     testWidgets('renders tab bar', (tester) async {
       await tester.pumpWidget(createTestWidget());
 

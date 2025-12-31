@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/playlists_view.dart';
+import 'package:music_tag_editor/screens/playlists/playlists_screen.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
@@ -18,10 +18,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: PlaylistsView());
+    return const MaterialApp(home: PlaylistsScreen());
   }
 
-  group('PlaylistsView', () {
+  group('PlaylistsScreen', () {
     testWidgets('renders empty state', (tester) async {
       when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
 

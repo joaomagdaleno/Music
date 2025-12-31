@@ -4,7 +4,8 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/settings_page.dart';
+import 'package:music_tag_editor/models/filename_format.dart';
+import 'package:music_tag_editor/screens/settings/settings_screen.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
@@ -64,10 +65,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: SettingsPage());
+    return const MaterialApp(home: SettingsScreen());
   }
 
-  group('SettingsPage', () {
+  group('SettingsScreen', () {
     testWidgets('renders Scaffold', (tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pump(); // Start loading

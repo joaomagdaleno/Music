@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:music_tag_editor/views/karaoke_view.dart';
+import 'package:music_tag_editor/screens/disco/karaoke_screen.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
 
@@ -35,13 +35,13 @@ void main() {
 
   Widget createTestWidget() {
     return MaterialApp(
-      home: KaraokeView(
+      home: KaraokeScreen(
         track: {'id': '1', 'title': 'Test Song', 'artist': 'Test Artist'},
       ),
     );
   }
 
-  group('KaraokeView', () {
+  group('KaraokeScreen', () {
     testWidgets('renders track title', (tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
