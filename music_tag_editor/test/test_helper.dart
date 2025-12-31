@@ -1,4 +1,5 @@
 import 'package:mocktail/mocktail.dart';
+import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
@@ -75,6 +76,8 @@ Future<void> setupMusicTest({
   bool mockThemeInstance = true,
   bool mockDepsInstance = true,
 }) async {
+  // Force Material Design for tests that expect it
+  debugDefaultTargetPlatformOverride = TargetPlatform.android;
   // Reset ALL core singletons
   AuthService.resetInstance();
   DatabaseService.resetInstance();

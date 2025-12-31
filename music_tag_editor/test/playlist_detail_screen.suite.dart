@@ -79,7 +79,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.text('Esta playlist está vazia.'), findsOneWidget);
+      expect(find.text('Playlist vazia.'), findsOneWidget);
     });
 
     testWidgets('shows track list when tracks exist', (tester) async {

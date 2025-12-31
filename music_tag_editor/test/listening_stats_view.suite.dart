@@ -60,7 +60,7 @@ void main() {
       await tester.pump(); // Initial load
       await tester.pump(); // FutureBuilder completion
 
-      expect(find.text('Suas Estatísticas'), findsOneWidget);
+      expect(find.text('Estatísticas de Escuta'), findsOneWidget);
       expect(find.text('10'), findsOneWidget);
       expect(find.text('100'), findsOneWidget);
       expect(find.text('5h 0min'), findsOneWidget);

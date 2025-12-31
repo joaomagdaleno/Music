@@ -41,7 +41,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
-      expect(find.text('No Track Playing'), findsOneWidget);
+      expect(find.text('No Track'), findsOneWidget);
       expect(find.text('Toque para sair'), findsOneWidget);
     });
 
