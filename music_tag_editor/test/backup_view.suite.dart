@@ -42,14 +42,14 @@ void main() {
       await tester.pumpWidget(createTestWidget());
 
       expect(find.text('Criar Backup'), findsWidgets);
-      expect(find.byIcon(Icons.cloud_upload), findsOneWidget);
+      expect(find.byIcon(Icons.cloud_upload), findsNWidgets(2));
     });
 
     testWidgets('renders restore backup card', (tester) async {
       await tester.pumpWidget(createTestWidget());
 
       expect(find.text('Restaurar Backup'), findsOneWidget);
-      expect(find.byIcon(Icons.cloud_download), findsOneWidget);
+      expect(find.byIcon(Icons.cloud_download), findsNWidgets(2));
     });
 
     testWidgets('shows backup size estimate', (tester) async {

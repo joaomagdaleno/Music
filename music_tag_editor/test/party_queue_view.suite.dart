@@ -4,8 +4,13 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:music_tag_editor/screens/disco/party_queue_screen.dart';
+import 'test_helper.dart';
 
 void main() {
+  setUpAll(() {
+    setupHttpOverrides();
+  });
+
   Widget createTestWidget() {
     return MaterialApp(
       theme: ThemeData(platform: TargetPlatform.android),

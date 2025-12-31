@@ -55,7 +55,8 @@ class MaterialDiscoModeView extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.end,
-        children: bars.map((val) => Expanded(child: Container(
+        children: bars.map((val) => Expanded(child: AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
           margin: const EdgeInsets.symmetric(horizontal: 2),
           height: val * 180,
           color: primaryColor,
@@ -95,6 +96,6 @@ class MaterialDiscoModeView extends StatelessWidget {
   }
 
   Widget _buildCloseHint() {
-    return const Positioned(bottom: 220, left: 0, right: 0, child: Center(child: Text('Tocar para sair', style: TextStyle(color: Colors.white38, fontSize: 14))));
+    return const Positioned(bottom: 220, left: 0, right: 0, child: Center(child: Text('Toque para sair', style: TextStyle(color: Colors.white38, fontSize: 14))));
   }
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/screens/player/views/fluent_player_view.dart';
 import 'package:music_tag_editor/screens/player/views/material_player_view.dart';
@@ -9,14 +8,16 @@ import 'package:music_tag_editor/widgets/cast_dialog.dart';
 class PlayerScreen extends StatelessWidget {
   const PlayerScreen({super.key});
 
-  bool get _isFluent =>
-      defaultTargetPlatform == TargetPlatform.windows ||
-      defaultTargetPlatform == TargetPlatform.linux ||
-      defaultTargetPlatform == TargetPlatform.macOS;
+  bool _isFluent(BuildContext context) {
+    final platform = Theme.of(context).platform;
+    return platform == TargetPlatform.windows ||
+           platform == TargetPlatform.linux ||
+           platform == TargetPlatform.macOS;
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (_isFluent) {
+    if (_isFluent(context)) {
       return FluentPlayerView(
         onShowSleepTimer: _showSleepTimerDialog,
         onShowQueue: _showQueueSheet,

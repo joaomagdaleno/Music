@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
