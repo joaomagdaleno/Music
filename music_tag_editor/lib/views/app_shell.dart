@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:music_tag_editor/screens/search/search_screen.dart';
 
 import 'package:music_tag_editor/widgets/mini_player.dart';
-import 'package:music_tag_editor/views/playlists_view.dart';
-import 'package:music_tag_editor/views/my_tracks_view.dart';
-import 'package:music_tag_editor/views/home_view.dart';
+import 'package:music_tag_editor/screens/playlists/playlists_screen.dart';
+import 'package:music_tag_editor/screens/tracks/my_tracks_screen.dart';
+import 'package:music_tag_editor/screens/home/home_screen.dart';
 import 'package:music_tag_editor/services/connectivity_service.dart';
 
 import 'package:music_tag_editor/services/persona_service.dart';
 import 'package:music_tag_editor/models/persona_model.dart';
-import 'package:music_tag_editor/views/disco_mode_view.dart';
-import 'package:music_tag_editor/views/karaoke_view.dart';
+import 'package:music_tag_editor/screens/disco_mode/disco_mode_screen.dart';
+import 'package:music_tag_editor/screens/karaoke/karaoke_screen.dart';
 import 'package:music_tag_editor/views/ringtone_maker_view.dart';
-import 'package:music_tag_editor/views/vault_view.dart';
-import 'package:music_tag_editor/views/party_queue_view.dart';
-import 'package:music_tag_editor/views/listening_stats_view.dart';
+import 'package:music_tag_editor/screens/vault/vault_screen.dart';
+import 'package:music_tag_editor/screens/party/party_queue_screen.dart';
+import 'package:music_tag_editor/screens/stats/listening_stats_screen.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/screens/library/library_screen.dart';
 
@@ -168,20 +168,20 @@ class _AppShellState extends State<AppShell> {
       case AppPersona.librarian:
         return [
           const LibraryScreen(title: 'Editor de Tags'),
-          const MyTracksView(),
+          const MyTracksScreen(),
         ];
       case AppPersona.listener:
         return [
-          const HomeView(),
+          const HomeScreen(),
           const SearchScreen(),
-          const MyTracksView(),
-          const PlaylistsView(),
+          const MyTracksScreen(),
+          const PlaylistsScreen(),
         ];
       case AppPersona.host:
         return [
-          const DiscoModeView(),
-          const KaraokeView(track: {}), // Placeholder track
-          const PartyQueueView(),
+          const DiscoModeScreen(),
+          const KaraokeScreen(track: {}), // Placeholder track
+          const PartyQueueScreen(),
         ];
       case AppPersona.artisan:
         return [
@@ -195,8 +195,8 @@ class _AppShellState extends State<AppShell> {
               thumbnail: '',
             ),
           ),
-          const VaultView(),
-          const ListeningStatsView(),
+          const VaultScreen(),
+          const ListeningStatsScreen(),
         ];
     }
   }

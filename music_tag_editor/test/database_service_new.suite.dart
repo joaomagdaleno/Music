@@ -3,7 +3,7 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/views/settings_page.dart'; // For FilenameFormat
+import 'package:music_tag_editor/models/filename_format.dart'; // For FilenameFormat
 import 'package:music_tag_editor/widgets/learning_dialog.dart'; // For LearningChoice
 
 void main() {

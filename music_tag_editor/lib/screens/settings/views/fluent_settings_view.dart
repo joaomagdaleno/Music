@@ -2,7 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:music_tag_editor/models/persona_model.dart';
 import 'package:music_tag_editor/services/persona_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
-import 'package:music_tag_editor/views/backup_view.dart';
+import 'package:music_tag_editor/screens/backup/backup_screen.dart';
 import 'package:music_tag_editor/models/filename_format.dart';
 
 class FluentSettingsView extends StatefulWidget {
@@ -144,7 +144,7 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
                          // For now, standard navigation
                          Navigator.push(
                           context,
-                          FluentPageRoute(builder: (_) => const BackupView()),
+                          FluentPageRoute(builder: (_) => const BackupScreen()),
                         );
                       },
                     ),
@@ -162,7 +162,7 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
                       padding: const EdgeInsets.all(12.0),
                       child: Row(
                         children: [
-                          const Icon(FluentIcons.warning, color: Colors.orange),
+                          Icon(FluentIcons.warning, color: Colors.orange),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(
@@ -283,7 +283,7 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
             : FluentTheme.of(context).cardColor;
         
         return Card(
-          backgroundColor: isSelected ? color.withOpacity(0.1) : null,
+          backgroundColor: isSelected ? color.withValues(alpha: 0.1) : null,
           borderColor: isSelected ? color : null,
           child: Container(
             width: 140,
@@ -313,7 +313,7 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
           children: [
             Row(
               children: [
-                const Icon(FluentIcons.cloud, color: Colors.blue),
+                Icon(FluentIcons.cloud, color: Colors.blue),
                 const SizedBox(width: 8),
                 Text(
                   'Sincronização na Nuvem',
@@ -364,7 +364,7 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
              children: [
                 Row(
                   children: [
-                    const Icon(FluentIcons.color, color: Colors.purple),
+                    Icon(FluentIcons.color, color: Colors.purple),
                     const SizedBox(width: 8),
                     Text('Tema de Cores', style: FluentTheme.of(context).typography.bodyStrong),
                   ],

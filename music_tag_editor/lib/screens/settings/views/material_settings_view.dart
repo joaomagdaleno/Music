@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:music_tag_editor/models/persona_model.dart';
 import 'package:music_tag_editor/services/persona_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
-import 'package:music_tag_editor/views/backup_view.dart';
+import 'package:music_tag_editor/screens/backup/backup_screen.dart';
 import 'package:music_tag_editor/models/filename_format.dart';
 
 class MaterialSettingsView extends StatefulWidget {
@@ -132,7 +132,7 @@ class _MaterialSettingsViewState extends State<MaterialSettingsView> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const BackupView()),
+                          MaterialPageRoute(builder: (_) => const BackupScreen()),
                         );
                       },
                     ),

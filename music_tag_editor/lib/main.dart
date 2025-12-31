@@ -11,7 +11,7 @@ import 'package:music_tag_editor/services/startup_logger.dart';
 import 'package:music_tag_editor/services/telemetry_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
-import 'package:music_tag_editor/views/login_page.dart';
+import 'package:music_tag_editor/screens/login/login_screen.dart';
 
 
 
@@ -207,7 +207,7 @@ class MusicTagEditorApp extends StatelessWidget {
           ),
           home: AuthService.instance.isAuthenticated
               ? const AppShell()
-              : const LoginPage(),
+              : const LoginScreen(),
         );
       },
     );

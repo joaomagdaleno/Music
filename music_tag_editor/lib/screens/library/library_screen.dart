@@ -8,7 +8,7 @@ import 'package:music_tag_editor/api/musicbrainz_api.dart';
 import 'package:music_tag_editor/models/music_track.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/metadata_service.dart';
-import 'package:music_tag_editor/views/settings_page.dart';
+import 'package:music_tag_editor/models/filename_format.dart';
 import 'package:music_tag_editor/widgets/edit_track_dialog.dart';
 import 'package:music_tag_editor/widgets/learning_dialog.dart';
 import 'package:music_tag_editor/widgets/search_results_dialog.dart';

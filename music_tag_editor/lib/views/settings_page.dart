@@ -9,30 +9,7 @@ import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/services/persona_service.dart';
 import 'package:music_tag_editor/models/persona_model.dart';
 
-// Enum to represent the different filename formats.
-enum FilenameFormat {
-  artistTitle,
-  titleArtist,
-  trackArtistTitle,
-}
-
-extension FilenameFormatExtension on FilenameFormat {
-  String generateFilename({
-    required String artist,
-    required String title,
-    required int trackNumber,
-  }) {
-    switch (this) {
-      case FilenameFormat.artistTitle:
-        return '$artist - $title';
-      case FilenameFormat.titleArtist:
-        return '$title ($artist)';
-      case FilenameFormat.trackArtistTitle:
-        final trackStr = trackNumber.toString().padLeft(2, '0');
-        return '$trackStr. $artist - $title';
-    }
-  }
-}
+import 'package:music_tag_editor/models/filename_format.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});

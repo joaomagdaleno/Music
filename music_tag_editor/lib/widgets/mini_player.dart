@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:music_tag_editor/views/player_screen.dart';
+import 'package:music_tag_editor/screens/player/player_screen.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 
 class MiniPlayer extends StatelessWidget {

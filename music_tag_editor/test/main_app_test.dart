@@ -20,7 +20,7 @@ import 'package:music_tag_editor/services/desktop_integration_service.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/views/settings_page.dart';
+import 'package:music_tag_editor/models/filename_format.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
 import 'package:music_tag_editor/views/login_page.dart';
 

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/models/music_track.dart';
 import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/views/mood_explorer_view.dart';
-import 'package:music_tag_editor/views/my_tracks_view.dart';
+import 'package:music_tag_editor/screens/mood/mood_explorer_screen.dart';
+import 'package:music_tag_editor/screens/tracks/my_tracks_screen.dart';
 import 'package:music_tag_editor/views/ringtone_maker_view.dart';
 import 'package:music_tag_editor/screens/search/search_screen.dart';
-import 'package:music_tag_editor/views/settings_page.dart';
-import 'package:music_tag_editor/views/smart_library_view.dart';
+import 'package:music_tag_editor/screens/settings/settings_screen.dart';
+import 'package:music_tag_editor/screens/library/smart_library_screen.dart';
 
 class MaterialLibraryView extends StatelessWidget {
   const MaterialLibraryView({
@@ -51,7 +51,7 @@ class MaterialLibraryView extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const SettingsPage()),
+                  MaterialPageRoute(builder: (context) => const SettingsScreen()),
                 );
               },
             ),
@@ -69,9 +69,9 @@ class MaterialLibraryView extends StatelessWidget {
         body: TabBarView(
           children: [
             _buildFolderView(context),
-            const MyTracksView(),
-            const SmartLibraryView(),
-            MoodExplorerView(),
+            const MyTracksScreen(),
+            const SmartLibraryScreen(),
+            MoodExplorerScreen(),
           ],
         ),
       ),

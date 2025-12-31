@@ -1,12 +1,12 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:music_tag_editor/models/music_track.dart';
 import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/views/mood_explorer_view.dart';
-import 'package:music_tag_editor/views/my_tracks_view.dart';
+import 'package:music_tag_editor/screens/mood/mood_explorer_screen.dart';
+import 'package:music_tag_editor/screens/tracks/my_tracks_screen.dart';
 import 'package:music_tag_editor/views/ringtone_maker_view.dart';
 import 'package:music_tag_editor/screens/search/search_screen.dart';
-import 'package:music_tag_editor/views/settings_page.dart';
-import 'package:music_tag_editor/views/smart_library_view.dart';
+import 'package:music_tag_editor/screens/settings/settings_screen.dart';
+import 'package:music_tag_editor/screens/library/smart_library_screen.dart';
 
 class FluentLibraryView extends StatefulWidget {
   const FluentLibraryView({
@@ -56,7 +56,7 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  FluentPageRoute(builder: (context) => const SettingsPage()),
+                  FluentPageRoute(builder: (context) => const SettingsScreen()),
                 );
               },
             ),
@@ -76,17 +76,17 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
           Tab(
             text: const Text('Minha Biblioteca'),
             icon: const Icon(FluentIcons.music_note),
-            body: const ScaffoldPage(content: MyTracksView()),
+            body: const ScaffoldPage(content: MyTracksScreen()),
           ),
           Tab(
             text: const Text('Smart Mix'),
             icon: const Icon(FluentIcons.library),
-            body: const ScaffoldPage(content: SmartLibraryView()),
+            body: const ScaffoldPage(content: SmartLibraryScreen()),
           ),
           Tab(
             text: const Text('Mood Explorer'),
             icon: const Icon(FluentIcons.emoji_neutral),
-            body: ScaffoldPage(content: MoodExplorerView()),
+            body: ScaffoldPage(content: MoodExplorerScreen()),
           ),
         ],
       ),
