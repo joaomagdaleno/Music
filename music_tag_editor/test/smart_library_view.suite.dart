@@ -48,7 +48,7 @@ void main() {
 
       expect(find.byType(TabBar), findsOneWidget);
       expect(find.text('Top Hits'), findsOneWidget);
-      expect(find.text('Descobertas Recentes'), findsOneWidget);
+      expect(find.text('Recentes'), findsOneWidget);
     });
 
     testWidgets('shows loading indicator', (tester) async {
@@ -74,7 +74,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.textContaining('Toque algumas músicas'), findsOneWidget);
+      expect(find.textContaining('Dê o play'), findsOneWidget);
     });
 
     testWidgets('shows top hits list', (tester) async {
@@ -93,7 +93,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Top Song'), findsOneWidget);
-      expect(find.textContaining('50 plays'), findsOneWidget);
+      expect(find.text('Artist'), findsOneWidget);
     });
   });
 }

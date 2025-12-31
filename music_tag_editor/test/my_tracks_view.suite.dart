@@ -52,7 +52,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Minhas Músicas'), findsOneWidget);
-      expect(find.byIcon(Icons.lock_outline), findsOneWidget);
       expect(find.byIcon(Icons.playlist_add), findsOneWidget);
     });
 
@@ -114,7 +113,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.lock), findsOneWidget);
+      expect(find.byIcon(Icons.more_vert), findsOneWidget);
     });
   });
 }

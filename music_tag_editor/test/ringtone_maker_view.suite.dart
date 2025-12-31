@@ -139,7 +139,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.play_arrow_rounded), findsWidgets);
+      expect(find.byIcon(Icons.play_arrow), findsWidgets);
     });
 
     testWidgets('has app bar with title', (tester) async {
