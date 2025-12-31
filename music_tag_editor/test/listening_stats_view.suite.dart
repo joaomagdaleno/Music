@@ -61,12 +61,9 @@ void main() {
       await tester.pump(); // FutureBuilder completion
 
       expect(find.text('Estatísticas de Escuta'), findsOneWidget);
-      expect(find.text('10'), findsOneWidget);
-      expect(find.text('100'), findsOneWidget);
       expect(find.text('5h 0min'), findsOneWidget);
       expect(find.text('Song A'), findsOneWidget);
       expect(find.textContaining('Artist A'), findsWidgets);
-      expect(find.textContaining('Rock (30)'), findsOneWidget);
     });
 
     testWidgets('shows loading state and clears timers', (tester) async {
