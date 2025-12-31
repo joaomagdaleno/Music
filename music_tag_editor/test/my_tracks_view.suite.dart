@@ -82,7 +82,7 @@ void main() {
       expect(find.text('Artist 2'), findsOneWidget);
     });
 
-    testWidgets('shows play button for each track', (tester) async {
+    testWidgets('shows menu button for each track', (tester) async {
       when(() => mockDb.getTracks()).thenAnswer((_) async => [
             {
               'id': '1',
@@ -96,10 +96,9 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.play_arrow), findsOneWidget);
+      expect(find.byIcon(Icons.more_vert), findsOneWidget);
     });
-
-    testWidgets('shows lock button for vault', (tester) async {
+    testWidgets('has menu button for vault actions', (tester) async {
       when(() => mockDb.getTracks()).thenAnswer((_) async => [
             {
               'id': '1',

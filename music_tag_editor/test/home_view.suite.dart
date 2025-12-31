@@ -15,7 +15,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: HomeScreen());
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const HomeScreen(),
+    );
   }
 
   group('HomeScreen', () {
@@ -43,7 +46,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.trending_up), findsOneWidget);
-      expect(find.byIcon(Icons.auto_awesome), findsOneWidget);
+      expect(find.byIcon(Icons.spa), findsOneWidget);
       expect(find.byIcon(Icons.bar_chart), findsOneWidget);
     });
 
