@@ -15,7 +15,7 @@ class AuthService extends ChangeNotifier {
   }
 
   AuthService._internal({FirebaseAuth? auth, SecurityService? securityService})
-      : _auth = auth ?? FirebaseAuth.instance,
+      : _authOverride = auth,
         _securityService = securityService ?? SecurityService.instance;
 
   @visibleForTesting
@@ -24,7 +24,8 @@ class AuthService extends ChangeNotifier {
     return AuthService._internal(auth: auth, securityService: securityService);
   }
 
-  final FirebaseAuth _auth;
+  final FirebaseAuth? _authOverride;
+  FirebaseAuth get _auth => _authOverride ?? FirebaseAuth.instance;
   final SecurityService _securityService;
   User? _user;
 

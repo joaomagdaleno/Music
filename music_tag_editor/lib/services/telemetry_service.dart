@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:music_tag_editor/firebase_options.dart';
 
 /// A service for handling telemetry and error reporting in the Music project.
 class TelemetryService {
@@ -15,9 +16,10 @@ class TelemetryService {
     if (_initialized) return;
 
     try {
-      // NOTE: Music project needs Firebase Options for specialized initialization if not using default.
-      // For now, we assume simple current platform initialization is configured in the environment.
-      await Firebase.initializeApp();
+      // Initialize with platform-specific options (required for Windows)
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
 
       if (!kIsWeb &&
           (defaultTargetPlatform == TargetPlatform.android ||
@@ -39,6 +41,7 @@ class TelemetryService {
       debugPrint('TelemetryService initialized');
     } catch (e) {
       debugPrint('Failed to initialize TelemetryService: $e');
+      // Do not rethrow, allow app to run without telemetry
     }
   }
 

@@ -100,10 +100,13 @@ class _AppBootstrapState extends State<AppBootstrap> {
     } catch (e, stack) {
       await StartupLogger.log('🔥 FATAL: App initialization failed: $e');
       await StartupLogger.log(stack.toString());
+      
+      // If it's a known non-critical error, we might want to continue
+      // For now, fail safe to avoid corrupt state
       if (mounted) {
         setState(() {
           _errorMessage =
-              'Initialization failed: $e\n\nCheck startup_log.txt for details.';
+              'Initialization failed: $e\n\nCheck C:\\Users\\...\\startup_log.txt for details.';
         });
       }
     }
