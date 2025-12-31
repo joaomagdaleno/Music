@@ -32,6 +32,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Configure Firebase
+        shell: bash
+        env:
+          FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
+        run: |
+          mkdir -p music_tag_editor/lib
+          echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
+
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
