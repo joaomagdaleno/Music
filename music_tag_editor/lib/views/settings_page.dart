@@ -85,6 +85,33 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  Future<void> _enableCloudSync() async {
+    setState(() => _isLoading = true);
+    final success = await FirebaseSyncService.instance.enableSync();
+    setState(() => _isLoading = false);
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(success
+              ? 'Sincronização ativada!'
+              : 'Erro ao ativar sincronização'),
+        ),
+      );
+    }
+  }
+
+  Future<void> _pullFromCloud() async {
+    setState(() => _isLoading = true);
+    final count = await FirebaseSyncService.instance.pullFromCloud();
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('$count itens sincronizados!')),
+      );
+    }
+    setState(() => _isLoading = false);
+  }
+
   Widget _buildPersonaSection() {
     return ListenableBuilder(
       listenable: PersonaService.instance,
@@ -159,8 +186,6 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget _buildCloudSyncSection() {
-    final syncService = FirebaseSyncService.instance;
-
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -187,38 +212,14 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: () async {
-                      setState(() => _isLoading = true);
-                      final success = await syncService.enableSync();
-                      setState(() => _isLoading = false);
-
-                      if (mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(success
-                                ? 'Sincronização ativada!'
-                                : 'Erro ao ativar sincronização'),
-                          ),
-                        );
-                      }
-                    },
+                    onPressed: _enableCloudSync,
                     icon: const Icon(Icons.cloud_upload),
                     label: const Text('Sincronizar Agora'),
                   ),
                 ),
                 const SizedBox(width: 8),
                 IconButton(
-                  onPressed: () async {
-                    setState(() => _isLoading = true);
-                    final count = await syncService.pullFromCloud();
-                    setState(() => _isLoading = false);
-
-                    if (mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('$count itens sincronizados!')),
-                      );
-                    }
-                  },
+                  onPressed: _pullFromCloud,
                   icon: const Icon(Icons.cloud_download),
                   tooltip: 'Baixar da Nuvem',
                 ),
