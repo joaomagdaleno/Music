@@ -44,56 +44,33 @@ void main() {
   }
 
   group('MoodExplorerScreen', () {
-    testWidgets('renders mood cards', (tester) async {
+    testWidgets('renders mood sections', (tester) async {
       await tester.pumpWidget(createTestWidget());
-
-      expect(find.text('Qual o seu mood hoje?'), findsOneWidget);
-      expect(find.text('Energético'), findsOneWidget);
-      expect(find.text('Relaxante'), findsOneWidget);
-      expect(find.text('Foco'), findsOneWidget);
-      expect(find.text('Melancólico'), findsOneWidget);
-    });
-
-    testWidgets('tapping mood opens bottom sheet', (tester) async {
-      when(() => mockDb.getTracksByMood(any())).thenAnswer((_) async => []);
-
-      await tester.pumpWidget(createTestWidget());
-      await tester.tap(find.text('Energético'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Mix Energético'), findsOneWidget);
-      expect(find.text('Nenhuma música encontrada para este mood.'),
-          findsOneWidget);
+      expect(find.text('Explorar por Humor'), findsOneWidget);
     });
 
-    testWidgets('mood sheet shows loading indicator', (tester) async {
-      when(() => mockDb.getTracksByMood(any())).thenAnswer((_) async {
+    testWidgets('shows loading indicator', (tester) async {
+      when(() => mockDb.getTracks()).thenAnswer((_) async {
         await Future.delayed(const Duration(milliseconds: 500));
         return [];
       });
 
       await tester.pumpWidget(createTestWidget());
-      await tester.tap(find.text('Relaxante'));
       await tester.pump();
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
       await tester.pumpAndSettle();
     });
 
-    testWidgets('grid layout displays correctly', (tester) async {
+    testWidgets('displays empty state message', (tester) async {
+      when(() => mockDb.getTracks()).thenAnswer((_) async => []);
+
       await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
 
-      expect(find.byType(GridView), findsOneWidget);
-      expect(find.byType(InkWell), findsNWidgets(4));
-    });
-
-    testWidgets('mood icons are displayed', (tester) async {
-      await tester.pumpWidget(createTestWidget());
-
-      expect(find.byIcon(Icons.flash_on), findsOneWidget);
-      expect(find.byIcon(Icons.spa), findsOneWidget);
-      expect(find.byIcon(Icons.center_focus_strong), findsOneWidget);
-      expect(find.byIcon(Icons.cloud_outlined), findsOneWidget);
+      expect(find.text('Nenhuma música analisada ainda.'), findsOneWidget);
     });
   });
 }

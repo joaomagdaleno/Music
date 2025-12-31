@@ -41,49 +41,30 @@ void main() {
   group('PlaylistImporterScreen', () {
     testWidgets('renders correctly', (tester) async {
       await tester.pumpWidget(createTestWidget());
-      await tester.pump();
-
-      expect(find.byType(Scaffold), findsOneWidget);
+      expect(find.text('Importador de Playlist'), findsOneWidget);
     });
 
     testWidgets('has text field for URL', (tester) async {
       await tester.pumpWidget(createTestWidget());
-      await tester.pump();
-
       expect(find.byType(TextField), findsOneWidget);
-    });
-
-    testWidgets('displays correct app bar title', (tester) async {
-      await tester.pumpWidget(createTestWidget());
-      await tester.pump();
-
-      expect(find.text('Importador de Playlist'), findsOneWidget);
+      expect(find.text('URL da Playlist'), findsOneWidget);
     });
 
     testWidgets('shows placeholder text', (tester) async {
       await tester.pumpWidget(createTestWidget());
-      await tester.pump();
-
-      expect(find.text('Cole um link acima para escanear a playlist.'),
-          findsOneWidget);
+      expect(find.text('Cole um link para começar.'), findsOneWidget);
     });
 
-    testWidgets('has download icon button', (tester) async {
+    testWidgets('has scan icon button', (tester) async {
       await tester.pumpWidget(createTestWidget());
-      await tester.pump();
-
-      expect(find.byIcon(Icons.download), findsOneWidget);
+      expect(find.byIcon(Icons.search), findsOneWidget);
     });
 
     testWidgets('text field accepts input', (tester) async {
       await tester.pumpWidget(createTestWidget());
+      await tester.enterText(find.byType(TextField), 'https://test.com');
       await tester.pump();
-
-      await tester.enterText(
-          find.byType(TextField), 'https://spotify.com/playlist/123');
-      await tester.pump();
-
-      expect(find.text('https://spotify.com/playlist/123'), findsOneWidget);
+      expect(find.text('https://test.com'), findsOneWidget);
     });
   });
 }

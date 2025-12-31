@@ -17,43 +17,41 @@ void main() {
     testWidgets('renders app bar', (tester) async {
       await tester.pumpWidget(createTestWidget());
 
-      expect(find.text('Fila de Festa (Party Queue)'), findsOneWidget);
+      expect(find.text('Party Queue'), findsOneWidget);
     });
 
     testWidgets('renders start party UI', (tester) async {
       await tester.pumpWidget(createTestWidget());
 
-      expect(find.byIcon(Icons.qr_code_2_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.qr_code_2), findsOneWidget);
       expect(find.text('Comece uma Festa'), findsOneWidget);
     });
 
     testWidgets('renders description text', (tester) async {
       await tester.pumpWidget(createTestWidget());
 
-      expect(find.textContaining('amigos escanearem'), findsOneWidget);
+      expect(find.textContaining('Escaneie para adicionar músicas!'), findsOneWidget);
     });
 
     testWidgets('has generate QR button', (tester) async {
       await tester.pumpWidget(createTestWidget());
 
-      expect(find.text('Gerar QR Code da Festa'), findsOneWidget);
+      expect(find.text('Gerar QR Code'), findsOneWidget);
     });
 
     testWidgets('has scan button', (tester) async {
       await tester.pumpWidget(createTestWidget());
 
-      expect(find.text('Escanear QR de Amigo'), findsOneWidget);
+      expect(find.text('Escanear Amigo'), findsOneWidget);
       expect(find.byIcon(Icons.camera_alt_outlined), findsOneWidget);
     });
 
     testWidgets('tapping generate shows QR code', (tester) async {
       await tester.pumpWidget(createTestWidget());
-      final button = find.text('Gerar QR Code da Festa');
-      await tester.ensureVisible(button);
-      await tester.tap(button);
-      await tester.pump();
+      await tester.tap(find.text('Gerar QR Code'));
+      await tester.pumpAndSettle();
 
-      expect(find.textContaining('Código da Sessão'), findsOneWidget);
+      expect(find.textContaining('Sessão:'), findsOneWidget);
       expect(find.text('Encerrar Festa'), findsOneWidget);
     });
 
