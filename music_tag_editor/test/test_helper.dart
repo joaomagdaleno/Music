@@ -1,4 +1,6 @@
 import 'package:mocktail/mocktail.dart';
+import 'dart:io';
+import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
@@ -79,6 +81,11 @@ Future<void> setupMusicTest({
 }) async {
   // Force Material Design for tests that expect it
   debugDefaultTargetPlatformOverride = TargetPlatform.android;
+  addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
+  // Mock all HTTP requests in tests
+  HttpOverrides.global = _MockHttpOverrides();
+
   // Reset ALL core singletons
   AuthService.resetInstance();
   DatabaseService.resetInstance();
@@ -173,3 +180,33 @@ Future<void> setupMusicTest({
 
 bool _registerFallbackValueWasCalled = false;
 bool _sqfliteInitialized = false;
+
+class _MockHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return _MockHttpClient();
+  }
+}
+
+class _MockHttpClient extends Mock implements HttpClient {
+  @override
+  Future<HttpClientRequest> getUrl(Uri url) => Future.value(_MockHttpClientRequest());
+}
+
+class _MockHttpClientRequest extends Mock implements HttpClientRequest {
+  @override
+  Future<HttpClientResponse> close() => Future.value(_MockHttpClientResponse());
+}
+
+class _MockHttpClientResponse extends Mock implements HttpClientResponse {
+  @override
+  int get statusCode => 200;
+
+  @override
+  StreamSubscription<List<int>> listen(void Function(List<int> event)? onData,
+      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
+    return Stream<List<int>>.fromIterable([
+      [0, 0, 0]
+    ]).listen(onData, onError: onError, onDone: onDone, cancelOnError: cancelOnError);
+  }
+}
