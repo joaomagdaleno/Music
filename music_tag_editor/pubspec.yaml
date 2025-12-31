@@ -44,12 +44,12 @@ dependencies:
   rxdart: ^0.27.7
   fluent_ui: ^4.13.0
   path_provider: ^2.1.5
+  sqflite_common_ffi: ^2.3.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.4
-  sqflite_common_ffi: ^2.3.3
   flutter_lints: ^6.0.0
   alchemist: ^0.13.0
 
