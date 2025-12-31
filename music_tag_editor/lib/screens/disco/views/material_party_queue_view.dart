@@ -19,25 +19,27 @@ class MaterialPartyQueueView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Party Queue')),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.qr_code_2, size: 80, color: Colors.deepPurple),
-              const SizedBox(height: 24),
-              Text('Comece uma Festa', style: Theme.of(context).textTheme.headlineMedium),
-              const SizedBox(height: 12),
-              const Text('Escaneie para adicionar músicas!', textAlign: TextAlign.center),
-              const SizedBox(height: 48),
-              if (!isSharing)
-                ElevatedButton(onPressed: onToggleSharing, child: const Text('Gerar QR Code'))
-              else
-                _buildSharingView(),
-              const SizedBox(height: 32),
-              OutlinedButton(onPressed: onScan, child: const Text('Escanear Amigo')),
-            ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.qr_code_2, size: 80, color: Colors.deepPurple),
+                const SizedBox(height: 24),
+                Text('Comece uma Festa', style: Theme.of(context).textTheme.headlineMedium),
+                const SizedBox(height: 12),
+                const Text('Escaneie para adicionar músicas!', textAlign: TextAlign.center),
+                const SizedBox(height: 48),
+                if (!isSharing)
+                  ElevatedButton(onPressed: onToggleSharing, child: const Text('Gerar QR Code'))
+                else
+                  _buildSharingView(),
+                const SizedBox(height: 32),
+                OutlinedButton(onPressed: onScan, child: const Text('Escanear Amigo')),
+              ],
+            ),
           ),
         ),
       ),

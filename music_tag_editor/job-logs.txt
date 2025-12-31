@@ -1,785 +1,646 @@
-﻿2025-12-31T20:36:19.9793801Z Current runner version: '2.330.0'
-2025-12-31T20:36:19.9828847Z ##[group]Runner Image Provisioner
-2025-12-31T20:36:19.9830114Z Hosted Compute Agent
-2025-12-31T20:36:19.9831074Z Version: 20251211.462
-2025-12-31T20:36:19.9832236Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
-2025-12-31T20:36:19.9833657Z Build Date: 2025-12-11T16:28:49Z
-2025-12-31T20:36:19.9834801Z Worker ID: {537223fa-874f-49e4-897e-94c81c4ea909}
-2025-12-31T20:36:19.9836031Z ##[endgroup]
-2025-12-31T20:36:19.9837003Z ##[group]Operating System
-2025-12-31T20:36:19.9837890Z Ubuntu
-2025-12-31T20:36:19.9838735Z 24.04.3
-2025-12-31T20:36:19.9839450Z LTS
-2025-12-31T20:36:19.9840189Z ##[endgroup]
-2025-12-31T20:36:19.9841128Z ##[group]Runner Image
-2025-12-31T20:36:19.9841969Z Image: ubuntu-24.04
-2025-12-31T20:36:19.9842818Z Version: 20251215.174.1
-2025-12-31T20:36:19.9844862Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
-2025-12-31T20:36:19.9847803Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
-2025-12-31T20:36:19.9850262Z ##[endgroup]
-2025-12-31T20:36:19.9852073Z ##[group]GITHUB_TOKEN Permissions
-2025-12-31T20:36:19.9855421Z Contents: write
-2025-12-31T20:36:19.9856337Z Metadata: read
-2025-12-31T20:36:19.9857248Z PullRequests: write
-2025-12-31T20:36:19.9858173Z ##[endgroup]
-2025-12-31T20:36:19.9861606Z Secret source: Actions
-2025-12-31T20:36:19.9863526Z Prepare workflow directory
-2025-12-31T20:36:20.0336498Z Prepare all required actions
-2025-12-31T20:36:20.0394524Z Getting action download info
-2025-12-31T20:36:20.2624558Z Download action repository 'actions/checkout@v6' (SHA:8e8c483db84b4bee98b60c0593521ed34d9990e8)
-2025-12-31T20:36:20.3481043Z Download action repository 'subosito/flutter-action@v2' (SHA:fd55f4c5af5b953cc57a2be44cb082c8f6635e8e)
-2025-12-31T20:36:20.5187299Z Download action repository 'actions/upload-artifact@v6' (SHA:b7c566a772e6b6bfb58ed0dc250532a479d7789f)
-2025-12-31T20:36:20.9504109Z Getting action download info
-2025-12-31T20:36:21.0414252Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
-2025-12-31T20:36:21.2033394Z Uses: joaomagdaleno/Music/.github/workflows/quality-gate.yml@refs/heads/dev (e72d489ac7e601ebf4069e688ecc7cdb4ceceed4)
-2025-12-31T20:36:21.2039281Z ##[group] Inputs
-2025-12-31T20:36:21.2040188Z   min_coverage: 80
-2025-12-31T20:36:21.2041000Z ##[endgroup]
-2025-12-31T20:36:21.2041900Z Complete job name: Quality Gate / Quality Gate
-2025-12-31T20:36:21.2721077Z ##[group]Run sudo rm -rf /usr/share/dotnet
-2025-12-31T20:36:21.2722271Z [36;1msudo rm -rf /usr/share/dotnet[0m
-2025-12-31T20:36:21.2723506Z [36;1msudo rm -rf /opt/ghc[0m
-2025-12-31T20:36:21.2724501Z [36;1msudo rm -rf "/usr/local/share/boost"[0m
-2025-12-31T20:36:21.2725611Z [36;1msudo rm -rf "$AGENT_TOOLSDIRECTORY"[0m
-2025-12-31T20:36:21.2763383Z shell: /usr/bin/bash -e {0}
-2025-12-31T20:36:21.2764591Z ##[endgroup]
-2025-12-31T20:36:35.3497493Z ##[group]Run actions/checkout@v6
-2025-12-31T20:36:35.3497844Z with:
-2025-12-31T20:36:35.3498091Z   fetch-depth: 0
-2025-12-31T20:36:35.3498330Z   repository: joaomagdaleno/Music
-2025-12-31T20:36:35.3498756Z   token: ***
-2025-12-31T20:36:35.3498981Z   ssh-strict: true
-2025-12-31T20:36:35.3499202Z   ssh-user: git
-2025-12-31T20:36:35.3499434Z   persist-credentials: true
-2025-12-31T20:36:35.3499685Z   clean: true
-2025-12-31T20:36:35.3499920Z   sparse-checkout-cone-mode: true
-2025-12-31T20:36:35.3500184Z   fetch-tags: false
-2025-12-31T20:36:35.3500407Z   show-progress: true
-2025-12-31T20:36:35.3500628Z   lfs: false
-2025-12-31T20:36:35.3500843Z   submodules: false
-2025-12-31T20:36:35.3501071Z   set-safe-directory: true
-2025-12-31T20:36:35.3501327Z ##[endgroup]
-2025-12-31T20:36:35.4378324Z Syncing repository: joaomagdaleno/Music
-2025-12-31T20:36:35.4379741Z ##[group]Getting Git version info
-2025-12-31T20:36:35.4380143Z Working directory is '/home/runner/work/Music/Music'
-2025-12-31T20:36:35.4380779Z [command]/usr/bin/git version
-2025-12-31T20:36:35.4421715Z git version 2.52.0
-2025-12-31T20:36:35.4442985Z ##[endgroup]
-2025-12-31T20:36:35.4458731Z Temporarily overriding HOME='/home/runner/work/_temp/6b3587a0-16fd-4db7-8983-a336f63e3124' before making global git config changes
-2025-12-31T20:36:35.4460182Z Adding repository directory to the temporary git global config as a safe directory
-2025-12-31T20:36:35.4464658Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Music/Music
-2025-12-31T20:36:35.4503963Z Deleting the contents of '/home/runner/work/Music/Music'
-2025-12-31T20:36:35.4507743Z ##[group]Initializing the repository
-2025-12-31T20:36:35.4512029Z [command]/usr/bin/git init /home/runner/work/Music/Music
-2025-12-31T20:36:35.4603866Z hint: Using 'master' as the name for the initial branch. This default branch name
-2025-12-31T20:36:35.4604664Z hint: will change to "main" in Git 3.0. To configure the initial branch name
-2025-12-31T20:36:35.4605204Z hint: to use in all of your new repositories, which will suppress this warning,
-2025-12-31T20:36:35.4605601Z hint: call:
-2025-12-31T20:36:35.4605815Z hint:
-2025-12-31T20:36:35.4606112Z hint: 	git config --global init.defaultBranch <name>
-2025-12-31T20:36:35.4606499Z hint:
-2025-12-31T20:36:35.4607104Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
-2025-12-31T20:36:35.4608056Z hint: 'development'. The just-created branch can be renamed via this command:
-2025-12-31T20:36:35.4608466Z hint:
-2025-12-31T20:36:35.4608697Z hint: 	git branch -m <name>
-2025-12-31T20:36:35.4609153Z hint:
-2025-12-31T20:36:35.4609810Z hint: Disable this message with "git config set advice.defaultBranchName false"
-2025-12-31T20:36:35.4610879Z Initialized empty Git repository in /home/runner/work/Music/Music/.git/
-2025-12-31T20:36:35.4619262Z [command]/usr/bin/git remote add origin https://github.com/joaomagdaleno/Music
-2025-12-31T20:36:35.4651702Z ##[endgroup]
-2025-12-31T20:36:35.4652459Z ##[group]Disabling automatic garbage collection
-2025-12-31T20:36:35.4656525Z [command]/usr/bin/git config --local gc.auto 0
-2025-12-31T20:36:35.4682428Z ##[endgroup]
-2025-12-31T20:36:35.4758964Z ##[group]Setting up auth
-2025-12-31T20:36:35.4759662Z Removing SSH command configuration
-2025-12-31T20:36:35.4760573Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
-2025-12-31T20:36:35.4762747Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
-2025-12-31T20:36:35.5049247Z Removing HTTP extra header
-2025-12-31T20:36:35.5054374Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
-2025-12-31T20:36:35.5084302Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
-2025-12-31T20:36:35.5296625Z Removing includeIf entries pointing to credentials config files
-2025-12-31T20:36:35.5302197Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
-2025-12-31T20:36:35.5332313Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
-2025-12-31T20:36:35.5551383Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-484c03e6-eb3f-4839-8e4b-a915478e48f6.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
-2025-12-31T20:36:35.5586541Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Music/Music/.git.path /home/runner/work/_temp/git-credentials-484c03e6-eb3f-4839-8e4b-a915478e48f6.config
-2025-12-31T20:36:35.5615248Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Music/Music/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-484c03e6-eb3f-4839-8e4b-a915478e48f6.config
-2025-12-31T20:36:35.5645782Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-484c03e6-eb3f-4839-8e4b-a915478e48f6.config
-2025-12-31T20:36:35.5675170Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-484c03e6-eb3f-4839-8e4b-a915478e48f6.config
-2025-12-31T20:36:35.5700611Z ##[endgroup]
-2025-12-31T20:36:35.5701253Z ##[group]Fetching the repository
-2025-12-31T20:36:35.5709634Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
-2025-12-31T20:36:36.0160148Z From https://github.com/joaomagdaleno/Music
-2025-12-31T20:36:36.0160830Z  * [new branch]      beta          -> origin/beta
-2025-12-31T20:36:36.0161411Z  * [new branch]      coverage-data -> origin/coverage-data
-2025-12-31T20:36:36.0161998Z  * [new branch]      dev           -> origin/dev
-2025-12-31T20:36:36.0162540Z  * [new branch]      main          -> origin/main
-2025-12-31T20:36:36.0163241Z  * [new branch]      teste         -> origin/teste
-2025-12-31T20:36:36.0221957Z [command]/usr/bin/git branch --list --remote origin/dev
-2025-12-31T20:36:36.0246604Z   origin/dev
-2025-12-31T20:36:36.0256070Z [command]/usr/bin/git rev-parse refs/remotes/origin/dev
-2025-12-31T20:36:36.0277661Z e72d489ac7e601ebf4069e688ecc7cdb4ceceed4
-2025-12-31T20:36:36.0283614Z ##[endgroup]
-2025-12-31T20:36:36.0284272Z ##[group]Determining the checkout info
-2025-12-31T20:36:36.0286195Z ##[endgroup]
-2025-12-31T20:36:36.0288967Z [command]/usr/bin/git sparse-checkout disable
-2025-12-31T20:36:36.0331572Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
-2025-12-31T20:36:36.0358950Z ##[group]Checking out the ref
-2025-12-31T20:36:36.0363547Z [command]/usr/bin/git checkout --progress --force -B dev refs/remotes/origin/dev
-2025-12-31T20:36:36.0796461Z Switched to a new branch 'dev'
-2025-12-31T20:36:36.0797953Z branch 'dev' set up to track 'origin/dev'.
-2025-12-31T20:36:36.0808666Z ##[endgroup]
-2025-12-31T20:36:36.0849882Z [command]/usr/bin/git log -1 --format=%H
-2025-12-31T20:36:36.0875245Z e72d489ac7e601ebf4069e688ecc7cdb4ceceed4
-2025-12-31T20:36:36.1100047Z ##[group]Run subosito/flutter-action@v2
-2025-12-31T20:36:36.1100476Z with:
-2025-12-31T20:36:36.1100659Z   flutter-version: 3.35.7
-2025-12-31T20:36:36.1100873Z   cache: true
-2025-12-31T20:36:36.1101047Z   channel: stable
-2025-12-31T20:36:36.1101227Z   architecture: X64
-2025-12-31T20:36:36.1101420Z   pub-cache-path: default
-2025-12-31T20:36:36.1101646Z   dry-run: false
-2025-12-31T20:36:36.1101913Z   git-source: https://github.com/flutter/flutter.git
-2025-12-31T20:36:36.1102202Z ##[endgroup]
-2025-12-31T20:36:36.1190315Z ##[group]Run chmod +x "$GITHUB_ACTION_PATH/setup.sh"
-2025-12-31T20:36:36.1190667Z [36;1mchmod +x "$GITHUB_ACTION_PATH/setup.sh"[0m
-2025-12-31T20:36:36.1225865Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
-2025-12-31T20:36:36.1226188Z ##[endgroup]
-2025-12-31T20:36:36.1331791Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh -p \
-2025-12-31T20:36:36.1332170Z [36;1m$GITHUB_ACTION_PATH/setup.sh -p \[0m
-2025-12-31T20:36:36.1332448Z [36;1m  -n '3.35.7' \[0m
-2025-12-31T20:36:36.1332673Z [36;1m  -f '' \[0m
-2025-12-31T20:36:36.1332847Z [36;1m  -a 'X64' \[0m
-2025-12-31T20:36:36.1333239Z [36;1m  -k '' \[0m
-2025-12-31T20:36:36.1333460Z [36;1m  -c '' \[0m
-2025-12-31T20:36:36.1333638Z [36;1m  -l '' \[0m
-2025-12-31T20:36:36.1333820Z [36;1m  -d 'default' \[0m
-2025-12-31T20:36:36.1334098Z [36;1m  -g 'https://github.com/flutter/flutter.git' \[0m
-2025-12-31T20:36:36.1334379Z [36;1m  stable[0m
-2025-12-31T20:36:36.1365045Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
-2025-12-31T20:36:36.1365376Z ##[endgroup]
-2025-12-31T20:36:36.3261839Z ##[group]Run actions/cache@v4
-2025-12-31T20:36:36.3262109Z with:
-2025-12-31T20:36:36.3262354Z   path: /opt/hostedtoolcache/flutter/stable-3.35.7-x64
-2025-12-31T20:36:36.3262804Z   key: flutter-linux-stable-3.35.7-x64-adc901062556672b4138e18a4dc62a4be8f4b3c2
-2025-12-31T20:36:36.3263426Z   enableCrossOsArchive: false
-2025-12-31T20:36:36.3263668Z   fail-on-cache-miss: false
-2025-12-31T20:36:36.3264100Z   lookup-only: false
-2025-12-31T20:36:36.3264289Z   save-always: false
-2025-12-31T20:36:36.3264476Z ##[endgroup]
-2025-12-31T20:36:36.6314845Z Cache hit for: flutter-linux-stable-3.35.7-x64-adc901062556672b4138e18a4dc62a4be8f4b3c2
-2025-12-31T20:36:37.6838950Z Received 201326592 of 1585737234 (12.7%), 192.0 MBs/sec
-2025-12-31T20:36:38.6862194Z Received 427819008 of 1585737234 (27.0%), 203.8 MBs/sec
-2025-12-31T20:36:39.6867901Z Received 671088640 of 1585737234 (42.3%), 213.1 MBs/sec
-2025-12-31T20:36:40.6869761Z Received 935329792 of 1585737234 (59.0%), 222.8 MBs/sec
-2025-12-31T20:36:41.6886840Z Received 1170210816 of 1585737234 (73.8%), 223.0 MBs/sec
-2025-12-31T20:36:42.6897133Z Received 1405091840 of 1585737234 (88.6%), 223.1 MBs/sec
-2025-12-31T20:36:43.5723312Z Received 1585737234 of 1585737234 (100.0%), 219.5 MBs/sec
-2025-12-31T20:36:43.5726329Z Cache Size: ~1512 MB (1585737234 B)
-2025-12-31T20:36:43.5849215Z [command]/usr/bin/tar -xf /home/runner/work/_temp/13ee3ae6-3777-428b-9fe0-dfc12eafee33/cache.tzst -P -C /home/runner/work/Music/Music --use-compress-program unzstd
-2025-12-31T20:36:48.0448506Z Cache restored successfully
-2025-12-31T20:36:48.3862300Z Cache restored from key: flutter-linux-stable-3.35.7-x64-adc901062556672b4138e18a4dc62a4be8f4b3c2
-2025-12-31T20:36:48.5087034Z ##[group]Run actions/cache@v4
-2025-12-31T20:36:48.5087403Z with:
-2025-12-31T20:36:48.5087704Z   path: /home/runner/.pub-cache
-2025-12-31T20:36:48.5088865Z   key: flutter-pub-linux-stable-3.35.7-x64-adc901062556672b4138e18a4dc62a4be8f4b3c2-34264c5e040db878dc188e17b2bb65c01e6ae325fbf2e6438a94978036bd8384
-2025-12-31T20:36:48.5090078Z   enableCrossOsArchive: false
-2025-12-31T20:36:48.5090469Z   fail-on-cache-miss: false
-2025-12-31T20:36:48.5090822Z   lookup-only: false
-2025-12-31T20:36:48.5091142Z   save-always: false
-2025-12-31T20:36:48.5091454Z ##[endgroup]
-2025-12-31T20:36:48.7420243Z Cache not found for input keys: flutter-pub-linux-stable-3.35.7-x64-adc901062556672b4138e18a4dc62a4be8f4b3c2-34264c5e040db878dc188e17b2bb65c01e6ae325fbf2e6438a94978036bd8384
-2025-12-31T20:36:48.7509023Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh \
-2025-12-31T20:36:48.7509543Z [36;1m$GITHUB_ACTION_PATH/setup.sh \[0m
-2025-12-31T20:36:48.7509965Z [36;1m  -n '3.35.7' \[0m
-2025-12-31T20:36:48.7510296Z [36;1m  -a 'x64' \[0m
-2025-12-31T20:36:48.7510745Z [36;1m  -c '/opt/hostedtoolcache/flutter/stable-3.35.7-x64' \[0m
-2025-12-31T20:36:48.7511291Z [36;1m  -d '/home/runner/.pub-cache' \[0m
-2025-12-31T20:36:48.7511695Z [36;1m  stable[0m
-2025-12-31T20:36:48.7552949Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
-2025-12-31T20:36:48.7553596Z ##[endgroup]
-2025-12-31T20:36:48.9470626Z ##[group]Run flutter pub get
-2025-12-31T20:36:48.9470913Z [36;1mflutter pub get[0m
-2025-12-31T20:36:48.9505248Z shell: /usr/bin/bash -e {0}
-2025-12-31T20:36:48.9505477Z env:
-2025-12-31T20:36:48.9505732Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.35.7-x64
-2025-12-31T20:36:48.9506079Z   PUB_CACHE: /home/runner/.pub-cache
-2025-12-31T20:36:48.9506324Z ##[endgroup]
-2025-12-31T20:36:54.3824030Z Resolving dependencies...
-2025-12-31T20:36:55.6957926Z Downloading packages...
-2025-12-31T20:37:02.2552765Z   archive 3.6.1 (4.0.7 available)
-2025-12-31T20:37:02.2553583Z   audio_session 0.1.25 (0.2.2 available)
-2025-12-31T20:37:02.2554114Z   characters 1.4.0 (1.4.1 available)
-2025-12-31T20:37:02.2554642Z   connectivity_plus 6.1.5 (7.0.0 available)
-2025-12-31T20:37:02.2555182Z   file_picker 8.3.7 (10.3.8 available)
-2025-12-31T20:37:02.2555691Z   flutter_cache_manager 3.3.1 (3.4.1 available)
-2025-12-31T20:37:02.2556239Z   flutter_secure_storage 9.2.4 (10.0.0 available)
-2025-12-31T20:37:02.2556998Z   flutter_secure_storage_linux 1.2.3 (3.0.0 available)
-2025-12-31T20:37:02.2557692Z   flutter_secure_storage_macos 3.1.3 (4.0.0 available)
-2025-12-31T20:37:02.2558613Z   flutter_secure_storage_platform_interface 1.1.2 (2.0.1 available)
-2025-12-31T20:37:02.2559516Z   flutter_secure_storage_web 1.2.1 (2.1.0 available)
-2025-12-31T20:37:02.2560582Z   flutter_secure_storage_windows 3.1.2 (4.1.0 available)
-2025-12-31T20:37:02.2561284Z   js 0.6.7 (0.7.2 available)
-2025-12-31T20:37:02.2561771Z   matcher 0.12.17 (0.12.18 available)
-2025-12-31T20:37:02.2562376Z   material_color_utilities 0.11.1 (0.13.0 available)
-2025-12-31T20:37:02.2562995Z   math_expressions 2.7.0 (3.1.0 available)
-2025-12-31T20:37:02.2563787Z < meta 1.16.0 (was 1.17.0) (1.17.0 available)
-2025-12-31T20:37:02.2564420Z   petitparser 6.1.0 (7.0.1 available)
-2025-12-31T20:37:02.2564985Z   pointycastle 3.9.1 (4.0.0 available)
-2025-12-31T20:37:02.2565580Z   rxdart 0.27.7 (0.28.0 available)
-2025-12-31T20:37:02.2566218Z < sqflite_common_ffi 2.3.6 (was 2.4.0+1) (2.4.0+1 available)
-2025-12-31T20:37:02.2566828Z < sqlite3 2.9.4 (was 3.1.1) (3.1.2 available)
-2025-12-31T20:37:02.2567419Z < test_api 0.7.6 (was 0.7.7) (0.7.8 available)
-2025-12-31T20:37:02.2567942Z   uuid 3.0.7 (4.5.2 available)
-2025-12-31T20:37:02.2568420Z   xml 6.5.0 (6.6.1 available)
-2025-12-31T20:37:02.2569018Z These packages are no longer being depended on:
-2025-12-31T20:37:02.2569548Z - code_assets 1.0.0
-2025-12-31T20:37:02.2569904Z - glob 2.1.3
-2025-12-31T20:37:02.2570198Z - hooks 1.0.0
-2025-12-31T20:37:02.2570497Z - logging 1.3.0
-2025-12-31T20:37:02.2570833Z - native_toolchain_c 0.17.4
-2025-12-31T20:37:02.2571206Z - pub_semver 2.2.0
-2025-12-31T20:37:02.2571525Z - yaml 3.1.3
-2025-12-31T20:37:02.2574754Z Changed 11 dependencies!
-2025-12-31T20:37:02.2591687Z 25 packages have newer versions incompatible with dependency constraints.
-2025-12-31T20:37:02.2592347Z Try `flutter pub outdated` for more information.
-2025-12-31T20:37:02.7075705Z ##[group]Run flutter analyze --no-fatal-infos --no-fatal-warnings
-2025-12-31T20:37:02.7076185Z [36;1mflutter analyze --no-fatal-infos --no-fatal-warnings[0m
-2025-12-31T20:37:02.7108512Z shell: /usr/bin/bash -e {0}
-2025-12-31T20:37:02.7108755Z env:
-2025-12-31T20:37:02.7109010Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.35.7-x64
-2025-12-31T20:37:02.7109367Z   PUB_CACHE: /home/runner/.pub-cache
-2025-12-31T20:37:02.7109626Z ##[endgroup]
-2025-12-31T20:37:23.9010092Z Analyzing music_tag_editor...                                   
-2025-12-31T20:37:23.9017412Z 
-2025-12-31T20:37:23.9039995Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/backup/backup_screen.dart:1:8 • unnecessary_import
-2025-12-31T20:37:23.9043341Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/disco/disco_mode_screen.dart:3:8 • unnecessary_import
-2025-12-31T20:37:23.9046353Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/disco/karaoke_screen.dart:2:8 • unnecessary_import
-2025-12-31T20:37:23.9049332Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/disco/party_queue_screen.dart:1:8 • unnecessary_import
-2025-12-31T20:37:23.9052253Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/home/home_screen.dart:1:8 • unnecessary_import
-2025-12-31T20:37:23.9055377Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/library/mood_explorer_screen.dart:1:8 • unnecessary_import
-2025-12-31T20:37:23.9058165Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/library/remote_library_screen.dart:1:8 • unnecessary_import
-2025-12-31T20:37:23.9061272Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/library/smart_library_screen.dart:1:8 • unnecessary_import
-2025-12-31T20:37:23.9064028Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/login/login_screen.dart:1:8 • unnecessary_import
-2025-12-31T20:37:23.9065670Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/playlists/playlist_detail_screen.dart:1:8 • unnecessary_import
-2025-12-31T20:37:23.9067294Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/playlists/playlist_importer_screen.dart:1:8 • unnecessary_import
-2025-12-31T20:37:23.9068884Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/playlists/playlists_screen.dart:1:8 • unnecessary_import
-2025-12-31T20:37:23.9070666Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/settings/settings_screen.dart:1:8 • unnecessary_import
-2025-12-31T20:37:23.9072241Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/stats/listening_stats_screen.dart:1:8 • unnecessary_import
-2025-12-31T20:37:23.9074321Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/tracks/my_tracks_screen.dart:1:8 • unnecessary_import
-2025-12-31T20:37:23.9077205Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/tracks/ringtone_maker_screen.dart:1:8 • unnecessary_import
-2025-12-31T20:37:23.9080117Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/vault/vault_screen.dart:1:8 • unnecessary_import
-2025-12-31T20:37:23.9082778Z    info • The import of 'package:flutter_test/flutter_test.dart' is unnecessary because all of the used elements are also provided by the import of 'dart:async' • test/test_helper.dart:4:8 • unnecessary_import
-2025-12-31T20:37:23.9085419Z    info • The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'dart:io' • test/test_helper.dart:5:8 • unnecessary_import
-2025-12-31T20:37:23.9087953Z 
-2025-12-31T20:37:23.9197028Z 19 issues found. (ran in 20.4s)
-2025-12-31T20:37:23.9291388Z ##[group]Run flutter test --coverage
-2025-12-31T20:37:23.9291854Z [36;1mflutter test --coverage[0m
-2025-12-31T20:37:23.9334627Z shell: /usr/bin/bash -e {0}
-2025-12-31T20:37:23.9334983Z env:
-2025-12-31T20:37:23.9335384Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.35.7-x64
-2025-12-31T20:37:23.9335928Z   PUB_CACHE: /home/runner/.pub-cache
-2025-12-31T20:37:23.9336312Z ##[endgroup]
-2025-12-31T20:37:25.0899997Z 
-2025-12-31T20:37:33.3262891Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi searchRelease returns parsed data on success
-2025-12-31T20:37:33.3309847Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi searchRelease returns null on empty results
-2025-12-31T20:37:33.3360031Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi searchRelease handles errors gracefully
-2025-12-31T20:37:33.3420861Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong returns parsed data on success
-2025-12-31T20:37:33.3457992Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong returns null on empty hits
-2025-12-31T20:37:33.3489863Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong handles errors gracefully
-2025-12-31T20:37:33.3554701Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: LastFmApi getTrackInfo returns parsed data on success
-2025-12-31T20:37:33.3576733Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: LastFmApi getTrackInfo returns null on error
-2025-12-31T20:37:33.3605101Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: LastFmApi getTrackInfo returns null on 404
-2025-12-31T20:37:33.3667892Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: MusicBrainzApi searchMetadata returns parsed recordings
-2025-12-31T20:37:33.3706621Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: MusicBrainzApi searchMetadata returns empty list on error response
-2025-12-31T20:37:33.8077140Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi searchRelease returns null on empty query
-2025-12-31T20:37:33.9746850Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi searchRelease handles network errors gracefully
-2025-12-31T20:37:33.9780828Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi DiscogsApi can be instantiated
-2025-12-31T20:37:34.0784603Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong returns null on empty query
-2025-12-31T20:37:34.1735470Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong handles network errors gracefully
-2025-12-31T20:37:34.1761345Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: GeniusApi GeniusApi can be instantiated
-2025-12-31T20:37:34.1786206Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: LastFmApi getTrackInfo returns null when API key is placeholder
-2025-12-31T20:37:34.1810196Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: LastFmApi getTrackInfo handles empty strings
-2025-12-31T20:37:34.1830363Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: LastFmApi LastFmApi can be instantiated
-2025-12-31T20:37:34.9865565Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: MusicBrainzApi searchRecording returns map on query
-2025-12-31T20:37:35.4859186Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: MusicBrainzApi searchRecording handles empty strings
-2025-12-31T20:37:35.4884962Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: MusicBrainzApi MusicBrainzApi can be instantiated
-2025-12-31T20:37:37.6001742Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
-2025-12-31T20:37:38.3804453Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics handles empty strings
-2025-12-31T20:37:38.3834148Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi NeteaseApi can be instantiated
-2025-12-31T20:37:38.3917212Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: SlavArtApi search returns parsed results on success
-2025-12-31T20:37:38.3965398Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: SlavArtApi getDownloadUrl returns URL on success
-2025-12-31T20:37:38.4112575Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: SlavArtApi downloadFlac streams content to file
-2025-12-31T20:37:40.2900151Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: playSearchResult updates current track and plays
-2025-12-31T20:37:40.3053356Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: playSearchResult fetches lyrics and applies theme
-2025-12-31T20:37:40.3165325Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: Queue Management addToQueue adds to list and playlist
-2025-12-31T20:37:40.3252804Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: Queue Management clearQueue empties the list
-2025-12-31T20:37:40.6683464Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/search_service_test.dart: searchYouTube parses yt-dlp json output correctly
-2025-12-31T20:37:40.6725422Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/search_service_test.dart: searchYouTube returns empty list on process error
-2025-12-31T20:37:40.6780520Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/search_service_test.dart: searchYouTubeMusic parses yt-music output with album info
-2025-12-31T20:37:40.6961577Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/search_service_test.dart: searchHiFi delegates to HiFiDownloadService
-2025-12-31T20:37:40.7017602Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/search_service_test.dart: getStreamUrl returns trimmed stdout on success
-2025-12-31T20:37:40.7054037Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/search_service_test.dart: getStreamUrl returns null on failure
-2025-12-31T20:37:40.7150061Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/search_service_test.dart: searchAll calls all platforms and updates status
-2025-12-31T20:37:40.7964512Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/settings_page_test.dart: Loads and displays settings
-2025-12-31T20:37:41.5311106Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/settings_page_test.dart: Changes Filename Format
-2025-12-31T20:37:41.8536653Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/settings_page_test.dart: Clean Library interaction
-2025-12-31T20:37:42.3071689Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/settings_page_test.dart: Age bypass requires confirmation
-2025-12-31T20:37:42.5832720Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/settings_page_test.dart: Sync interactions
-2025-12-31T20:37:43.8459488Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
-2025-12-31T20:37:43.8530948Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer cancelSleepTimer clears timer
-2025-12-31T20:37:43.8630382Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: Controls pause/resume delegates to player
-2025-12-31T20:37:43.8725829Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: Controls seek delegates to player and sends message
-2025-12-31T20:37:45.3599211Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows LoginPage when not authenticated
-2025-12-31T20:37:45.9489438Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Settings save and load filename format
-2025-12-31T20:37:45.9645463Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Settings save and load crossfade duration
-2025-12-31T20:37:45.9763599Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Settings save and load age bypass
-2025-12-31T20:37:45.9897662Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Tracks save and retrieve tracks
-2025-12-31T20:37:46.0100759Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Tracks toggle vault
-2025-12-31T20:37:46.0258001Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Tracks trackPlay increments count and sets lastPlayed
-2025-12-31T20:37:46.0454059Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Playlists create playlist and add tracks
-2025-12-31T20:37:46.0648115Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Duo save guest and add session tracks
-2025-12-31T20:37:46.0888918Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Moods getTracksByMood returns matching genres
-2025-12-31T20:37:46.1130460Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Learning Rules save and get learning rules
-2025-12-31T20:37:46.3534215Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when authenticated
-2025-12-31T20:37:46.5200340Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_app_test.dart: LibraryScreen displays initial empty state
-2025-12-31T20:37:46.5360640Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_app_test.dart: FilenameFormat functional tests artistTitle format
-2025-12-31T20:37:46.5405531Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_app_test.dart: FilenameFormat functional tests titleArtist format
-2025-12-31T20:37:46.5497093Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_app_test.dart: FilenameFormat functional tests trackArtistTitle format
-2025-12-31T20:37:48.7718328Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: AppShell AppShell Widget Tests Shows offline banner when offline
-2025-12-31T20:37:48.8428928Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: CastDialog displays title and loading state
-2025-12-31T20:37:49.0788970Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: AuthService AuthService login success returns true
-2025-12-31T20:37:49.0959609Z ##[group]✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: AuthService AuthService login failure returns false
-2025-12-31T20:37:49.0966278Z Login error: [firebase_auth/user-not-found] null
-2025-12-31T20:37:49.0972340Z ##[endgroup]
-2025-12-31T20:37:49.1084105Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: AuthService AuthService register success returns true
-2025-12-31T20:37:49.1175969Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: AuthService AuthService logout calls signOut
-2025-12-31T20:37:49.1295124Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: AuthService AuthService recoverVaultAccess returns true if user matches
-2025-12-31T20:37:49.1627504Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: CastDialog lists discovered devices
-2025-12-31T20:37:49.2694866Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: BackupService BackupService createBackup creates a zip file with data
-2025-12-31T20:37:49.3298274Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: BackupService BackupService restoreBackup restores data from zip
-2025-12-31T20:37:49.3427220Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: BackupService BackupService estimateBackupSize returns valid size
-2025-12-31T20:37:49.3474297Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ConnectivityRoot ConnectivityService instance is accessible
-2025-12-31T20:37:49.3519198Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ConnectivityRoot ConnectivityService isOffline is a ValueNotifier
-2025-12-31T20:37:49.3554599Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ConnectivityRoot ConnectivityService init completes without error
-2025-12-31T20:37:49.4065654Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: AppShell AppShell Widget Tests Navigation switches pages
-2025-12-31T20:37:49.5562729Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Settings save and load filename format
-2025-12-31T20:37:49.5576655Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: Tapping device calls castFile if track is local
-2025-12-31T20:37:49.5803640Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Settings save and load crossfade duration
-2025-12-31T20:37:49.5964961Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Settings save and load age bypass
-2025-12-31T20:37:49.6103722Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Settings generic saveSetting and getSetting
-2025-12-31T20:37:49.6555481Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Tracks save and retrieve tracks
-2025-12-31T20:37:49.6801069Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: AppShell AppShell Widget Tests Adapts to wide screen (NavigationRail)
-2025-12-31T20:37:49.6940409Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Tracks toggle vault
-2025-12-31T20:37:49.7124921Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Tracks trackPlay increments count and sets lastPlayed
-2025-12-31T20:37:49.7131285Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: Tapping device shows error if track is not local
-2025-12-31T20:37:49.7336293Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Playlists create playlist and add tracks
-2025-12-31T20:37:49.7572400Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Duo save guest and add session tracks
-2025-12-31T20:37:49.7743205Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Moods getTracksByMood returns matching genres
-2025-12-31T20:37:49.7775772Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: BackupView BackupScreen renders app bar
-2025-12-31T20:37:49.7932765Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Learning Rules save and get learning rules
-2025-12-31T20:37:49.7993782Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseServiceNew DatabaseService instance is accessible
-2025-12-31T20:37:49.8027511Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseServiceNew FilenameFormat generateFilename returns string
-2025-12-31T20:37:49.8075497Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseServiceNew FilenameFormat generateFilename handles titleArtist
-2025-12-31T20:37:49.8108587Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseServiceNew LearningChoice has expected values
-2025-12-31T20:37:49.8164766Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: Stop Casting button calls stopCasting
-2025-12-31T20:37:49.8181728Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DownloadService DownloadService - Platform Detection detects YouTube correctly
-2025-12-31T20:37:49.8226122Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DownloadService DownloadService - Platform Detection detects YouTube Music correctly
-2025-12-31T20:37:49.8266101Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DownloadService DownloadService - Platform Detection detects Spotify correctly
-2025-12-31T20:37:49.8309285Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DownloadService DownloadService - Platform Detection returns unknown for invalid URLs
-2025-12-31T20:37:49.8416812Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DownloadService DownloadService - Media Info getMediaInfo returns YouTube info correctly
-2025-12-31T20:37:49.8438379Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DownloadService DownloadService - Media Info getMediaInfo returns Spotify info correctly
-2025-12-31T20:37:49.8535201Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: EqualizerRoot EqualizerService Tests Normalization calculation
-2025-12-31T20:37:49.8566986Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: EqualizerRoot EqualizerService Tests Normalization disabled returns 1.0
-2025-12-31T20:37:49.8619201Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: EqualizerRoot EqualizerService Tests Auto mode state
-2025-12-31T20:37:49.8778760Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: FirebaseSync enableSync signs in anonymously if not signed in
-2025-12-31T20:37:49.8939745Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: FirebaseSync pullFromCloud pulls tracks and playlists
-2025-12-31T20:37:49.9080814Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LocalDuoService LocalDuoService startHost sets role and starts advertising
-2025-12-31T20:37:49.9135964Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LocalDuoService LocalDuoService startDiscovery sets role and starts discovery
-2025-12-31T20:37:49.9180813Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: DuoMatchingDialog displays initial state correctly
-2025-12-31T20:37:49.9217888Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LocalDuoService LocalDuoService stopAll cleans up state
-2025-12-31T20:37:49.9290581Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LocalDuoService LocalDuoService sendMessage sends bytes to all connected endpoints
-2025-12-31T20:37:49.9342181Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LocalDuoService LocalDuoService sendFile sends file to all connected endpoints
-2025-12-31T20:37:49.9430890Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LocalDuoService LocalDuoService handleIncomingMessage play/pause/seek
-2025-12-31T20:37:49.9508899Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LocalDuoService LocalDuoService handleIncomingMessage track/chat
-2025-12-31T20:37:49.9682736Z ##[group]✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LyricsService LyricsService fetchLyrics returns empty list on network error
-2025-12-31T20:37:49.9684912Z Error fetching lyrics: type 'Null' is not a subtype of type 'Future<HttpClientRequest>'
-2025-12-31T20:37:49.9701533Z ##[endgroup]
-2025-12-31T20:37:49.9722561Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LyricsService LyricsService _parseLrc parses valid LRC format
-2025-12-31T20:37:49.9760591Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LyricsService LyricsService LyricLine has correct structure
-2025-12-31T20:37:49.9809539Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LyricsService LyricsService multiple LyricLines can be created
-2025-12-31T20:37:49.9971881Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataAggregator aggregateMetadata aggregates results correctly with majority vote
-2025-12-31T20:37:50.0017364Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataAggregator aggregateMetadata handles empty results
-2025-12-31T20:37:50.0064615Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataAggregator fetchSyncedLyrics returns lyrics from LrcLib if found and valid
-2025-12-31T20:37:50.0113231Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataAggregator fetchSyncedLyrics falls back to Netease if LrcLib empty
-2025-12-31T20:37:50.0158662Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataAggregator fetchSyncedLyrics validates duration mismatch
-2025-12-31T20:37:50.0246120Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: Start Host button updates state
-2025-12-31T20:37:50.0298216Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataCleanup MetadataCleanupService cleanupLibrary cleans dirty titles and artists
-2025-12-31T20:37:50.0370345Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataCleanup MetadataCleanupService cleanupLibrary fetches missing metadata
-2025-12-31T20:37:50.0418136Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataCleanup MetadataCleanupService cleanupLibrary handles aggregator errors gracefully
-2025-12-31T20:37:50.0780069Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataService MetadataService Tests Read and Write Metadata
-2025-12-31T20:37:50.0925200Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataService MetadataService Tests parseTrackNumber handles various formats
-2025-12-31T20:37:50.1030746Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataService MetadataService Tests Read non-existent file throws exception
-2025-12-31T20:37:50.1180915Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataService MetadataService Tests Write to non-existent file throws exception
-2025-12-31T20:37:50.1262620Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: Start Discovery button updates state
-2025-12-31T20:37:50.1270815Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataService MetadataService Tests readMetadata handles ID3v1 vs ID3v2 logic (basic branch test)
-2025-12-31T20:37:50.1462517Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PersonaService PersonaService Unit Tests Default persona should be listener
-2025-12-31T20:37:50.1536365Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PersonaService PersonaService Unit Tests setPersona updates activePersona and notifies listeners
-2025-12-31T20:37:50.1867696Z ##[group]❌ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: BackupView BackupScreen renders create backup card (failed)
-2025-12-31T20:37:50.1882528Z ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
-2025-12-31T20:37:50.1885687Z The following TestFailure was thrown running a test:
-2025-12-31T20:37:50.1886423Z Expected: exactly one matching candidate
-2025-12-31T20:37:50.1888162Z   Actual: _IconWidgetFinder:<Found 2 widgets with icon "IconData(U+0E175)": [
-2025-12-31T20:37:50.1889503Z             Icon(IconData(U+0E175), size: 28.0, color: MaterialColor(primary value: Color(alpha:
-2025-12-31T20:37:50.1891594Z 1.0000, red: 0.1294, green: 0.5882, blue: 0.9529, colorSpace: ColorSpace.sRGB)), dependencies:
-2025-12-31T20:37:50.1894032Z [Directionality, IconTheme]),
-2025-12-31T20:37:50.1894664Z             Icon(IconData(U+0E175), dependencies: [Directionality, IconTheme]),
-2025-12-31T20:37:50.1895231Z           ]>
-2025-12-31T20:37:50.1895970Z    Which: is too many
-2025-12-31T20:37:50.1896212Z 
-2025-12-31T20:37:50.1898575Z When the exception was thrown, this was the stack:
-2025-12-31T20:37:50.1899641Z #4      main.<anonymous closure>.<anonymous closure> (file:///home/runner/work/Music/Music/music_tag_editor/test/backup_view.suite.dart:45:7)
-2025-12-31T20:37:50.1900559Z <asynchronous suspension>
-2025-12-31T20:37:50.1901219Z #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
-2025-12-31T20:37:50.1902051Z <asynchronous suspension>
-2025-12-31T20:37:50.1913774Z #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
-2025-12-31T20:37:50.1914588Z <asynchronous suspension>
-2025-12-31T20:37:50.1914984Z <asynchronous suspension>
-2025-12-31T20:37:50.1915390Z (elided one frame from package:stack_trace)
-2025-12-31T20:37:50.1916032Z 
-2025-12-31T20:37:50.1916312Z This was caught by the test expectation on the following line:
-2025-12-31T20:37:50.1917179Z   file:///home/runner/work/Music/Music/music_tag_editor/test/backup_view.suite.dart line 45
-2025-12-31T20:37:50.1917908Z The test description was:
-2025-12-31T20:37:50.1918272Z   renders create backup card
-2025-12-31T20:37:50.1919095Z ════════════════════════════════════════════════════════════════════════════════════════════════════
-2025-12-31T20:37:50.1919662Z Test failed. See exception logs above.
-2025-12-31T20:37:50.1920169Z The test description was: renders create backup card
-2025-12-31T20:37:50.1920524Z 
-2025-12-31T20:37:50.1921002Z ##[endgroup]
-2025-12-31T20:37:50.1922308Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic playSearchResult sets source and plays
-2025-12-31T20:37:50.1973524Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic pause calls player pause and sends message
-2025-12-31T20:37:50.2012992Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic resume calls player play and sends message
-2025-12-31T20:37:50.2096045Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic stop calls player stop
-2025-12-31T20:37:50.2227887Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic seek calls player seek and sends message
-2025-12-31T20:37:50.2305938Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic addToQueue adds track and notifies remote
-2025-12-31T20:37:50.2344206Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic clearQueue empties the queue
-2025-12-31T20:37:50.2455752Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic setSleepTimer stops playback after duration
-2025-12-31T20:37:50.2548014Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic cancelSleepTimer resets status
-2025-12-31T20:37:50.2696691Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService searchYouTube parses yt-dlp json output correctly
-2025-12-31T20:37:50.2785055Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService searchYouTube returns empty list on process error
-2025-12-31T20:37:50.2807484Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: Displays connected guests
-2025-12-31T20:37:50.2915302Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService searchYouTubeMusic parses yt-music output with album info
-2025-12-31T20:37:50.3022123Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService searchHiFi delegates to HiFiDownloadService
-2025-12-31T20:37:50.3079227Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService getStreamUrl returns trimmed stdout on success
-2025-12-31T20:37:50.3136190Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService getStreamUrl returns null on failure
-2025-12-31T20:37:50.3245528Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService searchAll calls all platforms and updates status
-2025-12-31T20:37:50.3304860Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService getFormats returns default formats for Spotify
-2025-12-31T20:37:50.3343665Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService getFormats parses yt-dlp json formats correctly
-2025-12-31T20:37:50.3409012Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService getFormats returns default formats on process failure
-2025-12-31T20:37:50.3506589Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService importPlaylist importYouTubePlaylist parses results correctly
-2025-12-31T20:37:50.3607802Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService findSpotifyMatch returns match if available
-2025-12-31T20:37:50.3745713Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SecurityService SecurityService instance is accessible
-2025-12-31T20:37:50.4155293Z ##[group]❌ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: BackupView BackupScreen renders restore backup card (failed)
-2025-12-31T20:37:50.4156930Z ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
-2025-12-31T20:37:50.4157786Z The following TestFailure was thrown running a test:
-2025-12-31T20:37:50.4158329Z Expected: exactly one matching candidate
-2025-12-31T20:37:50.4159203Z   Actual: _IconWidgetFinder:<Found 2 widgets with icon "IconData(U+0E172)": [
-2025-12-31T20:37:50.4160113Z             Icon(IconData(U+0E172), size: 28.0, color: MaterialColor(primary value: Color(alpha:
-2025-12-31T20:37:50.4160888Z 1.0000, red: 0.2980, green: 0.6863, blue: 0.3137, colorSpace: ColorSpace.sRGB)), dependencies:
-2025-12-31T20:37:50.4161456Z [Directionality, IconTheme]),
-2025-12-31T20:37:50.4161924Z             Icon(IconData(U+0E172), dependencies: [Directionality, IconTheme]),
-2025-12-31T20:37:50.4162417Z           ]>
-2025-12-31T20:37:50.4162668Z    Which: is too many
-2025-12-31T20:37:50.4162853Z 
-2025-12-31T20:37:50.4163230Z When the exception was thrown, this was the stack:
-2025-12-31T20:37:50.4164187Z #4      main.<anonymous closure>.<anonymous closure> (file:///home/runner/work/Music/Music/music_tag_editor/test/backup_view.suite.dart:52:7)
-2025-12-31T20:37:50.4165060Z <asynchronous suspension>
-2025-12-31T20:37:50.4165704Z #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
-2025-12-31T20:37:50.4166408Z <asynchronous suspension>
-2025-12-31T20:37:50.4166990Z #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
-2025-12-31T20:37:50.4167621Z <asynchronous suspension>
-2025-12-31T20:37:50.4167919Z <asynchronous suspension>
-2025-12-31T20:37:50.4168384Z (elided one frame from package:stack_trace)
-2025-12-31T20:37:50.4168652Z 
-2025-12-31T20:37:50.4168872Z This was caught by the test expectation on the following line:
-2025-12-31T20:37:50.4169583Z   file:///home/runner/work/Music/Music/music_tag_editor/test/backup_view.suite.dart line 52
-2025-12-31T20:37:50.4170197Z The test description was:
-2025-12-31T20:37:50.4170517Z   renders restore backup card
-2025-12-31T20:37:50.4171211Z ════════════════════════════════════════════════════════════════════════════════════════════════════
-2025-12-31T20:37:50.4171715Z Test failed. See exception logs above.
-2025-12-31T20:37:50.4172154Z The test description was: renders restore backup card
-2025-12-31T20:37:50.4172473Z 
-2025-12-31T20:37:50.4173462Z ##[endgroup]
-2025-12-31T20:37:50.4507316Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SecurityService SecurityService encryptString returns encrypted format
-2025-12-31T20:37:50.4575404Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SecurityService SecurityService decryptString returns original text
-2025-12-31T20:37:50.4618588Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SecurityService SecurityService decryptString handles invalid format gracefully
-2025-12-31T20:37:50.4661671Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SecurityService SecurityService _hashPassword produces consistent hash
-2025-12-31T20:37:50.4692294Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SecurityService SecurityService unlockVault returns false without setup
-2025-12-31T20:37:50.4735836Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SecurityService SecurityService setupVaultPassword allows unlocking
-2025-12-31T20:37:50.4786619Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ThemeRoot ThemeService instance is accessible
-2025-12-31T20:37:50.4828495Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ThemeRoot ThemeService primaryColor returns a Color
-2025-12-31T20:37:50.4885680Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ThemeRoot ThemeService setCustomColor updates color
-2025-12-31T20:37:50.4928486Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ThemeRoot ThemeService ThemeService is a ChangeNotifier
-2025-12-31T20:37:50.5340086Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: CastService CastService parseSsdpResponse adds device to stream on valid XML
-2025-12-31T20:37:50.5397607Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: BackupView BackupScreen shows backup size estimate
-2025-12-31T20:37:50.5409985Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: CastService CastService sendSoap sends correct POST request
-2025-12-31T20:37:50.5490444Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: CastService CastService parseSsdpResponse handles partial URLs in controlURL
-2025-12-31T20:37:50.5598226Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ConnectivityService ConnectivityService init updates isOffline status correctly
-2025-12-31T20:37:50.5662823Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ConnectivityService ConnectivityService Becomes online when wifi connected
-2025-12-31T20:37:50.5795376Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DesktopIntegration init calls initialization methods
-2025-12-31T20:37:50.5840390Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DesktopIntegration hideToTray calls windowManager.hide()
-2025-12-31T20:37:50.5935514Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: EqualizerService EqualizerService applyPresetForGenre sets bands correctly for Rock
-2025-12-31T20:37:50.5966840Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: EqualizerService EqualizerService calculateNormalizedVolume calculates gain adjustment
-2025-12-31T20:37:50.6040262Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: HifiDownload HiFiDownloadService search returns sorted results
-2025-12-31T20:37:50.6123254Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: HifiDownload HiFiDownloadService download handles success
-2025-12-31T20:37:50.6153475Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: HifiDownload HiFiDownloadService download handles failure to get link
-2025-12-31T20:37:50.6192616Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: HifiDownload HiFiDownloadService findHiFiVersion finds match
-2025-12-31T20:37:50.6265620Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ListeningStats ListeningStatsService getStats calculates basic totals correctly
-2025-12-31T20:37:50.6308402Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ListeningStats ListeningStatsService getStats identifies top items correctly
-2025-12-31T20:37:50.6343006Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ListeningStats ListeningStatsService getStats handles empty database
-2025-12-31T20:37:50.6396919Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ThemeService ThemeService init loads settings from DB
-2025-12-31T20:37:50.6449598Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ThemeService ThemeService setCustomColor saves to DB and updates state
-2025-12-31T20:37:50.6516004Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ThemeService ThemeService updateThemeFromImage updates primary color from palette
-2025-12-31T20:37:50.6935314Z ##[group]❌ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen renders with no track playing (failed)
-2025-12-31T20:37:50.6946125Z ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
-2025-12-31T20:37:50.6948431Z The following TestFailure was thrown running a test:
-2025-12-31T20:37:50.6949183Z Expected: exactly one matching candidate
-2025-12-31T20:37:50.6950006Z   Actual: _TextWidgetFinder:<Found 0 widgets with text "Toque para sair": []>
-2025-12-31T20:37:50.6950905Z    Which: means none were found but one was expected
-2025-12-31T20:37:50.6951462Z 
-2025-12-31T20:37:50.6951822Z When the exception was thrown, this was the stack:
-2025-12-31T20:37:50.6954420Z #4      main.<anonymous closure>.<anonymous closure> (file:///home/runner/work/Music/Music/music_tag_editor/test/disco_mode_view.suite.dart:48:7)
-2025-12-31T20:37:50.6955476Z <asynchronous suspension>
-2025-12-31T20:37:50.6956225Z #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
-2025-12-31T20:37:50.6957021Z <asynchronous suspension>
-2025-12-31T20:37:50.6957697Z #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
-2025-12-31T20:37:50.6958349Z <asynchronous suspension>
-2025-12-31T20:37:50.6958691Z <asynchronous suspension>
-2025-12-31T20:37:50.6970352Z (elided one frame from package:stack_trace)
-2025-12-31T20:37:50.6970671Z 
-2025-12-31T20:37:50.6970931Z This was caught by the test expectation on the following line:
-2025-12-31T20:37:50.6971674Z   file:///home/runner/work/Music/Music/music_tag_editor/test/disco_mode_view.suite.dart line 48
-2025-12-31T20:37:50.6972422Z The test description was:
-2025-12-31T20:37:50.6972806Z   renders with no track playing
-2025-12-31T20:37:50.6974157Z ════════════════════════════════════════════════════════════════════════════════════════════════════
-2025-12-31T20:37:50.6974699Z Test failed. See exception logs above.
-2025-12-31T20:37:50.6975213Z The test description was: renders with no track playing
-2025-12-31T20:37:50.6975551Z 
-2025-12-31T20:37:50.6975972Z ##[endgroup]
-2025-12-31T20:37:50.7516866Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen renders with track playing
-2025-12-31T20:37:50.9818078Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: EditTrackDialog renders properly and returns updated track
-2025-12-31T20:37:51.0731856Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
-2025-12-31T20:37:51.0904422Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: SearchResultsDialog renders list and returns selection
-2025-12-31T20:37:51.1645340Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: SearchResultsDialog cancels correctly
-2025-12-31T20:37:51.2245947Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp shows LoginPage when not authenticated
-2025-12-31T20:37:51.3642291Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp uses theme color from ThemeService
-2025-12-31T20:37:51.6785132Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: LibraryScreen renders with title
-2025-12-31T20:37:51.7723502Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: LibraryScreen has DefaultTabController
-2025-12-31T20:37:51.8583333Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: LibraryScreen renders tab bar with tabs
-2025-12-31T20:37:51.9304394Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: LibraryScreen has settings button in app bar
-2025-12-31T20:37:52.0249888Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: LibraryScreen has download button in app bar
-2025-12-31T20:37:52.1537562Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: LibraryScreen shows empty folder message
-2025-12-31T20:37:52.2068090Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen tap closes the view
-2025-12-31T20:37:52.3655084Z ##[group]❌ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen visualizer bars animate (failed)
-2025-12-31T20:37:52.3658202Z ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
-2025-12-31T20:37:52.3660359Z The following TestFailure was thrown running a test:
-2025-12-31T20:37:52.3661797Z Expected: at least one matching candidate
-2025-12-31T20:37:52.3662587Z   Actual: _TypeWidgetFinder:<Found 0 widgets with type "AnimatedContainer": []>
-2025-12-31T20:37:52.3663517Z    Which: means none were found but some were expected
-2025-12-31T20:37:52.3663889Z 
-2025-12-31T20:37:52.3664117Z When the exception was thrown, this was the stack:
-2025-12-31T20:37:52.3665350Z #4      main.<anonymous closure>.<anonymous closure> (file:///home/runner/work/Music/Music/music_tag_editor/test/disco_mode_view.suite.dart:106:7)
-2025-12-31T20:37:52.3666425Z <asynchronous suspension>
-2025-12-31T20:37:52.3667211Z #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
-2025-12-31T20:37:52.3667992Z <asynchronous suspension>
-2025-12-31T20:37:52.3674071Z #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
-2025-12-31T20:37:52.3674851Z <asynchronous suspension>
-2025-12-31T20:37:52.3675232Z <asynchronous suspension>
-2025-12-31T20:37:52.3675634Z (elided one frame from package:stack_trace)
-2025-12-31T20:37:52.3675946Z 
-2025-12-31T20:37:52.3676239Z This was caught by the test expectation on the following line:
-2025-12-31T20:37:52.3677084Z   file:///home/runner/work/Music/Music/music_tag_editor/test/disco_mode_view.suite.dart line 106
-2025-12-31T20:37:52.3684653Z The test description was:
-2025-12-31T20:37:52.3685055Z   visualizer bars animate
-2025-12-31T20:37:52.3685703Z ════════════════════════════════════════════════════════════════════════════════════════════════════
-2025-12-31T20:37:52.3686156Z Test failed. See exception logs above.
-2025-12-31T20:37:52.3686562Z The test description was: visualizer bars animate
-2025-12-31T20:37:52.3686845Z 
-2025-12-31T20:37:52.3687257Z ##[endgroup]
-2025-12-31T20:37:52.4432676Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen rotation animation runs
-2025-12-31T20:37:52.5356184Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage renders initial UI
-2025-12-31T20:37:52.6189816Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage shows paste button
-2025-12-31T20:37:52.9304844Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage has dropdown selector after search
-2025-12-31T20:37:52.9720305Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage button bar is present
-2025-12-31T20:37:53.0505128Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage url input accepts text
-2025-12-31T20:37:53.0947507Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage scaffold renders
-2025-12-31T20:37:53.1582860Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: HomeView HomeScreen renders greeting
-2025-12-31T20:37:53.2203949Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: HomeView HomeScreen renders smart library cards
-2025-12-31T20:37:53.2750384Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: HomeView HomeScreen renders moods section
-2025-12-31T20:37:53.3296756Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: HomeView HomeScreen renders disco mode button
-2025-12-31T20:37:53.4058920Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: HomeView HomeScreen renders recents list with tracks
-2025-12-31T20:37:53.4622971Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: HomeView HomeScreen scaffold renders correctly
-2025-12-31T20:37:53.4952570Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: KaraokeView KaraokeScreen renders track title
-2025-12-31T20:37:53.5178981Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: KaraokeView KaraokeScreen renders close button
-2025-12-31T20:37:53.5407067Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: KaraokeView KaraokeScreen shows no lyrics message when empty
-2025-12-31T20:37:53.5624070Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: KaraokeView KaraokeScreen renders play button
-2025-12-31T20:37:53.5853701Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: KaraokeView KaraokeScreen scaffold has black background
-2025-12-31T20:37:53.6123932Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: KaraokeView KaraokeScreen tapping play button calls resume
-2025-12-31T20:37:53.6603353Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: ListeningStats ListeningStatsScreen renders all sections when data is available
-2025-12-31T20:37:53.6851098Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: ListeningStats ListeningStatsScreen shows loading state and clears timers
-2025-12-31T20:37:53.7372701Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen renders Scaffold
-2025-12-31T20:37:53.7762456Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen has email and password fields
-2025-12-31T20:37:53.8199749Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen has login button
-2025-12-31T20:37:53.8846614Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen can toggle to register mode
-2025-12-31T20:37:54.0131822Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen calls login on button press
-2025-12-31T20:37:54.0296250Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MiniPlayer MiniPlayer Widget Tests Shows nothing when no track is playing
-2025-12-31T20:37:54.0597373Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MiniPlayer MiniPlayer Widget Tests Shows track info and controls when track is present
-2025-12-31T20:37:54.0859094Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MiniPlayer MiniPlayer Widget Tests Pause button calls playback.pause
-2025-12-31T20:37:54.1112246Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MoodExplorer MoodExplorerScreen renders mood sections
-2025-12-31T20:37:54.1350751Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MoodExplorer MoodExplorerScreen shows loading indicator
-2025-12-31T20:37:54.1586817Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MoodExplorer MoodExplorerScreen displays empty state message
-2025-12-31T20:37:54.1836105Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MyTracks MyTracksScreen renders loading state
-2025-12-31T20:37:54.2072848Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MyTracks MyTracksScreen renders empty state
-2025-12-31T20:37:54.2289988Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MyTracks MyTracksScreen renders app bar with actions
-2025-12-31T20:37:54.3375022Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MyTracks MyTracksScreen renders tracks list
-2025-12-31T20:37:54.3682548Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MyTracks MyTracksScreen shows menu button for each track
-2025-12-31T20:37:54.4017976Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MyTracks MyTracksScreen has menu button for vault actions
-2025-12-31T20:37:54.4325542Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PartyQueue PartyQueueScreen renders app bar
-2025-12-31T20:37:54.4539713Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PartyQueue PartyQueueScreen renders start party UI
-2025-12-31T20:37:54.4731725Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PartyQueue PartyQueueScreen renders description text
-2025-12-31T20:37:54.4962841Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PartyQueue PartyQueueScreen has generate QR button
-2025-12-31T20:37:54.5161451Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PartyQueue PartyQueueScreen has scan button
-2025-12-31T20:37:54.5557322Z ##[group]❌ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PartyQueue PartyQueueScreen tapping generate shows QR code (failed)
-2025-12-31T20:37:54.5558871Z ══╡ EXCEPTION CAUGHT BY IMAGE RESOURCE SERVICE ╞════════════════════════════════════════════════════
-2025-12-31T20:37:54.5559689Z The following _TypeError was thrown resolving an image codec:
-2025-12-31T20:37:54.5560293Z type 'Null' is not a subtype of type 'int'
-2025-12-31T20:37:54.5560590Z 
-2025-12-31T20:37:54.5560791Z When the exception was thrown, this was the stack:
-2025-12-31T20:37:54.5561711Z #0      _MockHttpClientResponse.contentLength (file:///home/runner/work/Music/Music/music_tag_editor/test/test_helper.dart:197:7)
-2025-12-31T20:37:54.5562952Z #1      consolidateHttpClientResponseBytes (package:flutter/src/foundation/consolidate_response.dart:58:41)
-2025-12-31T20:37:54.5564373Z #2      NetworkImage._loadAsync (package:flutter/src/painting/_network_image_io.dart:136:37)
-2025-12-31T20:37:54.5565513Z <asynchronous suspension>
-2025-12-31T20:37:54.5566354Z #3      MultiFrameImageStreamCompleter._handleCodecReady (package:flutter/src/painting/image_stream.dart:1021:3)
-2025-12-31T20:37:54.5567265Z <asynchronous suspension>
-2025-12-31T20:37:54.5567495Z 
-2025-12-31T20:37:54.5567610Z Image provider:
-2025-12-31T20:37:54.5568259Z   NetworkImage("https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=DUO_PARTY_SESSION_7788",
-2025-12-31T20:37:54.5568970Z   scale: 1.0)
-2025-12-31T20:37:54.5569248Z Image key:
-2025-12-31T20:37:54.5569871Z   NetworkImage("https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=DUO_PARTY_SESSION_7788",
-2025-12-31T20:37:54.5570634Z   scale: 1.0)
-2025-12-31T20:37:54.5571338Z ════════════════════════════════════════════════════════════════════════════════════════════════════
-2025-12-31T20:37:54.5572176Z Test failed. See exception logs above.
-2025-12-31T20:37:54.5572707Z The test description was: tapping generate shows QR code
-2025-12-31T20:37:54.5573263Z 
-2025-12-31T20:37:54.5573664Z ##[endgroup]
-2025-12-31T20:37:54.5940156Z ##[group]❌ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PartyQueue PartyQueueScreen tapping end party returns to initial state (failed)
-2025-12-31T20:37:54.5941726Z ══╡ EXCEPTION CAUGHT BY IMAGE RESOURCE SERVICE ╞════════════════════════════════════════════════════
-2025-12-31T20:37:54.5942596Z The following _TypeError was thrown resolving an image codec:
-2025-12-31T20:37:54.5943404Z type 'Null' is not a subtype of type 'int'
-2025-12-31T20:37:54.5943727Z 
-2025-12-31T20:37:54.5943927Z When the exception was thrown, this was the stack:
-2025-12-31T20:37:54.5944951Z #0      _MockHttpClientResponse.contentLength (file:///home/runner/work/Music/Music/music_tag_editor/test/test_helper.dart:197:7)
-2025-12-31T20:37:54.5946354Z #1      consolidateHttpClientResponseBytes (package:flutter/src/foundation/consolidate_response.dart:58:41)
-2025-12-31T20:37:54.5947411Z #2      NetworkImage._loadAsync (package:flutter/src/painting/_network_image_io.dart:136:37)
-2025-12-31T20:37:54.5948069Z <asynchronous suspension>
-2025-12-31T20:37:54.5948827Z #3      MultiFrameImageStreamCompleter._handleCodecReady (package:flutter/src/painting/image_stream.dart:1021:3)
-2025-12-31T20:37:54.5949640Z <asynchronous suspension>
-2025-12-31T20:37:54.5949856Z 
-2025-12-31T20:37:54.5949967Z Image provider:
-2025-12-31T20:37:54.5950606Z   NetworkImage("https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=DUO_PARTY_SESSION_7788",
-2025-12-31T20:37:54.5951310Z   scale: 1.0)
-2025-12-31T20:37:54.5951561Z Image key:
-2025-12-31T20:37:54.5952144Z   NetworkImage("https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=DUO_PARTY_SESSION_7788",
-2025-12-31T20:37:54.5952837Z   scale: 1.0)
-2025-12-31T20:37:54.5953618Z ════════════════════════════════════════════════════════════════════════════════════════════════════
-2025-12-31T20:37:54.5954147Z Test failed. See exception logs above.
-2025-12-31T20:37:54.5955060Z The test description was: tapping end party returns to initial state
-2025-12-31T20:37:54.5955489Z 
-2025-12-31T20:37:54.5955856Z ##[endgroup]
-2025-12-31T20:37:54.7375257Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PersonasWidget SettingsPage Persona Selection Displays all persona options in SettingsScreen
-2025-12-31T20:37:54.8210283Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PersonasWidget SettingsPage Persona Selection Switching persona updates PersonaService
-2025-12-31T20:37:54.9049511Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PersonasWidget AppShell Persona Integration AppShell shows Home navigation for Listener persona
-2025-12-31T20:37:54.9992660Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PersonasWidget AppShell Persona Integration AppShell shows Tags navigation for Librarian persona
-2025-12-31T20:37:55.0442576Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PersonasWidget AppShell Persona Integration AppShell shows Disco and Karaoke for Host persona
-2025-12-31T20:37:55.0790820Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlayerScreen PlayerScreen Widget Tests Shows empty state when no track is playing
-2025-12-31T20:37:55.1333404Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlayerScreen PlayerScreen Widget Tests Shows track info when playing
-2025-12-31T20:37:55.1902238Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlayerScreen PlayerScreen Widget Tests Toggles play/pause
-2025-12-31T20:37:55.2383564Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlayerScreen PlayerScreen Widget Tests Shows Duo chat button when in Duo mode
-2025-12-31T20:37:55.2627767Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen shows loading indicator initially
-2025-12-31T20:37:55.2795631Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen displays playlist name in app bar
-2025-12-31T20:37:55.2974011Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen shows empty state when no tracks
-2025-12-31T20:37:55.3258586Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen shows track list when tracks exist
-2025-12-31T20:37:55.3509183Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen has play button for each track
-2025-12-31T20:37:55.3825562Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen calls playSearchResult on play button tap
-2025-12-31T20:37:55.4165834Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistImporter PlaylistImporterScreen renders correctly
-2025-12-31T20:37:55.4395660Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistImporter PlaylistImporterScreen has text field for URL
-2025-12-31T20:37:55.4644052Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistImporter PlaylistImporterScreen shows placeholder text
-2025-12-31T20:37:55.4876053Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistImporter PlaylistImporterScreen has scan icon button
-2025-12-31T20:37:55.5289705Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistImporter PlaylistImporterScreen text field accepts input
-2025-12-31T20:37:55.5485488Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistsView PlaylistsScreen renders empty state
-2025-12-31T20:37:55.5837613Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistsView PlaylistsScreen renders playlists list
-2025-12-31T20:37:55.6038036Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistsView PlaylistsScreen shows FAB for creating playlists
-2025-12-31T20:37:55.7180807Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistsView PlaylistsScreen FAB opens create playlist dialog
-2025-12-31T20:37:55.7944772Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistsView PlaylistsScreen cancel dialog closes without creating
-2025-12-31T20:37:55.8226757Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistsView PlaylistsScreen playlist items have correct icons
-2025-12-31T20:37:55.8443217Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistsView PlaylistsScreen app bar renders correctly
-2025-12-31T20:37:55.8663967Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RemoteLibrary RemoteLibraryScreen shows loading indicator initially
-2025-12-31T20:37:55.8820515Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RemoteLibrary RemoteLibraryScreen has refresh button in app bar
-2025-12-31T20:37:55.8996253Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RemoteLibrary RemoteLibraryScreen displays correct app bar title
-2025-12-31T20:37:55.9141933Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RemoteLibrary RemoteLibraryScreen has scaffold
-2025-12-31T20:37:56.0084565Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RingtoneMaker RingtoneMakerScreen renders Scaffold
-2025-12-31T20:37:56.0488038Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RingtoneMaker RingtoneMakerScreen displays track title
-2025-12-31T20:37:56.1027667Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RingtoneMaker RingtoneMakerScreen has play/pause button
-2025-12-31T20:37:56.1482366Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RingtoneMaker RingtoneMakerScreen has app bar with title
-2025-12-31T20:37:56.1839496Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SearchPage Shows initialization progress then content
-2025-12-31T20:37:56.2681217Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SearchPage Performs search and displays results
-2025-12-31T20:37:56.3596615Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SearchPage Handles play track interaction
-2025-12-31T20:37:56.4171661Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SearchPage Shows no results message
-2025-12-31T20:37:56.4451480Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SearchPage Shows error message on initialization failure
-2025-12-31T20:37:56.5091072Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SettingsPage SettingsScreen renders Scaffold
-2025-12-31T20:37:56.5698591Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SettingsPage SettingsScreen loads settings on init
-2025-12-31T20:37:56.6039053Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SmartLibrary SmartLibraryScreen renders tab bar
-2025-12-31T20:37:56.6375202Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SmartLibrary SmartLibraryScreen shows loading indicator
-2025-12-31T20:37:56.6596725Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SmartLibrary SmartLibraryScreen shows empty top hits message
-2025-12-31T20:37:56.6875726Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SmartLibrary SmartLibraryScreen shows top hits list
-2025-12-31T20:37:56.7173249Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: VaultView VaultScreen renders locked state
-2025-12-31T20:37:56.7411666Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: VaultView VaultScreen has password field
-2025-12-31T20:37:56.7618673Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: VaultView VaultScreen has unlock button
-2025-12-31T20:37:56.8063763Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: VaultView VaultScreen calls unlockVault on button press
-2025-12-31T20:37:57.6752755Z 
-2025-12-31T20:37:57.6775912Z ##[error]300 tests passed, 6 failed.
-2025-12-31T20:37:57.7873587Z ##[error]Process completed with exit code 1.
-2025-12-31T20:37:57.7991672Z Post job cleanup.
-2025-12-31T20:37:57.8044828Z Post job cleanup.
-2025-12-31T20:37:57.8819259Z [command]/usr/bin/git version
-2025-12-31T20:37:57.8854403Z git version 2.52.0
-2025-12-31T20:37:57.8923983Z Temporarily overriding HOME='/home/runner/work/_temp/96bbdcd9-77db-4681-9aee-82eaef824186' before making global git config changes
-2025-12-31T20:37:57.8925283Z Adding repository directory to the temporary git global config as a safe directory
-2025-12-31T20:37:57.8930079Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Music/Music
-2025-12-31T20:37:57.8959042Z Removing SSH command configuration
-2025-12-31T20:37:57.8965541Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
-2025-12-31T20:37:57.8997678Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
-2025-12-31T20:37:57.9218963Z Removing HTTP extra header
-2025-12-31T20:37:57.9223904Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
-2025-12-31T20:37:57.9256174Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
-2025-12-31T20:37:57.9470610Z Removing includeIf entries pointing to credentials config files
-2025-12-31T20:37:57.9477309Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
-2025-12-31T20:37:57.9499431Z includeif.gitdir:/home/runner/work/Music/Music/.git.path
-2025-12-31T20:37:57.9500127Z includeif.gitdir:/home/runner/work/Music/Music/.git/worktrees/*.path
-2025-12-31T20:37:57.9500618Z includeif.gitdir:/github/workspace/.git.path
-2025-12-31T20:37:57.9500972Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
-2025-12-31T20:37:57.9508685Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Music/Music/.git.path
-2025-12-31T20:37:57.9529964Z /home/runner/work/_temp/git-credentials-484c03e6-eb3f-4839-8e4b-a915478e48f6.config
-2025-12-31T20:37:57.9540212Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Music/Music/.git.path /home/runner/work/_temp/git-credentials-484c03e6-eb3f-4839-8e4b-a915478e48f6.config
-2025-12-31T20:37:57.9571627Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Music/Music/.git/worktrees/*.path
-2025-12-31T20:37:57.9592352Z /home/runner/work/_temp/git-credentials-484c03e6-eb3f-4839-8e4b-a915478e48f6.config
-2025-12-31T20:37:57.9601505Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Music/Music/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-484c03e6-eb3f-4839-8e4b-a915478e48f6.config
-2025-12-31T20:37:57.9631624Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
-2025-12-31T20:37:57.9652293Z /github/runner_temp/git-credentials-484c03e6-eb3f-4839-8e4b-a915478e48f6.config
-2025-12-31T20:37:57.9660107Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-484c03e6-eb3f-4839-8e4b-a915478e48f6.config
-2025-12-31T20:37:57.9689038Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
-2025-12-31T20:37:57.9708909Z /github/runner_temp/git-credentials-484c03e6-eb3f-4839-8e4b-a915478e48f6.config
-2025-12-31T20:37:57.9717618Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-484c03e6-eb3f-4839-8e4b-a915478e48f6.config
-2025-12-31T20:37:57.9747990Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
-2025-12-31T20:37:57.9985511Z Removing credentials config '/home/runner/work/_temp/git-credentials-484c03e6-eb3f-4839-8e4b-a915478e48f6.config'
-2025-12-31T20:37:58.0127415Z Cleaning up orphan processes
+﻿2025-12-31T20:57:51.0301741Z Current runner version: '2.330.0'
+2025-12-31T20:57:51.0327747Z ##[group]Runner Image Provisioner
+2025-12-31T20:57:51.0328503Z Hosted Compute Agent
+2025-12-31T20:57:51.0329154Z Version: 20251211.462
+2025-12-31T20:57:51.0329744Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+2025-12-31T20:57:51.0330454Z Build Date: 2025-12-11T16:28:49Z
+2025-12-31T20:57:51.0331164Z Worker ID: {5c4f535d-0523-46f3-9399-e847e67448dd}
+2025-12-31T20:57:51.0331843Z ##[endgroup]
+2025-12-31T20:57:51.0332386Z ##[group]Operating System
+2025-12-31T20:57:51.0332958Z Ubuntu
+2025-12-31T20:57:51.0333458Z 24.04.3
+2025-12-31T20:57:51.0333887Z LTS
+2025-12-31T20:57:51.0334686Z ##[endgroup]
+2025-12-31T20:57:51.0335255Z ##[group]Runner Image
+2025-12-31T20:57:51.0335829Z Image: ubuntu-24.04
+2025-12-31T20:57:51.0336388Z Version: 20251215.174.1
+2025-12-31T20:57:51.0337394Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-31T20:57:51.0338936Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
+2025-12-31T20:57:51.0339959Z ##[endgroup]
+2025-12-31T20:57:51.0341082Z ##[group]GITHUB_TOKEN Permissions
+2025-12-31T20:57:51.0343339Z Contents: write
+2025-12-31T20:57:51.0343879Z Metadata: read
+2025-12-31T20:57:51.0344685Z PullRequests: write
+2025-12-31T20:57:51.0345375Z ##[endgroup]
+2025-12-31T20:57:51.0347522Z Secret source: Actions
+2025-12-31T20:57:51.0348656Z Prepare workflow directory
+2025-12-31T20:57:51.0681979Z Prepare all required actions
+2025-12-31T20:57:51.0721391Z Getting action download info
+2025-12-31T20:57:51.4007201Z Download action repository 'actions/checkout@v6' (SHA:8e8c483db84b4bee98b60c0593521ed34d9990e8)
+2025-12-31T20:57:51.5097016Z Download action repository 'subosito/flutter-action@v2' (SHA:fd55f4c5af5b953cc57a2be44cb082c8f6635e8e)
+2025-12-31T20:57:51.8098989Z Download action repository 'actions/upload-artifact@v6' (SHA:b7c566a772e6b6bfb58ed0dc250532a479d7789f)
+2025-12-31T20:57:52.3595966Z Getting action download info
+2025-12-31T20:57:52.4759925Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+2025-12-31T20:57:52.6451950Z Uses: joaomagdaleno/Music/.github/workflows/quality-gate.yml@refs/heads/dev (b097a79505437bf970d0e420a289cd93df78262b)
+2025-12-31T20:57:52.6458411Z ##[group] Inputs
+2025-12-31T20:57:52.6459305Z   min_coverage: 80
+2025-12-31T20:57:52.6460110Z ##[endgroup]
+2025-12-31T20:57:52.6460992Z Complete job name: Quality Gate / Quality Gate
+2025-12-31T20:57:52.7148661Z ##[group]Run sudo rm -rf /usr/share/dotnet
+2025-12-31T20:57:52.7149856Z [36;1msudo rm -rf /usr/share/dotnet[0m
+2025-12-31T20:57:52.7150866Z [36;1msudo rm -rf /opt/ghc[0m
+2025-12-31T20:57:52.7151842Z [36;1msudo rm -rf "/usr/local/share/boost"[0m
+2025-12-31T20:57:52.7152967Z [36;1msudo rm -rf "$AGENT_TOOLSDIRECTORY"[0m
+2025-12-31T20:57:52.7191121Z shell: /usr/bin/bash -e {0}
+2025-12-31T20:57:52.7192316Z ##[endgroup]
+2025-12-31T20:58:23.3361633Z ##[group]Run actions/checkout@v6
+2025-12-31T20:58:23.3361993Z with:
+2025-12-31T20:58:23.3362242Z   fetch-depth: 0
+2025-12-31T20:58:23.3362487Z   repository: joaomagdaleno/Music
+2025-12-31T20:58:23.3362962Z   token: ***
+2025-12-31T20:58:23.3363190Z   ssh-strict: true
+2025-12-31T20:58:23.3363409Z   ssh-user: git
+2025-12-31T20:58:23.3363645Z   persist-credentials: true
+2025-12-31T20:58:23.3363897Z   clean: true
+2025-12-31T20:58:23.3364134Z   sparse-checkout-cone-mode: true
+2025-12-31T20:58:23.3364569Z   fetch-tags: false
+2025-12-31T20:58:23.3364812Z   show-progress: true
+2025-12-31T20:58:23.3365044Z   lfs: false
+2025-12-31T20:58:23.3365257Z   submodules: false
+2025-12-31T20:58:23.3365493Z   set-safe-directory: true
+2025-12-31T20:58:23.3365768Z ##[endgroup]
+2025-12-31T20:58:23.4256699Z Syncing repository: joaomagdaleno/Music
+2025-12-31T20:58:23.4258159Z ##[group]Getting Git version info
+2025-12-31T20:58:23.4258563Z Working directory is '/home/runner/work/Music/Music'
+2025-12-31T20:58:23.4259279Z [command]/usr/bin/git version
+2025-12-31T20:58:23.4332377Z git version 2.52.0
+2025-12-31T20:58:23.4353574Z ##[endgroup]
+2025-12-31T20:58:23.4370862Z Temporarily overriding HOME='/home/runner/work/_temp/91c2dc4d-0719-49b0-bd78-dcb55b141311' before making global git config changes
+2025-12-31T20:58:23.4372234Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-31T20:58:23.4377219Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Music/Music
+2025-12-31T20:58:23.4422817Z Deleting the contents of '/home/runner/work/Music/Music'
+2025-12-31T20:58:23.4427013Z ##[group]Initializing the repository
+2025-12-31T20:58:23.4431715Z [command]/usr/bin/git init /home/runner/work/Music/Music
+2025-12-31T20:58:23.4566205Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-31T20:58:23.4566926Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-31T20:58:23.4567559Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-31T20:58:23.4568006Z hint: call:
+2025-12-31T20:58:23.4568264Z hint:
+2025-12-31T20:58:23.4568783Z hint: 	git config --global init.defaultBranch <name>
+2025-12-31T20:58:23.4569163Z hint:
+2025-12-31T20:58:23.4569552Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-31T20:58:23.4570583Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-31T20:58:23.4571288Z hint:
+2025-12-31T20:58:23.4571678Z hint: 	git branch -m <name>
+2025-12-31T20:58:23.4572139Z hint:
+2025-12-31T20:58:23.4572847Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-31T20:58:23.4574041Z Initialized empty Git repository in /home/runner/work/Music/Music/.git/
+2025-12-31T20:58:23.4654613Z [command]/usr/bin/git remote add origin https://github.com/joaomagdaleno/Music
+2025-12-31T20:58:23.4656955Z ##[endgroup]
+2025-12-31T20:58:23.4658097Z ##[group]Disabling automatic garbage collection
+2025-12-31T20:58:23.4658773Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-31T20:58:23.4660349Z ##[endgroup]
+2025-12-31T20:58:23.4661120Z ##[group]Setting up auth
+2025-12-31T20:58:23.4661668Z Removing SSH command configuration
+2025-12-31T20:58:23.4665197Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-31T20:58:23.4698278Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-31T20:58:23.5066393Z Removing HTTP extra header
+2025-12-31T20:58:23.5072517Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-31T20:58:23.5104120Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-31T20:58:23.5316620Z Removing includeIf entries pointing to credentials config files
+2025-12-31T20:58:23.5323056Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-31T20:58:23.5354578Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-31T20:58:23.5575604Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-38279351-64f2-4676-9ac9-af87736f4c24.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-31T20:58:23.5611539Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Music/Music/.git.path /home/runner/work/_temp/git-credentials-38279351-64f2-4676-9ac9-af87736f4c24.config
+2025-12-31T20:58:23.5642339Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Music/Music/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-38279351-64f2-4676-9ac9-af87736f4c24.config
+2025-12-31T20:58:23.5672075Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-38279351-64f2-4676-9ac9-af87736f4c24.config
+2025-12-31T20:58:23.5701994Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-38279351-64f2-4676-9ac9-af87736f4c24.config
+2025-12-31T20:58:23.5727305Z ##[endgroup]
+2025-12-31T20:58:23.5728051Z ##[group]Fetching the repository
+2025-12-31T20:58:23.5737378Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2025-12-31T20:58:24.1103892Z From https://github.com/joaomagdaleno/Music
+2025-12-31T20:58:24.1105145Z  * [new branch]      beta          -> origin/beta
+2025-12-31T20:58:24.1105821Z  * [new branch]      coverage-data -> origin/coverage-data
+2025-12-31T20:58:24.1106410Z  * [new branch]      dev           -> origin/dev
+2025-12-31T20:58:24.1106954Z  * [new branch]      main          -> origin/main
+2025-12-31T20:58:24.1107490Z  * [new branch]      teste         -> origin/teste
+2025-12-31T20:58:24.1150661Z [command]/usr/bin/git branch --list --remote origin/dev
+2025-12-31T20:58:24.1175760Z   origin/dev
+2025-12-31T20:58:24.1185518Z [command]/usr/bin/git rev-parse refs/remotes/origin/dev
+2025-12-31T20:58:24.1207386Z b097a79505437bf970d0e420a289cd93df78262b
+2025-12-31T20:58:24.1211918Z ##[endgroup]
+2025-12-31T20:58:24.1212678Z ##[group]Determining the checkout info
+2025-12-31T20:58:24.1213475Z ##[endgroup]
+2025-12-31T20:58:24.1218837Z [command]/usr/bin/git sparse-checkout disable
+2025-12-31T20:58:24.1260610Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-31T20:58:24.1288843Z ##[group]Checking out the ref
+2025-12-31T20:58:24.1292085Z [command]/usr/bin/git checkout --progress --force -B dev refs/remotes/origin/dev
+2025-12-31T20:58:24.1728771Z Switched to a new branch 'dev'
+2025-12-31T20:58:24.1729779Z branch 'dev' set up to track 'origin/dev'.
+2025-12-31T20:58:24.1740984Z ##[endgroup]
+2025-12-31T20:58:24.1781747Z [command]/usr/bin/git log -1 --format=%H
+2025-12-31T20:58:24.1805297Z b097a79505437bf970d0e420a289cd93df78262b
+2025-12-31T20:58:24.2000788Z ##[group]Run subosito/flutter-action@v2
+2025-12-31T20:58:24.2001074Z with:
+2025-12-31T20:58:24.2001263Z   flutter-version: 3.35.7
+2025-12-31T20:58:24.2001470Z   cache: true
+2025-12-31T20:58:24.2001648Z   channel: stable
+2025-12-31T20:58:24.2001830Z   architecture: X64
+2025-12-31T20:58:24.2002034Z   pub-cache-path: default
+2025-12-31T20:58:24.2002272Z   dry-run: false
+2025-12-31T20:58:24.2002576Z   git-source: https://github.com/flutter/flutter.git
+2025-12-31T20:58:24.2002858Z ##[endgroup]
+2025-12-31T20:58:24.2089185Z ##[group]Run chmod +x "$GITHUB_ACTION_PATH/setup.sh"
+2025-12-31T20:58:24.2089533Z [36;1mchmod +x "$GITHUB_ACTION_PATH/setup.sh"[0m
+2025-12-31T20:58:24.2124905Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2025-12-31T20:58:24.2125401Z ##[endgroup]
+2025-12-31T20:58:24.2231280Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh -p \
+2025-12-31T20:58:24.2231649Z [36;1m$GITHUB_ACTION_PATH/setup.sh -p \[0m
+2025-12-31T20:58:24.2231924Z [36;1m  -n '3.35.7' \[0m
+2025-12-31T20:58:24.2232163Z [36;1m  -f '' \[0m
+2025-12-31T20:58:24.2232343Z [36;1m  -a 'X64' \[0m
+2025-12-31T20:58:24.2232526Z [36;1m  -k '' \[0m
+2025-12-31T20:58:24.2232696Z [36;1m  -c '' \[0m
+2025-12-31T20:58:24.2232865Z [36;1m  -l '' \[0m
+2025-12-31T20:58:24.2233037Z [36;1m  -d 'default' \[0m
+2025-12-31T20:58:24.2233324Z [36;1m  -g 'https://github.com/flutter/flutter.git' \[0m
+2025-12-31T20:58:24.2233612Z [36;1m  stable[0m
+2025-12-31T20:58:24.2263763Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2025-12-31T20:58:24.2264089Z ##[endgroup]
+2025-12-31T20:58:24.3976064Z ##[group]Run actions/cache@v4
+2025-12-31T20:58:24.3976331Z with:
+2025-12-31T20:58:24.3976575Z   path: /opt/hostedtoolcache/flutter/stable-3.35.7-x64
+2025-12-31T20:58:24.3977008Z   key: flutter-linux-stable-3.35.7-x64-adc901062556672b4138e18a4dc62a4be8f4b3c2
+2025-12-31T20:58:24.3977391Z   enableCrossOsArchive: false
+2025-12-31T20:58:24.3977630Z   fail-on-cache-miss: false
+2025-12-31T20:58:24.3978081Z   lookup-only: false
+2025-12-31T20:58:24.3978275Z   save-always: false
+2025-12-31T20:58:24.3978464Z ##[endgroup]
+2025-12-31T20:58:24.7072334Z Cache hit for: flutter-linux-stable-3.35.7-x64-adc901062556672b4138e18a4dc62a4be8f4b3c2
+2025-12-31T20:58:25.8583451Z Received 134217728 of 1585737234 (8.5%), 127.9 MBs/sec
+2025-12-31T20:58:26.8582142Z Received 348127232 of 1585737234 (22.0%), 166.0 MBs/sec
+2025-12-31T20:58:27.8738606Z Received 536870912 of 1585737234 (33.9%), 169.8 MBs/sec
+2025-12-31T20:58:28.8747042Z Received 734003200 of 1585737234 (46.3%), 174.3 MBs/sec
+2025-12-31T20:58:29.8749737Z Received 926941184 of 1585737234 (58.5%), 176.2 MBs/sec
+2025-12-31T20:58:30.8759105Z Received 1103101952 of 1585737234 (69.6%), 174.8 MBs/sec
+2025-12-31T20:58:31.8767275Z Received 1312817152 of 1585737234 (82.8%), 178.4 MBs/sec
+2025-12-31T20:58:32.8797474Z Received 1497366528 of 1585737234 (94.4%), 178.0 MBs/sec
+2025-12-31T20:58:33.2697591Z Received 1585737234 of 1585737234 (100.0%), 179.8 MBs/sec
+2025-12-31T20:58:33.2701216Z Cache Size: ~1512 MB (1585737234 B)
+2025-12-31T20:58:33.2743020Z [command]/usr/bin/tar -xf /home/runner/work/_temp/aba3cb45-16e8-41a5-bfa1-e4c3d79142df/cache.tzst -P -C /home/runner/work/Music/Music --use-compress-program unzstd
+2025-12-31T20:58:38.1960854Z Cache restored successfully
+2025-12-31T20:58:38.5056229Z Cache restored from key: flutter-linux-stable-3.35.7-x64-adc901062556672b4138e18a4dc62a4be8f4b3c2
+2025-12-31T20:58:38.6215794Z ##[group]Run actions/cache@v4
+2025-12-31T20:58:38.6216024Z with:
+2025-12-31T20:58:38.6216216Z   path: /home/runner/.pub-cache
+2025-12-31T20:58:38.6216859Z   key: flutter-pub-linux-stable-3.35.7-x64-adc901062556672b4138e18a4dc62a4be8f4b3c2-34264c5e040db878dc188e17b2bb65c01e6ae325fbf2e6438a94978036bd8384
+2025-12-31T20:58:38.6217509Z   enableCrossOsArchive: false
+2025-12-31T20:58:38.6217741Z   fail-on-cache-miss: false
+2025-12-31T20:58:38.6217955Z   lookup-only: false
+2025-12-31T20:58:38.6218156Z   save-always: false
+2025-12-31T20:58:38.6218352Z ##[endgroup]
+2025-12-31T20:58:38.8808027Z Cache not found for input keys: flutter-pub-linux-stable-3.35.7-x64-adc901062556672b4138e18a4dc62a4be8f4b3c2-34264c5e040db878dc188e17b2bb65c01e6ae325fbf2e6438a94978036bd8384
+2025-12-31T20:58:38.8900204Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh \
+2025-12-31T20:58:38.8900534Z [36;1m$GITHUB_ACTION_PATH/setup.sh \[0m
+2025-12-31T20:58:38.8900790Z [36;1m  -n '3.35.7' \[0m
+2025-12-31T20:58:38.8901003Z [36;1m  -a 'x64' \[0m
+2025-12-31T20:58:38.8901280Z [36;1m  -c '/opt/hostedtoolcache/flutter/stable-3.35.7-x64' \[0m
+2025-12-31T20:58:38.8901606Z [36;1m  -d '/home/runner/.pub-cache' \[0m
+2025-12-31T20:58:38.8901849Z [36;1m  stable[0m
+2025-12-31T20:58:38.8935008Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2025-12-31T20:58:38.8935333Z ##[endgroup]
+2025-12-31T20:58:39.1738329Z ##[group]Run flutter pub get
+2025-12-31T20:58:39.1738608Z [36;1mflutter pub get[0m
+2025-12-31T20:58:39.1772432Z shell: /usr/bin/bash -e {0}
+2025-12-31T20:58:39.1772678Z env:
+2025-12-31T20:58:39.1772930Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.35.7-x64
+2025-12-31T20:58:39.1773271Z   PUB_CACHE: /home/runner/.pub-cache
+2025-12-31T20:58:39.1773526Z ##[endgroup]
+2025-12-31T20:58:45.5204920Z Resolving dependencies...
+2025-12-31T20:58:46.9881783Z Downloading packages...
+2025-12-31T20:58:53.2846494Z   archive 3.6.1 (4.0.7 available)
+2025-12-31T20:58:53.2847080Z   audio_session 0.1.25 (0.2.2 available)
+2025-12-31T20:58:53.2847627Z   characters 1.4.0 (1.4.1 available)
+2025-12-31T20:58:53.2848158Z   connectivity_plus 6.1.5 (7.0.0 available)
+2025-12-31T20:58:53.2848677Z   file_picker 8.3.7 (10.3.8 available)
+2025-12-31T20:58:53.2849214Z   flutter_cache_manager 3.3.1 (3.4.1 available)
+2025-12-31T20:58:53.2849803Z   flutter_secure_storage 9.2.4 (10.0.0 available)
+2025-12-31T20:58:53.2850470Z   flutter_secure_storage_linux 1.2.3 (3.0.0 available)
+2025-12-31T20:58:53.2851064Z   flutter_secure_storage_macos 3.1.3 (4.0.0 available)
+2025-12-31T20:58:53.2851761Z   flutter_secure_storage_platform_interface 1.1.2 (2.0.1 available)
+2025-12-31T20:58:53.2852790Z   flutter_secure_storage_web 1.2.1 (2.1.0 available)
+2025-12-31T20:58:53.2853584Z   flutter_secure_storage_windows 3.1.2 (4.1.0 available)
+2025-12-31T20:58:53.2854156Z   js 0.6.7 (0.7.2 available)
+2025-12-31T20:58:53.2854844Z   matcher 0.12.17 (0.12.18 available)
+2025-12-31T20:58:53.2855401Z   material_color_utilities 0.11.1 (0.13.0 available)
+2025-12-31T20:58:53.2855917Z   math_expressions 2.7.0 (3.1.0 available)
+2025-12-31T20:58:53.2856401Z < meta 1.16.0 (was 1.17.0) (1.17.0 available)
+2025-12-31T20:58:53.2856881Z   petitparser 6.1.0 (7.0.1 available)
+2025-12-31T20:58:53.2857361Z   pointycastle 3.9.1 (4.0.0 available)
+2025-12-31T20:58:53.2857825Z   rxdart 0.27.7 (0.28.0 available)
+2025-12-31T20:58:53.2858397Z < sqflite_common_ffi 2.3.6 (was 2.4.0+1) (2.4.0+1 available)
+2025-12-31T20:58:53.2858943Z < sqlite3 2.9.4 (was 3.1.1) (3.1.2 available)
+2025-12-31T20:58:53.2859419Z < test_api 0.7.6 (was 0.7.7) (0.7.8 available)
+2025-12-31T20:58:53.2859876Z   uuid 3.0.7 (4.5.2 available)
+2025-12-31T20:58:53.2860247Z   xml 6.5.0 (6.6.1 available)
+2025-12-31T20:58:53.2860682Z These packages are no longer being depended on:
+2025-12-31T20:58:53.2861151Z - code_assets 1.0.0
+2025-12-31T20:58:53.2861502Z - glob 2.1.3
+2025-12-31T20:58:53.2861789Z - hooks 1.0.0
+2025-12-31T20:58:53.2862078Z - logging 1.3.0
+2025-12-31T20:58:53.2862395Z - native_toolchain_c 0.17.4
+2025-12-31T20:58:53.2862781Z - pub_semver 2.2.0
+2025-12-31T20:58:53.2863112Z - yaml 3.1.3
+2025-12-31T20:58:53.2863734Z Changed 11 dependencies!
+2025-12-31T20:58:53.2879978Z 25 packages have newer versions incompatible with dependency constraints.
+2025-12-31T20:58:53.2880661Z Try `flutter pub outdated` for more information.
+2025-12-31T20:58:53.7241224Z ##[group]Run flutter analyze --no-fatal-infos --no-fatal-warnings
+2025-12-31T20:58:53.7241743Z [36;1mflutter analyze --no-fatal-infos --no-fatal-warnings[0m
+2025-12-31T20:58:53.7274559Z shell: /usr/bin/bash -e {0}
+2025-12-31T20:58:53.7274837Z env:
+2025-12-31T20:58:53.7275114Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.35.7-x64
+2025-12-31T20:58:53.7275477Z   PUB_CACHE: /home/runner/.pub-cache
+2025-12-31T20:58:53.7275747Z ##[endgroup]
+2025-12-31T20:59:14.1423090Z Analyzing music_tag_editor...                                   
+2025-12-31T20:59:14.1436337Z No issues found! (ran in 19.7s)
+2025-12-31T20:59:14.1577232Z ##[group]Run flutter test --coverage
+2025-12-31T20:59:14.1577553Z [36;1mflutter test --coverage[0m
+2025-12-31T20:59:14.1609343Z shell: /usr/bin/bash -e {0}
+2025-12-31T20:59:14.1609567Z env:
+2025-12-31T20:59:14.1609816Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.35.7-x64
+2025-12-31T20:59:14.1610146Z   PUB_CACHE: /home/runner/.pub-cache
+2025-12-31T20:59:14.1610387Z ##[endgroup]
+2025-12-31T20:59:15.3465870Z 
+2025-12-31T20:59:23.0661153Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi searchRelease returns parsed data on success
+2025-12-31T20:59:23.0697983Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi searchRelease returns null on empty results
+2025-12-31T20:59:23.0727283Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi searchRelease handles errors gracefully
+2025-12-31T20:59:23.0774815Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong returns parsed data on success
+2025-12-31T20:59:23.0831245Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong returns null on empty hits
+2025-12-31T20:59:23.0869171Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong handles errors gracefully
+2025-12-31T20:59:23.0926446Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: LastFmApi getTrackInfo returns parsed data on success
+2025-12-31T20:59:23.0955417Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: LastFmApi getTrackInfo returns null on error
+2025-12-31T20:59:23.0977612Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: LastFmApi getTrackInfo returns null on 404
+2025-12-31T20:59:23.1018905Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: MusicBrainzApi searchMetadata returns parsed recordings
+2025-12-31T20:59:23.1046460Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: MusicBrainzApi searchMetadata returns empty list on error response
+2025-12-31T20:59:23.2474929Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi searchRelease returns null on empty query
+2025-12-31T20:59:23.3559188Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi searchRelease handles network errors gracefully
+2025-12-31T20:59:23.3589043Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi DiscogsApi can be instantiated
+2025-12-31T20:59:23.4965344Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong returns null on empty query
+2025-12-31T20:59:23.6800222Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong handles network errors gracefully
+2025-12-31T20:59:23.6828067Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: GeniusApi GeniusApi can be instantiated
+2025-12-31T20:59:23.6849827Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: LastFmApi getTrackInfo returns null when API key is placeholder
+2025-12-31T20:59:23.6869070Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: LastFmApi getTrackInfo handles empty strings
+2025-12-31T20:59:23.6892557Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: LastFmApi LastFmApi can be instantiated
+2025-12-31T20:59:24.4349383Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: MusicBrainzApi searchRecording returns map on query
+2025-12-31T20:59:24.8132173Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: MusicBrainzApi searchRecording handles empty strings
+2025-12-31T20:59:24.8156934Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: MusicBrainzApi MusicBrainzApi can be instantiated
+2025-12-31T20:59:27.2259983Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+2025-12-31T20:59:27.9814201Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics handles empty strings
+2025-12-31T20:59:27.9845649Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi NeteaseApi can be instantiated
+2025-12-31T20:59:27.9917770Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: SlavArtApi search returns parsed results on success
+2025-12-31T20:59:27.9952243Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: SlavArtApi getDownloadUrl returns URL on success
+2025-12-31T20:59:28.0087485Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_api_test.dart: SlavArtApi downloadFlac streams content to file
+2025-12-31T20:59:30.1719274Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: playSearchResult updates current track and plays
+2025-12-31T20:59:30.1791987Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: playSearchResult fetches lyrics and applies theme
+2025-12-31T20:59:30.1876152Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: Queue Management addToQueue adds to list and playlist
+2025-12-31T20:59:30.1929864Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: Queue Management clearQueue empties the list
+2025-12-31T20:59:30.4780279Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/search_service_test.dart: searchYouTube parses yt-dlp json output correctly
+2025-12-31T20:59:30.4815691Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/search_service_test.dart: searchYouTube returns empty list on process error
+2025-12-31T20:59:30.4852492Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/search_service_test.dart: searchYouTubeMusic parses yt-music output with album info
+2025-12-31T20:59:30.5011857Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/search_service_test.dart: searchHiFi delegates to HiFiDownloadService
+2025-12-31T20:59:30.5057845Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/search_service_test.dart: getStreamUrl returns trimmed stdout on success
+2025-12-31T20:59:30.5096322Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/search_service_test.dart: getStreamUrl returns null on failure
+2025-12-31T20:59:30.5175363Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/search_service_test.dart: searchAll calls all platforms and updates status
+2025-12-31T20:59:30.9507101Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/settings_page_test.dart: Loads and displays settings
+2025-12-31T20:59:31.6674705Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/settings_page_test.dart: Changes Filename Format
+2025-12-31T20:59:31.9273417Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/settings_page_test.dart: Clean Library interaction
+2025-12-31T20:59:32.4393064Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/settings_page_test.dart: Age bypass requires confirmation
+2025-12-31T20:59:32.6818079Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/settings_page_test.dart: Sync interactions
+2025-12-31T20:59:33.7067787Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+2025-12-31T20:59:33.7132919Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer cancelSleepTimer clears timer
+2025-12-31T20:59:33.7242671Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: Controls pause/resume delegates to player
+2025-12-31T20:59:33.7328604Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/playback_service_test.dart: Controls seek delegates to player and sends message
+2025-12-31T20:59:34.9950326Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows LoginPage when not authenticated
+2025-12-31T20:59:35.8744724Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when authenticated
+2025-12-31T20:59:36.2000185Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_app_test.dart: LibraryScreen displays initial empty state
+2025-12-31T20:59:36.2133380Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_app_test.dart: FilenameFormat functional tests artistTitle format
+2025-12-31T20:59:36.2307325Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_app_test.dart: FilenameFormat functional tests titleArtist format
+2025-12-31T20:59:36.2457240Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_app_test.dart: FilenameFormat functional tests trackArtistTitle format
+2025-12-31T20:59:36.5301811Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Settings save and load filename format
+2025-12-31T20:59:36.5451380Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Settings save and load crossfade duration
+2025-12-31T20:59:36.5549910Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Settings save and load age bypass
+2025-12-31T20:59:36.5695270Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Tracks save and retrieve tracks
+2025-12-31T20:59:36.5928050Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Tracks toggle vault
+2025-12-31T20:59:36.6099638Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Tracks trackPlay increments count and sets lastPlayed
+2025-12-31T20:59:36.6296635Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Playlists create playlist and add tracks
+2025-12-31T20:59:36.6475993Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Duo save guest and add session tracks
+2025-12-31T20:59:36.6684654Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Moods getTracksByMood returns matching genres
+2025-12-31T20:59:36.6834607Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/database_service_test.dart: Learning Rules save and get learning rules
+2025-12-31T20:59:38.5724715Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: CastDialog displays title and loading state
+2025-12-31T20:59:38.9298887Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: AuthService AuthService login success returns true
+2025-12-31T20:59:38.9452608Z ##[group]✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: AuthService AuthService login failure returns false
+2025-12-31T20:59:38.9467780Z Login error: [firebase_auth/user-not-found] null
+2025-12-31T20:59:38.9473045Z ##[endgroup]
+2025-12-31T20:59:38.9607553Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: AuthService AuthService register success returns true
+2025-12-31T20:59:38.9678388Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: AuthService AuthService logout calls signOut
+2025-12-31T20:59:38.9795819Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: AuthService AuthService recoverVaultAccess returns true if user matches
+2025-12-31T20:59:39.0032637Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: AppShell AppShell Widget Tests Shows offline banner when offline
+2025-12-31T20:59:39.0710649Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: CastDialog lists discovered devices
+2025-12-31T20:59:39.1572428Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: BackupService BackupService createBackup creates a zip file with data
+2025-12-31T20:59:39.2272149Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: BackupService BackupService restoreBackup restores data from zip
+2025-12-31T20:59:39.2419134Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: BackupService BackupService estimateBackupSize returns valid size
+2025-12-31T20:59:39.2555909Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ConnectivityRoot ConnectivityService instance is accessible
+2025-12-31T20:59:39.2652738Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ConnectivityRoot ConnectivityService isOffline is a ValueNotifier
+2025-12-31T20:59:39.2734543Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ConnectivityRoot ConnectivityService init completes without error
+2025-12-31T20:59:39.5151381Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: AppShell AppShell Widget Tests Navigation switches pages
+2025-12-31T20:59:39.5240708Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Settings save and load filename format
+2025-12-31T20:59:39.5648560Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Settings save and load crossfade duration
+2025-12-31T20:59:39.5961372Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Settings save and load age bypass
+2025-12-31T20:59:39.6517325Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: Tapping device calls castFile if track is local
+2025-12-31T20:59:39.6842404Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Settings generic saveSetting and getSetting
+2025-12-31T20:59:39.7203798Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Tracks save and retrieve tracks
+2025-12-31T20:59:39.7560701Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Tracks toggle vault
+2025-12-31T20:59:39.7768813Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Tracks trackPlay increments count and sets lastPlayed
+2025-12-31T20:59:39.7821049Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: Tapping device shows error if track is not local
+2025-12-31T20:59:39.8062113Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Playlists create playlist and add tracks
+2025-12-31T20:59:39.8168109Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: AppShell AppShell Widget Tests Adapts to wide screen (NavigationRail)
+2025-12-31T20:59:39.8316614Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Duo save guest and add session tracks
+2025-12-31T20:59:39.8525626Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Moods getTracksByMood returns matching genres
+2025-12-31T20:59:39.8745881Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: Stop Casting button calls stopCasting
+2025-12-31T20:59:39.8762344Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseService Learning Rules save and get learning rules
+2025-12-31T20:59:39.9049867Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: BackupView BackupScreen renders app bar
+2025-12-31T20:59:39.9116224Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseServiceNew DatabaseService instance is accessible
+2025-12-31T20:59:39.9158691Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseServiceNew FilenameFormat generateFilename returns string
+2025-12-31T20:59:39.9194814Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseServiceNew FilenameFormat generateFilename handles titleArtist
+2025-12-31T20:59:39.9242141Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DatabaseServiceNew LearningChoice has expected values
+2025-12-31T20:59:39.9305720Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DownloadService DownloadService - Platform Detection detects YouTube correctly
+2025-12-31T20:59:39.9351466Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DownloadService DownloadService - Platform Detection detects YouTube Music correctly
+2025-12-31T20:59:39.9416095Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DownloadService DownloadService - Platform Detection detects Spotify correctly
+2025-12-31T20:59:39.9471104Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DownloadService DownloadService - Platform Detection returns unknown for invalid URLs
+2025-12-31T20:59:39.9574129Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DownloadService DownloadService - Media Info getMediaInfo returns YouTube info correctly
+2025-12-31T20:59:39.9593206Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: BackupView BackupScreen renders create backup card
+2025-12-31T20:59:39.9630192Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DownloadService DownloadService - Media Info getMediaInfo returns Spotify info correctly
+2025-12-31T20:59:39.9710814Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: DuoMatchingDialog displays initial state correctly
+2025-12-31T20:59:39.9732833Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: EqualizerRoot EqualizerService Tests Normalization calculation
+2025-12-31T20:59:39.9780125Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: EqualizerRoot EqualizerService Tests Normalization disabled returns 1.0
+2025-12-31T20:59:39.9815304Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: EqualizerRoot EqualizerService Tests Auto mode state
+2025-12-31T20:59:39.9981768Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: FirebaseSync enableSync signs in anonymously if not signed in
+2025-12-31T20:59:40.0116409Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: BackupView BackupScreen renders restore backup card
+2025-12-31T20:59:40.0148278Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: FirebaseSync pullFromCloud pulls tracks and playlists
+2025-12-31T20:59:40.0286449Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LocalDuoService LocalDuoService startHost sets role and starts advertising
+2025-12-31T20:59:40.0344506Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LocalDuoService LocalDuoService startDiscovery sets role and starts discovery
+2025-12-31T20:59:40.0401126Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LocalDuoService LocalDuoService stopAll cleans up state
+2025-12-31T20:59:40.0478612Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LocalDuoService LocalDuoService sendMessage sends bytes to all connected endpoints
+2025-12-31T20:59:40.0550046Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LocalDuoService LocalDuoService sendFile sends file to all connected endpoints
+2025-12-31T20:59:40.0629029Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LocalDuoService LocalDuoService handleIncomingMessage play/pause/seek
+2025-12-31T20:59:40.0665864Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: Start Host button updates state
+2025-12-31T20:59:40.0694542Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LocalDuoService LocalDuoService handleIncomingMessage track/chat
+2025-12-31T20:59:40.0730913Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: BackupView BackupScreen shows backup size estimate
+2025-12-31T20:59:40.0844494Z ##[group]✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LyricsService LyricsService fetchLyrics returns empty list on network error
+2025-12-31T20:59:40.0850899Z Error fetching lyrics: type 'Null' is not a subtype of type 'Future<HttpClientRequest>'
+2025-12-31T20:59:40.0855921Z ##[endgroup]
+2025-12-31T20:59:40.0887373Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LyricsService LyricsService _parseLrc parses valid LRC format
+2025-12-31T20:59:40.0909893Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LyricsService LyricsService LyricLine has correct structure
+2025-12-31T20:59:40.0950729Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: LyricsService LyricsService multiple LyricLines can be created
+2025-12-31T20:59:40.1100402Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataAggregator aggregateMetadata aggregates results correctly with majority vote
+2025-12-31T20:59:40.1153153Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataAggregator aggregateMetadata handles empty results
+2025-12-31T20:59:40.1200673Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataAggregator fetchSyncedLyrics returns lyrics from LrcLib if found and valid
+2025-12-31T20:59:40.1252009Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataAggregator fetchSyncedLyrics falls back to Netease if LrcLib empty
+2025-12-31T20:59:40.1315511Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataAggregator fetchSyncedLyrics validates duration mismatch
+2025-12-31T20:59:40.1384539Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataCleanup MetadataCleanupService cleanupLibrary cleans dirty titles and artists
+2025-12-31T20:59:40.1494055Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataCleanup MetadataCleanupService cleanupLibrary fetches missing metadata
+2025-12-31T20:59:40.1552732Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataCleanup MetadataCleanupService cleanupLibrary handles aggregator errors gracefully
+2025-12-31T20:59:40.1686551Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: Start Discovery button updates state
+2025-12-31T20:59:40.1816430Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataService MetadataService Tests Read and Write Metadata
+2025-12-31T20:59:40.1872383Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen renders with no track playing
+2025-12-31T20:59:40.1882420Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataService MetadataService Tests parseTrackNumber handles various formats
+2025-12-31T20:59:40.1963391Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataService MetadataService Tests Read non-existent file throws exception
+2025-12-31T20:59:40.2017068Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataService MetadataService Tests Write to non-existent file throws exception
+2025-12-31T20:59:40.2064923Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: MetadataService MetadataService Tests readMetadata handles ID3v1 vs ID3v2 logic (basic branch test)
+2025-12-31T20:59:40.2112963Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PersonaService PersonaService Unit Tests Default persona should be listener
+2025-12-31T20:59:40.2177062Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PersonaService PersonaService Unit Tests setPersona updates activePersona and notifies listeners
+2025-12-31T20:59:40.2346122Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen renders with track playing
+2025-12-31T20:59:40.2506788Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic playSearchResult sets source and plays
+2025-12-31T20:59:40.2560774Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic pause calls player pause and sends message
+2025-12-31T20:59:40.2606139Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic resume calls player play and sends message
+2025-12-31T20:59:40.2690802Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic stop calls player stop
+2025-12-31T20:59:40.2784734Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic seek calls player seek and sends message
+2025-12-31T20:59:40.2896391Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic addToQueue adds track and notifies remote
+2025-12-31T20:59:40.2982776Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic clearQueue empties the queue
+2025-12-31T20:59:40.2984836Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: Displays connected guests
+2025-12-31T20:59:40.3135323Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic setSleepTimer stops playback after duration
+2025-12-31T20:59:40.3171446Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService - Core Logic cancelSleepTimer resets status
+2025-12-31T20:59:40.3249651Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService searchYouTube parses yt-dlp json output correctly
+2025-12-31T20:59:40.3300684Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService searchYouTube returns empty list on process error
+2025-12-31T20:59:40.3353722Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService searchYouTubeMusic parses yt-music output with album info
+2025-12-31T20:59:40.3413764Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService searchHiFi delegates to HiFiDownloadService
+2025-12-31T20:59:40.3455261Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService getStreamUrl returns trimmed stdout on success
+2025-12-31T20:59:40.3488354Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService getStreamUrl returns null on failure
+2025-12-31T20:59:40.3580626Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService searchAll calls all platforms and updates status
+2025-12-31T20:59:40.3642423Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService getFormats returns default formats for Spotify
+2025-12-31T20:59:40.3702519Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService getFormats parses yt-dlp json formats correctly
+2025-12-31T20:59:40.3803627Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService getFormats returns default formats on process failure
+2025-12-31T20:59:40.3880787Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService importPlaylist importYouTubePlaylist parses results correctly
+2025-12-31T20:59:40.3961815Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SearchService findSpotifyMatch returns match if available
+2025-12-31T20:59:40.4009182Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SecurityService SecurityService instance is accessible
+2025-12-31T20:59:40.4756717Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SecurityService SecurityService encryptString returns encrypted format
+2025-12-31T20:59:40.4798556Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SecurityService SecurityService decryptString returns original text
+2025-12-31T20:59:40.4829360Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SecurityService SecurityService decryptString handles invalid format gracefully
+2025-12-31T20:59:40.4859968Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SecurityService SecurityService _hashPassword produces consistent hash
+2025-12-31T20:59:40.4900908Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SecurityService SecurityService unlockVault returns false without setup
+2025-12-31T20:59:40.4939251Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: SecurityService SecurityService setupVaultPassword allows unlocking
+2025-12-31T20:59:40.4987449Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ThemeRoot ThemeService instance is accessible
+2025-12-31T20:59:40.5042621Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ThemeRoot ThemeService primaryColor returns a Color
+2025-12-31T20:59:40.5075346Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ThemeRoot ThemeService setCustomColor updates color
+2025-12-31T20:59:40.5113787Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ThemeRoot ThemeService ThemeService is a ChangeNotifier
+2025-12-31T20:59:40.5502625Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: CastService CastService parseSsdpResponse adds device to stream on valid XML
+2025-12-31T20:59:40.5560898Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: CastService CastService sendSoap sends correct POST request
+2025-12-31T20:59:40.5612037Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: CastService CastService parseSsdpResponse handles partial URLs in controlURL
+2025-12-31T20:59:40.5712678Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ConnectivityService ConnectivityService init updates isOffline status correctly
+2025-12-31T20:59:40.5764001Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ConnectivityService ConnectivityService Becomes online when wifi connected
+2025-12-31T20:59:40.5900259Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DesktopIntegration init calls initialization methods
+2025-12-31T20:59:40.5941279Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: DesktopIntegration hideToTray calls windowManager.hide()
+2025-12-31T20:59:40.6035876Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: EqualizerService EqualizerService applyPresetForGenre sets bands correctly for Rock
+2025-12-31T20:59:40.6062164Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: EqualizerService EqualizerService calculateNormalizedVolume calculates gain adjustment
+2025-12-31T20:59:40.6132503Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: HifiDownload HiFiDownloadService search returns sorted results
+2025-12-31T20:59:40.6213339Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: HifiDownload HiFiDownloadService download handles success
+2025-12-31T20:59:40.6241632Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: HifiDownload HiFiDownloadService download handles failure to get link
+2025-12-31T20:59:40.6282578Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: HifiDownload HiFiDownloadService findHiFiVersion finds match
+2025-12-31T20:59:40.6353348Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ListeningStats ListeningStatsService getStats calculates basic totals correctly
+2025-12-31T20:59:40.6384740Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ListeningStats ListeningStatsService getStats identifies top items correctly
+2025-12-31T20:59:40.6412845Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ListeningStats ListeningStatsService getStats handles empty database
+2025-12-31T20:59:40.6456701Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ThemeService ThemeService init loads settings from DB
+2025-12-31T20:59:40.6508276Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ThemeService ThemeService setCustomColor saves to DB and updates state
+2025-12-31T20:59:40.6574026Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_services_test.dart: ThemeService ThemeService updateThemeFromImage updates primary color from palette
+2025-12-31T20:59:40.7671338Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+2025-12-31T20:59:40.8759517Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: EditTrackDialog renders properly and returns updated track
+2025-12-31T20:59:40.8928755Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp shows LoginPage when not authenticated
+2025-12-31T20:59:40.9671153Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: SearchResultsDialog renders list and returns selection
+2025-12-31T20:59:41.0306760Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp uses theme color from ThemeService
+2025-12-31T20:59:41.0442670Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_widgets_test.dart: SearchResultsDialog cancels correctly
+2025-12-31T20:59:41.3344448Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: LibraryScreen renders with title
+2025-12-31T20:59:41.4063889Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: LibraryScreen has DefaultTabController
+2025-12-31T20:59:41.4962257Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: LibraryScreen renders tab bar with tabs
+2025-12-31T20:59:41.5475774Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen tap closes the view
+2025-12-31T20:59:41.5719367Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: LibraryScreen has settings button in app bar
+2025-12-31T20:59:41.6216698Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen visualizer bars animate
+2025-12-31T20:59:41.6476144Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: LibraryScreen has download button in app bar
+2025-12-31T20:59:41.6992884Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen rotation animation runs
+2025-12-31T20:59:41.7561923Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/main_test.dart: LibraryScreen shows empty folder message
+2025-12-31T20:59:41.7976637Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage renders initial UI
+2025-12-31T20:59:41.8805506Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage shows paste button
+2025-12-31T20:59:42.3088379Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage has dropdown selector after search
+2025-12-31T20:59:42.4080868Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage button bar is present
+2025-12-31T20:59:42.5099599Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage url input accepts text
+2025-12-31T20:59:42.5646387Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage scaffold renders
+2025-12-31T20:59:42.6229634Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: HomeView HomeScreen renders greeting
+2025-12-31T20:59:42.6897102Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: HomeView HomeScreen renders smart library cards
+2025-12-31T20:59:42.7975630Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: HomeView HomeScreen renders moods section
+2025-12-31T20:59:42.8789512Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: HomeView HomeScreen renders disco mode button
+2025-12-31T20:59:42.9645481Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: HomeView HomeScreen renders recents list with tracks
+2025-12-31T20:59:43.0242639Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: HomeView HomeScreen scaffold renders correctly
+2025-12-31T20:59:43.0563984Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: KaraokeView KaraokeScreen renders track title
+2025-12-31T20:59:43.0797396Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: KaraokeView KaraokeScreen renders close button
+2025-12-31T20:59:43.1039614Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: KaraokeView KaraokeScreen shows no lyrics message when empty
+2025-12-31T20:59:43.1289948Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: KaraokeView KaraokeScreen renders play button
+2025-12-31T20:59:43.1543183Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: KaraokeView KaraokeScreen scaffold has black background
+2025-12-31T20:59:43.2256188Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: KaraokeView KaraokeScreen tapping play button calls resume
+2025-12-31T20:59:43.2846181Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: ListeningStats ListeningStatsScreen renders all sections when data is available
+2025-12-31T20:59:43.3099644Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: ListeningStats ListeningStatsScreen shows loading state and clears timers
+2025-12-31T20:59:43.3594123Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen renders Scaffold
+2025-12-31T20:59:43.4003036Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen has email and password fields
+2025-12-31T20:59:43.4444601Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen has login button
+2025-12-31T20:59:43.5171792Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen can toggle to register mode
+2025-12-31T20:59:43.6474457Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen calls login on button press
+2025-12-31T20:59:43.6645303Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MiniPlayer MiniPlayer Widget Tests Shows nothing when no track is playing
+2025-12-31T20:59:43.6898175Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MiniPlayer MiniPlayer Widget Tests Shows track info and controls when track is present
+2025-12-31T20:59:43.7159965Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MiniPlayer MiniPlayer Widget Tests Pause button calls playback.pause
+2025-12-31T20:59:43.7504822Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MoodExplorer MoodExplorerScreen renders mood sections
+2025-12-31T20:59:43.7925645Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MoodExplorer MoodExplorerScreen shows loading indicator
+2025-12-31T20:59:43.8128405Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MoodExplorer MoodExplorerScreen displays empty state message
+2025-12-31T20:59:43.8434692Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MyTracks MyTracksScreen renders loading state
+2025-12-31T20:59:43.8690942Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MyTracks MyTracksScreen renders empty state
+2025-12-31T20:59:43.8956285Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MyTracks MyTracksScreen renders app bar with actions
+2025-12-31T20:59:43.9680520Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MyTracks MyTracksScreen renders tracks list
+2025-12-31T20:59:44.0051585Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MyTracks MyTracksScreen shows menu button for each track
+2025-12-31T20:59:44.0490980Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: MyTracks MyTracksScreen has menu button for vault actions
+2025-12-31T20:59:44.0759897Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PartyQueue PartyQueueScreen renders app bar
+2025-12-31T20:59:44.0986079Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PartyQueue PartyQueueScreen renders start party UI
+2025-12-31T20:59:44.1323135Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PartyQueue PartyQueueScreen renders description text
+2025-12-31T20:59:44.1776612Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PartyQueue PartyQueueScreen has generate QR button
+2025-12-31T20:59:44.1981824Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PartyQueue PartyQueueScreen has scan button
+2025-12-31T20:59:44.2257764Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PartyQueue PartyQueueScreen tapping generate shows QR code
+2025-12-31T20:59:44.2820187Z ##[group]❌ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PartyQueue PartyQueueScreen tapping end party returns to initial state (failed)
+2025-12-31T20:59:44.2821916Z ══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞═════════════════════════════════════════════════════════
+2025-12-31T20:59:44.2823173Z The following assertion was thrown during layout:
+2025-12-31T20:59:44.2823763Z A RenderFlex overflowed by 70 pixels on the bottom.
+2025-12-31T20:59:44.2824090Z 
+2025-12-31T20:59:44.2824245Z The relevant error-causing widget was:
+2025-12-31T20:59:44.2824848Z   Column
+2025-12-31T20:59:44.2825566Z   Column:file:///home/runner/work/Music/Music/music_tag_editor/lib/screens/disco/views/material_party_queue_view.dart:25:18
+2025-12-31T20:59:44.2826253Z 
+2025-12-31T20:59:44.2826509Z The overflowing RenderFlex has an orientation of Axis.vertical.
+2025-12-31T20:59:44.2827264Z The edge of the RenderFlex that is overflowing has been marked in the rendering with a yellow and
+2025-12-31T20:59:44.2828229Z black striped pattern. This is usually caused by the contents being too big for the RenderFlex.
+2025-12-31T20:59:44.2828845Z Consider applying a flex factor (e.g. using an Expanded widget) to force the children of the
+2025-12-31T20:59:44.2829388Z RenderFlex to fit within the available space instead of being sized to their natural size.
+2025-12-31T20:59:44.2829949Z This is considered an error condition because it indicates that there is content that cannot be
+2025-12-31T20:59:44.2830503Z seen. If the content is legitimately bigger than the available space, consider clipping it with a
+2025-12-31T20:59:44.2831071Z ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
+2025-12-31T20:59:44.2831465Z like a ListView.
+2025-12-31T20:59:44.2831781Z The specific RenderFlex in question is: RenderFlex#d8ea7 relayoutBoundary=up3:
+2025-12-31T20:59:44.2832646Z   creator: Column ← Padding ← Center ← KeyedSubtree-[GlobalKey#5cf0b] ← _BodyBuilder ← MediaQuery ←
+2025-12-31T20:59:44.2833296Z     LayoutId-[<_ScaffoldSlot.body>] ← CustomMultiChildLayout ← _ActionsScope ← Actions ←
+2025-12-31T20:59:44.2833745Z     AnimatedBuilder ← DefaultTextStyle ← ⋯
+2025-12-31T20:59:44.2834041Z   parentData: offset=Offset(32.0, 32.0) (can use size)
+2025-12-31T20:59:44.2834643Z   constraints: BoxConstraints(0.0<=w<=736.0, 0.0<=h<=480.0)
+2025-12-31T20:59:44.2834938Z   size: Size(456.0, 480.0)
+2025-12-31T20:59:44.2835135Z   direction: vertical
+2025-12-31T20:59:44.2835339Z   mainAxisAlignment: center
+2025-12-31T20:59:44.2835548Z   mainAxisSize: max
+2025-12-31T20:59:44.2835743Z   crossAxisAlignment: center
+2025-12-31T20:59:44.2836153Z   verticalDirection: down
+2025-12-31T20:59:44.2836369Z   spacing: 0.0
+2025-12-31T20:59:44.2836755Z ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+2025-12-31T20:59:44.2837229Z ════════════════════════════════════════════════════════════════════════════════════════════════════
+2025-12-31T20:59:44.2837541Z Test failed. See exception logs above.
+2025-12-31T20:59:44.2837883Z The test description was: tapping end party returns to initial state
+2025-12-31T20:59:44.2838198Z 
+2025-12-31T20:59:44.2838630Z ##[endgroup]
+2025-12-31T20:59:44.4245524Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PersonasWidget SettingsPage Persona Selection Displays all persona options in SettingsScreen
+2025-12-31T20:59:44.5055381Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PersonasWidget SettingsPage Persona Selection Switching persona updates PersonaService
+2025-12-31T20:59:44.5839076Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PersonasWidget AppShell Persona Integration AppShell shows Home navigation for Listener persona
+2025-12-31T20:59:44.6778720Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PersonasWidget AppShell Persona Integration AppShell shows Tags navigation for Librarian persona
+2025-12-31T20:59:44.7292875Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PersonasWidget AppShell Persona Integration AppShell shows Disco and Karaoke for Host persona
+2025-12-31T20:59:44.7625565Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlayerScreen PlayerScreen Widget Tests Shows empty state when no track is playing
+2025-12-31T20:59:44.8161016Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlayerScreen PlayerScreen Widget Tests Shows track info when playing
+2025-12-31T20:59:44.8768918Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlayerScreen PlayerScreen Widget Tests Toggles play/pause
+2025-12-31T20:59:44.9240332Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlayerScreen PlayerScreen Widget Tests Shows Duo chat button when in Duo mode
+2025-12-31T20:59:44.9508841Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen shows loading indicator initially
+2025-12-31T20:59:44.9748426Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen displays playlist name in app bar
+2025-12-31T20:59:44.9958275Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen shows empty state when no tracks
+2025-12-31T20:59:45.0261556Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen shows track list when tracks exist
+2025-12-31T20:59:45.0542652Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen has play button for each track
+2025-12-31T20:59:45.0856856Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen calls playSearchResult on play button tap
+2025-12-31T20:59:45.1187601Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistImporter PlaylistImporterScreen renders correctly
+2025-12-31T20:59:45.1410222Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistImporter PlaylistImporterScreen has text field for URL
+2025-12-31T20:59:45.1650972Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistImporter PlaylistImporterScreen shows placeholder text
+2025-12-31T20:59:45.1900697Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistImporter PlaylistImporterScreen has scan icon button
+2025-12-31T20:59:45.2301216Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistImporter PlaylistImporterScreen text field accepts input
+2025-12-31T20:59:45.2502805Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistsView PlaylistsScreen renders empty state
+2025-12-31T20:59:45.2814838Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistsView PlaylistsScreen renders playlists list
+2025-12-31T20:59:45.2986597Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistsView PlaylistsScreen shows FAB for creating playlists
+2025-12-31T20:59:45.3830819Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistsView PlaylistsScreen FAB opens create playlist dialog
+2025-12-31T20:59:45.4635244Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistsView PlaylistsScreen cancel dialog closes without creating
+2025-12-31T20:59:45.4950832Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistsView PlaylistsScreen playlist items have correct icons
+2025-12-31T20:59:45.5153118Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: PlaylistsView PlaylistsScreen app bar renders correctly
+2025-12-31T20:59:45.5380486Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RemoteLibrary RemoteLibraryScreen shows loading indicator initially
+2025-12-31T20:59:45.5561307Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RemoteLibrary RemoteLibraryScreen has refresh button in app bar
+2025-12-31T20:59:45.5719916Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RemoteLibrary RemoteLibraryScreen displays correct app bar title
+2025-12-31T20:59:45.5905875Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RemoteLibrary RemoteLibraryScreen has scaffold
+2025-12-31T20:59:45.6824511Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RingtoneMaker RingtoneMakerScreen renders Scaffold
+2025-12-31T20:59:45.7217140Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RingtoneMaker RingtoneMakerScreen displays track title
+2025-12-31T20:59:45.7617186Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RingtoneMaker RingtoneMakerScreen has play/pause button
+2025-12-31T20:59:45.8004976Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: RingtoneMaker RingtoneMakerScreen has app bar with title
+2025-12-31T20:59:45.8400532Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SearchPage Shows initialization progress then content
+2025-12-31T20:59:45.9559159Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SearchPage Performs search and displays results
+2025-12-31T20:59:46.0451501Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SearchPage Handles play track interaction
+2025-12-31T20:59:46.1005262Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SearchPage Shows no results message
+2025-12-31T20:59:46.1320599Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SearchPage Shows error message on initialization failure
+2025-12-31T20:59:46.2003701Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SettingsPage SettingsScreen renders Scaffold
+2025-12-31T20:59:46.2594141Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SettingsPage SettingsScreen loads settings on init
+2025-12-31T20:59:46.2901962Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SmartLibrary SmartLibraryScreen renders tab bar
+2025-12-31T20:59:46.3169701Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SmartLibrary SmartLibraryScreen shows loading indicator
+2025-12-31T20:59:46.3397246Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SmartLibrary SmartLibraryScreen shows empty top hits message
+2025-12-31T20:59:46.3689567Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: SmartLibrary SmartLibraryScreen shows top hits list
+2025-12-31T20:59:46.3989903Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: VaultView VaultScreen renders locked state
+2025-12-31T20:59:46.4227332Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: VaultView VaultScreen has password field
+2025-12-31T20:59:46.4469211Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: VaultView VaultScreen has unlock button
+2025-12-31T20:59:46.4905161Z ✅ /home/runner/work/Music/Music/music_tag_editor/test/all_views_test.dart: VaultView VaultScreen calls unlockVault on button press
+2025-12-31T20:59:47.3620568Z 
+2025-12-31T20:59:47.3650518Z ##[error]305 tests passed, 1 failed.
+2025-12-31T20:59:47.4725038Z ##[error]Process completed with exit code 1.
+2025-12-31T20:59:47.4893810Z Post job cleanup.
+2025-12-31T20:59:47.4946050Z Post job cleanup.
+2025-12-31T20:59:47.5720206Z [command]/usr/bin/git version
+2025-12-31T20:59:47.5788851Z git version 2.52.0
+2025-12-31T20:59:47.5825080Z Temporarily overriding HOME='/home/runner/work/_temp/f74bd6af-2446-46b2-a648-03088cb333a3' before making global git config changes
+2025-12-31T20:59:47.5826373Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-31T20:59:47.5830327Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Music/Music
+2025-12-31T20:59:47.5860081Z Removing SSH command configuration
+2025-12-31T20:59:47.5866663Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-31T20:59:47.5900701Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-31T20:59:47.6122164Z Removing HTTP extra header
+2025-12-31T20:59:47.6126500Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-31T20:59:47.6157925Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-31T20:59:47.6371113Z Removing includeIf entries pointing to credentials config files
+2025-12-31T20:59:47.6377257Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-31T20:59:47.6398165Z includeif.gitdir:/home/runner/work/Music/Music/.git.path
+2025-12-31T20:59:47.6398916Z includeif.gitdir:/home/runner/work/Music/Music/.git/worktrees/*.path
+2025-12-31T20:59:47.6399318Z includeif.gitdir:/github/workspace/.git.path
+2025-12-31T20:59:47.6399687Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2025-12-31T20:59:47.6407761Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Music/Music/.git.path
+2025-12-31T20:59:47.6427809Z /home/runner/work/_temp/git-credentials-38279351-64f2-4676-9ac9-af87736f4c24.config
+2025-12-31T20:59:47.6437568Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Music/Music/.git.path /home/runner/work/_temp/git-credentials-38279351-64f2-4676-9ac9-af87736f4c24.config
+2025-12-31T20:59:47.6469804Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Music/Music/.git/worktrees/*.path
+2025-12-31T20:59:47.6491565Z /home/runner/work/_temp/git-credentials-38279351-64f2-4676-9ac9-af87736f4c24.config
+2025-12-31T20:59:47.6500871Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Music/Music/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-38279351-64f2-4676-9ac9-af87736f4c24.config
+2025-12-31T20:59:47.6530906Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2025-12-31T20:59:47.6550737Z /github/runner_temp/git-credentials-38279351-64f2-4676-9ac9-af87736f4c24.config
+2025-12-31T20:59:47.6558547Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-38279351-64f2-4676-9ac9-af87736f4c24.config
+2025-12-31T20:59:47.6587861Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2025-12-31T20:59:47.6607880Z /github/runner_temp/git-credentials-38279351-64f2-4676-9ac9-af87736f4c24.config
+2025-12-31T20:59:47.6616572Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-38279351-64f2-4676-9ac9-af87736f4c24.config
+2025-12-31T20:59:47.6647226Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-31T20:59:47.6857467Z Removing credentials config '/home/runner/work/_temp/git-credentials-38279351-64f2-4676-9ac9-af87736f4c24.config'
+2025-12-31T20:59:47.6974774Z Cleaning up orphan processes
