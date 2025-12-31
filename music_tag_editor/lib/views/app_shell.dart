@@ -9,11 +9,11 @@ import 'package:music_tag_editor/services/connectivity_service.dart';
 
 import 'package:music_tag_editor/services/persona_service.dart';
 import 'package:music_tag_editor/models/persona_model.dart';
-import 'package:music_tag_editor/screens/disco_mode/disco_mode_screen.dart';
-import 'package:music_tag_editor/screens/karaoke/karaoke_screen.dart';
-import 'package:music_tag_editor/views/ringtone_maker_view.dart';
+import 'package:music_tag_editor/screens/tracks/ringtone_maker_screen.dart';
+import 'package:music_tag_editor/screens/disco/disco_mode_screen.dart';
+import 'package:music_tag_editor/screens/disco/karaoke_screen.dart';
+import 'package:music_tag_editor/screens/disco/party_queue_screen.dart';
 import 'package:music_tag_editor/screens/vault/vault_screen.dart';
-import 'package:music_tag_editor/screens/party/party_queue_screen.dart';
 import 'package:music_tag_editor/screens/stats/listening_stats_screen.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/screens/library/library_screen.dart';
@@ -185,7 +185,7 @@ class _AppShellState extends State<AppShell> {
         ];
       case AppPersona.artisan:
         return [
-          RingtoneMakerView(
+          RingtoneMakerScreen(
             track: SearchResult(
               id: '0',
               title: 'Selecione uma música',

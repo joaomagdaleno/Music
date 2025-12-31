@@ -1,58 +1,46 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/screens/library/views/fluent_smart_library_view.dart';
+import 'package:music_tag_editor/screens/library/views/material_smart_library_view.dart';
 
-/// SmartLibraryScreen controller
-class SmartLibraryScreen extends StatelessWidget {
+/// SmartLibraryScreen controller - platform-adaptive
+class SmartLibraryScreen extends StatefulWidget {
   const SmartLibraryScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Column(
-        children: [
-          const TabBar(tabs: [Tab(icon: Icon(Icons.trending_up), text: 'Top Hits'), Tab(icon: Icon(Icons.history), text: 'Descobertas Recentes')]),
-          Expanded(child: TabBarView(children: [
-            _SmartList(future: DatabaseService.instance.getMostPlayed(), emptyText: 'Toque algumas músicas para ver suas favoritas aqui!'),
-            _SmartList(future: DatabaseService.instance.getRecentlyPlayed(), emptyText: 'Suas músicas ouvidas recentemente aparecerão aqui.'),
-          ])),
-        ],
-      ),
-    );
-  }
+  State<SmartLibraryScreen> createState() => _SmartLibraryScreenState();
 }
 
-class _SmartList extends StatelessWidget {
-  final Future<List<Map<String, dynamic>>> future;
-  final String emptyText;
+class _SmartLibraryScreenState extends State<SmartLibraryScreen> {
+  late Future<List<SearchResult>> _topHitsFuture;
+  late Future<List<SearchResult>> _recentDiscoveriesFuture;
 
-  const _SmartList({required this.future, required this.emptyText});
+  @override
+  void initState() {
+    super.initState();
+    _topHitsFuture = _loadTracks(DatabaseService.instance.getMostPlayed());
+    _recentDiscoveriesFuture = _loadTracks(DatabaseService.instance.getRecentlyPlayed());
+  }
+
+  Future<List<SearchResult>> _loadTracks(Future<List<Map<String, dynamic>>> source) async {
+    final data = await source;
+    return data.map((t) => SearchResult.fromJson(t)).toList();
+  }
+
+  void _playTrack(SearchResult track) => PlaybackService.instance.playSearchResult(track);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Map<String, dynamic>>>(
-      future: future,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator());
-        final tracks = snapshot.data ?? [];
-        if (tracks.isEmpty) return Center(child: Padding(padding: const EdgeInsets.all(32.0), child: Text(emptyText, textAlign: TextAlign.center, style: const TextStyle(color: Colors.grey))));
-
-        return ListView.builder(
-          itemCount: tracks.length,
-          itemBuilder: (context, index) {
-            final t = tracks[index];
-            final result = SearchResult(id: t['id'], title: t['title'], artist: t['artist'] ?? '', thumbnail: t['thumbnail'], duration: t['duration'] as int?, url: t['url'], platform: MediaPlatform.values.firstWhere((e) => e.toString() == t['platform'], orElse: () => MediaPlatform.unknown), localPath: t['local_path'], genre: t['genre']);
-            return ListTile(
-              leading: result.thumbnail != null ? ClipRRect(borderRadius: BorderRadius.circular(4), child: Image.network(result.thumbnail!, width: 40, height: 40, fit: BoxFit.cover)) : const Icon(Icons.music_note),
-              title: Text(result.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-              subtitle: Text("${result.artist} • ${t['play_count'] ?? 0} plays"),
-              onTap: () => PlaybackService.instance.playSearchResult(result),
-            );
-          },
-        );
-      },
-    );
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.windows:
+      case TargetPlatform.macOS:
+      case TargetPlatform.linux:
+        return FluentSmartLibraryView(topHitsFuture: _topHitsFuture, recentDiscoveriesFuture: _recentDiscoveriesFuture, onPlayTrack: _playTrack);
+      default:
+        return MaterialSmartLibraryView(topHitsFuture: _topHitsFuture, recentDiscoveriesFuture: _recentDiscoveriesFuture, onPlayTrack: _playTrack);
+    }
   }
 }

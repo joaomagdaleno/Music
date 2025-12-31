@@ -1,9 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/services/local_duo_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
+import 'package:music_tag_editor/screens/library/views/fluent_remote_library_view.dart';
+import 'package:music_tag_editor/screens/library/views/material_remote_library_view.dart';
 
-/// RemoteLibraryScreen controller
+/// RemoteLibraryScreen controller - platform-adaptive
 class RemoteLibraryScreen extends StatefulWidget {
   const RemoteLibraryScreen({super.key});
 
@@ -12,48 +15,45 @@ class RemoteLibraryScreen extends StatefulWidget {
 }
 
 class _RemoteLibraryScreenState extends State<RemoteLibraryScreen> {
-  final _service = LocalDuoService.instance;
   List<SearchResult> _tracks = [];
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _service.onLibraryReceived = (tracks) {
+    LocalDuoService.instance.onLibraryReceived = (tracks) {
       if (mounted) setState(() { _tracks = tracks; _isLoading = false; });
     };
-    _service.requestRemoteLibrary();
+    _refresh();
   }
 
   @override
   void dispose() {
-    _service.onLibraryReceived = null;
+    LocalDuoService.instance.onLibraryReceived = null;
     super.dispose();
+  }
+
+  void _refresh() {
+    setState(() => _isLoading = true);
+    LocalDuoService.instance.requestRemoteLibrary();
+  }
+
+  void _playTrack(SearchResult track) => PlaybackService.instance.playSearchResult(track);
+
+  void _addToQueue(SearchResult track) {
+    PlaybackService.instance.addToQueue(track);
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Adicionado à fila compartilhada!')));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Biblioteca do Amigo'), actions: [IconButton(icon: const Icon(Icons.refresh), onPressed: () { setState(() => _isLoading = true); _service.requestRemoteLibrary(); })]),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blue)))
-          : _tracks.isEmpty
-              ? const Center(child: Text('Nenhuma música encontrada no dispositivo do seu amigo.'))
-              : ListView.builder(
-                  itemCount: _tracks.length,
-                  itemBuilder: (context, index) {
-                    final track = _tracks[index];
-                    return ListTile(
-                      leading: track.thumbnail != null ? ClipRRect(borderRadius: BorderRadius.circular(4), child: Image.network(track.thumbnail!, width: 40, height: 40, fit: BoxFit.cover)) : const Icon(Icons.music_note),
-                      title: Text(track.title),
-                      subtitle: Text(track.artist),
-                      trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-                        IconButton(icon: const Icon(Icons.add_to_photos_outlined), onPressed: () { PlaybackService.instance.addToQueue(track); ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Adicionado à fila compartilhada'))); }),
-                        IconButton(icon: const Icon(Icons.play_arrow), onPressed: () => PlaybackService.instance.playSearchResult(track)),
-                      ]),
-                    );
-                  },
-                ),
-    );
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.windows:
+      case TargetPlatform.macOS:
+      case TargetPlatform.linux:
+        return FluentRemoteLibraryView(tracks: _tracks, isLoading: _isLoading, onRefresh: _refresh, onPlayTrack: _playTrack, onAddToQueue: _addToQueue);
+      default:
+        return MaterialRemoteLibraryView(tracks: _tracks, isLoading: _isLoading, onRefresh: _refresh, onPlayTrack: _playTrack, onAddToQueue: _addToQueue);
+    }
   }
 }

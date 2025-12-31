@@ -45,7 +45,7 @@ class FluentVaultView extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(FluentIcons.shield_alert, size: 64, color: fluent.Colors.orange),
+              Icon(FluentIcons.shield_alert, size: 64, color: fluent.Colors.orange),
               const SizedBox(height: 16),
               Text('Cofre Bloqueado', style: FluentTheme.of(context).typography.title),
               const SizedBox(height: 8),
@@ -78,7 +78,7 @@ class FluentVaultView extends StatelessWidget {
             subtitle: Text(track.artist),
             trailing: Row(mainAxisSize: MainAxisSize.min, children: [
               IconButton(icon: const Icon(FluentIcons.play), onPressed: () => onPlayTrack(track)),
-              IconButton(icon: const Icon(FluentIcons.lock_shield), onPressed: () => onRemoveFromVault(track)),
+              IconButton(icon: const Icon(FluentIcons.lock), onPressed: () => onRemoveFromVault(track)),
             ]),
           ),
         );

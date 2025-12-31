@@ -44,7 +44,7 @@ class FluentMoodExplorerView extends StatelessWidget {
               return Card(
                 margin: const EdgeInsets.only(right: 12),
                 padding: EdgeInsets.zero,
-                child: InkWell(
+                child: GestureDetector(
                   onTap: () => onPlayTrack(track),
                   child: SizedBox(
                     width: 140,

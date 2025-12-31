@@ -1,6 +1,4 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:music_tag_editor/services/auth_service.dart';
-import 'package:music_tag_editor/views/app_shell.dart';
 
 /// Fluent UI view for LoginScreen - WinUI 3 styling
 class FluentLoginView extends StatelessWidget {
