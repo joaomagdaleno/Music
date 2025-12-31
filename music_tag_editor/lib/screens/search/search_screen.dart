@@ -8,7 +8,7 @@ import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/views/player_screen.dart';
+import 'package:music_tag_editor/screens/player/player_screen.dart';
 import 'package:music_tag_editor/screens/search/views/material_search_view.dart';
 import 'package:music_tag_editor/screens/search/views/fluent_search_view.dart';
 

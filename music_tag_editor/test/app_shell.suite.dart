@@ -7,7 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
 import 'package:music_tag_editor/models/filename_format.dart';
 import 'package:music_tag_editor/screens/search/search_screen.dart';
-import 'package:music_tag_editor/views/home_view.dart';
+import 'package:music_tag_editor/screens/home/home_screen.dart';
 import 'test_helper.dart';
 
 void main() {
@@ -48,7 +48,7 @@ void main() {
       await tester.pumpWidget(const MaterialApp(home: AppShell()));
       await tester.pumpAndSettle();
 
-      expect(find.byType(HomeView), findsOneWidget);
+      expect(find.byType(HomeScreen), findsOneWidget);
 
       final bottomNavBarFinder = find.byType(BottomNavigationBar);
       expect(bottomNavBarFinder, findsOneWidget);

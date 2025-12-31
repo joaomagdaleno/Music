@@ -1,5 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+
 
 /// Fluent UI view for PlaylistDetailScreen - WinUI 3 styling
 class FluentPlaylistDetailView extends StatelessWidget {

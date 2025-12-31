@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/playlist_importer_view.dart';
+import 'package:music_tag_editor/screens/playlists/playlist_importer_screen.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
@@ -35,10 +35,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: PlaylistImporterView());
+    return const MaterialApp(home: PlaylistImporterScreen());
   }
 
-  group('PlaylistImporterView', () {
+  group('PlaylistImporterScreen', () {
     testWidgets('renders correctly', (tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pump();

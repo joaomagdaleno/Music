@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+
 import 'package:music_tag_editor/screens/disco/views/fluent_disco_view.dart';
 import 'package:music_tag_editor/screens/disco/views/material_disco_view.dart';
 

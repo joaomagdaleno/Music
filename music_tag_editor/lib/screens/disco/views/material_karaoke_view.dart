@@ -47,7 +47,7 @@ class MaterialKaraokeView extends StatelessWidget {
         gradient: RadialGradient(
           center: const Alignment(0, -0.5),
           radius: 1.5,
-          colors: [Theme.of(context).colorScheme.primary.withOpacity(0.3), Colors.black],
+          colors: [Theme.of(context).colorScheme.primary.withValues(alpha: 0.3), Colors.black],
         ),
       ),
     );

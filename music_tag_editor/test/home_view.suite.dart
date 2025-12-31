@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/home_view.dart';
+import 'package:music_tag_editor/screens/home/home_screen.dart';
 
 import 'test_helper.dart';
 
@@ -15,10 +15,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: HomeView());
+    return const MaterialApp(home: HomeScreen());
   }
 
-  group('HomeView', () {
+  group('HomeScreen', () {
     testWidgets('renders greeting', (tester) async {
       final completer = Completer<List<Map<String, dynamic>>>();
       when(() => mockDb.getRecentlyPlayed()).thenAnswer((_) async => []);

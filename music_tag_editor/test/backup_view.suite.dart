@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/backup_view.dart';
+import 'package:music_tag_editor/screens/backup/backup_screen.dart';
 import 'package:music_tag_editor/services/backup_service.dart';
 
 class MockBackupService extends Mock implements BackupService {}
@@ -24,10 +24,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: BackupView());
+    return const MaterialApp(home: BackupScreen());
   }
 
-  group('BackupView', () {
+  group('BackupScreen', () {
     testWidgets('renders app bar', (tester) async {
       await tester.pumpWidget(createTestWidget());
 

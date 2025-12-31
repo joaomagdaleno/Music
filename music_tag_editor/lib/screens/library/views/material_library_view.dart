@@ -3,7 +3,7 @@ import 'package:music_tag_editor/models/music_track.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/screens/mood/mood_explorer_screen.dart';
 import 'package:music_tag_editor/screens/tracks/my_tracks_screen.dart';
-import 'package:music_tag_editor/views/ringtone_maker_view.dart';
+import 'package:music_tag_editor/screens/tracks/ringtone_maker_screen.dart';
 import 'package:music_tag_editor/screens/search/search_screen.dart';
 import 'package:music_tag_editor/screens/settings/settings_screen.dart';
 import 'package:music_tag_editor/screens/library/smart_library_screen.dart';
@@ -108,7 +108,7 @@ class MaterialLibraryView extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => RingtoneMakerView(
+                                builder: (context) => RingtoneMakerScreen(
                                   track: SearchResult(
                                     id: index.toString(),
                                     title: track.title,

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/models/filename_format.dart';
-import 'package:music_tag_editor/views/settings_page.dart';
+import 'package:music_tag_editor/screens/settings/settings_screen.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
 import 'package:music_tag_editor/services/persona_service.dart';
 import 'package:music_tag_editor/models/persona_model.dart';
@@ -125,8 +125,8 @@ void main() {
   }
 
   group('SettingsPage Persona Selection', () {
-    testWidgets('Displays all persona options in SettingsPage', (tester) async {
-      await tester.pumpWidget(createWidgetUnderTest(const SettingsPage()));
+    testWidgets('Displays all persona options in SettingsScreen', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest(const SettingsScreen()));
       await tester.pump();
 
       expect(find.text('Modo do Sistema (Persona)'), findsOneWidget);
@@ -137,7 +137,7 @@ void main() {
     });
 
     testWidgets('Switching persona updates PersonaService', (tester) async {
-      await tester.pumpWidget(createWidgetUnderTest(const SettingsPage()));
+      await tester.pumpWidget(createWidgetUnderTest(const SettingsScreen()));
       await tester.pump(const Duration(milliseconds: 200));
 
       // Default persona is listener

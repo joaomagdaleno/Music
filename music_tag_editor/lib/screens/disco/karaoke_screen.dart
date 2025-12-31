@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/lyrics_service.dart';
+
 import 'package:music_tag_editor/screens/disco/views/fluent_karaoke_view.dart';
 import 'package:music_tag_editor/screens/disco/views/material_karaoke_view.dart';
 
@@ -33,7 +33,11 @@ class _KaraokeScreenState extends State<KaraokeScreen> {
       final lyrics = PlaybackService.instance.currentLyrics;
       int index = -1;
       for (int i = 0; i < lyrics.length; i++) {
-        if (lyrics[i].time.inMilliseconds <= pos) index = i; else break;
+        if (lyrics[i].time.inMilliseconds <= pos) {
+          index = i;
+        } else {
+          break;
+        }
       }
       if (index != _activeLineIndex && index != -1) {
         setState(() => _activeLineIndex = index);

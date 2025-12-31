@@ -25,7 +25,7 @@ class FluentPartyQueueView extends StatelessWidget {
             padding: const EdgeInsets.all(48.0),
             child: Column(
               children: [
-                const Icon(FluentIcons.contact_card, size: 100, color: Colors.purple),
+                Icon(FluentIcons.contact_card, size: 100, color: Colors.purple),
                 const SizedBox(height: 24),
                 Text('Comece uma Festa', style: FluentTheme.of(context).typography.title),
                 const SizedBox(height: 12),
@@ -57,7 +57,7 @@ class FluentPartyQueueView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 24),
-        Text('Código da Sessão: $qrData', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.purple)),
+        Text('Código da Sessão: $qrData', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.purple)),
         const SizedBox(height: 32),
         Button(onPressed: onToggleSharing, child: const Text('Encerrar Festa')),
       ],

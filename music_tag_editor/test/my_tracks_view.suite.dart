@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/my_tracks_view.dart';
+import 'package:music_tag_editor/screens/tracks/my_tracks_screen.dart';
 
 import 'test_helper.dart';
 
@@ -15,10 +15,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: MyTracksView());
+    return const MaterialApp(home: MyTracksScreen());
   }
 
-  group('MyTracksView', () {
+  group('MyTracksScreen', () {
     testWidgets('renders loading state', (tester) async {
       final completer = Completer<List<Map<String, dynamic>>>();
       when(() => mockDb.getTracks()).thenAnswer((_) => completer.future);

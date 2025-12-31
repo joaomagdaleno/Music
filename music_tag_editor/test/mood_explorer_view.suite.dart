@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/mood_explorer_view.dart';
+import 'package:music_tag_editor/screens/library/mood_explorer_screen.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
@@ -36,10 +36,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return MaterialApp(home: Scaffold(body: MoodExplorerView()));
+    return MaterialApp(home: Scaffold(body: MoodExplorerScreen()));
   }
 
-  group('MoodExplorerView', () {
+  group('MoodExplorerScreen', () {
     testWidgets('renders mood cards', (tester) async {
       await tester.pumpWidget(createTestWidget());
 

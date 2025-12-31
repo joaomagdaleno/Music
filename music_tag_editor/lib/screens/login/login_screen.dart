@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
             final email = recoveryEmailController.text.trim();
             if (email.isNotEmpty) {
               await AuthService.instance.sendPasswordReset(email);
-              if (context.mounted) Navigator.pop(context);
+              if (mounted) Navigator.pop(context);
             }
           }),
         ],
@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
             final email = recoveryEmailController.text.trim();
             if (email.isNotEmpty) {
               await AuthService.instance.sendPasswordReset(email);
-              if (context.mounted) Navigator.pop(context);
+              if (mounted) Navigator.pop(context);
             }
           }, child: const Text('Enviar')),
         ],

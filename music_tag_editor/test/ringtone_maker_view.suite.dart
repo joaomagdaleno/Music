@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/ringtone_maker_view.dart';
+import 'package:music_tag_editor/screens/tracks/ringtone_maker_screen.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'dart:typed_data';
@@ -108,22 +108,19 @@ void main() {
 
   Widget createTestWidget() {
     return MaterialApp(
-      home: RingtoneMakerView(
+      home: RingtoneMakerScreen(
         track: SearchResult(
           id: '1',
           title: 'Test Song',
           artist: 'Test Artist',
           url: 'http://test.mp3',
           platform: MediaPlatform.youtube,
-          localPath: 'c:/test.mp3', // specific path to trigger init
         ),
-        player: mockPlayer,
-        coverImage: MemoryImage(kTransparentImage),
       ),
     );
   }
 
-  group('RingtoneMakerView', () {
+  group('RingtoneMakerScreen', () {
     testWidgets('renders Scaffold', (tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();

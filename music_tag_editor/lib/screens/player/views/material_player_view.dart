@@ -5,7 +5,7 @@ import 'package:music_tag_editor/services/local_duo_service.dart';
 import 'package:music_tag_editor/widgets/duo_chat_dialog.dart';
 import 'package:music_tag_editor/widgets/visualizer_widget.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
-import 'package:music_tag_editor/views/karaoke_view.dart';
+import 'package:music_tag_editor/screens/disco/karaoke_screen.dart';
 
 class MaterialPlayerView extends StatelessWidget {
   final void Function(BuildContext) onShowSleepTimer;
@@ -193,7 +193,7 @@ class MaterialPlayerView extends StatelessWidget {
             icon: const Icon(Icons.mic_external_on),
             tooltip: 'Modo Karaoke',
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_) => KaraokeView(track: {'id': track.id, 'title': track.title, 'artist': track.artist})));
+              Navigator.push(context, MaterialPageRoute(builder: (_) => KaraokeScreen(track: {'id': track.id, 'title': track.title, 'artist': track.artist})));
             },
           ),
         ],

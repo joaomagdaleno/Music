@@ -40,7 +40,7 @@ class MaterialDiscoModeView extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: RadialGradient(
           colors: [
-            primaryColor.withOpacity(0.4),
+            primaryColor.withValues(alpha: 0.4),
             Colors.black,
           ],
           radius: 1.2,
@@ -70,7 +70,7 @@ class MaterialDiscoModeView extends StatelessWidget {
         width: 250, height: 250,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          boxShadow: [BoxShadow(color: primaryColor.withOpacity(0.5), blurRadius: 30)],
+          boxShadow: [BoxShadow(color: primaryColor.withValues(alpha: 0.5), blurRadius: 30)],
         ),
         child: ClipOval(
           child: currentTrack?.thumbnail != null

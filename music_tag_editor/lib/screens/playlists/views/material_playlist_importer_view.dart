@@ -49,7 +49,7 @@ class MaterialPlaylistImporterView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              ElevatedButton(onPressed: onImportAll, child: Text('Importar ${tracks.length} Músicas'), style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 50))),
+              ElevatedButton(onPressed: onImportAll, style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 50)), child: Text('Importar ${tracks.length} Músicas')),
             ] else
               const Expanded(child: Center(child: Text('Cole um link para começar.'))),
           ],

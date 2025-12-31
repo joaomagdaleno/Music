@@ -8,11 +8,11 @@ import 'package:just_audio/just_audio.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
-import 'package:music_tag_editor/views/home_view.dart';
-import 'package:music_tag_editor/views/mood_explorer_view.dart';
-import 'package:music_tag_editor/views/smart_library_view.dart';
-import 'package:music_tag_editor/views/listening_stats_view.dart';
-import 'package:music_tag_editor/views/disco_mode_view.dart';
+import 'package:music_tag_editor/screens/home/home_screen.dart';
+import 'package:music_tag_editor/screens/library/mood_explorer_screen.dart';
+import 'package:music_tag_editor/screens/library/smart_library_screen.dart';
+import 'package:music_tag_editor/screens/stats/listening_stats_screen.dart';
+import 'package:music_tag_editor/screens/disco/disco_mode_screen.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
@@ -149,32 +149,32 @@ void main() {
   }
 
   testWidgets('HomeView smoke test', (tester) async {
-    await tester.pumpWidget(createTestWidget(const HomeView()));
+    await tester.pumpWidget(createTestWidget(const HomeScreen()));
     await tester.pump();
     expect(find.text('Início'), findsOneWidget);
   });
 
   testWidgets('MoodExplorerView smoke test', (tester) async {
-    await tester.pumpWidget(createTestWidget(MoodExplorerView()));
+    await tester.pumpWidget(createTestWidget(MoodExplorerScreen()));
     await tester.pump();
     expect(find.text('Qual o seu mood hoje?'), findsOneWidget);
   });
 
   testWidgets('SmartLibraryView smoke test', (tester) async {
-    await tester.pumpWidget(createTestWidget(const SmartLibraryView()));
+    await tester.pumpWidget(createTestWidget(const SmartLibraryScreen()));
     await tester.pump();
     expect(find.text('Top Hits'), findsOneWidget);
   });
 
   testWidgets('ListeningStatsView smoke test', (tester) async {
-    await tester.pumpWidget(createTestWidget(const ListeningStatsView()));
+    await tester.pumpWidget(createTestWidget(const ListeningStatsScreen()));
     await tester.pump();
     await tester.pump();
     expect(find.text('Suas Estatísticas'), findsOneWidget);
   });
 
   testWidgets('DiscoModeView smoke test', (tester) async {
-    await tester.pumpWidget(createTestWidget(const DiscoModeView()));
+    await tester.pumpWidget(createTestWidget(const DiscoModeScreen()));
     await tester.pump();
     expect(find.text('Toque para sair'), findsOneWidget);
   });

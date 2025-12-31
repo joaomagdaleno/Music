@@ -22,7 +22,7 @@ import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/models/filename_format.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
-import 'package:music_tag_editor/views/login_page.dart';
+import 'package:music_tag_editor/screens/login/login_screen.dart';
 
 class MockAuthService extends Mock implements AuthService {}
 
@@ -152,7 +152,7 @@ void main() {
     await tester.pumpWidget(const MusicTagEditorApp());
     await tester.pump();
 
-    expect(find.byType(LoginPage), findsOneWidget);
+    expect(find.byType(LoginScreen), findsOneWidget);
     expect(find.byType(AppShell), findsNothing);
   });
 
@@ -172,7 +172,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 200));
 
     expect(find.byType(AppShell), findsOneWidget);
-    expect(find.byType(LoginPage), findsNothing);
+    expect(find.byType(LoginScreen), findsNothing);
   });
 
   testWidgets('LibraryScreen displays initial empty state', (tester) async {

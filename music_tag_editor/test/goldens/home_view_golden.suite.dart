@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:alchemist/alchemist.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/home_view.dart';
+import 'package:music_tag_editor/screens/home/home_screen.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
@@ -53,7 +53,7 @@ class MockLocalDuoService extends Mock implements LocalDuoService {}
 class MockLyricsService extends Mock implements LyricsService {}
 
 void main() {
-  group('HomeView Golden Tests', () {
+  group('HomeScreen Golden Tests', () {
     late MockDatabaseService mockDb;
     late MockPlaybackService mockPlayback;
     late MockThemeService mockTheme;
@@ -138,19 +138,19 @@ void main() {
     });
 
     goldenTest(
-      'HomeView initial state',
+      'HomeScreen initial state',
       fileName: 'home_view_initial',
       builder: () => GoldenTestGroup(
         children: [
           GoldenTestScenario(
             name: 'phone',
             constraints: const BoxConstraints(maxWidth: 375, maxHeight: 667),
-            child: const HomeView(),
+            child: const HomeScreen(),
           ),
           GoldenTestScenario(
             name: 'tablet_landscape',
             constraints: const BoxConstraints(maxWidth: 1024, maxHeight: 768),
-            child: const HomeView(),
+            child: const HomeScreen(),
           ),
         ],
       ),

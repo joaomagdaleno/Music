@@ -207,7 +207,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
         await file.rename(newPath);
       }
 
-      // ignore: use_build_context_synchronously
+      if (!mounted) return;
       if (!_isFluent) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Updated: $newFileName')),
@@ -233,16 +233,19 @@ class _LibraryScreenState extends State<LibraryScreen> {
         );
         // Fluent Dialog is different, skipping full implementation for brevity
         // Falling back to Material Dialog even in Fluent for complex dialogs temporarily
+        if (!mounted) return;
          updatedTrack = await showDialog<MusicTrack>(
             context: context,
              builder: (context) => EditTrackDialog(track: track),
         );
+        if (!mounted) return;
 
     } else {
         updatedTrack = await showDialog<MusicTrack>(
             context: context,
             builder: (context) => EditTrackDialog(track: track),
         );
+        if (!mounted) return;
     }
     
 
@@ -287,7 +290,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
         choice: choice,
       );
       await _dbService.saveLearningRule(rule);
-      // ignore: use_build_context_synchronously
+      if (!mounted) return;
       if (!_isFluent) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Learning rule saved!')),
