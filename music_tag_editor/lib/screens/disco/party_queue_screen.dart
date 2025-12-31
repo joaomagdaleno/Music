@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/screens/disco/views/fluent_party_queue_view.dart';
 import 'package:music_tag_editor/screens/disco/views/material_party_queue_view.dart';

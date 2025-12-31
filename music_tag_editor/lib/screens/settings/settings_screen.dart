@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/models/filename_format.dart';
 import 'package:music_tag_editor/screens/settings/views/fluent_settings_view.dart';

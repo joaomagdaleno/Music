@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/services/listening_stats_service.dart';
 import 'package:music_tag_editor/screens/stats/views/fluent_listening_stats_view.dart';
