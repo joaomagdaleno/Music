@@ -79,7 +79,6 @@ Future<void> setupMusicTest({
 }) async {
   // Force Material Design for tests that expect it
   debugDefaultTargetPlatformOverride = TargetPlatform.android;
-  addTearDown(() => debugDefaultTargetPlatformOverride = null);
   // Reset ALL core singletons
   AuthService.resetInstance();
   DatabaseService.resetInstance();

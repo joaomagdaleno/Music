@@ -63,7 +63,7 @@ void main() {
       expect(find.text('Estatísticas de Escuta'), findsOneWidget);
       expect(find.text('5h 0min'), findsOneWidget);
       expect(find.text('Song A'), findsOneWidget);
-      expect(find.textContaining('Artist A'), findsWidgets);
+      expect(find.text('Artist A'), findsWidgets);
     });
 
     testWidgets('shows loading state and clears timers', (tester) async {

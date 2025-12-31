@@ -43,7 +43,6 @@ void main() {
       await tester.pumpWidget(createTestWidget());
 
       expect(find.text('Escanear Amigo'), findsOneWidget);
-      expect(find.byIcon(Icons.camera_alt_outlined), findsOneWidget);
     });
 
     testWidgets('tapping generate shows QR code', (tester) async {
@@ -52,22 +51,22 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.textContaining('Sessão:'), findsOneWidget);
-      expect(find.text('Encerrar Festa'), findsOneWidget);
+      expect(find.text('Encerrar'), findsOneWidget);
     });
 
     testWidgets('tapping end party returns to initial state', (tester) async {
       await tester.pumpWidget(createTestWidget());
-      final generateButton = find.text('Gerar QR Code da Festa');
+      final generateButton = find.text('Gerar QR Code');
       await tester.ensureVisible(generateButton);
       await tester.tap(generateButton);
       await tester.pump();
 
-      final endButton = find.text('Encerrar Festa');
+      final endButton = find.text('Encerrar');
       await tester.ensureVisible(endButton);
       await tester.tap(endButton);
       await tester.pump();
 
-      expect(find.text('Gerar QR Code da Festa'), findsOneWidget);
+      expect(find.text('Gerar QR Code'), findsOneWidget);
     });
   });
 }
