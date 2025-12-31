@@ -41,6 +41,7 @@ void main() {
   Widget createTestWidget(
       {int playlistId = 1, String playlistName = 'Test Playlist'}) {
     return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
       home: PlaylistDetailScreen(
         playlistId: playlistId,
         playlistName: playlistName,

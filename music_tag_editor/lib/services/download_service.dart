@@ -99,17 +99,33 @@ class SearchResult {
   }
 
   factory SearchResult.fromJson(Map<String, dynamic> json) {
+    // Handle platform safely - can be int (index) or String (enum name)
+    MediaPlatform platform = MediaPlatform.unknown;
+    final platformRaw = json['platform'];
+    if (platformRaw is int) {
+      if (platformRaw >= 0 && platformRaw < MediaPlatform.values.length) {
+        platform = MediaPlatform.values[platformRaw];
+      }
+    } else if (platformRaw is String) {
+      // Handle 'MediaPlatform.youtube' format or just 'youtube'
+      final cleanPlatform = platformRaw.split('.').last.toLowerCase();
+      platform = MediaPlatform.values.firstWhere(
+        (e) => e.name.toLowerCase() == cleanPlatform,
+        orElse: () => MediaPlatform.unknown,
+      );
+    }
+
     return SearchResult(
-      id: json['id'],
-      title: json['title'],
-      artist: json['artist'],
-      album: json['album'],
-      thumbnail: json['thumbnail'],
-      duration: json['duration'],
-      url: json['url'],
-      platform: MediaPlatform.values[json['platform']],
-      localPath: json['localPath'],
-      genre: json['genre'],
+      id: json['id']?.toString() ?? '',
+      title: json['title']?.toString() ?? 'Unknown',
+      artist: json['artist']?.toString() ?? 'Unknown',
+      album: json['album']?.toString(),
+      thumbnail: json['thumbnail']?.toString(),
+      duration: json['duration'] is int ? json['duration'] : null,
+      url: json['url']?.toString() ?? '',
+      platform: platform,
+      localPath: json['localPath']?.toString(),
+      genre: json['genre']?.toString(),
     );
   }
 }

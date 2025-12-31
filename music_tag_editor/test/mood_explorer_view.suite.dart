@@ -33,6 +33,10 @@ void main() {
 
     DatabaseService.instance = mockDb;
     PlaybackService.instance = mockPlayback;
+
+    // Default stubs
+    when(() => mockDb.getTracks()).thenAnswer((_) async => []);
+    when(() => mockDb.getTracksByMood(any())).thenAnswer((_) async => []);
   });
 
   Widget createTestWidget() {

@@ -15,7 +15,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: MyTracksScreen());
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const MyTracksScreen(),
+    );
   }
 
   group('MyTracksScreen', () {
