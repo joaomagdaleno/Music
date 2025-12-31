@@ -44,7 +44,11 @@ void main() {
     testWidgets('Shows empty state when no track is playing', (tester) async {
       when(() => mockPlayback.currentTrack).thenReturn(null);
 
-      await tester.pumpWidget(const MaterialApp(home: PlayerScreen()));
+      await tester.pumpWidget(MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const PlayerScreen(),
+      ));
+
       await tester.pump(); // Start building
 
       playerStateController.add(PlayerState(false, ProcessingState.idle));
@@ -63,7 +67,10 @@ void main() {
       );
       when(() => mockPlayback.currentTrack).thenReturn(track);
 
-      await tester.pumpWidget(const MaterialApp(home: PlayerScreen()));
+      await tester.pumpWidget(MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const PlayerScreen(),
+      ));
 
       playerStateController.add(PlayerState(true, ProcessingState.ready));
       await tester.pump();
@@ -82,7 +89,10 @@ void main() {
       );
       when(() => mockPlayback.currentTrack).thenReturn(track);
 
-      await tester.pumpWidget(const MaterialApp(home: PlayerScreen()));
+      await tester.pumpWidget(MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const PlayerScreen(),
+      ));
 
       // Initially paused
       playerStateController.add(PlayerState(false, ProcessingState.ready));
@@ -116,7 +126,10 @@ void main() {
       when(() => mockPlayback.currentTrack).thenReturn(track);
       when(() => mockDuo.role).thenReturn(DuoRole.host);
 
-      await tester.pumpWidget(const MaterialApp(home: PlayerScreen()));
+      await tester.pumpWidget(MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const PlayerScreen(),
+      ));
 
       playerStateController.add(PlayerState(false, ProcessingState.ready));
       await tester.pump();

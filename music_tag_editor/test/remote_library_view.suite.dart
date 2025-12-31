@@ -40,7 +40,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: RemoteLibraryScreen());
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const RemoteLibraryScreen(),
+    );
   }
 
   group('RemoteLibraryScreen', () {

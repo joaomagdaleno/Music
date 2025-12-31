@@ -56,9 +56,10 @@ class _VaultScreenState extends State<VaultScreen> {
   }
 
   void _showError(String message) {
-    if (defaultTargetPlatform == TargetPlatform.windows ||
-        defaultTargetPlatform == TargetPlatform.macOS ||
-        defaultTargetPlatform == TargetPlatform.linux) {
+    final platform = Theme.of(context).platform;
+    if (platform == TargetPlatform.windows ||
+        platform == TargetPlatform.macOS ||
+        platform == TargetPlatform.linux) {
       fluent.displayInfoBar(context, builder: (_, close) => fluent.InfoBar(title: Text(message), severity: fluent.InfoBarSeverity.error, onClose: close));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
@@ -67,7 +68,8 @@ class _VaultScreenState extends State<VaultScreen> {
 
   @override
   Widget build(BuildContext context) {
-    switch (defaultTargetPlatform) {
+    final platform = Theme.of(context).platform;
+    switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:

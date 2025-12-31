@@ -120,6 +120,7 @@ void main() {
 
   Widget createWidgetUnderTest(Widget home) {
     return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
       home: home,
     );
   }

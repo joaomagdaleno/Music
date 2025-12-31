@@ -23,7 +23,8 @@ class _PartyQueueScreenState extends State<PartyQueueScreen> {
 
   @override
   Widget build(BuildContext context) {
-    switch (defaultTargetPlatform) {
+    final platform = Theme.of(context).platform;
+    switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:

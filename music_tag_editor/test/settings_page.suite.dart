@@ -65,7 +65,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: SettingsScreen());
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const SettingsScreen(),
+    );
   }
 
   group('SettingsScreen', () {

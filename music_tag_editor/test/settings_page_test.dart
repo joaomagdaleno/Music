@@ -81,7 +81,11 @@ void main() {
 
   testWidgets('Loads and displays settings', (tester) async {
     setupViewport(tester);
-    await tester.pumpWidget(const MaterialApp(home: SettingsScreen()));
+    await tester.pumpWidget(MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const SettingsScreen(),
+    ));
+
     await tester.pump(); // init load
     await tester.pumpAndSettle();
 
@@ -92,7 +96,10 @@ void main() {
 
   testWidgets('Changes Filename Format', (tester) async {
     setupViewport(tester);
-    await tester.pumpWidget(const MaterialApp(home: SettingsScreen()));
+    await tester.pumpWidget(MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const SettingsScreen(),
+    ));
     await tester.pumpAndSettle();
 
     final dropdownFinder = find.text('Artist - Title.mp3');
@@ -114,7 +121,10 @@ void main() {
     setupViewport(tester);
     when(() => mockCleanup.cleanupLibrary()).thenAnswer((_) async => 5);
 
-    await tester.pumpWidget(const MaterialApp(home: SettingsScreen()));
+    await tester.pumpWidget(MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const SettingsScreen(),
+    ));
     await tester.pumpAndSettle();
 
     final cleanBtn = find.text('Polir Biblioteca');
@@ -132,7 +142,10 @@ void main() {
 
   testWidgets('Age bypass requires confirmation', (tester) async {
     setupViewport(tester);
-    await tester.pumpWidget(const MaterialApp(home: SettingsScreen()));
+    await tester.pumpWidget(MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const SettingsScreen(),
+    ));
     await tester.pumpAndSettle();
 
     final switchFinder = find.byType(Switch);
@@ -155,7 +168,10 @@ void main() {
     when(() => mockSync.enableSync()).thenAnswer((_) async => true);
     when(() => mockSync.pullFromCloud()).thenAnswer((_) async => 10);
 
-    await tester.pumpWidget(const MaterialApp(home: SettingsScreen()));
+    await tester.pumpWidget(MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const SettingsScreen(),
+    ));
     await tester.pumpAndSettle();
 
     final syncBtn = find.text('Sincronizar Agora');

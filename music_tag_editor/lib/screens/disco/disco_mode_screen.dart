@@ -49,8 +49,9 @@ class _DiscoModeScreenState extends State<DiscoModeScreen> {
   Widget build(BuildContext context) {
     final track = PlaybackService.instance.currentTrack;
     final primaryColor = ThemeService.instance.primaryColor;
+    final platform = Theme.of(context).platform;
 
-    switch (defaultTargetPlatform) {
+    switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:

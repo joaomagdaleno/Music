@@ -62,7 +62,8 @@ class _KaraokeScreenState extends State<KaraokeScreen> {
   @override
   Widget build(BuildContext context) {
     final lyrics = PlaybackService.instance.currentLyrics;
-    switch (defaultTargetPlatform) {
+    final platform = Theme.of(context).platform;
+    switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:

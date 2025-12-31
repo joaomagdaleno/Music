@@ -149,7 +149,7 @@ void main() {
 
   testWidgets('MusicTagEditorApp shows LoginPage when not authenticated',
       (tester) async {
-    await tester.pumpWidget(const MusicTagEditorApp());
+    await tester.pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
     await tester.pump();
 
     expect(find.byType(LoginScreen), findsOneWidget);
@@ -167,7 +167,7 @@ void main() {
     when(() => mockDb.getTracks()).thenAnswer((_) async => []);
     when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
 
-    await tester.pumpWidget(const MusicTagEditorApp());
+    await tester.pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -179,8 +179,9 @@ void main() {
     when(() => mockDb.loadFilenameFormat())
         .thenAnswer((_) async => FilenameFormat.artistTitle);
 
-    await tester.pumpWidget(
-        const MaterialApp(home: LibraryScreen(title: 'Test Library')));
+    await tester.pumpWidget(MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const LibraryScreen(title: 'Test Library')));
     await tester.pump();
 
     expect(find.text('Nenhuma pasta selecionada.'), findsOneWidget);

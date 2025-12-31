@@ -35,7 +35,10 @@ void main() {
     testWidgets('Shows offline banner when offline', (tester) async {
       isOffline.value = true;
 
-      await tester.pumpWidget(const MaterialApp(home: AppShell()));
+      await tester.pumpWidget(MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const AppShell(),
+      ));
       await tester.pump();
 
       expect(find.text('Modo Offline Ativado'), findsOneWidget);
@@ -45,7 +48,10 @@ void main() {
       tester.view.physicalSize = const Size(400, 800);
       tester.view.devicePixelRatio = 1.0;
 
-      await tester.pumpWidget(const MaterialApp(home: AppShell()));
+      await tester.pumpWidget(MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const AppShell(),
+      ));
       await tester.pumpAndSettle();
 
       expect(find.byType(HomeScreen), findsOneWidget);
@@ -71,7 +77,10 @@ void main() {
       tester.view.physicalSize = const Size(1200, 800);
       tester.view.devicePixelRatio = 1.0;
 
-      await tester.pumpWidget(const MaterialApp(home: AppShell()));
+      await tester.pumpWidget(MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const AppShell(),
+      ));
       await tester.pump();
 
       expect(find.byType(NavigationRail), findsOneWidget);

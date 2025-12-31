@@ -29,7 +29,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return MaterialApp(home: Scaffold(body: const ListeningStatsScreen()));
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const Scaffold(body: ListeningStatsScreen()),
+    );
   }
 
   group('ListeningStatsScreen', () {

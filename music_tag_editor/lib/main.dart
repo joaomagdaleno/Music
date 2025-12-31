@@ -181,7 +181,8 @@ class _AppBootstrapState extends State<AppBootstrap> {
 }
 
 class MusicTagEditorApp extends StatelessWidget {
-  const MusicTagEditorApp({super.key});
+  final TargetPlatform? platform;
+  const MusicTagEditorApp({super.key, this.platform});
 
   @override
   Widget build(BuildContext context) {
@@ -193,6 +194,7 @@ class MusicTagEditorApp extends StatelessWidget {
           title: 'Music Tag Editor',
           theme: ThemeData(
             useMaterial3: true,
+            platform: platform,
             colorScheme: ColorScheme.fromSeed(
               seedColor: primaryColor,
               brightness: Brightness.light,
@@ -200,6 +202,7 @@ class MusicTagEditorApp extends StatelessWidget {
           ),
           darkTheme: ThemeData(
             useMaterial3: true,
+            platform: platform,
             colorScheme: ColorScheme.fromSeed(
               seedColor: primaryColor,
               brightness: Brightness.dark,

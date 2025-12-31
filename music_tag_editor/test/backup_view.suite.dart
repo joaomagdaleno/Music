@@ -24,7 +24,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: BackupScreen());
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const BackupScreen(),
+    );
   }
 
   group('BackupScreen', () {

@@ -34,7 +34,11 @@ void main() {
       when(() => mockPlayback.currentTrack).thenReturn(null);
 
       await tester
-          .pumpWidget(const MaterialApp(home: Scaffold(body: MiniPlayer())));
+          .pumpWidget(MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const Scaffold(body: MiniPlayer()),
+      ));
+
 
       expect(find.byType(Container), findsNothing);
     });
@@ -54,7 +58,10 @@ void main() {
           ));
 
       await tester
-          .pumpWidget(const MaterialApp(home: Scaffold(body: MiniPlayer())));
+          .pumpWidget(MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const Scaffold(body: MiniPlayer()),
+      ));
       await tester.pump(); // Handle StreamBuilder
 
       expect(find.text('Test Song'), findsOneWidget);
@@ -77,7 +84,10 @@ void main() {
       when(() => mockPlayback.pause()).thenAnswer((_) async {});
 
       await tester
-          .pumpWidget(const MaterialApp(home: Scaffold(body: MiniPlayer())));
+          .pumpWidget(MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const Scaffold(body: MiniPlayer()),
+      ));
       await tester.pump();
 
       await tester.tap(find.byIcon(Icons.pause));

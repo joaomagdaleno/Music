@@ -31,7 +31,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: DiscoModeScreen());
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const DiscoModeScreen(),
+    );
   }
 
   group('DiscoModeScreen', () {
@@ -67,6 +70,7 @@ void main() {
       when(() => mockPlayback.currentTrack).thenReturn(null);
 
       await tester.pumpWidget(MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
         home: Builder(
           builder: (context) => ElevatedButton(
             onPressed: () => Navigator.push(

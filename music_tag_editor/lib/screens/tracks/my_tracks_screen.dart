@@ -47,7 +47,8 @@ class _MyTracksScreenState extends State<MyTracksScreen> {
   }
 
   void _importPlaylist() {
-    if (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux) {
+    final platform = Theme.of(context).platform;
+    if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
       Navigator.push(context, fluent.FluentPageRoute(builder: (_) => const PlaylistImporterScreen()));
     } else {
       Navigator.push(context, MaterialPageRoute(builder: (_) => const PlaylistImporterScreen()));
@@ -55,7 +56,8 @@ class _MyTracksScreenState extends State<MyTracksScreen> {
   }
 
   void _showSuccess(String message) {
-    if (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux) {
+    final platform = Theme.of(context).platform;
+    if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
       fluent.displayInfoBar(context, builder: (_, close) => fluent.InfoBar(title: Text(message), severity: fluent.InfoBarSeverity.success, onClose: close));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
@@ -64,7 +66,8 @@ class _MyTracksScreenState extends State<MyTracksScreen> {
 
   @override
   Widget build(BuildContext context) {
-    switch (defaultTargetPlatform) {
+    final platform = Theme.of(context).platform;
+    switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:
