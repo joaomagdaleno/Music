@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
 import 'package:music_tag_editor/views/settings_page.dart';
-import 'package:music_tag_editor/views/search_page.dart';
+import 'package:music_tag_editor/screens/search/search_screen.dart';
 import 'package:music_tag_editor/views/home_view.dart';
 import 'test_helper.dart';
 
@@ -61,7 +61,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 300));
       await tester.pumpAndSettle();
 
-      expect(find.byType(SearchPage), findsOneWidget);
+      expect(find.byType(SearchScreen), findsOneWidget);
 
       tester.view.resetPhysicalSize();
       tester.view.resetDevicePixelRatio();

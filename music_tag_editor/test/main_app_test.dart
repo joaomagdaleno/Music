@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_tag_editor/main.dart';
+import 'package:music_tag_editor/screens/library/library_screen.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
@@ -174,12 +175,12 @@ void main() {
     expect(find.byType(LoginPage), findsNothing);
   });
 
-  testWidgets('LibraryPage displays initial empty state', (tester) async {
+  testWidgets('LibraryScreen displays initial empty state', (tester) async {
     when(() => mockDb.loadFilenameFormat())
         .thenAnswer((_) async => FilenameFormat.artistTitle);
 
     await tester.pumpWidget(
-        const MaterialApp(home: LibraryPage(title: 'Test Library')));
+        const MaterialApp(home: LibraryScreen(title: 'Test Library')));
     await tester.pump();
 
     expect(find.text('Nenhuma pasta selecionada.'), findsOneWidget);

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:music_tag_editor/views/search_page.dart';
-import 'package:music_tag_editor/main.dart'
-    as legacy; // To keep the metadata editor accessible
+import 'package:music_tag_editor/screens/search/search_screen.dart';
+
 import 'package:music_tag_editor/widgets/mini_player.dart';
 import 'package:music_tag_editor/views/playlists_view.dart';
 import 'package:music_tag_editor/views/my_tracks_view.dart';
@@ -17,6 +16,7 @@ import 'package:music_tag_editor/views/vault_view.dart';
 import 'package:music_tag_editor/views/party_queue_view.dart';
 import 'package:music_tag_editor/views/listening_stats_view.dart';
 import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/screens/library/library_screen.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -167,13 +167,13 @@ class _AppShellState extends State<AppShell> {
     switch (persona) {
       case AppPersona.librarian:
         return [
-          const legacy.LibraryPage(title: 'Editor de Tags'),
+          const LibraryScreen(title: 'Editor de Tags'),
           const MyTracksView(),
         ];
       case AppPersona.listener:
         return [
           const HomeView(),
-          const SearchPage(),
+          const SearchScreen(),
           const MyTracksView(),
           const PlaylistsView(),
         ];

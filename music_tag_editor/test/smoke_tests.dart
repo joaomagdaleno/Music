@@ -17,7 +17,7 @@ import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/listening_stats_service.dart';
-import 'package:music_tag_editor/views/search_page.dart';
+import 'package:music_tag_editor/screens/search/search_screen.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
 
@@ -180,7 +180,7 @@ void main() {
   });
 
   testWidgets('SearchPage smoke test', (tester) async {
-    await tester.pumpWidget(createTestWidget(const SearchPage()));
+    await tester.pumpWidget(createTestWidget(const SearchScreen()));
     await tester.pump();
     await tester.pumpAndSettle();
     expect(find.text('Busca de Músicas'), findsOneWidget);
