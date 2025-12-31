@@ -3,6 +3,7 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/foundation.dart';
 import 'test_helper.dart';
 
 import 'app_shell.suite.dart' as app_shell;
@@ -32,6 +33,7 @@ import 'vault_view.suite.dart' as vault;
 void main() {
   // Global baseline setup
   setUp(() async => await setupMusicTest());
+  tearDown(() => debugDefaultTargetPlatformOverride = null);
 
   group('AppShell', () => app_shell.main());
   group('BackupView', () => backup_view.main());

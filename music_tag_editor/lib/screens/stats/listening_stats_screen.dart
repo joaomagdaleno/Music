@@ -32,7 +32,9 @@ class _ListeningStatsScreenState extends State<ListeningStatsScreen> {
         _topArtists = stats.topArtists
             .map((e) => {'name': e.key, 'count': e.value})
             .toList();
-        _topTracks = List<Map<String, dynamic>>.from(stats.topTracks);
+        _topTracks = stats.topTracks
+            .map((e) => {'name': e['title'], 'count': e['play_count']})
+            .toList();
         _isLoading = false;
       });
     }
