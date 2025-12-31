@@ -20,9 +20,10 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = true;
 
   bool get _isFluent {
-    return defaultTargetPlatform == TargetPlatform.windows ||
-        defaultTargetPlatform == TargetPlatform.linux ||
-        defaultTargetPlatform == TargetPlatform.macOS;
+    final platform = Theme.of(context).platform;
+    return platform == TargetPlatform.windows ||
+        platform == TargetPlatform.linux ||
+        platform == TargetPlatform.macOS;
   }
 
   @override

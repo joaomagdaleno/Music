@@ -40,7 +40,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _showError() {
-    if (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux) {
+    final platform = Theme.of(context).platform;
+    if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
       fluent.displayInfoBar(context, builder: (_, close) => fluent.InfoBar(title: const Text('Falha na autenticação'), severity: fluent.InfoBarSeverity.error, onClose: close));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Falha na autenticação')));
@@ -50,7 +51,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void _showRecoveryDialog() {
     final recoveryEmailController = TextEditingController(text: _emailController.text);
     
-    if (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.linux) {
+    final platform = Theme.of(context).platform;
+    if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
       fluent.showDialog(context: context, builder: (_) => fluent.ContentDialog(
         title: const Text('Recuperação 2FA'),
         content: Column(mainAxisSize: MainAxisSize.min, children: [const Text('Enviaremos um link de recuperação para o seu email.'), const SizedBox(height: 16), fluent.TextBox(controller: recoveryEmailController, placeholder: 'Confirmar Email')]),
@@ -85,7 +87,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    switch (defaultTargetPlatform) {
+    final platform = Theme.of(context).platform;
+    switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:

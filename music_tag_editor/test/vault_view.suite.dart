@@ -46,7 +46,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: VaultScreen());
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const VaultScreen(),
+    );
   }
 
   group('VaultScreen', () {

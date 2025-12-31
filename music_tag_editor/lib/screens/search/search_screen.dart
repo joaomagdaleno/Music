@@ -40,9 +40,10 @@ class _SearchScreenState extends material.State<SearchScreen> {
   double _initProgress = 0;
 
   bool get _isFluent {
-    return defaultTargetPlatform == TargetPlatform.windows ||
-        defaultTargetPlatform == TargetPlatform.linux ||
-        defaultTargetPlatform == TargetPlatform.macOS;
+    final platform = material.Theme.of(context).platform;
+    return platform == material.TargetPlatform.windows ||
+        platform == material.TargetPlatform.linux ||
+        platform == material.TargetPlatform.macOS;
   }
 
   @override

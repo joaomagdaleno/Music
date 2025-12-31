@@ -133,7 +133,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: LoginScreen());
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const LoginScreen(),
+    );
   }
 
   group('LoginScreen', () {

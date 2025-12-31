@@ -40,7 +40,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return MaterialApp(home: Scaffold(body: MoodExplorerScreen()));
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: Scaffold(body: MoodExplorerScreen()),
+    );
   }
 
   group('MoodExplorerScreen', () {

@@ -79,10 +79,6 @@ Future<void> setupMusicTest({
   bool mockThemeInstance = true,
   bool mockDepsInstance = true,
 }) async {
-  // Force Material Design for tests that expect it
-  debugDefaultTargetPlatformOverride = TargetPlatform.android;
-  addTearDown(() => debugDefaultTargetPlatformOverride = null);
-
   // Mock all HTTP requests in tests
   HttpOverrides.global = _MockHttpOverrides();
 

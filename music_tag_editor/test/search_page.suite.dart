@@ -35,7 +35,11 @@ void main() {
       callback?.call('Done', 1.0);
     });
 
-    await tester.pumpWidget(const MaterialApp(home: SearchScreen()));
+    await tester.pumpWidget(MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const SearchScreen(),
+    ));
+
     await tester.pump(); // Start init
 
     expect(find.text('Loading...'), findsOneWidget);
@@ -77,7 +81,10 @@ void main() {
       return results;
     });
 
-    await tester.pumpWidget(const MaterialApp(home: SearchScreen()));
+    await tester.pumpWidget(MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const SearchScreen(),
+    ));
     await tester.pump(const Duration(milliseconds: 200));
 
     await tester.enterText(find.byType(TextField), 'test query');
@@ -114,7 +121,10 @@ void main() {
     when(() => mockPlayback.playSearchResult(any()))
         .thenAnswer((_) async => Future.value());
 
-    await tester.pumpWidget(const MaterialApp(home: SearchScreen()));
+    await tester.pumpWidget(MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const SearchScreen(),
+    ));
     await tester.pump(const Duration(milliseconds: 200));
 
     await tester.enterText(find.byType(TextField), 'test');
@@ -143,7 +153,10 @@ void main() {
       return [];
     });
 
-    await tester.pumpWidget(const MaterialApp(home: SearchScreen()));
+    await tester.pumpWidget(MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const SearchScreen(),
+    ));
     await tester.pump(const Duration(milliseconds: 200));
 
     await tester.enterText(find.byType(TextField), 'unknown');
@@ -159,7 +172,10 @@ void main() {
             mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
         .thenThrow('Init failed');
 
-    await tester.pumpWidget(const MaterialApp(home: SearchScreen()));
+    await tester.pumpWidget(MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const SearchScreen(),
+    ));
     await tester.pump(const Duration(milliseconds: 200));
 
     expect(find.textContaining('Erro ao inicializar: Init failed'),

@@ -65,7 +65,9 @@ void main() {
   });
 
   Widget createWidgetUnderTest() {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+
       home: Scaffold(
         body: CastDialog(),
       ),

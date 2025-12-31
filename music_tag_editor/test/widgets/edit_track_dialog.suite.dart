@@ -20,6 +20,8 @@ void main() {
     MusicTrack? result;
 
     await tester.pumpWidget(MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+
       home: Builder(builder: (context) {
         return TextButton(
           onPressed: () async {

@@ -87,8 +87,9 @@ void main() {
   });
 
   Widget createWidgetUnderTest() {
-    return const MaterialApp(
-      home: Scaffold(
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const Scaffold(
         body: DuoMatchingDialog(),
       ),
     );

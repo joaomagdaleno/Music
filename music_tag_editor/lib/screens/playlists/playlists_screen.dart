@@ -31,9 +31,10 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
   void _createPlaylist() async {
     String? name;
     
-    if (defaultTargetPlatform == TargetPlatform.windows || 
-        defaultTargetPlatform == TargetPlatform.macOS ||
-        defaultTargetPlatform == TargetPlatform.linux) {
+    final platform = Theme.of(context).platform;
+    if (platform == TargetPlatform.windows || 
+        platform == TargetPlatform.macOS ||
+        platform == TargetPlatform.linux) {
       // Fluent dialog
       final controller = TextEditingController();
       name = await fluent.showDialog<String>(
@@ -71,7 +72,8 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    switch (defaultTargetPlatform) {
+    final platform = Theme.of(context).platform;
+    switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:

@@ -39,7 +39,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: Scaffold(body: SmartLibraryScreen()));
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const Scaffold(body: SmartLibraryScreen()),
+    );
   }
 
   group('SmartLibraryScreen', () {

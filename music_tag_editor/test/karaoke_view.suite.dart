@@ -35,8 +35,9 @@ void main() {
 
   Widget createTestWidget() {
     return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
       home: KaraokeScreen(
-        track: {'id': '1', 'title': 'Test Song', 'artist': 'Test Artist'},
+        track: const {'id': '1', 'title': 'Test Song', 'artist': 'Test Artist'},
       ),
     );
   }

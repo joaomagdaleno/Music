@@ -18,7 +18,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: PlaylistsScreen());
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const PlaylistsScreen(),
+    );
   }
 
   group('PlaylistsScreen', () {

@@ -108,6 +108,7 @@ void main() {
 
   Widget createTestWidget() {
     return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
       home: RingtoneMakerScreen(
         track: SearchResult(
           id: '1',

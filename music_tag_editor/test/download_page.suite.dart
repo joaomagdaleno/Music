@@ -25,7 +25,10 @@ void main() {
   });
 
   Widget createTestWidget() {
-    return const MaterialApp(home: DownloadPage());
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const DownloadPage(),
+    );
   }
 
   group('DownloadPage', () {
