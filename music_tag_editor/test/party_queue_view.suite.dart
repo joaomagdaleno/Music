@@ -7,7 +7,10 @@ import 'package:music_tag_editor/screens/disco/party_queue_screen.dart';
 
 void main() {
   Widget createTestWidget() {
-    return const MaterialApp(home: PartyQueueScreen());
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: const PartyQueueScreen(),
+    );
   }
 
   group('PartyQueueScreen', () {
