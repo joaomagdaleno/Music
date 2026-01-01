@@ -1,6 +1,7 @@
 @Tags(['unit'])
 library;
 
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/services/desktop_integration_service.dart';
@@ -24,6 +25,10 @@ void main() {
   late MockMenu mockMenu;
 
   setUpAll(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    const MethodChannel('com.alexmercerind/flutter_acrylic').setMockMethodCallHandler((MethodCall methodCall) async {
+      return null;
+    });
     registerFallbackValue(FakeMenu());
     registerFallbackValue(FakeWindowOptions());
   });
