@@ -11,6 +11,7 @@ class MaterialSettingsView extends StatefulWidget {
   final int crossfadeSeconds;
   final bool ageBypass;
   
+  final bool isAuthenticated;
   final ValueChanged<FilenameFormat?> onFormatChanged;
   final ValueChanged<double> onCrossfadeChanged;
   final ValueChanged<int> onCrossfadeSaved;
@@ -18,6 +19,8 @@ class MaterialSettingsView extends StatefulWidget {
   final VoidCallback onCleanupLibrary;
   final VoidCallback onEnableCloudSync;
   final VoidCallback onPullFromCloud;
+  final VoidCallback onLogin;
+  final VoidCallback onLogout;
 
   const MaterialSettingsView({
     super.key,
@@ -25,6 +28,7 @@ class MaterialSettingsView extends StatefulWidget {
     required this.selectedFormat,
     required this.crossfadeSeconds,
     required this.ageBypass,
+    required this.isAuthenticated,
     required this.onFormatChanged,
     required this.onCrossfadeChanged,
     required this.onCrossfadeSaved,
@@ -32,6 +36,8 @@ class MaterialSettingsView extends StatefulWidget {
     required this.onCleanupLibrary,
     required this.onEnableCloudSync,
     required this.onPullFromCloud,
+    required this.onLogin,
+    required this.onLogout,
   });
 
   @override
@@ -278,6 +284,17 @@ class _MaterialSettingsViewState extends State<MaterialSettingsView> {
                   'Sincronização na Nuvem',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
+                const Spacer(),
+                if (!widget.isAuthenticated)
+                  TextButton(
+                    onPressed: widget.onLogin,
+                    child: const Text('Conectar'),
+                  )
+                else
+                  TextButton(
+                    onPressed: widget.onLogout,
+                    child: const Text('Sair'),
+                  ),
               ],
             ),
             const SizedBox(height: 8),
@@ -290,19 +307,27 @@ class _MaterialSettingsViewState extends State<MaterialSettingsView> {
               children: [
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: widget.onEnableCloudSync,
+                    onPressed: widget.isAuthenticated ? widget.onEnableCloudSync : null,
                     icon: const Icon(Icons.cloud_upload),
                     label: const Text('Sincronizar Agora'),
                   ),
                 ),
                 const SizedBox(width: 8),
                 IconButton(
-                  onPressed: widget.onPullFromCloud,
+                  onPressed: widget.isAuthenticated ? widget.onPullFromCloud : null,
                   icon: const Icon(Icons.cloud_download),
                   tooltip: 'Baixar da Nuvem',
                 ),
               ],
             ),
+            if (!widget.isAuthenticated)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  'Login necessário para sincronização',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.orange),
+                ),
+              ),
           ],
         ),
       ),

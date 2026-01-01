@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:music_tag_editor/models/filename_format.dart';
 import 'package:music_tag_editor/screens/settings/views/fluent_settings_view.dart';
 import 'package:music_tag_editor/screens/settings/views/material_settings_view.dart';
+import 'package:music_tag_editor/services/auth_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/firebase_sync_service.dart';
 import 'package:music_tag_editor/services/metadata_cleanup_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
+import 'package:music_tag_editor/screens/login/login_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -16,6 +19,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final DatabaseService _dbService = DatabaseService.instance;
+  final AuthService _authService = AuthService.instance;
   FilenameFormat _selectedFormat = FilenameFormat.artistTitle;
   int _crossfadeSeconds = 3;
   bool _ageBypass = false;
@@ -53,9 +57,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     await _dbService.saveFilenameFormat(format);
     if (!mounted) return;
     
-    // On Fluent, we might use InfoBar or ContentDialog, but ScaffolMessenger works for now 
-    // or we can pass a callback that the view handles.
-    // For simplicity, we keep ScaffoldMessenger as it works on FluentApp too (usually).
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Preference saved!')),
     );
@@ -73,6 +74,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _enableCloudSync() async {
+    if (!_authService.isAuthenticated) {
+      _navigateToLogin();
+      return;
+    }
     setState(() => _isLoading = true);
     final success = await FirebaseSyncService.instance.enableSync();
     if (mounted) {
@@ -88,6 +93,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _pullFromCloud() async {
+    if (!_authService.isAuthenticated) {
+      _navigateToLogin();
+      return;
+    }
     setState(() => _isLoading = true);
     final count = await FirebaseSyncService.instance.pullFromCloud();
     if (mounted) {
@@ -96,6 +105,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
         SnackBar(content: Text('$count itens sincronizados!')),
       );
     }
+  }
+
+  void _navigateToLogin() {
+    Navigator.of(context).push(
+      _isFluent
+          ? fluent.FluentPageRoute(builder: (_) => const LoginScreen())
+          : MaterialPageRoute(builder: (_) => const LoginScreen()),
+    ).then((_) => setState(() {})); // Refresh state after return
+  }
+
+  Future<void> _logout() async {
+    await _authService.logout();
+    setState(() {});
   }
 
   Future<void> _saveCrossfade(int validSeconds) async {
@@ -117,6 +139,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         selectedFormat: _selectedFormat,
         crossfadeSeconds: _crossfadeSeconds,
         ageBypass: _ageBypass,
+        isAuthenticated: _authService.isAuthenticated,
         onFormatChanged: (val) {
           if (val != null) _saveFormat(val);
         },
@@ -126,21 +149,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
         onCrossfadeSaved: _saveCrossfade,
         onAgeBypassChanged: (val) async {
              if (val) {
-                // Confirm logic usually needs context/dialog.
-                // We'll simplisticly toggle it here, or we'd move the dialog logic to the View
-                // OR we move the dialog logic here but we need a way to show dialog from Controller
-                // For now, simpler implementation: prompt logic was in View in previous legacy code
-                // But generally logic in Controller.
-                // We can let the View handle the confirmation UI and then call this callback only if confirmed.
-                // Let's assume the View handles the confirmation for UI purity.
-                // Actually, logic was: "If checking true, show dialog".
-                // We'll update _ageBypass after callback.
+                // Confirmation logic remains here or in view
               }
             _saveAgeBypass(val);
         },
         onCleanupLibrary: _cleanupLibrary,
         onEnableCloudSync: _enableCloudSync,
         onPullFromCloud: _pullFromCloud,
+        onLogin: _navigateToLogin,
+        onLogout: _logout,
       );
     }
 
@@ -149,6 +166,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       selectedFormat: _selectedFormat,
       crossfadeSeconds: _crossfadeSeconds,
       ageBypass: _ageBypass,
+      isAuthenticated: _authService.isAuthenticated,
       onFormatChanged: (val) {
         if (val != null) _saveFormat(val);
       },
@@ -158,6 +176,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       onCleanupLibrary: _cleanupLibrary,
       onEnableCloudSync: _enableCloudSync,
       onPullFromCloud: _pullFromCloud,
+      onLogin: _navigateToLogin,
+      onLogout: _logout,
     );
   }
 }
