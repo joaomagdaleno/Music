@@ -32,4 +32,8 @@ class PersonaService extends ChangeNotifier {
     DatabaseService.instance.saveSetting('active_persona', persona.name);
     notifyListeners();
   }
+
+  static void resetInstance() {
+    instance._activePersona = AppPersona.listener;
+  }
 }

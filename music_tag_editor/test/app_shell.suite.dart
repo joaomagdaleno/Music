@@ -6,8 +6,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
 import 'package:music_tag_editor/models/filename_format.dart';
-import 'package:music_tag_editor/screens/search/search_screen.dart';
-import 'package:music_tag_editor/screens/home/home_screen.dart';
 import 'test_helper.dart';
 
 void main() {
@@ -44,7 +42,7 @@ void main() {
       expect(find.text('Modo Offline Ativado'), findsOneWidget);
     });
 
-    testWidgets('Navigation switches pages', (tester) async {
+    testWidgets('Global Rail switches Personas', (tester) async {
       tester.view.physicalSize = const Size(400, 800);
       tester.view.devicePixelRatio = 1.0;
 
@@ -54,20 +52,19 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      expect(find.byType(HomeScreen), findsOneWidget);
+      // Initial persona is Listener (Ouvinte)
+      expect(find.text('Início'), findsAtLeastNWidgets(1));
 
       final bottomNavBarFinder = find.byType(BottomNavigationBar);
       expect(bottomNavBarFinder, findsOneWidget);
 
-      final bottomNavBar =
-          tester.widget<BottomNavigationBar>(bottomNavBarFinder);
-      bottomNavBar.onTap?.call(1);
-
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 300));
+      // Tap index 1: Librarian (Bibliotecário)
+      await tester.tap(find.text('Bibliotecário'));
       await tester.pumpAndSettle();
 
-      expect(find.byType(SearchScreen), findsOneWidget);
+      // Should now show Librarian tabs: Tags, Minhas Músicas
+      expect(find.text('Tags'), findsAtLeastNWidgets(1));
+      expect(find.text('Início'), findsNothing);
 
       tester.view.resetPhysicalSize();
       tester.view.resetDevicePixelRatio();

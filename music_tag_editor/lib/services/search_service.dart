@@ -416,7 +416,8 @@ class SearchService {
 
       if (result.exitCode == 0) {
         final streamUrl = (result.stdout as String).trim();
-        debugPrint('[SearchService] Found Stream URL: ${streamUrl.substring(0, 50)}...');
+        final displayUrl = streamUrl.length > 50 ? '${streamUrl.substring(0, 50)}...' : streamUrl;
+        debugPrint('[SearchService] Found Stream URL: $displayUrl');
         return streamUrl;
       }
       debugPrint('[SearchService] getStreamUrl FAILED: ${result.stderr}');
