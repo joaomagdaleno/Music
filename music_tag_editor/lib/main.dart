@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
 import 'package:music_tag_editor/services/connectivity_service.dart';
@@ -216,9 +217,22 @@ class MusicTagEditorApp extends StatelessWidget {
         final primaryColor = ThemeService.instance.primaryColor;
         return MaterialApp(
           title: 'Music Tag Editor',
+          builder: (context, child) {
+            child = child ?? const SizedBox();
+            if (platform == TargetPlatform.windows || (platform == null && Platform.isWindows)) {
+              return fluent.FluentTheme(
+                data: fluent.FluentThemeData(
+                  accentColor: fluent.Colors.blue,
+                ),
+                child: child,
+              );
+            }
+            return child;
+          },
           theme: ThemeData(
             useMaterial3: true,
             platform: platform,
+            scaffoldBackgroundColor: Colors.transparent,
             colorScheme: ColorScheme.fromSeed(
               seedColor: primaryColor,
               brightness: Brightness.light,
@@ -227,6 +241,7 @@ class MusicTagEditorApp extends StatelessWidget {
           darkTheme: ThemeData(
             useMaterial3: true,
             platform: platform,
+            scaffoldBackgroundColor: Colors.transparent,
             colorScheme: ColorScheme.fromSeed(
               seedColor: primaryColor,
               brightness: Brightness.dark,

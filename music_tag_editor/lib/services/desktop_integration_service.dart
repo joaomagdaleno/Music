@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter/material.dart';
 import 'package:system_tray/system_tray.dart';
 import 'package:window_manager/window_manager.dart';
@@ -44,6 +45,10 @@ class DesktopIntegrationService {
     try {
       await StartupLogger.log('Desktop: ensuring WindowManager initialized');
       await _windowManager.ensureInitialized();
+      await Window.initialize();
+      if (Platform.isWindows) {
+        await Window.setEffect(effect: WindowEffect.mica, dark: true);
+      }
 
       const String iconPath = 'assets/app_icon.ico';
 
