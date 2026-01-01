@@ -222,12 +222,12 @@ class MusicTagEditorApp extends StatelessWidget {
             darkTheme: fluent.FluentThemeData(
               brightness: fluent.Brightness.dark,
               accentColor: fluent.Colors.blue,
-              scaffoldBackgroundColor: fluent.Colors.grey.withValues(alpha: 0.85),
+              scaffoldBackgroundColor: fluent.Colors.grey,
             ),
             theme: fluent.FluentThemeData(
               brightness: fluent.Brightness.light,
               accentColor: fluent.Colors.blue,
-              scaffoldBackgroundColor: fluent.Colors.white.withValues(alpha: 0.85),
+              scaffoldBackgroundColor: fluent.Colors.white,
             ),
             home: const AppShell(),
           );
@@ -238,7 +238,7 @@ class MusicTagEditorApp extends StatelessWidget {
           theme: ThemeData(
             useMaterial3: true,
             platform: platform,
-            scaffoldBackgroundColor: Colors.white.withValues(alpha: 0.85),
+            scaffoldBackgroundColor: Colors.white,
             colorScheme: ColorScheme.fromSeed(
               seedColor: primaryColor,
               brightness: Brightness.light,
@@ -247,7 +247,7 @@ class MusicTagEditorApp extends StatelessWidget {
           darkTheme: ThemeData(
             useMaterial3: true,
             platform: platform,
-            scaffoldBackgroundColor: Colors.black.withValues(alpha: 0.85),
+            scaffoldBackgroundColor: Colors.black,
             colorScheme: ColorScheme.fromSeed(
               seedColor: primaryColor,
               brightness: Brightness.dark,

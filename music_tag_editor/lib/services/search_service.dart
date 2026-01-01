@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
 import 'package:music_tag_editor/services/dependency_manager.dart';
@@ -71,6 +72,7 @@ class SearchService {
     onStatusUpdate?.call(MediaPlatform.youtube, SearchStatus.searching);
     onStatusUpdate?.call(MediaPlatform.youtubeMusic, SearchStatus.searching);
     onStatusUpdate?.call(MediaPlatform.spotify, SearchStatus.searching);
+    onStatusUpdate?.call(MediaPlatform.hifi, SearchStatus.searching);
 
     // Run searches in parallel
     final futures = [
@@ -99,14 +101,17 @@ class SearchService {
     void Function(MediaPlatform platform, SearchStatus status)? onStatusUpdate,
   ) async {
     try {
+      debugPrint('[SearchService] Executing ${platform.name} search...');
       final results = await searchFn();
+      debugPrint('[SearchService] ${platform.name} search finished with ${results.length} results');
       if (results.isEmpty) {
         onStatusUpdate?.call(platform, SearchStatus.noResults);
       } else {
         onStatusUpdate?.call(platform, SearchStatus.completed);
       }
       return results;
-    } catch (e) {
+    } catch (e, stack) {
+      debugPrint('[SearchService] ${platform.name} search FAILED: $e\n$stack');
       onStatusUpdate?.call(platform, SearchStatus.failed);
       return [];
     }
@@ -117,9 +122,11 @@ class SearchService {
     try {
       final args = [
         ..._getBaseArgs(),
+        '--quiet',
+        '--no-warnings',
         'ytsearch10:$query',
         '--dump-json',
-        // Removed --flat-playlist to get full metadata (thumbnails, artists etc)
+        '--flat-playlist',
         '--no-download',
       ];
 
@@ -184,8 +191,11 @@ class SearchService {
     try {
       final args = [
         ..._getBaseArgs(),
+        '--quiet',
+        '--no-warnings',
         'https://music.youtube.com/search?q=${Uri.encodeComponent(query)}',
         '--dump-json',
+        '--flat-playlist',
         '--no-download',
         '-I', '1:5', // First 5 results
       ];
@@ -396,6 +406,7 @@ class SearchService {
         url,
       ];
 
+      debugPrint('[SearchService] getStreamUrl Command: ${_deps.ytDlpPath} ${args.join(' ')}');
       final result = await processRunner(
         _deps.ytDlpPath,
         args,
@@ -404,10 +415,14 @@ class SearchService {
       );
 
       if (result.exitCode == 0) {
-        return (result.stdout as String).trim();
+        final streamUrl = (result.stdout as String).trim();
+        debugPrint('[SearchService] Found Stream URL: ${streamUrl.substring(0, 50)}...');
+        return streamUrl;
       }
+      debugPrint('[SearchService] getStreamUrl FAILED: ${result.stderr}');
       return null;
-    } catch (e) {
+    } catch (e, stack) {
+      debugPrint('[SearchService] Error extracting stream: $e\n$stack');
       return null;
     }
   }

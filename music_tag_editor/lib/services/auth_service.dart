@@ -40,22 +40,26 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<bool> login(String email, String password) async {
+    debugPrint("[AuthService] Attempting login for: $email");
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      debugPrint("[AuthService] Login SUCCESS for: $email");
       return true;
     } catch (e) {
-      debugPrint("Login error: $e");
+      debugPrint("[AuthService] Login FAILED for $email: $e");
       return false;
     }
   }
 
   Future<bool> register(String email, String password) async {
+    debugPrint("[AuthService] Attempting registration for: $email");
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      debugPrint("[AuthService] Registration SUCCESS for: $email");
       return true;
     } catch (e) {
-      debugPrint("Registration error: $e");
+      debugPrint("[AuthService] Registration FAILED for $email: $e");
       return false;
     }
   }
@@ -65,11 +69,13 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<bool> sendPasswordReset(String email) async {
+    debugPrint("[AuthService] Attempting password reset for: $email");
     try {
       await _auth.sendPasswordResetEmail(email: email);
+      debugPrint("[AuthService] Password reset email SENT to: $email");
       return true;
     } catch (e) {
-      debugPrint("Reset email error: $e");
+      debugPrint("[AuthService] Password reset FAILED for $email: $e");
       return false;
     }
   }

@@ -24,9 +24,11 @@ class _LoginScreenState extends State<LoginScreen> {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
+    debugPrint('[LoginScreen] Starting ${_isLogin ? 'LOGIN' : 'REGISTRATION'} process for: $email');
     bool success = _isLogin
         ? await AuthService.instance.login(email, password)
         : await AuthService.instance.register(email, password);
+    debugPrint('[LoginScreen] Auth process finished. Result: ${success ? 'SUCCESS' : 'FAILURE'}');
 
     if (mounted) {
       setState(() => _isLoading = false);

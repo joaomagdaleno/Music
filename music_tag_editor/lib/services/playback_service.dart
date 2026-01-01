@@ -1,4 +1,5 @@
 import 'package:just_audio/just_audio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
@@ -8,7 +9,6 @@ import 'package:music_tag_editor/services/equalizer_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
-import 'package:meta/meta.dart';
 import 'dart:async';
 
 class PlaybackService {
@@ -149,11 +149,13 @@ class PlaybackService {
 
   Future<void> playSearchResult(SearchResult result,
       {bool fromRemote = false}) async {
+    debugPrint('[PlaybackService] Playing search result: ${result.title} (${result.platform})');
     _currentTrack = result;
 
     // Clear queue and start fresh for a single play
     _queue.clear();
     _queue.add(result);
+    debugPrint('[PlaybackService] Creating audio source for ${result.id}');
     _playlist =
         // ignore: deprecated_member_use
         ConcatenatingAudioSource(children: [await _createSource(result)]);
@@ -161,6 +163,7 @@ class PlaybackService {
     await _player.setAudioSource(_playlist!);
     _onTrackChanged(result);
     _player.play();
+    debugPrint('[PlaybackService] Playback started');
 
     if (!fromRemote) {
       LocalDuoService.instance.sendMessage({
@@ -175,12 +178,16 @@ class PlaybackService {
 
   Future<AudioSource> _createSource(SearchResult track) async {
     if (track.localPath != null) {
+      debugPrint('[PlaybackService] Playing local file: ${track.localPath}');
       return AudioSource.uri(Uri.file(track.localPath!));
     }
+    debugPrint('[PlaybackService] Fetching stream URL for: ${track.url}');
     final streamUrl = await _searchService.getStreamUrl(track.url);
     if (streamUrl != null) {
+      debugPrint('[PlaybackService] Stream URL obtained successfully');
       return AudioSource.uri(Uri.parse(streamUrl));
     }
+    debugPrint('[PlaybackService] ERROR: Could not get stream URL for ${track.id}');
     throw Exception('Could not get stream URL');
   }
 

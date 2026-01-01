@@ -18,6 +18,7 @@ import 'package:music_tag_editor/screens/vault/vault_screen.dart';
 import 'package:music_tag_editor/screens/stats/listening_stats_screen.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/screens/library/library_screen.dart';
+import 'package:music_tag_editor/screens/settings/settings_screen.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -97,7 +98,7 @@ class _AppShellState extends State<AppShell> {
     return Container(
       decoration: BoxDecoration(
         color: isDesktop
-            ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.85)
+            ? Theme.of(context).colorScheme.surface
             : null,
         border: isDesktop
             ? Border(
@@ -157,6 +158,7 @@ class _AppShellState extends State<AppShell> {
           const _Destination('Tags', Icons.edit_note, Icons.edit_note_outlined),
           const _Destination('Minhas Músicas', Icons.library_music,
               Icons.library_music_outlined),
+          const _Destination('Configurações', Icons.settings, Icons.settings_outlined),
         ];
       case AppPersona.listener:
         return [
@@ -166,6 +168,7 @@ class _AppShellState extends State<AppShell> {
               Icons.library_music_outlined),
           const _Destination(
               'Playlists', Icons.playlist_play, Icons.playlist_play_outlined),
+          const _Destination('Configurações', Icons.settings, Icons.settings_outlined),
         ];
       case AppPersona.host:
         return [
@@ -173,6 +176,7 @@ class _AppShellState extends State<AppShell> {
           const _Destination('Karaoke', Icons.mic, Icons.mic_none),
           const _Destination(
               'Fila', Icons.queue_music, Icons.queue_music_outlined),
+          const _Destination('Configurações', Icons.settings, Icons.settings_outlined),
         ];
       case AppPersona.artisan:
         return [
@@ -180,6 +184,7 @@ class _AppShellState extends State<AppShell> {
           const _Destination('Cofre', Icons.enhanced_encryption,
               Icons.enhanced_encryption_outlined),
           const _Destination('Estatísticas', Icons.bar_chart, Icons.bar_chart),
+          const _Destination('Configurações', Icons.settings, Icons.settings_outlined),
         ];
     }
   }
@@ -190,6 +195,7 @@ class _AppShellState extends State<AppShell> {
         return [
           const LibraryScreen(title: 'Editor de Tags'),
           const MyTracksScreen(),
+          const SettingsScreen(),
         ];
       case AppPersona.listener:
         return [
@@ -197,12 +203,14 @@ class _AppShellState extends State<AppShell> {
           const SearchScreen(),
           const MyTracksScreen(),
           const PlaylistsScreen(),
+          const SettingsScreen(),
         ];
       case AppPersona.host:
         return [
           const DiscoModeScreen(),
           const KaraokeScreen(track: {}), // Placeholder track
           const PartyQueueScreen(),
+          const SettingsScreen(),
         ];
       case AppPersona.artisan:
         return [
@@ -218,6 +226,7 @@ class _AppShellState extends State<AppShell> {
           ),
           const VaultScreen(),
           const ListeningStatsScreen(),
+          const SettingsScreen(),
         ];
     }
   }
