@@ -97,7 +97,7 @@ class _AppShellState extends State<AppShell> {
     return Container(
       decoration: BoxDecoration(
         color: isDesktop
-            ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.7)
+            ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.85)
             : null,
         border: isDesktop
             ? Border(
