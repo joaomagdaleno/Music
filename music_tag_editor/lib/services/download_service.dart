@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'dart:convert';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 
 /// Platform detected from URL or search.
@@ -228,6 +228,7 @@ class DownloadService {
 
   /// Get YouTube/YouTube Music info using yt-dlp.
   Future<MediaInfo> _getYouTubeInfo(String url) async {
+    debugPrint('[DownloadService] Getting MediaInfo for YouTube: $url');
     final result = await processRunner(
       _deps.ytDlpPath,
       [
@@ -240,11 +241,11 @@ class DownloadService {
     );
 
     if (result.exitCode != 0) {
+      debugPrint('[DownloadService] getMediaInfo FAILED: ${result.stderr}');
       throw Exception('Failed to get video info: ${result.stderr}');
     }
 
     final json = jsonDecode(result.stdout as String);
-
     final formats = <DownloadFormat>[];
 
     // Parse available formats
@@ -299,6 +300,7 @@ class DownloadService {
         ));
 
     final platform = detectPlatform(url);
+    debugPrint('[DownloadService] Successfully parsed info for: ${json['title']}');
 
     return MediaInfo(
       title: json['title'] as String? ?? 'Unknown',

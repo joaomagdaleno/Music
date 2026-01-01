@@ -18,6 +18,7 @@ import 'package:music_tag_editor/screens/vault/vault_screen.dart';
 import 'package:music_tag_editor/screens/stats/listening_stats_screen.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/screens/library/library_screen.dart';
+import 'package:music_tag_editor/screens/settings/settings_screen.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -87,8 +88,8 @@ class _AppShellState extends State<AppShell> {
     );
   }
 
-  Widget _buildNavigationRail(AppPersona persona) {
-    final destinations = _getDestinations(persona);
+  Widget _buildNavigationRail(AppPersona activePersona) {
+    final destinations = _getGlobalDestinations();
     final isDesktop = !kIsWeb &&
         (Theme.of(context).platform == TargetPlatform.windows ||
             Theme.of(context).platform == TargetPlatform.linux ||
@@ -96,9 +97,7 @@ class _AppShellState extends State<AppShell> {
 
     return Container(
       decoration: BoxDecoration(
-        color: isDesktop
-            ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.85)
-            : null,
+        color: isDesktop ? Theme.of(context).colorScheme.surface : null,
         border: isDesktop
             ? Border(
                 right: BorderSide(
@@ -109,12 +108,51 @@ class _AppShellState extends State<AppShell> {
       ),
       child: NavigationRail(
         extended: MediaQuery.of(context).size.width >= 900,
-        selectedIndex: _selectedIndex >= destinations.length ? 0 : _selectedIndex,
-        onDestinationSelected: (index) => setState(() => _selectedIndex = index),
+        selectedIndex: destinations.indexWhere((d) => d.persona == activePersona),
+        onDestinationSelected: (index) {
+          if (index < destinations.length) {
+            setState(() => _selectedIndex = 0);
+            PersonaService.instance.setPersona(destinations[index].persona!);
+          } else {
+             setState(() => _selectedIndex = index);
+          }
+        },
         labelType: MediaQuery.of(context).size.width >= 900
             ? NavigationRailLabelType.none
             : NavigationRailLabelType.all,
-        backgroundColor: Colors.transparent, // Allow container color to show
+        backgroundColor: Colors.transparent,
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: Column(
+            children: [
+              const Icon(Icons.music_note, size: 32, color: Colors.blue),
+              if (MediaQuery.of(context).size.width >= 900)
+                const Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                  child: Text('Persona Engine',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                ),
+            ],
+          ),
+        ),
+        trailing: Expanded(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: IconButton(
+                icon: const Icon(Icons.settings),
+                tooltip: 'Configurações',
+                onPressed: () {
+                   // Open settings as a dialog or a temporary mode overlay
+                   // For now, let's keep it consistent and maybe add it as a "persona" or just a specific UI.
+                   // Let's use a hidden "Settings" index if we want it in IndexedStack.
+                   setState(() => _selectedIndex = 99); // 99 for Settings
+                },
+              ),
+            ),
+          ),
+        ),
         destinations: destinations
             .map((d) => NavigationRailDestination(
                   icon: Icon(d.iconOutline),
@@ -126,100 +164,163 @@ class _AppShellState extends State<AppShell> {
     );
   }
 
-  Widget _buildBottomNavBar(AppPersona persona) {
-    final destinations = _getDestinations(persona);
+  Widget _buildBottomNavBar(AppPersona activePersona) {
+    final destinations = _getGlobalDestinations();
+    final currentIndex = destinations.indexWhere((d) => d.persona == activePersona);
+    
     return BottomNavigationBar(
-      currentIndex: _selectedIndex >= destinations.length ? 0 : _selectedIndex,
-      onTap: (index) => setState(() => _selectedIndex = index),
+      currentIndex: currentIndex == -1 ? 0 : currentIndex,
+      onTap: (index) => PersonaService.instance.setPersona(destinations[index].persona!),
       type: BottomNavigationBarType.fixed,
-      items: destinations
-          .map((d) => BottomNavigationBarItem(
-                icon: Icon(d.icon),
-                label: d.label,
-              ))
-          .toList(),
+      items: [
+        ...destinations.map((d) => BottomNavigationBarItem(
+              icon: Icon(d.icon),
+              label: d.label,
+            )),
+        const BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: 'Configurações',
+        ),
+      ],
     );
   }
 
   Widget _buildBody(AppPersona persona) {
-    final pages = _getPages(persona);
-    final index = _selectedIndex >= pages.length ? 0 : _selectedIndex;
-    return IndexedStack(
-      index: index,
-      children: pages,
+    if (_selectedIndex == 99) {
+      return const SettingsScreen();
+    }
+    
+    // Each Persona now has its own internal shell/container
+    switch (persona) {
+      case AppPersona.listener:
+        return _buildListenerPersona();
+      case AppPersona.librarian:
+        return _buildLibrarianPersona();
+      case AppPersona.host:
+        return _buildHostPersona();
+      case AppPersona.artisan:
+        return _buildArtisanPersona();
+    }
+  }
+
+  List<_Destination> _getGlobalDestinations() {
+    return [
+      const _Destination('Ouvinte', Icons.headset, Icons.headset_outlined, persona: AppPersona.listener),
+      const _Destination('Bibliotecário', Icons.library_books, Icons.library_books_outlined, persona: AppPersona.librarian),
+      const _Destination('Anfitrião', Icons.celebration, Icons.celebration_outlined, persona: AppPersona.host),
+      const _Destination('Artesão', Icons.architecture, Icons.architecture_outlined, persona: AppPersona.artisan),
+    ];
+  }
+
+  // --- Persona Custom Shells ---
+
+  Widget _buildListenerPersona() {
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 0,
+          bottom: const TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.home), text: 'Início'),
+              Tab(icon: Icon(Icons.search), text: 'Buscar'),
+              Tab(icon: Icon(Icons.library_music), text: 'Minhas Músicas'),
+              Tab(icon: Icon(Icons.playlist_play), text: 'Playlists'),
+            ],
+          ),
+        ),
+        body: const TabBarView(
+          children: [
+            HomeScreen(),
+            SearchScreen(),
+            MyTracksScreen(),
+            PlaylistsScreen(),
+          ],
+        ),
+      ),
     );
   }
 
-  List<_Destination> _getDestinations(AppPersona persona) {
-    switch (persona) {
-      case AppPersona.librarian:
-        return [
-          const _Destination('Tags', Icons.edit_note, Icons.edit_note_outlined),
-          const _Destination('Minhas Músicas', Icons.library_music,
-              Icons.library_music_outlined),
-        ];
-      case AppPersona.listener:
-        return [
-          const _Destination('Início', Icons.home, Icons.home_outlined),
-          const _Destination('Buscar', Icons.search, Icons.search_outlined),
-          const _Destination('Minhas Músicas', Icons.library_music,
-              Icons.library_music_outlined),
-          const _Destination(
-              'Playlists', Icons.playlist_play, Icons.playlist_play_outlined),
-        ];
-      case AppPersona.host:
-        return [
-          const _Destination('Disco', Icons.album, Icons.album_outlined),
-          const _Destination('Karaoke', Icons.mic, Icons.mic_none),
-          const _Destination(
-              'Fila', Icons.queue_music, Icons.queue_music_outlined),
-        ];
-      case AppPersona.artisan:
-        return [
-          const _Destination('Toques', Icons.content_cut, Icons.content_cut),
-          const _Destination('Cofre', Icons.enhanced_encryption,
-              Icons.enhanced_encryption_outlined),
-          const _Destination('Estatísticas', Icons.bar_chart, Icons.bar_chart),
-        ];
-    }
+  Widget _buildLibrarianPersona() {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 0,
+          bottom: const TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.edit_note), text: 'Tags'),
+              Tab(icon: Icon(Icons.library_music), text: 'Minhas Músicas'),
+            ],
+          ),
+        ),
+        body: const TabBarView(
+          children: [
+            LibraryScreen(title: 'Editor de Tags'),
+            MyTracksScreen(),
+          ],
+        ),
+      ),
+    );
   }
 
-  List<Widget> _getPages(AppPersona persona) {
-    switch (persona) {
-      case AppPersona.librarian:
-        return [
-          const LibraryScreen(title: 'Editor de Tags'),
-          const MyTracksScreen(),
-        ];
-      case AppPersona.listener:
-        return [
-          const HomeScreen(),
-          const SearchScreen(),
-          const MyTracksScreen(),
-          const PlaylistsScreen(),
-        ];
-      case AppPersona.host:
-        return [
-          const DiscoModeScreen(),
-          const KaraokeScreen(track: {}), // Placeholder track
-          const PartyQueueScreen(),
-        ];
-      case AppPersona.artisan:
-        return [
-          RingtoneMakerScreen(
-            track: SearchResult(
-              id: '0',
-              title: 'Selecione uma música',
-              artist: '',
-              url: '',
-              platform: MediaPlatform.unknown,
-              thumbnail: '',
-            ),
+  Widget _buildHostPersona() {
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 0,
+          bottom: const TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.album), text: 'Disco'),
+              Tab(icon: Icon(Icons.mic), text: 'Karaoke'),
+              Tab(icon: Icon(Icons.queue_music), text: 'Fila'),
+            ],
           ),
-          const VaultScreen(),
-          const ListeningStatsScreen(),
-        ];
-    }
+        ),
+        body: const TabBarView(
+          children: [
+            DiscoModeScreen(),
+            KaraokeScreen(track: {}),
+            PartyQueueScreen(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildArtisanPersona() {
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 0,
+          bottom: const TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.content_cut), text: 'Toques'),
+              Tab(icon: Icon(Icons.enhanced_encryption), text: 'Cofre'),
+              Tab(icon: Icon(Icons.bar_chart), text: 'Estatísticas'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            RingtoneMakerScreen(
+              track: SearchResult(
+                id: '0',
+                title: 'Selecione uma música',
+                artist: '',
+                url: '',
+                platform: MediaPlatform.unknown,
+                thumbnail: '',
+              ),
+            ),
+            const VaultScreen(),
+            const ListeningStatsScreen(),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -227,5 +328,6 @@ class _Destination {
   final String label;
   final IconData icon;
   final IconData iconOutline;
-  const _Destination(this.label, this.icon, this.iconOutline);
+  final AppPersona? persona;
+  const _Destination(this.label, this.icon, this.iconOutline, {this.persona});
 }

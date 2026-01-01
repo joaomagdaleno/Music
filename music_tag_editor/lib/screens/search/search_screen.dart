@@ -55,6 +55,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
   }
 
   Future<void> _initDependencies() async {
+    debugPrint('[SearchScreen] Initializing dependencies...');
     try {
       await DependencyManager.instance.ensureDependencies(
         onProgress: (status, progress) {
@@ -64,8 +65,10 @@ class _SearchScreenState extends material.State<SearchScreen> {
           });
         },
       );
+      debugPrint('[SearchScreen] Dependencies initialized successfully');
       setState(() => _isInitializing = false);
-    } catch (e) {
+    } catch (e, stack) {
+      debugPrint('[SearchScreen] Dependency initialization FAILED: $e\n$stack');
       if (mounted) {
         setState(() {
           _errorMessage = 'Erro ao inicializar: $e';
@@ -84,10 +87,12 @@ class _SearchScreenState extends material.State<SearchScreen> {
   void _onSearch(String query) async {
     if (query.trim().isEmpty) return;
 
+    debugPrint('[SearchScreen] Starting search for: "$query" (Platform: $_selectedPlatform)');
     setState(() {
       _isLoading = true;
       _errorMessage = '';
       _searchResults.clear();
+      _platformStatuses.clear();
       _formatsCache.clear();
       _selectedFormats.clear();
       _isExpanding.clear();
@@ -95,7 +100,9 @@ class _SearchScreenState extends material.State<SearchScreen> {
 
     try {
       if (_selectedPlatform != null) {
-        // Single platform search
+        debugPrint('[SearchScreen] Searching single platform: $_selectedPlatform');
+        _platformStatuses[_selectedPlatform!] = SearchStatus.searching;
+        
         List<SearchResult> filtered = [];
         if (_selectedPlatform == MediaPlatform.youtube) {
           filtered = await _searchService.searchYouTube(query);
@@ -106,14 +113,22 @@ class _SearchScreenState extends material.State<SearchScreen> {
         }
         
         if (mounted) {
+          debugPrint('[SearchScreen] Single platform search returned ${filtered.length} results');
           setState(() {
             _searchResults.addAll(filtered);
+            _platformStatuses[_selectedPlatform!] = filtered.isEmpty ? SearchStatus.noResults : SearchStatus.completed;
           });
         }
       } else {
-        // Search all
-        final results = await _searchService.searchAll(query);
+        debugPrint('[SearchScreen] Searching all platforms');
+        final results = await _searchService.searchAll(query, 
+          onStatusUpdate: (p, s) {
+            debugPrint('[SearchScreen] Status update for $p: $s');
+            if (mounted) setState(() => _platformStatuses[p] = s);
+          }
+        );
         if (mounted) {
+          debugPrint('[SearchScreen] Search all returned ${results.length} results');
           setState(() {
             _searchResults.addAll(results);
           });
@@ -121,10 +136,12 @@ class _SearchScreenState extends material.State<SearchScreen> {
       }
 
       if (_searchResults.isEmpty && mounted) {
+        debugPrint('[SearchScreen] No results found for query: "$query"');
         setState(() => _errorMessage =
             'Nenhuma música encontrada nas plataformas selecionadas.');
       }
-    } catch (e) {
+    } catch (e, stack) {
+      debugPrint('[SearchScreen] Error during search: $e\n$stack');
       if (mounted) {
         setState(() => _errorMessage = 'Erro ao buscar: $e');
       }
@@ -136,14 +153,16 @@ class _SearchScreenState extends material.State<SearchScreen> {
   }
 
   void _setPlatform(MediaPlatform? platform) {
+    debugPrint('[SearchScreen] Platform changed to: $platform');
     setState(() {
       _selectedPlatform = platform;
     });
-    // Optional: auto-trigger search if query exists
   }
 
   Future<void> loadFormats(SearchResult result) async {
+    debugPrint('[SearchScreen] Loading formats for ${result.id} (${result.platform})');
     if (_formatsCache.containsKey(result.url)) {
+      debugPrint('[SearchScreen] Using cached formats for ${result.id}');
       setState(() =>
           _isExpanding[result.url] = !(_isExpanding[result.url] ?? false));
       return;
@@ -157,6 +176,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
     try {
       final formats =
           await _searchService.getFormats(result.url, result.platform);
+      debugPrint('[SearchScreen] Retrived ${formats.length} formats for ${result.id}');
       if (mounted) {
         setState(() {
           _formatsCache[result.url] = formats;
@@ -166,7 +186,8 @@ class _SearchScreenState extends material.State<SearchScreen> {
           _loadingFormatsStatus.remove(result.url);
         });
       }
-    } catch (e) {
+    } catch (e, stack) {
+      debugPrint('[SearchScreen] Error loading formats: $e\n$stack');
       if (mounted) {
         showSnackBar('Erro ao carregar formatos: $e');
         setState(() => _loadingFormatsStatus.remove(result.url));
@@ -176,6 +197,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
 
   Future<void> startDownload(SearchResult result) async {
     final selectedFormat = _selectedFormats[result.url];
+    debugPrint('[SearchScreen] Starting download for ${result.id} with format: ${selectedFormat?.formatId}');
     if (selectedFormat == null) {
       return;
     }
@@ -186,18 +208,19 @@ class _SearchScreenState extends material.State<SearchScreen> {
     });
 
     try {
-      // Find Spotify match for better cover if it's YouTube
       String? overrideThumbnail;
       if (result.platform == MediaPlatform.youtube ||
           result.platform == MediaPlatform.youtubeMusic) {
+        debugPrint('[SearchScreen] Looking for Spotify metadata match for YouTube result...');
         final match = await _searchService.findSpotifyMatch(result);
         if (match != null) {
+          debugPrint('[SearchScreen] Found Spotify match for metadata');
           overrideThumbnail = match.thumbnail;
         }
       }
 
-      // Use user's Music folder
       final musicDir = '${Platform.environment['USERPROFILE']}\\Music';
+      debugPrint('[SearchScreen] Target directory: $musicDir');
 
       await _downloadService.download(
         result.url,
@@ -214,10 +237,12 @@ class _SearchScreenState extends material.State<SearchScreen> {
         },
       );
 
+      debugPrint('[SearchScreen] Download COMPLETED for ${result.id}');
       if (mounted) {
         showSnackBar('Download de "${result.title}" concluído!');
       }
-    } catch (e) {
+    } catch (e, stack) {
+      debugPrint('[SearchScreen] Download FAILED: $e\n$stack');
       if (mounted) {
         showSnackBar('Erro no download: $e');
       }
@@ -232,12 +257,11 @@ class _SearchScreenState extends material.State<SearchScreen> {
   }
 
   Future<void> addToPlaylist(SearchResult result) async {
+    debugPrint('[SearchScreen] Adding ${result.id} to playlist');
     final db = DatabaseService.instance;
     final playlistsList = await db.getPlaylists();
 
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     if (playlistsList.isEmpty) {
       showSnackBar('Crie uma playlist primeiro na aba "Playlists"');
@@ -247,7 +271,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
     final selectedPlaylistId = await showPlaylistDialog(playlistsList);
 
     if (selectedPlaylistId != null) {
-      // First save the track metadata to the tracks table
+      debugPrint('[SearchScreen] Selected playlist ID: $selectedPlaylistId');
       await db.saveTrack({
         'id': result.id,
         'title': result.title,
@@ -259,7 +283,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
       });
 
       await db.addTrackToPlaylist(selectedPlaylistId, result.id);
-
+      debugPrint('[SearchScreen] Track added to playlist successfully');
       if (mounted) {
         showSnackBar('"${result.title}" adicionada à playlist!');
       }
@@ -267,12 +291,15 @@ class _SearchScreenState extends material.State<SearchScreen> {
   }
 
   Future<void> playTrack(SearchResult result) async {
+    debugPrint('[SearchScreen] Playing track: ${result.id}');
     try {
       if (mounted) {
         showSnackBar('Carregando áudio de "${result.title}"...');
       }
       await _playbackService.playSearchResult(result);
-    } catch (e) {
+      debugPrint('[SearchScreen] Playback started for ${result.id}');
+    } catch (e, stack) {
+      debugPrint('[SearchScreen] Playback FAILED: $e\n$stack');
       if (mounted) {
         showSnackBar('Erro ao reproduzir: $e');
       }
@@ -280,6 +307,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
   }
 
   void openFullPlayer() {
+    debugPrint('[SearchScreen] Opening full player');
     material.Navigator.push(
       context,
       material.MaterialPageRoute(builder: (context) => const PlayerScreen()),
@@ -288,12 +316,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
 
   void showSnackBar(String message) {
     if (_isFluent) {
-      // Fluent UI doesn't have a standardized global snackbar without a Key/Overlay setup that mirrors Material's ScaffoldMessenger behavior easily in a localized child.
-      // We will fallback to debugging print or a dialog if critical, but for now we can try to use a local InfoBar overlay or just rely on console for non-critical feedback
-      // Or we can use `fluent.showDialog` for important messages.
-      // For ephemeral messages like 'Downloading...', we might want a better solution in Fluent.
-      // For now, logging to debug console and showing simple dialog for critical success/error.
-      debugPrint('[Fluent] $message');
+      debugPrint('[SearchScreen][SnackBar/Fluent] $message');
     } else {
       material.ScaffoldMessenger.of(context).showSnackBar(
         material.SnackBar(content: material.Text(message)),
@@ -407,7 +430,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
     }
 
     void handleToggleExpand(SearchResult result) {
-      loadFormats(result); // This method handles toggling too
+      loadFormats(result);
     }
 
     if (_isFluent) {

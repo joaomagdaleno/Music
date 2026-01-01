@@ -277,7 +277,7 @@ class FluentSearchView extends StatelessWidget {
     final isSelected = selectedPlatform == platform;
     return Button(
       style: ButtonStyle(
-        backgroundColor: isSelected ? ButtonState.all(FluentTheme.of(context).accentColor.withValues(alpha: 0.2)) : null,
+        backgroundColor: isSelected ? WidgetStateProperty.all(FluentTheme.of(context).accentColor.withValues(alpha: 0.2)) : null,
       ),
       onPressed: () => onPlatformChanged(platform),
       child: Row(
