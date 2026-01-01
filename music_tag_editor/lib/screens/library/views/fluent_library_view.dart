@@ -76,17 +76,17 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
           Tab(
             text: const Text('Minha Biblioteca'),
             icon: const Icon(FluentIcons.music_note),
-            body: const ScaffoldPage(content: MyTracksScreen()),
+            body: const MyTracksScreen(),
           ),
           Tab(
             text: const Text('Smart Mix'),
             icon: const Icon(FluentIcons.library),
-            body: const ScaffoldPage(content: SmartLibraryScreen()),
+            body: const SmartLibraryScreen(),
           ),
           Tab(
             text: const Text('Mood Explorer'),
             icon: const Icon(FluentIcons.emoji_neutral),
-            body: ScaffoldPage(content: MoodExplorerScreen()),
+            body: MoodExplorerScreen(),
           ),
         ],
       ),
