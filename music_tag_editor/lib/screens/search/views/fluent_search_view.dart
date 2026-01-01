@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/widgets/mini_player.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class FluentSearchView extends StatelessWidget {
   final TextEditingController searchController;
@@ -9,11 +10,14 @@ class FluentSearchView extends StatelessWidget {
   final String? errorMessage;
   final List<SearchResult> results;
   final Map<MediaPlatform, SearchStatus> platformStatuses;
+  // Platform Selection
+  final MediaPlatform? selectedPlatform;
   final Map<String, bool> isExpanding;
   final Map<String, List<DownloadFormat>> formatsCache;
   final Map<String, DownloadFormat?> selectedFormats;
   final Map<String, double> downloadingProgress;
   final Map<String, String> downloadingStatus;
+  final Map<String, String> loadingFormatsStatus;
 
   // Callbacks
   final VoidCallback onSearch;
@@ -24,6 +28,7 @@ class FluentSearchView extends StatelessWidget {
   final Function(SearchResult, String?) onFormatSelected;
   final Function(SearchResult) onToggleExpand;
   final VoidCallback onOpenFullPlayer;
+  final Function(MediaPlatform?) onPlatformChanged;
 
   const FluentSearchView({
     super.key,
@@ -32,11 +37,13 @@ class FluentSearchView extends StatelessWidget {
     required this.errorMessage,
     required this.results,
     required this.platformStatuses,
+    required this.selectedPlatform,
     required this.isExpanding,
     required this.formatsCache,
     required this.selectedFormats,
     required this.downloadingProgress,
     required this.downloadingStatus,
+    required this.loadingFormatsStatus,
     required this.onSearch,
     required this.onPlay,
     required this.onAddToPlaylist,
@@ -45,6 +52,7 @@ class FluentSearchView extends StatelessWidget {
     required this.onFormatSelected,
     required this.onToggleExpand,
     required this.onOpenFullPlayer,
+    required this.onPlatformChanged,
   });
 
   @override
@@ -55,25 +63,31 @@ class FluentSearchView extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Row(
+            child: Column(
               children: [
-                Expanded(
-                  child: TextBox(
-                    controller: searchController,
-                    placeholder: 'Digite o nome da música ou artista...',
-                    onSubmitted: (_) => onSearch(),
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextBox(
+                        controller: searchController,
+                        placeholder: 'Digite o nome da música ou artista...',
+                        onSubmitted: (_) => onSearch(),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    FilledButton(
+                      onPressed: isLoading ? null : onSearch,
+                      child: const Text('Buscar'),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 8),
-                FilledButton(
-                  onPressed: isLoading ? null : onSearch,
-                  child: const Text('Buscar'),
-                ),
+                const SizedBox(height: 12),
+                _buildPlatformSelector(context),
               ],
             ),
           ),
           if (isLoading || platformStatuses.isNotEmpty) _buildStatusIndicator(),
-          if (errorMessage != null)
+          if (errorMessage != null && errorMessage!.isNotEmpty)
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: InfoBar(
@@ -91,6 +105,8 @@ class FluentSearchView extends StatelessWidget {
                 final isExpanded = isExpanding[result.url] ?? false;
                 final isDownloading = downloadingProgress.containsKey(result.url);
 
+                final isVideo = result.platform == MediaPlatform.youtube;
+
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: Card(
@@ -98,33 +114,36 @@ class FluentSearchView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ListTile(
-                          leading: result.thumbnail != null
-                              ? Image.network(result.thumbnail!,
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (_, __, ___) => const Icon(FluentIcons.music_note))
-                              : const Icon(FluentIcons.music_note),
-                          title: Text(result.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child: result.thumbnail != null
+                                ? GestureDetector(
+                                    onTap: isVideo 
+                                      ? () => _playVideo(context, result)
+                                      : () => onPlay(result),
+                                    child: Image.network(result.thumbnail!,
+                                        width: 60,
+                                        height: 60,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (_, __, ___) => const Icon(FluentIcons.music_note)),
+                                  )
+                                : const Icon(FluentIcons.music_note, size: 32),
+                          ),
+                          title: Text(result.title, 
+                            maxLines: 1, 
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
                           subtitle: Text('${result.artist} • ${result.durationFormatted}'),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              IconButton(
-                                icon: const Icon(FluentIcons.play),
-                                onPressed: () => onPlay(result),
-                              ),
+                              _buildPlaybackButtons(context, result),
+                              const SizedBox(width: 8),
                               Tooltip(
-                                message: 'Opções Adicionais',
+                                message: 'Mais Opções',
                                 child: DropDownButton(
-                                  title: const Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(FluentIcons.more, size: 16),
-                                      SizedBox(width: 4),
-                                      Text('Opções', style: TextStyle(fontSize: 12)),
-                                    ],
-                                  ),
+                                  title: const Icon(FluentIcons.more, size: 16),
                                   items: [
                                     MenuFlyoutItem(
                                       leading: const Icon(FluentIcons.add),
@@ -151,10 +170,22 @@ class FluentSearchView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 const Divider(),
-                                const SizedBox(height: 12),
-                                if (!formatsCache.containsKey(result.url))
-                                  const Center(child: ProgressRing())
-                                else ...[
+                                  const SizedBox(height: 12),
+                                  if (loadingFormatsStatus.containsKey(result.url))
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          const ProgressRing(strokeWidth: 2),
+                                          const SizedBox(width: 12),
+                                          Text(loadingFormatsStatus[result.url]!),
+                                        ],
+                                      ),
+                                    )
+                                  else if (!formatsCache.containsKey(result.url))
+                                    const Center(child: ProgressRing())
+                                  else ...[
                                   Row(
                                     children: [
                                       const Text('Formato: '),
@@ -223,6 +254,95 @@ class FluentSearchView extends StatelessWidget {
       bottomBar: GestureDetector(
         onTap: onOpenFullPlayer,
         child: const MiniPlayer(),
+      ),
+    );
+  }
+
+  Widget _buildPlatformSelector(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _platformButton(context, null, 'Geral', FluentIcons.all_apps),
+        const SizedBox(width: 8),
+        _platformButton(context, MediaPlatform.spotify, 'Spotify', FluentIcons.music_note),
+        const SizedBox(width: 8),
+        _platformButton(context, MediaPlatform.youtube, 'YouTube', FluentIcons.video),
+        const SizedBox(width: 8),
+        _platformButton(context, MediaPlatform.youtubeMusic, 'YT Music', FluentIcons.music_in_collection),
+      ],
+    );
+  }
+
+  Widget _platformButton(BuildContext context, MediaPlatform? platform, String label, IconData icon) {
+    final isSelected = selectedPlatform == platform;
+    return Button(
+      style: ButtonStyle(
+        backgroundColor: isSelected ? ButtonState.all(FluentTheme.of(context).accentColor.withValues(alpha: 0.2)) : null,
+      ),
+      onPressed: () => onPlatformChanged(platform),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16, color: isSelected ? FluentTheme.of(context).accentColor : null),
+          const SizedBox(width: 4),
+          Text(label, style: TextStyle(color: isSelected ? FluentTheme.of(context).accentColor : null)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPlaybackButtons(BuildContext context, SearchResult result) {
+    final isVideo = result.platform == MediaPlatform.youtube;
+    
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (isVideo)
+          IconButton(
+            icon: const Icon(FluentIcons.video, size: 20),
+            onPressed: () => _playVideo(context, result),
+          ),
+        IconButton(
+          icon: Icon(isVideo ? FluentIcons.headset : FluentIcons.play, size: 20),
+          onPressed: () => onPlay(result),
+        ),
+      ],
+    );
+  }
+
+  void _playVideo(BuildContext context, SearchResult result) {
+    final controller = YoutubePlayerController.fromVideoId(
+      videoId: result.id,
+      autoPlay: true,
+      params: const YoutubePlayerParams(
+        showControls: true,
+        showFullscreenButton: true,
+        mute: false,
+      ),
+    );
+
+    showDialog(
+      context: context,
+      builder: (context) => ContentDialog(
+        title: Text(result.title),
+        constraints: const BoxConstraints(maxWidth: 800),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            YoutubePlayer(
+              controller: controller,
+              aspectRatio: 16 / 9,
+            ),
+            const SizedBox(height: 12),
+            Text('Artista: ${result.artist}', style: const TextStyle(fontWeight: FontWeight.bold)),
+          ],
+        ),
+        actions: [
+          Button(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fechar'),
+          ),
+        ],
       ),
     );
   }

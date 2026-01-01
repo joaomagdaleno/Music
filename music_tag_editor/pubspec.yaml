@@ -46,6 +46,7 @@ dependencies:
   path_provider: ^2.1.5
   sqflite_common_ffi: ^2.3.3
   flutter_acrylic: ^1.1.4
+  youtube_player_iframe: ^5.2.0
 
 dev_dependencies:
   flutter_test:

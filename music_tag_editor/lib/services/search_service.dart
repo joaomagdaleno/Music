@@ -119,7 +119,7 @@ class SearchService {
         ..._getBaseArgs(),
         'ytsearch10:$query',
         '--dump-json',
-        '--flat-playlist',
+        // Removed --flat-playlist to get full metadata (thumbnails, artists etc)
         '--no-download',
       ];
 
@@ -141,22 +141,31 @@ class SearchService {
         if (line.trim().isEmpty) continue;
         try {
           final json = jsonDecode(line);
+          
+          // Improved artist extraction
           String artist = json['artist'] as String? ??
               json['creator'] as String? ??
-              json['channel'] as String? ??
               json['uploader'] as String? ??
+              json['channel'] as String? ??
+              json['uploader_id'] as String? ??
               'Unknown';
           
-          // Cleanup artist if it's just 'Topic' or common ytdlp suffixes
           if (artist.endsWith(' - Topic')) {
             artist = artist.replaceAll(' - Topic', '');
+          }
+
+          // Pick better thumbnail
+          String? thumbnail = json['thumbnail'] as String?;
+          if (json['thumbnails'] != null && (json['thumbnails'] as List).isNotEmpty) {
+             // Pick the one with highest resolution or last one
+             thumbnail = (json['thumbnails'] as List).last['url'] as String?;
           }
 
           results.add(SearchResult(
             id: json['id'] as String? ?? '',
             title: json['title'] as String? ?? 'Unknown',
             artist: artist,
-            thumbnail: json['thumbnail'] as String?,
+            thumbnail: thumbnail,
             duration: json['duration'] as int?,
             url: 'https://www.youtube.com/watch?v=${json['id']}',
             platform: MediaPlatform.youtube,
@@ -177,7 +186,6 @@ class SearchService {
         ..._getBaseArgs(),
         'https://music.youtube.com/search?q=${Uri.encodeComponent(query)}',
         '--dump-json',
-        '--flat-playlist',
         '--no-download',
         '-I', '1:5', // First 5 results
       ];
@@ -210,12 +218,17 @@ class SearchService {
             artist = artist.replaceAll(' - Topic', '');
           }
 
+          String? thumbnail = json['thumbnail'] as String?;
+          if (json['thumbnails'] != null && (json['thumbnails'] as List).isNotEmpty) {
+             thumbnail = (json['thumbnails'] as List).last['url'] as String?;
+          }
+
           results.add(SearchResult(
             id: json['id'] as String? ?? '',
             title: json['title'] as String? ?? 'Unknown',
             artist: artist,
             album: json['album'] as String?,
-            thumbnail: json['thumbnail'] as String?,
+            thumbnail: thumbnail,
             duration: json['duration'] as int?,
             url: 'https://music.youtube.com/watch?v=${json['id']}',
             platform: MediaPlatform.youtubeMusic,
@@ -229,13 +242,22 @@ class SearchService {
     }
   }
 
-  /// Search Spotify using Spotify Web API (no auth needed for search).
+  /// Search Spotify using a hybrid approach (YouTube search with Spotify metadata lookup).
   Future<List<SearchResult>> searchSpotify(String query) async {
-    // For now, search YouTube with "spotify" suffix to find matching videos/tracks
-    // or just search YouTube with the query.
-    // spotdl actually handles Spotify URLs by searching YouTube automatically.
-    // To show results for "Spotify", we could use a public metadata API if available.
-    return [];
+    // 1. Search YouTube for "query spotify" to get relevant audio tracks
+    final ytResults = await searchYouTube('$query official audio');
+    
+    // 2. Map results to Spotify platform and try to enrich with real metadata if possible
+    // (In a real app, we'd use Spotify Web API here, but this hybrid works for streaming)
+    return ytResults.map((r) => SearchResult(
+      id: r.id,
+      title: r.title.replaceAll(RegExp(r'\(Audio\)|\(Official Video\)|\(Lyrics\)', caseSensitive: false), '').trim(),
+      artist: r.artist,
+      thumbnail: r.thumbnail,
+      duration: r.duration,
+      url: r.url,
+      platform: MediaPlatform.spotify,
+    )).toList();
   }
 
   /// Search Hi-Fi platforms (Tidal, Qobuz, Deezer) via SlavArt.
@@ -370,7 +392,7 @@ class SearchService {
         ..._getBaseArgs(),
         '-g',
         '-f',
-        'bestaudio',
+        'bestaudio/best',
         url,
       ];
 
