@@ -410,7 +410,7 @@ class DownloadService {
 
     args.add(url);
 
-    onProgress?.call(0.0, 'Starting download...');
+    onProgress?.call(0.0, 'Preparando download...');
 
     final process = await processStarter(
       _deps.ytDlpPath,
@@ -426,7 +426,7 @@ class DownloadService {
       if (match != null) {
         final percent = double.tryParse(match.group(1)!) ?? 0;
         onProgress?.call(
-            percent / 100, 'Downloading: ${percent.toStringAsFixed(1)}%');
+            percent / 100, 'Baixando arquivo: ${percent.toStringAsFixed(1)}%');
       }
 
       // Capture output filename
@@ -447,11 +447,11 @@ class DownloadService {
     if (outputFile != null &&
         overrideThumbnailUrl != null &&
         overrideThumbnailUrl.isNotEmpty) {
-      onProgress?.call(0.95, 'Embeeding custom thumbnail...');
+      onProgress?.call(0.95, 'Embutindo capa personalizada...');
       await _embedCustomThumbnail(outputFile!, overrideThumbnailUrl);
     }
 
-    onProgress?.call(1.0, 'Complete!');
+    onProgress?.call(1.0, 'Download concluído!');
     return outputFile ?? outputDir;
   }
 
@@ -502,7 +502,7 @@ class DownloadService {
     String outputDir,
     void Function(double progress, String status)? onProgress,
   ) async {
-    onProgress?.call(0.0, 'Starting Spotify download...');
+    onProgress?.call(0.0, 'Iniciando download do Spotify...');
 
     final result = await processRunner(
       _deps.spotdlPath,

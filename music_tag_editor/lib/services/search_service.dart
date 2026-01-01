@@ -141,12 +141,21 @@ class SearchService {
         if (line.trim().isEmpty) continue;
         try {
           final json = jsonDecode(line);
+          String artist = json['artist'] as String? ??
+              json['creator'] as String? ??
+              json['channel'] as String? ??
+              json['uploader'] as String? ??
+              'Unknown';
+          
+          // Cleanup artist if it's just 'Topic' or common ytdlp suffixes
+          if (artist.endsWith(' - Topic')) {
+            artist = artist.replaceAll(' - Topic', '');
+          }
+
           results.add(SearchResult(
             id: json['id'] as String? ?? '',
             title: json['title'] as String? ?? 'Unknown',
-            artist: json['channel'] as String? ??
-                json['uploader'] as String? ??
-                'Unknown',
+            artist: artist,
             thumbnail: json['thumbnail'] as String?,
             duration: json['duration'] as int?,
             url: 'https://www.youtube.com/watch?v=${json['id']}',
@@ -191,12 +200,20 @@ class SearchService {
         if (line.trim().isEmpty) continue;
         try {
           final json = jsonDecode(line);
+          String artist = json['artist'] as String? ??
+              json['creator'] as String? ??
+              json['uploader'] as String? ??
+              json['channel'] as String? ??
+              'Unknown';
+          
+          if (artist.endsWith(' - Topic')) {
+            artist = artist.replaceAll(' - Topic', '');
+          }
+
           results.add(SearchResult(
             id: json['id'] as String? ?? '',
             title: json['title'] as String? ?? 'Unknown',
-            artist: json['artist'] as String? ??
-                json['channel'] as String? ??
-                'Unknown',
+            artist: artist,
             album: json['album'] as String?,
             thumbnail: json['thumbnail'] as String?,
             duration: json['duration'] as int?,

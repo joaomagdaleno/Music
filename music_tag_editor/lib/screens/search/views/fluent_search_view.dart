@@ -114,20 +114,30 @@ class FluentSearchView extends StatelessWidget {
                                 icon: const Icon(FluentIcons.play),
                                 onPressed: () => onPlay(result),
                               ),
-                              DropDownButton(
-                                title: const Icon(FluentIcons.more),
-                                items: [
-                                  MenuFlyoutItem(
-                                    leading: const Icon(FluentIcons.add),
-                                    text: const Text('Adicionar à Playlist'),
-                                    onPressed: () => onAddToPlaylist(result),
+                              Tooltip(
+                                message: 'Opções Adicionais',
+                                child: DropDownButton(
+                                  title: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(FluentIcons.more, size: 16),
+                                      SizedBox(width: 4),
+                                      Text('Opções', style: TextStyle(fontSize: 12)),
+                                    ],
                                   ),
-                                  MenuFlyoutItem(
-                                    leading: const Icon(FluentIcons.download),
-                                    text: const Text('Opções de Download'),
-                                    onPressed: () => onLoadFormats(result),
-                                  ),
-                                ],
+                                  items: [
+                                    MenuFlyoutItem(
+                                      leading: const Icon(FluentIcons.add),
+                                      text: const Text('Adicionar à Playlist'),
+                                      onPressed: () => onAddToPlaylist(result),
+                                    ),
+                                    MenuFlyoutItem(
+                                      leading: const Icon(FluentIcons.download),
+                                      text: const Text('Opções de Download'),
+                                      onPressed: () => onLoadFormats(result),
+                                    ),
+                                  ],
+                                ),
                               ),
                               const SizedBox(width: 8),
                               _getPlatformLogo(result.platform, hifiSource: result.hifiSource),
@@ -166,13 +176,24 @@ class FluentSearchView extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 16),
                                   if (isDownloading)
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        ProgressBar(value: downloadingProgress[result.url]),
-                                        const SizedBox(height: 4),
-                                        Text(downloadingStatus[result.url] ?? ''),
-                                      ],
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          ProgressBar(
+                                            value: downloadingProgress[result.url]! * 100,
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            downloadingStatus[result.url] ?? 'Baixando...',
+                                            style: TextStyle(
+                                              color: Colors.blue.lighter,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     )
                                   else
                                     Button(

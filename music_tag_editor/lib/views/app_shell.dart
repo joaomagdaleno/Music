@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/screens/search/search_screen.dart';
 
@@ -88,20 +89,40 @@ class _AppShellState extends State<AppShell> {
 
   Widget _buildNavigationRail(AppPersona persona) {
     final destinations = _getDestinations(persona);
-    return NavigationRail(
-      extended: MediaQuery.of(context).size.width >= 900,
-      selectedIndex: _selectedIndex >= destinations.length ? 0 : _selectedIndex,
-      onDestinationSelected: (index) => setState(() => _selectedIndex = index),
-      labelType: MediaQuery.of(context).size.width >= 900
-          ? NavigationRailLabelType.none
-          : NavigationRailLabelType.all,
-      destinations: destinations
-          .map((d) => NavigationRailDestination(
-                icon: Icon(d.iconOutline),
-                selectedIcon: Icon(d.icon),
-                label: Text(d.label),
-              ))
-          .toList(),
+    final isDesktop = !kIsWeb &&
+        (Theme.of(context).platform == TargetPlatform.windows ||
+            Theme.of(context).platform == TargetPlatform.linux ||
+            Theme.of(context).platform == TargetPlatform.macOS);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: isDesktop
+            ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.7)
+            : null,
+        border: isDesktop
+            ? Border(
+                right: BorderSide(
+                  color: Theme.of(context).dividerColor.withValues(alpha: 0.1),
+                ),
+              )
+            : null,
+      ),
+      child: NavigationRail(
+        extended: MediaQuery.of(context).size.width >= 900,
+        selectedIndex: _selectedIndex >= destinations.length ? 0 : _selectedIndex,
+        onDestinationSelected: (index) => setState(() => _selectedIndex = index),
+        labelType: MediaQuery.of(context).size.width >= 900
+            ? NavigationRailLabelType.none
+            : NavigationRailLabelType.all,
+        backgroundColor: Colors.transparent, // Allow container color to show
+        destinations: destinations
+            .map((d) => NavigationRailDestination(
+                  icon: Icon(d.iconOutline),
+                  selectedIcon: Icon(d.icon),
+                  label: Text(d.label),
+                ))
+            .toList(),
+      ),
     );
   }
 
