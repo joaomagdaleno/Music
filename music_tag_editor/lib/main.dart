@@ -215,20 +215,28 @@ class MusicTagEditorApp extends StatelessWidget {
       animation: ThemeService.instance,
       builder: (context, child) {
         final primaryColor = ThemeService.instance.primaryColor;
+        if (platform == TargetPlatform.windows || (platform == null && Platform.isWindows)) {
+          return fluent.FluentApp(
+            title: 'Music Tag Editor',
+            themeMode: fluent.ThemeMode.system,
+            darkTheme: fluent.FluentThemeData(
+              brightness: fluent.Brightness.dark,
+              accentColor: fluent.Colors.blue,
+              scaffoldBackgroundColor: fluent.Colors.transparent,
+            ),
+            theme: fluent.FluentThemeData(
+              brightness: fluent.Brightness.light,
+              accentColor: fluent.Colors.blue,
+              scaffoldBackgroundColor: fluent.Colors.transparent,
+            ),
+            home: AuthService.instance.isAuthenticated
+                ? const AppShell()
+                : const LoginScreen(),
+          );
+        }
+
         return MaterialApp(
           title: 'Music Tag Editor',
-          builder: (context, child) {
-            child = child ?? const SizedBox();
-            if (platform == TargetPlatform.windows || (platform == null && Platform.isWindows)) {
-              return fluent.FluentTheme(
-                data: fluent.FluentThemeData(
-                  accentColor: fluent.Colors.blue,
-                ),
-                child: child,
-              );
-            }
-            return child;
-          },
           theme: ThemeData(
             useMaterial3: true,
             platform: platform,
