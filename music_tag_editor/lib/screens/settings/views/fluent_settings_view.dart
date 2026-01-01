@@ -11,6 +11,7 @@ class FluentSettingsView extends StatefulWidget {
   final int crossfadeSeconds;
   final bool ageBypass;
   
+  final bool isAuthenticated;
   final ValueChanged<FilenameFormat?> onFormatChanged;
   final ValueChanged<double> onCrossfadeChanged;
   final ValueChanged<int> onCrossfadeSaved;
@@ -18,6 +19,8 @@ class FluentSettingsView extends StatefulWidget {
   final VoidCallback onCleanupLibrary;
   final VoidCallback onEnableCloudSync;
   final VoidCallback onPullFromCloud;
+  final VoidCallback onLogin;
+  final VoidCallback onLogout;
 
   const FluentSettingsView({
     super.key,
@@ -25,6 +28,7 @@ class FluentSettingsView extends StatefulWidget {
     required this.selectedFormat,
     required this.crossfadeSeconds,
     required this.ageBypass,
+    required this.isAuthenticated,
     required this.onFormatChanged,
     required this.onCrossfadeChanged,
     required this.onCrossfadeSaved,
@@ -32,6 +36,8 @@ class FluentSettingsView extends StatefulWidget {
     required this.onCleanupLibrary,
     required this.onEnableCloudSync,
     required this.onPullFromCloud,
+    required this.onLogin,
+    required this.onLogout,
   });
 
   @override
@@ -317,8 +323,19 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
                 const SizedBox(width: 8),
                 Text(
                   'Sincronização na Nuvem',
-                   style: FluentTheme.of(context).typography.bodyStrong,
+                  style: FluentTheme.of(context).typography.bodyStrong,
                 ),
+                const Spacer(),
+                if (!widget.isAuthenticated)
+                  Button(
+                    onPressed: widget.onLogin,
+                    child: const Text('Conectar Conta'),
+                  )
+                else
+                  Button(
+                    onPressed: widget.onLogout,
+                    child: const Text('Sair'),
+                  ),
               ],
             ),
             const SizedBox(height: 8),
@@ -329,23 +346,33 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
             Row(
               children: [
                 FilledButton(
-                  onPressed: widget.onEnableCloudSync,
+                  onPressed: widget.isAuthenticated ? widget.onEnableCloudSync : null,
                   child: const Row(
                     children: [
-                       Icon(FluentIcons.cloud_import_export),
-                       SizedBox(width: 8),
-                       Text('Sincronizar Agora'),
+                      Icon(FluentIcons.cloud_import_export),
+                      SizedBox(width: 8),
+                      Text('Sincronizar Agora'),
                     ],
                   ),
                 ),
                 const SizedBox(width: 8),
                 Button(
-                    onPressed: widget.onPullFromCloud,
-                    child: const Tooltip(
-                        message: 'Baixar da Nuvem',
-                        child: Icon(FluentIcons.cloud_download),
-                    ),
+                  onPressed: widget.isAuthenticated ? widget.onPullFromCloud : null,
+                  child: const Tooltip(
+                    message: 'Baixar da Nuvem',
+                    child: Icon(FluentIcons.cloud_download),
+                  ),
                 ),
+                if (!widget.isAuthenticated)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      '(Necessário Login)',
+                      style: FluentTheme.of(context).typography.caption?.copyWith(
+                            color: Colors.grey,
+                          ),
+                    ),
+                  ),
               ],
             ),
           ],
