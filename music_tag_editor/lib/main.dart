@@ -84,14 +84,27 @@ class _AppBootstrapState extends State<AppBootstrap> {
       // Initialize Core Services
       _updateStep('Initializing Core Services...');
       try {
+        await StartupLogger.log('Initializing SecurityService...');
         await SecurityService.instance.init();
+        
+        await StartupLogger.log('Initializing AuthService...');
         AuthService.instance.init();
+        
+        await StartupLogger.log('Initializing ConnectivityService...');
         await ConnectivityService.instance.init();
+        
+        await StartupLogger.log('Initializing PersonaService...');
         await PersonaService.instance.init();
 
+        await StartupLogger.log('Initializing ThemeService...');
         await ThemeService.instance.init();
+        
+        await StartupLogger.log('Initializing DesktopIntegrationService...');
         await DesktopIntegrationService.instance.init();
+        
+        await StartupLogger.log('Initializing PlaybackService...');
         await PlaybackService.instance.init();
+        
         await StartupLogger.log('✅ Core services initialized successfully');
       } catch (e) {
         debugPrint('Service initialization failed: $e');
