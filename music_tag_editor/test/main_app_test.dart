@@ -142,18 +142,26 @@ void main() {
     when(() => mockAudioPlayer.playerStateStream)
         .thenAnswer((_) => const Stream.empty());
 
+    when(() => mockConnectivity.isOffline).thenReturn(ValueNotifier(false));
+
     when(() =>
             mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
         .thenAnswer((_) async {});
   });
 
-  testWidgets('MusicTagEditorApp shows LoginPage when not authenticated',
+  testWidgets('MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)',
       (tester) async {
+    when(() => mockDb.loadFilenameFormat())
+        .thenAnswer((_) async => FilenameFormat.artistTitle);
+    when(() => mockDb.getTracks()).thenAnswer((_) async => []);
+    when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
+
     await tester.pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
     await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
 
-    expect(find.byType(LoginScreen), findsOneWidget);
-    expect(find.byType(AppShell), findsNothing);
+    expect(find.byType(AppShell), findsOneWidget);
+    expect(find.byType(LoginScreen), findsNothing);
   });
 
   testWidgets('MusicTagEditorApp shows AppShell when authenticated',
@@ -161,7 +169,6 @@ void main() {
     when(() => mockAuth.isAuthenticated).thenReturn(true);
 
     // Stubbing for AppShell and its sub-widgets
-    when(() => mockConnectivity.isOffline).thenReturn(ValueNotifier(false));
     when(() => mockDb.loadFilenameFormat())
         .thenAnswer((_) async => FilenameFormat.artistTitle);
     when(() => mockDb.getTracks()).thenAnswer((_) async => []);

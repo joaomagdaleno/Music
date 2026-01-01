@@ -9,6 +9,7 @@ import 'package:music_tag_editor/services/metadata_cleanup_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/firebase_sync_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
+import 'package:music_tag_editor/services/auth_service.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
 
@@ -23,6 +24,8 @@ class MockThemeService extends Mock implements ThemeService {}
 
 class MockAudioPlayer extends Mock implements AudioPlayer {}
 
+class MockAuthService extends Mock implements AuthService {}
+
 void main() {
   late MockDatabaseService mockDb;
   late MockMetadataCleanupService mockCleanup;
@@ -30,6 +33,7 @@ void main() {
   late MockFirebaseSyncService mockSync;
   late MockThemeService mockTheme;
   late MockAudioPlayer mockPlayer;
+  late MockAuthService mockAuth;
 
   setUpAll(() {
     registerFallbackValue(FilenameFormat.artistTitle);
@@ -44,12 +48,14 @@ void main() {
     mockSync = MockFirebaseSyncService();
     mockTheme = MockThemeService();
     mockPlayer = MockAudioPlayer();
+    mockAuth = MockAuthService();
 
     DatabaseService.instance = mockDb;
     MetadataCleanupService.instance = mockCleanup;
     PlaybackService.instance = mockPlayback;
     FirebaseSyncService.instance = mockSync;
     ThemeService.instance = mockTheme;
+    AuthService.instance = mockAuth;
 
     // Default Stubs
     when(() => mockDb.loadFilenameFormat())
@@ -68,6 +74,8 @@ void main() {
     when(() => mockTheme.useCustomColor).thenReturn(false);
     when(() => mockTheme.setAutoMode()).thenAnswer((_) async {});
     when(() => mockTheme.setCustomColor(any())).thenAnswer((_) async {});
+
+    when(() => mockAuth.isAuthenticated).thenReturn(false);
   });
 
   void setupViewport(WidgetTester tester) {
@@ -165,6 +173,7 @@ void main() {
 
   testWidgets('Sync interactions', (tester) async {
     setupViewport(tester);
+    when(() => mockAuth.isAuthenticated).thenReturn(true);
     when(() => mockSync.enableSync()).thenAnswer((_) async => true);
     when(() => mockSync.pullFromCloud()).thenAnswer((_) async => 10);
 

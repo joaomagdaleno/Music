@@ -26,7 +26,10 @@ void main() {
 
   setUpAll(() {
     TestWidgetsFlutterBinding.ensureInitialized();
-    const MethodChannel('com.alexmercerind/flutter_acrylic').setMockMethodCallHandler((MethodCall methodCall) async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+            const MethodChannel('com.alexmercerind/flutter_acrylic'),
+            (MethodCall methodCall) async {
       return null;
     });
     registerFallbackValue(FakeMenu());
