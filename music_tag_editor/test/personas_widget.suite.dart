@@ -111,6 +111,8 @@ void main() {
     when(() => mockAudioPlayer.sequenceStateStream)
         .thenAnswer((_) => const Stream.empty());
 
+    when(() => mockAuth.isAuthenticated).thenReturn(false);
+
     when(() => mockPlayback.player).thenReturn(mockAudioPlayer);
     when(() => mockPlayback.currentTrack).thenReturn(null);
     when(() => mockPlayback.lyricsStream)
