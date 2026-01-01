@@ -45,7 +45,7 @@ class DesktopIntegrationService {
       await StartupLogger.log('Desktop: ensuring WindowManager initialized');
       await _windowManager.ensureInitialized();
 
-      const String iconPath = 'windows/runner/resources/app_icon.ico';
+      const String iconPath = 'assets/app_icon.ico';
 
       await StartupLogger.log('Desktop: initializing SystemTray');
       await _systemTray.initSystemTray(
