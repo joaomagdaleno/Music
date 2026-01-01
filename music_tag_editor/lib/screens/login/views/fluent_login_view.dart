@@ -29,7 +29,7 @@ class FluentLoginView extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [FluentTheme.of(context).accentColor.withValues(alpha: 0.3), FluentTheme.of(context).scaffoldBackgroundColor],
+            colors: [FluentTheme.of(context).accentColor.withValues(alpha: 0.3), Colors.transparent],
           ),
         ),
         child: Center(
