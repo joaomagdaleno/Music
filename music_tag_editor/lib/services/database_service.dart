@@ -1,5 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:music_tag_editor/models/filename_format.dart'; // Import the enum
@@ -69,7 +71,20 @@ class DatabaseService {
   }
 
   Future<Database> _initDB({String? path}) async {
-    path ??= join(await getDatabasesPath(), 'music_tag_editor.db');
+    if (path == null) {
+      if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+        final dir = await getApplicationSupportDirectory();
+        final dbPath = join(dir.path, 'music_tag_editor.db');
+        // Ensure the directory exists
+        final dbDir = Directory(dirname(dbPath));
+        if (!await dbDir.exists()) {
+          await dbDir.create(recursive: true);
+        }
+        path = dbPath;
+      } else {
+        path = join(await getDatabasesPath(), 'music_tag_editor.db');
+      }
+    }
     return await openDatabase(
       path,
       version: 6, // Incremented version for vault support
