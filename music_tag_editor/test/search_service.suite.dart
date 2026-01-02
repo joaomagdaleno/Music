@@ -123,7 +123,7 @@ void main() {
       expect(results[0].title, 'M Song');
       expect(results[0].platform, MediaPlatform.youtubeMusic);
       
-      verify(() => mockSearchClient.search('query audio')).called(1);
+      verify(() => mockSearchClient.search('query topic')).called(1);
     });
   });
 

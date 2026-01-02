@@ -129,8 +129,8 @@ void main() {
       expect(results[0].title, 'M Song');
       expect(results[0].platform, MediaPlatform.youtubeMusic);
       
-      // Verify " audio" was appended
-      verify(() => mockSearchClient.search('query audio')).called(1);
+      // Verify " topic" was appended
+      verify(() => mockSearchClient.search('query topic')).called(1);
     });
   });
 

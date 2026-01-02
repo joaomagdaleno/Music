@@ -66,6 +66,8 @@ void main() {
     when(() => mockDb.saveFilenameFormat(any())).thenAnswer((_) async {});
     when(() => mockDb.saveCrossfadeDuration(any())).thenAnswer((_) async {});
     when(() => mockDb.saveAgeBypass(any())).thenAnswer((_) async {});
+    when(() => mockDb.getSpotifyCredentials())
+        .thenAnswer((_) async => {'clientId': null, 'clientSecret': null});
 
     when(() => mockPlayback.updateCrossfadeDuration(any()))
         .thenAnswer((_) async {});
