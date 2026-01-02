@@ -123,14 +123,20 @@ class SearchService {
     }
   }
 
-  final _ytExplode = yt.YoutubeExplode();
-  
+  yt.YoutubeExplode? _ytExplodeOverride;
+  final _defaultYtExplode = yt.YoutubeExplode();
+
+  /// Inject a mock YoutubeExplode instance for testing.
+  @visibleForTesting
+  set ytExplode(yt.YoutubeExplode instance) => _ytExplodeOverride = instance;
+
   /// Search YouTube using youtube_explode_dart (Native & Fast).
   Future<List<SearchResult>> searchYouTube(String query) async {
     try {
       final results = <SearchResult>[];
+      final client = _ytExplodeOverride ?? _defaultYtExplode;
       // Search specifically for videos
-      final searchList = await _ytExplode.search.search(query);
+      final searchList = await client.search.search(query);
       
       for (final video in searchList) {
         results.add(SearchResult(
@@ -154,8 +160,9 @@ class SearchService {
   Future<List<SearchResult>> searchYouTubeMusic(String query) async {
     try {
       final results = <SearchResult>[];
+      final client = _ytExplodeOverride ?? _defaultYtExplode;
       // We can use the same search, but we might filter or append "audio" to query
-      final searchList = await _ytExplode.search.search('$query audio');
+      final searchList = await client.search.search('$query audio');
       
       for (final video in searchList) {
         results.add(SearchResult(
@@ -190,7 +197,8 @@ class SearchService {
 
     // Authentic-feeling fallback (Better than previous yt-dlp):
     try {
-       final searchList = await _ytExplode.search.search('$query official audio');
+       final client = _ytExplodeOverride ?? _defaultYtExplode;
+       final searchList = await client.search.search('$query official audio');
        final results = <SearchResult>[];
 
        for (final video in searchList) {
