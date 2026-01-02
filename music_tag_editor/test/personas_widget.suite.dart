@@ -74,6 +74,7 @@ void main() {
     DesktopIntegrationService.instance = mockDesktop;
     DependencyManager.instance = mockDeps;
     DownloadService.instance = mockDownload;
+    PersonaService.resetInstance();
 
     // Default stubs
     when(() => mockTheme.primaryColor).thenReturn(Colors.blue);

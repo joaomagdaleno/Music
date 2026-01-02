@@ -14,6 +14,7 @@ import 'package:music_tag_editor/services/lyrics_service.dart';
 import 'package:music_tag_editor/services/local_duo_service.dart';
 import 'package:music_tag_editor/services/equalizer_service.dart';
 import 'package:music_tag_editor/services/firebase_sync_service.dart';
+import 'package:music_tag_editor/services/persona_service.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:just_audio/just_audio.dart'; // Assuming this import is needed for AudioPlayer
@@ -91,6 +92,7 @@ Future<void> setupMusicTest({
   ConnectivityService.resetInstance();
   ThemeService.resetInstance();
   DependencyManager.resetInstance();
+  PersonaService.resetInstance();
 
   // Create and inject standard mocks
   mockAuth = MockAuthService();
