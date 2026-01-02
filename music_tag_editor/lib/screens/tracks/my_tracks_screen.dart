@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
@@ -46,7 +47,7 @@ class _MyTracksScreenState extends State<MyTracksScreen> {
   }
 
   void _importPlaylist() {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
       Navigator.push(context, fluent.FluentPageRoute(builder: (_) => const PlaylistImporterScreen()));
     } else {
@@ -55,7 +56,7 @@ class _MyTracksScreenState extends State<MyTracksScreen> {
   }
 
   void _showSuccess(String message) {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
       fluent.displayInfoBar(context, builder: (_, close) => fluent.InfoBar(title: Text(message), severity: fluent.InfoBarSeverity.success, onClose: close));
     } else {
@@ -65,7 +66,7 @@ class _MyTracksScreenState extends State<MyTracksScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:

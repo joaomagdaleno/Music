@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 
 import 'package:music_tag_editor/screens/disco/views/fluent_karaoke_view.dart';
@@ -61,7 +62,7 @@ class _KaraokeScreenState extends State<KaraokeScreen> {
   @override
   Widget build(BuildContext context) {
     final lyrics = PlaybackService.instance.currentLyrics;
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:

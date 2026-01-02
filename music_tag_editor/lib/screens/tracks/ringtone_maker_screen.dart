@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/screens/tracks/views/fluent_ringtone_maker_view.dart';
@@ -71,7 +72,7 @@ class _RingtoneMakerScreenState extends State<RingtoneMakerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:

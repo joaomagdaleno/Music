@@ -300,7 +300,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
   }
   
   bool get _isFluent {
-      final platform = Theme.of(context).platform;
+      final platform = defaultTargetPlatform;
       return !kIsWeb &&
         (platform == TargetPlatform.windows ||
             platform == TargetPlatform.linux ||

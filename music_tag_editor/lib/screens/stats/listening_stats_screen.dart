@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/services/listening_stats_service.dart';
 import 'package:music_tag_editor/screens/stats/views/fluent_listening_stats_view.dart';
 import 'package:music_tag_editor/screens/stats/views/material_listening_stats_view.dart';
@@ -41,7 +42,7 @@ class _ListeningStatsScreenState extends State<ListeningStatsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:

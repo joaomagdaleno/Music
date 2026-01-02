@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:music_tag_editor/models/filename_format.dart';
 import 'package:music_tag_editor/screens/settings/views/fluent_settings_view.dart';
@@ -26,7 +27,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _isLoading = true;
 
   bool get _isFluent {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     return platform == TargetPlatform.windows ||
         platform == TargetPlatform.linux ||
         platform == TargetPlatform.macOS;
