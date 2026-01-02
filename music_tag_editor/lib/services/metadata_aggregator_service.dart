@@ -297,6 +297,25 @@ class MetadataAggregatorService {
     // For now, simple priority: Genius (often high res art) > Discogs > LastFm > MB
     String? finalThumbnail = genius['thumbnail'] ?? discogs['cover'] ?? discogs['thumbnail'] ?? lastfm['thumbnail'] ?? mb['thumbnail'];
 
+    // Calculate confidence based on agreement
+    int agreements = 0;
+    int total = 0;
+    
+    final titleVotes = [mb['title'], discogs['title'], lastfm['title'], genius['title']].whereType<String>().toList();
+    if (titleVotes.isNotEmpty) {
+      total++;
+       // Simple check: if we have more than 1 vote and they match or we trust MB
+       if (titleVotes.length > 1 || mb['title'] != null) agreements++;
+    }
+
+    final artistVotes = [mb['artist'], discogs['artist'], lastfm['artist'], genius['artist']].whereType<String>().toList();
+    if (artistVotes.isNotEmpty) {
+      total++;
+      if (artistVotes.length > 1 || mb['artist'] != null) agreements++;
+    }
+
+    final confidence = total > 0 ? (agreements / total).clamp(0.0, 1.0) : 0.0;
+
     return AggregatedMetadata(
       title: finalTitle,
       artist: finalArtist,
@@ -305,7 +324,7 @@ class MetadataAggregatorService {
       year: finalYear,
       thumbnail: finalThumbnail,
       allGenres: combinedGenres.toList(),
-      confidence: 1.0, // simplified
+      confidence: confidence, 
     );
   }
 

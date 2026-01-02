@@ -70,16 +70,12 @@ void main() {
       ),
     ];
 
-    when(() => mockSearch.searchAll(any(),
-            onStatusUpdate: any(named: 'onStatusUpdate')))
-        .thenAnswer((invocation) async {
-      final callback = invocation.namedArguments[#onStatusUpdate] as void
-          Function(MediaPlatform, SearchStatus)?;
-      callback?.call(MediaPlatform.youtube, SearchStatus.completed);
-      callback?.call(MediaPlatform.spotify, SearchStatus.completed);
-      callback?.call(MediaPlatform.youtubeMusic, SearchStatus.completed);
-      return results;
-    });
+    when(() => mockSearch.searchYouTubeMusic(any()))
+        .thenAnswer((_) async => results);
+    when(() => mockSearch.searchYouTube(any()))
+        .thenAnswer((_) async => results);
+    when(() => mockSearch.searchSpotify(any()))
+        .thenAnswer((_) async => results);
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(platform: TargetPlatform.android),
@@ -108,16 +104,12 @@ void main() {
       platform: MediaPlatform.youtube,
     );
 
-    when(() => mockSearch.searchAll(any(),
-            onStatusUpdate: any(named: 'onStatusUpdate')))
-        .thenAnswer((invocation) async {
-      final callback = invocation.namedArguments[#onStatusUpdate] as void
-          Function(MediaPlatform, SearchStatus)?;
-      callback?.call(MediaPlatform.youtube, SearchStatus.completed);
-      callback?.call(MediaPlatform.spotify, SearchStatus.completed);
-      callback?.call(MediaPlatform.youtubeMusic, SearchStatus.completed);
-      return [result];
-    });
+    when(() => mockSearch.searchYouTubeMusic(any()))
+        .thenAnswer((_) async => [result]);
+    when(() => mockSearch.searchYouTube(any()))
+        .thenAnswer((_) async => [result]);
+    when(() => mockSearch.searchSpotify(any()))
+        .thenAnswer((_) async => [result]);
     when(() => mockPlayback.playSearchResult(any()))
         .thenAnswer((_) async => Future.value());
 
@@ -142,16 +134,12 @@ void main() {
   });
 
   testWidgets('Shows no results message', (tester) async {
-    when(() => mockSearch.searchAll(any(),
-            onStatusUpdate: any(named: 'onStatusUpdate')))
-        .thenAnswer((invocation) async {
-      final callback = invocation.namedArguments[#onStatusUpdate] as void
-          Function(MediaPlatform, SearchStatus)?;
-      callback?.call(MediaPlatform.youtube, SearchStatus.completed);
-      callback?.call(MediaPlatform.spotify, SearchStatus.completed);
-      callback?.call(MediaPlatform.youtubeMusic, SearchStatus.completed);
-      return [];
-    });
+    when(() => mockSearch.searchYouTubeMusic(any()))
+        .thenAnswer((_) async => []);
+    when(() => mockSearch.searchYouTube(any()))
+        .thenAnswer((_) async => []);
+    when(() => mockSearch.searchSpotify(any()))
+        .thenAnswer((_) async => []);
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(platform: TargetPlatform.android),

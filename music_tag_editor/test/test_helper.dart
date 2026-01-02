@@ -191,6 +191,9 @@ class _MockHttpOverrides extends HttpOverrides {
 class _MockHttpClient extends Mock implements HttpClient {
   @override
   Future<HttpClientRequest> getUrl(Uri url) => Future.value(_MockHttpClientRequest());
+
+  @override
+  Future<HttpClientRequest> openUrl(String method, Uri url) => Future.value(_MockHttpClientRequest());
 }
 
 class _MockHttpClientRequest extends Mock implements HttpClientRequest {
