@@ -162,19 +162,29 @@ class SearchService {
       final results = <SearchResult>[];
       final client = _ytExplodeOverride ?? _defaultYtExplode;
       // We can use the same search, but we might filter or append "audio" to query
-      final searchList = await client.search.search('$query audio');
+      final searchList = await client.search.search('$query topic');
       
       for (final video in searchList) {
         results.add(SearchResult(
           id: video.id.value,
           title: video.title,
-          artist: video.author,
+          artist: video.author.replaceAll(' - Topic', ''),
           thumbnail: video.thumbnails.highResUrl,
           duration: video.duration?.inSeconds,
           url: video.url,
           platform: MediaPlatform.youtubeMusic,
         ));
       }
+      
+      // Sort to put topic/official results first if they exist
+      results.sort((a, b) {
+        final aTopic = a.artist.toLowerCase().contains('topic') || a.title.toLowerCase().contains('official audio');
+        final bTopic = b.artist.toLowerCase().contains('topic') || b.title.toLowerCase().contains('official audio');
+        if (aTopic && !bTopic) return -1;
+        if (!aTopic && bTopic) return 1;
+        return 0;
+      });
+
       return results;
     } catch (e, stack) {
       StartupLogger.log('[SearchService] YT Music Error: $e\n$stack');

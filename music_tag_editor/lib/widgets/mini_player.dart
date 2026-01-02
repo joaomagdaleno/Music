@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,8 +32,7 @@ class _FluentMiniPlayer extends StatelessWidget {
       stream: playback.player.playerStateStream,
       builder: (context, snapshot) {
         final track = playback.currentTrack;
-        if (track == null ||
-            snapshot.data?.processingState == ProcessingState.idle) {
+        if (track == null) {
           return const SizedBox.shrink();
         }
 
@@ -63,12 +63,22 @@ class _FluentMiniPlayer extends StatelessWidget {
                   if (track.thumbnail != null)
                     ClipRRect(
                       borderRadius: BorderRadius.circular(4),
-                      child: Image.network(
-                        track.thumbnail!,
-                        width: 48,
-                        height: 48,
-                        fit: BoxFit.cover,
-                      ),
+                        child: track.thumbnail != null && (track.thumbnail!.startsWith('http') || track.thumbnail!.startsWith('https'))
+                        ? Image.network(
+                            track.thumbnail!,
+                            width: 48,
+                            height: 48,
+                            fit: BoxFit.cover,
+                          )
+                        : track.thumbnail != null
+                            ? Image.file(
+                                File(track.thumbnail!),
+                                width: 48,
+                                height: 48,
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) => const Icon(fluent.FluentIcons.music_note),
+                              )
+                            : const Icon(fluent.FluentIcons.music_note),
                     ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -131,8 +141,7 @@ class _MaterialMiniPlayer extends StatelessWidget {
       stream: playback.player.playerStateStream,
       builder: (context, snapshot) {
         final track = playback.currentTrack;
-        if (track == null ||
-            snapshot.data?.processingState == ProcessingState.idle) {
+        if (track == null) {
           return const SizedBox.shrink();
         }
 
@@ -163,12 +172,22 @@ class _MaterialMiniPlayer extends StatelessWidget {
                 if (track.thumbnail != null)
                   ClipRRect(
                     borderRadius: BorderRadius.circular(4),
-                    child: Image.network(
-                      track.thumbnail!,
-                      width: 48,
-                      height: 48,
-                      fit: BoxFit.cover,
-                    ),
+                    child: track.thumbnail != null && (track.thumbnail!.startsWith('http') || track.thumbnail!.startsWith('https'))
+                      ? Image.network(
+                          track.thumbnail!,
+                          width: 48,
+                          height: 48,
+                          fit: BoxFit.cover,
+                        )
+                      : track.thumbnail != null
+                          ? Image.file(
+                              File(track.thumbnail!),
+                              width: 48,
+                              height: 48,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => const Icon(Icons.music_note),
+                            )
+                          : const Icon(Icons.music_note),
                   ),
                 const SizedBox(width: 12),
                 Expanded(

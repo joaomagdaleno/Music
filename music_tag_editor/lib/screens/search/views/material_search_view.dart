@@ -78,7 +78,7 @@ class MaterialSearchView extends StatelessWidget {
               ],
             ),
           ),
-          if (isLoading || platformStatuses.isNotEmpty) _buildStatusIndicator(context),
+          if (isLoading) _buildStatusIndicator(context),
           if (errorMessage != null)
             Padding(
               padding: const EdgeInsets.all(16.0),
