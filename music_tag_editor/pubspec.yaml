@@ -47,6 +47,8 @@ dependencies:
   sqflite_common_ffi: ^2.3.3
   flutter_acrylic: ^1.1.4
   youtube_player_iframe: ^5.2.0
+  youtube_explode_dart: ^3.0.5
+  spotify: ^0.15.0
 
 dev_dependencies:
   flutter_test:

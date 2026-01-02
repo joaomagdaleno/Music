@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/startup_logger.dart';
+import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
 
 /// Platform detected from URL or search.
 enum MediaPlatform {
@@ -357,14 +358,23 @@ class DownloadService {
     String outputDir, {
     void Function(double progress, String status)? onProgress,
     String? overrideThumbnailUrl,
+    String? title,
+    String? artist,
   }) async {
     final platform = detectPlatform(url);
 
     if (platform == MediaPlatform.spotify) {
       return _downloadSpotify(url, format, outputDir, onProgress);
     } else {
-      return _downloadYouTube(url, format, outputDir, onProgress,
-          overrideThumbnailUrl: overrideThumbnailUrl);
+      return _downloadYouTube(
+        url,
+        format,
+        outputDir,
+        onProgress,
+        overrideThumbnailUrl: overrideThumbnailUrl,
+        title: title,
+        artist: artist,
+      );
     }
   }
 
@@ -375,6 +385,8 @@ class DownloadService {
     String outputDir,
     void Function(double progress, String status)? onProgress, {
     String? overrideThumbnailUrl,
+    String? title,
+    String? artist,
   }) async {
     final outputTemplate = '$outputDir/%(title)s.%(ext)s';
 
@@ -387,7 +399,7 @@ class DownloadService {
       outputTemplate,
       '--no-playlist',
       '--progress',
-      '--embed-metadata',
+      '--embed-metadata', // Basic YouTube metadata as base
       '--embed-subs',
       '--write-auto-subs',
       '--sub-format',
@@ -435,6 +447,14 @@ class DownloadService {
       // Capture output filename
       if (line.contains('[download] Destination:')) {
         outputFile = line.split('Destination:').last.trim();
+      } else if (line.contains('[download]') &&
+          line.contains('has already been downloaded')) {
+        // Handle "already downloaded" case to capture filename
+        outputFile = line.split('downloaded').last.trim();
+        // Sometimes it's just the path
+        if (outputFile!.contains(outputDir)) {
+           // We have the path
+        }
       }
     });
 
@@ -447,54 +467,111 @@ class DownloadService {
       throw Exception('Download failed with exit code $exitCode');
     }
 
-    if (outputFile != null &&
-        overrideThumbnailUrl != null &&
-        overrideThumbnailUrl.isNotEmpty) {
-      onProgress?.call(0.95, 'Embutindo capa personalizada...');
-      await _embedCustomThumbnail(outputFile!, overrideThumbnailUrl);
+    if (outputFile != null) {
+      onProgress?.call(0.90, 'Buscando metadados autênticos (MusicBrainz)...');
+      
+      String searchTitle;
+      String searchArtist;
+
+      // Use efficient passed metadata if available, otherwise fallback to filename parsing
+      if (title != null && title.isNotEmpty) {
+        searchTitle = title;
+        searchArtist = artist ?? '';
+      } else {
+        // Fallback: Extract from filename
+        String baseName = outputFile!.split(Platform.pathSeparator).last;
+        baseName = baseName.substring(0, baseName.lastIndexOf('.'));
+        
+        // Simple regex clean logic
+        searchTitle = baseName
+            .replaceAll(RegExp(r'\(Official.*?\)', caseSensitive: false), '')
+            .replaceAll(RegExp(r'\[Official.*?\]', caseSensitive: false), '')
+            .replaceAll(RegExp(r'\(Lyrics\)', caseSensitive: false), '')
+            .replaceAll(RegExp(r'\(Audio\)', caseSensitive: false), '')
+            .trim();
+        searchArtist = '';
+
+        if (searchTitle.contains(' - ')) {
+          final parts = searchTitle.split(' - ');
+          if (parts.length >= 2) {
+            searchArtist = parts[0].trim();
+            searchTitle = parts.sublist(1).join(' - ').trim();
+          }
+        }
+      }
+
+      // 2. Fetch High-Quality Metadata
+      final aggregator = MetadataAggregatorService.instance;
+      // We pass the clean title/artist to the aggregator
+      final metadata = await aggregator.aggregateMetadata(searchTitle, searchArtist);
+
+      onProgress?.call(0.95, 'Embutindo metadados e capa...');
+      
+      final finalImage = overrideThumbnailUrl ?? metadata.thumbnail;
+
+      // Embed the enhanced metadata using FFmpeg
+      await _embedMetadata(outputFile!, finalImage, metadata, searchTitle);
     }
 
     onProgress?.call(1.0, 'Download concluído!');
     return outputFile ?? outputDir;
   }
 
-  Future<void> _embedCustomThumbnail(String audioPath, String imageUrl) async {
+  Future<void> _embedMetadata(
+    String audioPath,
+    String? imageUrl,
+    AggregatedMetadata metadata,
+    String originalTitle,
+  ) async {
     try {
-      final imageFile = File('${audioPath}_thumb.jpg');
-      await fileDownloader(imageUrl, imageFile.path);
-
       final tempOut = '${audioPath}_temp.mp3';
-
-      // Use ffmpeg to embed the thumbnail
-      final result = await processRunner(_deps.ffmpegPath, [
+      
+      final args = <String>[
         '-y',
         '-i',
         audioPath,
-        '-i',
-        imageFile.path,
-        '-map',
-        '0:0',
-        '-map',
-        '1:0',
-        '-c',
-        'copy',
-        '-id3v2_version',
-        '3',
-        '-metadata:s:v',
-        'title="Album cover"',
-        '-metadata:s:v',
-        'comment="Cover (front)"',
-        tempOut,
-      ]);
+      ];
+
+      // Handle Cover Art
+      File? imageFile;
+      if (imageUrl != null && imageUrl.isNotEmpty) {
+        imageFile = File('${audioPath}_thumb.jpg');
+        await fileDownloader(imageUrl, imageFile.path);
+        args.addAll(['-i', imageFile.path]);
+        args.addAll(['-map', '0:0', '-map', '1:0']);
+      } else {
+        args.addAll(['-map', '0:0']);
+      }
+
+      args.addAll(['-c', 'copy', '-id3v2_version', '3']);
+
+      // Add Metadata Tags
+      // Use aggregated data if available, otherwise just keep what we have (or regex clean it elsewhere)
+      // Note: originalTitle might be "Cleaned" by regex before this function is called if we decide so,
+      // but here we prioritize the aggregated metadata.
+
+      if (metadata.title != null) args.addAll(['-metadata', 'title=${metadata.title}']);
+      if (metadata.artist != null) args.addAll(['-metadata', 'artist=${metadata.artist}']);
+      if (metadata.album != null) args.addAll(['-metadata', 'album=${metadata.album}']);
+      if (metadata.genre != null) args.addAll(['-metadata', 'genre=${metadata.genre}']);
+      if (metadata.year != null) args.addAll(['-metadata', 'date=${metadata.year}']);
+
+      args.add(tempOut);
+
+      final result = await processRunner(_deps.ffmpegPath, args);
 
       if (result.exitCode == 0) {
         await File(audioPath).delete();
         await File(tempOut).rename(audioPath);
+      } else {
+        StartupLogger.log('FFmpeg metadata embed failed: ${result.stderr}');
       }
 
-      if (await imageFile.exists()) await imageFile.delete();
+      if (imageFile != null && await imageFile.exists()) {
+        await imageFile.delete();
+      }
     } catch (e) {
-      StartupLogger.log('Error embedding custom thumbnail: $e');
+      StartupLogger.log('Error embedding metadata: $e');
     }
   }
 
