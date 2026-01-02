@@ -43,7 +43,7 @@ class _PersonaShellState extends State<PersonaShell> {
             );
           }).toList(),
         ),
-        content: widget.children[_currentIndex],
+        paneBodyBuilder: (item, body) => widget.children[_currentIndex],
       );
     }
 
