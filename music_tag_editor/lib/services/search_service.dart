@@ -162,24 +162,53 @@ class SearchService {
   @visibleForTesting
   set ytExplode(yt.YoutubeExplode instance) => _ytExplodeOverride = instance;
 
+  SearchResult _parseYouTubeVideo(yt.Video video, MediaPlatform platform) {
+    String title = video.title;
+    String artist = video.author.replaceAll(' - Topic', '').trim();
+    
+    // Heuristic: If author is generic or "Topic", try to parse "Artist - Title" from video title
+    final genericAuthors = ['7clouds', 'proximity', 'trap nation', 'official music', 'official', 'vevo', 'lyrics', 'audio'];
+    bool isGeneric = genericAuthors.any((g) => artist.toLowerCase().contains(g)) || video.author.toLowerCase().contains('topic');
+    
+    if (isGeneric && title.contains(' - ')) {
+      final parts = title.split(' - ');
+      if (parts.length >= 2) {
+        artist = parts[0].trim();
+        title = parts.sublist(1).join(' - ').trim();
+      }
+    }
+
+    // Clean title from common YouTube suffixes
+    title = title
+        .replaceAll(RegExp(r'\(Official.*?\)', caseSensitive: false), '')
+        .replaceAll(RegExp(r'\[Official.*?\]', caseSensitive: false), '')
+        .replaceAll(RegExp(r'\(Lyrics\)', caseSensitive: false), '')
+        .replaceAll(RegExp(r'\(Audio\)', caseSensitive: false), '')
+        .replaceAll(RegExp(r'\(Video\)', caseSensitive: false), '')
+        .replaceAll(RegExp(r'ft\..*$', caseSensitive: false), '')
+        .replaceAll(RegExp(r'feat\..*$', caseSensitive: false), '')
+        .trim();
+
+    return SearchResult(
+      id: video.id.value,
+      title: title,
+      artist: artist,
+      thumbnail: video.thumbnails.highResUrl,
+      duration: video.duration?.inSeconds,
+      url: video.url,
+      platform: platform,
+    );
+  }
+
   /// Search YouTube using youtube_explode_dart (Native & Fast).
   Future<List<SearchResult>> searchYouTube(String query) async {
     try {
       final results = <SearchResult>[];
       final client = _ytExplodeOverride ?? _defaultYtExplode;
-      // Search specifically for videos
       final searchList = await client.search.search(query);
       
       for (final video in searchList) {
-        results.add(SearchResult(
-          id: video.id.value,
-          title: video.title,
-          artist: video.author,
-          thumbnail: video.thumbnails.highResUrl,
-          duration: video.duration?.inSeconds,
-          url: video.url,
-          platform: MediaPlatform.youtube,
-        ));
+        results.add(_parseYouTubeVideo(video, MediaPlatform.youtube));
       }
       return results;
     } catch (e, stack) {
@@ -193,19 +222,10 @@ class SearchService {
     try {
       final results = <SearchResult>[];
       final client = _ytExplodeOverride ?? _defaultYtExplode;
-      // We can use the same search, but we might filter or append "audio" to query
       final searchList = await client.search.search('$query topic');
       
       for (final video in searchList) {
-        results.add(SearchResult(
-          id: video.id.value,
-          title: video.title,
-          artist: video.author.replaceAll(' - Topic', ''),
-          thumbnail: video.thumbnails.highResUrl,
-          duration: video.duration?.inSeconds,
-          url: video.url,
-          platform: MediaPlatform.youtubeMusic,
-        ));
+        results.add(_parseYouTubeVideo(video, MediaPlatform.youtubeMusic));
       }
       
       // Sort to put topic/official results first if they exist
@@ -219,37 +239,19 @@ class SearchService {
 
       return results;
     } catch (e, stack) {
-      StartupLogger.log('[SearchService] YT Music Error: $e\n$stack');
+      StartupLogger.logError('YT Music Error', e, stack);
       return [];
     }
   }
 
   Future<List<SearchResult>> searchSpotify(String query) async {
-    // Authentic-feeling fallback (YouTube base formatted as Spotify):
-    // As per user request, Spotify API is only for metadata, not search results.
     try {
        final client = _ytExplodeOverride ?? _defaultYtExplode;
        final searchList = await client.search.search('$query official audio');
        final results = <SearchResult>[];
 
        for (final video in searchList) {
-         // Clean titles to look like Spotify tracks
-         String cleanTitle = video.title
-            .replaceAll(RegExp(r'\(Official.*?\)', caseSensitive: false), '')
-            .replaceAll(RegExp(r'\[Official.*?\]', caseSensitive: false), '')
-            .replaceAll(RegExp(r'\(Lyrics\)', caseSensitive: false), '')
-            .replaceAll(RegExp(r'\(Audio\)', caseSensitive: false), '')
-            .trim();
-
-         results.add(SearchResult(
-          id: video.id.value,
-          title: cleanTitle,
-          artist: video.author,
-          thumbnail: video.thumbnails.highResUrl,
-          duration: video.duration?.inSeconds,
-          url: video.url,
-          platform: MediaPlatform.spotify, // Branding as Spotify for the UI preference
-        ));
+         results.add(_parseYouTubeVideo(video, MediaPlatform.spotify));
        }
        return results;
     } catch (e) {

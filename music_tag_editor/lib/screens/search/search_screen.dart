@@ -42,6 +42,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
   bool _isInitializing = true;
   String _initStatus = 'Iniciando ferramentas...';
   double _initProgress = 0;
+  Set<String> _downloadedUrls = {};
 
   bool get _isFluent {
     final platform = material.Theme.of(context).platform;
@@ -124,7 +125,10 @@ class _SearchScreenState extends material.State<SearchScreen> {
         
         if (mounted && searchId == _currentSearchId) {
           StartupLogger.log('[SearchScreen] Single platform search returned ${filtered.length} results');
+          final downloadedData = await DatabaseService.instance.getDownloadedUrls();
+          final verifiedUrls = await _verifyFiles(downloadedData);
           setState(() {
+            _downloadedUrls = verifiedUrls;
             _searchResults.addAll(filtered);
             _platformStatuses[_selectedPlatform!] = filtered.isEmpty ? SearchStatus.noResults : SearchStatus.completed;
           });
@@ -142,7 +146,10 @@ class _SearchScreenState extends material.State<SearchScreen> {
         );
         if (mounted && searchId == _currentSearchId) {
           StartupLogger.log('[SearchScreen] Search all returned ${results.length} results');
+          final downloadedData = await DatabaseService.instance.getDownloadedUrls();
+          final verifiedUrls = await _verifyFiles(downloadedData);
           setState(() {
+            _downloadedUrls = verifiedUrls;
             _searchResults.addAll(results);
           });
         }
@@ -467,6 +474,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
         downloadingProgress: _downloadingProgress,
         downloadingStatus: _downloadingStatus,
         loadingFormatsStatus: _loadingFormatsStatus,
+        downloadedUrls: _downloadedUrls,
         onSearch: () => _onSearch(_searchController.text),
         onPlay: playTrack,
         onAddToPlaylist: addToPlaylist,
@@ -498,6 +506,17 @@ class _SearchScreenState extends material.State<SearchScreen> {
       onFormatSelected: handleFormatSelected,
       onToggleExpand: handleToggleExpand,
       onOpenFullPlayer: openFullPlayer,
+      downloadedUrls: _downloadedUrls, // Add this
     );
+  }
+
+  Future<Set<String>> _verifyFiles(Map<String, String?> data) async {
+    final Set<String> verified = {};
+    for (final entry in data.entries) {
+      if (entry.value != null && await File(entry.value!).exists()) {
+        verified.add(entry.key);
+      }
+    }
+    return verified;
   }
 }

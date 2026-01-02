@@ -18,6 +18,7 @@ class FluentSearchView extends StatelessWidget {
   final Map<String, double> downloadingProgress;
   final Map<String, String> downloadingStatus;
   final Map<String, String> loadingFormatsStatus;
+  final Set<String> downloadedUrls;
 
   // Callbacks
   final VoidCallback onSearch;
@@ -53,6 +54,7 @@ class FluentSearchView extends StatelessWidget {
     required this.onToggleExpand,
     required this.onOpenFullPlayer,
     required this.onPlatformChanged,
+    required this.downloadedUrls,
   });
 
   @override
@@ -104,6 +106,7 @@ class FluentSearchView extends StatelessWidget {
                 final result = results[index];
                 final isExpanded = isExpanding[result.url] ?? false;
                 final isDownloading = downloadingProgress.containsKey(result.url);
+                final isDownloaded = downloadedUrls.contains(result.url);
 
                 final isVideo = result.platform == MediaPlatform.youtube;
 
@@ -114,27 +117,39 @@ class FluentSearchView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ListTile(
+                          onPressed: () => onToggleExpand(result),
                           leading: ClipRRect(
                             borderRadius: BorderRadius.circular(4),
                             child: result.thumbnail != null
                                 ? GestureDetector(
-                                    onTap: isVideo 
+                                    onTap: isVideo
                                       ? () => _playVideo(context, result)
                                       : () => onPlay(result),
-                                    child: Image.network(result.thumbnail!,
-                                        width: 60,
-                                        height: 60,
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (_, __, ___) => const Icon(FluentIcons.music_note)),
+                                    child: Image.network(
+                                      result.thumbnail!,
+                                      width: 48,
+                                      height: 48,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (_, __, ___) => const Icon(FluentIcons.music_note, size: 24),
+                                    ),
                                   )
                                 : const Icon(FluentIcons.music_note, size: 32),
                           ),
-                          title: Text(result.title, 
-                            maxLines: 1, 
+                          title: Text(
+                            result.title,
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: isDownloaded ? Colors.green.lighter : null,
+                            ),
                           ),
-                          subtitle: Text('${result.artist} • ${result.durationFormatted}'),
+                          subtitle: Text(
+                            '${result.artist} • ${result.durationFormatted}',
+                            style: TextStyle(
+                              color: isDownloaded ? Colors.green.lighter.withOpacity(0.8) : null,
+                            ),
+                          ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -170,22 +185,22 @@ class FluentSearchView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 const Divider(),
-                                  const SizedBox(height: 12),
-                                  if (loadingFormatsStatus.containsKey(result.url))
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          const ProgressRing(strokeWidth: 2),
-                                          const SizedBox(width: 12),
-                                          Text(loadingFormatsStatus[result.url]!),
-                                        ],
-                                      ),
-                                    )
-                                  else if (!formatsCache.containsKey(result.url))
-                                    const Center(child: ProgressRing())
-                                  else ...[
+                                const SizedBox(height: 12),
+                                if (loadingFormatsStatus.containsKey(result.url))
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        const ProgressRing(strokeWidth: 2),
+                                        const SizedBox(width: 12),
+                                        Text(loadingFormatsStatus[result.url]!),
+                                      ],
+                                    ),
+                                  )
+                                else if (!formatsCache.containsKey(result.url))
+                                  const Center(child: ProgressRing())
+                                else ...[
                                   Row(
                                     children: [
                                       const Text('Formato: '),
@@ -213,7 +228,7 @@ class FluentSearchView extends StatelessWidget {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           ProgressBar(
-                                            value: downloadingProgress[result.url]! * 100,
+                                            value: (downloadingProgress[result.url] ?? 0) * 100,
                                           ),
                                           const SizedBox(height: 8),
                                           Text(

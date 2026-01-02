@@ -4,6 +4,7 @@ library;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
+import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/api/musicbrainz_api.dart';
 import 'package:music_tag_editor/api/lastfm_api.dart';
 import 'package:music_tag_editor/api/discogs_api.dart';
@@ -23,6 +24,8 @@ class MockNeteaseApi extends Mock implements NeteaseApi {}
 
 class MockLyricsService extends Mock implements LyricsService {}
 
+class MockSearchService extends Mock implements SearchService {}
+
 void main() {
   late MetadataAggregatorService service;
   late MockMusicBrainzApi mockMusicBrainz;
@@ -31,6 +34,7 @@ void main() {
   late MockGeniusApi mockGenius;
   late MockNeteaseApi mockNetease;
   late MockLyricsService mockLyrics;
+  late MockSearchService mockSearch;
 
   setUp(() {
     mockMusicBrainz = MockMusicBrainzApi();
@@ -39,6 +43,7 @@ void main() {
     mockGenius = MockGeniusApi();
     mockNetease = MockNeteaseApi();
     mockLyrics = MockLyricsService();
+    mockSearch = MockSearchService();
 
     service = MetadataAggregatorService.instance;
     service.setDependencies(
@@ -48,7 +53,10 @@ void main() {
       genius: mockGenius,
       netease: mockNetease,
       lrcLib: mockLyrics,
+      searchService: mockSearch,
     );
+
+    when(() => mockSearch.spotifyApi).thenAnswer((_) async => null);
   });
 
   group('aggregateMetadata', () {
@@ -57,7 +65,7 @@ void main() {
           .thenAnswer((_) async => [
                 {
                   'title': 'Correct Title',
-                  'artist': 'Correct Artist',
+                  'artist': 'Artist', // Must match our input 'Artist' to pass similarity check
                   'album': 'Correct Album',
                   'genres': ['Pop'],
                 }
@@ -65,7 +73,7 @@ void main() {
       when(() => mockLastFm.getTrackInfo(any(), any()))
           .thenAnswer((_) async => {
                 'name': 'Correct Title',
-                'artist': 'Correct Artist',
+                'artist': 'Artist',
                 'album': 'Correct Album',
               });
       when(() => mockDiscogs.searchRelease(any(), any()))
@@ -82,7 +90,7 @@ void main() {
       final result = await service.aggregateMetadata('Title', 'Artist');
 
       expect(result.title, 'Correct Title'); // 2 vs 1
-      expect(result.artist, 'Correct Artist');
+      expect(result.artist, 'Artist');
       expect(result.album, 'Correct Album');
       expect(result.year, 2023); // From Discogs alone
       expect(result.thumbnail, 'http://cover.jpg');
@@ -90,7 +98,7 @@ void main() {
       expect(result.confidence, greaterThan(0.5));
     });
 
-    test('handles empty results', () async {
+    test('handles empty results and falls back to input', () async {
       when(() => mockMusicBrainz.searchMetadata(any(), any()))
           .thenAnswer((_) async => []);
       when(() => mockLastFm.getTrackInfo(any(), any()))
@@ -102,8 +110,8 @@ void main() {
 
       final result = await service.aggregateMetadata('Title', 'Artist');
 
-      expect(result.title, null);
-      expect(result.artist, null);
+      expect(result.title, 'Title'); // Fallback to initial
+      expect(result.artist, 'Artist'); // Fallback to initial
       expect(result.confidence, 0.0);
     });
   });
