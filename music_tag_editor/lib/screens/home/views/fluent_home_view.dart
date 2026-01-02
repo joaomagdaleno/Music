@@ -1,8 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:music_tag_editor/screens/mood/mood_explorer_screen.dart';
+import 'package:music_tag_editor/screens/library/mood_explorer_screen.dart';
 import 'package:music_tag_editor/screens/library/smart_library_screen.dart';
 import 'package:music_tag_editor/screens/stats/listening_stats_screen.dart';
-import 'package:music_tag_editor/screens/disco_mode/disco_mode_screen.dart';
+import 'package:music_tag_editor/screens/disco/disco_mode_screen.dart';
 
 class FluentHomeView extends StatelessWidget {
   final bool isLoading;
