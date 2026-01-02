@@ -86,7 +86,7 @@ class FluentSearchView extends StatelessWidget {
               ],
             ),
           ),
-          if (isLoading || platformStatuses.isNotEmpty) _buildStatusIndicator(),
+          if (isLoading || platformStatuses.isNotEmpty) _buildStatusIndicator(context),
           if (errorMessage != null && errorMessage!.isNotEmpty)
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -262,13 +262,9 @@ class FluentSearchView extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _platformButton(context, null, 'Geral', FluentIcons.all_apps),
-        const SizedBox(width: 8),
-        _platformButton(context, MediaPlatform.spotify, 'Spotify', FluentIcons.music_note),
-        const SizedBox(width: 8),
-        _platformButton(context, MediaPlatform.youtube, 'YouTube', FluentIcons.video),
-        const SizedBox(width: 8),
-        _platformButton(context, MediaPlatform.youtubeMusic, 'YT Music', FluentIcons.music_in_collection),
+        _platformButton(context, MediaPlatform.youtube, 'Vídeos (YouTube)', FluentIcons.video),
+        const SizedBox(width: 12),
+        _platformButton(context, MediaPlatform.youtubeMusic, 'Músicas (YT Music)', FluentIcons.music_in_collection),
       ],
     );
   }
@@ -347,88 +343,31 @@ class FluentSearchView extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusIndicator() {
+  Widget _buildStatusIndicator(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _platformStatusChip(MediaPlatform.youtube, 'YouTube'),
-          _platformStatusChip(MediaPlatform.youtubeMusic, 'YT Music'),
-          _platformStatusChip(MediaPlatform.spotify, 'Spotify'),
-        ],
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      child: Center(
+        child: Column(
+          children: [
+            const SizedBox(
+              width: 300,
+              child: ProgressBar(),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Buscando nas plataformas...',
+              style: TextStyle(
+                color: FluentTheme.of(context).typography.body?.color?.withValues(alpha: 0.7),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _platformStatusChip(MediaPlatform platform, String label) {
-    final status = platformStatuses[platform];
-    if (status == null) {
-      return const SizedBox.shrink();
-    }
-
-    IconData icon;
-    Color color;
-    bool spin = false;
-
-    // Mapping colors roughly to Fluent standard or standard library colors
-    switch (status) {
-      case SearchStatus.searching:
-        icon = FluentIcons.sync;
-        color = Colors.blue;
-        spin = true;
-        break;
-      case SearchStatus.completed:
-        icon = FluentIcons.check_mark;
-        color = Colors.green;
-        break;
-      case SearchStatus.noResults:
-        icon = FluentIcons.info;
-        color = Colors.orange;
-        break;
-      case SearchStatus.failed:
-        icon = FluentIcons.error;
-        color = Colors.red;
-        break;
-    }
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (spin)
-          const SizedBox(
-            width: 12,
-            height: 12,
-            child: ProgressRing(strokeWidth: 2),
-          )
-        else
-          Icon(icon, size: 16, color: color),
-        const SizedBox(width: 4),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            color: color,
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildFallbackInfo() {
-    final spotifyStatus = platformStatuses[MediaPlatform.spotify];
-    final youtubeStatus = platformStatuses[MediaPlatform.youtube];
-
-    if (spotifyStatus == SearchStatus.noResults &&
-        (youtubeStatus == SearchStatus.completed || youtubeStatus == SearchStatus.searching)) {
-      return InfoBar(
-         title: const Text('Info'),
-         content: const Text('Nenhuma correspondência exata no Spotify. Mostrando resultados similares do YouTube.'),
-         severity: InfoBarSeverity.info,
-         isLong: true,
-      );
-    }
+    // Simplified: No longer needing complex cross-platform fallback messages.
     return const SizedBox.shrink();
   }
 

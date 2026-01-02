@@ -30,7 +30,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
   bool _isLoading = false;
   String? _errorMessage;
   final Map<MediaPlatform, SearchStatus> _platformStatuses = {};
-  MediaPlatform? _selectedPlatform;
+  MediaPlatform? _selectedPlatform = MediaPlatform.youtubeMusic; // Default to Music
   int _currentSearchId = 0;
 
   final Map<String, List<DownloadFormat>> _formatsCache = {};
@@ -130,7 +130,8 @@ class _SearchScreenState extends material.State<SearchScreen> {
           });
         }
       } else {
-        StartupLogger.log('[SearchScreen] Searching all platforms');
+        // Fallback or "Search All" logic if ever needed again, but currently unused in UI
+        StartupLogger.log('[SearchScreen] Searching all platforms (Not expected in current UI)');
         final results = await _searchService.searchAll(query, 
           onStatusUpdate: (p, s) {
             if (mounted && searchId == _currentSearchId) {
@@ -165,7 +166,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
   }
 
   void _setPlatform(MediaPlatform? platform) {
-    if (_selectedPlatform == platform) return;
+    if (platform == null || _selectedPlatform == platform) return; // Prevent deselection
     StartupLogger.log('[SearchScreen] Platform changed to: $platform');
     setState(() {
       _selectedPlatform = platform;
