@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/screens/search/search_screen.dart';
-
-import 'package:music_tag_editor/widgets/mini_player.dart';
 import 'package:music_tag_editor/screens/playlists/playlists_screen.dart';
 import 'package:music_tag_editor/screens/tracks/my_tracks_screen.dart';
 import 'package:music_tag_editor/screens/home/home_screen.dart';
@@ -16,9 +14,11 @@ import 'package:music_tag_editor/screens/disco/karaoke_screen.dart';
 import 'package:music_tag_editor/screens/disco/party_queue_screen.dart';
 import 'package:music_tag_editor/screens/vault/vault_screen.dart';
 import 'package:music_tag_editor/screens/stats/listening_stats_screen.dart';
-import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/screens/library/library_screen.dart';
 import 'package:music_tag_editor/screens/settings/settings_screen.dart';
+import 'package:music_tag_editor/screens/library/library_screen.dart';
+import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/views/app_shell/fluent_app_shell.dart';
+import 'package:music_tag_editor/views/app_shell/material_app_shell.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -40,29 +40,37 @@ class _AppShellState extends State<AppShell> {
         return ValueListenableBuilder<bool>(
           valueListenable: ConnectivityService.instance.isOffline,
           builder: (context, isOffline, child) {
-            return LayoutBuilder(
-              builder: (context, constraints) {
-                final isWide = constraints.maxWidth >= 600;
+            final appShellDestinations = _getGlobalDestinations()
+                .map((d) => AppShellDestination(
+                      d.label,
+                      _isFluent(context) ? d.icon : d.iconOutline,
+                      persona: d.persona,
+                    ))
+                .toList();
 
-                return Scaffold(
-                  body: Column(
-                    children: [
-                      if (isOffline) _buildOfflineBanner(),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            if (isWide) _buildNavigationRail(persona),
-                            Expanded(child: _buildBody(persona)),
-                          ],
-                        ),
-                      ),
-                      const MiniPlayer(),
-                    ],
-                  ),
-                  bottomNavigationBar:
-                      isWide ? null : _buildBottomNavBar(persona),
-                );
-              },
+            final appShell = _isFluent(context)
+                ? FluentAppShell(
+                    body: _buildBody(persona),
+                    selectedIndex: _selectedIndex,
+                    onSelectedIndexChanged: (index) =>
+                        setState(() => _selectedIndex = index),
+                    destinations: appShellDestinations,
+                  )
+                : MaterialAppShell(
+                    body: _buildBody(persona),
+                    selectedIndex: _selectedIndex,
+                    onSelectedIndexChanged: (index) =>
+                        setState(() => _selectedIndex = index),
+                    destinations: appShellDestinations,
+                  );
+
+            if (!isOffline) return appShell;
+
+            return Column(
+              children: [
+                _buildOfflineBanner(),
+                Expanded(child: appShell),
+              ],
             );
           },
         );
@@ -70,10 +78,18 @@ class _AppShellState extends State<AppShell> {
     );
   }
 
+  bool _isFluent(BuildContext context) {
+    if (kIsWeb) return false;
+    final platform = Theme.of(context).platform;
+    return platform == TargetPlatform.windows ||
+        platform == TargetPlatform.linux ||
+        platform == TargetPlatform.macOS;
+  }
+
   Widget _buildOfflineBanner() {
     return Container(
       width: double.infinity,
-      color: Colors.orange.withValues(alpha: 0.9),
+      color: Colors.orange.withOpacity(0.9),
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: const Center(
         child: Text(
@@ -85,103 +101,6 @@ class _AppShellState extends State<AppShell> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildNavigationRail(AppPersona activePersona) {
-    final destinations = _getGlobalDestinations();
-    final isDesktop = !kIsWeb &&
-        (Theme.of(context).platform == TargetPlatform.windows ||
-            Theme.of(context).platform == TargetPlatform.linux ||
-            Theme.of(context).platform == TargetPlatform.macOS);
-
-    return Container(
-      decoration: BoxDecoration(
-        color: isDesktop ? Theme.of(context).colorScheme.surface : null,
-        border: isDesktop
-            ? Border(
-                right: BorderSide(
-                  color: Theme.of(context).dividerColor.withValues(alpha: 0.1),
-                ),
-              )
-            : null,
-      ),
-      child: NavigationRail(
-        extended: MediaQuery.of(context).size.width >= 900,
-        selectedIndex: destinations.indexWhere((d) => d.persona == activePersona),
-        onDestinationSelected: (index) {
-          if (index < destinations.length) {
-            setState(() => _selectedIndex = 0);
-            PersonaService.instance.setPersona(destinations[index].persona!);
-          } else {
-             setState(() => _selectedIndex = index);
-          }
-        },
-        labelType: MediaQuery.of(context).size.width >= 900
-            ? NavigationRailLabelType.none
-            : NavigationRailLabelType.all,
-        backgroundColor: Colors.transparent,
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: Column(
-            children: [
-              const Icon(Icons.music_note, size: 32, color: Colors.blue),
-              if (MediaQuery.of(context).size.width >= 900)
-                const Padding(
-                  padding: EdgeInsets.only(top: 8.0),
-                  child: Text('Persona Engine',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                ),
-            ],
-          ),
-        ),
-        trailing: Expanded(
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: IconButton(
-                icon: const Icon(Icons.settings),
-                tooltip: 'Configurações',
-                onPressed: () {
-                   // Open settings as a dialog or a temporary mode overlay
-                   // For now, let's keep it consistent and maybe add it as a "persona" or just a specific UI.
-                   // Let's use a hidden "Settings" index if we want it in IndexedStack.
-                   setState(() => _selectedIndex = 99); // 99 for Settings
-                },
-              ),
-            ),
-          ),
-        ),
-        destinations: destinations
-            .map((d) => NavigationRailDestination(
-                  icon: Icon(d.iconOutline),
-                  selectedIcon: Icon(d.icon),
-                  label: Text(d.label),
-                ))
-            .toList(),
-      ),
-    );
-  }
-
-  Widget _buildBottomNavBar(AppPersona activePersona) {
-    final destinations = _getGlobalDestinations();
-    final currentIndex = destinations.indexWhere((d) => d.persona == activePersona);
-    
-    return BottomNavigationBar(
-      currentIndex: currentIndex == -1 ? 0 : currentIndex,
-      onTap: (index) => PersonaService.instance.setPersona(destinations[index].persona!),
-      type: BottomNavigationBarType.fixed,
-      items: [
-        ...destinations.map((d) => BottomNavigationBarItem(
-              icon: Icon(d.icon),
-              label: d.label,
-            )),
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: 'Configurações',
-        ),
-      ],
     );
   }
 

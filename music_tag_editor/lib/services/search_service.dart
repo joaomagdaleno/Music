@@ -143,11 +143,18 @@ class SearchService {
       );
 
       if (result.exitCode != 0) {
+        StartupLogger.log('[SearchService] YouTube search FAILED with code ${result.exitCode}: ${result.stderr}');
         return [];
       }
 
       final results = <SearchResult>[];
-      final lines = (result.stdout as String).split('\n');
+      final rawStdout = result.stdout as String;
+      if (rawStdout.isEmpty) {
+        StartupLogger.log('[SearchService] YouTube search returned EMPTY stdout');
+        return [];
+      }
+      
+      final lines = rawStdout.split('\n');
 
       for (final line in lines) {
         if (line.trim().isEmpty) continue;
@@ -169,29 +176,33 @@ class SearchService {
           // Pick better thumbnail
           String? thumbnail = json['thumbnail'] as String?;
           if (json['thumbnails'] != null && (json['thumbnails'] as List).isNotEmpty) {
-             // Pick the one with highest resolution or last one
              thumbnail = (json['thumbnails'] as List).last['url'] as String?;
           }
 
+          final id = json['id'] as String? ?? '';
+          if (id.isEmpty) continue;
+
           results.add(SearchResult(
-            id: json['id'] as String? ?? '',
+            id: id,
             title: json['title'] as String? ?? 'Unknown',
             artist: artist,
             thumbnail: thumbnail,
-            duration: json['duration'] as int?,
-            url: 'https://www.youtube.com/watch?v=${json['id']}',
+            duration: (json['duration'] as num?)?.toInt(),
+            url: json['url'] as String? ?? 'https://www.youtube.com/watch?v=$id',
             platform: MediaPlatform.youtube,
           ));
-        } catch (_) {}
+        } catch (e) {
+          StartupLogger.log('[SearchService] Error parsing YouTube line: $e');
+        }
       }
 
       return results;
-    } catch (e) {
+    } catch (e, stack) {
+      StartupLogger.log('[SearchService] YouTube search exception: $e\n$stack');
       return [];
     }
   }
 
-  /// Search YouTube Music using yt-dlp.
   Future<List<SearchResult>> searchYouTubeMusic(String query) async {
     try {
       final args = [
@@ -212,11 +223,18 @@ class SearchService {
       );
 
       if (result.exitCode != 0) {
+        StartupLogger.log('[SearchService] YT Music search FAILED with code ${result.exitCode}: ${result.stderr}');
         return [];
       }
 
       final results = <SearchResult>[];
-      final lines = (result.stdout as String).split('\n');
+      final rawStdout = result.stdout as String;
+      if (rawStdout.isEmpty) {
+        StartupLogger.log('[SearchService] YT Music search returned EMPTY stdout');
+        return [];
+      }
+
+      final lines = rawStdout.split('\n');
 
       for (final line in lines) {
         if (line.trim().isEmpty) continue;
@@ -237,21 +255,27 @@ class SearchService {
              thumbnail = (json['thumbnails'] as List).last['url'] as String?;
           }
 
+          final id = json['id'] as String? ?? '';
+          if (id.isEmpty) continue;
+
           results.add(SearchResult(
-            id: json['id'] as String? ?? '',
+            id: id,
             title: json['title'] as String? ?? 'Unknown',
             artist: artist,
             album: json['album'] as String?,
             thumbnail: thumbnail,
-            duration: json['duration'] as int?,
-            url: 'https://music.youtube.com/watch?v=${json['id']}',
+            duration: (json['duration'] as num?)?.toInt(),
+            url: json['url'] as String? ?? 'https://music.youtube.com/watch?v=$id',
             platform: MediaPlatform.youtubeMusic,
           ));
-        } catch (_) {}
+        } catch (e) {
+          StartupLogger.log('[SearchService] Error parsing YT Music line: $e');
+        }
       }
 
       return results;
-    } catch (e) {
+    } catch (e, stack) {
+      StartupLogger.log('[SearchService] YT Music search exception: $e\n$stack');
       return [];
     }
   }
@@ -299,7 +323,6 @@ class SearchService {
     }
   }
 
-  /// Get available formats for a URL.
   Future<List<DownloadFormat>> getFormats(
       String url, MediaPlatform platform) async {
     if (platform == MediaPlatform.spotify) {
