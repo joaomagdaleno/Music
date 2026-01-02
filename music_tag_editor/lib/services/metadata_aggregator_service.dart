@@ -10,6 +10,8 @@ import 'package:music_tag_editor/api/genius_api.dart';
 import 'package:music_tag_editor/api/netease_api.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
+import 'package:music_tag_editor/services/search_service.dart';
+import 'package:spotify/spotify.dart' as spot;
 
 /// Unified result from metadata aggregation.
 class AggregatedMetadata {
@@ -91,6 +93,9 @@ class MetadataAggregatorService {
       _fetchGenius(title, artist)
           .timeout(const Duration(seconds: 3), onTimeout: () => null)
           .then((r) => results['genius'] = r ?? {}),
+      _fetchSpotify(title, artist)
+          .timeout(const Duration(seconds: 3), onTimeout: () => null)
+          .then((r) => results['spotify'] = r ?? {}),
     ]);
 
     // Apply voting logic
@@ -251,32 +256,27 @@ class MetadataAggregatorService {
   AggregatedMetadata _vote(
       Map<String, Map<String, dynamic>> results, int? durationMs) {
     // 1. Establish Source Hierarchy
-    // MusicBrainz is Gold standard.
-    // Discogs/LastFm are Silver (good for genre/album).
-    // Genius is Bronze (good for lyrics/cover).
-    
     final mb = results['musicbrainz'] ?? {};
     final discogs = results['discogs'] ?? {};
     final lastfm = results['lastfm'] ?? {};
     final genius = results['genius'] ?? {};
+    final spotify = results['spotify'] ?? {};
 
     // 2. Voting / Gap Filling Algorithm
     
-    // Title/Artist: Trust MusicBrainz first, otherwise vote
-    String? finalTitle = mb['title'] ?? _getMostCommon([discogs['title'], lastfm['title'], genius['title']].whereType<String>().toList());
-    String? finalArtist = mb['artist'] ?? _getMostCommon([discogs['artist'], lastfm['artist'], genius['artist']].whereType<String>().toList());
+    // Title/Artist: Trust MusicBrainz/Spotify first, otherwise vote
+    String? finalTitle = mb['title'] ?? spotify['title'] ?? _getMostCommon([discogs['title'], lastfm['title'], genius['title']].whereType<String>().toList());
+    String? finalArtist = mb['artist'] ?? spotify['artist'] ?? _getMostCommon([discogs['artist'], lastfm['artist'], genius['artist']].whereType<String>().toList());
     
-    // Album: MusicBrainz > Discogs > LastFM
-    String? finalAlbum = mb['album'] ?? discogs['title'] ?? lastfm['album']; // Note: discogs search often returns title as album or vice versa depending on release type, but 'title' in release search IS the album name usually.
+    // Album: MusicBrainz > Spotify > Discogs > LastFM
+    String? finalAlbum = mb['album'] ?? spotify['album'] ?? discogs['title'] ?? lastfm['album']; 
+    
+    // Year: Spotify/Discogs > MusicBrainz
+    int? finalYear = spotify['year'] ?? (discogs['year'] != null ? int.tryParse(discogs['year'].toString()) : null);
+    if (finalYear == null && mb['year'] != null) {
+       finalYear = int.tryParse(mb['year'].toString());
+    }
 
-    // Year: Discogs often has best year data, then MusicBrainz
-    int? finalYear;
-    if (discogs['year'] != null) {
-      finalYear = int.tryParse(discogs['year'].toString());
-    }
-    if (finalYear == null && mb['year'] != null) { // MusicBrainz often doesn't give simple year in basic search, but if it did...
-       // implementation detail: our current MB api only searches recordings, which *might* have release dates but complex processing.
-    }
     // Fallback to voting for year if multiple sources have it
     if (finalYear == null) {
        final years = [lastfm['year'], discogs['year'], mb['year']].whereType<num>().map((e) => e.toInt()).toList();
@@ -293,9 +293,8 @@ class MetadataAggregatorService {
     // Pick the most popular genre as primary
     String? finalGenre = _getMostCommon(combinedGenres.toList());
 
-    // Thumbnail: Priority to highest resolution usually Discogs or Genius or LastFm
-    // For now, simple priority: Genius (often high res art) > Discogs > LastFm > MB
-    String? finalThumbnail = genius['thumbnail'] ?? discogs['cover'] ?? discogs['thumbnail'] ?? lastfm['thumbnail'] ?? mb['thumbnail'];
+    // Thumbnail: Priority to high res: Spotify > Genius > Discogs
+    String? finalThumbnail = spotify['thumbnail'] ?? genius['thumbnail'] ?? discogs['cover'] ?? discogs['thumbnail'] ?? lastfm['thumbnail'] ?? mb['thumbnail'];
 
     // Calculate confidence based on agreement
     int agreements = 0;
@@ -304,7 +303,6 @@ class MetadataAggregatorService {
     final titleVotes = [mb['title'], discogs['title'], lastfm['title'], genius['title']].whereType<String>().toList();
     if (titleVotes.isNotEmpty) {
       total++;
-       // Simple check: if we have more than 1 vote and they match or we trust MB
        if (titleVotes.length > 1 || mb['title'] != null) agreements++;
     }
 
@@ -326,6 +324,27 @@ class MetadataAggregatorService {
       allGenres: combinedGenres.toList(),
       confidence: confidence, 
     );
+  }
+
+  Future<Map<String, dynamic>?> _fetchSpotify(String title, String artist) async {
+    try {
+      final spotify = await SearchService.instance.spotifyApi;
+      if (spotify == null) return null;
+
+      final results = await spotify.search.get('$title $artist', types: [spot.SearchType.track]).first(1);
+      if (results.isNotEmpty && results.first.items?.isNotEmpty == true) {
+        final track = results.first.items!.first as spot.Track;
+        return {
+          'title': track.name,
+          'artist': track.artists?.map((a) => a.name).join(', '),
+          'album': track.album?.name,
+          'year': track.album?.releaseDate != null ? int.tryParse(track.album!.releaseDate!.split('-')[0]) : null,
+          'thumbnail': track.album?.images?.isNotEmpty == true ? track.album!.images!.first.url : null,
+          'genres': [], 
+        };
+      }
+    } catch (_) {}
+    return null;
   }
 
   String? _getMostCommon(List<String> votes) {
