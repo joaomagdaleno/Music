@@ -70,7 +70,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
       StartupLogger.log('[SearchScreen] Dependencies initialized successfully');
       setState(() => _isInitializing = false);
     } catch (e, stack) {
-      StartupLogger.log('[SearchScreen] Dependency initialization FAILED: $e\n$stack');
+      StartupLogger.logError('Dependency initialization FAILED', e, stack);
       if (mounted) {
         setState(() {
           _errorMessage = 'Erro ao inicializar: $e';

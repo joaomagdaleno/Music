@@ -37,6 +37,22 @@ class StartupLogger {
     }
   }
 
+  /// Logs an error with optional stack trace.
+  static Future<void> logError(String message, [dynamic error, StackTrace? stack]) async {
+    String msg = '❌ $message';
+    if (error != null) msg += ': $error';
+    
+    // In tests, we usually don't want the full stack trace dumping into logs
+    // unless it's a real unexpected failure. GitHub Actions also truncate long logs.
+    final isTest = Platform.environment.containsKey('FLUTTER_TEST');
+    
+    if (stack != null && !isTest) {
+      msg += '\n$stack';
+    }
+    
+    return log(msg);
+  }
+
   /// Logs a message to the file and console.
   static Future<void> log(String message) async {
     final timestamp = DateTime.now().toIso8601String();
