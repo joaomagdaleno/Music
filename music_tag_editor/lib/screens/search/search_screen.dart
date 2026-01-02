@@ -245,6 +245,8 @@ class _SearchScreenState extends material.State<SearchScreen> {
         selectedFormat,
         musicDir,
         overrideThumbnailUrl: overrideThumbnail,
+        title: result.title,
+        artist: result.artist,
         onProgress: (progress, status) {
           if (mounted) {
             setState(() {

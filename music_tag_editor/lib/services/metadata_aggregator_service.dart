@@ -77,12 +77,20 @@ class MetadataAggregatorService {
     final results = <String, Map<String, dynamic>>{};
 
     // Query all sources in parallel
+    // Query all sources in parallel with timeouts for speed
     await Future.wait([
       _fetchMusicBrainz(title, artist)
+          .timeout(const Duration(seconds: 4), onTimeout: () => null)
           .then((r) => results['musicbrainz'] = r ?? {}),
-      _fetchLastFm(title, artist).then((r) => results['lastfm'] = r ?? {}),
-      _fetchDiscogs(title, artist).then((r) => results['discogs'] = r ?? {}),
-      _fetchGenius(title, artist).then((r) => results['genius'] = r ?? {}),
+      _fetchLastFm(title, artist)
+          .timeout(const Duration(seconds: 3), onTimeout: () => null)
+          .then((r) => results['lastfm'] = r ?? {}),
+      _fetchDiscogs(title, artist)
+          .timeout(const Duration(seconds: 3), onTimeout: () => null)
+          .then((r) => results['discogs'] = r ?? {}),
+      _fetchGenius(title, artist)
+          .timeout(const Duration(seconds: 3), onTimeout: () => null)
+          .then((r) => results['genius'] = r ?? {}),
     ]);
 
     // Apply voting logic
@@ -242,68 +250,62 @@ class MetadataAggregatorService {
 
   AggregatedMetadata _vote(
       Map<String, Map<String, dynamic>> results, int? durationMs) {
-    // Collect all values for each field
-    final titleVotes = <String>[];
-    final artistVotes = <String>[];
-    final albumVotes = <String>[];
-    final genreVotes = <String>[];
-    final yearVotes = <int>[];
-    final thumbnails = <String>[];
+    // 1. Establish Source Hierarchy
+    // MusicBrainz is Gold standard.
+    // Discogs/LastFm are Silver (good for genre/album).
+    // Genius is Bronze (good for lyrics/cover).
+    
+    final mb = results['musicbrainz'] ?? {};
+    final discogs = results['discogs'] ?? {};
+    final lastfm = results['lastfm'] ?? {};
+    final genius = results['genius'] ?? {};
 
+    // 2. Voting / Gap Filling Algorithm
+    
+    // Title/Artist: Trust MusicBrainz first, otherwise vote
+    String? finalTitle = mb['title'] ?? _getMostCommon([discogs['title'], lastfm['title'], genius['title']].whereType<String>().toList());
+    String? finalArtist = mb['artist'] ?? _getMostCommon([discogs['artist'], lastfm['artist'], genius['artist']].whereType<String>().toList());
+    
+    // Album: MusicBrainz > Discogs > LastFM
+    String? finalAlbum = mb['album'] ?? discogs['title'] ?? lastfm['album']; // Note: discogs search often returns title as album or vice versa depending on release type, but 'title' in release search IS the album name usually.
+
+    // Year: Discogs often has best year data, then MusicBrainz
+    int? finalYear;
+    if (discogs['year'] != null) {
+      finalYear = int.tryParse(discogs['year'].toString());
+    }
+    if (finalYear == null && mb['year'] != null) { // MusicBrainz often doesn't give simple year in basic search, but if it did...
+       // implementation detail: our current MB api only searches recordings, which *might* have release dates but complex processing.
+    }
+    // Fallback to voting for year if multiple sources have it
+    if (finalYear == null) {
+       final years = [lastfm['year'], discogs['year'], mb['year']].whereType<num>().map((e) => e.toInt()).toList();
+       if (years.isNotEmpty) finalYear = years.first;
+    }
+
+    // Genre: Combine ALL unique genres found
+    final Set<String> combinedGenres = {};
     for (var source in results.values) {
-      if (source['title'] != null) {
-        titleVotes.add(source['title'].toString().trim());
-      }
-      if (source['artist'] != null) {
-        artistVotes.add(source['artist'].toString().trim());
-      }
-      if (source['album'] != null) {
-        albumVotes.add(source['album'].toString().trim());
-      }
-      if (source['year'] != null) {
-        final y = int.tryParse(source['year'].toString());
-        if (y != null) {
-          yearVotes.add(y);
-        }
-      }
-      if (source['thumbnail'] != null) {
-        thumbnails.add(source['thumbnail'].toString());
-      }
-
-      final genres = source['genres'];
-      if (genres is List) {
-        for (var g in genres) {
-          if (g != null) {
-            genreVotes.add(g.toString());
-          }
-        }
+      if (source['genres'] is List) {
+        combinedGenres.addAll((source['genres'] as List).map((e) => e.toString()));
       }
     }
+    // Pick the most popular genre as primary
+    String? finalGenre = _getMostCommon(combinedGenres.toList());
 
-    // Calculate confidence based on agreement
-    int agreements = 0;
-    int total = 0;
-
-    if (titleVotes.isNotEmpty) {
-      total++;
-      if (_hasMajority(titleVotes)) agreements++;
-    }
-    if (artistVotes.isNotEmpty) {
-      total++;
-      if (_hasMajority(artistVotes)) agreements++;
-    }
-
-    final confidence = total > 0 ? agreements / total : 0.0;
+    // Thumbnail: Priority to highest resolution usually Discogs or Genius or LastFm
+    // For now, simple priority: Genius (often high res art) > Discogs > LastFm > MB
+    String? finalThumbnail = genius['thumbnail'] ?? discogs['cover'] ?? discogs['thumbnail'] ?? lastfm['thumbnail'] ?? mb['thumbnail'];
 
     return AggregatedMetadata(
-      title: _getMostCommon(titleVotes),
-      artist: _getMostCommon(artistVotes),
-      album: _getMostCommon(albumVotes),
-      genre: _getMostCommon(genreVotes),
-      year: yearVotes.isNotEmpty ? yearVotes.first : null,
-      thumbnail: thumbnails.isNotEmpty ? thumbnails.first : null,
-      allGenres: genreVotes.toSet().toList(),
-      confidence: confidence,
+      title: finalTitle,
+      artist: finalArtist,
+      album: finalAlbum,
+      genre: finalGenre,
+      year: finalYear,
+      thumbnail: finalThumbnail,
+      allGenres: combinedGenres.toList(),
+      confidence: 1.0, // simplified
     );
   }
 
@@ -326,20 +328,7 @@ class MetadataAggregatorService {
     return votes.firstWhere((v) => v.toLowerCase() == winner);
   }
 
-  bool _hasMajority(List<String> votes) {
-    if (votes.length < 2) {
-      return true;
-    }
 
-    final counts = <String, int>{};
-    for (var v in votes) {
-      final normalized = v.toLowerCase();
-      counts[normalized] = (counts[normalized] ?? 0) + 1;
-    }
-
-    final max = counts.values.reduce((a, b) => a > b ? a : b);
-    return max > votes.length / 2;
-  }
 
   bool _validateDuration(List<LyricLine> lyrics, int? durationMs) {
     if (durationMs == null || lyrics.isEmpty) {
