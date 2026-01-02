@@ -28,8 +28,12 @@ class FluentAppShell extends StatelessWidget {
         ),
       ),
       pane: NavigationPane(
-        selected: selectedIndex,
+        selected: selectedIndex == 99 ? destinations.length : selectedIndex,
         onChanged: (index) {
+          if (index == destinations.length) {
+             onSelectedIndexChanged(99);
+             return;
+          }
           if (index < destinations.length) {
             final dest = destinations[index];
             if (dest.persona != null) {
@@ -51,16 +55,24 @@ class FluentAppShell extends StatelessWidget {
             icon: const Icon(FluentIcons.settings),
             title: const Text('Configurações'),
             body: const SizedBox.shrink(),
-            onTap: () => onSelectedIndexChanged(99),
+            onTap: () {
+              // This is handled by onChanged, but safe to keep as fallback or specific action
+              if (selectedIndex != 99) onSelectedIndexChanged(99);
+            },
           ),
         ],
       ),
-      content: Column(
-        children: [
-          Expanded(child: body),
-          const MiniPlayer(),
-        ],
-      ),
+      paneBodyBuilder: (item, child) {
+        return ScaffoldPage(
+          padding: EdgeInsets.zero,
+          content: Column(
+            children: [
+              Expanded(child: body),
+              const MiniPlayer(),
+            ],
+          ),
+        );
+      },
     );
   }
 }
