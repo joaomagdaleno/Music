@@ -35,7 +35,7 @@ class _PersonaShellState extends State<PersonaShell> {
           selected: _currentIndex,
           onChanged: (index) => setState(() => _currentIndex = index),
           displayMode: fluent.PaneDisplayMode.top,
-          items: widget.destinations.map((d) {
+          items: widget.destinations.map<fluent.NavigationPaneItem>((d) {
             return fluent.PaneItem(
               icon: fluent.Icon(d.fluentIcon),
               title: fluent.Text(d.label),
