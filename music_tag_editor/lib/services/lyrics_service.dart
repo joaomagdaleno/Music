@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:music_tag_editor/services/startup_logger.dart';
 
 class LyricsService {
   static LyricsService? _instance;
@@ -29,7 +30,7 @@ class LyricsService {
         }
       }
     } catch (e) {
-      debugPrint("Error fetching lyrics: $e");
+      StartupLogger.log("Error fetching lyrics: $e");
     }
     return [];
   }

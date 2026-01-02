@@ -1,6 +1,4 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:music_tag_editor/models/persona_model.dart';
-import 'package:music_tag_editor/services/persona_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/screens/backup/backup_screen.dart';
 import 'package:music_tag_editor/models/filename_format.dart';
@@ -56,9 +54,6 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildPersonaSection(),
-                  const SizedBox(height: 24),
-                  const Divider(),
                   const SizedBox(height: 24),
                   Text('Formato do Nome do Arquivo',
                       style: FluentTheme.of(context).typography.subtitle),
@@ -223,92 +218,6 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
     widget.onAgeBypassChanged(val);
   }
 
-  Widget _buildPersonaSection() {
-    return ListenableBuilder(
-      listenable: PersonaService.instance,
-      builder: (context, child) {
-        final activePersona = PersonaService.instance.activePersona;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Modo do Sistema (Persona)',
-                style: FluentTheme.of(context).typography.subtitle),
-            const SizedBox(height: 8),
-            Text(
-              'Escolha o "sistema" que deseja utilizar. Cada persona transforma a aplicação.',
-              style: FluentTheme.of(context).typography.caption,
-            ),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                _buildPersonaCard(
-                  AppPersona.listener,
-                  'O Ouvinte',
-                  'Streaming & Playlists',
-                  FluentIcons.headset,
-                  activePersona == AppPersona.listener,
-                ),
-                 _buildPersonaCard(
-                  AppPersona.librarian,
-                  'O Bibliotecário',
-                  'Tags & Arquivos',
-                  FluentIcons.library,
-                  activePersona == AppPersona.librarian,
-                ),
-                 _buildPersonaCard(
-                  AppPersona.host,
-                  'O Anfitrião',
-                  'Festa & Karaoke',
-                  FluentIcons.music_note,
-                  activePersona == AppPersona.host,
-                ),
-                 _buildPersonaCard(
-                  AppPersona.artisan,
-                  'O Artesão',
-                  'Utilitários & Audio',
-                  FluentIcons.design,
-                  activePersona == AppPersona.artisan,
-                ),
-              ],
-            )
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildPersonaCard(AppPersona persona, String title, String subtitle,
-      IconData icon, bool isSelected) {
-    return HoverButton(
-      onPressed: () => PersonaService.instance.setPersona(persona),
-      builder: (context, states) {
-        final color = isSelected
-            ? FluentTheme.of(context).accentColor
-            : FluentTheme.of(context).cardColor;
-        
-        return Card(
-          backgroundColor: isSelected ? color.withValues(alpha: 0.1) : null,
-          borderColor: isSelected ? color : null,
-          child: Container(
-            width: 140,
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(icon, size: 24, color: isSelected ? color : null),
-                const SizedBox(height: 8),
-                Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-                const SizedBox(height: 4),
-                Text(subtitle, style: FluentTheme.of(context).typography.caption, textAlign: TextAlign.center),
-              ],
-            ),
-          ),
-        );
-      }
-    );
-  }
 
   Widget _buildCloudSyncSection() {
     return Card(

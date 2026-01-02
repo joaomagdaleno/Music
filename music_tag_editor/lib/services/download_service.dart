@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:music_tag_editor/services/dependency_manager.dart';
+import 'package:music_tag_editor/services/startup_logger.dart';
 
 /// Platform detected from URL or search.
 enum MediaPlatform {
@@ -228,7 +229,7 @@ class DownloadService {
 
   /// Get YouTube/YouTube Music info using yt-dlp.
   Future<MediaInfo> _getYouTubeInfo(String url) async {
-    debugPrint('[DownloadService] Getting MediaInfo for YouTube: $url');
+    StartupLogger.log('[DownloadService] Getting MediaInfo for YouTube: $url');
     final result = await processRunner(
       _deps.ytDlpPath,
       [
@@ -241,7 +242,7 @@ class DownloadService {
     );
 
     if (result.exitCode != 0) {
-      debugPrint('[DownloadService] getMediaInfo FAILED: ${result.stderr}');
+      StartupLogger.log('[DownloadService] getMediaInfo FAILED: ${result.stderr}');
       throw Exception('Failed to get video info: ${result.stderr}');
     }
 
@@ -300,7 +301,7 @@ class DownloadService {
         ));
 
     final platform = detectPlatform(url);
-    debugPrint('[DownloadService] Successfully parsed info for: ${json['title']}');
+    StartupLogger.log('[DownloadService] Successfully parsed info for: ${json['title']}');
 
     return MediaInfo(
       title: json['title'] as String? ?? 'Unknown',
@@ -493,7 +494,7 @@ class DownloadService {
 
       if (await imageFile.exists()) await imageFile.delete();
     } catch (e) {
-      debugPrint('Error embedding custom thumbnail: $e');
+      StartupLogger.log('Error embedding custom thumbnail: $e');
     }
   }
 

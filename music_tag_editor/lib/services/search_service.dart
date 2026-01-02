@@ -6,6 +6,7 @@ import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/hifi_download_service.dart';
+import 'package:music_tag_editor/services/startup_logger.dart';
 import 'package:path/path.dart' as p;
 
 /// Status of search on a specific platform.
@@ -54,11 +55,15 @@ class SearchService {
 
   /// Get base yt-dlp args (with cookies if age bypass enabled).
   List<String> _getBaseArgs() {
+    final baseArgs = [
+      '--no-check-certificates',
+      '--no-cache-dir',
+    ];
     if (_ageBypassEnabled && Platform.isWindows) {
       // Try Chrome first, then Edge, then Firefox
-      return ['--cookies-from-browser', 'chrome'];
+      baseArgs.addAll(['--cookies-from-browser', 'chrome']);
     }
-    return [];
+    return baseArgs;
   }
 
   /// Search across all platforms with status updates.
@@ -101,9 +106,9 @@ class SearchService {
     void Function(MediaPlatform platform, SearchStatus status)? onStatusUpdate,
   ) async {
     try {
-      debugPrint('[SearchService] Executing ${platform.name} search...');
+      StartupLogger.log('[SearchService] Executing ${platform.name} search...');
       final results = await searchFn();
-      debugPrint('[SearchService] ${platform.name} search finished with ${results.length} results');
+      StartupLogger.log('[SearchService] ${platform.name} search finished with ${results.length} results');
       if (results.isEmpty) {
         onStatusUpdate?.call(platform, SearchStatus.noResults);
       } else {
@@ -111,7 +116,7 @@ class SearchService {
       }
       return results;
     } catch (e, stack) {
-      debugPrint('[SearchService] ${platform.name} search FAILED: $e\n$stack');
+      StartupLogger.log('[SearchService] ${platform.name} search FAILED: $e\n$stack');
       onStatusUpdate?.call(platform, SearchStatus.failed);
       return [];
     }
@@ -193,11 +198,10 @@ class SearchService {
         ..._getBaseArgs(),
         '--quiet',
         '--no-warnings',
-        'https://music.youtube.com/search?q=${Uri.encodeComponent(query)}',
+        'ytsearch5:$query', // Explicitly ask for 5 results
         '--dump-json',
         '--flat-playlist',
         '--no-download',
-        '-I', '1:5', // First 5 results
       ];
 
       final result = await processRunner(
@@ -417,13 +421,13 @@ class SearchService {
       if (result.exitCode == 0) {
         final streamUrl = (result.stdout as String).trim();
         final displayUrl = streamUrl.length > 50 ? '${streamUrl.substring(0, 50)}...' : streamUrl;
-        debugPrint('[SearchService] Found Stream URL: $displayUrl');
+        StartupLogger.log('[SearchService] Found Stream URL: $displayUrl');
         return streamUrl;
       }
-      debugPrint('[SearchService] getStreamUrl FAILED: ${result.stderr}');
+      StartupLogger.log('[SearchService] getStreamUrl FAILED: ${result.stderr}');
       return null;
     } catch (e, stack) {
-      debugPrint('[SearchService] Error extracting stream: $e\n$stack');
+      StartupLogger.log('[SearchService] Error extracting stream: $e\n$stack');
       return null;
     }
   }

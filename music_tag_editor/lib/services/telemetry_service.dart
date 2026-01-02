@@ -3,6 +3,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/firebase_options.dart';
+import 'package:music_tag_editor/services/startup_logger.dart';
 
 /// A service for handling telemetry and error reporting in the Music project.
 class TelemetryService {
@@ -38,9 +39,9 @@ class TelemetryService {
       }
 
       _initialized = true;
-      debugPrint('TelemetryService initialized');
+      StartupLogger.log('TelemetryService initialized');
     } catch (e) {
-      debugPrint('Failed to initialize TelemetryService: $e');
+      StartupLogger.log('Failed to initialize TelemetryService: $e');
       // Do not rethrow, allow app to run without telemetry
     }
   }
@@ -61,7 +62,7 @@ class TelemetryService {
       await FirebaseCrashlytics.instance
           .recordError(exception, stack, reason: reason);
     } else {
-      debugPrint('Error: $exception');
+      StartupLogger.log('Error: $exception');
     }
   }
 }
