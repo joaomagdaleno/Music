@@ -1,0 +1,36 @@
+[2026-01-01T21:59:49.148279] 🚀 StartupLogger initialized at C:\Users\joaom\Documents
+[2026-01-01T21:59:49.159789] 🚀 App initialization started
+[2026-01-01T21:59:49.204023] TelemetryService initialized
+[2026-01-01T21:59:49.204023] ✅ TelemetryService initialized
+[2026-01-01T21:59:49.204023] Initializing SecurityService...
+[2026-01-01T21:59:49.267746] Initializing AuthService...
+[2026-01-01T21:59:49.299450] Initializing ConnectivityService...
+[2026-01-01T21:59:49.355521] Initializing PersonaService...
+[2026-01-01T21:59:49.381850] Initializing ThemeService...
+[2026-01-01T21:59:49.397469] Initializing DesktopIntegrationService...
+[2026-01-01T21:59:49.415235] Desktop: ensuring WindowManager initialized
+[2026-01-01T21:59:49.432262] Desktop: initializing SystemTray
+[2026-01-01T21:59:49.480132] Desktop: creating menu
+[2026-01-01T21:59:49.483859] Desktop: setting context menu
+[2026-01-01T21:59:49.502422] Desktop: waiting for WindowManager ready
+[2026-01-01T21:59:49.564145] Desktop: init complete
+[2026-01-01T21:59:49.567670] Initializing PlaybackService...
+[2026-01-01T21:59:49.570232] ✅ Core services initialized successfully
+[2026-01-01T21:59:49.570232] 🚀 App initialization complete, launching UI
+[2026-01-01T21:59:53.782323] [SearchScreen] Initializing dependencies...
+[2026-01-01T21:59:53.786371] [SearchScreen] Dependencies initialized successfully
+[2026-01-01T21:59:55.061869] [SearchScreen] Platform changed to: MediaPlatform.spotify
+[2026-01-01T22:00:12.153824] [SearchScreen] Starting search #1 for: "stay" (Platform: MediaPlatform.spotify)
+[2026-01-01T22:00:12.153824] [SearchScreen] Searching single platform: MediaPlatform.spotify
+[2026-01-01T22:00:20.786055] [SearchScreen] Single platform search returned 0 results
+[2026-01-01T22:00:20.786055] [SearchScreen] No results found for query: "stay"
+[2026-01-01T22:02:40.640294] [SearchScreen] Platform changed to: MediaPlatform.youtube
+[2026-01-01T22:02:40.640294] [SearchScreen] Starting search #2 for: "stay" (Platform: MediaPlatform.youtube)
+[2026-01-01T22:02:40.640294] [SearchScreen] Searching single platform: MediaPlatform.youtube
+[2026-01-01T22:02:50.795013] [SearchScreen] Single platform search returned 0 results
+[2026-01-01T22:02:50.795013] [SearchScreen] No results found for query: "stay"
+[2026-01-01T22:04:33.710348] [SearchScreen] Platform changed to: MediaPlatform.youtubeMusic
+[2026-01-01T22:04:33.710348] [SearchScreen] Starting search #3 for: "stay" (Platform: MediaPlatform.youtubeMusic)
+[2026-01-01T22:04:33.710348] [SearchScreen] Searching single platform: MediaPlatform.youtubeMusic
+[2026-01-01T22:04:44.672162] [SearchScreen] Single platform search returned 0 results
+[2026-01-01T22:04:44.672162] [SearchScreen] No results found for query: "stay"
