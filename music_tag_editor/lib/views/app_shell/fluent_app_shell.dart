@@ -39,14 +39,14 @@ class FluentAppShell extends StatelessWidget {
           onSelectedIndexChanged(index);
         },
         displayMode: PaneDisplayMode.compact,
-        items: destinations.map((d) {
+        items: destinations.map<NavigationPaneItem>((d) {
           return PaneItem(
             icon: Icon(d.icon),
             title: Text(d.label),
             body: const SizedBox.shrink(),
           );
         }).toList(),
-        footerItems: [
+        footerItems: <NavigationPaneItem>[
           PaneItem(
             icon: const Icon(FluentIcons.settings),
             title: const Text('Configurações'),
