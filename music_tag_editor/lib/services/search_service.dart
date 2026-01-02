@@ -8,7 +8,7 @@ import 'package:music_tag_editor/services/hifi_download_service.dart';
 import 'package:music_tag_editor/services/startup_logger.dart';
 import 'package:path/path.dart' as p;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
-// import 'package:spotify/spotify.dart' as spot; // TODO: Enable when Client ID/Secret are available
+import 'package:spotify/spotify.dart' as spot;
 
 /// Status of search on a specific platform.
 enum SearchStatus {
@@ -26,6 +26,38 @@ class SearchService {
   static void resetInstance() => _instance = null;
 
   SearchService._internal();
+  
+  spot.SpotifyApi? _spotifyApi;
+  bool _spotifyInitAttempted = false;
+
+  /// Expose Spotify API for metadata services.
+  Future<spot.SpotifyApi?> get spotifyApi async {
+    await _initSpotify();
+    return _spotifyApi;
+  }
+
+  Future<void> _initSpotify() async {
+    if (_spotifyInitAttempted) return;
+    _spotifyInitAttempted = true;
+
+    try {
+      final creds = await DatabaseService.instance.getSpotifyCredentials();
+      if (creds['clientId'] != null && creds['clientSecret'] != null) {
+        _spotifyApi = spot.SpotifyApi(spot.SpotifyApiCredentials(
+          creds['clientId']!,
+          creds['clientSecret']!,
+        ));
+        StartupLogger.log('[SearchService] Spotify API initialized successfully');
+      }
+    } catch (e) {
+      StartupLogger.log('[SearchService] Failed to initialize Spotify API: $e');
+    }
+  }
+
+  void resetSpotify() {
+    _spotifyApi = null;
+    _spotifyInitAttempted = false;
+  }
 
   // For backwards compatibility and internal use
   SearchService() : this._internal();
@@ -162,19 +194,29 @@ class SearchService {
       final results = <SearchResult>[];
       final client = _ytExplodeOverride ?? _defaultYtExplode;
       // We can use the same search, but we might filter or append "audio" to query
-      final searchList = await client.search.search('$query audio');
+      final searchList = await client.search.search('$query topic');
       
       for (final video in searchList) {
         results.add(SearchResult(
           id: video.id.value,
           title: video.title,
-          artist: video.author,
+          artist: video.author.replaceAll(' - Topic', ''),
           thumbnail: video.thumbnails.highResUrl,
           duration: video.duration?.inSeconds,
           url: video.url,
           platform: MediaPlatform.youtubeMusic,
         ));
       }
+      
+      // Sort to put topic/official results first if they exist
+      results.sort((a, b) {
+        final aTopic = a.artist.toLowerCase().contains('topic') || a.title.toLowerCase().contains('official audio');
+        final bTopic = b.artist.toLowerCase().contains('topic') || b.title.toLowerCase().contains('official audio');
+        if (aTopic && !bTopic) return -1;
+        if (!aTopic && bTopic) return 1;
+        return 0;
+      });
+
       return results;
     } catch (e, stack) {
       StartupLogger.log('[SearchService] YT Music Error: $e\n$stack');
@@ -183,19 +225,8 @@ class SearchService {
   }
 
   Future<List<SearchResult>> searchSpotify(String query) async {
-    // Note: Since we don't have user keys yet, we will use a high-quality fallback
-    // that mimics Spotify results better than before, or requires keys in the future.
-    // However, the user asked for "authentic".
-    
-    // For now, we will use YoutubeExplode but strictly filter for "Audio" 
-    // and parse metadata to look clean like Spotify.
-    
-    // In a real scenario with keys:
-    // final spotify = spot.SpotifyApi(spot.SpotifyApiCredentials('id', 'secret'));
-    // final results = await spotify.search.get(query).first;
-    // ... map results ...
-
-    // Authentic-feeling fallback (Better than previous yt-dlp):
+    // Authentic-feeling fallback (YouTube base formatted as Spotify):
+    // As per user request, Spotify API is only for metadata, not search results.
     try {
        final client = _ytExplodeOverride ?? _defaultYtExplode;
        final searchList = await client.search.search('$query official audio');

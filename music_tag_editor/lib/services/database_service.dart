@@ -609,4 +609,20 @@ class DatabaseService {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
+
+  // --- Spotify Credentials ---
+
+  Future<Map<String, String?>> getSpotifyCredentials() async {
+    final clientId = await getSetting('spotify_client_id');
+    final clientSecret = await getSetting('spotify_client_secret');
+    return {
+      'clientId': clientId,
+      'clientSecret': clientSecret,
+    };
+  }
+
+  Future<void> saveSpotifyCredentials(String? clientId, String? clientSecret) async {
+    if (clientId != null) await saveSetting('spotify_client_id', clientId);
+    if (clientSecret != null) await saveSetting('spotify_client_secret', clientSecret);
+  }
 }

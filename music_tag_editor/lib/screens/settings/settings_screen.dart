@@ -10,6 +10,7 @@ import 'package:music_tag_editor/services/firebase_sync_service.dart';
 import 'package:music_tag_editor/services/metadata_cleanup_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/screens/login/login_screen.dart';
+import 'package:music_tag_editor/services/search_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -24,6 +25,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   FilenameFormat _selectedFormat = FilenameFormat.artistTitle;
   int _crossfadeSeconds = 3;
   bool _ageBypass = false;
+  String? _spotifyClientId;
+  String? _spotifyClientSecret;
   bool _isLoading = true;
 
   bool get _isFluent {
@@ -49,6 +52,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _crossfadeSeconds = crossfade;
         _ageBypass = ageBypass;
         _isLoading = false;
+      });
+    }
+    
+    final spotifyCreds = await _dbService.getSpotifyCredentials();
+    if (mounted) {
+      setState(() {
+        _spotifyClientId = spotifyCreds['clientId'];
+        _spotifyClientSecret = spotifyCreds['clientSecret'];
       });
     }
   }
@@ -132,6 +143,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       await _dbService.saveAgeBypass(val);
   }
 
+  Future<void> _saveSpotifyCredentials(String id, String secret) async {
+    await _dbService.saveSpotifyCredentials(id, secret);
+    // Force re-init of Spotify API in SearchService next time it's used
+    SearchService.instance.resetSpotify(); 
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isFluent) {
@@ -159,6 +176,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         onPullFromCloud: _pullFromCloud,
         onLogin: _navigateToLogin,
         onLogout: _logout,
+        spotifyClientId: _spotifyClientId,
+        spotifyClientSecret: _spotifyClientSecret,
+        onSpotifyCredentialsSaved: _saveSpotifyCredentials,
       );
     }
 
@@ -179,6 +199,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       onPullFromCloud: _pullFromCloud,
       onLogin: _navigateToLogin,
       onLogout: _logout,
+      spotifyClientId: _spotifyClientId,
+      spotifyClientSecret: _spotifyClientSecret,
+      onSpotifyCredentialsSaved: _saveSpotifyCredentials,
     );
   }
 }
