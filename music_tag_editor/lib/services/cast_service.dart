@@ -6,6 +6,7 @@ import 'package:network_info_plus/network_info_plus.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_static/shelf_static.dart';
 import 'package:flutter/foundation.dart';
+import 'package:music_tag_editor/services/startup_logger.dart';
 
 class CastDevice {
   final String name;
@@ -88,7 +89,7 @@ class CastService {
         socket.close();
       });
     } catch (e) {
-      debugPrint('SSDP Discovery Error: $e');
+      StartupLogger.log('SSDP Discovery Error: $e');
     }
   }
 
@@ -159,7 +160,7 @@ class CastService {
     final fileUrl =
         'http://$_localIp:${_server!.port}/${File(filePath).uri.pathSegments.last}';
 
-    debugPrint('Hosting at $fileUrl');
+    StartupLogger.log('Hosting at $fileUrl');
 
     await _setAvTransportUri(device.controlUrl, fileUrl);
     await _play(device.controlUrl);
@@ -214,7 +215,7 @@ class CastService {
         body: body,
       );
     } catch (e) {
-      debugPrint('SOAP Error ($action): $e');
+      StartupLogger.log('SOAP Error ($action): $e');
     }
   }
 }

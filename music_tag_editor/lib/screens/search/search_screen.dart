@@ -11,6 +11,7 @@ import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/screens/player/player_screen.dart';
 import 'package:music_tag_editor/screens/search/views/material_search_view.dart';
 import 'package:music_tag_editor/screens/search/views/fluent_search_view.dart';
+import 'package:music_tag_editor/services/startup_logger.dart';
 
 class SearchScreen extends material.StatefulWidget {
   const SearchScreen({super.key});
@@ -30,6 +31,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
   String? _errorMessage;
   final Map<MediaPlatform, SearchStatus> _platformStatuses = {};
   MediaPlatform? _selectedPlatform;
+  int _currentSearchId = 0;
 
   final Map<String, List<DownloadFormat>> _formatsCache = {};
   final Map<String, DownloadFormat?> _selectedFormats = {};
@@ -55,7 +57,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
   }
 
   Future<void> _initDependencies() async {
-    debugPrint('[SearchScreen] Initializing dependencies...');
+    StartupLogger.log('[SearchScreen] Initializing dependencies...');
     try {
       await DependencyManager.instance.ensureDependencies(
         onProgress: (status, progress) {
@@ -65,10 +67,10 @@ class _SearchScreenState extends material.State<SearchScreen> {
           });
         },
       );
-      debugPrint('[SearchScreen] Dependencies initialized successfully');
+      StartupLogger.log('[SearchScreen] Dependencies initialized successfully');
       setState(() => _isInitializing = false);
     } catch (e, stack) {
-      debugPrint('[SearchScreen] Dependency initialization FAILED: $e\n$stack');
+      StartupLogger.log('[SearchScreen] Dependency initialization FAILED: $e\n$stack');
       if (mounted) {
         setState(() {
           _errorMessage = 'Erro ao inicializar: $e';
@@ -85,9 +87,17 @@ class _SearchScreenState extends material.State<SearchScreen> {
   }
 
   void _onSearch(String query) async {
-    if (query.trim().isEmpty) return;
+    if (query.trim().isEmpty) {
+      setState(() {
+        _searchResults.clear();
+        _platformStatuses.clear();
+      });
+      return;
+    }
 
-    debugPrint('[SearchScreen] Starting search for: "$query" (Platform: $_selectedPlatform)');
+    final searchId = ++_currentSearchId;
+    StartupLogger.log('[SearchScreen] Starting search #$searchId for: "$query" (Platform: $_selectedPlatform)');
+    
     setState(() {
       _isLoading = true;
       _errorMessage = '';
@@ -100,7 +110,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
 
     try {
       if (_selectedPlatform != null) {
-        debugPrint('[SearchScreen] Searching single platform: $_selectedPlatform');
+        StartupLogger.log('[SearchScreen] Searching single platform: $_selectedPlatform');
         _platformStatuses[_selectedPlatform!] = SearchStatus.searching;
         
         List<SearchResult> filtered = [];
@@ -112,57 +122,64 @@ class _SearchScreenState extends material.State<SearchScreen> {
           filtered = await _searchService.searchSpotify(query);
         }
         
-        if (mounted) {
-          debugPrint('[SearchScreen] Single platform search returned ${filtered.length} results');
+        if (mounted && searchId == _currentSearchId) {
+          StartupLogger.log('[SearchScreen] Single platform search returned ${filtered.length} results');
           setState(() {
             _searchResults.addAll(filtered);
             _platformStatuses[_selectedPlatform!] = filtered.isEmpty ? SearchStatus.noResults : SearchStatus.completed;
           });
         }
       } else {
-        debugPrint('[SearchScreen] Searching all platforms');
+        StartupLogger.log('[SearchScreen] Searching all platforms');
         final results = await _searchService.searchAll(query, 
           onStatusUpdate: (p, s) {
-            debugPrint('[SearchScreen] Status update for $p: $s');
-            if (mounted) setState(() => _platformStatuses[p] = s);
+            if (mounted && searchId == _currentSearchId) {
+              StartupLogger.log('[SearchScreen] Status update for $p: $s');
+              setState(() => _platformStatuses[p] = s);
+            }
           }
         );
-        if (mounted) {
-          debugPrint('[SearchScreen] Search all returned ${results.length} results');
+        if (mounted && searchId == _currentSearchId) {
+          StartupLogger.log('[SearchScreen] Search all returned ${results.length} results');
           setState(() {
             _searchResults.addAll(results);
           });
         }
       }
 
-      if (_searchResults.isEmpty && mounted) {
-        debugPrint('[SearchScreen] No results found for query: "$query"');
+      if (mounted && searchId == _currentSearchId && _searchResults.isEmpty) {
+        StartupLogger.log('[SearchScreen] No results found for query: "$query"');
         setState(() => _errorMessage =
             'Nenhuma música encontrada nas plataformas selecionadas.');
       }
     } catch (e, stack) {
-      debugPrint('[SearchScreen] Error during search: $e\n$stack');
-      if (mounted) {
+      StartupLogger.log('[SearchScreen] Error during search: $e\n$stack');
+      if (mounted && searchId == _currentSearchId) {
         setState(() => _errorMessage = 'Erro ao buscar: $e');
       }
     } finally {
-      if (mounted) {
+      if (mounted && searchId == _currentSearchId) {
         setState(() => _isLoading = false);
       }
     }
   }
 
   void _setPlatform(MediaPlatform? platform) {
-    debugPrint('[SearchScreen] Platform changed to: $platform');
+    if (_selectedPlatform == platform) return;
+    StartupLogger.log('[SearchScreen] Platform changed to: $platform');
     setState(() {
       _selectedPlatform = platform;
     });
+    // Re-trigger search if we have a query
+    if (_searchController.text.isNotEmpty) {
+      _onSearch(_searchController.text);
+    }
   }
 
   Future<void> loadFormats(SearchResult result) async {
-    debugPrint('[SearchScreen] Loading formats for ${result.id} (${result.platform})');
+    StartupLogger.log('[SearchScreen] Loading formats for ${result.id} (${result.platform})');
     if (_formatsCache.containsKey(result.url)) {
-      debugPrint('[SearchScreen] Using cached formats for ${result.id}');
+      StartupLogger.log('[SearchScreen] Using cached formats for ${result.id}');
       setState(() =>
           _isExpanding[result.url] = !(_isExpanding[result.url] ?? false));
       return;
@@ -176,7 +193,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
     try {
       final formats =
           await _searchService.getFormats(result.url, result.platform);
-      debugPrint('[SearchScreen] Retrived ${formats.length} formats for ${result.id}');
+      StartupLogger.log('[SearchScreen] Retrived ${formats.length} formats for ${result.id}');
       if (mounted) {
         setState(() {
           _formatsCache[result.url] = formats;
@@ -187,7 +204,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
         });
       }
     } catch (e, stack) {
-      debugPrint('[SearchScreen] Error loading formats: $e\n$stack');
+      StartupLogger.log('[SearchScreen] Error loading formats: $e\n$stack');
       if (mounted) {
         showSnackBar('Erro ao carregar formatos: $e');
         setState(() => _loadingFormatsStatus.remove(result.url));
@@ -197,7 +214,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
 
   Future<void> startDownload(SearchResult result) async {
     final selectedFormat = _selectedFormats[result.url];
-    debugPrint('[SearchScreen] Starting download for ${result.id} with format: ${selectedFormat?.formatId}');
+    StartupLogger.log('[SearchScreen] Starting download for ${result.id} with format: ${selectedFormat?.formatId}');
     if (selectedFormat == null) {
       return;
     }
@@ -211,16 +228,16 @@ class _SearchScreenState extends material.State<SearchScreen> {
       String? overrideThumbnail;
       if (result.platform == MediaPlatform.youtube ||
           result.platform == MediaPlatform.youtubeMusic) {
-        debugPrint('[SearchScreen] Looking for Spotify metadata match for YouTube result...');
+        StartupLogger.log('[SearchScreen] Looking for Spotify metadata match for YouTube result...');
         final match = await _searchService.findSpotifyMatch(result);
         if (match != null) {
-          debugPrint('[SearchScreen] Found Spotify match for metadata');
+          StartupLogger.log('[SearchScreen] Found Spotify match for metadata');
           overrideThumbnail = match.thumbnail;
         }
       }
 
       final musicDir = '${Platform.environment['USERPROFILE']}\\Music';
-      debugPrint('[SearchScreen] Target directory: $musicDir');
+      StartupLogger.log('[SearchScreen] Target directory: $musicDir');
 
       await _downloadService.download(
         result.url,
@@ -237,12 +254,12 @@ class _SearchScreenState extends material.State<SearchScreen> {
         },
       );
 
-      debugPrint('[SearchScreen] Download COMPLETED for ${result.id}');
+      StartupLogger.log('[SearchScreen] Download COMPLETED for ${result.id}');
       if (mounted) {
         showSnackBar('Download de "${result.title}" concluído!');
       }
     } catch (e, stack) {
-      debugPrint('[SearchScreen] Download FAILED: $e\n$stack');
+      StartupLogger.log('[SearchScreen] Download FAILED: $e\n$stack');
       if (mounted) {
         showSnackBar('Erro no download: $e');
       }
@@ -291,15 +308,15 @@ class _SearchScreenState extends material.State<SearchScreen> {
   }
 
   Future<void> playTrack(SearchResult result) async {
-    debugPrint('[SearchScreen] Playing track: ${result.id}');
+    StartupLogger.log('[SearchScreen] Playing track: ${result.id}');
     try {
       if (mounted) {
         showSnackBar('Carregando áudio de "${result.title}"...');
       }
       await _playbackService.playSearchResult(result);
-      debugPrint('[SearchScreen] Playback started for ${result.id}');
+      StartupLogger.log('[SearchScreen] Playback started for ${result.id}');
     } catch (e, stack) {
-      debugPrint('[SearchScreen] Playback FAILED: $e\n$stack');
+      StartupLogger.log('[SearchScreen] Playback FAILED: $e\n$stack');
       if (mounted) {
         showSnackBar('Erro ao reproduzir: $e');
       }
@@ -307,7 +324,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
   }
 
   void openFullPlayer() {
-    debugPrint('[SearchScreen] Opening full player');
+    StartupLogger.log('[SearchScreen] Opening full player');
     material.Navigator.push(
       context,
       material.MaterialPageRoute(builder: (context) => const PlayerScreen()),
@@ -316,7 +333,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
 
   void showSnackBar(String message) {
     if (_isFluent) {
-      debugPrint('[SearchScreen][SnackBar/Fluent] $message');
+      StartupLogger.log('[SearchScreen][SnackBar/Fluent] $message');
     } else {
       material.ScaffoldMessenger.of(context).showSnackBar(
         material.SnackBar(content: material.Text(message)),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:palette_generator_master/palette_generator_master.dart';
 import 'package:music_tag_editor/services/database_service.dart';
+import 'package:music_tag_editor/services/startup_logger.dart';
 
 class ThemeService extends ChangeNotifier {
   static ThemeService? _instance;
@@ -97,7 +98,7 @@ class ThemeService extends ChangeNotifier {
       _primaryColor = palette.dominantColor?.color ?? Colors.blue;
       notifyListeners();
     } catch (e) {
-      debugPrint("Error extracting palette: $e");
+      StartupLogger.log("Error extracting palette: $e");
       _primaryColor = Colors.blue;
       notifyListeners();
     }

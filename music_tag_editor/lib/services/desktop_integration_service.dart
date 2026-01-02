@@ -46,9 +46,6 @@ class DesktopIntegrationService {
       await StartupLogger.log('Desktop: ensuring WindowManager initialized');
       await _windowManager.ensureInitialized();
       await Window.initialize();
-      if (Platform.isWindows) {
-        await Window.setEffect(effect: WindowEffect.mica, dark: true);
-      }
 
       const String iconPath = 'assets/app_icon.ico';
 
@@ -91,7 +88,7 @@ class DesktopIntegrationService {
       WindowOptions windowOptions = const WindowOptions(
         size: Size(1280, 720),
         center: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xFF1E1E1E), // Solid dark grey to avoid transparency
         skipTaskbar: false,
         titleBarStyle: TitleBarStyle.normal,
       );

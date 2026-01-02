@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/services/security_service.dart';
+import 'package:music_tag_editor/services/startup_logger.dart';
 
 class AuthService extends ChangeNotifier {
   static AuthService? _instance;
@@ -40,26 +41,26 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<bool> login(String email, String password) async {
-    debugPrint("[AuthService] Attempting login for: $email");
+    StartupLogger.log("[AuthService] Attempting login for: $email");
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      debugPrint("[AuthService] Login SUCCESS for: $email");
+      StartupLogger.log("[AuthService] Login SUCCESS for: $email");
       return true;
     } catch (e) {
-      debugPrint("[AuthService] Login FAILED for $email: $e");
+      StartupLogger.log("[AuthService] Login FAILED for $email: $e");
       return false;
     }
   }
 
   Future<bool> register(String email, String password) async {
-    debugPrint("[AuthService] Attempting registration for: $email");
+    StartupLogger.log("[AuthService] Attempting registration for: $email");
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      debugPrint("[AuthService] Registration SUCCESS for: $email");
+      StartupLogger.log("[AuthService] Registration SUCCESS for: $email");
       return true;
     } catch (e) {
-      debugPrint("[AuthService] Registration FAILED for $email: $e");
+      StartupLogger.log("[AuthService] Registration FAILED for $email: $e");
       return false;
     }
   }
@@ -69,13 +70,13 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<bool> sendPasswordReset(String email) async {
-    debugPrint("[AuthService] Attempting password reset for: $email");
+    StartupLogger.log("[AuthService] Attempting password reset for: $email");
     try {
       await _auth.sendPasswordResetEmail(email: email);
-      debugPrint("[AuthService] Password reset email SENT to: $email");
+      StartupLogger.log("[AuthService] Password reset email SENT to: $email");
       return true;
     } catch (e) {
-      debugPrint("[AuthService] Password reset FAILED for $email: $e");
+      StartupLogger.log("[AuthService] Password reset FAILED for $email: $e");
       return false;
     }
   }

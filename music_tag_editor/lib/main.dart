@@ -31,8 +31,6 @@ void main() {
       runApp(const AppBootstrap());
     },
     (error, stack) {
-      debugPrint('🔥 [FATAL] Global runZonedGuarded error: $error');
-      debugPrint(stack.toString());
       StartupLogger.log('🔥 [FATAL] Global error: $error');
       StartupLogger.log(stack.toString());
       try {
@@ -76,10 +74,9 @@ class _AppBootstrapState extends State<AppBootstrap> {
       _updateStep('Initializing Telemetry...');
       try {
         await TelemetryService.instance.init();
-        await StartupLogger.log('✅ TelemetryService initialized');
+        StartupLogger.log('✅ TelemetryService initialized');
       } catch (e) {
-        debugPrint('Telemetry init failed: $e');
-        await StartupLogger.log('❌ Telemetry init failed: $e');
+        StartupLogger.log('❌ Telemetry init failed: $e');
       }
 
       // Initialize Core Services
@@ -103,13 +100,12 @@ class _AppBootstrapState extends State<AppBootstrap> {
         await StartupLogger.log('Initializing DesktopIntegrationService...');
         await DesktopIntegrationService.instance.init();
         
-        await StartupLogger.log('Initializing PlaybackService...');
+        StartupLogger.log('Initializing PlaybackService...');
         await PlaybackService.instance.init();
         
-        await StartupLogger.log('✅ Core services initialized successfully');
+        StartupLogger.log('✅ Core services initialized successfully');
       } catch (e) {
-        debugPrint('Service initialization failed: $e');
-        await StartupLogger.log('❌ Service initialization failed: $e');
+        StartupLogger.log('❌ Service initialization failed: $e');
       }
 
       await StartupLogger.log('🚀 App initialization complete, launching UI');
@@ -222,7 +218,7 @@ class MusicTagEditorApp extends StatelessWidget {
             darkTheme: fluent.FluentThemeData(
               brightness: fluent.Brightness.dark,
               accentColor: fluent.Colors.blue,
-              scaffoldBackgroundColor: fluent.Colors.grey,
+              scaffoldBackgroundColor: const fluent.Color(0xFF1E1E1E),
             ),
             theme: fluent.FluentThemeData(
               brightness: fluent.Brightness.light,
