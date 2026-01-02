@@ -62,6 +62,8 @@ void main() {
 
     when(() => mockDb.loadCrossfadeDuration()).thenAnswer((_) async => 3);
     when(() => mockDb.loadAgeBypass()).thenAnswer((_) async => false);
+    when(() => mockDb.getSpotifyCredentials())
+        .thenAnswer((_) async => {'clientId': null, 'clientSecret': null});
   });
 
   Widget createTestWidget() {

@@ -124,6 +124,8 @@ Future<void> setupMusicTest({
   when(() => mockDb.saveSetting(any(), any())).thenAnswer((_) async => {});
   when(() => mockDb.getSetting(any())).thenAnswer((_) async => null);
   when(() => mockDb.loadCrossfadeDuration()).thenAnswer((_) async => 3);
+  when(() => mockDb.getSpotifyCredentials())
+      .thenAnswer((_) async => {'clientId': null, 'clientSecret': null});
   when(() => mockPlayback.player)
       .thenReturn(mockPlayer); // Real player but usually fine
   when(() => mockPlayback.currentTrack).thenReturn(null);

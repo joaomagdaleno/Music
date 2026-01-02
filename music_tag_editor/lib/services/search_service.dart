@@ -149,7 +149,7 @@ class SearchService {
       }
       return results;
     } catch (e, stack) {
-      StartupLogger.log('[SearchService] ${platform.name} search FAILED: $e\n$stack');
+      StartupLogger.logError('${platform.name} search FAILED', e, stack);
       onStatusUpdate?.call(platform, SearchStatus.failed);
       return [];
     }
@@ -183,7 +183,7 @@ class SearchService {
       }
       return results;
     } catch (e, stack) {
-      StartupLogger.log('[SearchService] YouTube Explode Error: $e\n$stack');
+      StartupLogger.logError('YouTube Explode Error', e, stack);
       return [];
     }
   }
