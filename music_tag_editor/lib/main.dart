@@ -23,6 +23,23 @@ void main() {
     () {
       WidgetsFlutterBinding.ensureInitialized();
       
+      ErrorWidget.builder = (FlutterErrorDetails details) {
+        return MaterialApp(
+          home: Scaffold(
+            backgroundColor: Colors.red,
+            body: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  details.exceptionAsString(),
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+          ),
+        );
+      };
+
       if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
         sqfliteFfiInit();
         databaseFactory = databaseFactoryFfi;
