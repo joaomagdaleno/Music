@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/models/filename_format.dart';
-import 'package:music_tag_editor/screens/settings/settings_screen.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
 import 'package:music_tag_editor/services/persona_service.dart';
 import 'package:music_tag_editor/models/persona_model.dart';
@@ -128,28 +127,28 @@ void main() {
     );
   }
 
-  group('SettingsPage Persona Selection', () {
-    testWidgets('Displays all persona options in SettingsScreen', (tester) async {
-      await tester.pumpWidget(createWidgetUnderTest(const SettingsScreen()));
+  group('Global Persona Selection (AppShell)', () {
+    testWidgets('Displays all persona options in AppShell', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest(const AppShell()));
       await tester.pump();
 
-      expect(find.text('Modo do Sistema (Persona)'), findsOneWidget);
-      expect(find.text('O Ouvinte'), findsOneWidget);
-      expect(find.text('O Bibliotecário'), findsOneWidget);
-      expect(find.text('O Anfitrião'), findsOneWidget);
-      expect(find.text('O Artesão'), findsOneWidget);
+      expect(find.text('Ouvinte'), findsAtLeastNWidgets(1));
+      expect(find.text('Bibliotecário'), findsAtLeastNWidgets(1));
+      expect(find.text('Anfitrião'), findsAtLeastNWidgets(1));
+      expect(find.text('Artesão'), findsAtLeastNWidgets(1));
     });
 
     testWidgets('Switching persona updates PersonaService', (tester) async {
-      await tester.pumpWidget(createWidgetUnderTest(const SettingsScreen()));
-      await tester.pump(const Duration(milliseconds: 200));
+      await tester.pumpWidget(createWidgetUnderTest(const AppShell()));
+      await tester.pump();
 
       // Default persona is listener
       expect(PersonaService.instance.activePersona, AppPersona.listener);
 
       // Tap on Librarian
-      await tester.tap(find.text('O Bibliotecário'));
-      await tester.pump(const Duration(milliseconds: 200));
+      // Note: findsAtLeastNWidgets because it might be in Rail and BottomBar or have multiple labels
+      await tester.tap(find.text('Bibliotecário').first);
+      await tester.pumpAndSettle();
 
       expect(PersonaService.instance.activePersona, AppPersona.librarian);
 
