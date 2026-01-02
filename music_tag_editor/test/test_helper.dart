@@ -198,7 +198,20 @@ class _MockHttpClient extends Mock implements HttpClient {
 
 class _MockHttpClientRequest extends Mock implements HttpClientRequest {
   @override
+  HttpHeaders get headers => MockHttpHeaders();
+
+  @override
   Future<HttpClientResponse> close() => Future.value(_MockHttpClientResponse());
+
+  @override
+  Future<void> addStream(Stream<List<int>> stream) async {}
+}
+
+class MockHttpHeaders extends Mock implements HttpHeaders {
+  @override
+  void forEach(void Function(String name, List<String> values) action) {
+    // No-op for empty headers or implementation if needed
+  }
 }
 
 class _MockHttpClientResponse extends Mock implements HttpClientResponse {
@@ -207,6 +220,9 @@ class _MockHttpClientResponse extends Mock implements HttpClientResponse {
 
   @override
   int get contentLength => 3;
+
+  @override
+  HttpHeaders get headers => MockHttpHeaders();
 
   @override
   HttpClientResponseCompressionState get compressionState =>

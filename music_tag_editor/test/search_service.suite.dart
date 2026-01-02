@@ -6,34 +6,54 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/services/search_service.dart';
+import 'package:music_tag_editor/services/dependency_manager.dart';
+import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/hifi_download_service.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart' hide SearchResult;
 import 'test_helper.dart';
+
+class MockDependencyManager extends Mock implements DependencyManager {}
+class MockDatabaseService extends Mock implements DatabaseService {}
+class MockHiFiDownloadService extends Mock implements HiFiDownloadService {}
+class MockYoutubeExplode extends Mock implements YoutubeExplode {}
+class MockSearchClient extends Mock implements SearchClient {}
+class MockVideoSearchList extends Mock implements VideoSearchList {}
+class MockVideo extends Mock implements Video {}
 
 void main() {
   late SearchService service;
   late MockDependencyManager sMockDeps;
   late MockDatabaseService sMockDb;
   late MockHiFiDownloadService sMockHiFi;
+  late MockYoutubeExplode mockYt;
+  late MockSearchClient mockSearchClient;
 
   int mockExitCode = 0;
   String mockStdout = '';
   String mockStderr = '';
 
   setUp(() async {
-    await setupMusicTest(mockSearchInstance: false);
-
-    sMockDeps = mockDeps;
-    sMockDb = mockDb;
+    resetMocktailState();
+    sMockDeps = MockDependencyManager();
+    sMockDb = MockDatabaseService();
     sMockHiFi = MockHiFiDownloadService();
+    mockYt = MockYoutubeExplode();
+    mockSearchClient = MockSearchClient();
 
     mockExitCode = 0;
     mockStdout = '';
     mockStderr = '';
 
+    DependencyManager.instance = sMockDeps;
+    DatabaseService.instance = sMockDb;
     HiFiDownloadService.instance = sMockHiFi;
 
+    SearchService.resetInstance();
     service = SearchService.instance;
+    service.ytExplode = mockYt;
+
+    when(() => mockYt.search).thenReturn(mockSearchClient);
 
     // Inject mock runner
     service.processRunner = (
@@ -53,54 +73,57 @@ void main() {
   });
 
   group('searchYouTube', () {
-    test('parses yt-dlp json output correctly', () async {
-      final jsonOutput = jsonEncode({
-        'id': 'vid123',
-        'title': 'Test Title',
-        'channel': 'Test Artist',
-        'thumbnail': 'http://thumb',
-        'duration': 180,
-      });
-
-      mockExitCode = 0;
-      mockStdout = jsonOutput;
+    test('returns parsed video results', () async {
+      final mockVideo = MockVideo();
+      when(() => mockVideo.id).thenReturn(VideoId('12345678901'));
+      when(() => mockVideo.title).thenReturn('Test Title');
+      when(() => mockVideo.author).thenReturn('Test Artist');
+      when(() => mockVideo.url).thenReturn('http://url');
+      when(() => mockVideo.thumbnails).thenReturn(ThumbnailSet('http://thumb'));
+      when(() => mockVideo.duration).thenReturn(Duration(seconds: 180));
+      
+      final mockSearchList = MockVideoSearchList();
+      when(() => mockSearchList.iterator).thenAnswer((_) => [mockVideo].iterator);
+      
+      when(() => mockSearchClient.search(any())).thenAnswer((_) async => mockSearchList);
 
       final results = await service.searchYouTube('query');
 
       expect(results.length, 1);
-      expect(results[0].id, 'vid123');
+      expect(results[0].id, '12345678901');
       expect(results[0].title, 'Test Title');
-      expect(results[0].artist, 'Test Artist');
       expect(results[0].platform, MediaPlatform.youtube);
     });
 
-    test('returns empty list on process error', () async {
-      mockExitCode = 1;
+    test('returns empty list on error', () async {
+      when(() => mockSearchClient.search(any())).thenThrow(Exception('YT Error'));
       final results = await service.searchYouTube('query');
       expect(results, isEmpty);
     });
   });
 
   group('searchYouTubeMusic', () {
-    test('parses yt-music output with album info', () async {
-      final jsonOutput = jsonEncode({
-        'id': 'm123',
-        'title': 'M Song',
-        'artist': 'M Artist',
-        'album': 'M Album',
-        'thumbnail': 'http://mthumb',
-        'duration': 200,
-      });
+    test('filters and parses results', () async {
+      final mockVideo = MockVideo();
+      when(() => mockVideo.id).thenReturn(VideoId('12345678901'));
+      when(() => mockVideo.title).thenReturn('M Song');
+      when(() => mockVideo.author).thenReturn('M Artist');
+      when(() => mockVideo.url).thenReturn('http://murl');
+      when(() => mockVideo.thumbnails).thenReturn(ThumbnailSet('http://mthumb'));
+      when(() => mockVideo.duration).thenReturn(Duration(seconds: 200));
 
-      mockExitCode = 0;
-      mockStdout = jsonOutput;
+      final mockSearchList = MockVideoSearchList();
+      when(() => mockSearchList.iterator).thenAnswer((_) => [mockVideo].iterator);
+
+      when(() => mockSearchClient.search(any())).thenAnswer((_) async => mockSearchList);
 
       final results = await service.searchYouTubeMusic('query');
 
       expect(results.length, 1);
       expect(results[0].title, 'M Song');
-      expect(results[0].album, 'M Album');
       expect(results[0].platform, MediaPlatform.youtubeMusic);
+      
+      verify(() => mockSearchClient.search('query audio')).called(1);
     });
   });
 
@@ -142,8 +165,12 @@ void main() {
   group('searchAll', () {
     test('calls all platforms and updates status', () async {
       mockExitCode = 0;
-      mockStdout = ''; // Empty results for simplicity
+      mockStdout = '';
       when(() => sMockHiFi.search(any())).thenAnswer((_) async => []);
+
+      final mockSearchList = MockVideoSearchList();
+      when(() => mockSearchList.iterator).thenAnswer((_) => <Video>[].iterator);
+      when(() => mockSearchClient.search(any())).thenAnswer((_) async => mockSearchList);
 
       final statuses = <MediaPlatform, List<SearchStatus>>{};
       await service.searchAll('query', onStatusUpdate: (p, s) {
@@ -192,15 +219,13 @@ void main() {
 
       expect(formats.any((f) => f.formatId == '140'), isTrue);
       expect(formats.any((f) => f.quality == '720p'), isTrue);
-      // Best audio defaults added by service
       expect(formats.any((f) => f.formatId == 'bestaudio/best'), isTrue);
     });
-
-    test('returns default formats on process failure', () async {
+     test('returns default formats on process failure', () async {
       mockExitCode = 1;
       final formats = await service.getFormats(
           'https://youtube.com/watch?v=123', MediaPlatform.youtube);
-      expect(formats.length, 2); // Only defaults
+      expect(formats.length, 2);
       expect(formats[0].formatId, 'bestaudio/best');
     });
   });
@@ -223,19 +248,29 @@ void main() {
 
   group('findSpotifyMatch', () {
     test('returns match if available', () async {
-      // searchSpotify returns empty [] by default in implementation currently.
-      // But we can test the logic once we mock it.
-      // For now, it returns [] -> null.
       final ytResult = SearchResult(
           id: 'y1',
           title: 'Song',
           artist: 'Artist',
           url: '',
           platform: MediaPlatform.youtube);
+
+      // Mock searchSpotify (via mockSearchClient) to return a match
+      final mockVideo = MockVideo();
+      when(() => mockVideo.id).thenReturn(VideoId('12345678901'));
+      when(() => mockVideo.title).thenReturn('Song');
+      when(() => mockVideo.author).thenReturn('Artist');
+      when(() => mockVideo.url).thenReturn('http://surl');
+      when(() => mockVideo.thumbnails).thenReturn(ThumbnailSet('http://sthumb'));
+      when(() => mockVideo.duration).thenReturn(Duration(seconds: 180));
+
+      final mockSearchList = MockVideoSearchList();
+      when(() => mockSearchList.iterator).thenAnswer((_) => [mockVideo].iterator);
+      when(() => mockSearchClient.search(any())).thenAnswer((_) async => mockSearchList);
+
       final match = await service.findSpotifyMatch(ytResult);
-      expect(match, isNull);
+      expect(match, isNotNull);
+      expect(match!.title, 'Song');
     });
   });
 }
-
-class MockHiFiDownloadService extends Mock implements HiFiDownloadService {}

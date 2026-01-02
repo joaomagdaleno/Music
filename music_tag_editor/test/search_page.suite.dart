@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/screens/search/search_screen.dart';
-import 'package:music_tag_editor/services/search_service.dart';
+
 import 'package:music_tag_editor/services/download_service.dart';
 import 'test_helper.dart';
 
