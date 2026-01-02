@@ -14,6 +14,7 @@ class MaterialSearchView extends StatelessWidget {
   final Map<String, DownloadFormat?> selectedFormats;
   final Map<String, double> downloadingProgress;
   final Map<String, String> downloadingStatus;
+  final Set<String> downloadedUrls;
   
   // Callbacks
   final VoidCallback onSearch;
@@ -45,6 +46,7 @@ class MaterialSearchView extends StatelessWidget {
     required this.onFormatSelected,
     required this.onToggleExpand,
     required this.onOpenFullPlayer,
+    required this.downloadedUrls,
   });
 
   @override
@@ -105,8 +107,21 @@ class MaterialSearchView extends StatelessWidget {
                                 fit: BoxFit.cover,
                                 errorBuilder: (_, __, ___) => const Icon(Icons.music_note))
                             : const Icon(Icons.music_note),
-                        title: Text(result.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-                        subtitle: Text('${result.artist} • ${result.durationFormatted}'),
+                        title: Text(
+                          result.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: downloadedUrls.contains(result.url) ? Colors.green : null,
+                            fontWeight: downloadedUrls.contains(result.url) ? FontWeight.bold : null,
+                          ),
+                        ),
+                        subtitle: Text(
+                          '${result.artist} • ${result.durationFormatted}',
+                          style: TextStyle(
+                            color: downloadedUrls.contains(result.url) ? Colors.green.withValues(alpha: 0.7) : null,
+                          ),
+                        ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

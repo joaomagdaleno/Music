@@ -52,6 +52,7 @@ class MetadataAggregatorService {
   GeniusApi _genius = GeniusApi();
   NeteaseApi _netease = NeteaseApi();
   LyricsService _lrcLib = LyricsService.instance;
+  SearchService _searchService = SearchService.instance;
 
   @visibleForTesting
   void setDependencies({
@@ -61,6 +62,7 @@ class MetadataAggregatorService {
     GeniusApi? genius,
     NeteaseApi? netease,
     LyricsService? lrcLib,
+    SearchService? searchService,
   }) {
     if (musicBrainz != null) _musicBrainz = musicBrainz;
     if (lastFm != null) _lastFm = lastFm;
@@ -68,6 +70,7 @@ class MetadataAggregatorService {
     if (genius != null) _genius = genius;
     if (netease != null) _netease = netease;
     if (lrcLib != null) _lrcLib = lrcLib;
+    if (searchService != null) _searchService = searchService;
   }
 
   /// Aggregate metadata from all sources with voting.
@@ -99,7 +102,7 @@ class MetadataAggregatorService {
     ]);
 
     // Apply voting logic
-    return _vote(results, durationMs);
+    return _vote(results, title, artist, durationMs);
   }
 
   /// Fetch synced lyrics from multiple sources.
@@ -254,7 +257,10 @@ class MetadataAggregatorService {
   }
 
   AggregatedMetadata _vote(
-      Map<String, Map<String, dynamic>> results, int? durationMs) {
+      Map<String, Map<String, dynamic>> results,
+      String title,
+      String artist,
+      int? durationMs) {
     // 1. Establish Source Hierarchy
     final mb = results['musicbrainz'] ?? {};
     final discogs = results['discogs'] ?? {};
@@ -264,9 +270,39 @@ class MetadataAggregatorService {
 
     // 2. Voting / Gap Filling Algorithm
     
-    // Title/Artist: Trust MusicBrainz/Spotify first, otherwise vote
-    String? finalTitle = mb['title'] ?? spotify['title'] ?? _getMostCommon([discogs['title'], lastfm['title'], genius['title']].whereType<String>().toList());
-    String? finalArtist = mb['artist'] ?? spotify['artist'] ?? _getMostCommon([discogs['artist'], lastfm['artist'], genius['artist']].whereType<String>().toList());
+    // Sensitivity check: If a source has a wildly different artist, we ignore its title/artist votes
+    // but might still keep its other data if confidence is high.
+    bool sourceMatches(Map<String, dynamic> source) {
+      if (source['artist'] == null || artist.isEmpty) return true;
+      final sArtist = source['artist'].toString().toLowerCase();
+      final targetArtist = artist.toLowerCase();
+      
+      // Simple inclusion or overlap check
+      return sArtist.contains(targetArtist) || targetArtist.contains(sArtist);
+    }
+
+    final mbMatch = sourceMatches(mb);
+    final spotifyMatch = sourceMatches(spotify);
+    final discogsMatch = sourceMatches(discogs);
+    final lastfmMatch = sourceMatches(lastfm);
+    final geniusMatch = sourceMatches(genius);
+
+    // Title/Artist: Trust MusicBrainz/Spotify first (if they match the intended artist), otherwise vote
+    String? finalTitle = (mbMatch ? mb['title'] : null) ?? (spotifyMatch ? spotify['title'] : null) ?? _getMostCommon([
+      if (discogsMatch) discogs['title'], 
+      if (lastfmMatch) lastfm['title'], 
+      if (geniusMatch) genius['title']
+    ].whereType<String>().toList());
+
+    String? finalArtist = (mbMatch ? mb['artist'] : null) ?? (spotifyMatch ? spotify['artist'] : null) ?? _getMostCommon([
+      if (discogsMatch) discogs['artist'], 
+      if (lastfmMatch) lastfm['artist'], 
+      if (geniusMatch) genius['artist']
+    ].whereType<String>().toList());
+
+    // Fallback to initial if nothing matched reasonably
+    finalTitle ??= title;
+    finalArtist ??= artist;
     
     // Album: MusicBrainz > Spotify > Discogs > LastFM
     String? finalAlbum = mb['album'] ?? spotify['album'] ?? discogs['title'] ?? lastfm['album']; 
@@ -328,7 +364,7 @@ class MetadataAggregatorService {
 
   Future<Map<String, dynamic>?> _fetchSpotify(String title, String artist) async {
     try {
-      final spotify = await SearchService.instance.spotifyApi;
+      final spotify = await _searchService.spotifyApi;
       if (spotify == null) return null;
 
       final results = await spotify.search.get('$title $artist', types: [spot.SearchType.track]).first(1);

@@ -360,6 +360,12 @@ class DatabaseService {
     return await db.query(_tracksTable, where: 'is_vault = 0');
   }
 
+  Future<Map<String, String?>> getDownloadedUrls() async {
+    final db = await database;
+    final results = await db.query(_tracksTable, columns: ['url', 'local_path']);
+    return {for (var r in results) r['url'] as String: r['local_path'] as String?};
+  }
+
   Future<void> toggleVault(String trackId, bool inVault) async {
     final db = await database;
     await db.update(
