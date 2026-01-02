@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
@@ -44,7 +45,7 @@ class _PlaylistImporterScreenState extends State<PlaylistImporterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/security_service.dart';
@@ -55,7 +56,7 @@ class _VaultScreenState extends State<VaultScreen> {
   }
 
   void _showError(String message) {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     if (platform == TargetPlatform.windows ||
         platform == TargetPlatform.macOS ||
         platform == TargetPlatform.linux) {
@@ -67,7 +68,7 @@ class _VaultScreenState extends State<VaultScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:

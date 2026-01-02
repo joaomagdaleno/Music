@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:music_tag_editor/services/auth_service.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
@@ -41,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _showError() {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
       fluent.displayInfoBar(context, builder: (_, close) => fluent.InfoBar(title: const Text('Falha na autenticação'), severity: fluent.InfoBarSeverity.error, onClose: close));
     } else {
@@ -52,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _showRecoveryDialog() {
     final recoveryEmailController = TextEditingController(text: _emailController.text);
     
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
       fluent.showDialog(context: context, builder: (_) => fluent.ContentDialog(
         title: const Text('Recuperação 2FA'),
@@ -88,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:

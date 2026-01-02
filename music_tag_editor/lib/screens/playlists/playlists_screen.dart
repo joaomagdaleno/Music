@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/screens/playlists/views/fluent_playlists_view.dart';
@@ -30,7 +31,7 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
   void _createPlaylist() async {
     String? name;
     
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     if (platform == TargetPlatform.windows || 
         platform == TargetPlatform.macOS ||
         platform == TargetPlatform.linux) {
@@ -71,7 +72,7 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:

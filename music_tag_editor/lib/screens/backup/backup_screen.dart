@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:file_picker/file_picker.dart';
 import 'package:music_tag_editor/services/backup_service.dart';
@@ -45,7 +46,7 @@ class _BackupScreenState extends State<BackupScreen> {
   }
 
   void _showSuccess(String message) {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
       fluent.displayInfoBar(context, builder: (_, close) => fluent.InfoBar(title: Text(message), severity: fluent.InfoBarSeverity.success, onClose: close));
     } else {
@@ -55,7 +56,7 @@ class _BackupScreenState extends State<BackupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:

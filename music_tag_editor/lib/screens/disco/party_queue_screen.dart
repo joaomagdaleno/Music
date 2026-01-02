@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/screens/disco/views/fluent_party_queue_view.dart';
 import 'package:music_tag_editor/screens/disco/views/material_party_queue_view.dart';
 
@@ -22,7 +23,7 @@ class _PartyQueueScreenState extends State<PartyQueueScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     switch (platform) {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:

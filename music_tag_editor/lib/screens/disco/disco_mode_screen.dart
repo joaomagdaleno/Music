@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
 
@@ -48,7 +49,7 @@ class _DiscoModeScreenState extends State<DiscoModeScreen> {
   Widget build(BuildContext context) {
     final track = PlaybackService.instance.currentTrack;
     final primaryColor = ThemeService.instance.primaryColor;
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
 
     switch (platform) {
       case TargetPlatform.windows:

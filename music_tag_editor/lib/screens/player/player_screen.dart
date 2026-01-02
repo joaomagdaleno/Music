@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/screens/player/views/fluent_player_view.dart';
 import 'package:music_tag_editor/screens/player/views/material_player_view.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
@@ -9,7 +10,7 @@ class PlayerScreen extends StatelessWidget {
   const PlayerScreen({super.key});
 
   bool _isFluent(BuildContext context) {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     return platform == TargetPlatform.windows ||
            platform == TargetPlatform.linux ||
            platform == TargetPlatform.macOS;

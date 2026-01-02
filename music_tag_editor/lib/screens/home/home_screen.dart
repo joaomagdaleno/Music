@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/screens/home/views/fluent_home_view.dart';
 import 'package:music_tag_editor/screens/home/views/material_home_view.dart';
 import 'package:music_tag_editor/services/database_service.dart';
@@ -19,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = true;
 
   bool get _isFluent {
-    final platform = Theme.of(context).platform;
+    final platform = defaultTargetPlatform;
     return platform == TargetPlatform.windows ||
         platform == TargetPlatform.linux ||
         platform == TargetPlatform.macOS;
