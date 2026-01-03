@@ -252,14 +252,20 @@ class MusicTagEditorApp extends StatelessWidget {
             home: const AppShell(),
             navigatorKey: appNavigatorKey,
             builder: (context, child) {
-              return fluent.Container(
-                color: fluent.FluentTheme.of(context).scaffoldBackgroundColor,
-                child: Column(
-                  children: [
-                    Expanded(child: child ?? const SizedBox.shrink()),
-                    const MiniPlayer(),
-                  ],
-                ),
+              return Overlay(
+                initialEntries: [
+                  OverlayEntry(
+                    builder: (_) => fluent.Container(
+                      color: fluent.FluentTheme.of(context).scaffoldBackgroundColor,
+                      child: Column(
+                        children: [
+                          Expanded(child: child ?? const SizedBox.shrink()),
+                          const MiniPlayer(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               );
             },
           );
