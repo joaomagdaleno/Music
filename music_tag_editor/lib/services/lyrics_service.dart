@@ -17,6 +17,14 @@ class LyricsService {
   LyricsService._internal();
 
   Future<List<LyricLine>> fetchLyrics(String title, String artist) async {
+    final lrc = await fetchRawLyrics(title, artist);
+    if (lrc != null) {
+      return parseLrc(lrc);
+    }
+    return [];
+  }
+
+  Future<String?> fetchRawLyrics(String title, String artist) async {
     try {
       final url = Uri.parse(
           'https://lrclib.net/api/get?artist=${Uri.encodeComponent(artist)}&track=${Uri.encodeComponent(title)}');
@@ -24,18 +32,15 @@ class LyricsService {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        final lrc = data['syncedLyrics'] as String?;
-        if (lrc != null) {
-          return _parseLrc(lrc);
-        }
+        return data['syncedLyrics'] as String? ?? data['plainLyrics'] as String?;
       }
     } catch (e) {
-      StartupLogger.log("Error fetching lyrics: $e");
+      StartupLogger.log("Error fetching raw lyrics: $e");
     }
-    return [];
+    return null;
   }
 
-  List<LyricLine> _parseLrc(String lrc) {
+  List<LyricLine> parseLrc(String lrc) {
     final List<LyricLine> lines = [];
     final regExp = RegExp(r'\[(\d+):(\d+\.\d+)\](.*)');
 

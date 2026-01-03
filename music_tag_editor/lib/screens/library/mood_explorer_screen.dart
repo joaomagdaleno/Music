@@ -5,6 +5,8 @@ import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/screens/library/views/fluent_mood_explorer_view.dart';
 import 'package:music_tag_editor/screens/library/views/material_mood_explorer_view.dart';
+import 'package:music_tag_editor/screens/player/player_screen.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 
 /// MoodExplorerScreen controller - platform-adaptive
 class MoodExplorerScreen extends StatefulWidget {
@@ -40,6 +42,20 @@ class _MoodExplorerScreenState extends State<MoodExplorerScreen> {
   void _playTrack(Map<String, dynamic> trackData) {
     final result = SearchResult.fromJson(trackData);
     PlaybackService.instance.playSearchResult(result);
+    
+    if (mounted) {
+      if (defaultTargetPlatform == TargetPlatform.windows || 
+          defaultTargetPlatform == TargetPlatform.linux || 
+          defaultTargetPlatform == TargetPlatform.macOS) {
+        Navigator.of(context).push(
+          fluent.FluentPageRoute(builder: (_) => const PlayerScreen()),
+        );
+      } else {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const PlayerScreen()),
+        );
+      }
+    }
   }
 
   @override

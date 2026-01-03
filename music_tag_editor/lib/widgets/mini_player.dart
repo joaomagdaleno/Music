@@ -49,245 +49,252 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
             final track = trackSnapshot.data;
             if (track == null) return const SizedBox.shrink();
 
-            return Container(
-              height: 84,
-              decoration: BoxDecoration(
-                color: theme.cardColor,
-                border: Border(
-                  top: BorderSide(
-                    color: theme.resources.dividerStrokeColorDefault,
-                    width: 1,
+            return GestureDetector(
+              onTap: () {
+                appNavigatorKey.currentState?.push(
+                  fluent.FluentPageRoute(builder: (context) => const PlayerScreen()),
+                );
+              },
+              child: Container(
+                height: 84,
+                decoration: BoxDecoration(
+                  color: theme.cardColor,
+                  border: Border(
+                    top: BorderSide(
+                      color: theme.resources.dividerStrokeColorDefault,
+                      width: 1,
+                    ),
                   ),
                 ),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  // LEFT: Track Info
-                  Expanded(
-                    flex: 3,
-                    child: Row(
-                      children: [
-                        if (track.thumbnail != null)
-                           Hero(
-                              tag: 'player_art',
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(4),
-                                child: Image.network(
-                                  track.thumbnail!,
-                                  width: 56,
-                                  height: 56,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (_, __, ___) => Container(
-                                    width: 56,
-                                    height: 56,
-                                    color: theme.menuColor,
-                                    child: const Icon(fluent.FluentIcons.music_note),
-                                  ),
-                                ),
-                              ),
-                           ),
-                        const SizedBox(width: 12),
-                        Flexible(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                track.title,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                track.artist,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: theme.typography.caption?.color,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        fluent.IconButton(
-                          icon: const Icon(fluent.FluentIcons.heart),
-                          onPressed: () {
-                            // TODO: Like logic
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // CENTER: Controls & Progress
-                  Expanded(
-                    flex: 4,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                          // Controls Row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              StreamBuilder<bool>(
-                                stream: playback.player.stream.shuffle,
-                                builder: (context, snapshot) {
-                                  final isShuffle = snapshot.data ?? false;
-                                  return fluent.IconButton(
-                                    icon: Icon(
-                                      Icons.shuffle,
-                                      color: isShuffle ? theme.accentColor : null,
-                                    ),
-                                    onPressed: () => playback.toggleShuffle(),
-                                  );
-                                },
-                              ),
-                              const SizedBox(width: 8),
-                              fluent.IconButton(
-                                icon: const Icon(fluent.FluentIcons.previous),
-                                onPressed: () => playback.previous(),
-                              ),
-                              const SizedBox(width: 16),
-                              Container(
-                                width: 32,
-                                height: 32,
-                                decoration: BoxDecoration(
-                                  color: theme.accentColor,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: fluent.IconButton(
-                                  icon: Icon(
-                                    playing ? fluent.FluentIcons.pause : fluent.FluentIcons.play,
-                                    color: Colors.white,
-                                    size: 14,
-                                  ),
-                                  onPressed: () => playing ? playback.pause() : playback.resume(),
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              fluent.IconButton(
-                                icon: const Icon(fluent.FluentIcons.next),
-                                onPressed: () => playback.next(),
-                              ),
-                              const SizedBox(width: 8),
-                              StreamBuilder<PlaylistMode>(
-                                stream: playback.player.stream.playlistMode,
-                                builder: (context, snapshot) {
-                                  final mode = snapshot.data ?? PlaylistMode.none;
-                                  IconData icon;
-                                  Color? color;
-                                  if (mode == PlaylistMode.single) {
-                                    icon = Icons.repeat_one;
-                                    color = theme.accentColor;
-                                  } else if (mode == PlaylistMode.loop) {
-                                    icon = Icons.repeat;
-                                    color = theme.accentColor;
-                                  } else {
-                                    icon = Icons.repeat;
-                                    color = null;
-                                  }
-                                  return fluent.IconButton(
-                                    icon: Icon(icon, color: color),
-                                    onPressed: () => playback.toggleRepeat(),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        const SizedBox(height: 4),
-                        // Progress Bar
-                        StreamBuilder<Duration>(
-                          stream: playback.player.stream.position,
-                          builder: (context, posSnapshot) {
-                            final position = posSnapshot.data ?? Duration.zero;
-                            final duration = playback.player.state.duration;
-                            final max = duration.inMilliseconds.toDouble();
-                            final value = position.inMilliseconds.toDouble().clamp(0.0, max > 0 ? max : 1.0);
-                            
-                            return SizedBox(
-                              width: 400,
-                              child: Row(
-                                children: [
-                                  Text(
-                                    _formatDuration(position),
-                                    style: TextStyle(fontSize: 11, color: theme.typography.caption?.color),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: fluent.Slider(
-                                      value: value,
-                                      max: max > 0 ? max : 1.0,
-                                      onChanged: (val) {
-                                        playback.seek(Duration(milliseconds: val.toInt()));
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    _formatDuration(duration),
-                                    style: TextStyle(fontSize: 11, color: theme.typography.caption?.color),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-
-                    // RIGHT: Volume & Extras
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    // LEFT: Track Info
                     Expanded(
                       flex: 3,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          fluent.IconButton(
-                            icon: const Icon(fluent.FluentIcons.playlist_music),
-                            onPressed: () {
-                               // Show Queue
-                             
-                            },
-                          ),
+                          if (track.thumbnail != null)
+                             Hero(
+                                tag: 'player_art',
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(4),
+                                  child: Image.network(
+                                    track.thumbnail!,
+                                    width: 56,
+                                    height: 56,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (_, __, ___) => Container(
+                                      width: 56,
+                                      height: 56,
+                                      color: theme.menuColor,
+                                      child: const Icon(fluent.FluentIcons.music_note),
+                                    ),
+                                  ),
+                                ),
+                             ),
                           const SizedBox(width: 12),
-                          SizedBox(
-                            width: 100,
-                            child: Row(
+                          Flexible(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Icon(fluent.FluentIcons.volume2, size: 16),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: fluent.Slider(
-                                    value: _volume,
-                                    max: 100,
-                                    onChanged: (v) {
-                                      setState(() => _volume = v);
-                                      playback.player.setVolume(v);
-                                    },
+                                Text(
+                                  track.title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  track.artist,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: theme.typography.caption?.color,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(width: 12),
-                           fluent.IconButton(
-                                  icon: const fluent.Icon(fluent.FluentIcons.chrome_close),
-                                  onPressed: () => playback.stop(),
-                            ),
+                          const SizedBox(width: 16),
+                          fluent.IconButton(
+                            icon: const Icon(fluent.FluentIcons.heart),
+                            onPressed: () {
+                              // TODO: Like logic
+                            },
+                          ),
                         ],
                       ),
                     ),
-                  ],
+
+                    // CENTER: Controls & Progress
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                            // Controls Row
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                StreamBuilder<bool>(
+                                  stream: playback.player.stream.shuffle,
+                                  builder: (context, snapshot) {
+                                    final isShuffle = snapshot.data ?? false;
+                                    return fluent.IconButton(
+                                      icon: Icon(
+                                        Icons.shuffle,
+                                        color: isShuffle ? theme.accentColor : null,
+                                      ),
+                                      onPressed: () => playback.toggleShuffle(),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(width: 8),
+                                fluent.IconButton(
+                                  icon: const Icon(fluent.FluentIcons.previous),
+                                  onPressed: () => playback.previous(),
+                                ),
+                                const SizedBox(width: 16),
+                                Container(
+                                  width: 32,
+                                  height: 32,
+                                  decoration: BoxDecoration(
+                                    color: theme.accentColor,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: fluent.IconButton(
+                                    icon: Icon(
+                                      playing ? fluent.FluentIcons.pause : fluent.FluentIcons.play,
+                                      color: Colors.white,
+                                      size: 14,
+                                    ),
+                                    onPressed: () => playing ? playback.pause() : playback.resume(),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                fluent.IconButton(
+                                  icon: const Icon(fluent.FluentIcons.next),
+                                  onPressed: () => playback.next(),
+                                ),
+                                const SizedBox(width: 8),
+                                StreamBuilder<PlaylistMode>(
+                                  stream: playback.player.stream.playlistMode,
+                                  builder: (context, snapshot) {
+                                    final mode = snapshot.data ?? PlaylistMode.none;
+                                    IconData icon;
+                                    Color? color;
+                                    if (mode == PlaylistMode.single) {
+                                      icon = Icons.repeat_one;
+                                      color = theme.accentColor;
+                                    } else if (mode == PlaylistMode.loop) {
+                                      icon = Icons.repeat;
+                                      color = theme.accentColor;
+                                    } else {
+                                      icon = Icons.repeat;
+                                      color = null;
+                                    }
+                                    return fluent.IconButton(
+                                      icon: Icon(icon, color: color),
+                                      onPressed: () => playback.toggleRepeat(),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          const SizedBox(height: 4),
+                          // Progress Bar
+                          StreamBuilder<Duration>(
+                            stream: playback.player.stream.position,
+                            builder: (context, posSnapshot) {
+                              final position = posSnapshot.data ?? Duration.zero;
+                              final duration = playback.player.state.duration;
+                              final max = duration.inMilliseconds.toDouble();
+                              final value = position.inMilliseconds.toDouble().clamp(0.0, max > 0 ? max : 1.0);
+                              
+                              return SizedBox(
+                                width: 400,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      _formatDuration(position),
+                                      style: TextStyle(fontSize: 11, color: theme.typography.caption?.color),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: fluent.Slider(
+                                        value: value,
+                                        max: max > 0 ? max : 1.0,
+                                        onChanged: (val) {
+                                          playback.seek(Duration(milliseconds: val.toInt()));
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      _formatDuration(duration),
+                                      style: TextStyle(fontSize: 11, color: theme.typography.caption?.color),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+
+                      // RIGHT: Volume & Extras
+                      Expanded(
+                        flex: 3,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            fluent.IconButton(
+                              icon: const Icon(fluent.FluentIcons.playlist_music),
+                              onPressed: () {
+                                 // Show Queue
+                               
+                              },
+                            ),
+                            const SizedBox(width: 12),
+                            SizedBox(
+                              width: 100,
+                              child: Row(
+                                children: [
+                                  const Icon(fluent.FluentIcons.volume2, size: 16),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: fluent.Slider(
+                                      value: _volume,
+                                      max: 100,
+                                      onChanged: (v) {
+                                        setState(() => _volume = v);
+                                        playback.player.setVolume(v);
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                             fluent.IconButton(
+                                    icon: const fluent.Icon(fluent.FluentIcons.chrome_close),
+                                    onPressed: () => playback.stop(),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              );
-            },
-          );
-        },
-      );
+            );
+          },
+        );
+      },
+    );
   }
 
   String _formatDuration(Duration d) {

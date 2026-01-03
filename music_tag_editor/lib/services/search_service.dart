@@ -106,6 +106,9 @@ class SearchService {
   }) async {
     final results = <SearchResult>[];
 
+    // Get downloaded tracks for deduplication
+    final downloadedTracks = await DatabaseService.instance.getDownloadedUrls();
+
     // Initial status: all searching
     onStatusUpdate?.call(MediaPlatform.youtube, SearchStatus.searching);
     onStatusUpdate?.call(MediaPlatform.youtubeMusic, SearchStatus.searching);
@@ -127,7 +130,13 @@ class SearchService {
     final lists = await Future.wait(futures);
 
     for (final list in lists) {
-      results.addAll(list);
+      for (var item in list) {
+        // Deduplicate: If it's already downloaded, use the local path
+        if (downloadedTracks.containsKey(item.url)) {
+          item.localPath = downloadedTracks[item.url];
+        }
+        results.add(item);
+      }
     }
 
     return results;
@@ -444,19 +453,69 @@ class SearchService {
   }
 
   /// Get direct streaming URL for a given media URL.
-  Future<String?> getStreamUrl(String url, {String? resolution}) async {
+  Future<String?> getStreamUrl(String url, {
+    String? resolution, 
+    MediaPlatform? platform,
+    bool isVideo = false,
+  }) async {
+    // 0. Direct Link Detection (Skip extractors for direct files)
+    if (url.startsWith('http') && (url.contains('.slavart-api.') || url.endsWith('.flac') || url.endsWith('.mp3'))) {
+       StartupLogger.log('[SearchService] Direct link detected: $url');
+       return url;
+    }
+
+    // 1. Try youtube_explode_dart for YouTube URLs (Fast & Native)
+    if (url.contains('youtube.com') || url.contains('youtu.be')) {
+      try {
+        final client = _ytExplodeOverride ?? _defaultYtExplode;
+        final videoId = yt.VideoId.parseVideoId(url);
+        if (videoId != null) {
+          final manifest = await client.videos.streamsClient.getManifest(videoId);
+          
+          if (isVideo) {
+            // Priority: Muxed streams for video
+            if (resolution != null && resolution != 'Auto') {
+              final resValue = int.tryParse(resolution.replaceAll('p', '')) ?? 720;
+              final stream = manifest.muxed.where((s) => s.videoQuality.index <= resValue).toList();
+              if (stream.isNotEmpty) {
+                stream.sort((a, b) => b.videoQuality.index.compareTo(a.videoQuality.index));
+                StartupLogger.log('[SearchService] Found native video stream URL (YouTube Explode) with resolution $resolution');
+                return stream.first.url.toString();
+              }
+            }
+            // Fallback for video: highest muxed
+            final stream = manifest.muxed.withHighestBitrate();
+            StartupLogger.log('[SearchService] Found highest quality muxed stream URL (YouTube Explode)');
+            return stream.url.toString();
+          } else {
+             // Priority: Audio only for music
+             final audioStream = manifest.audioOnly.withHighestBitrate();
+             StartupLogger.log('[SearchService] Found native audio-only stream URL (YouTube Explode)');
+             return audioStream.url.toString();
+          }
+        }
+      } catch (e) {
+        StartupLogger.log('[SearchService] YouTube Explode native extract failed, falling back to yt-dlp: $e');
+      }
+    }
+
+    // 2. Fallback to yt-dlp (Slower but supports more sites and handles edge cases)
     try {
       final args = [
         ..._getBaseArgs(),
         '-g',
       ];
 
-      if (resolution != null && resolution != 'Auto') {
-        // Try to get specific resolution, fallback to best
-        args.addAll(['-f', 'bestvideo[height<=${resolution.replaceAll('p', '')}]+bestaudio/best[height<=${resolution.replaceAll('p', '')}]']);
+      if (isVideo) {
+        if (resolution != null && resolution != 'Auto') {
+          final res = resolution.replaceAll('p', '');
+          args.addAll(['-f', 'bestvideo[height<=$res]+bestaudio/best[height<=$res]/best[height<=$res]']);
+        } else {
+          args.addAll(['-f', 'bestvideo+bestaudio/best']);
+        }
       } else {
-        // Prefer HLS/DASH for adaptive bitrate, or best quality
-        args.addAll(['-f', 'bestvideo+bestaudio/best']);
+        // Music only: search for best audio
+        args.addAll(['-f', 'bestaudio/best']);
       }
       
       args.add(url);
@@ -470,19 +529,21 @@ class SearchService {
       );
 
       if (result.exitCode == 0) {
+        // yt-dlp -g can return multiple lines (video + audio separately). 
+        // We only want the first one if we requested a combined format, 
+        // but if it returned both, we can only really play one easily in media_kit without complex DASH/HLS merging.
+        // Actually, bestvideo+bestaudio/best should return a single URL if it's a direct resource, 
+        // or multiple if they are split. MediaKit usually takes a single source.
         final streamUrls = (result.stdout as String).trim().split('\n');
-        // If it returned two URLs (video and audio), media_kit can handle the first one if it's a combined stream
-        // but usually we want the best single URL or use media_kit's ability to open multiple.
-        // For simplicity with 'open(Media(url))', we'll use the first one and rely on yt-dlp finding a playble format.
-        final streamUrl = streamUrls.first;
+        final streamUrl = streamUrls.first; 
         final displayUrl = streamUrl.length > 50 ? '${streamUrl.substring(0, 50)}...' : streamUrl;
-        StartupLogger.log('[SearchService] Found Stream URL: $displayUrl');
+        StartupLogger.log('[SearchService] Found Stream URL (yt-dlp): $displayUrl');
         return streamUrl;
       }
       return null;
 
     } catch (e, stack) {
-      StartupLogger.log('[SearchService] Error extracting stream: $e\n$stack');
+      StartupLogger.log('[SearchService] Error extracting stream with yt-dlp: $e\n$stack');
       return null;
     }
   }

@@ -4,14 +4,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:music_tag_editor/api/musicbrainz_api.dart';
 import 'package:music_tag_editor/models/music_track.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/metadata_service.dart';
 import 'package:music_tag_editor/models/filename_format.dart';
 import 'package:music_tag_editor/widgets/edit_track_dialog.dart';
 import 'package:music_tag_editor/widgets/learning_dialog.dart';
-import 'package:music_tag_editor/widgets/search_results_dialog.dart';
+import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
+import 'package:music_tag_editor/services/search_service.dart';
 import 'package:path/path.dart' as p;
 
 import 'views/fluent_library_view.dart';
@@ -29,7 +29,6 @@ class LibraryScreen extends StatefulWidget {
 class _LibraryScreenState extends State<LibraryScreen> {
   final List<MusicTrack> _musicTracks = [];
   bool _isLoading = false;
-  final MusicBrainzApi _musicBrainzApi = MusicBrainzApi();
   final DatabaseService _dbService = DatabaseService.instance;
   final MetadataService _metadataService = MetadataService();
   String? _currentDirectory;
@@ -85,74 +84,62 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   void _searchOnline(MusicTrack track) async {
     debugPrint('Searching online for: ${track.artist} - ${track.title}');
+    setState(() {
+       _isLoading = true;
+    });
+
     try {
-      final results = await _musicBrainzApi.searchRecording(
-        artist: track.artist,
-        title: track.title,
+      // 1. Clean metadata before searching
+      final cleanTitle = SearchService.cleanMetadata(track.title);
+      final cleanArtist = SearchService.cleanMetadata(track.artist);
+
+      // 2. Use Aggregator for multi-source results
+      final result = await MetadataAggregatorService.instance.aggregateMetadata(
+        cleanTitle, 
+        cleanArtist,
       );
 
-      if (results['recordings'] != null && results['recordings'].isNotEmpty) {
-        if (!mounted) return;
-        dynamic selectedRecording;
-        
-        if (_isFluent) {
-            // Simple generic dialog for Fluent for now
-             selectedRecording = await fluent.showDialog<dynamic>(
-              context: context,
-              builder: (BuildContext context) {
-                 // Reuse Material dialog or create Fluent specific
-                return SearchResultsDialog(recordings: results['recordings']);
-              },
-            );
-        } else {
-             selectedRecording = await showDialog<dynamic>(
-              context: context,
-              builder: (BuildContext context) {
-                return SearchResultsDialog(recordings: results['recordings']);
-              },
-            );
-        }
+      if (!mounted) return;
 
-        if (selectedRecording != null) {
-          _applyTags(
-              originalTrack: track, selectedRecording: selectedRecording);
-        }
+      // Automatically apply if results were found with reasonable confidence
+      if (result.confidence > 0.3) {
+         await _applyTags(
+            originalTrack: track, 
+            aggregatedResult: result,
+         );
       } else {
-        if (!mounted) return;
-        if (_isFluent) {
-            // Fluent doesn't have ScaffoldMessenger at root usually, need InfoBar
-           debugPrint('No results found online');
-        } else {
-             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('No results found online.')),
+         if (!_isFluent) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Could not find high-confidence metadata.')),
             );
-        }
-       
+         }
       }
     } catch (e) {
       debugPrint('Error searching online: $e');
+    } finally {
+       if (mounted) {
+         setState(() {
+           _isLoading = false;
+         });
+       }
     }
   }
 
-  Future<void> _applyTags(
-      {required MusicTrack originalTrack,
-      dynamic selectedRecording,
-      MusicTrack? manualTrack}) async {
-    String newTitle, newArtist, newAlbum;
-    int newTrackNumber;
+  Future<void> _applyTags({
+    required MusicTrack originalTrack,
+    AggregatedMetadata? aggregatedResult,
+    MusicTrack? manualTrack,
+  }) async {
+    String newTitle, newArtist, newAlbum, newGenre;
+    int newTrackNumber, newYear;
 
-    if (selectedRecording != null) {
-      newTitle = selectedRecording['title'] as String? ?? originalTrack.title;
-      newArtist = selectedRecording['artist-credit']?[0]?['name'] as String? ??
-          originalTrack.artist;
-      newAlbum = selectedRecording['releases']?[0]?['title'] as String? ??
-          originalTrack.album;
-      final trackNumberStr = selectedRecording['releases']?[0]?['media']?[0]
-              ?['track-offset']
-          ?.toString();
-      newTrackNumber = trackNumberStr != null
-          ? int.tryParse(trackNumberStr) ?? originalTrack.trackNumber
-          : originalTrack.trackNumber;
+    if (aggregatedResult != null) {
+      newTitle = aggregatedResult.title ?? originalTrack.title;
+      newArtist = aggregatedResult.artist ?? originalTrack.artist;
+      newAlbum = aggregatedResult.album ?? originalTrack.album;
+      newGenre = aggregatedResult.genre ?? '';
+      newYear = aggregatedResult.year ?? 0;
+      newTrackNumber = originalTrack.trackNumber;
 
       // Apply learning rules
       final rules = await _dbService.getLearningRules();
@@ -178,6 +165,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
       newArtist = manualTrack.artist;
       newAlbum = manualTrack.album;
       newTrackNumber = manualTrack.trackNumber;
+      newGenre = ''; // Manual edit doesn't support genre yet in MusicTrack model
+      newYear = 0;
     } else {
       return; // Nothing to do
     }
@@ -190,6 +179,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
         artist: newArtist,
         album: newAlbum,
         trackNumber: newTrackNumber,
+        genre: newGenre.isNotEmpty ? newGenre : null,
+        year: newYear > 0 ? newYear : null,
       );
 
       // Load the preferred filename format.

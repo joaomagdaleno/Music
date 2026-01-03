@@ -141,7 +141,12 @@ class FluentPlayerView extends StatelessWidget {
                 StartupLogger.log('Selected resolution: $r');
                 // Implementation for changing resolution:
                 // We fetch the new stream URL and open it at current position
-                final newUrl = await SearchService.instance.getStreamUrl(track.url, resolution: r);
+                final newUrl = await SearchService.instance.getStreamUrl(
+                  track.url, 
+                  resolution: r,
+                  platform: track.platform,
+                  isVideo: track.mediaType == 'video',
+                );
                 if (newUrl != null) {
                    final position = PlaybackService.instance.player.state.position;
                    await PlaybackService.instance.player.open(Media(newUrl));

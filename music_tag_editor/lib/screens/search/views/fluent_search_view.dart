@@ -1,7 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/widgets/native_video_player.dart';
+import 'package:music_tag_editor/services/playback_service.dart';
+import 'package:music_tag_editor/screens/player/player_screen.dart';
 
 class FluentSearchView extends StatelessWidget {
   final TextEditingController searchController;
@@ -328,45 +329,15 @@ class FluentSearchView extends StatelessWidget {
   }
 
   void _playVideo(BuildContext context, SearchResult result) async {
-    showDialog(
-      context: context,
-      builder: (context) => FutureBuilder<Map<String, dynamic>?>(
-        future: SearchService.instance.getVideoDetails(result.url),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const ContentDialog(
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ProgressRing(),
-                  SizedBox(height: 12),
-                  Text('Obtendo detalhes do vídeo...'),
-                ],
-              ),
-            );
-          }
-          
-          if (snapshot.hasError || snapshot.data == null) {
-            return ContentDialog(
-              title: const Text('Erro'),
-              content: const Text('Não foi possível carregar os detalhes do vídeo.'),
-              actions: [
-                Button(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Fechar'),
-                ),
-              ],
-            );
-          }
-
-          return NativeVideoPlayer(
-            title: result.title,
-            videoUrl: result.url,
-            videoDetails: snapshot.data!,
-          );
-        },
-      ),
-    );
+    // Play the track using PlaybackService
+    await PlaybackService.instance.playSearchResult(result);
+    
+    // Navigate to the native PlayerScreen
+    if (context.mounted) {
+      Navigator.of(context).push(
+        FluentPageRoute(builder: (_) => const PlayerScreen()),
+      );
+    }
   }
 
   Widget _buildStatusIndicator(BuildContext context) {

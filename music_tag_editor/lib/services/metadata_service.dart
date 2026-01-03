@@ -32,6 +32,7 @@ class MetadataService {
       'album': tag.tags['album'] ?? tag.tags['TALB'] ?? 'Unknown Album',
       'track': parseTrackNumber(tag.tags['track'] ?? tag.tags['TRCK']),
       'genre': tag.tags['genre'] ?? tag.tags['TCON'] ?? 'Unknown Genre',
+      'lyrics': tag.tags['lyrics'] ?? tag.tags['USLT'] ?? tag.tags['unsynchronized_lyrics'],
     };
   }
 
@@ -42,6 +43,9 @@ class MetadataService {
     required String artist,
     required String album,
     required int trackNumber,
+    String? genre,
+    int? year,
+    String? lyrics,
   }) async {
     final file = File(filePath);
     if (!await file.exists()) {
@@ -59,11 +63,18 @@ class MetadataService {
         'artist': artist,
         'album': album,
         'track': trackNumber.toString(),
+        if (genre != null) 'genre': genre,
+        if (year != null) 'year': year.toString(),
+        if (lyrics != null) 'lyrics': lyrics,
         // ID3v2 frame IDs
         'TIT2': title,
         'TPE1': artist,
         'TALB': album,
         'TRCK': trackNumber.toString(),
+        if (genre != null) 'TCON': genre,
+        if (year != null) 'TDRC': year.toString(), 
+        if (year != null) 'TYER': year.toString(),
+        if (lyrics != null) 'USLT': lyrics,
       };
 
     // Write the tags to the byte array

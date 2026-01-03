@@ -249,14 +249,44 @@ class LyricsView extends StatelessWidget {
       builder: (context, snapshot) {
         final lyrics = snapshot.data ?? [];
         if (lyrics.isEmpty) {
-          return const Center(child: Text('Letras não disponíveis', style: TextStyle(color: Colors.grey)));
+          return const Center(
+            child: Text(
+              'Letras não encontradas',
+              style: TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+            ),
+          );
         }
 
         return StreamBuilder<Duration>(
           stream: PlaybackService.instance.player.stream.position,
           builder: (context, posSnapshot) {
-            // Simplified for now to clear lints
-            return const SizedBox.shrink(); 
+            final position = posSnapshot.data ?? Duration.zero;
+            return ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              itemCount: lyrics.length,
+              itemBuilder: (context, index) {
+                final line = lyrics[index];
+                final isCurrent = index < lyrics.length - 1
+                    ? position >= line.time && position < lyrics[index + 1].time
+                    : position >= line.time;
+
+                return AnimatedDefaultTextStyle(
+                  duration: const Duration(milliseconds: 300),
+                  style: TextStyle(
+                    fontSize: isCurrent ? 24 : 18,
+                    fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
+                    color: isCurrent ? Colors.white : Colors.white.withOpacity(0.5),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 32),
+                    child: Text(
+                      line.text,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              },
+            );
           },
         );
       },
