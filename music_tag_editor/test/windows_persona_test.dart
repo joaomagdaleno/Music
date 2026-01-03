@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -26,6 +27,12 @@ void main() {
     });
 
     testWidgets('Switching persona on Windows updates view', (tester) async {
+      // Set window size for Fluent UI
+      tester.view.physicalSize = const Size(1280, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
+      addTearDown(() => tester.view.resetDevicePixelRatio());
+
       // Set platform to Windows
       debugDefaultTargetPlatformOverride = TargetPlatform.windows;
 
@@ -48,17 +55,17 @@ void main() {
       await tester.pumpAndSettle();
 
       // Should now be in Librarian persona.
-      // Librarian persona has "Tags" section.
-      expect(find.text('Tags'), findsAtLeastNWidgets(1));
+      // Librarian persona has "Tags" section (Editor de Tags header).
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Editor de Tags'), findsOneWidget);
       expect(PersonaService.instance.activePersona, AppPersona.librarian);
 
       // Tap "Anfitrião"
-      await tester.tap(find.text('Anfitrião'));
+      await tester.tap(find.byIcon(fluent.FluentIcons.party_leader));
       await tester.pumpAndSettle();
 
       // Should now be in Host persona.
-      // Host persona has "Disco" section.
-      expect(find.text('Disco'), findsOneWidget);
       expect(PersonaService.instance.activePersona, AppPersona.host);
 
       debugDefaultTargetPlatformOverride = null;

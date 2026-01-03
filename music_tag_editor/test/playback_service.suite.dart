@@ -1,7 +1,3 @@
-@Tags(['unit'])
-library;
-
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:just_audio/just_audio.dart';
@@ -9,26 +5,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/local_duo_service.dart';
-import 'package:music_tag_editor/services/equalizer_service.dart';
-import 'package:music_tag_editor/services/theme_service.dart';
-import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/services/lyrics_service.dart';
-
-class MockDatabaseService extends Mock implements DatabaseService {}
-
-class MockLocalDuoService extends Mock implements LocalDuoService {}
-
-class MockEqualizerService extends Mock implements EqualizerService {}
-
-class MockThemeService extends Mock implements ThemeService {}
-
-class MockSearchService extends Mock implements SearchService {}
-
-class MockLyricsService extends Mock implements LyricsService {}
-
-class MockAudioPlayer extends Mock implements AudioPlayer {}
+import 'test_helper.dart';
 
 class MockAudioHandler extends Mock implements BaseAudioHandler {
   @override
@@ -40,77 +17,36 @@ class MockAudioHandler extends Mock implements BaseAudioHandler {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-
-  TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-      .setMockMethodCallHandler(
-    const MethodChannel('plugins.flutter.io/path_provider'),
-    (MethodCall methodCall) async {
-      return '.';
-    },
-  );
-
-  late MockDatabaseService mockDb;
-  late MockLocalDuoService mockDuo;
-  late MockEqualizerService mockEqualizer;
-  late MockThemeService mockTheme;
-  late MockSearchService mockSearch;
-  late MockLyricsService mockLyrics;
-  late MockAudioPlayer mockPlayer;
+  
   late MockAudioHandler mockHandler;
   late PlaybackService service;
 
-  setUp(() {
-    mockDb = MockDatabaseService();
-    mockDuo = MockLocalDuoService();
-    mockEqualizer = MockEqualizerService();
-    mockTheme = MockThemeService();
-    mockSearch = MockSearchService();
-    mockLyrics = MockLyricsService();
-    mockPlayer = MockAudioPlayer();
+  setUp(() async {
+    await setupMusicTest();
     mockHandler = MockAudioHandler();
 
-    DatabaseService.instance = mockDb;
-    LocalDuoService.instance = mockDuo;
-    EqualizerService.instance = mockEqualizer;
-    ThemeService.instance = mockTheme;
-    SearchService.instance = mockSearch;
-    LyricsService.instance = mockLyrics;
+    // Default stubs for handler
+    when(() => mockHandler.play()).thenAnswer((_) async {});
+    when(() => mockHandler.pause()).thenAnswer((_) async {});
+    when(() => mockHandler.stop()).thenAnswer((_) async {});
+    when(() => mockHandler.seek(any())).thenAnswer((_) async {});
+    when(() => mockHandler.addQueueItem(any())).thenAnswer((_) async {});
+    when(() => mockHandler.removeQueueItem(any())).thenAnswer((_) async {});
 
-    // Register fallback values for mocktail
-    registerFallbackValue(FakeAudioSource());
-    registerFallbackValue(const Duration(seconds: 0));
-
-    // Default stubs
+    // Default stubs specific to this test
     when(() => mockEqualizer.equalizer).thenReturn(FakeAndroidEqualizer());
-    when(() => mockEqualizer.applyPresetForGenre(any()))
-        .thenAnswer((_) async {});
-    when(() => mockTheme.updateThemeFromImage(any())).thenAnswer((_) async {});
-    when(() => mockDuo.role).thenReturn(DuoRole.none);
-    when(() => mockDuo.sendMessage(any())).thenReturn(null);
-    when(() => mockPlayer.currentIndexStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockPlayer.processingStateStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockPlayer.playingStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockPlayer.positionStream)
-        .thenAnswer((_) => const Stream.empty());
     when(() => mockPlayer.setAudioSource(any(),
             initialPosition: any(named: 'initialPosition'),
             initialIndex: any(named: 'initialIndex')))
         .thenAnswer((_) async => const Duration(seconds: 0));
-    when(() => mockPlayer.play()).thenAnswer((_) async {});
-    when(() => mockPlayer.pause()).thenAnswer((_) async {});
-    when(() => mockPlayer.stop()).thenAnswer((_) async {});
-    when(() => mockPlayer.seek(any())).thenAnswer((_) async {});
+    when(() => mockPlayer.currentIndexStream)
+        .thenAnswer((_) => const Stream.empty());
     when(() => mockPlayer.position).thenReturn(const Duration(seconds: 10));
     when(() => mockPlayer.playing).thenReturn(false);
     when(() => mockPlayer.processingState).thenReturn(ProcessingState.idle);
 
     when(() => mockSearch.getStreamUrl(any()))
         .thenAnswer((_) async => "http://stream.url");
-    when(() => mockDb.loadCrossfadeDuration()).thenAnswer((_) async => 3);
-    when(() => mockDb.trackPlay(any())).thenAnswer((_) async {});
     when(() => mockLyrics.fetchLyrics(any(), any()))
         .thenAnswer((_) async => []);
 
@@ -199,4 +135,4 @@ void main() {
 
 class FakeAndroidEqualizer extends Fake implements AndroidEqualizer {}
 
-class FakeAudioSource extends Fake implements AudioSource {}
+// FakeAudioSource moved to test_helper.dart
