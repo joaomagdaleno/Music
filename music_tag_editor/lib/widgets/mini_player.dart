@@ -120,10 +120,11 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
                           ),
                           const SizedBox(width: 16),
                           fluent.IconButton(
-                            icon: const Icon(fluent.FluentIcons.heart),
-                            onPressed: () {
-                              // TODO: Like logic
-                            },
+                            icon: Icon(
+                              track.isVault ? fluent.FluentIcons.heart_fill : fluent.FluentIcons.heart,
+                              color: track.isVault ? fluent.Colors.red : null,
+                            ),
+                            onPressed: () => playback.toggleFavorite(),
                           ),
                         ],
                       ),
@@ -407,6 +408,12 @@ class _MaterialMiniPlayer extends StatelessWidget {
                             ),
                             // Controls
                             // Controls
+                            IconButton(
+                              icon: Icon(track.isVault ? Icons.favorite : Icons.favorite_border),
+                              color: track.isVault ? Colors.red : null,
+                              onPressed: () => playback.toggleFavorite(),
+                            ),
+                            const SizedBox(width: 8),
                             // Shuffle
                             StreamBuilder<bool>(
                               stream: playback.player.stream.shuffle,

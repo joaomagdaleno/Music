@@ -265,7 +265,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
       final musicDir = '${Platform.environment['USERPROFILE']}\\Music';
       StartupLogger.log('[SearchScreen] Target directory: $musicDir');
 
-      await _downloadService.download(
+      final path = await _downloadService.download(
         result.url,
         selectedFormat,
         musicDir,
@@ -282,7 +282,12 @@ class _SearchScreenState extends material.State<SearchScreen> {
         },
       );
 
-      StartupLogger.log('[SearchScreen] Download COMPLETED for ${result.id}');
+      StartupLogger.log('[SearchScreen] Download COMPLETED for ${result.id} at $path');
+      
+      // Persist the localPath back to the result and database
+      result.localPath = path;
+      await DatabaseService.instance.saveTrack(result.toJson());
+
       await _refreshDownloadedStatus();
       if (mounted) {
         showSnackBar('Download de "${result.title}" concluído!');

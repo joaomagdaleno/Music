@@ -129,11 +129,28 @@ class SearchService {
 
     final lists = await Future.wait(futures);
 
+    // Get all local tracks for metadata matching
+    final allLocalTracks = await DatabaseService.instance.getAllTracks();
+    final Map<String, String> metadataToPath = {};
+    for (var track in allLocalTracks) {
+      if (track.localPath != null) {
+        final key = '${toMatchKey(track.artist)}:${toMatchKey(track.title)}';
+        metadataToPath[key] = track.localPath!;
+      }
+    }
+
     for (final list in lists) {
       for (var item in list) {
-        // Deduplicate: If it's already downloaded, use the local path
+        // 1. URL Deduplication
         if (downloadedTracks.containsKey(item.url)) {
           item.localPath = downloadedTracks[item.url];
+        } 
+        // 2. Metadata Deduplication (Fall back if URL didn't match)
+        else {
+          final itemKey = '${toMatchKey(item.artist)}:${toMatchKey(item.title)}';
+          if (metadataToPath.containsKey(itemKey)) {
+            item.localPath = metadataToPath[itemKey];
+          }
         }
         results.add(item);
       }

@@ -61,7 +61,8 @@ class SearchResult {
   final String? genre;
   final String? hifiSource; // 'qobuz', 'tidal', 'deezer' for Hi-Fi results
   final String? hifiQuality; // e.g. '24-bit/96kHz', 'FLAC 16-bit'
-  final bool isVault;
+  bool isVault;
+  bool isDownloaded;
   final String mediaType; // 'audio' or 'video'
 
   SearchResult({
@@ -78,6 +79,7 @@ class SearchResult {
     this.hifiSource,
     this.hifiQuality,
     this.isVault = false,
+    this.isDownloaded = false,
     this.mediaType = 'audio',
   });
 
@@ -140,6 +142,7 @@ class SearchResult {
       hifiSource: json['hifi_source']?.toString(),
       hifiQuality: json['hifi_quality']?.toString(),
       isVault: (json['is_vault'] == 1 || json['is_vault'] == true),
+      isDownloaded: (json['is_downloaded'] == 1 || json['is_downloaded'] == true),
       mediaType: json['media_type']?.toString() ?? 'audio',
     );
   }

@@ -185,6 +185,13 @@ class MaterialPlayerView extends StatelessWidget {
         ),
         const SizedBox(width: 16),
         IconButton(iconSize: 48, icon: const Icon(Icons.skip_next), onPressed: () {}),
+        const SizedBox(width: 16),
+        IconButton(
+          iconSize: 32,
+          icon: Icon(track.isVault ? Icons.favorite : Icons.favorite_border),
+          color: track.isVault ? Colors.red : null,
+          onPressed: () => playback.toggleFavorite(),
+        ),
         if (showKaraoke) ...[
           const SizedBox(width: 16),
           IconButton(
@@ -275,7 +282,7 @@ class LyricsView extends StatelessWidget {
                   style: TextStyle(
                     fontSize: isCurrent ? 24 : 18,
                     fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
-                    color: isCurrent ? Colors.white : Colors.white.withOpacity(0.5),
+                    color: isCurrent ? Colors.white : Colors.white.withValues(alpha: 0.5),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 32),

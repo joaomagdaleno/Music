@@ -214,6 +214,14 @@ class PlaybackService {
         ));
   }
 
+  Future<void> toggleFavorite() async {
+    if (_currentTrack == null) return;
+    final newState = !_currentTrack!.isVault;
+    _currentTrack!.isVault = newState;
+    await DatabaseService.instance.toggleVault(_currentTrack!.id, newState);
+    _trackController.add(_currentTrack);
+  }
+
   Future<void> playSearchResult(SearchResult result,
       {bool fromRemote = false}) async {
     StartupLogger.log('[PlaybackService] Playing search result: ${result.title} (${result.platform})');

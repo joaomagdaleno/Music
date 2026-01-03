@@ -104,8 +104,17 @@ class FluentPlayerView extends StatelessWidget {
                               ),
                               const SizedBox(width: 16),
                               IconButton(
-                                icon: const Icon(FluentIcons.next, size: 20), // Smaller icon
+                                icon: const Icon(FluentIcons.next, size: 20),
                                 onPressed: () => playback.player.next(),
+                              ),
+                              const SizedBox(width: 16),
+                              IconButton(
+                                icon: Icon(
+                                  track.isVault ? FluentIcons.heart_fill : FluentIcons.heart,
+                                  color: track.isVault ? Colors.red : null,
+                                  size: 20,
+                                ),
+                                onPressed: () => playback.toggleFavorite(),
                               ),
                             ],
                           );
