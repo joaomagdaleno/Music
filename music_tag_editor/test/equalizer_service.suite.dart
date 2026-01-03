@@ -10,6 +10,7 @@ void main() {
     late EqualizerService equalizerService;
 
     setUp(() {
+      EqualizerService.resetInstance();
       equalizerService = EqualizerService.instance;
       // Reset state if needed
       equalizerService.setAutoMode(true);
@@ -43,4 +44,3 @@ void main() {
     });
   });
 }
-

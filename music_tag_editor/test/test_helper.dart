@@ -173,6 +173,10 @@ Future<void> setupMusicTest({
 
   when(() => mockTheme.updateThemeFromImage(any())).thenAnswer((_) async {});
   when(() => mockEqualizer.applyPresetForGenre(any())).thenAnswer((_) async {});
+  when(() => mockEqualizer.calculateNormalizedVolume(any())).thenReturn(1.0);
+  when(() => mockEqualizer.isAutoMode).thenReturn(false);
+  when(() => mockLyrics.fetchLyrics(any(), any()))
+      .thenAnswer((_) async => []);
   when(() => mockDuo.sendMessage(any())).thenAnswer((_) async {});
   when(() => mockDb.trackPlay(any())).thenAnswer((_) async {});
 

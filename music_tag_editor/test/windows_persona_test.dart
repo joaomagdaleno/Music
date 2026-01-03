@@ -56,9 +56,8 @@ void main() {
 
       // Should now be in Librarian persona.
       // Librarian persona has "Tags" section (Editor de Tags header).
-      await tester.pump(const Duration(milliseconds: 500));
-      await tester.pumpAndSettle();
-      expect(find.textContaining('Editor de Tags'), findsOneWidget);
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      expect(find.text('Editor de Tags'), findsOneWidget);
       expect(PersonaService.instance.activePersona, AppPersona.librarian);
 
       // Tap "Anfitrião"

@@ -10,6 +10,10 @@ class MockHttpClient extends Mock implements http.Client {}
 
 void main() {
   group('LyricsService', () {
+    setUp(() {
+      LyricsService.resetInstance();
+    });
+
     test('fetchLyrics returns empty list on network error', () async {
       final service = LyricsService.instance;
 
