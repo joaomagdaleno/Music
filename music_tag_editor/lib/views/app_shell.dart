@@ -16,6 +16,7 @@ import 'package:music_tag_editor/screens/vault/vault_screen.dart';
 import 'package:music_tag_editor/screens/stats/listening_stats_screen.dart';
 import 'package:music_tag_editor/screens/settings/settings_screen.dart';
 import 'package:music_tag_editor/screens/library/library_screen.dart';
+import 'package:music_tag_editor/screens/library/local_sources_screen.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/views/app_shell/fluent_app_shell.dart';
 import 'package:music_tag_editor/views/app_shell/material_app_shell.dart';
@@ -51,10 +52,22 @@ class _AppShellState extends State<AppShell> {
     
     // If a persona is selected, and we are not already on that persona's tab,
     // and we are NOT on a special global tab (Início/Buscar), update the index.
-    // Actually, if we are on Home (0) and a persona is selected via card, we WANT to switch.
     if (index != -1 && _selectedIndex != index) {
       setState(() => _selectedIndex = index);
     }
+  }
+
+  void _onSelectedIndexChanged(int index, List<AppShellDestination> destinations) {
+    int targetIndex = index;
+    if (index == 99 || index == destinations.length) {
+      targetIndex = 99; // Settings
+    } else if (index < destinations.length) {
+      final persona = destinations[index].persona;
+      if (persona != null) {
+        PersonaService.instance.setPersona(persona);
+      }
+    }
+    setState(() => _selectedIndex = targetIndex);
   }
 
   @override
@@ -80,24 +93,14 @@ class _AppShellState extends State<AppShell> {
                     body: _buildBody(persona),
                     selectedIndex: _selectedIndex,
                     onSelectedIndexChanged: (index) =>
-                        setState(() => _selectedIndex = index),
+                        _onSelectedIndexChanged(index, appShellDestinations),
                     destinations: appShellDestinations,
                   )
                 : MaterialAppShell(
                     body: _buildBody(persona),
                     selectedIndex: _selectedIndex,
-                    onSelectedIndexChanged: (index) {
-                      int targetIndex = index;
-                      if (index == appShellDestinations.length) {
-                        targetIndex = 99;
-                      } else if (index < appShellDestinations.length) {
-                        final persona = appShellDestinations[index].persona;
-                        if (persona != null) {
-                          PersonaService.instance.setPersona(persona);
-                        }
-                      }
-                      setState(() => _selectedIndex = targetIndex);
-                    },
+                    onSelectedIndexChanged: (index) =>
+                        _onSelectedIndexChanged(index, appShellDestinations),
                     destinations: appShellDestinations,
                   );
 
@@ -180,13 +183,15 @@ class _AppShellState extends State<AppShell> {
       key: ValueKey(AppPersona.librarian),
       destinations: [
         PersonaDestination(label: 'Tags', materialIcon: Icons.edit_note, fluentIcon: FluentIcons.tag),
-        PersonaDestination(label: 'Minhas Músicas', materialIcon: Icons.library_music, fluentIcon: FluentIcons.music_note),
+        PersonaDestination(label: 'Biblioteca', materialIcon: Icons.library_music, fluentIcon: FluentIcons.music_note),
         PersonaDestination(label: 'Playlists', materialIcon: Icons.playlist_play, fluentIcon: FluentIcons.list),
+        PersonaDestination(label: 'Pastas', materialIcon: Icons.folder, fluentIcon: FluentIcons.folder),
       ],
       children: [
         LibraryScreen(title: 'Editor de Tags'),
         MyTracksScreen(),
         PlaylistsScreen(),
+        LocalSourcesScreen(),
       ],
     );
   }

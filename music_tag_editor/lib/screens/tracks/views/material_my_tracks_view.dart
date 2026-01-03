@@ -20,34 +20,88 @@ class MaterialMyTracksView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Minhas Músicas'),
-        actions: [IconButton(icon: const Icon(Icons.playlist_add), onPressed: onImportPlaylist, tooltip: 'Importar Playlist')],
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Biblioteca'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.playlist_add),
+              onPressed: onImportPlaylist,
+              tooltip: 'Importar Playlist',
+            )
+          ],
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'Músicas', icon: Icon(Icons.music_note)),
+              Tab(text: 'Vídeos', icon: Icon(Icons.video_library)),
+            ],
+          ),
+        ),
+        body: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : TabBarView(
+                children: [
+                  _buildTrackList(context, 'audio'),
+                  _buildTrackList(context, 'video'),
+                ],
+              ),
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : tracks.isEmpty
-              ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [Icon(Icons.music_off, size: 64, color: Colors.grey[400]), const SizedBox(height: 16), const Text('Nenhuma música salva.')]))
-              : ListView.builder(
-                  itemCount: tracks.length,
-                  itemBuilder: (context, index) {
-                    final track = tracks[index];
-                    return Card(
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                      child: ListTile(
-                        leading: Container(width: 48, height: 48, decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer, borderRadius: BorderRadius.circular(8)), child: track.thumbnail != null ? ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.network(track.thumbnail!, fit: BoxFit.cover)) : const Icon(Icons.music_note)),
-                        title: Text(track.title, style: const TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Text(track.artist),
-                        trailing: PopupMenuButton(itemBuilder: (_) => [
-                          const PopupMenuItem(value: 'play', child: ListTile(leading: Icon(Icons.play_arrow), title: Text('Tocar'))),
-                          const PopupMenuItem(value: 'vault', child: ListTile(leading: Icon(Icons.lock), title: Text('Adicionar ao Cofre'))),
-                        ], onSelected: (v) => v == 'play' ? onPlayTrack(track) : onAddToVault(track)),
-                        onTap: () => onPlayTrack(track),
-                      ),
-                    );
-                  },
-                ),
+    );
+  }
+
+  Widget _buildTrackList(BuildContext context, String mediaType) {
+    final filteredTracks = tracks.where((t) => t.mediaType == mediaType).toList();
+
+    if (filteredTracks.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              mediaType == 'audio' ? Icons.music_off : Icons.videocam_off,
+              size: 64,
+              color: Colors.grey[400],
+            ),
+            const SizedBox(height: 16),
+            Text('Nenhum(a) ${mediaType == 'audio' ? 'música' : 'vídeo'} salvo(a).'),
+          ],
+        ),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: filteredTracks.length,
+      itemBuilder: (context, index) {
+        final track = filteredTracks[index];
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          child: ListTile(
+            leading: Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: track.thumbnail != null
+                  ? ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.network(track.thumbnail!, fit: BoxFit.cover))
+                  : const Icon(Icons.music_note),
+            ),
+            title: Text(track.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text(track.artist),
+            trailing: PopupMenuButton(
+              itemBuilder: (_) => [
+                const PopupMenuItem(value: 'play', child: ListTile(leading: Icon(Icons.play_arrow), title: Text('Tocar'))),
+                const PopupMenuItem(value: 'vault', child: ListTile(leading: Icon(Icons.lock), title: Text('Adicionar ao Cofre'))),
+              ],
+              onSelected: (v) => v == 'play' ? onPlayTrack(track) : onAddToVault(track),
+            ),
+            onTap: () => onPlayTrack(track),
+          ),
+        );
+      },
     );
   }
 }

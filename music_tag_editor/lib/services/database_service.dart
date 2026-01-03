@@ -3,7 +3,6 @@ import 'package:path/path.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
 import 'package:music_tag_editor/models/filename_format.dart'; // Import the enum
 import 'package:music_tag_editor/widgets/learning_dialog.dart'; // Import the learning choice enum
 import 'package:music_tag_editor/services/download_service.dart'; // For SearchResult and MediaPlatform
@@ -61,6 +60,7 @@ class DatabaseService {
   static const String _playlistTracksTable = 'playlist_tracks';
   static const String _duoGuestsTable = 'duo_guests';
   static const String _duoSessionsTable = 'duo_sessions';
+  static const String _foldersTable = 'music_folders';
 
   Future<Database> get database async {
     if (_database != null) {
@@ -87,7 +87,7 @@ class DatabaseService {
     }
     return await openDatabase(
       path,
-      version: 6, // Incremented version for vault support
+      version: 8, // Incremented for media_type support
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE $_settingsTable (
@@ -121,7 +121,8 @@ class DatabaseService {
             genre TEXT,
             play_count INTEGER DEFAULT 0,
             last_played INTEGER,
-            is_vault INTEGER DEFAULT 0
+            is_vault INTEGER DEFAULT 0,
+            media_type TEXT DEFAULT 'audio'
           )
         ''');
         await db.execute('''
@@ -155,6 +156,12 @@ class DatabaseService {
             PRIMARY KEY (guest_id, track_id),
             FOREIGN KEY (guest_id) REFERENCES $_duoGuestsTable (id) ON DELETE CASCADE,
             FOREIGN KEY (track_id) REFERENCES $_tracksTable (id) ON DELETE CASCADE
+          )
+        ''');
+        await db.execute('''
+          CREATE TABLE $_foldersTable (
+            path TEXT PRIMARY KEY,
+            added_at INTEGER NOT NULL
           )
         ''');
       },
@@ -229,6 +236,23 @@ class DatabaseService {
               FOREIGN KEY (track_id) REFERENCES $_tracksTable (id) ON DELETE CASCADE
             )
           ''');
+        }
+        if (oldVersion < 7) {
+          await db.execute('''
+            CREATE TABLE IF NOT EXISTS $_foldersTable (
+              path TEXT PRIMARY KEY,
+              added_at INTEGER NOT NULL
+            )
+          ''');
+        }
+        if (oldVersion < 8) {
+          try {
+            await db.execute(
+                "ALTER TABLE $_tracksTable ADD COLUMN media_type TEXT DEFAULT 'audio'");
+          } catch (e) {
+            // Check if column exists or ignore error on some platforms if redundant
+            debugPrint('Error adding media_type column: $e');
+          }
         }
       },
     );
@@ -630,5 +654,26 @@ class DatabaseService {
   Future<void> saveSpotifyCredentials(String? clientId, String? clientSecret) async {
     if (clientId != null) await saveSetting('spotify_client_id', clientId);
     if (clientSecret != null) await saveSetting('spotify_client_secret', clientSecret);
+  }
+
+  // --- Music Folders ---
+
+  Future<void> addMusicFolder(String path) async {
+    final db = await database;
+    await db.insert(
+      _foldersTable,
+      {'path': path, 'added_at': DateTime.now().millisecondsSinceEpoch},
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getMusicFolders() async {
+    final db = await database;
+    return await db.query(_foldersTable, orderBy: 'added_at DESC');
+  }
+
+  Future<void> removeMusicFolder(String path) async {
+    final db = await database;
+    await db.delete(_foldersTable, where: 'path = ?', whereArgs: [path]);
   }
 }

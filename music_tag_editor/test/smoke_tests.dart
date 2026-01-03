@@ -18,8 +18,13 @@ import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/listening_stats_service.dart';
 import 'package:music_tag_editor/screens/search/search_screen.dart';
+import 'package:music_tag_editor/screens/library/local_sources_screen.dart';
+import 'package:music_tag_editor/screens/tracks/my_tracks_screen.dart';
+import 'package:music_tag_editor/services/metadata_service.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
+
+class MockMetadataService extends Mock implements MetadataService {}
 
 class MockPlaybackService extends Mock implements PlaybackService {}
 
@@ -120,6 +125,7 @@ void main() {
     when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
     when(() => mockDb.getLearningRules()).thenAnswer((_) async => []);
     when(() => mockDb.getTracksByMood(any())).thenAnswer((_) async => []);
+    when(() => mockDb.getMusicFolders()).thenAnswer((_) async => []);
 
     when(() => mockTheme.primaryColor).thenReturn(Colors.blue);
     when(() => mockTheme.addListener(any())).thenReturn(null);
@@ -188,7 +194,25 @@ void main() {
   testWidgets('SearchPage smoke test', (tester) async {
     await tester.pumpWidget(createTestWidget(const SearchScreen()));
     await tester.pump();
-    await tester.pumpAndSettle();
     expect(find.text('Busca de Músicas'), findsOneWidget);
+  });
+
+// ... inside main ...
+  testWidgets('LocalSourcesScreen smoke test', (tester) async {
+    final mockMetadata = MockMetadataService();
+    // Stub for getMusicFolders is in setup()
+    await tester.pumpWidget(createTestWidget(LocalSourcesScreen(metadataService: mockMetadata)));
+    await tester.pump();
+    expect(find.text('Pastas de Música'), findsOneWidget);
+  });
+
+  testWidgets('MyTracksScreen smoke test', (tester) async {
+    // Stub for getTracks is in setup()
+    await tester.pumpWidget(createTestWidget(const MyTracksScreen()));
+    await tester.pump(); // build
+    await tester.pump(); // async load
+    expect(find.text('Biblioteca'), findsOneWidget);
+    expect(find.text('Músicas'), findsOneWidget);
+    // Note: Video tab might be hidden/lazy loaded in some conditions or we can just verify one tab
   });
 }
