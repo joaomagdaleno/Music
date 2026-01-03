@@ -45,7 +45,7 @@ class PlaybackService {
 
   VideoController get videoController => _videoController;
 
-  final SearchService _searchService = SearchService.instance;
+  SearchService get _searchService => SearchService.instance;
 
   SearchResult? _currentTrack;
   final List<SearchResult> _queue = [];
