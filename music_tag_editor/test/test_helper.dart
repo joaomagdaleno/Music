@@ -17,7 +17,8 @@ import 'package:music_tag_editor/services/firebase_sync_service.dart';
 import 'package:music_tag_editor/services/persona_service.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:just_audio/just_audio.dart'; // Assuming this import is needed for AudioPlayer
+import 'package:just_audio/just_audio.dart';
+import 'package:audio_service/audio_service.dart';
 
 Future<void> setupSqflite() async {
   if (!_sqfliteInitialized) {
@@ -66,6 +67,8 @@ late MockConnectivityService mockConnectivity;
 late MockThemeService mockTheme;
 late MockAudioPlayer mockPlayer;
 late MockDependencyManager mockDeps;
+late MockLyricsService mockLyrics;
+late MockEqualizerService mockEqualizer;
 
 Future<void> setupMusicTest({
   bool mockAuthInstance = true,
@@ -80,6 +83,27 @@ Future<void> setupMusicTest({
 }) async {
   // Mock all HTTP requests in tests
   HttpOverrides.global = _MockHttpOverrides();
+
+  if (!_registerFallbackValueWasCalled) {
+    registerFallbackValue(Uri.parse('http://test.com'));
+    registerFallbackValue(const Color(0xFF000000));
+    registerFallbackValue(Duration.zero);
+    registerFallbackValue(SearchResult(
+      id: 'fallback',
+      title: 'Fallback',
+      artist: 'Fallback',
+      url: 'http://fallback',
+      platform: MediaPlatform.youtube,
+    ));
+    registerFallbackValue(MediaPlatform.youtube);
+    registerFallbackValue(FakeAudioSource());
+    registerFallbackValue(const MediaItem(id: 'fallback', title: 'Fallback'));
+    registerFallbackValue(PlaybackState(
+      processingState: AudioProcessingState.idle,
+      playing: false,
+    ));
+    _registerFallbackValueWasCalled = true;
+  }
 
   // Reset ALL core singletons
   AuthService.resetInstance();
@@ -105,6 +129,8 @@ Future<void> setupMusicTest({
   mockTheme = MockThemeService();
   mockPlayer = MockAudioPlayer();
   mockDeps = MockDependencyManager();
+  mockLyrics = MockLyricsService();
+  mockEqualizer = MockEqualizerService();
 
   if (mockAuthInstance) AuthService.instance = mockAuth;
   if (mockDbInstance) DatabaseService.instance = mockDb;
@@ -115,13 +141,15 @@ Future<void> setupMusicTest({
   if (mockConnectivityInstance) ConnectivityService.instance = mockConnectivity;
   if (mockThemeInstance) ThemeService.instance = mockTheme;
   if (mockDepsInstance) DependencyManager.instance = mockDeps;
+  LyricsService.instance = mockLyrics;
+  EqualizerService.instance = mockEqualizer;
 
   // Default stubs to avoid common Null errors
   when(() => mockDb.getTracks(includeVault: any(named: 'includeVault')))
       .thenAnswer((_) async => []);
   when(() => mockDb.getRecentlyPlayed(limit: any(named: 'limit')))
       .thenAnswer((_) async => []);
-  when(() => mockDb.saveSetting(any(), any())).thenAnswer((_) async => {});
+  when(() => mockDb.saveSetting(any(), any())).thenAnswer((_) async {});
   when(() => mockDb.getSetting(any())).thenAnswer((_) async => null);
   when(() => mockDb.loadCrossfadeDuration()).thenAnswer((_) async => 3);
   when(() => mockDb.getSpotifyCredentials())
@@ -139,9 +167,14 @@ Future<void> setupMusicTest({
   when(() => mockPlayback.lyricsStream)
       .thenAnswer((_) => Stream.value([]));
   when(() => mockDb.getMusicFolders()).thenAnswer((_) async => []);
-  when(() => mockDb.addMusicFolder(any())).thenAnswer((_) async => {});
-  when(() => mockDb.removeMusicFolder(any())).thenAnswer((_) async => {}); // Added remove mock
+  when(() => mockDb.addMusicFolder(any())).thenAnswer((_) async {});
+  when(() => mockDb.removeMusicFolder(any())).thenAnswer((_) async {}); // Added remove mock
   when(() => mockPlayback.queue).thenReturn([]);
+
+  when(() => mockTheme.updateThemeFromImage(any())).thenAnswer((_) async {});
+  when(() => mockEqualizer.applyPresetForGenre(any())).thenAnswer((_) async {});
+  when(() => mockDuo.sendMessage(any())).thenAnswer((_) async {});
+  when(() => mockDb.trackPlay(any())).thenAnswer((_) async {});
 
   when(() => mockPlayer.playerStateStream).thenAnswer(
       (_) => Stream.value(PlayerState(false, ProcessingState.ready)));
@@ -161,7 +194,15 @@ Future<void> setupMusicTest({
       .thenAnswer((_) => Stream.value(LoopMode.off));
   when(() => mockPlayer.shuffleModeEnabledStream)
       .thenAnswer((_) => Stream.value(false));
-  when(() => mockPlayer.setVolume(any())).thenAnswer((_) async => {});
+  when(() => mockPlayer.setVolume(any())).thenAnswer((_) async {});
+  when(() => mockPlayer.play()).thenAnswer((_) async {});
+  when(() => mockPlayer.pause()).thenAnswer((_) async {});
+  when(() => mockPlayer.stop()).thenAnswer((_) async {});
+  when(() => mockPlayer.seek(any())).thenAnswer((_) async {});
+  when(() => mockPlayer.setAudioSource(any<AudioSource>(),
+      initialPosition: any(named: 'initialPosition'),
+      initialIndex: any(named: 'initialIndex'))).thenAnswer((_) async => Duration.zero);
+  when(() => mockPlayer.addAudioSource(any<AudioSource>())).thenAnswer((_) async {});
 
   when(() => mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
       .thenAnswer((invocation) async {
@@ -171,22 +212,9 @@ Future<void> setupMusicTest({
   });
   when(() => mockDeps.areAllDependenciesInstalled())
       .thenAnswer((_) async => true);
-
-  if (!_registerFallbackValueWasCalled) {
-    registerFallbackValue(Uri.parse('http://test.com'));
-    registerFallbackValue(const Color(0xFF000000));
-    registerFallbackValue(Duration.zero);
-    registerFallbackValue(SearchResult(
-      id: 'fallback',
-      title: 'Fallback',
-      artist: 'Fallback',
-      url: 'http://fallback',
-      platform: MediaPlatform.youtube,
-    ));
-    registerFallbackValue(MediaPlatform.youtube);
-    _registerFallbackValueWasCalled = true;
-  }
 }
+
+class FakeAudioSource extends Fake implements AudioSource {}
 
 bool _registerFallbackValueWasCalled = false;
 bool _sqfliteInitialized = false;

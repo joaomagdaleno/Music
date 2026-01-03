@@ -5,16 +5,10 @@ import 'package:mocktail/mocktail.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/services/local_duo_service.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/theme_service.dart';
-import 'package:music_tag_editor/services/equalizer_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/services/lyrics_service.dart';
+import 'test_helper.dart';
 
-class MockAudioPlayer extends Mock implements AudioPlayer {}
-
+// Mocks are now sourced from test_helper.dart
 class MockBaseAudioHandler extends Mock implements BaseAudioHandler {
   @override
   final playbackState = BehaviorSubject<PlaybackState>();
@@ -22,32 +16,13 @@ class MockBaseAudioHandler extends Mock implements BaseAudioHandler {
   final mediaItem = BehaviorSubject<MediaItem?>();
 }
 
-class MockSearchService extends Mock implements SearchService {}
-
-class MockLocalDuoService extends Mock implements LocalDuoService {}
-
-class MockDatabaseService extends Mock implements DatabaseService {}
-
-class MockThemeService extends Mock implements ThemeService {}
-
-class MockEqualizerService extends Mock implements EqualizerService {}
-
-class MockLyricsService extends Mock implements LyricsService {}
-
 class MockMediaItem extends Mock implements MediaItem {}
 
-class FakeAudioSource extends Fake implements AudioSource {}
+// FakeAudioSource moved to test_helper.dart
 
 void main() {
   late PlaybackService service;
-  late MockAudioPlayer mockPlayer;
   late MockBaseAudioHandler mockHandler;
-  late MockSearchService mockSearch;
-  late MockLocalDuoService mockDuo;
-  late MockDatabaseService mockDb;
-  late MockThemeService mockTheme;
-  late MockEqualizerService mockEqualizer;
-  late MockLyricsService mockLyrics;
 
   final testTrack = SearchResult(
     id: '1',
@@ -69,39 +44,27 @@ void main() {
     registerFallbackValue(FakeAudioSource());
   });
 
-  setUp(() {
-    mockPlayer = MockAudioPlayer();
+  setUp(() async {
+    await setupMusicTest();
     mockHandler = MockBaseAudioHandler();
-    mockSearch = MockSearchService();
-    mockDuo = MockLocalDuoService();
-    mockDb = MockDatabaseService();
-    mockTheme = MockThemeService();
-    mockEqualizer = MockEqualizerService();
-    mockLyrics = MockLyricsService();
-
-    // Mock singletons
-    LocalDuoService.instance = mockDuo;
-    DatabaseService.instance = mockDb;
-    ThemeService.instance = mockTheme;
-    EqualizerService.instance = mockEqualizer;
-    LyricsService.instance = mockLyrics;
-
-    service =
-        PlaybackService.forTesting(player: mockPlayer, handler: mockHandler);
+    
+    // PlaybackService needs specific handler for testing
+    service = PlaybackService.forTesting(player: mockPlayer, handler: mockHandler);
     service.searchService = mockSearch;
 
-    // Default stubs
-    when(() => mockPlayer.play()).thenAnswer((_) => Future.value());
-    when(() => mockPlayer.pause()).thenAnswer((_) => Future.value());
-    when(() => mockPlayer.stop()).thenAnswer((_) => Future.value());
+    // Additional stubs for this test specifically
+    when(() => mockHandler.play()).thenAnswer((_) async {});
+    when(() => mockHandler.pause()).thenAnswer((_) async {});
+    when(() => mockHandler.stop()).thenAnswer((_) async {});
+    when(() => mockHandler.seek(any())).thenAnswer((_) async {});
+    when(() => mockHandler.addQueueItem(any())).thenAnswer((_) async {});
+    when(() => mockHandler.removeQueueItem(any())).thenAnswer((_) async {});
+
     when(() => mockPlayer.seek(any())).thenAnswer((_) => Future.value());
-    when(() => mockPlayer.setAudioSource(any()))
+    when(() => mockPlayer.setAudioSource(any(), 
+        initialPosition: any(named: 'initialPosition'),
+        initialIndex: any(named: 'initialIndex')))
         .thenAnswer((_) async => Duration.zero);
-    when(() => mockPlayer.processingStateStream)
-        .thenAnswer((_) => Stream.value(ProcessingState.idle));
-    when(() => mockPlayer.playingStream).thenAnswer((_) => Stream.value(false));
-    when(() => mockPlayer.positionStream)
-        .thenAnswer((_) => Stream.value(Duration.zero));
     when(() => mockPlayer.currentIndexStream)
         .thenAnswer((_) => Stream.value(0));
     when(() => mockPlayer.position).thenReturn(Duration.zero);
@@ -113,14 +76,6 @@ void main() {
 
     when(() => mockSearch.getStreamUrl(any()))
         .thenAnswer((_) async => 'http://stream');
-    when(() => mockDuo.sendMessage(any())).thenReturn(null);
-    when(() => mockDuo.sendFile(any())).thenAnswer((_) => Future.value());
-    when(() => mockDb.trackPlay(any())).thenAnswer((_) => Future.value());
-    when(() => mockDb.loadCrossfadeDuration()).thenAnswer((_) async => 3);
-    when(() => mockEqualizer.applyPresetForGenre(any()))
-        .thenAnswer((_) => Future.value());
-    when(() => mockTheme.updateThemeFromImage(any()))
-        .thenAnswer((_) => Future.value());
     when(() => mockLyrics.fetchLyrics(any(), any()))
         .thenAnswer((_) => Future.value([]));
   });

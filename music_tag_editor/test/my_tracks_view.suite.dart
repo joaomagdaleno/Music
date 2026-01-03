@@ -42,7 +42,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.textContaining('Nenhuma música salva'), findsOneWidget);
+      expect(find.textContaining('Nenhum(a) música salvo(a).'), findsOneWidget);
     });
 
     testWidgets('renders app bar with actions', (tester) async {
@@ -51,7 +51,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.text('Minhas Músicas'), findsOneWidget);
+      expect(find.text('Biblioteca'), findsOneWidget);
       expect(find.byIcon(Icons.playlist_add), findsOneWidget);
     });
 
