@@ -76,6 +76,8 @@ void main() {
 
     when(() => mockDeps.ytDlpPath).thenReturn('yt-dlp');
     when(() => mockDb.loadAgeBypass()).thenAnswer((_) async => false);
+    when(() => mockDb.getDownloadedUrls()).thenAnswer((_) async => <String, String?>{});
+    when(() => mockDb.getAllTracks()).thenAnswer((_) async => []);
   });
 
   group('searchYouTube', () {

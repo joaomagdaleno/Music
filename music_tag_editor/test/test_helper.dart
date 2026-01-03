@@ -20,6 +20,8 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:audio_service/audio_service.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt_exp;
+import 'package:music_tag_editor/services/hifi_download_service.dart';
 
 Future<void> setupSqflite() async {
   if (!_sqfliteInitialized) {
@@ -41,7 +43,17 @@ class MockPlaybackService extends Mock implements PlaybackService {}
 
 class MockSecurityService extends Mock implements SecurityService {}
 
+class FakeDependencyManager extends Fake implements DependencyManager {
+  @override String get ytDlpPath => 'yt-dlp';
+  @override String get spotdlPath => 'spotdl';
+  @override String get ffmpegPath => 'ffmpeg';
+  @override String get fpcalcPath => 'fpcalc';
+  @override Future<void> ensureDependencies({void Function(String status, double progress)? onProgress}) async {}
+  @override Future<bool> areAllDependenciesInstalled() async => true;
+}
+
 class MockDependencyManager extends Mock implements DependencyManager {}
+// Keep Mock for cases where verify() is needed, but we'll use Fake for instance injection.
 
 class MockSearchService extends Mock implements SearchService {}
 
@@ -55,6 +67,11 @@ class MockEqualizerService extends Mock implements EqualizerService {}
 
 class MockPlayer extends Mock implements Player {}
 class MockVideoController extends Mock implements VideoController {}
+class MockHiFiDownloadService extends Mock implements HiFiDownloadService {}
+class MockYoutubeExplode extends Mock implements yt_exp.YoutubeExplode {}
+class MockSearchClient extends Mock implements yt_exp.SearchClient {}
+class MockVideoSearchList extends Mock implements yt_exp.VideoSearchList {}
+class MockVideo extends Mock implements yt_exp.Video {}
 
 class FakePlayerStream extends Fake implements PlayerStream {
   @override Stream<bool> get playing => Stream.value(false);
@@ -163,7 +180,10 @@ Future<void> setupMusicTest({
   mockTheme = MockThemeService();
   mockPlayer = MockPlayer();
   mockPlayerStreams = FakePlayerStream();
-  mockDeps = MockDependencyManager();
+  mockPlayerStreams = FakePlayerStream();
+  // Using a Fake by default for better stability with non-nullable String paths
+  mockDeps = MockDependencyManager(); 
+  // Wait, I'll use a real instance of FakeDependencyManager for the singleton
   mockLyrics = MockLyricsService();
   mockEqualizer = MockEqualizerService();
 
@@ -175,7 +195,9 @@ Future<void> setupMusicTest({
   if (mockDuoInstance) LocalDuoService.instance = mockDuo;
   if (mockConnectivityInstance) ConnectivityService.instance = mockConnectivity;
   if (mockThemeInstance) ThemeService.instance = mockTheme;
-  if (mockDepsInstance) DependencyManager.instance = mockDeps;
+  if (mockDepsInstance) {
+    DependencyManager.instance = FakeDependencyManager();
+  }
   LyricsService.instance = mockLyrics;
   EqualizerService.instance = mockEqualizer;
 
@@ -191,6 +213,10 @@ Future<void> setupMusicTest({
       .thenAnswer((_) async => {'clientId': null, 'clientSecret': null});
   when(() => mockDb.getDownloadedUrls())
       .thenAnswer((_) async => <String, String?>{});
+  when(() => mockDb.getAllTracks()).thenAnswer((_) async => []);
+  when(() => mockDeps.ytDlpPath).thenReturn('yt-dlp');
+  when(() => mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
+      .thenAnswer((_) async {});
   when(() => mockPlayback.player)
       .thenReturn(mockPlayer); // Real player but usually fine
   when(() => mockPlayback.currentTrack).thenReturn(null);
@@ -202,9 +228,18 @@ Future<void> setupMusicTest({
   when(() => mockPlayback.lyricsStream)
       .thenAnswer((_) => Stream.value([]));
   when(() => mockDb.getMusicFolders()).thenAnswer((_) async => []);
+  when(() => mockSearch.getStreamUrl(any(),
+          platform: any(named: 'platform'), isVideo: any(named: 'isVideo')))
+      .thenAnswer((_) async => 'http://stream.url');
+  when(() => mockSearch.importPlaylist(any()))
+      .thenAnswer((_) async => []);
   when(() => mockDb.addMusicFolder(any())).thenAnswer((_) async {});
   when(() => mockDb.removeMusicFolder(any())).thenAnswer((_) async {}); // Added remove mock
   when(() => mockPlayback.queue).thenReturn([]);
+  when(() => mockSearch.getStreamUrl(any()))
+      .thenAnswer((_) async => 'http://test-stream');
+  when(() => mockDuo.role).thenReturn(DuoRole.none);
+  when(() => mockDuo.connectedEndpoints).thenReturn(<String>{});
 
   when(() => mockTheme.updateThemeFromImage(any())).thenAnswer((_) async {});
   when(() => mockTheme.primaryColor).thenReturn(const Color(0xFF000000));

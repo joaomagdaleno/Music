@@ -10,16 +10,12 @@ import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/hifi_download_service.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart' hide SearchResult;
+import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt_exp hide SearchResult;
 
 
-class MockDependencyManager extends Mock implements DependencyManager {}
-class MockDatabaseService extends Mock implements DatabaseService {}
-class MockHiFiDownloadService extends Mock implements HiFiDownloadService {}
-class MockYoutubeExplode extends Mock implements YoutubeExplode {}
-class MockSearchClient extends Mock implements SearchClient {}
-class MockVideoSearchList extends Mock implements VideoSearchList {}
-class MockVideo extends Mock implements Video {}
+import 'test_helper.dart';
+
+// Removed local mocks
 
 void main() {
   late SearchService service;
@@ -34,16 +30,13 @@ void main() {
   String mockStderr = '';
 
   setUp(() async {
+    await setupMusicTest(); 
     resetMocktailState();
     sMockDeps = MockDependencyManager();
     sMockDb = MockDatabaseService();
     sMockHiFi = MockHiFiDownloadService();
     mockYt = MockYoutubeExplode();
     mockSearchClient = MockSearchClient();
-
-    mockExitCode = 0;
-    mockStdout = '';
-    mockStderr = '';
 
     DependencyManager.instance = sMockDeps;
     DatabaseService.instance = sMockDb;
@@ -69,17 +62,26 @@ void main() {
     };
 
     when(() => sMockDeps.ytDlpPath).thenReturn('yt-dlp');
+    when(() => sMockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
+        .thenAnswer((_) async {});
     when(() => sMockDb.loadAgeBypass()).thenAnswer((_) async => false);
+    when(() => sMockDb.getDownloadedUrls()).thenAnswer((_) async => <String, String?>{});
+    when(() => sMockDb.getAllTracks()).thenAnswer((_) async => []);
+    when(() => sMockHiFi.search(any())).thenAnswer((_) async => []);
+
+    mockExitCode = 0;
+    mockStdout = '';
+    mockStderr = '';
   });
 
   group('searchYouTube', () {
     test('returns parsed video results', () async {
       final mockVideo = MockVideo();
-      when(() => mockVideo.id).thenReturn(VideoId('12345678901'));
+      when(() => mockVideo.id).thenReturn(yt_exp.VideoId('12345678901'));
       when(() => mockVideo.title).thenReturn('Test Title');
       when(() => mockVideo.author).thenReturn('Test Artist');
       when(() => mockVideo.url).thenReturn('http://url');
-      when(() => mockVideo.thumbnails).thenReturn(ThumbnailSet('http://thumb'));
+      when(() => mockVideo.thumbnails).thenReturn(yt_exp.ThumbnailSet('http://thumb'));
       when(() => mockVideo.duration).thenReturn(Duration(seconds: 180));
       
       final mockSearchList = MockVideoSearchList();
@@ -105,11 +107,11 @@ void main() {
   group('searchYouTubeMusic', () {
     test('filters and parses results', () async {
       final mockVideo = MockVideo();
-      when(() => mockVideo.id).thenReturn(VideoId('12345678901'));
+      when(() => mockVideo.id).thenReturn(yt_exp.VideoId('12345678901'));
       when(() => mockVideo.title).thenReturn('M Song');
       when(() => mockVideo.author).thenReturn('M Artist');
       when(() => mockVideo.url).thenReturn('http://murl');
-      when(() => mockVideo.thumbnails).thenReturn(ThumbnailSet('http://mthumb'));
+      when(() => mockVideo.thumbnails).thenReturn(yt_exp.ThumbnailSet('http://mthumb'));
       when(() => mockVideo.duration).thenReturn(Duration(seconds: 200));
 
       final mockSearchList = MockVideoSearchList();
@@ -169,7 +171,7 @@ void main() {
       when(() => sMockHiFi.search(any())).thenAnswer((_) async => []);
 
       final mockSearchList = MockVideoSearchList();
-      when(() => mockSearchList.iterator).thenAnswer((_) => <Video>[].iterator);
+      when(() => mockSearchList.iterator).thenAnswer((_) => <yt_exp.Video>[].iterator);
       when(() => mockSearchClient.search(any())).thenAnswer((_) async => mockSearchList);
 
       final statuses = <MediaPlatform, List<SearchStatus>>{};
@@ -257,11 +259,11 @@ void main() {
 
       // Mock searchSpotify (via mockSearchClient) to return a match
       final mockVideo = MockVideo();
-      when(() => mockVideo.id).thenReturn(VideoId('12345678901'));
+      when(() => mockVideo.id).thenReturn(yt_exp.VideoId('12345678901'));
       when(() => mockVideo.title).thenReturn('Song');
       when(() => mockVideo.author).thenReturn('Artist');
       when(() => mockVideo.url).thenReturn('http://surl');
-      when(() => mockVideo.thumbnails).thenReturn(ThumbnailSet('http://sthumb'));
+      when(() => mockVideo.thumbnails).thenReturn(yt_exp.ThumbnailSet('http://sthumb'));
       when(() => mockVideo.duration).thenReturn(Duration(seconds: 180));
 
       final mockSearchList = MockVideoSearchList();
