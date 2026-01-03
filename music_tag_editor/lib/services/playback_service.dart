@@ -59,8 +59,6 @@ class PlaybackService {
 
   SearchResult? _currentTrack;
   final List<SearchResult> _queue = [];
-  // ignore: deprecated_member_use
-  ConcatenatingAudioSource? _playlist;
   Duration _crossfadeDuration = const Duration(seconds: 3);
   List<LyricLine> _currentLyrics = [];
   Timer? _sleepTimer;
@@ -136,8 +134,7 @@ class PlaybackService {
       // Preload audio source without playing
       _queue.clear();
       _queue.add(track);
-      _playlist = ConcatenatingAudioSource(children: [await _createSource(track)]);
-      await _player.setAudioSource(_playlist!, preload: false);
+      await _player.setAudioSource(await _createSource(track), preload: false);
       
       // Also restore metadata for system media controls
       (_audioHandler as BaseAudioHandler).mediaItem.add(MediaItem(
@@ -212,11 +209,8 @@ class PlaybackService {
     _queue.clear();
     _queue.add(result);
     StartupLogger.log('[PlaybackService] Creating audio source for ${result.id}');
-    _playlist =
-        // ignore: deprecated_member_use
-        ConcatenatingAudioSource(children: [await _createSource(result)]);
-
-    await _player.setAudioSource(_playlist!);
+    
+    await _player.setAudioSource(await _createSource(result));
     _onTrackChanged(result);
     _player.play();
     StartupLogger.log('[PlaybackService] Playback started');
@@ -314,9 +308,8 @@ class PlaybackService {
 
   Future<void> addToQueue(SearchResult track, {bool fromRemote = false}) async {
     _queue.add(track);
-    if (_playlist != null) {
-      _playlist!.add(await _createSource(track));
-    }
+    await _player.addAudioSource(await _createSource(track));
+    
     if (!fromRemote) {
       LocalDuoService.instance.sendMessage({
         'type': 'add_to_queue',
