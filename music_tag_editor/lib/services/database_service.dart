@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/models/filename_format.dart'; // Import the enum
 import 'package:music_tag_editor/widgets/learning_dialog.dart'; // Import the learning choice enum
 import 'package:music_tag_editor/services/download_service.dart'; // For SearchResult and MediaPlatform
+import 'package:music_tag_editor/services/search_service.dart';
 
 class LearningRule {
   final String? artist;
@@ -408,7 +409,7 @@ class DatabaseService {
   /// Get all tracks as SearchResult objects for use by services.
   Future<List<SearchResult>> getAllTracks() async {
     final tracksData = await getTracks(includeVault: true);
-    return tracksData
+    final List<SearchResult> allResults = tracksData
         .map((data) => SearchResult(
               id: data['id'],
               title: data['title'],
@@ -424,8 +425,36 @@ class DatabaseService {
               localPath: data['local_path'],
               genre: data['genre'],
               isVault: (data['is_vault'] as int?) == 1,
+              isDownloaded: (data['is_downloaded'] as int?) == 1,
             ))
         .toList();
+
+    // Deduplicate by metadata (Title + Artist)
+    final Map<String, SearchResult> uniqueMap = {};
+    for (var track in allResults) {
+      final key = '${SearchService.toMatchKey(track.artist)}:${SearchService.toMatchKey(track.title)}';
+      
+      final existing = uniqueMap[key];
+      if (existing == null) {
+        uniqueMap[key] = track;
+      } else {
+        // Priority: Local Path > Is Downloaded > Is Vault
+        bool shouldReplace = false;
+        if (track.localPath != null && existing.localPath == null) {
+          shouldReplace = true;
+        } else if (track.isDownloaded && !existing.isDownloaded) {
+           shouldReplace = true;
+        } else if (track.isVault && !existing.isVault) {
+          shouldReplace = true;
+        }
+        
+        if (shouldReplace) {
+          uniqueMap[key] = track;
+        }
+      }
+    }
+
+    return uniqueMap.values.toList();
   }
 
   // --- Playlist Methods ---

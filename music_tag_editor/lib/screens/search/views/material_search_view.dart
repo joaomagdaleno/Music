@@ -111,15 +111,29 @@ class MaterialSearchView extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            color: downloadedUrls.contains(result.url) ? Colors.green : null,
-                            fontWeight: downloadedUrls.contains(result.url) ? FontWeight.bold : null,
+                            color: downloadedUrls.contains(result.url) ? Colors.green : (result.localPath != null ? Colors.blue : null),
+                            fontWeight: (downloadedUrls.contains(result.url) || result.localPath != null) ? FontWeight.bold : null,
                           ),
                         ),
-                        subtitle: Text(
-                          '${result.artist} • ${result.durationFormatted}',
-                          style: TextStyle(
-                            color: downloadedUrls.contains(result.url) ? Colors.green.withValues(alpha: 0.7) : null,
-                          ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${result.artist} • ${result.durationFormatted}',
+                              style: TextStyle(
+                                color: downloadedUrls.contains(result.url) ? Colors.green.withValues(alpha: 0.7) : (result.localPath != null ? Colors.blue.withValues(alpha: 0.7) : null),
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                if (downloadedUrls.contains(result.url))
+                                  _buildBadge('Baixada', Colors.green),
+                                if (result.localPath != null && !downloadedUrls.contains(result.url))
+                                  _buildBadge('Na Biblioteca', Colors.blue),
+                              ],
+                            ),
+                          ],
                         ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -128,32 +142,7 @@ class MaterialSearchView extends StatelessWidget {
                               icon: const Icon(Icons.play_arrow, color: Colors.blue),
                               onPressed: () => onPlay(result),
                             ),
-                            PopupMenuButton<String>(
-                              onSelected: (val) {
-                                if (val == 'playlist') {
-                                  onAddToPlaylist(result);
-                                }
-                                if (val == 'download') {
-                                  onLoadFormats(result);
-                                }
-                              },
-                              itemBuilder: (context) => [
-                                const PopupMenuItem(
-                                  value: 'playlist',
-                                  child: ListTile(
-                                    leading: Icon(Icons.playlist_add),
-                                    title: Text('Adicionar à Playlist'),
-                                  ),
-                                ),
-                                const PopupMenuItem(
-                                  value: 'download',
-                                  child: ListTile(
-                                    leading: Icon(Icons.download),
-                                    title: Text('Opções de Download'),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            _buildOptionsButton(context, result),
                             _getPlatformLogo(result.platform, hifiSource: result.hifiSource),
                           ],
                         ),
@@ -396,5 +385,71 @@ class MaterialSearchView extends StatelessWidget {
       default:
         return const Icon(Icons.high_quality, color: Colors.purple);
     }
+  }
+  Widget _buildBadge(String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildOptionsButton(BuildContext context, SearchResult result) {
+    final isDownloaded = downloadedUrls.contains(result.url);
+
+    return PopupMenuButton<String>(
+      tooltip: 'Mais Opções',
+      onSelected: (val) {
+        if (val == 'playlist') {
+          onAddToPlaylist(result);
+        }
+        if (val == 'download') {
+          onLoadFormats(result);
+        }
+      },
+      child: OutlinedButton.icon(
+        onPressed: null, // PopupMenuButton handles the tap
+        icon: const Icon(Icons.keyboard_arrow_down, size: 16),
+        label: const Text('Opções'),
+        style: OutlinedButton.styleFrom(
+          visualDensity: VisualDensity.compact,
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          side: BorderSide(
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5)),
+        ),
+      ),
+      itemBuilder: (context) => [
+        const PopupMenuItem(
+          value: 'playlist',
+          child: ListTile(
+            leading: Icon(Icons.playlist_add),
+            title: Text('Adicionar à Playlist'),
+          ),
+        ),
+        PopupMenuItem(
+          value: 'download',
+          enabled: !isDownloaded,
+          child: ListTile(
+            leading: Icon(isDownloaded ? Icons.check_circle : Icons.download),
+            title: Text(isDownloaded ? 'Música Baixada' : 'Opções de Download'),
+          ),
+        ),
+        if (result.localPath != null)
+          const PopupMenuItem(
+            value: 'library',
+            child: ListTile(
+              leading: Icon(Icons.library_music),
+              title: Text('Ver na Biblioteca'),
+            ),
+          ),
+      ],
+    );
   }
 }

@@ -1,7 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/widgets/native_video_player.dart';
+import 'package:music_tag_editor/services/playback_service.dart';
+import 'package:music_tag_editor/screens/player/player_screen.dart';
 
 class FluentSearchView extends StatelessWidget {
   final TextEditingController searchController;
@@ -151,14 +152,41 @@ class FluentSearchView extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              color: isDownloaded ? Colors.green.lighter : null,
+                              color: isDownloaded ? Colors.green.lighter : (result.localPath != null ? Colors.blue.lighter : null),
                             ),
                           ),
-                          subtitle: Text(
-                            '${result.artist} • ${result.durationFormatted}',
-                            style: TextStyle(
-                              color: isDownloaded ? Colors.green.lighter.withValues(alpha: 0.8) : null,
-                            ),
+                          subtitle: Row(
+                            children: [
+                              Text(
+                                '${result.artist} • ${result.durationFormatted}',
+                                style: TextStyle(
+                                  color: isDownloaded ? Colors.green.lighter.withValues(alpha: 0.8) : (result.localPath != null ? Colors.blue.lighter.withValues(alpha: 0.8) : null),
+                                ),
+                              ),
+                              if (isDownloaded) ...[
+                                const SizedBox(width: 8),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green.lighter.withValues(alpha: 0.2),
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(color: Colors.green.lighter.withValues(alpha: 0.5)),
+                                  ),
+                                  child: Text('Baixada', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.green)),
+                                ),
+                              ] else if (result.localPath != null) ...[
+                                const SizedBox(width: 8),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue.lighter.withValues(alpha: 0.2),
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(color: Colors.blue.lighter.withValues(alpha: 0.5)),
+                                  ),
+                                  child: Text('Na Biblioteca', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.blue)),
+                                ),
+                              ],
+                            ],
                           ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -168,7 +196,17 @@ class FluentSearchView extends StatelessWidget {
                               Tooltip(
                                 message: 'Mais Opções',
                                 child: DropDownButton(
-                                  title: const Icon(FluentIcons.more, size: 16),
+                                  title: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text('Opções', style: TextStyle(color: FluentTheme.of(context).accentColor)),
+                                        const SizedBox(width: 4),
+                                        const Icon(FluentIcons.chevron_down, size: 8),
+                                      ],
+                                    ),
+                                  ),
                                   items: [
                                     MenuFlyoutItem(
                                       leading: const Icon(FluentIcons.add),
@@ -176,10 +214,18 @@ class FluentSearchView extends StatelessWidget {
                                       onPressed: () => onAddToPlaylist(result),
                                     ),
                                     MenuFlyoutItem(
-                                      leading: const Icon(FluentIcons.download),
-                                      text: const Text('Opções de Download'),
-                                      onPressed: () => onLoadFormats(result),
+                                      leading: Icon(isDownloaded ? FluentIcons.check_mark : FluentIcons.download),
+                                      text: Text(isDownloaded ? 'Música Baixada' : 'Opções de Download'),
+                                      onPressed: isDownloaded ? null : () => onLoadFormats(result),
                                     ),
+                                    if (result.localPath != null)
+                                      MenuFlyoutItem(
+                                        leading: const Icon(FluentIcons.library),
+                                        text: const Text('Ver na Biblioteca'),
+                                        onPressed: () {
+                                          // TODO: Navigate to library?
+                                        },
+                                      ),
                                   ],
                                 ),
                               ),
@@ -328,45 +374,15 @@ class FluentSearchView extends StatelessWidget {
   }
 
   void _playVideo(BuildContext context, SearchResult result) async {
-    showDialog(
-      context: context,
-      builder: (context) => FutureBuilder<Map<String, dynamic>?>(
-        future: SearchService.instance.getVideoDetails(result.url),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const ContentDialog(
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ProgressRing(),
-                  SizedBox(height: 12),
-                  Text('Obtendo detalhes do vídeo...'),
-                ],
-              ),
-            );
-          }
-          
-          if (snapshot.hasError || snapshot.data == null) {
-            return ContentDialog(
-              title: const Text('Erro'),
-              content: const Text('Não foi possível carregar os detalhes do vídeo.'),
-              actions: [
-                Button(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Fechar'),
-                ),
-              ],
-            );
-          }
-
-          return NativeVideoPlayer(
-            title: result.title,
-            videoUrl: result.url,
-            videoDetails: snapshot.data!,
-          );
-        },
-      ),
-    );
+    // Play the track using PlaybackService
+    await PlaybackService.instance.playSearchResult(result);
+    
+    // Navigate to the native PlayerScreen
+    if (context.mounted) {
+      Navigator.of(context).push(
+        FluentPageRoute(builder: (_) => const PlayerScreen()),
+      );
+    }
   }
 
   Widget _buildStatusIndicator(BuildContext context) {

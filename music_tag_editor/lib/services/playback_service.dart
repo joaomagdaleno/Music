@@ -1,4 +1,5 @@
 import 'package:media_kit/media_kit.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:flutter/foundation.dart';
 import 'package:audio_session/audio_session.dart';
@@ -10,6 +11,7 @@ import 'package:music_tag_editor/services/equalizer_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
+import 'package:music_tag_editor/services/metadata_service.dart';
 import 'package:music_tag_editor/services/startup_logger.dart';
 import 'dart:async';
 
@@ -77,6 +79,9 @@ class PlaybackService {
 
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.music());
+
+    // Initialize wakelock state
+    WakelockPlus.enable(); // Keep awake during init/prep
 
     // Load crossfade duration
     final savedDuration =
@@ -150,19 +155,32 @@ class PlaybackService {
   }
 
   void _updatePlaybackState() {
+    final playing = _player.state.playing;
+    
+    // Manage wakelock based on playback state
+    if (playing) {
+      WakelockPlus.enable();
+    } else {
+      WakelockPlus.disable();
+    }
+
     _audioHandler.playbackState.add(PlaybackState(
           controls: [
             MediaControl.skipToPrevious,
-            if (_player.state.playing) MediaControl.pause else MediaControl.play,
+            if (playing) MediaControl.pause else MediaControl.play,
             MediaControl.stop,
             MediaControl.skipToNext,
           ],
           systemActions: const {
             MediaAction.seek,
+            MediaAction.seekForward,
+            MediaAction.seekBackward,
+            MediaAction.skipToNext,
+            MediaAction.skipToPrevious,
           },
           androidCompactActionIndices: const [0, 1, 3],
           processingState: _mapProcessingState(),
-          playing: _player.state.playing,
+          playing: playing,
           updatePosition: _player.state.position,
           bufferedPosition: _player.state.buffer,
           speed: _player.state.rate,
@@ -171,8 +189,9 @@ class PlaybackService {
 
   AudioProcessingState _mapProcessingState() {
     if (_player.state.buffering) return AudioProcessingState.buffering;
-    if (_player.state.playing) return AudioProcessingState.ready;
-    return AudioProcessingState.idle;
+    if (_player.state.completed) return AudioProcessingState.completed;
+    // Always ready if loaded, even if paused
+    return AudioProcessingState.ready;
   }
 
   void _onTrackChanged(SearchResult track) {
@@ -193,6 +212,14 @@ class PlaybackService {
               : null,
           artUri: track.thumbnail != null ? Uri.parse(track.thumbnail!) : null,
         ));
+  }
+
+  Future<void> toggleFavorite() async {
+    if (_currentTrack == null) return;
+    final newState = !_currentTrack!.isVault;
+    _currentTrack!.isVault = newState;
+    await DatabaseService.instance.toggleVault(_currentTrack!.id, newState);
+    _trackController.add(_currentTrack);
   }
 
   Future<void> playSearchResult(SearchResult result,
@@ -227,7 +254,11 @@ class PlaybackService {
     }
     StartupLogger.log('[PlaybackService] Fetching stream URL for: ${track.url}');
     // Logic for highest quality resolution should be in search_service
-    final streamUrl = await _searchService.getStreamUrl(track.url);
+    final streamUrl = await _searchService.getStreamUrl(
+      track.url,
+      platform: track.platform,
+      isVideo: track.mediaType == 'video',
+    );
     if (streamUrl != null) {
       StartupLogger.log('[PlaybackService] Stream URL obtained successfully');
       return streamUrl;
@@ -357,6 +388,26 @@ class PlaybackService {
   Future<void> _fetchLyrics(SearchResult track) async {
     _currentLyrics = [];
     _lyricsController.add([]);
+
+    // 1. Try to read from local file if it exists
+    if (track.url.startsWith('/') || track.url.startsWith('file://')) {
+       try {
+         final path = track.url.replaceFirst('file://', '');
+         final metadata = await MetadataService().readMetadata(path);
+         final localLyrics = metadata['lyrics'] as String?;
+         if (localLyrics != null && localLyrics.isNotEmpty) {
+           _currentLyrics = LyricsService.instance.parseLrc(localLyrics);
+           if (_currentLyrics.isNotEmpty) {
+             _lyricsController.add(_currentLyrics);
+             return;
+           }
+         }
+       } catch (e) {
+         debugPrint('Error reading local lyrics: $e');
+       }
+    }
+
+    // 2. Fallback to online fetching
     final lyrics =
         await LyricsService.instance.fetchLyrics(track.title, track.artist);
     _currentLyrics = lyrics;

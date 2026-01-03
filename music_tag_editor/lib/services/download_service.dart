@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/startup_logger.dart';
 import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
+import 'package:music_tag_editor/services/search_service.dart';
+import 'package:music_tag_editor/services/lyrics_service.dart';
 
 /// Platform detected from URL or search.
 enum MediaPlatform {
@@ -55,11 +57,12 @@ class SearchResult {
   final int? duration;
   final String url;
   final MediaPlatform platform;
-  final String? localPath;
+  String? localPath;
   final String? genre;
   final String? hifiSource; // 'qobuz', 'tidal', 'deezer' for Hi-Fi results
   final String? hifiQuality; // e.g. '24-bit/96kHz', 'FLAC 16-bit'
-  final bool isVault;
+  bool isVault;
+  bool isDownloaded;
   final String mediaType; // 'audio' or 'video'
 
   SearchResult({
@@ -76,6 +79,7 @@ class SearchResult {
     this.hifiSource,
     this.hifiQuality,
     this.isVault = false,
+    this.isDownloaded = false,
     this.mediaType = 'audio',
   });
 
@@ -97,24 +101,27 @@ class SearchResult {
       'thumbnail': thumbnail,
       'duration': duration,
       'url': url,
-      'platform': platform.index,
-      'local_path': localPath, // Standardized to underscore for DB/internal Map
+      'platform': platform.toString(),
+      'local_path': localPath,
+      'is_downloaded': localPath != null ? 1 : 0,
       'genre': genre,
+      'hifi_source': hifiSource,
+      'hifi_quality': hifiQuality,
+      'is_vault': isVault ? 1 : 0,
       'media_type': mediaType,
     };
   }
 
   factory SearchResult.fromJson(Map<String, dynamic> json) {
-    // Handle platform safely - can be int (index) or String (enum name)
+    // Handle platform safely
     MediaPlatform platform = MediaPlatform.unknown;
     final platformRaw = json['platform'];
     if (platformRaw is int) {
       if (platformRaw >= 0 && platformRaw < MediaPlatform.values.length) {
         platform = MediaPlatform.values[platformRaw];
       }
-    } else if (platformRaw is String) {
-      // Handle 'MediaPlatform.youtube' format or just 'youtube'
-      final cleanPlatform = platformRaw.split('.').last.toLowerCase();
+    } else if (platformRaw != null) {
+      final cleanPlatform = platformRaw.toString().split('.').last.toLowerCase();
       platform = MediaPlatform.values.firstWhere(
         (e) => e.name.toLowerCase() == cleanPlatform,
         orElse: () => MediaPlatform.unknown,
@@ -132,6 +139,10 @@ class SearchResult {
       platform: platform,
       localPath: (json['local_path'] ?? json['localPath'])?.toString(),
       genre: json['genre']?.toString(),
+      hifiSource: json['hifi_source']?.toString(),
+      hifiQuality: json['hifi_quality']?.toString(),
+      isVault: (json['is_vault'] == 1 || json['is_vault'] == true),
+      isDownloaded: (json['is_downloaded'] == 1 || json['is_downloaded'] == true),
       mediaType: json['media_type']?.toString() ?? 'audio',
     );
   }
@@ -487,13 +498,7 @@ class DownloadService {
         String baseName = outputFile!.split(Platform.pathSeparator).last;
         baseName = baseName.substring(0, baseName.lastIndexOf('.'));
         
-        // Simple regex clean logic
-        searchTitle = baseName
-            .replaceAll(RegExp(r'\(Official.*?\)', caseSensitive: false), '')
-            .replaceAll(RegExp(r'\[Official.*?\]', caseSensitive: false), '')
-            .replaceAll(RegExp(r'\(Lyrics\)', caseSensitive: false), '')
-            .replaceAll(RegExp(r'\(Audio\)', caseSensitive: false), '')
-            .trim();
+        searchTitle = SearchService.cleanMetadata(baseName);
         searchArtist = '';
 
         if (searchTitle.contains(' - ')) {
@@ -510,12 +515,13 @@ class DownloadService {
       // We pass the clean title/artist to the aggregator
       final metadata = await aggregator.aggregateMetadata(searchTitle, searchArtist);
 
+      // 3. Fetch lyrics online
+      final lyrics = await LyricsService.instance.fetchRawLyrics(searchTitle, searchArtist);
+
       onProgress?.call(0.95, 'Embutindo metadados e capa...');
       
-      final finalImage = overrideThumbnailUrl ?? metadata.thumbnail;
-
       // Embed the enhanced metadata using FFmpeg
-      await _embedMetadata(outputFile!, finalImage, metadata, searchTitle);
+      await _embedMetadata(outputFile!, metadata, lyrics: lyrics);
     }
 
     onProgress?.call(1.0, 'Download concluído!');
@@ -524,10 +530,9 @@ class DownloadService {
 
   Future<void> _embedMetadata(
     String audioPath,
-    String? imageUrl,
-    AggregatedMetadata metadata,
-    String originalTitle,
-  ) async {
+    AggregatedMetadata metadata, {
+    String? lyrics,
+  }) async {
     try {
       final tempOut = '${audioPath}_temp.mp3';
       
@@ -539,9 +544,9 @@ class DownloadService {
 
       // Handle Cover Art
       File? imageFile;
-      if (imageUrl != null && imageUrl.isNotEmpty) {
+      if (metadata.thumbnail != null && metadata.thumbnail!.isNotEmpty) {
         imageFile = File('${audioPath}_thumb.jpg');
-        await fileDownloader(imageUrl, imageFile.path);
+        await fileDownloader(metadata.thumbnail!, imageFile.path);
         args.addAll(['-i', imageFile.path]);
         args.addAll(['-map', '0:0', '-map', '1:0']);
       } else {
@@ -551,22 +556,24 @@ class DownloadService {
       args.addAll(['-c', 'copy', '-id3v2_version', '3']);
 
       // Add Metadata Tags
-      // Use aggregated data if available, otherwise just keep what we have (or regex clean it elsewhere)
-      // Note: originalTitle might be "Cleaned" by regex before this function is called if we decide so,
-      // but here we prioritize the aggregated metadata.
-
       if (metadata.title != null) args.addAll(['-metadata', 'title=${metadata.title}']);
       if (metadata.artist != null) args.addAll(['-metadata', 'artist=${metadata.artist}']);
       if (metadata.album != null) args.addAll(['-metadata', 'album=${metadata.album}']);
       if (metadata.genre != null) args.addAll(['-metadata', 'genre=${metadata.genre}']);
       if (metadata.year != null) args.addAll(['-metadata', 'date=${metadata.year}']);
+      if (lyrics != null) {
+        args.addAll(['-metadata', 'lyrics=$lyrics']);
+        args.addAll(['-metadata', 'USLT=$lyrics']);
+      }
 
       args.add(tempOut);
 
       final result = await processRunner(_deps.ffmpegPath, args);
 
       if (result.exitCode == 0) {
-        await File(audioPath).delete();
+        if (await File(audioPath).exists()) {
+          await File(audioPath).delete();
+        }
         await File(tempOut).rename(audioPath);
       } else {
         StartupLogger.log('FFmpeg metadata embed failed: ${result.stderr}');

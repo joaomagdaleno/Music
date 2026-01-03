@@ -46,10 +46,10 @@ class _SearchScreenState extends material.State<SearchScreen> {
   Set<String> _localMetadataKeys = {}; // artist:title
 
   bool get _isFluent {
-    final platform = material.Theme.of(context).platform;
-    return platform == material.TargetPlatform.windows ||
-        platform == material.TargetPlatform.linux ||
-        platform == material.TargetPlatform.macOS;
+    final platform = defaultTargetPlatform;
+    return platform == TargetPlatform.windows ||
+        platform == TargetPlatform.linux ||
+        platform == TargetPlatform.macOS;
   }
 
   @override
@@ -265,7 +265,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
       final musicDir = '${Platform.environment['USERPROFILE']}\\Music';
       StartupLogger.log('[SearchScreen] Target directory: $musicDir');
 
-      await _downloadService.download(
+      final path = await _downloadService.download(
         result.url,
         selectedFormat,
         musicDir,
@@ -282,7 +282,12 @@ class _SearchScreenState extends material.State<SearchScreen> {
         },
       );
 
-      StartupLogger.log('[SearchScreen] Download COMPLETED for ${result.id}');
+      StartupLogger.log('[SearchScreen] Download COMPLETED for ${result.id} at $path');
+      
+      // Persist the localPath back to the result and database
+      result.localPath = path;
+      await DatabaseService.instance.saveTrack(result.toJson());
+
       await _refreshDownloadedStatus();
       if (mounted) {
         showSnackBar('Download de "${result.title}" concluído!');
@@ -318,15 +323,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
 
     if (selectedPlaylistId != null) {
       debugPrint('[SearchScreen] Selected playlist ID: $selectedPlaylistId');
-      await db.saveTrack({
-        'id': result.id,
-        'title': result.title,
-        'artist': result.artist,
-        'thumbnail': result.thumbnail,
-        'duration': result.duration,
-        'platform': result.platform.toString(),
-        'url': result.url,
-      });
+      await db.saveTrack(result.toJson());
 
       await db.addTrackToPlaylist(selectedPlaylistId, result.id);
       await _refreshDownloadedStatus();
@@ -345,6 +342,9 @@ class _SearchScreenState extends material.State<SearchScreen> {
       }
       await _playbackService.playSearchResult(result);
       StartupLogger.log('[SearchScreen] Playback started for ${result.id}');
+      if (mounted) {
+        openFullPlayer();
+      }
     } catch (e, stack) {
       StartupLogger.logError('Playback FAILED in SearchScreen', e, stack);
       if (mounted) {
@@ -355,10 +355,17 @@ class _SearchScreenState extends material.State<SearchScreen> {
 
   void openFullPlayer() {
     StartupLogger.log('[SearchScreen] Opening full player');
-    material.Navigator.push(
-      context,
-      material.MaterialPageRoute(builder: (context) => const PlayerScreen()),
-    );
+    if (_isFluent) {
+      fluent.Navigator.push(
+        context,
+        fluent.FluentPageRoute(builder: (context) => const PlayerScreen()),
+      );
+    } else {
+      material.Navigator.push(
+        context,
+        material.MaterialPageRoute(builder: (context) => const PlayerScreen()),
+      );
+    }
   }
 
   void showSnackBar(String message, {bool isError = false}) {

@@ -5,6 +5,8 @@ import 'package:music_tag_editor/screens/home/views/material_home_view.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
+import 'package:music_tag_editor/screens/player/player_screen.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -44,20 +46,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _playTrack(Map<String, dynamic> trackData) {
-    final result = SearchResult(
-      id: trackData['id'],
-      title: trackData['title'],
-      artist: trackData['artist'] ?? '',
-      thumbnail: trackData['thumbnail'],
-      duration: trackData['duration'],
-      url: trackData['url'],
-      platform: MediaPlatform.values.firstWhere(
-        (e) => e.toString() == trackData['platform'],
-        orElse: () => MediaPlatform.unknown,
-      ),
-      localPath: trackData['local_path'],
-    );
+    final result = SearchResult.fromJson(trackData);
     _playbackService.playSearchResult(result);
+    
+    if (mounted) {
+      if (defaultTargetPlatform == TargetPlatform.windows || 
+          defaultTargetPlatform == TargetPlatform.linux || 
+          defaultTargetPlatform == TargetPlatform.macOS) {
+        Navigator.of(context).push(
+          fluent.FluentPageRoute(builder: (_) => const PlayerScreen()),
+        );
+      } else {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const PlayerScreen()),
+        );
+      }
+    }
   }
 
   @override
