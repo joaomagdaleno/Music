@@ -43,6 +43,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
   String _initStatus = 'Iniciando ferramentas...';
   double _initProgress = 0;
   Set<String> _downloadedUrls = {};
+  Set<String> _localMetadataKeys = {}; // artist:title
 
   bool get _isFluent {
     final platform = material.Theme.of(context).platform;
@@ -125,10 +126,19 @@ class _SearchScreenState extends material.State<SearchScreen> {
         
         if (mounted && searchId == _currentSearchId) {
           StartupLogger.log('[SearchScreen] Single platform search returned ${filtered.length} results');
-          final downloadedData = await DatabaseService.instance.getDownloadedUrls();
-          final verifiedUrls = await _verifyFiles(downloadedData);
+          await _refreshDownloadedStatus();
+          
+          // Add URLs that match by metadata
+          final Set<String> updatedDownloaded = Set.from(_downloadedUrls);
+          for (final res in filtered) {
+            final key = '${SearchService.toMatchKey(res.artist)}:${SearchService.toMatchKey(res.title)}';
+            if (_localMetadataKeys.contains(key)) {
+              updatedDownloaded.add(res.url);
+            }
+          }
+
           setState(() {
-            _downloadedUrls = verifiedUrls;
+            _downloadedUrls = updatedDownloaded;
             _searchResults.addAll(filtered);
             _platformStatuses[_selectedPlatform!] = filtered.isEmpty ? SearchStatus.noResults : SearchStatus.completed;
           });
@@ -146,10 +156,18 @@ class _SearchScreenState extends material.State<SearchScreen> {
         );
         if (mounted && searchId == _currentSearchId) {
           StartupLogger.log('[SearchScreen] Search all returned ${results.length} results');
-          final downloadedData = await DatabaseService.instance.getDownloadedUrls();
-          final verifiedUrls = await _verifyFiles(downloadedData);
+          await _refreshDownloadedStatus();
+
+          final Set<String> updatedDownloaded = Set.from(_downloadedUrls);
+          for (final res in results) {
+            final key = '${SearchService.toMatchKey(res.artist)}:${SearchService.toMatchKey(res.title)}';
+            if (_localMetadataKeys.contains(key)) {
+              updatedDownloaded.add(res.url);
+            }
+          }
+
           setState(() {
-            _downloadedUrls = verifiedUrls;
+            _downloadedUrls = updatedDownloaded;
             _searchResults.addAll(results);
           });
         }
@@ -265,6 +283,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
       );
 
       StartupLogger.log('[SearchScreen] Download COMPLETED for ${result.id}');
+      await _refreshDownloadedStatus();
       if (mounted) {
         showSnackBar('Download de "${result.title}" concluído!');
       }
@@ -310,6 +329,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
       });
 
       await db.addTrackToPlaylist(selectedPlaylistId, result.id);
+      await _refreshDownloadedStatus();
       debugPrint('[SearchScreen] Track added to playlist successfully');
       if (mounted) {
         showSnackBar('"${result.title}" adicionada à playlist!');
@@ -326,9 +346,9 @@ class _SearchScreenState extends material.State<SearchScreen> {
       await _playbackService.playSearchResult(result);
       StartupLogger.log('[SearchScreen] Playback started for ${result.id}');
     } catch (e, stack) {
-      StartupLogger.log('[SearchScreen] Playback FAILED: $e\n$stack');
+      StartupLogger.logError('Playback FAILED in SearchScreen', e, stack);
       if (mounted) {
-        showSnackBar('Erro ao reproduzir: $e');
+        showSnackBar('Erro ao reproduzir: $e', isError: true);
       }
     }
   }
@@ -341,12 +361,29 @@ class _SearchScreenState extends material.State<SearchScreen> {
     );
   }
 
-  void showSnackBar(String message) {
+  void showSnackBar(String message, {bool isError = false}) {
     if (_isFluent) {
       StartupLogger.log('[SearchScreen][SnackBar/Fluent] $message');
+      fluent.displayInfoBar(
+        context,
+        builder: (context, close) {
+          return fluent.InfoBar(
+            title: fluent.Text(isError ? 'Erro' : 'Sucesso'),
+            content: fluent.Text(message),
+            action: fluent.IconButton(
+              icon: const fluent.Icon(fluent.FluentIcons.clear),
+              onPressed: close,
+            ),
+            severity: isError ? fluent.InfoBarSeverity.error : fluent.InfoBarSeverity.success,
+          );
+        },
+      );
     } else {
       material.ScaffoldMessenger.of(context).showSnackBar(
-        material.SnackBar(content: material.Text(message)),
+        material.SnackBar(
+          content: material.Text(message),
+          backgroundColor: isError ? material.Colors.red : null,
+        ),
       );
     }
   }
@@ -508,6 +545,27 @@ class _SearchScreenState extends material.State<SearchScreen> {
       onOpenFullPlayer: openFullPlayer,
       downloadedUrls: _downloadedUrls, // Add this
     );
+  }
+
+  Future<void> _refreshDownloadedStatus() async {
+    try {
+      final downloadedData = await DatabaseService.instance.getDownloadedUrls();
+      final verifiedUrls = await _verifyFiles(downloadedData);
+      
+      final allLocalTracks = await DatabaseService.instance.getAllTracks();
+      final metadataKeys = allLocalTracks
+          .map((t) => '${SearchService.toMatchKey(t.artist)}:${SearchService.toMatchKey(t.title)}')
+          .toSet();
+
+      if (mounted) {
+        setState(() {
+          _downloadedUrls = verifiedUrls;
+          _localMetadataKeys = metadataKeys;
+        });
+      }
+    } catch (e) {
+      StartupLogger.log('[SearchScreen] Error refreshing downloaded status: $e');
+    }
   }
 
   Future<Set<String>> _verifyFiles(Map<String, String?> data) async {

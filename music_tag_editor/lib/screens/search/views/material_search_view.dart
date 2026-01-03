@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/widgets/mini_player.dart';
 
 class MaterialSearchView extends StatelessWidget {
   final TextEditingController searchController;
@@ -214,10 +213,6 @@ class MaterialSearchView extends StatelessWidget {
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: InkWell(
-        onTap: onOpenFullPlayer,
-        child: const MiniPlayer(),
       ),
     );
   }

@@ -21,8 +21,8 @@ void main() {
   });
 
   group('PersonaService Unit Tests', () {
-    test('Default persona should be listener', () {
-      expect(PersonaService.instance.activePersona, AppPersona.listener);
+    test('Default persona should be librarian', () {
+      expect(PersonaService.instance.activePersona, AppPersona.librarian);
     });
 
     test('setPersona updates activePersona and notifies listeners', () {
@@ -31,15 +31,15 @@ void main() {
         notified = true;
       });
 
-      PersonaService.instance.setPersona(AppPersona.librarian);
+      PersonaService.instance.setPersona(AppPersona.host);
 
-      expect(PersonaService.instance.activePersona, AppPersona.librarian);
+      expect(PersonaService.instance.activePersona, AppPersona.host);
       expect(notified, isTrue);
 
-      verify(() => mockDb.saveSetting('active_persona', 'librarian')).called(1);
+      verify(() => mockDb.saveSetting('active_persona', 'host')).called(1);
 
       // Reset to default for other tests
-      PersonaService.instance.setPersona(AppPersona.listener);
+      PersonaService.instance.setPersona(AppPersona.librarian);
     });
   });
 }

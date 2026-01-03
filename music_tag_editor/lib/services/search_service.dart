@@ -162,29 +162,54 @@ class SearchService {
   @visibleForTesting
   set ytExplode(yt.YoutubeExplode instance) => _ytExplodeOverride = instance;
 
-  SearchResult _parseYouTubeVideo(yt.Video video, MediaPlatform platform) {
-    String title = video.title;
-    String artist = video.author.replaceAll(' - Topic', '').trim();
-    
-    // Heuristic: If author is generic or "Topic", try to parse "Artist - Title" from video title
-    final genericAuthors = ['7clouds', 'proximity', 'trap nation', 'official music', 'official', 'vevo', 'lyrics', 'audio'];
-    bool isGeneric = genericAuthors.any((g) => artist.toLowerCase().contains(g)) || video.author.toLowerCase().contains('topic');
-    
-    if (isGeneric && title.contains(' - ')) {
-      final parts = title.split(' - ');
-      if (parts.length >= 2) {
-        artist = parts[0].trim();
-        title = parts.sublist(1).join(' - ').trim();
-      }
-    }
-
-    // Clean title from common YouTube suffixes
-    title = title
+  static String cleanMetadata(String s) {
+    return s
         .replaceAll(RegExp(r'\(Official.*?\)', caseSensitive: false), '')
         .replaceAll(RegExp(r'\[Official.*?\]', caseSensitive: false), '')
         .replaceAll(RegExp(r'\(Lyrics\)', caseSensitive: false), '')
         .replaceAll(RegExp(r'\(Audio\)', caseSensitive: false), '')
         .replaceAll(RegExp(r'\(Video\)', caseSensitive: false), '')
+        .replaceAll(RegExp(r'\(Visualizer\)', caseSensitive: false), '')
+        .replaceAll(RegExp(r'\[Visualizer\]', caseSensitive: false), '')
+        .replaceAll(RegExp(r'\(.*?\)', caseSensitive: false), '') // Remove anything else in parens
+        .replaceAll(RegExp(r'\[.*?\]', caseSensitive: false), '') // Remove anything else in brackets
+        .replaceAll(RegExp(r' - YouTube$', caseSensitive: false), '')
+        .trim();
+  }
+
+  static String toMatchKey(String s) {
+    return s.toLowerCase().trim();
+  }
+
+  SearchResult _parseYouTubeVideo(yt.Video video, MediaPlatform platform) {
+    String title = video.title;
+    String artist = video.author.replaceAll(' - Topic', '').trim();
+    
+    // Clean title from common YouTube suffixes before splitting
+    title = cleanMetadata(title);
+
+    // Heuristic: If title contains " - ", prioritize it over author unless author is the artist
+    if (video.title.contains(' - ')) {
+      final parts = video.title.split(' - ');
+      if (parts.length >= 2) {
+        final potentialArtist = cleanMetadata(parts[0]);
+        final potentialTitle = cleanMetadata(parts.sublist(1).join(' - '));
+        
+        // If author is generic, or if the author is NOT the first part of the title,
+        // we assume the uploader is just a fan/channel and the title has the real metadata.
+        final genericAuthors = ['7clouds', 'proximity', 'trap nation', 'official music', 'official', 'vevo', 'lyrics', 'audio', 'music', 'videos', 'records', 'entertainment'];
+        bool isGeneric = genericAuthors.any((g) => artist.toLowerCase().contains(g)) || video.author.toLowerCase().contains('topic');
+        bool authorMatchesTitle = toMatchKey(artist).contains(toMatchKey(potentialArtist)) || toMatchKey(potentialArtist).contains(toMatchKey(artist));
+
+        if (isGeneric || !authorMatchesTitle) {
+          artist = potentialArtist;
+          title = potentialTitle;
+        }
+      }
+    }
+
+    // Secondary cleanup after potentially splitting
+    title = title
         .replaceAll(RegExp(r'ft\..*$', caseSensitive: false), '')
         .replaceAll(RegExp(r'feat\..*$', caseSensitive: false), '')
         .trim();
@@ -204,11 +229,22 @@ class SearchService {
   Future<List<SearchResult>> searchYouTube(String query) async {
     try {
       final results = <SearchResult>[];
+      final seenIds = <String>{};
+      final seenMeta = <String>{};
       final client = _ytExplodeOverride ?? _defaultYtExplode;
       final searchList = await client.search.search(query);
       
       for (final video in searchList) {
-        results.add(_parseYouTubeVideo(video, MediaPlatform.youtube));
+        if (seenIds.contains(video.id.value)) continue;
+        
+        final res = _parseYouTubeVideo(video, MediaPlatform.youtube);
+        final metaKey = '${toMatchKey(res.artist)}:${toMatchKey(res.title)}';
+        
+        if (seenMeta.contains(metaKey)) continue;
+        
+        results.add(res);
+        seenIds.add(video.id.value);
+        seenMeta.add(metaKey);
       }
       return results;
     } catch (e, stack) {
@@ -221,11 +257,22 @@ class SearchService {
   Future<List<SearchResult>> searchYouTubeMusic(String query) async {
     try {
       final results = <SearchResult>[];
+      final seenIds = <String>{};
+      final seenMeta = <String>{};
       final client = _ytExplodeOverride ?? _defaultYtExplode;
       final searchList = await client.search.search('$query topic');
       
       for (final video in searchList) {
-        results.add(_parseYouTubeVideo(video, MediaPlatform.youtubeMusic));
+        if (seenIds.contains(video.id.value)) continue;
+
+        final res = _parseYouTubeVideo(video, MediaPlatform.youtubeMusic);
+        final metaKey = '${toMatchKey(res.artist)}:${toMatchKey(res.title)}';
+
+        if (seenMeta.contains(metaKey)) continue;
+
+        results.add(res);
+        seenIds.add(video.id.value);
+        seenMeta.add(metaKey);
       }
       
       // Sort to put topic/official results first if they exist
@@ -249,9 +296,20 @@ class SearchService {
        final client = _ytExplodeOverride ?? _defaultYtExplode;
        final searchList = await client.search.search('$query official audio');
        final results = <SearchResult>[];
+       final seenIds = <String>{};
+       final seenMeta = <String>{};
 
        for (final video in searchList) {
-         results.add(_parseYouTubeVideo(video, MediaPlatform.spotify));
+         if (seenIds.contains(video.id.value)) continue;
+
+         final res = _parseYouTubeVideo(video, MediaPlatform.spotify);
+         final metaKey = '${toMatchKey(res.artist)}:${toMatchKey(res.title)}';
+
+         if (seenMeta.contains(metaKey)) continue;
+
+         results.add(res);
+         seenIds.add(video.id.value);
+         seenMeta.add(metaKey);
        }
        return results;
     } catch (e) {

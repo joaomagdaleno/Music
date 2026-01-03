@@ -1,7 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:music_tag_editor/models/persona_model.dart';
-import 'package:music_tag_editor/services/persona_service.dart';
-import 'package:music_tag_editor/widgets/mini_player.dart';
 
 class FluentAppShell extends StatelessWidget {
   final Widget body;
@@ -29,19 +27,7 @@ class FluentAppShell extends StatelessWidget {
       ),
       pane: NavigationPane(
         selected: selectedIndex == 99 ? destinations.length : selectedIndex,
-        onChanged: (index) {
-          if (index == destinations.length) {
-             onSelectedIndexChanged(99);
-             return;
-          }
-          if (index < destinations.length) {
-            final dest = destinations[index];
-            if (dest.persona != null) {
-              PersonaService.instance.setPersona(dest.persona!);
-            }
-          }
-          onSelectedIndexChanged(index);
-        },
+        onChanged: onSelectedIndexChanged,
         displayMode: PaneDisplayMode.compact,
         items: destinations.map<NavigationPaneItem>((d) {
           return PaneItem(
@@ -65,12 +51,7 @@ class FluentAppShell extends StatelessWidget {
       paneBodyBuilder: (item, child) {
         return ScaffoldPage(
           padding: EdgeInsets.zero,
-          content: Column(
-            children: [
-              Expanded(child: body),
-              const MiniPlayer(),
-            ],
-          ),
+          content: body,
         );
       },
     );

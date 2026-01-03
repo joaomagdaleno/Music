@@ -33,6 +33,31 @@ class _AppShellState extends State<AppShell> {
   int _selectedIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    PersonaService.instance.addListener(_handlePersonaChange);
+  }
+
+  @override
+  void dispose() {
+    PersonaService.instance.removeListener(_handlePersonaChange);
+    super.dispose();
+  }
+
+  void _handlePersonaChange() {
+    final persona = PersonaService.instance.activePersona;
+    final destinations = _getGlobalDestinations();
+    final index = destinations.indexWhere((d) => d.persona == persona);
+    
+    // If a persona is selected, and we are not already on that persona's tab,
+    // and we are NOT on a special global tab (Início/Buscar), update the index.
+    // Actually, if we are on Home (0) and a persona is selected via card, we WANT to switch.
+    if (index != -1 && _selectedIndex != index) {
+      setState(() => _selectedIndex = index);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
       listenable: PersonaService.instance,
@@ -61,8 +86,18 @@ class _AppShellState extends State<AppShell> {
                 : MaterialAppShell(
                     body: _buildBody(persona),
                     selectedIndex: _selectedIndex,
-                    onSelectedIndexChanged: (index) =>
-                        setState(() => _selectedIndex = index),
+                    onSelectedIndexChanged: (index) {
+                      int targetIndex = index;
+                      if (index == appShellDestinations.length) {
+                        targetIndex = 99;
+                      } else if (index < appShellDestinations.length) {
+                        final persona = appShellDestinations[index].persona;
+                        if (persona != null) {
+                          PersonaService.instance.setPersona(persona);
+                        }
+                      }
+                      setState(() => _selectedIndex = targetIndex);
+                    },
                     destinations: appShellDestinations,
                   );
 
@@ -110,10 +145,16 @@ class _AppShellState extends State<AppShell> {
       return const SettingsScreen();
     }
     
+    if (_selectedIndex == 0) {
+      return const HomeScreen();
+    }
+    
+    if (_selectedIndex == 1) {
+      return const SearchScreen();
+    }
+    
     // Each Persona now has its own internal shell/container
     switch (persona) {
-      case AppPersona.listener:
-        return _buildListenerPersona();
       case AppPersona.librarian:
         return _buildLibrarianPersona();
       case AppPersona.host:
@@ -125,45 +166,34 @@ class _AppShellState extends State<AppShell> {
 
   List<_Destination> _getGlobalDestinations() {
     return [
-      const _Destination('Ouvinte', Icons.headset, Icons.headset_outlined, FluentIcons.headset, persona: AppPersona.listener),
+      const _Destination('Início', Icons.home, Icons.home_outlined, FluentIcons.home),
+      const _Destination('Buscar', Icons.search, Icons.search_outlined, FluentIcons.search),
       const _Destination('Bibliotecário', Icons.library_books, Icons.library_books_outlined, FluentIcons.library, persona: AppPersona.librarian),
       const _Destination('Anfitrião', Icons.celebration, Icons.celebration_outlined, FluentIcons.party_leader, persona: AppPersona.host),
       const _Destination('Artesão', Icons.architecture, Icons.architecture_outlined, FluentIcons.developer_tools, persona: AppPersona.artisan),
     ];
   }
 
-  Widget _buildListenerPersona() {
+
+  Widget _buildLibrarianPersona() {
     return const PersonaShell(
+      key: ValueKey(AppPersona.librarian),
       destinations: [
-        PersonaDestination(label: 'Início', materialIcon: Icons.home, fluentIcon: FluentIcons.home),
-        PersonaDestination(label: 'Buscar', materialIcon: Icons.search, fluentIcon: FluentIcons.search),
+        PersonaDestination(label: 'Tags', materialIcon: Icons.edit_note, fluentIcon: FluentIcons.tag),
         PersonaDestination(label: 'Minhas Músicas', materialIcon: Icons.library_music, fluentIcon: FluentIcons.music_note),
         PersonaDestination(label: 'Playlists', materialIcon: Icons.playlist_play, fluentIcon: FluentIcons.list),
       ],
       children: [
-        HomeScreen(),
-        SearchScreen(),
+        LibraryScreen(title: 'Editor de Tags'),
         MyTracksScreen(),
         PlaylistsScreen(),
       ],
     );
   }
 
-  Widget _buildLibrarianPersona() {
-    return const PersonaShell(
-      destinations: [
-        PersonaDestination(label: 'Tags', materialIcon: Icons.edit_note, fluentIcon: FluentIcons.tag),
-        PersonaDestination(label: 'Minhas Músicas', materialIcon: Icons.library_music, fluentIcon: FluentIcons.music_note),
-      ],
-      children: [
-        LibraryScreen(title: 'Editor de Tags'),
-        MyTracksScreen(),
-      ],
-    );
-  }
-
   Widget _buildHostPersona() {
     return const PersonaShell(
+      key: ValueKey(AppPersona.host),
       destinations: [
         PersonaDestination(label: 'Disco', materialIcon: Icons.album, fluentIcon: FluentIcons.album),
         PersonaDestination(label: 'Karaoke', materialIcon: Icons.mic, fluentIcon: FluentIcons.microphone),
@@ -179,6 +209,7 @@ class _AppShellState extends State<AppShell> {
 
   Widget _buildArtisanPersona() {
     return PersonaShell(
+      key: const ValueKey(AppPersona.artisan),
       destinations: const [
         PersonaDestination(label: 'Toques', materialIcon: Icons.content_cut, fluentIcon: FluentIcons.cut),
         PersonaDestination(label: 'Cofre', materialIcon: Icons.enhanced_encryption, fluentIcon: FluentIcons.lock),

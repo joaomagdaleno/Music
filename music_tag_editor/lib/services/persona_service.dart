@@ -6,7 +6,7 @@ class PersonaService extends ChangeNotifier {
   static final PersonaService instance = PersonaService._();
   PersonaService._();
 
-  AppPersona _activePersona = AppPersona.listener;
+  AppPersona _activePersona = AppPersona.librarian;
   AppPersona get activePersona => _activePersona;
 
   /// Inicializa o serviço, possivelmente carregando a persona salva.
@@ -17,10 +17,10 @@ class PersonaService extends ChangeNotifier {
       try {
         _activePersona = AppPersona.values.firstWhere(
           (e) => e.name == savedPersona,
-          orElse: () => AppPersona.listener,
+          orElse: () => AppPersona.librarian,
         );
       } catch (_) {
-        _activePersona = AppPersona.listener;
+        _activePersona = AppPersona.librarian;
       }
     }
     notifyListeners();
@@ -34,6 +34,6 @@ class PersonaService extends ChangeNotifier {
   }
 
   static void resetInstance() {
-    instance._activePersona = AppPersona.listener;
+    instance._activePersona = AppPersona.librarian;
   }
 }

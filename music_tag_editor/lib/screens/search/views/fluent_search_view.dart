@@ -1,7 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/widgets/mini_player.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class FluentSearchView extends StatelessWidget {
@@ -147,7 +146,7 @@ class FluentSearchView extends StatelessWidget {
                           subtitle: Text(
                             '${result.artist} • ${result.durationFormatted}',
                             style: TextStyle(
-                              color: isDownloaded ? Colors.green.lighter.withOpacity(0.8) : null,
+                              color: isDownloaded ? Colors.green.lighter.withValues(alpha: 0.8) : null,
                             ),
                           ),
                           trailing: Row(
@@ -265,10 +264,6 @@ class FluentSearchView extends StatelessWidget {
             ),
           ),
         ],
-      ),
-      bottomBar: GestureDetector(
-        onTap: onOpenFullPlayer,
-        child: const MiniPlayer(),
       ),
     );
   }

@@ -14,6 +14,7 @@ import 'package:music_tag_editor/services/startup_logger.dart';
 import 'package:music_tag_editor/services/telemetry_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
+import 'package:music_tag_editor/widgets/mini_player.dart';
 
 
 
@@ -243,6 +244,17 @@ class MusicTagEditorApp extends StatelessWidget {
               scaffoldBackgroundColor: fluent.Colors.white,
             ),
             home: const AppShell(),
+            builder: (context, child) {
+              return fluent.ScaffoldPage(
+                padding: EdgeInsets.zero,
+                content: Column(
+                  children: [
+                    Expanded(child: child ?? const SizedBox.shrink()),
+                    const MiniPlayer(),
+                  ],
+                ),
+              );
+            },
           );
         }
 
@@ -267,6 +279,16 @@ class MusicTagEditorApp extends StatelessWidget {
             ),
           ),
           home: const AppShell(),
+          builder: (context, child) {
+            return Scaffold(
+              body: Column(
+                children: [
+                  Expanded(child: child ?? const SizedBox.shrink()),
+                  const MiniPlayer(),
+                ],
+              ),
+            );
+          },
         );
       },
     );

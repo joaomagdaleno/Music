@@ -20,24 +20,14 @@ import 'package:music_tag_editor/services/download_service.dart';
 import 'package:just_audio/just_audio.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
-
 class MockThemeService extends Mock implements ThemeService {}
-
 class MockConnectivityService extends Mock implements ConnectivityService {}
-
 class MockAuthService extends Mock implements AuthService {}
-
 class MockPlaybackService extends Mock implements PlaybackService {}
-
 class MockSecurityService extends Mock implements SecurityService {}
-
-class MockDesktopIntegrationService extends Mock
-    implements DesktopIntegrationService {}
-
+class MockDesktopIntegrationService extends Mock implements DesktopIntegrationService {}
 class MockDependencyManager extends Mock implements DependencyManager {}
-
 class MockDownloadService extends Mock implements DownloadService {}
-
 class MockAudioPlayer extends Mock implements AudioPlayer {}
 
 void main() {
@@ -75,48 +65,32 @@ void main() {
     DownloadService.instance = mockDownload;
     PersonaService.resetInstance();
 
-    // Default stubs
     when(() => mockTheme.primaryColor).thenReturn(Colors.blue);
     when(() => mockTheme.addListener(any())).thenReturn(null);
     when(() => mockTheme.removeListener(any())).thenReturn(null);
     when(() => mockTheme.useCustomColor).thenReturn(false);
-
     when(() => mockConnectivity.isOffline).thenReturn(ValueNotifier(false));
-
-    when(() => mockDb.loadFilenameFormat())
-        .thenAnswer((_) async => FilenameFormat.artistTitle);
+    when(() => mockDb.loadFilenameFormat()).thenAnswer((_) async => FilenameFormat.artistTitle);
     when(() => mockDb.loadCrossfadeDuration()).thenAnswer((_) async => 3);
     when(() => mockDb.loadAgeBypass()).thenAnswer((_) async => false);
     when(() => mockDb.getSetting(any())).thenAnswer((_) async => null);
     when(() => mockDb.saveSetting(any(), any())).thenAnswer((_) async {});
     when(() => mockDb.getTracks()).thenAnswer((_) async => []);
     when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
-
-    when(() => mockAudioPlayer.playerStateStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.positionStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.bufferedPositionStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.durationStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.volumeStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.speedStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.shuffleModeEnabledStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.loopModeStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.sequenceStateStream)
-        .thenAnswer((_) => const Stream.empty());
-
+    when(() => mockAudioPlayer.playerStateStream).thenAnswer((_) => const Stream.empty());
+    when(() => mockAudioPlayer.positionStream).thenAnswer((_) => const Stream.empty());
+    when(() => mockAudioPlayer.bufferedPositionStream).thenAnswer((_) => const Stream.empty());
+    when(() => mockAudioPlayer.durationStream).thenAnswer((_) => const Stream.empty());
+    when(() => mockAudioPlayer.volumeStream).thenAnswer((_) => const Stream.empty());
+    when(() => mockAudioPlayer.speedStream).thenAnswer((_) => const Stream.empty());
+    when(() => mockAudioPlayer.shuffleModeEnabledStream).thenAnswer((_) => const Stream.empty());
+    when(() => mockAudioPlayer.loopModeStream).thenAnswer((_) => const Stream.empty());
+    when(() => mockAudioPlayer.sequenceStateStream).thenAnswer((_) => const Stream.empty());
     when(() => mockAuth.isAuthenticated).thenReturn(false);
-
     when(() => mockPlayback.player).thenReturn(mockAudioPlayer);
     when(() => mockPlayback.currentTrack).thenReturn(null);
-    when(() => mockPlayback.lyricsStream)
-        .thenAnswer((_) => const Stream.empty());
+    when(() => mockPlayback.currentTrackStream).thenAnswer((_) => const Stream.empty());
+    when(() => mockPlayback.lyricsStream).thenAnswer((_) => const Stream.empty());
     when(() => mockPlayback.currentLyrics).thenReturn([]);
   });
 
@@ -127,69 +101,97 @@ void main() {
     );
   }
 
-  group('Global Persona Selection (AppShell)', () {
-    testWidgets('Displays all persona options in AppShell', (tester) async {
-      await tester.pumpWidget(createWidgetUnderTest(const AppShell()));
-      await tester.pump();
-
-      expect(find.text('Ouvinte'), findsAtLeastNWidgets(1));
-      expect(find.text('Bibliotecário'), findsAtLeastNWidgets(1));
-      expect(find.text('Anfitrião'), findsAtLeastNWidgets(1));
-      expect(find.text('Artesão'), findsAtLeastNWidgets(1));
-    });
-
-    testWidgets('Switching persona updates PersonaService', (tester) async {
-      await tester.pumpWidget(createWidgetUnderTest(const AppShell()));
-      await tester.pump();
-
-      // Default persona is listener
-      expect(PersonaService.instance.activePersona, AppPersona.listener);
-
-      // Tap on Librarian
-      // Note: findsAtLeastNWidgets because it might be in Rail and BottomBar or have multiple labels
-      await tester.tap(find.text('Bibliotecário').first);
-      await tester.pumpAndSettle();
-
-      expect(PersonaService.instance.activePersona, AppPersona.librarian);
-
-      // Reset for safety
-      PersonaService.instance.setPersona(AppPersona.listener);
-    });
-  });
-
-  group('AppShell Persona Integration', () {
-    testWidgets('AppShell shows Home navigation for Listener persona',
-        (tester) async {
-      PersonaService.instance.setPersona(AppPersona.listener);
+  group('Global Navigation (AppShell)', () {
+    testWidgets('Displays global navigation items in AppShell', (tester) async {
+      tester.view.physicalSize = const Size(400, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
 
       await tester.pumpWidget(createWidgetUnderTest(const AppShell()));
       await tester.pump();
 
       expect(find.text('Início'), findsAtLeastNWidgets(1));
       expect(find.text('Buscar'), findsAtLeastNWidgets(1));
+      expect(find.text('Bibliotecário'), findsAtLeastNWidgets(1));
+      expect(find.text('Anfitrião'), findsAtLeastNWidgets(1));
+      expect(find.text('Artesão'), findsAtLeastNWidgets(1));
     });
 
-    testWidgets('AppShell shows Tags navigation for Librarian persona',
-        (tester) async {
+    testWidgets('Switching persona updates PersonaService', (tester) async {
+      tester.view.physicalSize = const Size(400, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
+
+      await tester.pumpWidget(createWidgetUnderTest(const AppShell()));
+      await tester.pumpAndSettle();
+
+      // Default persona is librarian
+      expect(PersonaService.instance.activePersona, AppPersona.librarian);
+
+      // Tap persona in nav bar - use a more robust finder
+      final navBarItem = find.descendant(
+        of: find.byType(BottomNavigationBar),
+        matching: find.text('Anfitrião'),
+      );
+      
+      expect(navBarItem, findsOneWidget);
+      await tester.tap(navBarItem);
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(PersonaService.instance.activePersona, AppPersona.host);
+      
       PersonaService.instance.setPersona(AppPersona.librarian);
+    });
+  });
+
+  group('AppShell Persona Features', () {
+    testWidgets('AppShell shows Home screen by default', (tester) async {
+      tester.view.physicalSize = const Size(400, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
 
       await tester.pumpWidget(createWidgetUnderTest(const AppShell()));
       await tester.pump();
 
-      expect(find.text('Tags'), findsAtLeastNWidgets(1));
-      expect(find.text('Minhas Músicas'), findsAtLeastNWidgets(1));
-      expect(find.text('Início'), findsNothing);
+      expect(find.text('Minhas Personas'), findsOneWidget);
     });
 
-    testWidgets('AppShell shows Disco and Karaoke for Host persona',
-        (tester) async {
-      PersonaService.instance.setPersona(AppPersona.host);
+    testWidgets('Librarian persona includes Playlists', (tester) async {
+      tester.view.physicalSize = const Size(400, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
+
+      PersonaService.instance.setPersona(AppPersona.librarian);
+      await tester.pumpWidget(createWidgetUnderTest(const AppShell()));
+      await tester.pumpAndSettle();
+      
+      // Select Librarian persona via Nav Bar
+      final libItem = find.descendant(
+        of: find.byType(BottomNavigationBar),
+        matching: find.text('Bibliotecário'),
+      );
+      await tester.tap(libItem);
+      await tester.pump(const Duration(milliseconds: 500));
+
+      // The persona shell shows tabs. "Playlists" is one of them.
+      expect(find.text('Playlists'), findsAtLeastNWidgets(1));
+    });
+  });
+
+  group('Home Screen Interaction', () {
+    testWidgets('Tapping persona card on Home screen switches persona', (tester) async {
+      tester.view.physicalSize = const Size(400, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
 
       await tester.pumpWidget(createWidgetUnderTest(const AppShell()));
       await tester.pump();
 
-      expect(find.text('Disco'), findsAtLeastNWidgets(1));
-      expect(find.text('Karaoke'), findsAtLeastNWidgets(1));
+      // Tap "Anfitrião" card on Home screen (should be first instance)
+      await tester.tap(find.text('Anfitrião').first);
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(PersonaService.instance.activePersona, AppPersona.host);
     });
   });
 }
