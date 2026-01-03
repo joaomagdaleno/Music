@@ -29,7 +29,7 @@ class _KaraokeScreenState extends State<KaraokeScreen> {
   void _startTracking() {
     _timer = Timer.periodic(const Duration(milliseconds: 200), (_) {
       if (!mounted) return;
-      final pos = PlaybackService.instance.player.position.inMilliseconds;
+      final pos = PlaybackService.instance.player.state.position.inMilliseconds;
       final lyrics = PlaybackService.instance.currentLyrics;
       int index = -1;
       for (int i = 0; i < lyrics.length; i++) {

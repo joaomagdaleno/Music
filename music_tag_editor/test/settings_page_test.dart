@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:just_audio/just_audio.dart';
+// Duplicate mocktail removed
+import 'test_helper.dart'; // test_helper
 import 'package:music_tag_editor/models/filename_format.dart';
 import 'package:music_tag_editor/screens/settings/settings_screen.dart';
 import 'package:music_tag_editor/services/database_service.dart';
@@ -22,7 +23,8 @@ class MockFirebaseSyncService extends Mock implements FirebaseSyncService {}
 
 class MockThemeService extends Mock implements ThemeService {}
 
-class MockAudioPlayer extends Mock implements AudioPlayer {}
+// MockAudioPlayer removed
+
 
 class MockAuthService extends Mock implements AuthService {}
 
@@ -32,7 +34,7 @@ void main() {
   late MockPlaybackService mockPlayback;
   late MockFirebaseSyncService mockSync;
   late MockThemeService mockTheme;
-  late MockAudioPlayer mockPlayer;
+  late MockPlayer mockPlayer;
   late MockAuthService mockAuth;
 
   setUpAll(() {
@@ -47,7 +49,8 @@ void main() {
     mockPlayback = MockPlaybackService();
     mockSync = MockFirebaseSyncService();
     mockTheme = MockThemeService();
-    mockPlayer = MockAudioPlayer();
+    mockPlayer = MockPlayer();
+
     mockAuth = MockAuthService();
 
     DatabaseService.instance = mockDb;

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
+import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/connectivity_service.dart';
 import 'package:music_tag_editor/services/desktop_integration_service.dart';
 import 'package:music_tag_editor/services/persona_service.dart';
@@ -104,6 +105,9 @@ class _AppBootstrapState extends State<AppBootstrap> {
       try {
         await StartupLogger.log('Initializing SecurityService...');
         await SecurityService.instance.init();
+        
+        await StartupLogger.log('Initializing DependencyManager...');
+        await DependencyManager.instance.ensureDependencies();
         
         await StartupLogger.log('Initializing AuthService...');
         AuthService.instance.init();

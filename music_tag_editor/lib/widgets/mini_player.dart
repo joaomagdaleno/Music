@@ -1,8 +1,7 @@
-import 'dart:io';
+import 'package:media_kit/media_kit.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:music_tag_editor/screens/player/player_screen.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
@@ -24,94 +23,72 @@ class MiniPlayer extends StatelessWidget {
   }
 }
 
-class _FluentMiniPlayer extends StatelessWidget {
+class _FluentMiniPlayer extends StatefulWidget {
   const _FluentMiniPlayer();
+
+  @override
+  State<_FluentMiniPlayer> createState() => _FluentMiniPlayerState();
+}
+
+class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
+  double _volume = 100.0;
 
   @override
   Widget build(BuildContext context) {
     final playback = PlaybackService.instance;
+    final theme = fluent.FluentTheme.of(context);
 
-    return StreamBuilder<Map<String, dynamic>>(
-      stream: Rx.combineLatest3(
-        playback.player.playerStateStream,
-        playback.currentTrackStream.startWith(playback.currentTrack),
-        playback.player.positionStream,
-        (state, track, position) => {
-          'state': state,
-          'track': track,
-          'position': position,
-        },
-      ),
-      builder: (context, snapshot) {
-        final data = snapshot.data;
-        final track = data?['track'] as SearchResult?;
-        final state = data?['state'] as PlayerState?;
-        final position = data?['position'] as Duration? ?? Duration.zero;
-        final duration = playback.player.duration ?? Duration.zero;
+    return StreamBuilder<bool>(
+      stream: playback.player.stream.playing,
+      builder: (context, playingSnapshot) {
+        final playing = playingSnapshot.data ?? false;
         
-        if (track == null) {
-          return const SizedBox.shrink();
-        }
+        return StreamBuilder<SearchResult?>(
+          stream: playback.currentTrackStream.startWith(playback.currentTrack),
+          builder: (context, trackSnapshot) {
+            final track = trackSnapshot.data;
+            if (track == null) return const SizedBox.shrink();
 
-        final playing = state?.playing ?? false;
-        final progress = duration.inMilliseconds > 0 
-            ? position.inMilliseconds / duration.inMilliseconds 
-            : 0.0;
-
-        return fluent.HoverButton(
-          onPressed: () {
-            appNavigatorKey.currentState?.push(
-              fluent.FluentPageRoute(builder: (context) => const PlayerScreen()),
-            );
-          },
-          builder: (context, states) {
             return Container(
-              height: 72,
+              height: 84,
               decoration: BoxDecoration(
-                color: fluent.FluentTheme.of(context).cardColor,
+                color: theme.cardColor,
                 border: Border(
                   top: BorderSide(
-                    color: fluent.FluentTheme.of(context).resources.dividerStrokeColorDefault,
+                    color: theme.resources.dividerStrokeColorDefault,
                     width: 1,
                   ),
                 ),
               ),
-              child: Stack(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
                 children: [
-                   // Progress Bar at the top
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: SizedBox(
-                      height: 2,
-                      child: LinearProgressIndicator(
-                        value: progress,
-                        backgroundColor: Colors.transparent,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          fluent.FluentTheme.of(context).accentColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                  // LEFT: Track Info
+                  Expanded(
+                    flex: 3,
                     child: Row(
                       children: [
                         if (track.thumbnail != null)
-                          Hero(
-                            tag: 'player_art',
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(4),
-                              child: track.thumbnail != null && (track.thumbnail!.startsWith('http') || track.thumbnail!.startsWith('https'))
-                              ? Image.network(track.thumbnail!, width: 48, height: 48, fit: BoxFit.cover)
-                              : track.thumbnail != null
-                                  ? Image.file(File(track.thumbnail!), width: 48, height: 48, fit: BoxFit.cover)
-                                  : const Icon(fluent.FluentIcons.music_note),
-                            ),
-                          ),
+                           Hero(
+                              tag: 'player_art',
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(4),
+                                child: Image.network(
+                                  track.thumbnail!,
+                                  width: 56,
+                                  height: 56,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, __, ___) => Container(
+                                    width: 56,
+                                    height: 56,
+                                    color: theme.menuColor,
+                                    child: const Icon(fluent.FluentIcons.music_note),
+                                  ),
+                                ),
+                              ),
+                           ),
                         const SizedBox(width: 12),
-                        Expanded(
+                        Flexible(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,37 +99,201 @@ class _FluentMiniPlayer extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
+                              const SizedBox(height: 4),
                               Text(
                                 track.artist,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: fluent.FluentTheme.of(context).typography.caption?.color,
+                                  color: theme.typography.caption?.color,
                                 ),
                               ),
                             ],
                           ),
                         ),
+                        const SizedBox(width: 16),
                         fluent.IconButton(
-                          icon: Icon(playing ? fluent.FluentIcons.pause : fluent.FluentIcons.play),
-                          onPressed: () => playing ? playback.pause() : playback.resume(),
-                        ),
-                        const SizedBox(width: 8),
-                        fluent.IconButton(
-                          icon: const Icon(fluent.FluentIcons.clear),
-                          onPressed: () => playback.stop(),
+                          icon: const Icon(fluent.FluentIcons.heart),
+                          onPressed: () {
+                            // TODO: Like logic
+                          },
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
+
+                  // CENTER: Controls & Progress
+                  Expanded(
+                    flex: 4,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                          // Controls Row
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              StreamBuilder<bool>(
+                                stream: playback.player.stream.shuffle,
+                                builder: (context, snapshot) {
+                                  final isShuffle = snapshot.data ?? false;
+                                  return fluent.IconButton(
+                                    icon: Icon(
+                                      Icons.shuffle,
+                                      color: isShuffle ? theme.accentColor : null,
+                                    ),
+                                    onPressed: () => playback.toggleShuffle(),
+                                  );
+                                },
+                              ),
+                              const SizedBox(width: 8),
+                              fluent.IconButton(
+                                icon: const Icon(fluent.FluentIcons.previous),
+                                onPressed: () => playback.previous(),
+                              ),
+                              const SizedBox(width: 16),
+                              Container(
+                                width: 32,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                  color: theme.accentColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: fluent.IconButton(
+                                  icon: Icon(
+                                    playing ? fluent.FluentIcons.pause : fluent.FluentIcons.play,
+                                    color: Colors.white,
+                                    size: 14,
+                                  ),
+                                  onPressed: () => playing ? playback.pause() : playback.resume(),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              fluent.IconButton(
+                                icon: const Icon(fluent.FluentIcons.next),
+                                onPressed: () => playback.next(),
+                              ),
+                              const SizedBox(width: 8),
+                              StreamBuilder<PlaylistMode>(
+                                stream: playback.player.stream.playlistMode,
+                                builder: (context, snapshot) {
+                                  final mode = snapshot.data ?? PlaylistMode.none;
+                                  IconData icon;
+                                  Color? color;
+                                  if (mode == PlaylistMode.single) {
+                                    icon = Icons.repeat_one;
+                                    color = theme.accentColor;
+                                  } else if (mode == PlaylistMode.loop) {
+                                    icon = Icons.repeat;
+                                    color = theme.accentColor;
+                                  } else {
+                                    icon = Icons.repeat;
+                                    color = null;
+                                  }
+                                  return fluent.IconButton(
+                                    icon: Icon(icon, color: color),
+                                    onPressed: () => playback.toggleRepeat(),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        const SizedBox(height: 4),
+                        // Progress Bar
+                        StreamBuilder<Duration>(
+                          stream: playback.player.stream.position,
+                          builder: (context, posSnapshot) {
+                            final position = posSnapshot.data ?? Duration.zero;
+                            final duration = playback.player.state.duration;
+                            final max = duration.inMilliseconds.toDouble();
+                            final value = position.inMilliseconds.toDouble().clamp(0.0, max > 0 ? max : 1.0);
+                            
+                            return SizedBox(
+                              width: 400,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    _formatDuration(position),
+                                    style: TextStyle(fontSize: 11, color: theme.typography.caption?.color),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: fluent.Slider(
+                                      value: value,
+                                      max: max > 0 ? max : 1.0,
+                                      onChanged: (val) {
+                                        playback.seek(Duration(milliseconds: val.toInt()));
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    _formatDuration(duration),
+                                    style: TextStyle(fontSize: 11, color: theme.typography.caption?.color),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                    // RIGHT: Volume & Extras
+                    Expanded(
+                      flex: 3,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          fluent.IconButton(
+                            icon: const Icon(fluent.FluentIcons.playlist_music),
+                            onPressed: () {
+                               // Show Queue
+                             
+                            },
+                          ),
+                          const SizedBox(width: 12),
+                          SizedBox(
+                            width: 100,
+                            child: Row(
+                              children: [
+                                const Icon(fluent.FluentIcons.volume2, size: 16),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: fluent.Slider(
+                                    value: _volume,
+                                    max: 100,
+                                    onChanged: (v) {
+                                      setState(() => _volume = v);
+                                      playback.player.setVolume(v);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                           fluent.IconButton(
+                                  icon: const fluent.Icon(fluent.FluentIcons.chrome_close),
+                                  onPressed: () => playback.stop(),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      );
+  }
+
+  String _formatDuration(Duration d) {
+    final minutes = d.inMinutes;
+    final seconds = d.inSeconds % 60;
+    return '$minutes:${seconds.toString().padLeft(2, '0')}';
   }
 }
 
@@ -163,133 +304,161 @@ class _MaterialMiniPlayer extends StatelessWidget {
   Widget build(BuildContext context) {
     final playback = PlaybackService.instance;
 
-    return StreamBuilder<Map<String, dynamic>>(
-      stream: Rx.combineLatest3(
-        playback.player.playerStateStream,
-        playback.currentTrackStream.startWith(playback.currentTrack),
-        playback.player.positionStream,
-        (state, track, position) => {
-          'state': state,
-          'track': track,
-          'position': position,
-        },
-      ),
-      builder: (context, snapshot) {
-        final data = snapshot.data;
-        final track = data?['track'] as SearchResult?;
-        final state = data?['state'] as PlayerState?;
-        final position = data?['position'] as Duration? ?? Duration.zero;
-        final duration = playback.player.duration ?? Duration.zero;
-        
-        if (track == null) {
-          return const SizedBox.shrink();
-        }
+    return StreamBuilder<bool>(
+      stream: playback.player.stream.playing,
+      builder: (context, playingSnapshot) {
+        final playing = playingSnapshot.data ?? false;
+        return StreamBuilder<SearchResult?>(
+          stream: playback.currentTrackStream.startWith(playback.currentTrack),
+          builder: (context, trackSnapshot) {
+            final track = trackSnapshot.data;
+            if (track == null) return const SizedBox.shrink();
 
-        final playing = state?.playing ?? false;
-        final progress = duration.inMilliseconds > 0 
-            ? position.inMilliseconds / duration.inMilliseconds 
-            : 0.0;
-
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          child: Container(
-            height: 68,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.95),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, -2),
-                ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () {
-                    appNavigatorKey.currentState?.push(
-                      MaterialPageRoute(builder: (context) => const PlayerScreen()),
-                    );
-                  },
-                  child: Stack(
-                children: [
-                   // Progress Bar at the bottom
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: SizedBox(
-                      height: 2,
-                      child: LinearProgressIndicator(
-                        value: progress,
-                        backgroundColor: Colors.transparent,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Row(
-                      children: [
-                        if (track.thumbnail != null)
-                          Hero(
-                            tag: 'player_art',
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: track.thumbnail != null && (track.thumbnail!.startsWith('http') || track.thumbnail!.startsWith('https'))
-                                ? Image.network(track.thumbnail!, width: 44, height: 44, fit: BoxFit.cover)
-                                : track.thumbnail != null
-                                    ? Image.file(File(track.thumbnail!), width: 44, height: 44, fit: BoxFit.cover)
-                                    : const Icon(Icons.music_note),
-                            ),
-                          ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                track.title,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                track.artist,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(playing ? Icons.pause : Icons.play_arrow),
-                          onPressed: () => playing ? playback.pause() : playback.resume(),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.close),
-                          onPressed: () => playback.stop(),
-                        ),
-                      ],
-                    ),
+            return Container(
+              margin: const EdgeInsets.all(8),
+              height: 72,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainer,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 8,
+                    offset: Offset(0, 2),
                   ),
                 ],
               ),
+              child: InkWell(
+                onTap: () {
+                   appNavigatorKey.currentState?.push(
+                      MaterialPageRoute(builder: (context) => const PlayerScreen()),
+                   );
+                },
+                borderRadius: BorderRadius.circular(12),
+                child: Column(
+                  children: [
+                    // Progress Indicator (Thin line at top)
+                     StreamBuilder<Duration>(
+                        stream: playback.player.stream.position,
+                        builder: (context, posSnapshot) {
+                          final position = posSnapshot.data ?? Duration.zero;
+                          final duration = playback.player.state.duration;
+                          final progress = duration.inMilliseconds > 0 
+                              ? position.inMilliseconds / duration.inMilliseconds 
+                              : 0.0;
+                           return LinearProgressIndicator(
+                             value: progress,
+                             minHeight: 2,
+                             backgroundColor: Colors.transparent,
+                             valueColor: AlwaysStoppedAnimation(
+                               Theme.of(context).colorScheme.primary,
+                             ),
+                           );
+                        }
+                     ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Row(
+                          children: [
+                             // Art
+                             if (track.thumbnail != null)
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(
+                                    track.thumbnail!,
+                                    width: 48,
+                                    height: 48,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (_,__,___) => const Icon(Icons.music_note),
+                                  ),
+                                ),
+                            const SizedBox(width: 12),
+                            // Info
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    track.title,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    track.artist,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Controls
+                            // Controls
+                            // Shuffle
+                            StreamBuilder<bool>(
+                              stream: playback.player.stream.shuffle,
+                              builder: (context, snapshot) {
+                                final isShuffle = snapshot.data ?? false;
+                                return IconButton(
+                                  icon: const Icon(Icons.shuffle),
+                                  color: isShuffle ? Theme.of(context).colorScheme.primary : null,
+                                  onPressed: () => playback.toggleShuffle(),
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.skip_previous),
+                              onPressed: () => playback.previous(),
+                            ),
+                            IconButton(
+                              icon: Icon(playing ? Icons.pause_circle_filled : Icons.play_circle_filled),
+                              iconSize: 40,
+                              color: Theme.of(context).colorScheme.primary,
+                              onPressed: () => playing ? playback.pause() : playback.resume(),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.skip_next),
+                              onPressed: () => playback.next(),
+                            ),
+                            // Repeat
+                            StreamBuilder<PlaylistMode>(
+                              stream: playback.player.stream.playlistMode,
+                              builder: (context, snapshot) {
+                                final mode = snapshot.data ?? PlaylistMode.none;
+                                IconData icon;
+                                Color? color;
+                                if (mode == PlaylistMode.single) {
+                                  icon = Icons.repeat_one;
+                                  color = Theme.of(context).colorScheme.primary;
+                                } else if (mode == PlaylistMode.loop) {
+                                  icon = Icons.repeat;
+                                  color = Theme.of(context).colorScheme.primary;
+                                } else {
+                                  icon = Icons.repeat;
+                                  color = null;
+                                }
+                                return IconButton(
+                                  icon: Icon(icon),
+                                  color: color,
+                                  onPressed: () => playback.toggleRepeat(),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );

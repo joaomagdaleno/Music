@@ -24,7 +24,18 @@ class _FluentSmartLibraryViewState extends State<FluentSmartLibraryView> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage(
-      header: const PageHeader(title: Text('Biblioteca Inteligente')),
+      header: PageHeader(
+        title: const Text('Biblioteca Inteligente'),
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(FluentIcons.back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
+      ),
       content: TabView(
         currentIndex: _currentIndex,
         onChanged: (index) => setState(() => _currentIndex = index),

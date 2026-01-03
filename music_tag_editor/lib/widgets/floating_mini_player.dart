@@ -53,10 +53,9 @@ class _FloatingMiniPlayerState extends State<FloatingMiniPlayer> {
               border: Border.all(color: Colors.white24),
             ),
             child: StreamBuilder<SearchResult?>(
-              stream: _playback.player.currentIndexStream
-                  .map((_) => _playback.currentTrack),
+              stream: _playback.currentTrackStream,
               builder: (context, snapshot) {
-                final track = _playback.currentTrack;
+                final track = snapshot.data ?? _playback.currentTrack;
 
                 return Row(
                   children: [
@@ -112,7 +111,7 @@ class _FloatingMiniPlayerState extends State<FloatingMiniPlayer> {
                     ),
                     // Playback Controls
                     StreamBuilder<bool>(
-                      stream: _playback.player.playingStream,
+                      stream: _playback.player.stream.playing,
                       builder: (context, snapshot) {
                         final isPlaying = snapshot.data ?? false;
                         return Row(
@@ -122,7 +121,7 @@ class _FloatingMiniPlayerState extends State<FloatingMiniPlayer> {
                               icon: const Icon(Icons.skip_previous,
                                   color: Colors.white70, size: 20),
                               onPressed: () =>
-                                  _playback.player.seekToPrevious(),
+                                  _playback.previous(),
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                             ),
@@ -143,7 +142,7 @@ class _FloatingMiniPlayerState extends State<FloatingMiniPlayer> {
                             IconButton(
                               icon: const Icon(Icons.skip_next,
                                   color: Colors.white70, size: 20),
-                              onPressed: () => _playback.player.seekToNext(),
+                              onPressed: () => _playback.next(),
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                             ),

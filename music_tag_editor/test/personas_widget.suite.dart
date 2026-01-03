@@ -17,42 +17,38 @@ import 'package:music_tag_editor/services/security_service.dart';
 import 'package:music_tag_editor/services/desktop_integration_service.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/download_service.dart';
-import 'package:just_audio/just_audio.dart';
+// import 'package:media_kit/media_kit.dart'; // Unused
+import 'test_helper.dart';
 
+class MockAuthService extends Mock implements AuthService {}
 class MockDatabaseService extends Mock implements DatabaseService {}
 class MockThemeService extends Mock implements ThemeService {}
-class MockConnectivityService extends Mock implements ConnectivityService {}
-class MockAuthService extends Mock implements AuthService {}
 class MockPlaybackService extends Mock implements PlaybackService {}
+class MockConnectivityService extends Mock implements ConnectivityService {}
 class MockSecurityService extends Mock implements SecurityService {}
 class MockDesktopIntegrationService extends Mock implements DesktopIntegrationService {}
-class MockDependencyManager extends Mock implements DependencyManager {}
-class MockDownloadService extends Mock implements DownloadService {}
-class MockAudioPlayer extends Mock implements AudioPlayer {}
+// Removed MockAudioPlayer
 
 void main() {
+  late MockAuthService mockAuth;
   late MockDatabaseService mockDb;
   late MockThemeService mockTheme;
-  late MockConnectivityService mockConnectivity;
-  late MockAuthService mockAuth;
   late MockPlaybackService mockPlayback;
+  late MockConnectivityService mockConnectivity;
   late MockSecurityService mockSecurity;
   late MockDesktopIntegrationService mockDesktop;
-  late MockDependencyManager mockDeps;
-  late MockDownloadService mockDownload;
-  late MockAudioPlayer mockAudioPlayer;
+  late MockPlayer mockAudioPlayer; // Renamed to keep usage consistent if it was mockAudioPlayer
 
   setUp(() {
+    mockAuth = MockAuthService();
     mockDb = MockDatabaseService();
     mockTheme = MockThemeService();
     mockConnectivity = MockConnectivityService();
-    mockAuth = MockAuthService();
     mockPlayback = MockPlaybackService();
     mockSecurity = MockSecurityService();
     mockDesktop = MockDesktopIntegrationService();
-    mockDeps = MockDependencyManager();
-    mockDownload = MockDownloadService();
-    mockAudioPlayer = MockAudioPlayer();
+    mockAudioPlayer = MockPlayer();
+
 
     DatabaseService.instance = mockDb;
     ThemeService.instance = mockTheme;
@@ -77,15 +73,14 @@ void main() {
     when(() => mockDb.saveSetting(any(), any())).thenAnswer((_) async {});
     when(() => mockDb.getTracks()).thenAnswer((_) async => []);
     when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
-    when(() => mockAudioPlayer.playerStateStream).thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.positionStream).thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.bufferedPositionStream).thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.durationStream).thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.volumeStream).thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.speedStream).thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.shuffleModeEnabledStream).thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.loopModeStream).thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.sequenceStateStream).thenAnswer((_) => const Stream.empty());
+    // Fake streams
+    final fakeStream = FakePlayerStream();
+    when(() => mockAudioPlayer.stream).thenReturn(fakeStream);
+    
+    // Stub individual streams via the fake if accessed directly (though test might access via stream property)
+    // If the test accesses `mockPlayer.playerStateStream` (old API), we must remove that.
+    // Assuming the test code under verification has been updated, we just need to ensure generic stream access works.
+    
     when(() => mockAuth.isAuthenticated).thenReturn(false);
     when(() => mockPlayback.player).thenReturn(mockAudioPlayer);
     when(() => mockPlayback.currentTrack).thenReturn(null);

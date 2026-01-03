@@ -28,6 +28,15 @@ class FluentVaultView extends StatelessWidget {
     return ScaffoldPage(
       header: PageHeader(
         title: const Text('Cofre Privado'),
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(FluentIcons.back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
         commandBar: isUnlocked ? CommandBar(mainAxisAlignment: MainAxisAlignment.end, primaryItems: [
           CommandBarButton(icon: const Icon(FluentIcons.lock), label: const Text('Bloquear'), onPressed: onLock),
         ]) : null,

@@ -52,7 +52,18 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage(
-      header: const PageHeader(title: Text('Configurações')),
+      header: PageHeader(
+        title: const Text('Configurações'),
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(FluentIcons.back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
+      ),
       content: widget.isLoading
           ? const Center(child: ProgressRing())
           : SingleChildScrollView(

@@ -1,7 +1,11 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:media_kit/media_kit.dart';
+import 'package:media_kit_video/media_kit_video.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
+import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/services/search_service.dart';
+import 'package:music_tag_editor/services/startup_logger.dart';
 
 class FluentPlayerView extends StatelessWidget {
   final void Function(BuildContext) onShowSleepTimer;
@@ -34,62 +38,80 @@ class FluentPlayerView extends StatelessWidget {
           ],
         ),
       ),
-      content: StreamBuilder<PlayerState>(
-        stream: playback.player.playerStateStream,
+      content: StreamBuilder<SearchResult?>(
+        stream: playback.currentTrackStream,
         builder: (context, snapshot) {
-          final track = playback.currentTrack;
+          final track = snapshot.data;
           if (track == null) return const Center(child: Text('Nenhuma música tocando'));
-
-          final playing = snapshot.data?.playing ?? false;
 
           return Container(
             padding: const EdgeInsets.all(24),
             child: Row(
               children: [
-                // Album Art
+                // Album Art / Video
                 Expanded(
-                  flex: 4,
+                  flex: 5,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (track.thumbnail != null)
-                        Card(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.network(track.thumbnail!, width: 300, height: 300, fit: BoxFit.cover),
+                      Card(
+                        child: AspectRatio(
+                          aspectRatio: 16 / 9,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Video(controller: playback.videoController),
+                              // Optional: Show album art if video is not available/loading?
+                              // For now, media_kit handles black screen if no video track.
+                            ],
                           ),
                         ),
+                      ),
                       const SizedBox(height: 24),
-                      Text(track.title, style: FluentTheme.of(context).typography.title),
-                      Text(track.artist, style: FluentTheme.of(context).typography.body),
+                      Text(track.title, style: FluentTheme.of(context).typography.title, textAlign: TextAlign.center),
+                      Text(track.artist, style: FluentTheme.of(context).typography.body, textAlign: TextAlign.center),
+                      const SizedBox(height: 16),
+                      _buildResolutionSelector(context),
                     ],
                   ),
                 ),
                 // Controls & Lyrics
                 Expanded(
-                  flex: 6,
+                  flex: 5,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       FluentProgressBar(player: playback.player),
-                      const SizedBox(height: 32),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(icon: const Icon(FluentIcons.previous, size: 32), onPressed: () {}),
-                          const SizedBox(width: 24),
-                          FilledButton(
-                            onPressed: () => playing ? playback.pause() : playback.resume(),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Icon(playing ? FluentIcons.pause : FluentIcons.play, size: 32),
-                            ),
-                          ),
-                          const SizedBox(width: 24),
-                          IconButton(icon: const Icon(FluentIcons.next, size: 32), onPressed: () {}),
-                        ],
+                      const SizedBox(height: 24), // Reduced spacing
+                      StreamBuilder<bool>(
+                        stream: playback.player.stream.playing,
+                        builder: (context, playingSnapshot) {
+                          final playing = playingSnapshot.data ?? false;
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                icon: const Icon(FluentIcons.previous, size: 20), // Smaller icon
+                                onPressed: () => playback.player.previous(),
+                              ),
+                              const SizedBox(width: 16), // Smaller spacing
+                              FilledButton(
+                                onPressed: () => playing ? playback.pause() : playback.resume(),
+                                style: ButtonStyle(
+                                  padding: WidgetStateProperty.all(const EdgeInsets.all(12)), // Smaller padding
+                                ),
+                                child: Icon(playing ? FluentIcons.pause : FluentIcons.play, size: 24), // Smaller icon
+                              ),
+                              const SizedBox(width: 16),
+                              IconButton(
+                                icon: const Icon(FluentIcons.next, size: 20), // Smaller icon
+                                onPressed: () => playback.player.next(),
+                              ),
+                            ],
+                          );
+                        },
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 24),
                       const Expanded(child: FluentLyricsView()),
                     ],
                   ),
@@ -101,19 +123,50 @@ class FluentPlayerView extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildResolutionSelector(BuildContext context) {
+    return FutureBuilder<List<String>>(
+      future: PlaybackService.instance.currentTrack != null 
+          ? SearchService.instance.getAvailableResolutions(PlaybackService.instance.currentTrack!.url)
+          : Future.value(['Auto']),
+      builder: (context, snapshot) {
+        final resolutions = snapshot.data ?? ['Auto'];
+        return DropDownButton(
+          title: const Text('Resolução'),
+          items: resolutions.map((r) => MenuFlyoutItem(
+            text: Text(r),
+            onPressed: () async {
+              final track = PlaybackService.instance.currentTrack;
+              if (track != null) {
+                StartupLogger.log('Selected resolution: $r');
+                // Implementation for changing resolution:
+                // We fetch the new stream URL and open it at current position
+                final newUrl = await SearchService.instance.getStreamUrl(track.url, resolution: r);
+                if (newUrl != null) {
+                   final position = PlaybackService.instance.player.state.position;
+                   await PlaybackService.instance.player.open(Media(newUrl));
+                   await PlaybackService.instance.player.seek(position);
+                }
+              }
+            },
+          )).toList(),
+        );
+      },
+    );
+  }
 }
 
 class FluentProgressBar extends StatelessWidget {
-  final AudioPlayer player;
+  final Player player;
   const FluentProgressBar({super.key, required this.player});
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Duration?>(
-      stream: player.positionStream,
+    return StreamBuilder<Duration>(
+      stream: player.stream.position,
       builder: (context, snapshot) {
         final position = snapshot.data ?? Duration.zero;
-        final duration = player.duration ?? Duration.zero;
+        final duration = player.state.duration;
         final maxVal = duration.inMilliseconds.toDouble().clamp(1.0, double.infinity);
 
         return Padding(
@@ -156,7 +209,7 @@ class FluentLyricsView extends StatelessWidget {
         }
 
         return StreamBuilder<Duration>(
-          stream: PlaybackService.instance.player.positionStream,
+          stream: PlaybackService.instance.player.stream.position,
           builder: (context, posSnapshot) {
             final position = posSnapshot.data ?? Duration.zero;
             return ListView.builder(

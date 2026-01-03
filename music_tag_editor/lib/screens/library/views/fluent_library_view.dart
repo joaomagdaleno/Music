@@ -38,6 +38,15 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
     return ScaffoldPage(
       header: PageHeader(
         title: Text(widget.title),
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(FluentIcons.back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
         commandBar: CommandBar(
           primaryItems: [
             CommandBarButton(

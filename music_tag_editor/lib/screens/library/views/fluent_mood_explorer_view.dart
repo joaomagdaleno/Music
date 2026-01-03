@@ -16,7 +16,18 @@ class FluentMoodExplorerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage(
-      header: const PageHeader(title: Text('Explorar por Humor')),
+      header: PageHeader(
+        title: const Text('Explorar por Humor'),
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(FluentIcons.back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
+      ),
       content: isLoading
           ? const Center(child: ProgressRing())
           : moodTracks.isEmpty

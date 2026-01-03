@@ -23,7 +23,18 @@ class FluentPlaylistImporterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage(
-      header: const PageHeader(title: Text('Importador de Playlist')),
+      header: PageHeader(
+        title: const Text('Importador de Playlist'),
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(FluentIcons.back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
+      ),
       content: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(

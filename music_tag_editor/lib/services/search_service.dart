@@ -444,15 +444,22 @@ class SearchService {
   }
 
   /// Get direct streaming URL for a given media URL.
-  Future<String?> getStreamUrl(String url) async {
+  Future<String?> getStreamUrl(String url, {String? resolution}) async {
     try {
       final args = [
         ..._getBaseArgs(),
         '-g',
-        '-f',
-        'bestaudio/best',
-        url,
       ];
+
+      if (resolution != null && resolution != 'Auto') {
+        // Try to get specific resolution, fallback to best
+        args.addAll(['-f', 'bestvideo[height<=${resolution.replaceAll('p', '')}]+bestaudio/best[height<=${resolution.replaceAll('p', '')}]']);
+      } else {
+        // Prefer HLS/DASH for adaptive bitrate, or best quality
+        args.addAll(['-f', 'bestvideo+bestaudio/best']);
+      }
+      
+      args.add(url);
 
       debugPrint('[SearchService] getStreamUrl Command: ${_deps.ytDlpPath} ${args.join(' ')}');
       final result = await processRunner(
@@ -463,14 +470,15 @@ class SearchService {
       );
 
       if (result.exitCode == 0) {
-        final streamUrl = (result.stdout as String).trim();
+        final streamUrls = (result.stdout as String).trim().split('\n');
+        // If it returned two URLs (video and audio), media_kit can handle the first one if it's a combined stream
+        // but usually we want the best single URL or use media_kit's ability to open multiple.
+        // For simplicity with 'open(Media(url))', we'll use the first one and rely on yt-dlp finding a playble format.
+        final streamUrl = streamUrls.first;
         final displayUrl = streamUrl.length > 50 ? '${streamUrl.substring(0, 50)}...' : streamUrl;
         StartupLogger.log('[SearchService] Found Stream URL: $displayUrl');
         return streamUrl;
       }
-      StartupLogger.log('[SearchService] getStreamUrl FAILED. Exit code: ${result.exitCode}');
-      StartupLogger.log('[SearchService] stderr: ${result.stderr}');
-      StartupLogger.log('[SearchService] stdout: ${result.stdout}');
       return null;
 
     } catch (e, stack) {
@@ -479,10 +487,31 @@ class SearchService {
     }
   }
 
+  /// Fetches available resolutions for a video.
+  Future<List<String>> getAvailableResolutions(String url) async {
+    try {
+      final details = await getVideoDetails(url);
+      if (details == null) return ['Auto'];
+
+      final formats = details['formats'] as List?;
+      if (formats == null) return ['Auto'];
+
+      final resolutions = <int>{};
+      for (final f in formats) {
+        final height = f['height'] as int?;
+        if (height != null) resolutions.add(height);
+      }
+
+      final sorted = resolutions.toList()..sort((a, b) => b.compareTo(a));
+      return ['Auto', ...sorted.map((r) => '${r}p')];
+    } catch (e) {
+      return ['Auto'];
+    }
+  }
+
   /// Fetches detailed video information including available formats and subtitles.
   Future<Map<String, dynamic>?> getVideoDetails(String videoUrl) async {
-    final ytDlp = await DependencyManager.instance.ytDlpPath;
-    if (ytDlp == null) return null;
+    final ytDlp = DependencyManager.instance.ytDlpPath;
 
     try {
       final args = _getBaseArgs();

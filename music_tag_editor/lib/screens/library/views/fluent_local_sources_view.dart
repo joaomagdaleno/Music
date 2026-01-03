@@ -26,6 +26,15 @@ class FluentLocalSourcesView extends StatelessWidget {
     return ScaffoldPage(
       header: PageHeader(
         title: const Text('Pastas de Música'),
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(FluentIcons.back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
         commandBar: CommandBar(
           mainAxisAlignment: MainAxisAlignment.end,
           primaryItems: [
