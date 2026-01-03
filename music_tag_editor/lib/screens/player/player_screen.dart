@@ -5,6 +5,7 @@ import 'package:music_tag_editor/screens/player/views/material_player_view.dart'
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/widgets/duo_matching_dialog.dart';
 import 'package:music_tag_editor/widgets/cast_dialog.dart';
+import 'package:music_tag_editor/widgets/queue_sheet.dart';
 
 class PlayerScreen extends StatelessWidget {
   const PlayerScreen({super.key});

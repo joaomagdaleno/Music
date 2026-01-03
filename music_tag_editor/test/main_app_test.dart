@@ -7,7 +7,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:media_kit/media_kit.dart';
+import 'test_helper.dart';
 import 'package:music_tag_editor/main.dart';
 import 'package:music_tag_editor/screens/library/library_screen.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
@@ -45,7 +46,8 @@ class MockSearchService extends Mock implements SearchService {}
 
 class MockDownloadService extends Mock implements DownloadService {}
 
-class MockAudioPlayer extends Mock implements AudioPlayer {}
+// MockAudioPlayer removed. Using MockPlayer from test_helper.dart or media_kit imports.
+
 
 // Mock HTTP for NetworkImage
 class MockHttpClient extends Mock implements HttpClient {}
@@ -106,7 +108,7 @@ void main() {
   late MockDependencyManager mockDeps;
   late MockSearchService mockSearch;
   late MockDownloadService mockDownload;
-  late MockAudioPlayer mockAudioPlayer;
+  late MockPlayer mockPlayer;
 
   setUp(() {
     mockAuth = MockAuthService();
@@ -119,7 +121,7 @@ void main() {
     mockDeps = MockDependencyManager();
     mockSearch = MockSearchService();
     mockDownload = MockDownloadService();
-    mockAudioPlayer = MockAudioPlayer();
+    mockPlayer = MockPlayer();
 
     AuthService.instance = mockAuth;
     DatabaseService.instance = mockDb;
@@ -137,16 +139,14 @@ void main() {
     when(() => mockTheme.addListener(any())).thenReturn(null);
     when(() => mockTheme.removeListener(any())).thenReturn(null);
 
-    when(() => mockPlayback.player).thenReturn(mockAudioPlayer);
+    when(() => mockPlayback.player).thenReturn(mockPlayer);
+    when(() => mockPlayer.stream).thenReturn(FakePlayerStream()); // Wire up streams
+    when(() => mockPlayer.state).thenReturn(PlayerState());
+    
     when(() => mockPlayback.currentTrack).thenReturn(null);
     when(() => mockPlayback.currentTrackStream)
         .thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.playerStateStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.positionStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockAudioPlayer.durationStream)
-        .thenAnswer((_) => Stream.value(null));
+
 
     when(() => mockConnectivity.isOffline).thenReturn(ValueNotifier(false));
 

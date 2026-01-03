@@ -283,12 +283,11 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
                     ),
                   ],
                 ),
-              ),
-            );
-          },
-        );
-      },
-    );
+              );
+            },
+          );
+        },
+      );
   }
 
   String _formatDuration(Duration d) {

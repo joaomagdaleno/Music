@@ -12,19 +12,17 @@ import 'package:music_tag_editor/services/connectivity_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/models/filename_format.dart';
-import 'package:just_audio/just_audio.dart';
-
-class MockThemeService extends Mock implements ThemeService {}
-
-class MockAuthService extends Mock implements AuthService {}
-
-class MockConnectivityService extends Mock implements ConnectivityService {}
+// import 'package:music_tag_editor/models/filename_format.dart'; // duplicate removed
+import 'package:media_kit/media_kit.dart';
+import 'test_helper.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
 
 class MockPlaybackService extends Mock implements PlaybackService {}
 
-class MockAudioPlayer extends Mock implements AudioPlayer {}
+class MockThemeService extends Mock implements ThemeService {}
+
+// Removed MockAudioPlayer
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +32,7 @@ void main() {
   late MockConnectivityService mockConnectivity;
   late MockDatabaseService mockDb;
   late MockPlaybackService mockPlayback;
-  late MockAudioPlayer mockPlayer;
+  late MockPlayer mockPlayer;
 
   setUp(() {
     mockTheme = MockThemeService();
@@ -42,7 +40,7 @@ void main() {
     mockConnectivity = MockConnectivityService();
     mockDb = MockDatabaseService();
     mockPlayback = MockPlaybackService();
-    mockPlayer = MockAudioPlayer();
+    mockPlayer = MockPlayer();
 
     ThemeService.instance = mockTheme;
     AuthService.instance = mockAuth;
@@ -63,12 +61,11 @@ void main() {
     when(() => mockPlayback.currentTrack).thenReturn(null);
     when(() => mockPlayback.currentTrackStream)
         .thenAnswer((_) => const Stream.empty());
-    when(() => mockPlayer.playerStateStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockPlayer.positionStream)
-        .thenAnswer((_) => const Stream.empty());
-    when(() => mockPlayer.durationStream)
-        .thenAnswer((_) => Stream.value(null));
+    
+    // Use FakePlayerStream for all streams
+    when(() => mockPlayer.stream).thenReturn(FakePlayerStream());
+    when(() => mockPlayer.state).thenReturn(PlayerState());
+
   });
 
   group('MusicTagEditorApp', () {

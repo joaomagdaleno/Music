@@ -1,8 +1,7 @@
-import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:just_audio/just_audio.dart';
+// import 'package:just_audio/just_audio.dart'; // Removed
 import 'package:audio_service/audio_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
@@ -18,11 +17,10 @@ class MockBaseAudioHandler extends Mock implements BaseAudioHandler {
 
 class MockMediaItem extends Mock implements MediaItem {}
 
-// FakeAudioSource moved to test_helper.dart
-
 void main() {
   late PlaybackService service;
   late MockBaseAudioHandler mockHandler;
+  late MockVideoController mockVideoController;
 
   final testTrack = SearchResult(
     id: '1',
@@ -41,16 +39,16 @@ void main() {
     registerFallbackValue(MediaItem(id: '1', title: 'T', artist: 'A'));
     registerFallbackValue(PlaybackState(
         processingState: AudioProcessingState.idle, playing: false));
-    registerFallbackValue(FakeAudioSource());
   });
 
   setUp(() async {
     await setupMusicTest();
     mockHandler = MockBaseAudioHandler();
+    mockVideoController = MockVideoController(); // Initialized mockVideoController
     
     // PlaybackService needs specific handler for testing
-    service = PlaybackService.forTesting(player: mockPlayer, handler: mockHandler);
-    service.searchService = mockSearch;
+    service = PlaybackService.forTesting(player: mockPlayer, handler: mockHandler, videoController: mockVideoController); // Passed to constructor
+    // service.searchService = mockSearch; // Injected via singleton
 
     // Additional stubs for this test specifically
     when(() => mockHandler.play()).thenAnswer((_) async {});
@@ -60,19 +58,12 @@ void main() {
     when(() => mockHandler.addQueueItem(any())).thenAnswer((_) async {});
     when(() => mockHandler.removeQueueItem(any())).thenAnswer((_) async {});
 
-    when(() => mockPlayer.seek(any())).thenAnswer((_) => Future.value());
-    when(() => mockPlayer.setAudioSource(any(), 
-        initialPosition: any(named: 'initialPosition'),
-        initialIndex: any(named: 'initialIndex')))
-        .thenAnswer((_) async => Duration.zero);
-    when(() => mockPlayer.currentIndexStream)
-        .thenAnswer((_) => Stream.value(0));
-    when(() => mockPlayer.position).thenReturn(Duration.zero);
-    when(() => mockPlayer.speed).thenReturn(1.0);
-    when(() => mockPlayer.bufferedPosition).thenReturn(Duration.zero);
-    when(() => mockPlayer.processingState).thenReturn(ProcessingState.idle);
-    when(() => mockPlayer.playing).thenReturn(false);
-    when(() => mockPlayer.currentIndex).thenReturn(0);
+    // Stub mockPlayer methods used in PlaybackService
+    // Note: Most checks are redundant as setupMusicTest provides default stubs.
+    // However, verify calls need these to be valid.
+    
+    when(() => mockPlayer.open(any(), play: any(named: 'play')))
+        .thenAnswer((_) async {});
 
     when(() => mockSearch.getStreamUrl(any()))
         .thenAnswer((_) async => 'http://stream');
@@ -86,8 +77,8 @@ void main() {
 
       expect(service.currentTrack, testTrack);
       expect(service.queue, contains(testTrack));
-      verify(() => mockPlayer.setAudioSource(any())).called(1);
-      verify(() => mockPlayer.play()).called(1);
+      // Verify usage of media_kit open with play: true
+      verify(() => mockPlayer.open(any(), play: true)).called(1);
       verify(() => mockDuo.sendMessage(any())).called(1);
     });
 

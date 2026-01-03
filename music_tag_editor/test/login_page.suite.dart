@@ -16,6 +16,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:music_tag_editor/services/security_service.dart';
 import 'package:music_tag_editor/services/equalizer_service.dart';
 import 'package:music_tag_editor/services/desktop_integration_service.dart';
+// import 'test_helper.dart'; // Keep test_helper, remove duplicates above if any.
+import 'test_helper.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
@@ -32,8 +34,6 @@ class MockPlaybackService extends Mock implements PlaybackService {}
 class MockDatabaseService extends Mock implements DatabaseService {}
 
 class MockThemeService extends Mock implements ThemeService {}
-
-class MockAudioPlayer extends Mock implements AudioPlayer {}
 
 class MockSecurityService extends Mock implements SecurityService {}
 
@@ -62,7 +62,7 @@ void main() {
   late MockPlaybackService mockPlayback;
   late MockDatabaseService mockDb;
   late MockThemeService mockTheme;
-  late MockAudioPlayer mockPlayer;
+//  late MockPlayer mockPlayer; // Unused
   late MockSecurityService mockSecurity;
   late MockEqualizerService mockEqualizer;
   late MockDesktopIntegrationService mockDesktop;
@@ -80,7 +80,7 @@ void main() {
     mockPlayback = MockPlaybackService();
     mockDb = MockDatabaseService();
     mockTheme = MockThemeService();
-    mockPlayer = MockAudioPlayer();
+    mockPlayer = MockPlayer();
     mockSecurity = MockSecurityService();
     mockEqualizer = MockEqualizerService();
     mockDesktop = MockDesktopIntegrationService();
@@ -109,18 +109,10 @@ void main() {
 
     final isOffline = ValueNotifier<bool>(false);
     when(() => mockConnectivity.isOffline).thenReturn(isOffline);
-    when(() => mockPlayback.player).thenReturn(mockPlayer);
     when(() => mockPlayback.currentTrack).thenReturn(null);
-    when(() => mockPlayer.playerStateStream).thenAnswer(
-        (_) => Stream.value(PlayerState(false, ProcessingState.idle)));
-    when(() => mockPlayer.currentIndexStream)
-        .thenAnswer((_) => Stream.value(null));
-    when(() => mockPlayer.processingStateStream)
-        .thenAnswer((_) => Stream.value(ProcessingState.idle));
-    when(() => mockPlayer.playingStream).thenAnswer((_) => Stream.value(false));
-    when(() => mockPlayer.positionStream)
-        .thenAnswer((_) => Stream.value(Duration.zero));
     when(() => mockEqualizer.equalizer).thenReturn(mockAndroidEqualizer);
+    // Removed setAudioSessionId stub
+
     when(() =>
             mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
         .thenAnswer((_) async => {});

@@ -13,11 +13,12 @@ import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
 import 'package:music_tag_editor/services/local_duo_service.dart';
 import 'package:music_tag_editor/services/equalizer_service.dart';
-import 'package:music_tag_editor/services/firebase_sync_service.dart';
+// import 'package:music_tag_editor/services/firebase_sync_service.dart'; // Unused
 import 'package:music_tag_editor/services/persona_service.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:media_kit/media_kit.dart';
+import 'package:media_kit_video/media_kit_video.dart';
 import 'package:audio_service/audio_service.dart';
 
 Future<void> setupSqflite() async {
@@ -52,9 +53,40 @@ class MockLocalDuoService extends Mock implements LocalDuoService {}
 
 class MockEqualizerService extends Mock implements EqualizerService {}
 
-class MockFirebaseSyncService extends Mock implements FirebaseSyncService {}
+class MockPlayer extends Mock implements Player {}
+class MockVideoController extends Mock implements VideoController {}
 
-class MockAudioPlayer extends Mock implements AudioPlayer {}
+class FakePlayerStream extends Fake implements PlayerStream {
+  @override Stream<bool> get playing => Stream.value(false);
+  @override Stream<Duration> get position => Stream.value(Duration.zero);
+  @override Stream<Duration> get buffer => Stream.value(Duration.zero);
+  @override Stream<Duration> get duration => Stream.value(Duration.zero);
+  @override Stream<bool> get completed => Stream.value(false);
+  @override Stream<double> get volume => Stream.value(100.0);
+  @override Stream<PlaylistMode> get playlistMode => Stream.value(PlaylistMode.none);
+  @override Stream<bool> get shuffle => Stream.value(false);
+  @override Stream<double> get pitch => Stream.value(1.0);
+  @override Stream<double> get rate => Stream.value(1.0);
+  
+  @override Stream<PlayerLog> get log => Stream.empty();
+  @override Stream<String> get error => Stream.empty();
+  @override Stream<Track> get track => Stream.value(Track());
+  @override Stream<Tracks> get tracks => Stream.value(Tracks()); 
+  
+  @override Stream<Playlist> get playlist => Stream.value(Playlist([]));
+  @override Stream<int?> get width => Stream.value(null);
+  @override Stream<int?> get height => Stream.value(null);
+  @override Stream<AudioParams> get audioParams => Stream.value(AudioParams());
+  @override Stream<VideoParams> get videoParams => Stream.value(VideoParams());
+  @override Stream<double?> get audioBitrate => Stream.value(null);
+  Stream<double?> get videoBitrate => Stream.value(null);
+  @override Stream<AudioDevice> get audioDevice => Stream.value(AudioDevice('auto', ''));
+  @override Stream<List<AudioDevice>> get audioDevices => Stream.value([]);
+  
+  @override Stream<List<String>> get subtitle => Stream.value(['']);
+  
+  @override Stream<bool> get buffering => Stream.value(false);
+}
 
 // Global mock instances for easy access
 late MockAuthService mockAuth;
@@ -65,7 +97,8 @@ late MockDownloadService mockDownload;
 late MockLocalDuoService mockDuo;
 late MockConnectivityService mockConnectivity;
 late MockThemeService mockTheme;
-late MockAudioPlayer mockPlayer;
+late MockPlayer mockPlayer;
+late FakePlayerStream mockPlayerStreams;
 late MockDependencyManager mockDeps;
 late MockLyricsService mockLyrics;
 late MockEqualizerService mockEqualizer;
@@ -96,12 +129,13 @@ Future<void> setupMusicTest({
       platform: MediaPlatform.youtube,
     ));
     registerFallbackValue(MediaPlatform.youtube);
-    registerFallbackValue(FakeAudioSource());
+    registerFallbackValue(Media( 'http://fallback' ));
     registerFallbackValue(const MediaItem(id: 'fallback', title: 'Fallback'));
     registerFallbackValue(PlaybackState(
       processingState: AudioProcessingState.idle,
       playing: false,
     ));
+    registerFallbackValue(PlaylistMode.none);
     _registerFallbackValueWasCalled = true;
   }
 
@@ -127,7 +161,8 @@ Future<void> setupMusicTest({
   mockDuo = MockLocalDuoService();
   mockConnectivity = MockConnectivityService();
   mockTheme = MockThemeService();
-  mockPlayer = MockAudioPlayer();
+  mockPlayer = MockPlayer();
+  mockPlayerStreams = FakePlayerStream();
   mockDeps = MockDependencyManager();
   mockLyrics = MockLyricsService();
   mockEqualizer = MockEqualizerService();
@@ -181,34 +216,21 @@ Future<void> setupMusicTest({
   when(() => mockDuo.sendMessage(any())).thenAnswer((_) async {});
   when(() => mockDb.trackPlay(any())).thenAnswer((_) async {});
 
-  when(() => mockPlayer.playerStateStream).thenAnswer(
-      (_) => Stream.value(PlayerState(false, ProcessingState.ready)));
-  when(() => mockPlayer.positionStream)
-      .thenAnswer((_) => Stream.value(Duration.zero));
-  when(() => mockPlayer.bufferedPositionStream)
-      .thenAnswer((_) => Stream.value(Duration.zero));
-  when(() => mockPlayer.durationStream).thenAnswer((_) => Stream.value(null));
-  when(() => mockPlayer.currentIndexStream)
-      .thenAnswer((_) => Stream.value(null));
-  when(() => mockPlayer.playingStream).thenAnswer((_) => Stream.value(false));
-  when(() => mockPlayer.processingStateStream)
-      .thenAnswer((_) => Stream.value(ProcessingState.idle));
-  when(() => mockPlayer.volumeStream).thenAnswer((_) => Stream.value(1.0));
-  when(() => mockPlayer.speedStream).thenAnswer((_) => Stream.value(1.0));
-  when(() => mockPlayer.loopModeStream)
-      .thenAnswer((_) => Stream.value(LoopMode.off));
-  when(() => mockPlayer.shuffleModeEnabledStream)
-      .thenAnswer((_) => Stream.value(false));
+  // Wire up MockPlayer properties
+  when(() => mockPlayer.stream).thenReturn(mockPlayerStreams);
+  when(() => mockPlayer.state).thenReturn(PlayerState()); // default state
+  
+  // Note: No need to stub mockPlayerStreams getters as they are now real implementation
+
   when(() => mockPlayer.setVolume(any())).thenAnswer((_) async {});
   when(() => mockPlayer.play()).thenAnswer((_) async {});
   when(() => mockPlayer.pause()).thenAnswer((_) async {});
   when(() => mockPlayer.stop()).thenAnswer((_) async {});
   when(() => mockPlayer.seek(any())).thenAnswer((_) async {});
-  when(() => mockPlayer.setAudioSource(any<AudioSource>(),
-      initialPosition: any(named: 'initialPosition'),
-      initialIndex: any(named: 'initialIndex'))).thenAnswer((_) async => Duration.zero);
-  when(() => mockPlayer.addAudioSource(any<AudioSource>())).thenAnswer((_) async {});
-
+  when(() => mockPlayer.open(any(), play: any(named: 'play'))).thenAnswer((_) async {});
+  when(() => mockPlayer.setPlaylistMode(any())).thenAnswer((_) async {});
+  when(() => mockPlayer.setShuffle(any())).thenAnswer((_) async {});
+  
   when(() => mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
       .thenAnswer((invocation) async {
     final callback = invocation.namedArguments[#onProgress] as void Function(
@@ -219,7 +241,7 @@ Future<void> setupMusicTest({
       .thenAnswer((_) async => true);
 }
 
-class FakeAudioSource extends Fake implements AudioSource {}
+
 
 bool _registerFallbackValueWasCalled = false;
 bool _sqfliteInitialized = false;

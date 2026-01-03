@@ -4,7 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:media_kit/media_kit.dart';
+import 'test_helper.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
@@ -38,7 +39,8 @@ class MockDependencyManager extends Mock implements DependencyManager {}
 
 class MockListeningStatsService extends Mock implements ListeningStatsService {}
 
-class MockAudioPlayer extends Mock implements AudioPlayer {}
+// MockAudioPlayer removed
+
 
 // Mock HTTP for NetworkImage
 class MockHttpClient extends Mock implements HttpClient {}
@@ -96,7 +98,7 @@ void main() {
   late MockDownloadService mockDownload;
   late MockDependencyManager mockDeps;
   late MockListeningStatsService mockStats;
-  late MockAudioPlayer mockAudioPlayer;
+  late MockPlayer mockPlayer;
 
   setUp(() {
     mockDb = MockDatabaseService();
@@ -106,7 +108,7 @@ void main() {
     mockDownload = MockDownloadService();
     mockDeps = MockDependencyManager();
     mockStats = MockListeningStatsService();
-    mockAudioPlayer = MockAudioPlayer();
+    mockPlayer = MockPlayer();
 
     DatabaseService.instance = mockDb;
     PlaybackService.instance = mockPlayback;
@@ -134,13 +136,10 @@ void main() {
     when(() => mockPlayback.currentTrack).thenReturn(null);
     when(() => mockPlayback.currentTrackStream)
         .thenAnswer((_) => Stream.value(null));
-    when(() => mockPlayback.player).thenReturn(mockAudioPlayer);
-    when(() => mockAudioPlayer.playerStateStream)
-        .thenAnswer((_) => Stream.value(PlayerState(false, ProcessingState.idle)));
-    when(() => mockAudioPlayer.positionStream)
-        .thenAnswer((_) => Stream.value(Duration.zero));
-    when(() => mockAudioPlayer.durationStream)
-        .thenAnswer((_) => Stream.value(null));
+    when(() => mockPlayback.player).thenReturn(mockPlayer);
+    when(() => mockPlayer.stream).thenReturn(FakePlayerStream()); // Wire up streams
+    when(() => mockPlayer.state).thenReturn(PlayerState());
+
 
     when(() =>
             mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))

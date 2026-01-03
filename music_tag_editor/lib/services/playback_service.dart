@@ -25,6 +25,19 @@ class PlaybackService {
     _videoController = VideoController(_player);
   }
 
+  @visibleForTesting
+  PlaybackService.forTesting({
+    Player? player, 
+    BaseAudioHandler? handler,
+    VideoController? videoController,
+  }) {
+    _player = player ?? Player();
+    _videoController = videoController ?? VideoController(_player);
+    if (handler != null) {
+      _audioHandler = handler;
+    }
+  }
+
   late final Player _player;
   late final VideoController _videoController;
 
@@ -34,7 +47,8 @@ class PlaybackService {
 
   SearchResult? _currentTrack;
   final List<SearchResult> _queue = [];
-  Duration _crossfadeDuration = const Duration(seconds: 3);
+  // ignore: unused_field
+  Duration _crossfadeDuration = const Duration(seconds: 2);
   List<LyricLine> _currentLyrics = [];
   Timer? _sleepTimer;
   final _sleepTimerController = StreamController<Duration?>.broadcast();
@@ -107,7 +121,7 @@ class PlaybackService {
     }
   }
 
-  late MusicAudioHandler _audioHandler;
+  late BaseAudioHandler _audioHandler;
 
   Future<void> _restoreAudioSource(SearchResult track) async {
     try {
@@ -119,7 +133,7 @@ class PlaybackService {
         await _player.open(Media(source), play: false);
       }
       
-      _audioHandler.updateMediaItem(MediaItem(
+      _audioHandler.mediaItem.add(MediaItem(
         id: track.id,
         album: track.album ?? 'Unknown Album',
         title: track.title,
@@ -136,7 +150,7 @@ class PlaybackService {
   }
 
   void _updatePlaybackState() {
-    _audioHandler.updatePlaybackState(PlaybackState(
+    _audioHandler.playbackState.add(PlaybackState(
           controls: [
             MediaControl.skipToPrevious,
             if (_player.state.playing) MediaControl.pause else MediaControl.play,
@@ -367,7 +381,8 @@ class MusicAudioHandler extends BaseAudioHandler {
 
   MusicAudioHandler(this._service);
 
-  Future<void> updateMediaItem(MediaItem item) async => mediaItem.add(item);
+  @override
+  Future<void> updateMediaItem(MediaItem mediaItem) async => this.mediaItem.add(mediaItem);
   Future<void> updatePlaybackState(PlaybackState state) async => playbackState.add(state);
 
   @override

@@ -5,29 +5,40 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:music_tag_editor/screens/disco/karaoke_screen.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
+import 'test_helper.dart';
 
 class MockPlaybackService extends Mock implements PlaybackService {}
-
-class MockAudioPlayer extends Mock implements AudioPlayer {}
 
 class MockLyricsService extends Mock implements LyricsService {}
 
 void main() {
   late MockPlaybackService mockPlayback;
-  late MockAudioPlayer mockPlayer;
+  late MockPlayer mockPlayer;
 
-  setUp(() {
+  setUp(() async {
+    await setupMusicTest();
     mockPlayback = MockPlaybackService();
-    mockPlayer = MockAudioPlayer();
+    // mockLyrics = MockLyricsService(); // Removed as unused
+    mockPlayer = MockPlayer(); // Or used global? setupMusicTest provides global mockPlayer.
+    // Use the global one or local if needed.
+    // If we use local, we shadow global. Let's use local for safety within suite if it was using local.
+    // Actually, to avoid conflicts, just use the global one if possible?
+    // But suite declares `late MockAudioPlayer mockPlayer;`.
+    // I'll reuse the variable name `mockPlayer` but type `MockPlayer`.
+
 
     PlaybackService.instance = mockPlayback;
 
     when(() => mockPlayback.player).thenReturn(mockPlayer);
-    when(() => mockPlayer.position).thenReturn(Duration.zero);
+    // Stub position if needed, or removing if test doesn't use it.
+    // when(() => mockPlayer.state.position).thenReturn(Duration.zero);
+    // But better toStub state:
+    when(() => mockPlayer.state).thenReturn(PlayerState(position: Duration.zero));
+
     when(() => mockPlayback.currentLyrics).thenReturn([]);
     when(() => mockPlayback.lyricsStream).thenAnswer((_) => Stream.value([]));
     when(() => mockPlayback.resume()).thenAnswer((_) async => {});

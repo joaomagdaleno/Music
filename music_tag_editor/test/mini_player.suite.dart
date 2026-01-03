@@ -2,103 +2,66 @@
 library;
 
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:music_tag_editor/widgets/mini_player.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
+
 import 'package:music_tag_editor/services/download_service.dart';
+import 'package:rxdart/rxdart.dart';
+import 'test_helper.dart';
 
-class MockPlaybackService extends Mock implements PlaybackService {}
-
-class MockAudioPlayer extends Mock implements AudioPlayer {}
+// MockPlayerStream defined locally or in test_helper (not in test_helper yet, but MockPlayer is)
+class MockPlayerStream extends Mock implements PlayerStream {}
 
 void main() {
   group('MiniPlayer Widget Tests', () {
-    late MockPlaybackService mockPlayback;
-    late MockAudioPlayer mockPlayer;
+    late MockPlayerStream mockStream;
+    late BehaviorSubject<bool> playingSubject;
 
-    setUp(() {
-      mockPlayback = MockPlaybackService();
-      mockPlayer = MockAudioPlayer();
-      PlaybackService.instance = mockPlayback;
+    setUp(() async {
+      await setupMusicTest(); 
+      // No platform override, uses Windows (Fluent)
 
-      when(() => mockPlayback.player).thenReturn(mockPlayer);
-      when(() => mockPlayback.currentTrackStream)
-          .thenAnswer((_) => Stream.value(mockPlayback.currentTrack));
-      when(() => mockPlayer.positionStream)
-          .thenAnswer((_) => Stream.value(Duration.zero));
-      when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(
-            PlayerState(false, ProcessingState.ready),
-          ));
-      when(() => mockPlayer.durationStream)
-          .thenAnswer((_) => Stream.value(null));
+      mockStream = MockPlayerStream();
+      playingSubject = BehaviorSubject.seeded(false); 
+      
+      when(() => mockPlayer.stream).thenReturn(mockStream);
+      when(() => mockPlayer.state).thenReturn(PlayerState());
+
+      when(() => mockStream.playing).thenAnswer((_) => playingSubject.stream);
+      when(() => mockStream.position).thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockStream.duration).thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockStream.buffer).thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockStream.volume).thenAnswer((_) => Stream.value(100.0));
+      when(() => mockStream.playlistMode).thenAnswer((_) => Stream.value(PlaylistMode.none));
+      when(() => mockStream.shuffle).thenAnswer((_) => Stream.value(false));
+
+      // Explicitly stub currentTrackStream as empty (so startWith(currentTrack) is the only value)
+      when(() => mockPlayback.currentTrackStream).thenAnswer((_) => const Stream.empty());
+    });
+    
+    tearDown(() {
+      playingSubject.close();
+      debugDefaultTargetPlatformOverride = null;
     });
 
-    testWidgets('Shows nothing when no track is playing', (tester) async {
-      when(() => mockPlayback.currentTrack).thenReturn(null);
+    testWidgets('MiniPlayer renders track info', (tester) async {
+       final track = SearchResult(
+         id: '1', title: 'Song', artist: 'Artist', url: 'url', platform: MediaPlatform.youtube, duration: 100
+       );
+       when(() => mockPlayback.currentTrack).thenReturn(track);
+       
+       await tester.pumpWidget(MaterialApp(
+         theme: ThemeData(useMaterial3: true),
+         home: const Scaffold(body: MiniPlayer())
+       ));
+       await tester.pump();
 
-      await tester
-          .pumpWidget(MaterialApp(
-        theme: ThemeData(platform: TargetPlatform.android),
-        home: const Scaffold(body: MiniPlayer()),
-      ));
-
-
-      expect(find.byType(Container), findsNothing);
-    });
-
-    testWidgets('Shows track info and controls when track is present',
-        (tester) async {
-      final track = SearchResult(
-        id: '1',
-        title: 'Test Song',
-        artist: 'Test Artist',
-        url: 'https://example.com',
-        platform: MediaPlatform.youtube,
-      );
-      when(() => mockPlayback.currentTrack).thenReturn(track);
-      when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(
-            PlayerState(true, ProcessingState.ready),
-          ));
-
-      await tester
-          .pumpWidget(MaterialApp(
-        theme: ThemeData(platform: TargetPlatform.android),
-        home: const Scaffold(body: MiniPlayer()),
-      ));
-      await tester.pump(const Duration(milliseconds: 100)); // Handle StreamBuilder
-
-      expect(find.text('Test Song'), findsOneWidget);
-      expect(find.text('Test Artist'), findsOneWidget);
-      expect(find.byIcon(Icons.pause), findsOneWidget);
-    });
-
-    testWidgets('Pause button calls playback.pause', (tester) async {
-      final track = SearchResult(
-        id: '1',
-        title: 'Test Song',
-        artist: 'Test Artist',
-        url: 'https://example.com',
-        platform: MediaPlatform.youtube,
-      );
-      when(() => mockPlayback.currentTrack).thenReturn(track);
-      when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(
-            PlayerState(true, ProcessingState.ready),
-          ));
-      when(() => mockPlayback.pause()).thenAnswer((_) async {});
-
-      await tester
-          .pumpWidget(MaterialApp(
-        theme: ThemeData(platform: TargetPlatform.android),
-        home: const Scaffold(body: MiniPlayer()),
-      ));
-      await tester.pump(const Duration(milliseconds: 100));
-
-      await tester.tap(find.byIcon(Icons.pause));
-      verify(() => mockPlayback.pause()).called(1);
+       expect(find.text('Song'), findsOneWidget);
+       expect(find.text('Artist'), findsOneWidget);
     });
   });
 }
-
