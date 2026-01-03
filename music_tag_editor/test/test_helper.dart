@@ -172,6 +172,7 @@ Future<void> setupMusicTest({
   when(() => mockPlayback.queue).thenReturn([]);
 
   when(() => mockTheme.updateThemeFromImage(any())).thenAnswer((_) async {});
+  when(() => mockTheme.primaryColor).thenReturn(const Color(0xFF000000));
   when(() => mockEqualizer.applyPresetForGenre(any())).thenAnswer((_) async {});
   when(() => mockEqualizer.calculateNormalizedVolume(any())).thenReturn(1.0);
   when(() => mockEqualizer.isAutoMode).thenReturn(false);

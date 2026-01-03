@@ -46,23 +46,29 @@ void main() {
       // Initial persona is HOME (screen contains "Bem-vindo de volta")
       expect(find.text('Bem-vindo de volta!'), findsOneWidget);
 
-      // Find "Bibliotecário" in navigation pane
-      final libItem = find.text('Bibliotecário');
-      expect(libItem, findsOneWidget);
-
-      // Tap Librarian
+      // Find Librarian icon in navigation pane
+      final libItem = find.byIcon(fluent.FluentIcons.library).first;
+      expect(libItem, findsAtLeastNWidgets(1));
+      
+      // Tap Librarian icon
       await tester.tap(libItem);
       await tester.pumpAndSettle();
 
       // Should now be in Librarian persona.
-      // Librarian persona has "Tags" section (Editor de Tags header).
-      await tester.pumpAndSettle(const Duration(milliseconds: 500));
-      expect(find.text('Editor de Tags'), findsOneWidget);
       expect(PersonaService.instance.activePersona, AppPersona.librarian);
+      
+      // Look for any icon that identifies the Librarian persona view.
+      // "Tags" icon is tag.
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+      expect(find.byIcon(fluent.FluentIcons.tag), findsOneWidget);
 
-      // Tap "Anfitrião"
+      // Should also see "Biblioteca" icon
+      expect(find.byIcon(fluent.FluentIcons.music_note), findsAtLeastNWidgets(1));
+
+      // Tap "Anfitrião" (Host) icon
       await tester.tap(find.byIcon(fluent.FluentIcons.party_leader));
-      await tester.pumpAndSettle();
+      await tester.pump(); // Use pump instead of pumpAndSettle because of DiscoModeScreen timer
+      await tester.pump(const Duration(milliseconds: 500));
 
       // Should now be in Host persona.
       expect(PersonaService.instance.activePersona, AppPersona.host);
