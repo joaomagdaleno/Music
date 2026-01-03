@@ -100,6 +100,13 @@ class PlaybackService {
       }
     });
 
+    _player.playbackEventStream.listen((event) {
+      // Log playback events for debugging
+    }, onError: (Object e, StackTrace st) {
+      StartupLogger.logError('[PlaybackService] Player Error', e, st);
+    });
+
+
     _player.processingStateStream.listen((state) {
       _updatePlaybackState();
     });
@@ -299,10 +306,10 @@ class PlaybackService {
     _player.pause();
   }
 
-  void playLocalFile(String path, SearchResult track) {
+  Future<void> playLocalFile(String path, SearchResult track) async {
     _currentTrack = track;
     EqualizerService.instance.applyPresetForGenre(track.genre);
-    _player.setFilePath(path);
+    await _player.setFilePath(path);
     _player.play();
   }
 

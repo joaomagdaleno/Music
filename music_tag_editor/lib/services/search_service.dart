@@ -468,10 +468,37 @@ class SearchService {
         StartupLogger.log('[SearchService] Found Stream URL: $displayUrl');
         return streamUrl;
       }
-      StartupLogger.log('[SearchService] getStreamUrl FAILED: ${result.stderr}');
+      StartupLogger.log('[SearchService] getStreamUrl FAILED. Exit code: ${result.exitCode}');
+      StartupLogger.log('[SearchService] stderr: ${result.stderr}');
+      StartupLogger.log('[SearchService] stdout: ${result.stdout}');
       return null;
+
     } catch (e, stack) {
       StartupLogger.log('[SearchService] Error extracting stream: $e\n$stack');
+      return null;
+    }
+  }
+
+  /// Fetches detailed video information including available formats and subtitles.
+  Future<Map<String, dynamic>?> getVideoDetails(String videoUrl) async {
+    final ytDlp = await DependencyManager.instance.ytDlpPath;
+    if (ytDlp == null) return null;
+
+    try {
+      final args = _getBaseArgs();
+      args.addAll(['--dump-json', videoUrl]);
+
+      final result = await Process.run(ytDlp, args);
+
+      if (result.exitCode == 0) {
+        return jsonDecode(result.stdout as String);
+      } else {
+        StartupLogger.log('[SearchService] getVideoDetails FAILED. Exit code: ${result.exitCode}');
+        StartupLogger.log('[SearchService] stderr: ${result.stderr}');
+        return null;
+      }
+    } catch (e, stack) {
+      StartupLogger.log('[SearchService] Error getting video details: $e\n$stack');
       return null;
     }
   }
