@@ -5,9 +5,10 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   flutter_acrylic
   flutter_secure_storage_linux
+  media_kit_video
   screen_retriever_linux
   system_tray
-  url_launcher_linux
+  volume_controller
   window_manager
 )
 

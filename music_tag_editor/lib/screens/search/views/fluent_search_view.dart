@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/search_service.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:music_tag_editor/widgets/native_video_player.dart';
 
 class FluentSearchView extends StatelessWidget {
   final TextEditingController searchController;
@@ -316,39 +316,44 @@ class FluentSearchView extends StatelessWidget {
     );
   }
 
-  void _playVideo(BuildContext context, SearchResult result) {
-    final controller = YoutubePlayerController.fromVideoId(
-      videoId: result.id,
-      autoPlay: true,
-      params: const YoutubePlayerParams(
-        showControls: true,
-        showFullscreenButton: true,
-        mute: false,
-      ),
-    );
-
+  void _playVideo(BuildContext context, SearchResult result) async {
     showDialog(
       context: context,
-      builder: (context) => ContentDialog(
-        title: Text(result.title),
-        constraints: const BoxConstraints(maxWidth: 800),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            YoutubePlayer(
-              controller: controller,
-              aspectRatio: 16 / 9,
-            ),
-            const SizedBox(height: 12),
-            Text('Artista: ${result.artist}', style: const TextStyle(fontWeight: FontWeight.bold)),
-          ],
-        ),
-        actions: [
-          Button(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Fechar'),
-          ),
-        ],
+      builder: (context) => FutureBuilder<Map<String, dynamic>?>(
+        future: SearchService.instance.getVideoDetails(result.url),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const ContentDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ProgressRing(),
+                  SizedBox(height: 12),
+                  Text('Obtendo detalhes do vídeo...'),
+                ],
+              ),
+            );
+          }
+          
+          if (snapshot.hasError || snapshot.data == null) {
+            return ContentDialog(
+              title: const Text('Erro'),
+              content: const Text('Não foi possível carregar os detalhes do vídeo.'),
+              actions: [
+                Button(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Fechar'),
+                ),
+              ],
+            );
+          }
+
+          return NativeVideoPlayer(
+            title: result.title,
+            videoUrl: result.url,
+            videoDetails: snapshot.data!,
+          );
+        },
       ),
     );
   }

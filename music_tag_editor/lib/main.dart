@@ -15,14 +15,16 @@ import 'package:music_tag_editor/services/telemetry_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
 import 'package:music_tag_editor/widgets/mini_player.dart';
+import 'package:media_kit/media_kit.dart';
 
 final GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
 
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  MediaKit.ensureInitialized();
   runZonedGuarded(
     () {
-      WidgetsFlutterBinding.ensureInitialized();
       
       ErrorWidget.builder = (FlutterErrorDetails details) {
         return MaterialApp(
