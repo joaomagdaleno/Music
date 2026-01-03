@@ -3,6 +3,8 @@ import 'package:music_tag_editor/screens/library/mood_explorer_screen.dart';
 import 'package:music_tag_editor/screens/library/smart_library_screen.dart';
 import 'package:music_tag_editor/screens/stats/listening_stats_screen.dart';
 import 'package:music_tag_editor/screens/disco/disco_mode_screen.dart';
+import 'package:music_tag_editor/services/persona_service.dart';
+import 'package:music_tag_editor/models/persona_model.dart';
 
 class FluentHomeView extends StatelessWidget {
   final bool isLoading;
@@ -43,6 +45,11 @@ class FluentHomeView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildGreetingWidget(context),
+                  const SizedBox(height: 24),
+                  Text('Minhas Personas',
+                      style: FluentTheme.of(context).typography.subtitle),
+                  const SizedBox(height: 12),
+                  _buildPersonaWidgets(context),
                   const SizedBox(height: 24),
                   Text('Explore por Vibe',
                       style: FluentTheme.of(context).typography.subtitle),
@@ -105,6 +112,72 @@ class FluentHomeView extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildPersonaWidgets(BuildContext context) {
+    final personas = [
+      {
+        'label': 'Bibliotecário',
+        'desc': 'Organize sua música',
+        'icon': FluentIcons.library,
+        'persona': AppPersona.librarian,
+        'color': Colors.blue
+      },
+      {
+        'label': 'Anfitrião',
+        'desc': 'Modo Festa e Karaoke',
+        'icon': FluentIcons.party_leader,
+        'persona': AppPersona.host,
+        'color': Colors.purple
+      },
+      {
+        'label': 'Artesão',
+        'desc': 'Cofre e Ferramentas',
+        'icon': FluentIcons.developer_tools,
+        'persona': AppPersona.artisan,
+        'color': Colors.orange
+      },
+    ];
+
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
+      children: personas.map((p) {
+        return HoverButton(
+          onPressed: () =>
+              PersonaService.instance.setPersona(p['persona'] as AppPersona),
+          builder: (context, states) {
+            return Card(
+              backgroundColor: states.isHovered
+                  ? (p['color'] as AccentColor).withValues(alpha: 0.1)
+                  : null,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(p['icon'] as IconData,
+                        color: p['color'] as AccentColor, size: 32),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(p['label'] as String,
+                            style:
+                                FluentTheme.of(context).typography.bodyStrong),
+                        Text(p['desc'] as String,
+                            style: FluentTheme.of(context).typography.caption),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      }).toList(),
     );
   }
 

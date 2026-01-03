@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_tag_editor/screens/player/player_screen.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
+import 'package:music_tag_editor/services/download_service.dart';
+import 'package:rxdart/rxdart.dart';
 
 class MiniPlayer extends StatelessWidget {
   const MiniPlayer({super.key});
@@ -28,15 +30,32 @@ class _FluentMiniPlayer extends StatelessWidget {
   Widget build(BuildContext context) {
     final playback = PlaybackService.instance;
 
-    return StreamBuilder<PlayerState>(
-      stream: playback.player.playerStateStream,
+    return StreamBuilder<Map<String, dynamic>>(
+      stream: Rx.combineLatest3(
+        playback.player.playerStateStream,
+        playback.currentTrackStream.startWith(playback.currentTrack),
+        playback.player.positionStream,
+        (state, track, position) => {
+          'state': state,
+          'track': track,
+          'position': position,
+        },
+      ),
       builder: (context, snapshot) {
-        final track = playback.currentTrack;
+        final data = snapshot.data;
+        final track = data?['track'] as SearchResult?;
+        final state = data?['state'] as PlayerState?;
+        final position = data?['position'] as Duration? ?? Duration.zero;
+        final duration = playback.player.duration ?? Duration.zero;
+        
         if (track == null) {
           return const SizedBox.shrink();
         }
 
-        final playing = snapshot.data?.playing ?? false;
+        final playing = state?.playing ?? false;
+        final progress = duration.inMilliseconds > 0 
+            ? position.inMilliseconds / duration.inMilliseconds 
+            : 0.0;
 
         return fluent.HoverButton(
           onPressed: () {
@@ -47,8 +66,7 @@ class _FluentMiniPlayer extends StatelessWidget {
           },
           builder: (context, states) {
             return Container(
-              height: 64,
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              height: 72,
               decoration: BoxDecoration(
                 color: fluent.FluentTheme.of(context).cardColor,
                 border: Border(
@@ -58,67 +76,75 @@ class _FluentMiniPlayer extends StatelessWidget {
                   ),
                 ),
               ),
-              child: Row(
+              child: Stack(
                 children: [
-                  if (track.thumbnail != null)
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                        child: track.thumbnail != null && (track.thumbnail!.startsWith('http') || track.thumbnail!.startsWith('https'))
-                        ? Image.network(
-                            track.thumbnail!,
-                            width: 48,
-                            height: 48,
-                            fit: BoxFit.cover,
-                          )
-                        : track.thumbnail != null
-                            ? Image.file(
-                                File(track.thumbnail!),
-                                width: 48,
-                                height: 48,
-                                fit: BoxFit.cover,
-                                errorBuilder: (_, __, ___) => const Icon(fluent.FluentIcons.music_note),
-                              )
-                            : const Icon(fluent.FluentIcons.music_note),
-                    ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          track.title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                   // Progress Bar at the top
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: SizedBox(
+                      height: 2,
+                      child: LinearProgressIndicator(
+                        value: progress,
+                        backgroundColor: Colors.transparent,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          fluent.FluentTheme.of(context).accentColor,
                         ),
-                        Text(
-                          track.artist,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: fluent.FluentTheme.of(context)
-                                .typography.caption
-                                ?.color,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Row(
+                      children: [
+                        if (track.thumbnail != null)
+                          Hero(
+                            tag: 'player_art',
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: track.thumbnail != null && (track.thumbnail!.startsWith('http') || track.thumbnail!.startsWith('https'))
+                              ? Image.network(track.thumbnail!, width: 48, height: 48, fit: BoxFit.cover)
+                              : track.thumbnail != null
+                                  ? Image.file(File(track.thumbnail!), width: 48, height: 48, fit: BoxFit.cover)
+                                  : const Icon(fluent.FluentIcons.music_note),
+                            ),
                           ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                track.title,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                track.artist,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: fluent.FluentTheme.of(context).typography.caption?.color,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        fluent.IconButton(
+                          icon: Icon(playing ? fluent.FluentIcons.pause : fluent.FluentIcons.play),
+                          onPressed: () => playing ? playback.pause() : playback.resume(),
+                        ),
+                        const SizedBox(width: 8),
+                        fluent.IconButton(
+                          icon: const Icon(fluent.FluentIcons.clear),
+                          onPressed: () => playback.stop(),
                         ),
                       ],
                     ),
-                  ),
-                  fluent.IconButton(
-                    icon: Icon(playing ? fluent.FluentIcons.pause : fluent.FluentIcons.play),
-                    onPressed: () {
-                      if (playing) {
-                        playback.pause();
-                      } else {
-                        playback.resume();
-                      }
-                    },
-                  ),
-                  fluent.IconButton(
-                    icon: const Icon(fluent.FluentIcons.clear),
-                    onPressed: () => playback.stop(),
                   ),
                 ],
               ),
@@ -137,100 +163,132 @@ class _MaterialMiniPlayer extends StatelessWidget {
   Widget build(BuildContext context) {
     final playback = PlaybackService.instance;
 
-    return StreamBuilder<PlayerState>(
-      stream: playback.player.playerStateStream,
+    return StreamBuilder<Map<String, dynamic>>(
+      stream: Rx.combineLatest3(
+        playback.player.playerStateStream,
+        playback.currentTrackStream.startWith(playback.currentTrack),
+        playback.player.positionStream,
+        (state, track, position) => {
+          'state': state,
+          'track': track,
+          'position': position,
+        },
+      ),
       builder: (context, snapshot) {
-        final track = playback.currentTrack;
+        final data = snapshot.data;
+        final track = data?['track'] as SearchResult?;
+        final state = data?['state'] as PlayerState?;
+        final position = data?['position'] as Duration? ?? Duration.zero;
+        final duration = playback.player.duration ?? Duration.zero;
+        
         if (track == null) {
           return const SizedBox.shrink();
         }
 
-        final playing = snapshot.data?.playing ?? false;
+        final playing = state?.playing ?? false;
+        final progress = duration.inMilliseconds > 0 
+            ? position.inMilliseconds / duration.inMilliseconds 
+            : 0.0;
 
-        return Container(
-          height: 64,
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.2),
-                blurRadius: 4,
-                offset: const Offset(0, -2),
-              ),
-            ],
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const PlayerScreen()),
-              );
-            },
-            child: Row(
-              children: [
-                if (track.thumbnail != null)
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: track.thumbnail != null && (track.thumbnail!.startsWith('http') || track.thumbnail!.startsWith('https'))
-                      ? Image.network(
-                          track.thumbnail!,
-                          width: 48,
-                          height: 48,
-                          fit: BoxFit.cover,
-                        )
-                      : track.thumbnail != null
-                          ? Image.file(
-                              File(track.thumbnail!),
-                              width: 48,
-                              height: 48,
-                              fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => const Icon(Icons.music_note),
-                            )
-                          : const Icon(Icons.music_note),
-                  ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        track.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        track.artist,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onPrimaryContainer
-                              .withValues(alpha: 0.7),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(playing ? Icons.pause : Icons.play_arrow),
-                  onPressed: () {
-                    if (playing) {
-                      playback.pause();
-                    } else {
-                      playback.resume();
-                    }
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => playback.stop(),
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          child: Container(
+            height: 68,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.95),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, -2),
                 ),
               ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const PlayerScreen()),
+                    );
+                  },
+                  child: Stack(
+                children: [
+                   // Progress Bar at the bottom
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: SizedBox(
+                      height: 2,
+                      child: LinearProgressIndicator(
+                        value: progress,
+                        backgroundColor: Colors.transparent,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      children: [
+                        if (track.thumbnail != null)
+                          Hero(
+                            tag: 'player_art',
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: track.thumbnail != null && (track.thumbnail!.startsWith('http') || track.thumbnail!.startsWith('https'))
+                                ? Image.network(track.thumbnail!, width: 44, height: 44, fit: BoxFit.cover)
+                                : track.thumbnail != null
+                                    ? Image.file(File(track.thumbnail!), width: 44, height: 44, fit: BoxFit.cover)
+                                    : const Icon(Icons.music_note),
+                            ),
+                          ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                track.title,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                track.artist,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(playing ? Icons.pause : Icons.play_arrow),
+                          onPressed: () => playing ? playback.pause() : playback.resume(),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () => playback.stop(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+                ),
+              ),
             ),
           ),
         );

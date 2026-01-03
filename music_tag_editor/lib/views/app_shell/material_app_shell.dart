@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_tag_editor/services/persona_service.dart';
-import 'package:music_tag_editor/widgets/mini_player.dart';
 import 'fluent_app_shell.dart'; // Reuse the destination model
 
 class MaterialAppShell extends StatelessWidget {
@@ -22,9 +20,7 @@ class MaterialAppShell extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isWide = constraints.maxWidth > 600;
-        final persona = PersonaService.instance.activePersona;
-        final currentIndex = destinations.indexWhere((d) => d.persona == persona);
-        final effectiveIndex = selectedIndex == 99 ? destinations.length : (currentIndex == -1 ? 0 : currentIndex);
+        final effectiveIndex = selectedIndex == 99 ? destinations.length : selectedIndex;
 
         if (isWide) {
           return Scaffold(
@@ -32,17 +28,7 @@ class MaterialAppShell extends StatelessWidget {
               children: [
                 NavigationRail(
                   selectedIndex: effectiveIndex,
-                  onDestinationSelected: (index) {
-                    if (index == destinations.length) {
-                      onSelectedIndexChanged(99);
-                    } else {
-                      final dest = destinations[index];
-                      if (dest.persona != null) {
-                        PersonaService.instance.setPersona(dest.persona!);
-                      }
-                      onSelectedIndexChanged(index);
-                    }
-                  },
+                  onDestinationSelected: onSelectedIndexChanged,
                   labelType: NavigationRailLabelType.all,
                   destinations: [
                     ...destinations.map((d) => NavigationRailDestination(
@@ -57,12 +43,7 @@ class MaterialAppShell extends StatelessWidget {
                 ),
                 const VerticalDivider(thickness: 1, width: 1),
                 Expanded(
-                  child: Column(
-                    children: [
-                      Expanded(child: body),
-                      const MiniPlayer(),
-                    ],
-                  ),
+                  child: body,
                 ),
               ],
             ),
@@ -70,27 +51,10 @@ class MaterialAppShell extends StatelessWidget {
         }
 
         return Scaffold(
-          body: Column(
-            children: [
-              Expanded(child: body),
-              const MiniPlayer(),
-            ],
-          ),
+          body: body,
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: effectiveIndex >= destinations.length ? destinations.length : effectiveIndex,
-            onTap: (index) {
-              if (index == destinations.length) {
-                onSelectedIndexChanged(99);
-              } else {
-                if (index < destinations.length) {
-                  final dest = destinations[index];
-                  if (dest.persona != null) {
-                    PersonaService.instance.setPersona(dest.persona!);
-                  }
-                }
-                onSelectedIndexChanged(index);
-              }
-            },
+            onTap: onSelectedIndexChanged,
             type: BottomNavigationBarType.fixed,
             items: [
               ...destinations.map((d) => BottomNavigationBarItem(

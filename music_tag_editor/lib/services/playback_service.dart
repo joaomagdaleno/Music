@@ -57,6 +57,7 @@ class PlaybackService {
   Timer? _sleepTimer;
   final _sleepTimerController = StreamController<Duration?>.broadcast();
   final _lyricsController = StreamController<List<LyricLine>>.broadcast();
+  final _trackController = StreamController<SearchResult?>.broadcast();
   Duration? _sleepTimeLeft;
 
   SearchResult? get currentTrack => _currentTrack;
@@ -65,6 +66,7 @@ class PlaybackService {
   AudioPlayer get player => _player;
   Stream<Duration?> get sleepTimerStream => _sleepTimerController.stream;
   Stream<List<LyricLine>> get lyricsStream => _lyricsController.stream;
+  Stream<SearchResult?> get currentTrackStream => _trackController.stream;
   Duration? get sleepTimeLeft => _sleepTimeLeft;
 
   Future<void> init() async {
@@ -131,6 +133,7 @@ class PlaybackService {
 
   void _onTrackChanged(SearchResult track) {
     _currentTrack = track;
+    _trackController.add(track);
     EqualizerService.instance.applyPresetForGenre(track.genre);
     ThemeService.instance.updateThemeFromImage(track.thumbnail);
     DatabaseService.instance.trackPlay(track.id);
@@ -224,7 +227,11 @@ class PlaybackService {
     }
   }
 
-  Future<void> stop() async => await _player.stop();
+  Future<void> stop() async {
+    await _player.stop();
+    _currentTrack = null;
+    _trackController.add(null);
+  }
 
   Future<void> seek(Duration position, {bool fromRemote = false}) async {
     await _player.seek(position);
@@ -312,6 +319,7 @@ class PlaybackService {
     _sleepTimer?.cancel();
     _sleepTimerController.close();
     _lyricsController.close();
+    _trackController.close();
     _player.dispose();
   }
 }

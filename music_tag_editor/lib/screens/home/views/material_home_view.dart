@@ -3,6 +3,8 @@ import 'package:music_tag_editor/screens/library/mood_explorer_screen.dart';
 import 'package:music_tag_editor/screens/library/smart_library_screen.dart';
 import 'package:music_tag_editor/screens/stats/listening_stats_screen.dart';
 import 'package:music_tag_editor/screens/disco/disco_mode_screen.dart';
+import 'package:music_tag_editor/services/persona_service.dart';
+import 'package:music_tag_editor/models/persona_model.dart';
 
 class MaterialHomeView extends StatelessWidget {
   final bool isLoading;
@@ -40,7 +42,12 @@ class MaterialHomeView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildGreetingWidget(context),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 32),
+                  const Text('Minhas Personas',
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 16),
+                  _buildPersonaGrid(context),
+                  const SizedBox(height: 32),
                   const Text('Explore por Vibe',
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 12),
@@ -115,6 +122,78 @@ class MaterialHomeView extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildPersonaGrid(BuildContext context) {
+    final personas = [
+      {
+        'label': 'Bibliotecário',
+        'desc': 'Tags e Organização',
+        'icon': Icons.library_books,
+        'persona': AppPersona.librarian,
+        'color': Colors.blue
+      },
+      {
+        'label': 'Anfitrião',
+        'desc': 'Festa e Karaoke',
+        'icon': Icons.celebration,
+        'persona': AppPersona.host,
+        'color': Colors.purple
+      },
+      {
+        'label': 'Artesão',
+        'desc': 'Cofre e Utilidades',
+        'icon': Icons.architecture,
+        'persona': AppPersona.artisan,
+        'color': Colors.orange
+      },
+    ];
+
+    return GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 1,
+      mainAxisSpacing: 12,
+      childAspectRatio: 4,
+      children: personas.map((p) {
+        return InkWell(
+          onTap: () =>
+              PersonaService.instance.setPersona(p['persona'] as AppPersona),
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+              color: (p['color'] as Color).withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: (p['color'] as Color).withValues(alpha: 0.2),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(p['icon'] as IconData,
+                    color: p['color'] as Color, size: 32),
+                const SizedBox(width: 16),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(p['label'] as String,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16)),
+                    Text(p['desc'] as String,
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.grey)),
+                  ],
+                ),
+                const Spacer(),
+                const Icon(Icons.chevron_right, color: Colors.grey),
+              ],
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 
