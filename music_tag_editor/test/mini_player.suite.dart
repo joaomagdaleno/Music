@@ -25,9 +25,15 @@ void main() {
       PlaybackService.instance = mockPlayback;
 
       when(() => mockPlayback.player).thenReturn(mockPlayer);
+      when(() => mockPlayback.currentTrackStream)
+          .thenAnswer((_) => Stream.value(mockPlayback.currentTrack));
+      when(() => mockPlayer.positionStream)
+          .thenAnswer((_) => Stream.value(Duration.zero));
       when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(
             PlayerState(false, ProcessingState.ready),
           ));
+      when(() => mockPlayer.durationStream)
+          .thenAnswer((_) => Stream.value(null));
     });
 
     testWidgets('Shows nothing when no track is playing', (tester) async {
@@ -62,7 +68,7 @@ void main() {
         theme: ThemeData(platform: TargetPlatform.android),
         home: const Scaffold(body: MiniPlayer()),
       ));
-      await tester.pump(); // Handle StreamBuilder
+      await tester.pump(const Duration(milliseconds: 100)); // Handle StreamBuilder
 
       expect(find.text('Test Song'), findsOneWidget);
       expect(find.text('Test Artist'), findsOneWidget);
@@ -88,7 +94,7 @@ void main() {
         theme: ThemeData(platform: TargetPlatform.android),
         home: const Scaffold(body: MiniPlayer()),
       ));
-      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       await tester.tap(find.byIcon(Icons.pause));
       verify(() => mockPlayback.pause()).called(1);
