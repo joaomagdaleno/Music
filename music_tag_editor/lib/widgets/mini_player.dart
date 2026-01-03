@@ -6,6 +6,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:music_tag_editor/screens/player/player_screen.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/main.dart';
 import 'package:rxdart/rxdart.dart';
 
 class MiniPlayer extends StatelessWidget {
@@ -59,8 +60,7 @@ class _FluentMiniPlayer extends StatelessWidget {
 
         return fluent.HoverButton(
           onPressed: () {
-            Navigator.push(
-              context,
+            appNavigatorKey.currentState?.push(
               fluent.FluentPageRoute(builder: (context) => const PlayerScreen()),
             );
           },
@@ -211,8 +211,7 @@ class _MaterialMiniPlayer extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
+                    appNavigatorKey.currentState?.push(
                       MaterialPageRoute(builder: (context) => const PlayerScreen()),
                     );
                   },

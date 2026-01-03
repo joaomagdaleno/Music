@@ -16,7 +16,7 @@ import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
 import 'package:music_tag_editor/widgets/mini_player.dart';
 
-
+final GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
 
 
 void main() {
@@ -244,10 +244,11 @@ class MusicTagEditorApp extends StatelessWidget {
               scaffoldBackgroundColor: fluent.Colors.white,
             ),
             home: const AppShell(),
+            navigatorKey: appNavigatorKey,
             builder: (context, child) {
-              return fluent.ScaffoldPage(
-                padding: EdgeInsets.zero,
-                content: Column(
+              return fluent.Container(
+                color: fluent.FluentTheme.of(context).scaffoldBackgroundColor,
+                child: Column(
                   children: [
                     Expanded(child: child ?? const SizedBox.shrink()),
                     const MiniPlayer(),
@@ -279,9 +280,10 @@ class MusicTagEditorApp extends StatelessWidget {
             ),
           ),
           home: const AppShell(),
+          navigatorKey: appNavigatorKey,
           builder: (context, child) {
-            return Scaffold(
-              body: Column(
+            return Material(
+              child: Column(
                 children: [
                   Expanded(child: child ?? const SizedBox.shrink()),
                   const MiniPlayer(),

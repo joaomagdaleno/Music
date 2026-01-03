@@ -59,6 +59,7 @@ class SearchResult {
   final String? hifiSource; // 'qobuz', 'tidal', 'deezer' for Hi-Fi results
   final String? hifiQuality; // e.g. '24-bit/96kHz', 'FLAC 16-bit'
   final bool isVault;
+  final String mediaType; // 'audio' or 'video'
 
   SearchResult({
     required this.id,
@@ -74,6 +75,7 @@ class SearchResult {
     this.hifiSource,
     this.hifiQuality,
     this.isVault = false,
+    this.mediaType = 'audio',
   });
 
   String get durationFormatted {
@@ -97,6 +99,7 @@ class SearchResult {
       'platform': platform.index,
       'localPath': localPath,
       'genre': genre,
+      'media_type': mediaType,
     };
   }
 
@@ -128,6 +131,7 @@ class SearchResult {
       platform: platform,
       localPath: json['localPath']?.toString(),
       genre: json['genre']?.toString(),
+      mediaType: json['media_type']?.toString() ?? 'audio',
     );
   }
 }

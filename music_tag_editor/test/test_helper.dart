@@ -138,6 +138,9 @@ Future<void> setupMusicTest({
       .thenAnswer((_) => Stream.value(null));
   when(() => mockPlayback.lyricsStream)
       .thenAnswer((_) => Stream.value([]));
+  when(() => mockDb.getMusicFolders()).thenAnswer((_) async => []);
+  when(() => mockDb.addMusicFolder(any())).thenAnswer((_) async => {});
+  when(() => mockDb.removeMusicFolder(any())).thenAnswer((_) async => {}); // Added remove mock
   when(() => mockPlayback.queue).thenReturn([]);
 
   when(() => mockPlayer.playerStateStream).thenAnswer(

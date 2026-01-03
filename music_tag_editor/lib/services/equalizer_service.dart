@@ -1,6 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'dart:math' as math;
 import 'package:just_audio/just_audio.dart';
-import 'package:meta/meta.dart';
 
 class EqualizerService {
   static EqualizerService? _instance;
@@ -11,23 +11,25 @@ class EqualizerService {
   static void resetInstance() => _instance = null;
 
   @visibleForTesting
-  @visibleForTesting
   static set instance(EqualizerService mock) => _instance = mock;
 
-  final AndroidEqualizer _equalizer;
+  final AndroidEqualizer? _equalizer;
   bool _isAutoMode = true;
   bool _normalizationEnabled = false;
   double _targetLoudness = -14.0; // LUFS (Spotify standard)
 
   EqualizerService._internal({AndroidEqualizer? equalizer})
-      : _equalizer = equalizer ?? AndroidEqualizer();
+      : _equalizer = equalizer ??
+            (!kIsWeb && defaultTargetPlatform == TargetPlatform.android
+                ? AndroidEqualizer()
+                : null);
 
   @visibleForTesting
   factory EqualizerService.test({AndroidEqualizer? equalizer}) {
     return EqualizerService._internal(equalizer: equalizer);
   }
 
-  AndroidEqualizer get equalizer => _equalizer;
+  AndroidEqualizer get equalizer => _equalizer!;
   bool get isAutoMode => _isAutoMode;
   bool get normalizationEnabled => _normalizationEnabled;
   double get targetLoudness => _targetLoudness;
@@ -37,7 +39,7 @@ class EqualizerService {
   }
 
   Future<void> applyPresetForGenre(String? genre) async {
-    if (!_isAutoMode) {
+    if (!_isAutoMode || _equalizer == null) {
       return;
     }
 
@@ -91,6 +93,7 @@ class EqualizerService {
   }
 
   Future<void> setCustomBand(int index, double gain) async {
+    if (_equalizer == null) return;
     _isAutoMode = false;
     final parameters = await _equalizer.parameters;
     if (index < parameters.bands.length) {

@@ -26,12 +26,21 @@ class PlaybackService {
   }
 
   PlaybackService._internal({AudioPlayer? player, AudioHandler? handler}) {
-    _player = player ??
-        AudioPlayer(
+    if (player != null) {
+      _player = player;
+    } else {
+      // AudioPipeline and AndroidEqualizer are specifically for Android.
+      // Using them on Windows can cause MissingPluginException during player initialization.
+      if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+        _player = AudioPlayer(
           audioPipeline: AudioPipeline(
             androidAudioEffects: [EqualizerService.instance.equalizer],
           ),
         );
+      } else {
+        _player = AudioPlayer();
+      }
+    }
     if (handler != null) _audioHandler = handler;
   }
 
@@ -102,6 +111,49 @@ class PlaybackService {
     _player.positionStream.listen((position) {
       _updatePlaybackState();
     });
+
+    // Restore last played track
+    try {
+      final history = await DatabaseService.instance.getPlayHistory();
+      if (history.isNotEmpty) {
+        final lastTrackData = history.first;
+        final lastTrack = SearchResult.fromJson(lastTrackData);
+        _currentTrack = lastTrack;
+        _trackController.add(lastTrack);
+        
+        StartupLogger.log('[PlaybackService] Restored last track metadata: ${lastTrack.title}');
+
+        // Load audio source in background to not block startup
+        _restoreAudioSource(lastTrack);
+      }
+    } catch (e) {
+      StartupLogger.log('[PlaybackService] Failed to restore last track: $e');
+    }
+  }
+
+  Future<void> _restoreAudioSource(SearchResult track) async {
+    try {
+      // Preload audio source without playing
+      _queue.clear();
+      _queue.add(track);
+      _playlist = ConcatenatingAudioSource(children: [await _createSource(track)]);
+      await _player.setAudioSource(_playlist!, preload: false);
+      
+      // Also restore metadata for system media controls
+      (_audioHandler as BaseAudioHandler).mediaItem.add(MediaItem(
+        id: track.id,
+        album: track.album ?? 'Unknown Album',
+        title: track.title,
+        artist: track.artist,
+        duration: track.duration != null
+            ? Duration(seconds: track.duration!)
+            : null,
+        artUri: track.thumbnail != null ? Uri.parse(track.thumbnail!) : null,
+      ));
+      StartupLogger.log('[PlaybackService] Audio source restored and ready');
+    } catch (e) {
+      StartupLogger.log('[PlaybackService] Failed to restore audio source: $e');
+    }
   }
 
   void _updatePlaybackState() {
