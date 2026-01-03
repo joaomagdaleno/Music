@@ -11,6 +11,7 @@ enum MediaPlatform {
   youtubeMusic,
   spotify,
   hifi, // Tidal, Qobuz, Deezer via SlavArt
+  local,
   unknown,
 }
 
@@ -97,7 +98,7 @@ class SearchResult {
       'duration': duration,
       'url': url,
       'platform': platform.index,
-      'localPath': localPath,
+      'local_path': localPath, // Standardized to underscore for DB/internal Map
       'genre': genre,
       'media_type': mediaType,
     };
@@ -129,7 +130,7 @@ class SearchResult {
       duration: json['duration'] is int ? json['duration'] : null,
       url: json['url']?.toString() ?? '',
       platform: platform,
-      localPath: json['localPath']?.toString(),
+      localPath: (json['local_path'] ?? json['localPath'])?.toString(),
       genre: json['genre']?.toString(),
       mediaType: json['media_type']?.toString() ?? 'audio',
     );

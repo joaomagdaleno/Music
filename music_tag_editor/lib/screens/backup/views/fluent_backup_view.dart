@@ -19,7 +19,18 @@ class FluentBackupView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage(
-      header: const PageHeader(title: Text('Backup & Restauração')),
+      header: PageHeader(
+        title: const Text('Backup & Restauração'),
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(FluentIcons.back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
+      ),
       content: isLoading
           ? const Center(child: ProgressRing())
           : Padding(

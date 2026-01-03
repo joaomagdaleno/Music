@@ -24,6 +24,18 @@ class FluentLoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NavigationView(
+      appBar: NavigationAppBar(
+        automaticallyImplyLeading: false,
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(FluentIcons.back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
+      ),
       content: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

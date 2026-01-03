@@ -342,6 +342,8 @@ class MaterialSearchView extends StatelessWidget {
         );
       case MediaPlatform.hifi:
         return _getHiFiLogo(hifiSource);
+      case MediaPlatform.local:
+        return const Icon(Icons.folder, color: Colors.brown);
       case MediaPlatform.unknown:
         return const Icon(Icons.help_outline, color: Colors.grey);
     }

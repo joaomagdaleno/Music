@@ -18,7 +18,18 @@ class FluentPartyQueueView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage(
-      header: const PageHeader(title: Text('Fila de Festa (Party Queue)')),
+      header: PageHeader(
+        title: const Text('Fila de Festa (Party Queue)'),
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(FluentIcons.back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
+      ),
       content: SingleChildScrollView(
         child: Center(
           child: Padding(

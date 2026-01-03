@@ -144,6 +144,9 @@ class _DownloadPageState extends State<DownloadPage> {
       case MediaPlatform.hifi:
         icon = Icons.high_quality;
         color = Colors.purple;
+      case MediaPlatform.local:
+        icon = Icons.folder;
+        color = Colors.brown;
       case MediaPlatform.unknown:
         icon = Icons.help_outline;
         color = Colors.grey;

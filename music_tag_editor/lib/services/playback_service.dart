@@ -1,4 +1,5 @@
-import 'package:just_audio/just_audio.dart';
+import 'package:media_kit/media_kit.dart';
+import 'package:media_kit_video/media_kit_video.dart';
 import 'package:flutter/foundation.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:audio_service/audio_service.dart';
@@ -19,43 +20,17 @@ class PlaybackService {
   static set instance(PlaybackService value) => _instance = value;
   static void resetInstance() => _instance = null;
 
-  @visibleForTesting
-  factory PlaybackService.forTesting(
-      {AudioPlayer? player, AudioHandler? handler}) {
-    return PlaybackService._internal(player: player, handler: handler);
+  PlaybackService._internal() {
+    _player = Player();
+    _videoController = VideoController(_player);
   }
 
-  PlaybackService._internal({AudioPlayer? player, AudioHandler? handler}) {
-    if (player != null) {
-      _player = player;
-    } else {
-      // AudioPipeline and AndroidEqualizer are specifically for Android.
-      // Using them on Windows can cause MissingPluginException during player initialization.
-      if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-        _player = AudioPlayer(
-          audioPipeline: AudioPipeline(
-            androidAudioEffects: [EqualizerService.instance.equalizer],
-          ),
-        );
-      } else {
-        _player = AudioPlayer();
-      }
-    }
-    if (handler != null) _audioHandler = handler;
-  }
+  late final Player _player;
+  late final VideoController _videoController;
 
-  late AudioPlayer _player;
+  VideoController get videoController => _videoController;
 
-  @visibleForTesting
-  set player(AudioPlayer mock) => _player = mock;
-  late AudioHandler _audioHandler;
-
-  @visibleForTesting
-  set audioHandler(AudioHandler mock) => _audioHandler = mock;
-  SearchService _searchService = SearchService.instance;
-
-  @visibleForTesting
-  set searchService(SearchService mock) => _searchService = mock;
+  final SearchService _searchService = SearchService.instance;
 
   SearchResult? _currentTrack;
   final List<SearchResult> _queue = [];
@@ -70,7 +45,7 @@ class PlaybackService {
   SearchResult? get currentTrack => _currentTrack;
   List<SearchResult> get queue => List.unmodifiable(_queue);
   List<LyricLine> get currentLyrics => _currentLyrics;
-  AudioPlayer get player => _player;
+  Player get player => _player;
   Stream<Duration?> get sleepTimerStream => _sleepTimerController.stream;
   Stream<List<LyricLine>> get lyricsStream => _lyricsController.stream;
   Stream<SearchResult?> get currentTrackStream => _trackController.stream;
@@ -94,26 +69,23 @@ class PlaybackService {
         await DatabaseService.instance.loadCrossfadeDuration();
     _crossfadeDuration = Duration(seconds: savedDuration);
 
-    _player.currentIndexStream.listen((index) {
-      if (index != null && _queue.isNotEmpty && index < _queue.length) {
-        _onTrackChanged(_queue[index]);
-      }
+    _player.stream.track.listen((track) {
+      // Logic for track changes if needed via media_kit streams
     });
 
-    _player.playbackEventStream.listen((event) {
-      // Log playback events for debugging
-    }, onError: (Object e, StackTrace st) {
-      StartupLogger.logError('[PlaybackService] Player Error', e, st);
+    _player.stream.error.listen((error) {
+      StartupLogger.logError('[PlaybackService] Player Error', error, StackTrace.current);
     });
 
-
-    _player.processingStateStream.listen((state) {
+    _player.stream.playing.listen((playing) {
       _updatePlaybackState();
     });
-    _player.playingStream.listen((playing) {
+
+    _player.stream.position.listen((position) {
       _updatePlaybackState();
     });
-    _player.positionStream.listen((position) {
+
+    _player.stream.buffer.listen((buffer) {
       _updatePlaybackState();
     });
 
@@ -128,7 +100,6 @@ class PlaybackService {
         
         StartupLogger.log('[PlaybackService] Restored last track metadata: ${lastTrack.title}');
 
-        // Load audio source in background to not block startup
         _restoreAudioSource(lastTrack);
       }
     } catch (e) {
@@ -136,15 +107,19 @@ class PlaybackService {
     }
   }
 
+  late MusicAudioHandler _audioHandler;
+
   Future<void> _restoreAudioSource(SearchResult track) async {
     try {
-      // Preload audio source without playing
       _queue.clear();
       _queue.add(track);
-      await _player.setAudioSource(await _createSource(track), preload: false);
       
-      // Also restore metadata for system media controls
-      (_audioHandler as BaseAudioHandler).mediaItem.add(MediaItem(
+      final source = await _createSource(track);
+      if (source != null) {
+        await _player.open(Media(source), play: false);
+      }
+      
+      _audioHandler.updateMediaItem(MediaItem(
         id: track.id,
         album: track.album ?? 'Unknown Album',
         title: track.title,
@@ -154,17 +129,17 @@ class PlaybackService {
             : null,
         artUri: track.thumbnail != null ? Uri.parse(track.thumbnail!) : null,
       ));
-      StartupLogger.log('[PlaybackService] Audio source restored and ready');
+      StartupLogger.log('[PlaybackService] Source restored and ready');
     } catch (e) {
-      StartupLogger.log('[PlaybackService] Failed to restore audio source: $e');
+      StartupLogger.log('[PlaybackService] Failed to restore source: $e');
     }
   }
 
   void _updatePlaybackState() {
-    (_audioHandler as BaseAudioHandler).playbackState.add(PlaybackState(
+    _audioHandler.updatePlaybackState(PlaybackState(
           controls: [
             MediaControl.skipToPrevious,
-            if (_player.playing) MediaControl.pause else MediaControl.play,
+            if (_player.state.playing) MediaControl.pause else MediaControl.play,
             MediaControl.stop,
             MediaControl.skipToNext,
           ],
@@ -172,19 +147,18 @@ class PlaybackService {
             MediaAction.seek,
           },
           androidCompactActionIndices: const [0, 1, 3],
-          processingState: const {
-            ProcessingState.idle: AudioProcessingState.idle,
-            ProcessingState.loading: AudioProcessingState.loading,
-            ProcessingState.buffering: AudioProcessingState.buffering,
-            ProcessingState.ready: AudioProcessingState.ready,
-            ProcessingState.completed: AudioProcessingState.completed,
-          }[_player.processingState]!,
-          playing: _player.playing,
-          updatePosition: _player.position,
-          bufferedPosition: _player.bufferedPosition,
-          speed: _player.speed,
-          queueIndex: _player.currentIndex,
+          processingState: _mapProcessingState(),
+          playing: _player.state.playing,
+          updatePosition: _player.state.position,
+          bufferedPosition: _player.state.buffer,
+          speed: _player.state.rate,
         ));
+  }
+
+  AudioProcessingState _mapProcessingState() {
+    if (_player.state.buffering) return AudioProcessingState.buffering;
+    if (_player.state.playing) return AudioProcessingState.ready;
+    return AudioProcessingState.idle;
   }
 
   void _onTrackChanged(SearchResult track) {
@@ -195,7 +169,7 @@ class PlaybackService {
     DatabaseService.instance.trackPlay(track.id);
     _fetchLyrics(track);
 
-    (_audioHandler as BaseAudioHandler).mediaItem.add(MediaItem(
+    _audioHandler.mediaItem.add(MediaItem(
           id: track.id,
           album: track.album ?? 'Unknown Album',
           title: track.title,
@@ -212,15 +186,14 @@ class PlaybackService {
     StartupLogger.log('[PlaybackService] Playing search result: ${result.title} (${result.platform})');
     _currentTrack = result;
 
-    // Clear queue and start fresh for a single play
     _queue.clear();
     _queue.add(result);
-    StartupLogger.log('[PlaybackService] Creating audio source for ${result.id}');
     
-    await _player.setAudioSource(await _createSource(result));
-    _onTrackChanged(result);
-    _player.play();
-    StartupLogger.log('[PlaybackService] Playback started');
+    final source = await _createSource(result);
+    if (source != null) {
+      await _player.open(Media(source));
+      _onTrackChanged(result);
+    }
 
     if (!fromRemote) {
       LocalDuoService.instance.sendMessage({
@@ -233,31 +206,20 @@ class PlaybackService {
     }
   }
 
-  Future<AudioSource> _createSource(SearchResult track) async {
+  Future<String?> _createSource(SearchResult track) async {
     if (track.localPath != null) {
       StartupLogger.log('[PlaybackService] Playing local file: ${track.localPath}');
-      return AudioSource.uri(Uri.file(track.localPath!));
+      return track.localPath;
     }
     StartupLogger.log('[PlaybackService] Fetching stream URL for: ${track.url}');
+    // Logic for highest quality resolution should be in search_service
     final streamUrl = await _searchService.getStreamUrl(track.url);
     if (streamUrl != null) {
       StartupLogger.log('[PlaybackService] Stream URL obtained successfully');
-      return AudioSource.uri(Uri.parse(streamUrl));
+      return streamUrl;
     }
     StartupLogger.log('[PlaybackService] ERROR: Could not get stream URL for ${track.id}');
-    throw Exception('Could not get stream URL');
-  }
-
-  Future<void> fadeOutAndNext() async {
-    if (_crossfadeDuration.inMilliseconds > 0) {
-      for (double i = 1.0; i >= 0; i -= 0.1) {
-        _player.setVolume(i);
-        await Future.delayed(
-            Duration(milliseconds: _crossfadeDuration.inMilliseconds ~/ 10));
-      }
-    }
-    _player.seekToNext();
-    _player.setVolume(1.0);
+    return null;
   }
 
   Future<void> pause({bool fromRemote = false}) async {
@@ -265,7 +227,7 @@ class PlaybackService {
     if (!fromRemote) {
       LocalDuoService.instance.sendMessage({
         'type': 'pause',
-        'positionMs': _player.position.inMilliseconds,
+        'positionMs': _player.state.position.inMilliseconds,
       });
     }
   }
@@ -275,7 +237,7 @@ class PlaybackService {
     if (!fromRemote) {
       LocalDuoService.instance.sendMessage({
         'type': 'play',
-        'positionMs': _player.position.inMilliseconds,
+        'positionMs': _player.state.position.inMilliseconds,
       });
     }
   }
@@ -296,8 +258,34 @@ class PlaybackService {
     }
   }
 
-  // Remote controls
+  Future<void> next() async {
+    if (_queue.isNotEmpty) {
+      final nextTrack = _queue.removeAt(0);
+      await playSearchResult(nextTrack);
+    }
+  }
+
+  Future<void> previous() async {
+    await _player.seek(Duration.zero);
+  }
+
+  Future<void> toggleShuffle() async {
+    await _player.setShuffle(!_player.state.shuffle);
+  }
+
+  Future<void> toggleRepeat() async {
+    final mode = _player.state.playlistMode;
+    if (mode == PlaylistMode.none) {
+      await _player.setPlaylistMode(PlaylistMode.loop);
+    } else if (mode == PlaylistMode.loop) {
+      await _player.setPlaylistMode(PlaylistMode.single);
+    } else {
+      await _player.setPlaylistMode(PlaylistMode.none);
+    }
+  }
+
   void playFromRemote(Duration position) {
+
     _player.seek(position);
     _player.play();
   }
@@ -309,14 +297,12 @@ class PlaybackService {
   Future<void> playLocalFile(String path, SearchResult track) async {
     _currentTrack = track;
     EqualizerService.instance.applyPresetForGenre(track.genre);
-    await _player.setFilePath(path);
-    _player.play();
+    await _player.open(Media(path));
+    _trackController.add(track);
   }
 
   Future<void> addToQueue(SearchResult track, {bool fromRemote = false}) async {
     _queue.add(track);
-    await _player.addAudioSource(await _createSource(track));
-    
     if (!fromRemote) {
       LocalDuoService.instance.sendMessage({
         'type': 'add_to_queue',
@@ -381,6 +367,9 @@ class MusicAudioHandler extends BaseAudioHandler {
 
   MusicAudioHandler(this._service);
 
+  Future<void> updateMediaItem(MediaItem item) async => mediaItem.add(item);
+  Future<void> updatePlaybackState(PlaybackState state) async => playbackState.add(state);
+
   @override
   Future<void> play() => _service.resume();
 
@@ -391,10 +380,10 @@ class MusicAudioHandler extends BaseAudioHandler {
   Future<void> stop() => _service.stop();
 
   @override
-  Future<void> skipToNext() => _service._player.seekToNext();
+  Future<void> skipToNext() => _service.next();
 
   @override
-  Future<void> skipToPrevious() => _service._player.seekToPrevious();
+  Future<void> skipToPrevious() => _service.previous();
 
   @override
   Future<void> seek(Duration position) => _service.seek(position);

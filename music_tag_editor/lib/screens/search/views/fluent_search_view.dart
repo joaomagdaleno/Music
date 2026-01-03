@@ -59,7 +59,18 @@ class FluentSearchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage(
-      header: const PageHeader(title: Text('Busca de Músicas')),
+      header: PageHeader(
+        title: const Text('Busca de Músicas'),
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(FluentIcons.back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
+      ),
       content: Column(
         children: [
           Padding(
@@ -411,8 +422,10 @@ class FluentSearchView extends StatelessWidget {
         );
       case MediaPlatform.hifi:
         return _getHiFiLogo(hifiSource);
+      case MediaPlatform.local:
+        return const Icon(FluentIcons.folder_list, size: 20);
       case MediaPlatform.unknown:
-        return Icon(FluentIcons.unknown, color: Colors.grey);
+        return const Icon(FluentIcons.unknown, color: Colors.grey);
     }
   }
 

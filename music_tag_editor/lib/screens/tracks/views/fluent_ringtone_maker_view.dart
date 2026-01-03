@@ -28,7 +28,18 @@ class FluentRingtoneMakerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage(
-      header: const PageHeader(title: Text('Criador de Toques')),
+      header: PageHeader(
+        title: const Text('Criador de Toques'),
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(FluentIcons.back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
+      ),
       content: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 48),
         child: Column(

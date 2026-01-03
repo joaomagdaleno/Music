@@ -23,7 +23,7 @@ class DependencyManager {
         _binDir = 'test_bin',
         _client = client ?? http.Client();
 
-  late String _binDir;
+  String? _binDir;
   bool _initialized = false;
 
   /// URLs for downloading tools
@@ -42,8 +42,10 @@ class DependencyManager {
       return;
     }
 
-    _binDir = await _getBinDirectory();
-    await Directory(_binDir).create(recursive: true);
+    if (_binDir == null) {
+      _binDir = _getBinDirectorySync();
+      await Directory(_binDir!).create(recursive: true);
+    }
 
     // Check and download each tool
     final tools = [
@@ -65,8 +67,7 @@ class DependencyManager {
     _initialized = true;
   }
 
-  /// Get the binary directory for storing tools.
-  Future<String> _getBinDirectory() async {
+  String _getBinDirectorySync() {
     if (Platform.isWindows) {
       final appData = Platform.environment['APPDATA']!;
       return p.join(appData, 'music_tag_editor', 'bin');
@@ -79,26 +80,30 @@ class DependencyManager {
 
   /// Get path to yt-dlp executable.
   String _getYtDlpPath() {
+    _binDir ??= _getBinDirectorySync();
     final ext = Platform.isWindows ? '.exe' : '';
-    return p.join(_binDir, 'yt-dlp$ext');
+    return p.join(_binDir!, 'yt-dlp$ext');
   }
 
   /// Get path to spotdl executable.
   String _getSpotdlPath() {
+    _binDir ??= _getBinDirectorySync();
     final ext = Platform.isWindows ? '.exe' : '';
-    return p.join(_binDir, 'spotdl$ext');
+    return p.join(_binDir!, 'spotdl$ext');
   }
 
   /// Get path to FFmpeg executable.
   String _getFFmpegPath() {
+    _binDir ??= _getBinDirectorySync();
     final ext = Platform.isWindows ? '.exe' : '';
-    return p.join(_binDir, 'ffmpeg$ext');
+    return p.join(_binDir!, 'ffmpeg$ext');
   }
 
   /// Get path to fpcalc (Chromaprint) executable.
   String _getFpcalcPath() {
+    _binDir ??= _getBinDirectorySync();
     final ext = Platform.isWindows ? '.exe' : '';
-    return p.join(_binDir, 'fpcalc$ext');
+    return p.join(_binDir!, 'fpcalc$ext');
   }
 
   /// Public getters for tool paths.
@@ -181,7 +186,8 @@ class DependencyManager {
   /// Download FFmpeg from yt-dlp's FFmpeg builds.
   Future<void> _downloadFFmpeg() async {
     if (Platform.isWindows) {
-      final zipPath = p.join(_binDir, 'ffmpeg.zip');
+      _binDir ??= _getBinDirectorySync();
+      final zipPath = p.join(_binDir!, 'ffmpeg.zip');
       await downloadFile(_ffmpegUrl, zipPath);
 
       // Extract zip
@@ -226,7 +232,7 @@ class DependencyManager {
 
   /// Check if all dependencies are installed.
   Future<bool> areAllDependenciesInstalled() async {
-    _binDir = await _getBinDirectory();
+    _binDir ??= _getBinDirectorySync();
     return await File(_getYtDlpPath()).exists() &&
         await File(_getSpotdlPath()).exists() &&
         await File(_getFFmpegPath()).exists() &&
@@ -240,7 +246,8 @@ class DependencyManager {
         'https://github.com/acoustid/chromaprint/releases/download/v1.5.1/chromaprint-fpcalc-1.5.1-windows-x86_64.zip';
 
     if (Platform.isWindows) {
-      final zipPath = p.join(_binDir, 'fpcalc.zip');
+      _binDir ??= _getBinDirectorySync();
+      final zipPath = p.join(_binDir!, 'fpcalc.zip');
       await downloadFile(fpcalcUrl, zipPath);
 
       final bytes = await File(zipPath).readAsBytes();

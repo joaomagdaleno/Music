@@ -30,6 +30,16 @@ class _FluentMyTracksViewState extends State<FluentMyTracksView> {
     return NavigationView(
       appBar: NavigationAppBar(
         title: const Text('Biblioteca'),
+        automaticallyImplyLeading: false,
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(FluentIcons.back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
         actions: CommandBar(mainAxisAlignment: MainAxisAlignment.end, primaryItems: [
           CommandBarButton(
             icon: const Icon(FluentIcons.download),
