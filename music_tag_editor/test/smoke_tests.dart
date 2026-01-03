@@ -126,9 +126,15 @@ void main() {
     when(() => mockTheme.removeListener(any())).thenReturn(null);
 
     when(() => mockPlayback.currentTrack).thenReturn(null);
+    when(() => mockPlayback.currentTrackStream)
+        .thenAnswer((_) => Stream.value(null));
     when(() => mockPlayback.player).thenReturn(mockAudioPlayer);
     when(() => mockAudioPlayer.playerStateStream)
-        .thenAnswer((_) => const Stream.empty());
+        .thenAnswer((_) => Stream.value(PlayerState(false, ProcessingState.idle)));
+    when(() => mockAudioPlayer.positionStream)
+        .thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockAudioPlayer.durationStream)
+        .thenAnswer((_) => Stream.value(null));
 
     when(() =>
             mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
@@ -157,7 +163,7 @@ void main() {
   testWidgets('MoodExplorerView smoke test', (tester) async {
     await tester.pumpWidget(createTestWidget(MoodExplorerScreen()));
     await tester.pump();
-    expect(find.text('Qual o seu mood hoje?'), findsOneWidget);
+    expect(find.text('Explorar por Humor'), findsOneWidget);
   });
 
   testWidgets('SmartLibraryView smoke test', (tester) async {
@@ -170,7 +176,7 @@ void main() {
     await tester.pumpWidget(createTestWidget(const ListeningStatsScreen()));
     await tester.pump();
     await tester.pump();
-    expect(find.text('Suas Estatísticas'), findsOneWidget);
+    expect(find.text('Estatísticas de Escuta'), findsOneWidget);
   });
 
   testWidgets('DiscoModeView smoke test', (tester) async {

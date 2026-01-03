@@ -139,8 +139,14 @@ void main() {
 
     when(() => mockPlayback.player).thenReturn(mockAudioPlayer);
     when(() => mockPlayback.currentTrack).thenReturn(null);
+    when(() => mockPlayback.currentTrackStream)
+        .thenAnswer((_) => const Stream.empty());
     when(() => mockAudioPlayer.playerStateStream)
         .thenAnswer((_) => const Stream.empty());
+    when(() => mockAudioPlayer.positionStream)
+        .thenAnswer((_) => const Stream.empty());
+    when(() => mockAudioPlayer.durationStream)
+        .thenAnswer((_) => Stream.value(null));
 
     when(() => mockConnectivity.isOffline).thenReturn(ValueNotifier(false));
 

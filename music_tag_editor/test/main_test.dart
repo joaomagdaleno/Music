@@ -60,8 +60,15 @@ void main() {
     when(() => mockDb.getTracks()).thenAnswer((_) async => []);
     when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
     when(() => mockPlayback.player).thenReturn(mockPlayer);
+    when(() => mockPlayback.currentTrack).thenReturn(null);
+    when(() => mockPlayback.currentTrackStream)
+        .thenAnswer((_) => const Stream.empty());
     when(() => mockPlayer.playerStateStream)
         .thenAnswer((_) => const Stream.empty());
+    when(() => mockPlayer.positionStream)
+        .thenAnswer((_) => const Stream.empty());
+    when(() => mockPlayer.durationStream)
+        .thenAnswer((_) => Stream.value(null));
   });
 
   group('MusicTagEditorApp', () {

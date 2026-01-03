@@ -58,13 +58,21 @@ void main() {
       final bottomNavBarFinder = find.byType(BottomNavigationBar);
       expect(bottomNavBarFinder, findsOneWidget);
 
-      // Tap index 1: Librarian (Bibliotecário)
-      await tester.tap(find.text('Bibliotecário'));
+      // Tap Librarian (Bibliotecário) in nav bar
+      final libItem = find.descendant(
+        of: find.byType(BottomNavigationBar),
+        matching: find.text('Bibliotecário'),
+      );
+      await tester.tap(libItem);
       await tester.pumpAndSettle();
 
       // Should now show Librarian tabs: Tags, Minhas Músicas
       expect(find.text('Tags'), findsAtLeastNWidgets(1));
-      expect(find.text('Início'), findsNothing);
+      // "Início" might still be in the BottomNavigationBar, but should NOT be in the AppBar anymore
+      expect(
+        find.descendant(of: find.byType(AppBar), matching: find.text('Início')),
+        findsNothing,
+      );
 
       tester.view.resetPhysicalSize();
       tester.view.resetDevicePixelRatio();

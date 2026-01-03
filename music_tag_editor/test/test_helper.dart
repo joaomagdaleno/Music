@@ -131,10 +131,17 @@ Future<void> setupMusicTest({
   when(() => mockPlayback.player)
       .thenReturn(mockPlayer); // Real player but usually fine
   when(() => mockPlayback.currentTrack).thenReturn(null);
+  when(() => mockPlayback.currentTrackStream)
+      .thenAnswer((_) => Stream.value(null));
+  when(() => mockDb.getAllTracks()).thenAnswer((_) async => []);
+  when(() => mockPlayback.sleepTimerStream)
+      .thenAnswer((_) => Stream.value(null));
+  when(() => mockPlayback.lyricsStream)
+      .thenAnswer((_) => Stream.value([]));
   when(() => mockPlayback.queue).thenReturn([]);
 
   when(() => mockPlayer.playerStateStream).thenAnswer(
-      (_) => Stream.value(PlayerState(false, ProcessingState.idle)));
+      (_) => Stream.value(PlayerState(false, ProcessingState.ready)));
   when(() => mockPlayer.positionStream)
       .thenAnswer((_) => Stream.value(Duration.zero));
   when(() => mockPlayer.bufferedPositionStream)
