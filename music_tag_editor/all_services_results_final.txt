@@ -1,0 +1,161 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart
+00:00 +0: AuthService AuthService login success returns true
+[2026-01-03T09:13:45.040005] [AuthService] Attempting login for: test@test.com
+[2026-01-03T09:13:45.062527] [AuthService] Login SUCCESS for: test@test.com
+00:00 +1: AuthService AuthService login failure returns false
+[2026-01-03T09:13:45.100528] [AuthService] Attempting login for: test@test.com
+[2026-01-03T09:13:45.100528] [AuthService] Login FAILED for test@test.com: [firebase_auth/user-not-found] null
+00:00 +2: AuthService AuthService register success returns true
+[2026-01-03T09:13:45.110093] [AuthService] Attempting registration for: test@test.com
+[2026-01-03T09:13:45.110093] [AuthService] Registration SUCCESS for: test@test.com
+00:00 +3: AuthService AuthService logout calls signOut
+00:00 +4: AuthService AuthService recoverVaultAccess returns true if user matches
+00:00 +5: BackupService BackupService createBackup creates a zip file with data
+00:00 +6: BackupService BackupService restoreBackup restores data from zip
+00:00 +7: BackupService BackupService estimateBackupSize returns valid size
+00:00 +8: ConnectivityRoot ConnectivityService instance is accessible
+00:00 +9: ConnectivityRoot ConnectivityService isOffline is a ValueNotifier
+00:00 +10: ConnectivityRoot ConnectivityService init completes without error
+00:00 +11: DatabaseService (setUpAll)
+00:00 +11: DatabaseService Settings save and load filename format
+00:01 +12: DatabaseService Settings save and load crossfade duration
+00:01 +13: DatabaseService Settings save and load age bypass
+00:01 +14: DatabaseService Settings generic saveSetting and getSetting
+00:01 +15: DatabaseService Tracks save and retrieve tracks
+00:01 +16: DatabaseService Tracks toggle vault
+00:01 +17: DatabaseService Tracks trackPlay increments count and sets lastPlayed
+00:01 +18: DatabaseService Playlists create playlist and add tracks
+00:01 +19: DatabaseService Duo save guest and add session tracks
+00:01 +20: DatabaseService Moods getTracksByMood returns matching genres
+00:01 +21: DatabaseService Learning Rules save and get learning rules
+00:01 +22: DatabaseService (tearDownAll)
+00:01 +22: DatabaseServiceNew DatabaseService instance is accessible
+00:01 +23: DatabaseServiceNew FilenameFormat generateFilename returns string
+00:01 +24: DatabaseServiceNew FilenameFormat generateFilename handles titleArtist
+00:01 +25: DatabaseServiceNew LearningChoice has expected values
+00:01 +26: DownloadService DownloadService - Platform Detection detects YouTube correctly
+00:01 +27: DownloadService DownloadService - Platform Detection detects YouTube Music correctly
+00:01 +28: DownloadService DownloadService - Platform Detection detects Spotify correctly
+00:01 +29: DownloadService DownloadService - Platform Detection returns unknown for invalid URLs
+00:01 +30: DownloadService DownloadService - Media Info getMediaInfo returns YouTube info correctly
+[2026-01-03T09:13:46.394284] [DownloadService] Getting MediaInfo for YouTube: https://youtube.com/watch?v=abc
+[2026-01-03T09:13:46.396305] [DownloadService] Successfully parsed info for: Test Song
+00:01 +31: DownloadService DownloadService - Media Info getMediaInfo returns Spotify info correctly
+00:01 +32: EqualizerRoot EqualizerService Tests Normalization calculation
+00:01 +33: EqualizerRoot EqualizerService Tests Normalization disabled returns 1.0
+00:01 +34: EqualizerRoot EqualizerService Tests Auto mode state
+00:01 +35: FirebaseSync (setUpAll)
+00:01 +35: FirebaseSync enableSync signs in anonymously if not signed in
+00:01 +36: FirebaseSync pullFromCloud pulls tracks and playlists
+00:01 +37: FirebaseSync (tearDownAll)
+00:01 +37: LocalDuoService (setUpAll)
+00:01 +37: LocalDuoService LocalDuoService startHost sets role and starts advertising
+00:01 +38: LocalDuoService LocalDuoService startDiscovery sets role and starts discovery
+00:01 +39: LocalDuoService LocalDuoService stopAll cleans up state
+00:01 +40: LocalDuoService LocalDuoService sendMessage sends bytes to all connected endpoints
+00:01 +41: LocalDuoService LocalDuoService sendFile sends file to all connected endpoints
+00:01 +42: LocalDuoService LocalDuoService handleIncomingMessage play/pause/seek
+00:01 +43: LocalDuoService LocalDuoService handleIncomingMessage track/chat
+00:01 +44: LocalDuoService (tearDownAll)
+00:01 +44: LyricsService LyricsService fetchLyrics returns empty list on network error
+[2026-01-03T09:13:46.601705] Error fetching lyrics: type 'Null' is not a subtype of type 'bool'
+00:01 +45: LyricsService LyricsService _parseLrc parses valid LRC format
+00:01 +46: LyricsService LyricsService LyricLine has correct structure
+00:01 +47: LyricsService LyricsService multiple LyricLines can be created
+00:01 +48: MetadataAggregator aggregateMetadata aggregates results correctly with majority vote
+00:01 +49: MetadataAggregator aggregateMetadata handles empty results and falls back to input
+00:01 +50: MetadataAggregator fetchSyncedLyrics returns lyrics from LrcLib if found and valid
+00:01 +51: MetadataAggregator fetchSyncedLyrics falls back to Netease if LrcLib empty
+00:01 +52: MetadataAggregator fetchSyncedLyrics validates duration mismatch
+00:01 +53: MetadataCleanup MetadataCleanupService cleanupLibrary cleans dirty titles and artists
+00:01 +54: MetadataCleanup MetadataCleanupService cleanupLibrary fetches missing metadata
+00:01 +55: MetadataCleanup MetadataCleanupService cleanupLibrary handles aggregator errors gracefully
+00:01 +56: MetadataService MetadataService Tests Read and Write Metadata
+00:01 +57: MetadataService MetadataService Tests parseTrackNumber handles various formats
+00:01 +58: MetadataService MetadataService Tests Read non-existent file throws exception
+00:01 +59: MetadataService MetadataService Tests Write to non-existent file throws exception
+00:01 +60: MetadataService MetadataService Tests readMetadata handles ID3v1 vs ID3v2 logic (basic branch test)
+00:01 +61: PersonaService PersonaService Unit Tests Default persona should be librarian
+00:01 +62: PersonaService PersonaService Unit Tests setPersona updates activePersona and notifies listeners
+00:01 +63: PlaybackService PlaybackService - Core Logic playSearchResult sets source and plays
+[2026-01-03T09:13:46.889375] [PlaybackService] Playing search result: Test Track (MediaPlatform.youtube)
+[2026-01-03T09:13:46.890373] [PlaybackService] Creating audio source for test_1
+[2026-01-03T09:13:46.891377] [PlaybackService] Fetching stream URL for: http://test_url
+[2026-01-03T09:13:46.892375] [PlaybackService] Stream URL obtained successfully
+[2026-01-03T09:13:46.905896] [PlaybackService] Playback started
+00:01 +64: PlaybackService PlaybackService - Core Logic pause calls player pause and sends message
+00:01 +65: PlaybackService PlaybackService - Core Logic resume calls player play and sends message
+00:01 +66: PlaybackService PlaybackService - Core Logic stop calls player stop
+00:01 +67: PlaybackService PlaybackService - Core Logic seek calls player seek and sends message
+00:01 +68: PlaybackService PlaybackService - Core Logic addToQueue adds track and notifies remote
+[2026-01-03T09:13:46.961128] [PlaybackService] Fetching stream URL for: http://test_url
+[2026-01-03T09:13:46.962165] [PlaybackService] Stream URL obtained successfully
+00:01 +69: PlaybackService PlaybackService - Core Logic clearQueue empties the queue
+00:02 +70: PlaybackService PlaybackService - Core Logic setSleepTimer stops playback after duration
+00:02 +71: PlaybackService PlaybackService - Core Logic cancelSleepTimer resets status
+00:02 +72: SearchService searchYouTube returns parsed video results
+00:02 +73: SearchService searchYouTube returns empty list on error
+[2026-01-03T09:13:47.034477] ÔØî YouTube Explode Error: Exception: YT Error
+00:02 +74: SearchService searchYouTubeMusic filters and parses results
+00:02 +75: SearchService searchHiFi delegates to HiFiDownloadService
+00:02 +76: SearchService getStreamUrl returns trimmed stdout on success
+[SearchService] getStreamUrl Command: yt-dlp --no-check-certificates --no-cache-dir -g -f bestaudio/best http://origin
+[2026-01-03T09:13:47.073129] [SearchService] Found Stream URL: http://direct-url
+00:02 +77: SearchService getStreamUrl returns null on failure
+[SearchService] getStreamUrl Command: yt-dlp --no-check-certificates --no-cache-dir -g -f bestaudio/best http://origin
+[2026-01-03T09:13:47.083636] [SearchService] getStreamUrl FAILED: 
+00:02 +78: SearchService searchAll calls all platforms and updates status
+[2026-01-03T09:13:47.096684] [SearchService] Executing youtube search...
+[2026-01-03T09:13:47.097698] [SearchService] Executing youtubeMusic search...
+[2026-01-03T09:13:47.097698] [SearchService] Executing spotify search...
+[2026-01-03T09:13:47.097698] [SearchService] Executing hifi search...
+[2026-01-03T09:13:47.099617] [SearchService] youtube search finished with 0 results
+[2026-01-03T09:13:47.103736] [SearchService] youtubeMusic search finished with 0 results
+[2026-01-03T09:13:47.103736] [SearchService] spotify search finished with 0 results
+[2026-01-03T09:13:47.103736] [SearchService] hifi search finished with 0 results
+00:02 +79: SearchService getFormats returns default formats for Spotify
+00:02 +80: SearchService getFormats parses yt-dlp json formats correctly
+00:02 +81: SearchService getFormats returns default formats on process failure
+00:02 +82: SearchService importPlaylist importYouTubePlaylist parses results correctly
+00:02 +83: SearchService findSpotifyMatch returns match if available
+00:02 +84: SecurityService SecurityService instance is accessible
+00:02 +85: SecurityService SecurityService encryptString returns encrypted format
+00:02 +86: SecurityService SecurityService decryptString returns original text
+00:02 +87: SecurityService SecurityService decryptString handles invalid format gracefully
+00:02 +88: SecurityService SecurityService _hashPassword produces consistent hash
+00:02 +89: SecurityService SecurityService unlockVault returns false without setup
+00:02 +90: SecurityService SecurityService setupVaultPassword allows unlocking
+00:02 +91: ThemeRoot ThemeService instance is accessible
+00:02 +92: ThemeRoot ThemeService primaryColor returns a Color
+00:02 +93: ThemeRoot ThemeService setCustomColor updates color
+00:02 +94: ThemeRoot ThemeService ThemeService is a ChangeNotifier
+00:02 +95: CastService (setUpAll)
+00:02 +95: CastService CastService parseSsdpResponse adds device to stream on valid XML
+00:02 +96: CastService CastService sendSoap sends correct POST request
+00:02 +97: CastService CastService parseSsdpResponse handles partial URLs in controlURL
+00:02 +98: CastService (tearDownAll)
+00:02 +98: ConnectivityService ConnectivityService init updates isOffline status correctly
+00:02 +99: ConnectivityService ConnectivityService Becomes online when wifi connected
+00:02 +100: DesktopIntegration (setUpAll)
+00:02 +100: DesktopIntegration init calls initialization methods
+[2026-01-03T09:13:47.398119] Desktop: ensuring WindowManager initialized
+[2026-01-03T09:13:47.402151] Desktop: initializing SystemTray
+[2026-01-03T09:13:47.402151] Desktop: creating menu
+[2026-01-03T09:13:47.403121] Desktop: setting context menu
+[2026-01-03T09:13:47.404121] Desktop: waiting for WindowManager ready
+[2026-01-03T09:13:47.406631] Desktop: init complete
+00:02 +101: DesktopIntegration hideToTray calls windowManager.hide()
+00:02 +102: DesktopIntegration (tearDownAll)
+00:02 +102: EqualizerService EqualizerService applyPresetForGenre sets bands correctly for Rock
+00:02 +103: EqualizerService EqualizerService calculateNormalizedVolume calculates gain adjustment
+00:02 +104: HifiDownload HiFiDownloadService search returns sorted results
+00:02 +105: HifiDownload HiFiDownloadService download handles success
+00:02 +106: HifiDownload HiFiDownloadService download handles failure to get link
+00:02 +107: HifiDownload HiFiDownloadService findHiFiVersion finds match
+00:02 +108: ListeningStats ListeningStatsService getStats calculates basic totals correctly
+00:02 +109: ListeningStats ListeningStatsService getStats identifies top items correctly
+00:02 +110: ListeningStats ListeningStatsService getStats handles empty database
+00:02 +111: ThemeService ThemeService init loads settings from DB
+00:02 +112: ThemeService ThemeService setCustomColor saves to DB and updates state
+00:02 +113: ThemeService ThemeService updateThemeFromImage updates primary color from palette
+00:02 +114: All tests passed!

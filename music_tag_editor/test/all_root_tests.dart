@@ -24,21 +24,21 @@ import 'security_service.suite.dart' as security;
 import 'theme_service.suite.dart' as theme;
 
 void main() {
-  auth.main();
-  backup.main();
-  connectivity.main();
-  database.main();
-  dependency.main();
-  equalizer.main();
-  firebase_sync.main();
-  local_duo.main();
-  lyrics.main();
-  metadata_agg.main();
-  metadata_clean.main();
-  metadata.main();
-  persona.main();
-  playback.main();
-  search.main();
-  security.main();
-  theme.main();
+  group('AuthService', () => auth.main());
+  group('BackupService', () => backup.main());
+  group('ConnectivityService', () => connectivity.main());
+  group('DatabaseService', () => database.main());
+  group('DependencyManager', () => dependency.main());
+  group('EqualizerService', () => equalizer.main());
+  group('FirebaseSyncService', () => firebase_sync.main());
+  group('LocalDuoService', () => local_duo.main());
+  group('LyricsService', () => lyrics.main());
+  group('MetadataAggregator', () => metadata_agg.main());
+  group('MetadataCleanup', () => metadata_clean.main());
+  group('MetadataService', () => metadata.main());
+  group('PersonaService', () => persona.main());
+  group('PlaybackService', () => playback.main());
+  group('SearchService', () => search.main());
+  group('SecurityService', () => security.main());
+  group('ThemeService', () => theme.main());
 }

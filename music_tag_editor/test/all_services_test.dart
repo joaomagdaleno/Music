@@ -3,7 +3,6 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'test_helper.dart';
 
 import 'auth_service.suite.dart' as auth;
 import 'backup_service.suite.dart' as backup;
@@ -33,8 +32,6 @@ import 'services/listening_stats_service.suite.dart' as stats;
 import 'services/theme_service.suite.dart' as theme;
 
 void main() {
-  // Global baseline setup
-  setUp(() async => await setupMusicTest());
 
   group('AuthService', () => auth.main());
   group('BackupService', () => backup.main());
