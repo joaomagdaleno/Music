@@ -126,14 +126,39 @@ jobs:
         working-directory: music_tag_editor
         run: flutter pub get
 
-      - name: Run Tests
+      - name: Run Tests with Auditing 🔦
         working-directory: music_tag_editor
+        id: test_run
         run: |
-          flutter test --coverage | tee test_output.log
-          TEST_RESULT=$?
-          if [ $TEST_RESULT -ne 0 ]; then
+          # Use JSON reporter to capture durations while still showing output
+          (flutter test --coverage --reporter json | tee test_results.json) || (echo "TEST_FAILED=true" >> $GITHUB_ENV)
+          
+      - name: The Ghost Hunter's Audit 🔦
+        working-directory: music_tag_editor
+        if: always() && steps.test_run.outcome != 'skipped'
+        run: |
+          echo "### 🔦 The Ghost Hunter's Lantern: Test Performance Audit" >> $GITHUB_STEP_SUMMARY
+          if [ -f "test_results.json" ]; then
+            echo "| Test Name | Duration (ms) | Result |" >> $GITHUB_STEP_SUMMARY
+            echo "| :--- | :--- | :--- |" >> $GITHUB_STEP_SUMMARY
+            
+            # Extract top 5 slowest successful tests
+            # We filter for testDone events and join with their names from testStart
+            # Note: jq is used to bridge the gap between IDs and names
+            cat test_results.json | grep '"type":"testDone"' | \
+            jq -r 'select(.hidden == false) | [.time, .testID] | @tsv' | \
+            sort -rn | head -n 5 | while read -r time testid; do
+              name=$(grep "\"type\":\"testStart\"" test_results.json | jq -r "select(.test.id == $testid) | .test.name")
+              echo "| $name | $time | ✅ |" >> $GITHUB_STEP_SUMMARY
+            done
+          else
+            echo "⚠️ No test results JSON found for auditing." >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Finalize exit status
+          if [ "$TEST_FAILED" = "true" ]; then
             echo "::error title=Hermes 📦 Alert::Tests failed!"
-            exit $TEST_RESULT
+            exit 1
           fi
 
       - name: Dependency Hygiene 🧼

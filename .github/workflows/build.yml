@@ -121,6 +121,42 @@ jobs:
           fi
           
           echo "Historical metrics archived in \`coverage-data\` branch." >> $GITHUB_STEP_SUMMARY
+          
+          # The Scribe: Visual Chronology Generation
+          generate_scribe_report() {
+            echo "# 📜 Hermes: The Scribe's Chronology" > README.md
+            echo "Visual record of the project's technical evolution." >> README.md
+            echo "" >> README.md
+            echo "## 📊 Binary Size Trends (Last 10 Builds)" >> README.md
+            echo '```mermaid' >> README.md
+            echo 'xychart-beta' >> README.md
+            echo '    title "Binary Size Evolution (MB)"' >> README.md
+            
+            # Extract labels (timestamps)
+            LABELS=$(ls -t history/metrics/android_telemetry_*.json | head -n 10 | tac | xargs -I{} basename {} .json | cut -d'_' -f3 | cut -c7-11 | jq -R . | jq -s -c .)
+            echo "    x-axis $LABELS" >> README.md
+            
+            # Extract Android values
+            A_VALS=$(ls -t history/metrics/android_telemetry_*.json | head -n 10 | tac | xargs -I{} jq -r '.apk_size_bytes / 1024 / 1024' {} | jq -s -c .)
+            echo "    y-axis \"Size (MB)\" 0 -> 100" >> README.md
+            echo "    line $A_VALS" >> README.md
+            echo '```' >> README.md
+            echo "" >> README.md
+            echo "## 🛡️ Coverage Stability" >> README.md
+            echo '```mermaid' >> README.md
+            echo 'xychart-beta' >> README.md
+            echo '    title "Code Coverage Percentage"' >> README.md
+            C_LABELS=$(ls -t history/metrics/coverage_*.json | head -n 10 | tac | xargs -I{} basename {} .json | cut -d'_' -f2 | cut -c7-11 | jq -R . | jq -s -c .)
+            echo "    x-axis $C_LABELS" >> README.md
+            C_VALS=$(ls -t history/metrics/coverage_*.json | head -n 10 | tac | xargs -I{} jq -r '.["total-percentage"]' {} | jq -s -c .)
+            echo "    y-axis \"Coverage (%)\" 0 -> 100" >> README.md
+            echo "    bar $C_VALS" >> README.md
+            echo '```' >> README.md
+            echo "" >> README.md
+            echo "Last updated: $(date -u)" >> README.md
+          }
+          
+          generate_scribe_report
 
       - name: Commit and Push
         run: |
