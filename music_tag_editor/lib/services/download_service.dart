@@ -6,6 +6,7 @@ import 'package:music_tag_editor/services/startup_logger.dart';
 import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
+import 'package:path/path.dart' as p;
 
 /// Platform detected from URL or search.
 enum MediaPlatform {
@@ -460,16 +461,24 @@ class DownloadService {
             percent / 100, 'Baixando arquivo: ${percent.toStringAsFixed(1)}%');
       }
 
-      // Capture output filename
-      if (line.contains('[download] Destination:')) {
-        outputFile = line.split('Destination:').last.trim();
+      // Capture output filename - handle both initial and post-conversion destinations
+      if (line.contains('Destination:')) {
+        final path = line.split('Destination:').last.trim();
+        // Skip hidden/temporary paths starting with . or having intermediate extensions
+        if (path.isNotEmpty && !path.endsWith('.part')) {
+          outputFile = path;
+          debugPrint('[DownloadService] Captured destination: $outputFile');
+        }
       } else if (line.contains('[download]') &&
           line.contains('has already been downloaded')) {
-        // Handle "already downloaded" case to capture filename
-        outputFile = line.split('downloaded').last.trim();
-        // Sometimes it's just the path
-        if (outputFile!.contains(outputDir)) {
-          // We have the path
+        final parts = line.split('downloaded');
+        if (parts.length > 1) {
+          final path = parts.last.trim();
+          if (path.isNotEmpty) {
+            outputFile = path;
+            debugPrint(
+                '[DownloadService] Captured already downloaded: $outputFile');
+          }
         }
       }
     });
@@ -536,7 +545,8 @@ class DownloadService {
     String? lyrics,
   }) async {
     try {
-      final tempOut = '${audioPath}_temp.mp3';
+      final ext = p.extension(audioPath);
+      final tempOut = '${audioPath}_temp$ext';
 
       final args = <String>[
         '-y',
@@ -551,11 +561,20 @@ class DownloadService {
         await fileDownloader(metadata.thumbnail!, imageFile.path);
         args.addAll(['-i', imageFile.path]);
         args.addAll(['-map', '0:0', '-map', '1:0']);
+        // If it's MP3, we might need specific disposition
+        if (ext.toLowerCase() == '.mp3') {
+          args.addAll(['-disposition:v', 'attached_pic']);
+        }
       } else {
         args.addAll(['-map', '0:0']);
       }
 
-      args.addAll(['-c', 'copy', '-id3v2_version', '3']);
+      args.addAll(['-c', 'copy']);
+
+      // ID3v2 is only for MP3 really, others use Vorbis/Matroska tags naturally
+      if (ext.toLowerCase() == '.mp3') {
+        args.addAll(['-id3v2_version', '3']);
+      }
 
       // Add Metadata Tags
       if (metadata.title != null) {
@@ -588,14 +607,14 @@ class DownloadService {
         }
         await File(tempOut).rename(audioPath);
       } else {
-        StartupLogger.log('FFmpeg metadata embed failed: ${result.stderr}');
+        StartupLogger.log('FFmpeg metadata embed failed for $audioPath: ${result.stderr}');
       }
 
       if (imageFile != null && await imageFile.exists()) {
         await imageFile.delete();
       }
     } catch (e) {
-      StartupLogger.log('Error embedding metadata: $e');
+      StartupLogger.log('Error embedding metadata for $audioPath: $e');
     }
   }
 

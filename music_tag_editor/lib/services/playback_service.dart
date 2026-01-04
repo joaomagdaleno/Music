@@ -33,10 +33,10 @@ class PlaybackService {
     if (_player.platform is NativePlayer) {
       final player = _player.platform as NativePlayer;
       player.setProperty('user-agent',
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+          'Mozilla/5.0 (Android 14; Mobile; rv:128.0) Gecko/128.0 Firefox/128.0');
       player.setProperty('referrer', 'https://www.youtube.com/');
-      player.setProperty('demuxer-max-bytes', '33554432'); // 32MB
-      player.setProperty('demuxer-readahead-secs', '30');
+      player.setProperty('demuxer-max-bytes', '67108864'); // 64MB for better caching
+      player.setProperty('demuxer-readahead-secs', '60');
       player.setProperty('ytdl-format', 'bestaudio/best');
     }
   }
