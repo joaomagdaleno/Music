@@ -10,7 +10,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           fetch-tags: true
@@ -28,6 +28,15 @@ jobs:
         with:
           flutter-version: '3.38.2'
           cache: true
+
+      - name: Cache Pub Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~\AppData\Local\Pub\Cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
 
       - name: Get base version from last tag
         id: version-win
@@ -70,27 +79,10 @@ jobs:
         working-directory: music_tag_editor
         run: flutter pub get
 
-      - name: Cache Windows Build Artifacts
-        uses: actions/cache@v4
-        with:
-          path: |
-            music_tag_editor/build
-            music_tag_editor/.dart_tool
-          key: ${{ runner.os }}-build-v3
-          restore-keys: |
-            ${{ runner.os }}-build-v3
-            ${{ runner.os }}-build-v2
-            ${{ runner.os }}-build-
-
       - name: Flutter Build Windows
         working-directory: music_tag_editor
         run: |
           flutter build windows
-
-      - name: Install Inno Setup
-        run: |
-          Invoke-WebRequest -Uri "https://jrsoftware.org/download.php/is.exe" -OutFile is.exe
-          Start-Process -FilePath "is.exe" -ArgumentList "/VERYSILENT", "/NORESTART", "/SUPPRESSMSGBOXES" -Wait
 
       - name: Build Installer
         shell: pwsh
@@ -110,17 +102,36 @@ jobs:
           name: version-info
           path: music_tag_editor/version.txt
 
-  build_android_linux:
-    name: Build Android & Linux
+      - name: Generate Job Summary
+        run: |
+          echo "## Windows Build Summary 📦" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ steps.generate_version_win.outputs.full_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Artifact**: MusicTagEditorSetup.exe" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: Success ✅" >> $GITHUB_STEP_SUMMARY
+
+      - name: Record Build Metrics ⏱️
+        shell: bash
+        run: |
+          mkdir -p metrics
+          BINARY_SIZE=$(stat -c%s music_tag_editor/build/windows/x64/runner/Release/MusicTagEditorSetup.exe || echo 0)
+          echo "{
+            \"platform\": \"windows\",
+            \"version\": \"${{ steps.generate_version_win.outputs.full_version }}\",
+            \"binary_size_bytes\": $BINARY_SIZE,
+            \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",
+            \"commit\": \"${{ github.sha }}\"
+          }" > metrics/windows_telemetry.json
+
+      - name: Upload Telemetry
+        uses: actions/upload-artifact@v4
+        with:
+          name: telemetry-windows
+          path: metrics/windows_telemetry.json
+
+  build_android:
+    name: Build Android
     runs-on: ubuntu-latest
     steps:
-      - name: Free up disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf "/usr/local/share/boost"
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -143,11 +154,184 @@ jobs:
           flutter-version: '3.38.2'
           cache: true
 
+      - name: Cache Pub Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
+          cache: 'gradle'
+
+      - name: Cache Gradle Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Generate Version and Update Pubspec
+        id: generate_version
+        working-directory: music_tag_editor
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            FULL_VERSION="$VERSION"
+          elif [ "${{ github.ref_name }}" = "beta" ]; then
+            PATCH_NUM=$(echo $PATCH | grep -oE '^[0-9]+')
+            NEXT_PATCH=$((PATCH_NUM + 1))
+            FULL_VERSION="$MAJOR.$MINOR.$NEXT_PATCH-beta.${GITHUB_RUN_NUMBER}"
+          elif [ "${{ github.ref_name }}" = "dev" ]; then
+            NEXT_MINOR=$((MINOR + 1))
+            FULL_VERSION="$MAJOR.$NEXT_MINOR.0-dev.${GITHUB_RUN_NUMBER}"
+          else
+            FULL_VERSION="$VERSION-local.${GITHUB_RUN_NUMBER}"
+          fi
+
+          sed -i "s/^version:.*/version: $FULL_VERSION/" pubspec.yaml
+          echo "$FULL_VERSION" > version.txt
+          echo "full_version=$FULL_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Flutter Pub Get
+        working-directory: music_tag_editor
+        run: flutter pub get
+
+      - name: Setup Android Signing
+        env:
+          UPLOAD_SIGNING_KEY: ${{ secrets.UPLOAD_SIGNING_KEY }}
+          UPLOAD_STORE_PASSWORD: ${{ secrets.UPLOAD_STORE_PASSWORD }}
+          UPLOAD_KEY_PASSWORD: ${{ secrets.UPLOAD_KEY_PASSWORD }}
+          UPLOAD_KEY_ALIAS: ${{ secrets.UPLOAD_KEY_ALIAS }}
+        run: |
+          echo $UPLOAD_SIGNING_KEY | base64 --decode > music_tag_editor/android/app/upload-keystore.jks
+          echo "storePassword=$UPLOAD_STORE_PASSWORD" > music_tag_editor/android/key.properties
+          echo "keyPassword=$UPLOAD_KEY_PASSWORD" >> music_tag_editor/android/key.properties
+          echo "keyAlias=$UPLOAD_KEY_ALIAS" >> music_tag_editor/android/key.properties
+          echo "storeFile=../app/upload-keystore.jks" >> music_tag_editor/android/key.properties
+
+      - name: Flutter Build APK
+        working-directory: music_tag_editor
+        run: |
+          mkdir -p debug-info
+          flutter build apk --release --target-platform=android-arm64 --obfuscate --split-debug-info=debug-info --analyze-size | tee size_analysis.log
+
+      - name: The Cartographer 🗺️ (Size Analysis Summary)
+        working-directory: music_tag_editor
+        run: |
+          echo "### 🗺️ Size Cartography: Top Contributors" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          # Extract the table between the horizontal lines in the analyze-size output
+          grep -A 20 "Dart SDK" size_analysis.log | head -n 25 >> $GITHUB_STEP_SUMMARY || echo "Size analysis table not found" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "Detailed analysis available in [DevTools](https://docs.flutter.dev/perf/app-size#using-the-app-size-tool)." >> $GITHUB_STEP_SUMMARY
+
+      - name: Flutter Build App Bundle (AAB)
+        if: startsWith(github.ref, 'refs/tags/v')
+        working-directory: music_tag_editor
+        run: |
+          flutter build appbundle --release --obfuscate --split-debug-info=debug-info
+
+      - name: Check Build Health (APK Size)
+        working-directory: music_tag_editor
+        run: |
+          APK_SIZE=$(stat -c%s build/app/outputs/flutter-apk/app-release.apk)
+          THRESHOLD=80000000 # 80MB
+          echo "APK Size: $APK_SIZE bytes"
+          if [ "$APK_SIZE" -gt "$THRESHOLD" ]; then
+            echo "::warning title=Hermes 📦 Alert::APK size ($APK_SIZE bytes) exceeds the 80MB threshold!"
+          fi
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: music_tag_editor/build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Upload AAB Artifact
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-aab
+          path: music_tag_editor/build/app/outputs/bundle/release/app-release.aab
+
+      - name: Generate Job Summary
+        run: |
+          APK_SIZE=$(stat -c%s music_tag_editor/build/app/outputs/flutter-apk/app-release.apk)
+          APK_SIZE_MB=$(echo "scale=2; $APK_SIZE / 1048576" | bc)
+          echo "## Android Build Summary 📦" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ steps.generate_version.outputs.full_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **APK Size**: $APK_SIZE_MB MB" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f music_tag_editor/build/app/outputs/bundle/release/app-release.aab ]; then
+            AAB_SIZE=$(stat -c%s music_tag_editor/build/app/outputs/bundle/release/app-release.aab)
+            AAB_SIZE_MB=$(echo "scale=2; $AAB_SIZE / 1048576" | bc)
+            echo "- **AAB Size**: $AAB_SIZE_MB MB (Store Ready 🚀)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "$APK_SIZE" -gt 80000000 ]; then echo "- **Health**: WARNING ⚠️ (APK > 80MB)" >> $GITHUB_STEP_SUMMARY
+          else echo "- **Health**: Optimal ✅" >> $GITHUB_STEP_SUMMARY; fi
+
+      - name: Record Build Metrics ⏱️
+        run: |
+          mkdir -p metrics
+          APK_SIZE=$(stat -c%s music_tag_editor/build/app/outputs/flutter-apk/app-release.apk)
+          echo "{
+            \"platform\": \"android\",
+            \"version\": \"${{ steps.generate_version.outputs.full_version }}\",
+            \"apk_size_bytes\": $APK_SIZE,
+            \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",
+            \"commit\": \"${{ github.sha }}\"
+          }" > metrics/android_telemetry.json
+
+      - name: Upload Telemetry
+        uses: actions/upload-artifact@v4
+        with:
+          name: telemetry-android
+          path: metrics/android_telemetry.json
+
+  build_linux:
+    name: Build Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Configure Firebase
+        env:
+          FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
+        run: |
+          mkdir -p music_tag_editor/lib
+          echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.2'
+          cache: true
+
+      - name: Cache Pub Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
 
       - name: Generate Version and Update Pubspec
         id: generate_version
@@ -182,29 +366,6 @@ jobs:
         working-directory: music_tag_editor
         run: flutter pub get
 
-      - name: Setup Android Signing
-        env:
-          UPLOAD_SIGNING_KEY: ${{ secrets.UPLOAD_SIGNING_KEY }}
-          UPLOAD_STORE_PASSWORD: ${{ secrets.UPLOAD_STORE_PASSWORD }}
-          UPLOAD_KEY_PASSWORD: ${{ secrets.UPLOAD_KEY_PASSWORD }}
-          UPLOAD_KEY_ALIAS: ${{ secrets.UPLOAD_KEY_ALIAS }}
-        run: |
-          echo $UPLOAD_SIGNING_KEY | base64 --decode > music_tag_editor/android/app/upload-keystore.jks
-          echo "storePassword=$UPLOAD_STORE_PASSWORD" > music_tag_editor/android/key.properties
-          echo "keyPassword=$UPLOAD_KEY_PASSWORD" >> music_tag_editor/android/key.properties
-          echo "keyAlias=$UPLOAD_KEY_ALIAS" >> music_tag_editor/android/key.properties
-          echo "storeFile=../app/upload-keystore.jks" >> music_tag_editor/android/key.properties
-
-      - name: Flutter Build APK
-        working-directory: music_tag_editor
-        run: flutter build apk --release --target-platform=android-arm64
-
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-apk
-          path: music_tag_editor/build/app/outputs/flutter-apk/app-release.apk
-
       - name: Flutter Build Linux
         working-directory: music_tag_editor
         run: flutter build linux --release
@@ -219,3 +380,9 @@ jobs:
         with:
           name: linux-release
           path: music_tag_editor/music_tag_editor-linux-v*.tar.gz
+
+      - name: Generate Job Summary
+        run: |
+          echo "## Linux Build Summary 📦" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ steps.generate_version.outputs.full_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: Success ✅" >> $GITHUB_STEP_SUMMARY

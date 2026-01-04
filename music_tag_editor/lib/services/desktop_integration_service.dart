@@ -52,7 +52,7 @@ class DesktopIntegrationService {
       await StartupLogger.log('Desktop: initializing SystemTray');
       await _systemTray.initSystemTray(
         iconPath: iconPath,
-        title: "Music App",
+        title: 'Music App',
       );
 
       await StartupLogger.log('Desktop: creating menu');

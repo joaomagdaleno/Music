@@ -29,11 +29,17 @@ jobs:
       - name: Read version
         id: version
         run: |
-          VERSION=$(find artifacts/windows-installer -type f -name "*.exe" | grep -oP 'v\d+\.\d+\.\d+(-[^\s]+)?' | head -n 1 || echo "unknown")
-          # If grep -oP fails, try another way or just read it from a file if we had one.
-          # For parity with Notes, let's assume we'll create a version.txt in build-and-package.
           VERSION=$(find artifacts -type f -name "version.txt" | head -n 1 | xargs cat || echo "0.0.0-unknown")
           echo "full_version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          # Fetch changes since last push or last 10 commits if fresh
+          CHANGES=$(git log --oneline -n 10 --no-merges | sed 's/^/- /')
+          echo "changes<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
       
       - name: Create Dev Release (Update Existing)
         if: github.ref == 'refs/heads/dev'
@@ -42,9 +48,14 @@ jobs:
           tag_name: dev-latest
           name: Development Build (Dev)
           body: |
-            Este é o **Snapshot mais recente** da branch `dev`.
-            Versão interna: ${{ steps.version.outputs.full_version }}
-            Commit: ${{ github.sha }}
+            ## O que mudou? 🛠️
+            ${{ steps.changelog.outputs.changes }}
+
+            ---
+            **Metadados do Build 📦**
+            - Versão: `${{ steps.version.outputs.full_version }}`
+            - Commit: `${{ github.sha }}`
+            - Ambiente: `Development`
           prerelease: true
           generate_release_notes: false
           files: |
@@ -60,10 +71,14 @@ jobs:
           tag_name: beta-latest
           name: Beta Release
           body: |
-            Esta é a versão **Beta mais recente** para testes públicos.
-            Próxima versão planejada.
-            Versão interna: ${{ steps.version.outputs.full_version }}
-            Commit: ${{ github.sha }}
+            ## O que mudou? ✨
+            ${{ steps.changelog.outputs.changes }}
+
+            ---
+            **Metadados do Build 📦**
+            - Versão: `${{ steps.version.outputs.full_version }}`
+            - Commit: `${{ github.sha }}`
+            - Ambiente: `Beta`
           prerelease: true
           generate_release_notes: false
           files: |
