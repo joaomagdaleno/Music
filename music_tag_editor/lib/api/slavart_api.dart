@@ -150,19 +150,18 @@ class SlavArtResult {
     this.quality,
   });
 
-  factory SlavArtResult.fromJson(Map<String, dynamic> json, String source) {
-    return SlavArtResult(
-      id: json['id']?.toString() ?? '',
-      title: json['title'] ?? json['name'] ?? 'Unknown',
-      artist: _extractArtist(json),
-      album: json['album']?['title'] ?? json['album']?['name'],
-      thumbnail: json['cover'] ?? json['album']?['cover'] ?? json['image'],
-      duration: json['duration'] as int?,
-      source: source,
-      url: json['url'] ?? json['link'] ?? '',
-      quality: _parseQuality(json, source),
-    );
-  }
+  factory SlavArtResult.fromJson(Map<String, dynamic> json, String source) =>
+      SlavArtResult(
+        id: json['id']?.toString() ?? '',
+        title: json['title'] ?? json['name'] ?? 'Unknown',
+        artist: _extractArtist(json),
+        album: json['album']?['title'] ?? json['album']?['name'],
+        thumbnail: json['cover'] ?? json['album']?['cover'] ?? json['image'],
+        duration: json['duration'] as int?,
+        source: source,
+        url: json['url'] ?? json['link'] ?? '',
+        quality: _parseQuality(json, source),
+      );
 
   static String? _parseQuality(Map<String, dynamic> json, String source) {
     switch (source) {

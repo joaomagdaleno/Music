@@ -27,15 +27,14 @@ class DesktopIntegrationService {
 
   @visibleForTesting
   factory DesktopIntegrationService.test(
-      {SystemTray? systemTray,
-      WindowManager? windowManager,
-      Menu Function()? menuFactory}) {
-    return DesktopIntegrationService._internal(
-      systemTray: systemTray,
-      manager: windowManager,
-      menuFactory: menuFactory,
-    );
-  }
+          {SystemTray? systemTray,
+          WindowManager? windowManager,
+          Menu Function()? menuFactory}) =>
+      DesktopIntegrationService._internal(
+        systemTray: systemTray,
+        manager: windowManager,
+        menuFactory: menuFactory,
+      );
 
   Future<void> init() async {
     if (!Platform.isWindows && !Platform.isLinux && !Platform.isMacOS) {
@@ -85,10 +84,11 @@ class DesktopIntegrationService {
       });
 
       // Configure window manager
-      WindowOptions windowOptions = const WindowOptions(
+      const WindowOptions windowOptions = WindowOptions(
         size: Size(1280, 720),
         center: true,
-        backgroundColor: Color(0xFF1E1E1E), // Solid dark grey to avoid transparency
+        backgroundColor:
+            Color(0xFF1E1E1E), // Solid dark grey to avoid transparency
         skipTaskbar: false,
         titleBarStyle: TitleBarStyle.normal,
       );
@@ -98,7 +98,7 @@ class DesktopIntegrationService {
         await _windowManager.show();
         await _windowManager.focus();
       });
-      
+
       await StartupLogger.log('Desktop: init complete');
     } catch (e, stack) {
       await StartupLogger.log('❌ DesktopIntegrationService error: $e');

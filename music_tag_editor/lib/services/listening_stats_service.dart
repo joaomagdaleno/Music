@@ -30,9 +30,8 @@ class ListeningStatsService {
       : _db = db ?? DatabaseService.instance;
 
   @visibleForTesting
-  factory ListeningStatsService.test({DatabaseService? db}) {
-    return ListeningStatsService._internal(db: db);
-  }
+  factory ListeningStatsService.test({DatabaseService? db}) =>
+      ListeningStatsService._internal(db: db);
 
   final DatabaseService _db;
 

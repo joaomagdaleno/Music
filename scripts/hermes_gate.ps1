@@ -11,9 +11,8 @@ Write-Host "🧼 [1/3] Limpeza e Dependências..." -ForegroundColor Yellow
 flutter pub get
 
 Write-Host "✨ [2/3] Verificando Formatação e Análise..." -ForegroundColor Yellow
-$format = flutter format --set-exit-if-changed .
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "❌ Erro de Formatação detectado! Execute 'flutter format .' para corrigir." -ForegroundColor Red
+if (-not (dart format --set-exit-if-changed .)) {
+    Write-Host "❌ Erro de Formatação detectado! Execute 'dart format .' para corrigir." -ForegroundColor Red
     exit 1
 }
 

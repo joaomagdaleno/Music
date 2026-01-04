@@ -39,9 +39,8 @@ class CastService {
         _networkInfo = networkInfo ?? NetworkInfo();
 
   @visibleForTesting
-  factory CastService.test({http.Client? client, NetworkInfo? networkInfo}) {
-    return CastService._internal(client: client, networkInfo: networkInfo);
-  }
+  factory CastService.test({http.Client? client, NetworkInfo? networkInfo}) =>
+      CastService._internal(client: client, networkInfo: networkInfo);
 
   @visibleForTesting
   static void reset() {
@@ -189,7 +188,7 @@ class CastService {
   }
 
   Future<void> _play(String controlUrl) async {
-    final body = '''
+    const body = '''
       <?xml version="1.0" encoding="utf-8"?>
       <s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
         <s:Body>

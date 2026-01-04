@@ -79,9 +79,8 @@ void main() {
         runInShell = false,
         stdoutEncoding,
         stderrEncoding,
-      }) async {
-        return result;
-      };
+      }) async =>
+          result;
 
       final info =
           await service.getMediaInfo('https://youtube.com/watch?v=abc');

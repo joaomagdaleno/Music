@@ -22,46 +22,54 @@ void main() {
     late BehaviorSubject<bool> playingSubject;
 
     setUp(() async {
-      await setupMusicTest(); 
+      await setupMusicTest();
       // No platform override, uses Windows (Fluent)
 
       mockStream = MockPlayerStream();
-      playingSubject = BehaviorSubject.seeded(false); 
-      
+      playingSubject = BehaviorSubject.seeded(false);
+
       when(() => mockPlayer.stream).thenReturn(mockStream);
-      when(() => mockPlayer.state).thenReturn(PlayerState());
+      when(() => mockPlayer.state).thenReturn(const PlayerState());
 
       when(() => mockStream.playing).thenAnswer((_) => playingSubject.stream);
-      when(() => mockStream.position).thenAnswer((_) => Stream.value(Duration.zero));
-      when(() => mockStream.duration).thenAnswer((_) => Stream.value(Duration.zero));
-      when(() => mockStream.buffer).thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockStream.position)
+          .thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockStream.duration)
+          .thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockStream.buffer)
+          .thenAnswer((_) => Stream.value(Duration.zero));
       when(() => mockStream.volume).thenAnswer((_) => Stream.value(100.0));
-      when(() => mockStream.playlistMode).thenAnswer((_) => Stream.value(PlaylistMode.none));
+      when(() => mockStream.playlistMode)
+          .thenAnswer((_) => Stream.value(PlaylistMode.none));
       when(() => mockStream.shuffle).thenAnswer((_) => Stream.value(false));
 
       // Explicitly stub currentTrackStream as empty (so startWith(currentTrack) is the only value)
-      when(() => mockPlayback.currentTrackStream).thenAnswer((_) => const Stream.empty());
+      when(() => mockPlayback.currentTrackStream)
+          .thenAnswer((_) => const Stream.empty());
     });
-    
+
     tearDown(() {
       playingSubject.close();
       debugDefaultTargetPlatformOverride = null;
     });
 
     testWidgets('MiniPlayer renders track info', (tester) async {
-       final track = SearchResult(
-         id: '1', title: 'Song', artist: 'Artist', url: 'url', platform: MediaPlatform.youtube, duration: 100
-       );
-       when(() => mockPlayback.currentTrack).thenReturn(track);
-       
-       await tester.pumpWidget(MaterialApp(
-         theme: ThemeData(useMaterial3: true),
-         home: const Scaffold(body: MiniPlayer())
-       ));
-       await tester.pump();
+      final track = SearchResult(
+          id: '1',
+          title: 'Song',
+          artist: 'Artist',
+          url: 'url',
+          platform: MediaPlatform.youtube,
+          duration: 100);
+      when(() => mockPlayback.currentTrack).thenReturn(track);
 
-       expect(find.text('Song'), findsOneWidget);
-       expect(find.text('Artist'), findsOneWidget);
+      await tester.pumpWidget(MaterialApp(
+          theme: ThemeData(useMaterial3: true),
+          home: const Scaffold(body: MiniPlayer())));
+      await tester.pump();
+
+      expect(find.text('Song'), findsOneWidget);
+      expect(find.text('Artist'), findsOneWidget);
     });
   });
 }

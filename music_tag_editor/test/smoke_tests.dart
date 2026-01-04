@@ -41,7 +41,6 @@ class MockListeningStatsService extends Mock implements ListeningStatsService {}
 
 // MockAudioPlayer removed
 
-
 // Mock HTTP for NetworkImage
 class MockHttpClient extends Mock implements HttpClient {}
 
@@ -137,9 +136,9 @@ void main() {
     when(() => mockPlayback.currentTrackStream)
         .thenAnswer((_) => Stream.value(null));
     when(() => mockPlayback.player).thenReturn(mockPlayer);
-    when(() => mockPlayer.stream).thenReturn(FakePlayerStream()); // Wire up streams
-    when(() => mockPlayer.state).thenReturn(PlayerState());
-
+    when(() => mockPlayer.stream)
+        .thenReturn(FakePlayerStream()); // Wire up streams
+    when(() => mockPlayer.state).thenReturn(const PlayerState());
 
     when(() =>
             mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
@@ -155,9 +154,8 @@ void main() {
         ));
   });
 
-  Widget createTestWidget(Widget child) {
-    return MaterialApp(home: Scaffold(body: child));
-  }
+  Widget createTestWidget(Widget child) =>
+      MaterialApp(home: Scaffold(body: child));
 
   testWidgets('HomeView smoke test', (tester) async {
     await tester.pumpWidget(createTestWidget(const HomeScreen()));
@@ -166,7 +164,7 @@ void main() {
   });
 
   testWidgets('MoodExplorerView smoke test', (tester) async {
-    await tester.pumpWidget(createTestWidget(MoodExplorerScreen()));
+    await tester.pumpWidget(createTestWidget(const MoodExplorerScreen()));
     await tester.pump();
     expect(find.text('Explorar por Humor'), findsOneWidget);
   });
@@ -200,7 +198,8 @@ void main() {
   testWidgets('LocalSourcesScreen smoke test', (tester) async {
     final mockMetadata = MockMetadataService();
     // Stub for getMusicFolders is in setup()
-    await tester.pumpWidget(createTestWidget(LocalSourcesScreen(metadataService: mockMetadata)));
+    await tester.pumpWidget(
+        createTestWidget(LocalSourcesScreen(metadataService: mockMetadata)));
     await tester.pump();
     expect(find.text('Pastas de Música'), findsOneWidget);
   });

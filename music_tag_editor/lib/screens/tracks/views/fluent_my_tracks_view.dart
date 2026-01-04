@@ -29,54 +29,55 @@ class _FluentMyTracksViewState extends State<FluentMyTracksView> {
   int _currentIndex = 0;
 
   @override
-  Widget build(BuildContext context) {
-    return NavigationView(
-      appBar: NavigationAppBar(
-        title: const Text('Biblioteca'),
-        automaticallyImplyLeading: false,
-        leading: Navigator.canPop(context)
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: IconButton(
-                  icon: const Icon(FluentIcons.back),
-                  onPressed: () => Navigator.pop(context),
+  Widget build(BuildContext context) => NavigationView(
+        appBar: NavigationAppBar(
+          title: const Text('Biblioteca'),
+          automaticallyImplyLeading: false,
+          leading: Navigator.canPop(context)
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: IconButton(
+                    icon: const Icon(FluentIcons.back),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                )
+              : null,
+          actions: CommandBar(
+              mainAxisAlignment: MainAxisAlignment.end,
+              primaryItems: [
+                CommandBarButton(
+                  icon: const Icon(FluentIcons.download),
+                  label: const Text('Importar Playlist'),
+                  onPressed: widget.onImportPlaylist,
                 ),
-              )
-            : null,
-        actions: CommandBar(mainAxisAlignment: MainAxisAlignment.end, primaryItems: [
-          CommandBarButton(
-            icon: const Icon(FluentIcons.download),
-            label: const Text('Importar Playlist'),
-            onPressed: widget.onImportPlaylist,
-          ),
-        ]),
-      ),
-      pane: NavigationPane(
-        selected: _currentIndex,
-        onChanged: (index) => setState(() => _currentIndex = index),
-        displayMode: PaneDisplayMode.top,
-        items: [
-          PaneItem(
-            icon: const Icon(FluentIcons.music_note),
-            title: const Text('Músicas'),
-            body: _buildTrackList(context, 'audio'),
-          ),
-          PaneItem(
-            icon: const Icon(FluentIcons.video),
-            title: const Text('Vídeos'),
-            body: _buildTrackList(context, 'video'),
-          ),
-        ],
-      ),
-    );
-  }
+              ]),
+        ),
+        pane: NavigationPane(
+          selected: _currentIndex,
+          onChanged: (index) => setState(() => _currentIndex = index),
+          displayMode: PaneDisplayMode.top,
+          items: [
+            PaneItem(
+              icon: const Icon(FluentIcons.music_note),
+              title: const Text('Músicas'),
+              body: _buildTrackList(context, 'audio'),
+            ),
+            PaneItem(
+              icon: const Icon(FluentIcons.video),
+              title: const Text('Vídeos'),
+              body: _buildTrackList(context, 'video'),
+            ),
+          ],
+        ),
+      );
 
   Widget _buildTrackList(BuildContext context, String mediaType) {
     if (widget.isLoading) {
       return const Center(child: ProgressRing());
     }
 
-    final filteredTracks = widget.tracks.where((t) => t.mediaType == mediaType).toList();
+    final filteredTracks =
+        widget.tracks.where((t) => t.mediaType == mediaType).toList();
 
     if (filteredTracks.isEmpty) {
       return Center(
@@ -89,7 +90,8 @@ class _FluentMyTracksViewState extends State<FluentMyTracksView> {
               color: FluentTheme.of(context).inactiveColor,
             ),
             const SizedBox(height: 16),
-            Text('Nenhum(a) ${mediaType == 'audio' ? 'música' : 'vídeo'} salvo(a).'),
+            Text(
+                'Nenhum(a) ${mediaType == 'audio' ? 'música' : 'vídeo'} salvo(a).'),
           ],
         ),
       );
@@ -107,18 +109,24 @@ class _FluentMyTracksViewState extends State<FluentMyTracksView> {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: FluentTheme.of(context).accentColor.withValues(alpha: 0.2),
+                color:
+                    FluentTheme.of(context).accentColor.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: track.thumbnail != null
-                  ? ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.network(track.thumbnail!, fit: BoxFit.cover, cacheWidth: 150))
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(track.thumbnail!,
+                          fit: BoxFit.cover, cacheWidth: 150))
                   : const Icon(FluentIcons.music_note),
             ),
             title: Text(
-              track.title, 
+              track.title,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: track.id == widget.currentTrack?.id ? FluentTheme.of(context).accentColor : null,
+                color: track.id == widget.currentTrack?.id
+                    ? FluentTheme.of(context).accentColor
+                    : null,
               ),
             ),
             subtitle: Text(track.artist),
@@ -126,14 +134,20 @@ class _FluentMyTracksViewState extends State<FluentMyTracksView> {
               if (track.id == widget.currentTrack?.id)
                 Padding(
                   padding: const EdgeInsets.only(right: 8.0),
-                  child: Icon(FluentIcons.music_in_collection, color: FluentTheme.of(context).accentColor),
+                  child: Icon(FluentIcons.music_in_collection,
+                      color: FluentTheme.of(context).accentColor),
                 ),
-              IconButton(icon: const Icon(FluentIcons.play), onPressed: () => widget.onPlayTrack(track)),
-              IconButton(icon: const Icon(FluentIcons.lock), onPressed: () => widget.onAddToVault(track)),
+              IconButton(
+                  icon: const Icon(FluentIcons.play),
+                  onPressed: () => widget.onPlayTrack(track)),
+              IconButton(
+                  icon: const Icon(FluentIcons.lock),
+                  onPressed: () => widget.onAddToVault(track)),
             ]),
             onPressed: () => widget.onPlayTrack(track),
-            tileColor: track.id == widget.currentTrack?.id 
-                ? WidgetStateProperty.all(FluentTheme.of(context).accentColor.withValues(alpha: 0.1))
+            tileColor: track.id == widget.currentTrack?.id
+                ? WidgetStateProperty.all(
+                    FluentTheme.of(context).accentColor.withValues(alpha: 0.1))
                 : null,
           ),
         );

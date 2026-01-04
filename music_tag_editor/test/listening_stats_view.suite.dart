@@ -28,12 +28,10 @@ void main() {
     when(() => mockTheme.removeListener(any())).thenReturn(null);
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: const Scaffold(body: ListeningStatsScreen()),
-    );
-  }
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const Scaffold(body: ListeningStatsScreen()),
+      );
 
   group('ListeningStatsScreen', () {
     testWidgets('renders all sections when data is available', (tester) async {

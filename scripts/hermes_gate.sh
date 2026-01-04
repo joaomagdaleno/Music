@@ -12,8 +12,8 @@ echo "🧼 [1/3] Limpeza e Dependências..."
 flutter pub get
 
 echo "✨ [2/3] Verificando Formatação e Análise..."
-if ! flutter format --set-exit-if-changed . ; then
-    echo -e "\n❌ Erro de Formatação detectado! Execute 'flutter format .' para corrigir."
+if ! dart format --set-exit-if-changed . ; then
+    echo -e "\n❌ Erro de Formatação detectado! Execute 'dart format .' para corrigir."
     exit 1
 fi
 

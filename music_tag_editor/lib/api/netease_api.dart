@@ -70,4 +70,3 @@ class NeteaseApi {
     return lines;
   }
 }
-

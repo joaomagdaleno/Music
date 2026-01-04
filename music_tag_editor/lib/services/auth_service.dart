@@ -21,9 +21,8 @@ class AuthService extends ChangeNotifier {
 
   @visibleForTesting
   factory AuthService.test(
-      {FirebaseAuth? auth, SecurityService? securityService}) {
-    return AuthService._internal(auth: auth, securityService: securityService);
-  }
+          {FirebaseAuth? auth, SecurityService? securityService}) =>
+      AuthService._internal(auth: auth, securityService: securityService);
 
   final FirebaseAuth? _authOverride;
   FirebaseAuth get _auth => _authOverride ?? FirebaseAuth.instance;

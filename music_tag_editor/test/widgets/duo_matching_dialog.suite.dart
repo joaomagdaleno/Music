@@ -56,7 +56,7 @@ class FakeLocalDuoService extends Fake implements LocalDuoService {
   }
 
   @override
-  String? getDiscoveredName(String id) => "Guest $id";
+  String? getDiscoveredName(String id) => 'Guest $id';
 }
 
 class MockDatabaseService extends Mock implements DatabaseService {}
@@ -86,14 +86,12 @@ void main() {
         .thenAnswer((_) async => []);
   });
 
-  Widget createWidgetUnderTest() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: const Scaffold(
-        body: DuoMatchingDialog(),
-      ),
-    );
-  }
+  Widget createWidgetUnderTest() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const Scaffold(
+          body: DuoMatchingDialog(),
+        ),
+      );
 
   testWidgets('DuoMatchingDialog displays initial state correctly',
       (tester) async {

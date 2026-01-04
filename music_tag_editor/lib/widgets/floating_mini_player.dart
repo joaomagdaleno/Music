@@ -21,7 +21,9 @@ class _FloatingMiniPlayerState extends State<FloatingMiniPlayer> {
   }
 
   Future<void> _setupWindow() async {
-    if (!Platform.isWindows) { return; }
+    if (!Platform.isWindows) {
+      return;
+    }
 
     await windowManager.ensureInitialized();
     await windowManager.setSize(const Size(320, 100));
@@ -33,143 +35,141 @@ class _FloatingMiniPlayerState extends State<FloatingMiniPlayer> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: Colors.black.withValues(alpha: 0.9),
-      ),
-      home: Scaffold(
-        body: GestureDetector(
-          onPanUpdate: (details) async {
-            if (Platform.isWindows) {
-              await windowManager.startDragging();
-            }
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.black.withValues(alpha: 0.95),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white24),
-            ),
-            child: StreamBuilder<SearchResult?>(
-              stream: _playback.currentTrackStream,
-              builder: (context, snapshot) {
-                final track = snapshot.data ?? _playback.currentTrack;
+  Widget build(BuildContext context) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: Colors.black.withValues(alpha: 0.9),
+        ),
+        home: Scaffold(
+          body: GestureDetector(
+            onPanUpdate: (details) async {
+              if (Platform.isWindows) {
+                await windowManager.startDragging();
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.95),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.white24),
+              ),
+              child: StreamBuilder<SearchResult?>(
+                stream: _playback.currentTrackStream,
+                builder: (context, snapshot) {
+                  final track = snapshot.data ?? _playback.currentTrack;
 
-                return Row(
-                  children: [
-                    // Album Art
-                    ClipRRect(
-                      borderRadius: const BorderRadius.horizontal(
-                          left: Radius.circular(12)),
-                      child: track?.thumbnail != null
-                          ? Image.network(
-                              track!.thumbnail!,
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.cover,
-                              cacheWidth: 240, // ⚡ Bolt: Optimize memory (80px * 3x)
-                            )
-                          : Container(
-                              width: 80,
-                              height: 80,
-                              color: Colors.grey[800],
-                              child: const Icon(Icons.music_note,
-                                  color: Colors.white54),
-                            ),
-                    ),
-                    // Track Info & Controls
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              track?.title ?? 'Sem música',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
+                  return Row(
+                    children: [
+                      // Album Art
+                      ClipRRect(
+                        borderRadius: const BorderRadius.horizontal(
+                            left: Radius.circular(12)),
+                        child: track?.thumbnail != null
+                            ? Image.network(
+                                track!.thumbnail!,
+                                width: 80,
+                                height: 80,
+                                fit: BoxFit.cover,
+                                cacheWidth:
+                                    240, // ⚡ Bolt: Optimize memory (80px * 3x)
+                              )
+                            : Container(
+                                width: 80,
+                                height: 80,
+                                color: Colors.grey[800],
+                                child: const Icon(Icons.music_note,
+                                    color: Colors.white54),
                               ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              track?.artist ?? '',
-                              style: const TextStyle(
-                                color: Colors.white54,
-                                fontSize: 12,
+                      ),
+                      // Track Info & Controls
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                track?.title ?? 'Sem música',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
+                              Text(
+                                track?.artist ?? '',
+                                style: const TextStyle(
+                                  color: Colors.white54,
+                                  fontSize: 12,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    // Playback Controls
-                    StreamBuilder<bool>(
-                      stream: _playback.player.stream.playing,
-                      builder: (context, snapshot) {
-                        final isPlaying = snapshot.data ?? false;
-                        return Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.skip_previous,
-                                  color: Colors.white70, size: 20),
-                              onPressed: () =>
-                                  _playback.previous(),
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                isPlaying ? Icons.pause : Icons.play_arrow,
-                                color: Colors.white,
-                                size: 28,
+                      // Playback Controls
+                      StreamBuilder<bool>(
+                        stream: _playback.player.stream.playing,
+                        builder: (context, snapshot) {
+                          final isPlaying = snapshot.data ?? false;
+                          return Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.skip_previous,
+                                    color: Colors.white70, size: 20),
+                                onPressed: () => _playback.previous(),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
                               ),
-                              onPressed: () {
-                                if (isPlaying) {
-                                  _playback.pause();
-                                } else {
-                                  _playback.resume();
-                                }
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.skip_next,
-                                  color: Colors.white70, size: 20),
-                              onPressed: () => _playback.next(),
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.close,
-                                  color: Colors.white54, size: 18),
-                              onPressed: () async {
-                                await windowManager.close();
-                              },
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                    const SizedBox(width: 8),
-                  ],
-                );
-              },
+                              IconButton(
+                                icon: Icon(
+                                  isPlaying ? Icons.pause : Icons.play_arrow,
+                                  color: Colors.white,
+                                  size: 28,
+                                ),
+                                onPressed: () {
+                                  if (isPlaying) {
+                                    _playback.pause();
+                                  } else {
+                                    _playback.resume();
+                                  }
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.skip_next,
+                                    color: Colors.white70, size: 20),
+                                onPressed: () => _playback.next(),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.close,
+                                    color: Colors.white54, size: 18),
+                                onPressed: () async {
+                                  await windowManager.close();
+                                },
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 /// Opens the floating mini player in a separate window.
@@ -182,4 +182,3 @@ Future<void> openFloatingMiniPlayer() async {
   // One approach on Windows is to spawn a separate Flutter process with a flag.
   // For simplicity, we'll document this as a future enhancement.
 }
-

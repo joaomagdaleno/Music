@@ -54,7 +54,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _isLoading = false;
       });
     }
-    
+
     final spotifyCreds = await _dbService.getSpotifyCredentials();
     if (mounted) {
       setState(() {
@@ -68,7 +68,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() => _selectedFormat = format);
     await _dbService.saveFilenameFormat(format);
     if (!mounted) return;
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Preference saved!')),
     );
@@ -120,11 +120,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _navigateToLogin() {
-    Navigator.of(context).push(
-      _isFluent
-          ? fluent.FluentPageRoute(builder: (_) => const LoginScreen())
-          : MaterialPageRoute(builder: (_) => const LoginScreen()),
-    ).then((_) => setState(() {})); // Refresh state after return
+    Navigator.of(context)
+        .push(
+          _isFluent
+              ? fluent.FluentPageRoute(builder: (_) => const LoginScreen())
+              : MaterialPageRoute(builder: (_) => const LoginScreen()),
+        )
+        .then((_) => setState(() {})); // Refresh state after return
   }
 
   Future<void> _logout() async {
@@ -134,19 +136,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _saveCrossfade(int validSeconds) async {
     await _dbService.saveCrossfadeDuration(validSeconds);
-    PlaybackService.instance.updateCrossfadeDuration(
-        Duration(seconds: validSeconds));
+    PlaybackService.instance
+        .updateCrossfadeDuration(Duration(seconds: validSeconds));
   }
-  
+
   Future<void> _saveAgeBypass(bool val) async {
-      setState(() => _ageBypass = val);
-      await _dbService.saveAgeBypass(val);
+    setState(() => _ageBypass = val);
+    await _dbService.saveAgeBypass(val);
   }
 
   Future<void> _saveSpotifyCredentials(String id, String secret) async {
     await _dbService.saveSpotifyCredentials(id, secret);
     // Force re-init of Spotify API in SearchService next time it's used
-    SearchService.instance.resetSpotify(); 
+    SearchService.instance.resetSpotify();
   }
 
   @override
@@ -166,10 +168,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         },
         onCrossfadeSaved: _saveCrossfade,
         onAgeBypassChanged: (val) async {
-             if (val) {
-                // Confirmation logic remains here or in view
-              }
-            _saveAgeBypass(val);
+          if (val) {
+            // Confirmation logic remains here or in view
+          }
+          _saveAgeBypass(val);
         },
         onCleanupLibrary: _cleanupLibrary,
         onEnableCloudSync: _enableCloudSync,
@@ -191,7 +193,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       onFormatChanged: (val) {
         if (val != null) _saveFormat(val);
       },
-      onCrossfadeChanged: (val) => setState(() => _crossfadeSeconds = val.toInt()),
+      onCrossfadeChanged: (val) =>
+          setState(() => _crossfadeSeconds = val.toInt()),
       onCrossfadeSaved: _saveCrossfade,
       onAgeBypassChanged: (val) => _saveAgeBypass(val),
       onCleanupLibrary: _cleanupLibrary,

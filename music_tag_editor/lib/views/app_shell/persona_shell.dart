@@ -66,13 +66,13 @@ class _PersonaShellState extends State<PersonaShell> {
           selected: currentIndex,
           onChanged: _onTabChanged,
           displayMode: fluent.PaneDisplayMode.top,
-          items: widget.destinations.map<fluent.NavigationPaneItem>((d) {
-            return fluent.PaneItem(
-              icon: fluent.Icon(d.fluentIcon),
-              title: fluent.Text(d.label),
-              body: const SizedBox.shrink(),
-            );
-          }).toList(),
+          items: widget.destinations
+              .map<fluent.NavigationPaneItem>((d) => fluent.PaneItem(
+                    icon: fluent.Icon(d.fluentIcon),
+                    title: fluent.Text(d.label),
+                    body: const SizedBox.shrink(),
+                  ))
+              .toList(),
         ),
         paneBodyBuilder: (item, body) => widget.children[currentIndex],
       );
@@ -87,16 +87,17 @@ class _PersonaShellState extends State<PersonaShell> {
           bottom: material.TabBar(
             onTap: _onTabChanged,
             isScrollable: widget.destinations.length > 3,
-            tabs: widget.destinations.map((d) {
-              return material.Tab(
-                icon: material.Icon(d.materialIcon),
-                text: d.label,
-              );
-            }).toList(),
+            tabs: widget.destinations
+                .map((d) => material.Tab(
+                      icon: material.Icon(d.materialIcon),
+                      text: d.label,
+                    ))
+                .toList(),
           ),
         ),
         body: material.TabBarView(
-          physics: const material.NeverScrollableScrollPhysics(), // Sync with outer sub-index
+          physics: const material
+              .NeverScrollableScrollPhysics(), // Sync with outer sub-index
           children: widget.children,
         ),
       ),

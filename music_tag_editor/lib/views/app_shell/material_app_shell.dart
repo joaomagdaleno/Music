@@ -16,59 +16,60 @@ class MaterialAppShell extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isWide = constraints.maxWidth > 600;
-        final effectiveIndex = selectedIndex == 99 ? destinations.length : selectedIndex;
+  Widget build(BuildContext context) => LayoutBuilder(
+        builder: (context, constraints) {
+          final isWide = constraints.maxWidth > 600;
+          final effectiveIndex =
+              selectedIndex == 99 ? destinations.length : selectedIndex;
 
-        if (isWide) {
+          if (isWide) {
+            return Scaffold(
+              body: Row(
+                children: [
+                  NavigationRail(
+                    selectedIndex: effectiveIndex,
+                    onDestinationSelected: onSelectedIndexChanged,
+                    labelType: NavigationRailLabelType.all,
+                    destinations: [
+                      ...destinations.map((d) => NavigationRailDestination(
+                            icon: Icon(d.icon),
+                            label: Text(d.label),
+                          )),
+                      const NavigationRailDestination(
+                        icon: Icon(Icons.settings),
+                        label: Text('Configurações'),
+                      ),
+                    ],
+                  ),
+                  const VerticalDivider(thickness: 1, width: 1),
+                  Expanded(
+                    child: body,
+                  ),
+                ],
+              ),
+            );
+          }
+
           return Scaffold(
-            body: Row(
-              children: [
-                NavigationRail(
-                  selectedIndex: effectiveIndex,
-                  onDestinationSelected: onSelectedIndexChanged,
-                  labelType: NavigationRailLabelType.all,
-                  destinations: [
-                    ...destinations.map((d) => NavigationRailDestination(
-                          icon: Icon(d.icon),
-                          label: Text(d.label),
-                        )),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.settings),
-                      label: Text('Configurações'),
-                    ),
-                  ],
-                ),
-                const VerticalDivider(thickness: 1, width: 1),
-                Expanded(
-                  child: body,
+            body: body,
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: effectiveIndex >= destinations.length
+                  ? destinations.length
+                  : effectiveIndex,
+              onTap: onSelectedIndexChanged,
+              type: BottomNavigationBarType.fixed,
+              items: [
+                ...destinations.map((d) => BottomNavigationBarItem(
+                      icon: Icon(d.icon),
+                      label: d.label,
+                    )),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.settings),
+                  label: 'Configurações',
                 ),
               ],
             ),
           );
-        }
-
-        return Scaffold(
-          body: body,
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: effectiveIndex >= destinations.length ? destinations.length : effectiveIndex,
-            onTap: onSelectedIndexChanged,
-            type: BottomNavigationBarType.fixed,
-            items: [
-              ...destinations.map((d) => BottomNavigationBarItem(
-                    icon: Icon(d.icon),
-                    label: d.label,
-                  )),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Configurações',
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+        },
+      );
 }

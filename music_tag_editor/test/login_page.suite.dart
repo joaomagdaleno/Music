@@ -124,12 +124,10 @@ void main() {
     when(() => mockAuth.register(any(), any())).thenAnswer((_) async => true);
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: const LoginScreen(),
-    );
-  }
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const LoginScreen(),
+      );
 
   group('LoginScreen', () {
     testWidgets('renders Scaffold', (tester) async {

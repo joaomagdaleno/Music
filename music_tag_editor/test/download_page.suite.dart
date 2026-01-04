@@ -24,12 +24,10 @@ void main() {
     });
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: const DownloadPage(),
-    );
-  }
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const DownloadPage(),
+      );
 
   group('DownloadPage', () {
     testWidgets('renders initial UI', (tester) async {

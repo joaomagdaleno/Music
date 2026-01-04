@@ -20,7 +20,8 @@ void main() {
       when(() => mockDb.getSetting(any())).thenAnswer((_) async => null);
       when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
       when(() => mockDb.getGuestHistory()).thenAnswer((_) async => []);
-      when(() => mockDb.loadFilenameFormat()).thenAnswer((_) async => FilenameFormat.artistTitle);
+      when(() => mockDb.loadFilenameFormat())
+          .thenAnswer((_) async => FilenameFormat.artistTitle);
       when(() => mockDb.getLearningRules()).thenAnswer((_) async => []);
       when(() => mockDb.getMostPlayed()).thenAnswer((_) async => []);
       when(() => mockAuth.isAuthenticated).thenReturn(true);
@@ -36,38 +37,40 @@ void main() {
       // Set platform to Windows
       debugDefaultTargetPlatformOverride = TargetPlatform.windows;
 
-      await tester.pumpWidget(fluent.FluentApp(
-        home: const AppShell(),
+      await tester.pumpWidget(const fluent.FluentApp(
+        home: AppShell(),
       ));
       await tester.pumpAndSettle();
 
       expect(find.byType(fluent.NavigationView), findsOneWidget);
-      
+
       // Initial persona is HOME (screen contains "Bem-vindo de volta")
       expect(find.text('Bem-vindo de volta!'), findsOneWidget);
 
       // Find Librarian icon in navigation pane
       final libItem = find.byIcon(fluent.FluentIcons.library).first;
       expect(libItem, findsAtLeastNWidgets(1));
-      
+
       // Tap Librarian icon
       await tester.tap(libItem);
       await tester.pumpAndSettle();
 
       // Should now be in Librarian persona.
       expect(PersonaService.instance.activePersona, AppPersona.librarian);
-      
+
       // Look for any icon that identifies the Librarian persona view.
       // "Tags" icon is tag.
       await tester.pumpAndSettle(const Duration(seconds: 1));
       expect(find.byIcon(fluent.FluentIcons.tag), findsOneWidget);
 
       // Should also see "Biblioteca" icon
-      expect(find.byIcon(fluent.FluentIcons.music_note), findsAtLeastNWidgets(1));
+      expect(
+          find.byIcon(fluent.FluentIcons.music_note), findsAtLeastNWidgets(1));
 
       // Tap "Anfitrião" (Host) icon
       await tester.tap(find.byIcon(fluent.FluentIcons.party_leader));
-      await tester.pump(); // Use pump instead of pumpAndSettle because of DiscoModeScreen timer
+      await tester
+          .pump(); // Use pump instead of pumpAndSettle because of DiscoModeScreen timer
       await tester.pump(const Duration(milliseconds: 500));
 
       // Should now be in Host persona.

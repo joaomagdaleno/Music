@@ -21,7 +21,8 @@ class _BackupScreenState extends State<BackupScreen> {
   Future<void> _createBackup() async {
     setState(() => _isLoading = true);
     try {
-      final dir = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Escolha onde salvar o backup');
+      final dir = await FilePicker.platform
+          .getDirectoryPath(dialogTitle: 'Escolha onde salvar o backup');
       if (dir != null) {
         final path = await BackupService.instance.createBackup(dir);
         setState(() => _lastBackupPath = path);
@@ -35,7 +36,8 @@ class _BackupScreenState extends State<BackupScreen> {
   Future<void> _restoreBackup() async {
     setState(() => _isLoading = true);
     try {
-      final result = await FilePicker.platform.pickFiles(type: FileType.any, dialogTitle: 'Selecione o arquivo de backup');
+      final result = await FilePicker.platform.pickFiles(
+          type: FileType.any, dialogTitle: 'Selecione o arquivo de backup');
       if (result != null && result.files.single.path != null) {
         await BackupService.instance.restoreBackup(result.files.single.path!);
         _showSuccess('Backup restaurado com sucesso!');
@@ -47,10 +49,17 @@ class _BackupScreenState extends State<BackupScreen> {
 
   void _showSuccess(String message) {
     final platform = defaultTargetPlatform;
-    if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
-      fluent.displayInfoBar(context, builder: (_, close) => fluent.InfoBar(title: Text(message), severity: fluent.InfoBarSeverity.success, onClose: close));
+    if (platform == TargetPlatform.windows ||
+        platform == TargetPlatform.macOS ||
+        platform == TargetPlatform.linux) {
+      fluent.displayInfoBar(context,
+          builder: (_, close) => fluent.InfoBar(
+              title: Text(message),
+              severity: fluent.InfoBarSeverity.success,
+              onClose: close));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
     }
   }
 
@@ -61,9 +70,17 @@ class _BackupScreenState extends State<BackupScreen> {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:
-        return FluentBackupView(isLoading: _isLoading, lastBackupPath: _lastBackupPath, onCreateBackup: _createBackup, onRestoreBackup: _restoreBackup);
+        return FluentBackupView(
+            isLoading: _isLoading,
+            lastBackupPath: _lastBackupPath,
+            onCreateBackup: _createBackup,
+            onRestoreBackup: _restoreBackup);
       default:
-        return MaterialBackupView(isLoading: _isLoading, lastBackupPath: _lastBackupPath, onCreateBackup: _createBackup, onRestoreBackup: _restoreBackup);
+        return MaterialBackupView(
+            isLoading: _isLoading,
+            lastBackupPath: _lastBackupPath,
+            onCreateBackup: _createBackup,
+            onRestoreBackup: _restoreBackup);
     }
   }
 }

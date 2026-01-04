@@ -19,111 +19,112 @@ class MaterialHomeView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Início'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.auto_awesome),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const DiscoModeScreen()),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Início'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.auto_awesome),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const DiscoModeScreen()),
+              ),
+              tooltip: 'Modo Disco',
             ),
-            tooltip: 'Modo Disco',
+          ],
+        ),
+        body: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildGreetingWidget(context),
+                    const SizedBox(height: 32),
+                    const Text('Minhas Personas',
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 16),
+                    _buildPersonaGrid(context),
+                    const SizedBox(height: 32),
+                    const Text('Explore por Vibe',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 12),
+                    const _MoodsWidget(),
+                    const SizedBox(height: 24),
+                    const Text('Biblioteca Inteligente',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 12),
+                    _buildSmartLibraryCards(context),
+                    const SizedBox(height: 24),
+                    const Text('Adicionados Recentemente',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 12),
+                    _buildRecentsList(context),
+                  ],
+                ),
+              ),
+      );
+
+  Widget _buildGreetingWidget(BuildContext context) => Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.tertiary,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-        ],
-      ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildGreetingWidget(context),
-                  const SizedBox(height: 32),
-                  const Text('Minhas Personas',
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 16),
-                  _buildPersonaGrid(context),
-                  const SizedBox(height: 32),
-                  const Text('Explore por Vibe',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 12),
-                  const _MoodsWidget(),
-                  const SizedBox(height: 24),
-                  const Text('Biblioteca Inteligente',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 12),
-                  _buildSmartLibraryCards(context),
-                  const SizedBox(height: 24),
-                  const Text('Adicionados Recentemente',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 12),
-                  _buildRecentsList(context),
-                ],
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color:
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Bem-vindo de volta!',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
             ),
-    );
-  }
-
-  Widget _buildGreetingWidget(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Theme.of(context).colorScheme.primary,
-            Theme.of(context).colorScheme.tertiary,
+            const SizedBox(height: 8),
+            const Text(
+              'Que tal continuar de onde parou?',
+              style: TextStyle(color: Colors.white70),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: () {
+                if (recentTracks.isNotEmpty) {
+                  onPlayTrack(recentTracks.first);
+                }
+              },
+              icon: const Icon(Icons.play_arrow),
+              label: const Text('Tocar Algo'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Theme.of(context).colorScheme.primary,
+              ),
+            ),
           ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Bem-vindo de volta!',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Que tal continuar de onde parou?',
-            style: TextStyle(color: Colors.white70),
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton.icon(
-            onPressed: () {
-              if (recentTracks.isNotEmpty) {
-                onPlayTrack(recentTracks.first);
-              }
-            },
-            icon: const Icon(Icons.play_arrow),
-            label: const Text('Tocar Algo'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+      );
 
   Widget _buildPersonaGrid(BuildContext context) {
     final personas = [
@@ -156,99 +157,103 @@ class MaterialHomeView extends StatelessWidget {
       crossAxisCount: 1,
       mainAxisSpacing: 12,
       childAspectRatio: 4,
-      children: personas.map((p) {
-        return InkWell(
-          onTap: () =>
-              PersonaService.instance.setPersona(p['persona'] as AppPersona),
-          borderRadius: BorderRadius.circular(16),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: (p['color'] as Color).withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: (p['color'] as Color).withValues(alpha: 0.2),
-              ),
-            ),
-            child: Row(
-              children: [
-                Icon(p['icon'] as IconData,
-                    color: p['color'] as Color, size: 32),
-                const SizedBox(width: 16),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(p['label'] as String,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
-                    Text(p['desc'] as String,
-                        style:
-                            const TextStyle(fontSize: 12, color: Colors.grey)),
-                  ],
+      children: personas
+          .map((p) => InkWell(
+                onTap: () => PersonaService.instance
+                    .setPersona(p['persona'] as AppPersona),
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: (p['color'] as Color).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: (p['color'] as Color).withValues(alpha: 0.2),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(p['icon'] as IconData,
+                          color: p['color'] as Color, size: 32),
+                      const SizedBox(width: 16),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(p['label'] as String,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16)),
+                          Text(p['desc'] as String,
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.grey)),
+                        ],
+                      ),
+                      const Spacer(),
+                      const Icon(Icons.chevron_right, color: Colors.grey),
+                    ],
+                  ),
                 ),
-                const Spacer(),
-                const Icon(Icons.chevron_right, color: Colors.grey),
-              ],
-            ),
-          ),
-        );
-      }).toList(),
+              ))
+          .toList(),
     );
   }
 
-  Widget _buildSmartLibraryCards(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isNarrow = constraints.maxWidth < 600;
-        final cards = [
-          _SmartCard(
-            title: 'Top Hits',
-            icon: Icons.trending_up,
-            color: Colors.orange,
-            onTap: () => Navigator.push(
-                context, MaterialPageRoute(builder: (_) => const SmartLibraryScreen())),
-          ),
-          _SmartCard(
-            title: 'Relax',
-            icon: Icons.spa,
-            color: Colors.teal,
-            onTap: () => Navigator.push(
-                context, MaterialPageRoute(builder: (_) => MoodExplorerScreen())),
-          ),
-          _SmartCard(
-            title: 'Stats',
-            icon: Icons.bar_chart,
-            color: Colors.deepPurple,
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const ListeningStatsScreen())),
-          ),
-        ];
+  Widget _buildSmartLibraryCards(BuildContext context) => LayoutBuilder(
+        builder: (context, constraints) {
+          final isNarrow = constraints.maxWidth < 600;
+          final cards = [
+            _SmartCard(
+              title: 'Top Hits',
+              icon: Icons.trending_up,
+              color: Colors.orange,
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const SmartLibraryScreen())),
+            ),
+            _SmartCard(
+              title: 'Relax',
+              icon: Icons.spa,
+              color: Colors.teal,
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const MoodExplorerScreen())),
+            ),
+            _SmartCard(
+              title: 'Stats',
+              icon: Icons.bar_chart,
+              color: Colors.deepPurple,
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const ListeningStatsScreen())),
+            ),
+          ];
 
-        if (isNarrow) {
-          return Column(
+          if (isNarrow) {
+            return Column(
+              children: cards
+                  .map((c) => Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: c,
+                      ))
+                  .toList(),
+            );
+          }
+
+          return Row(
             children: cards
-                .map((c) => Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: c,
+                .map((c) => Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: c,
+                      ),
                     ))
                 .toList(),
           );
-        }
-
-        return Row(
-          children: cards
-              .map((c) => Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 12),
-                      child: c,
-                    ),
-                  ))
-              .toList(),
-        );
-      },
-    );
-  }
+        },
+      );
 
   Widget _buildRecentsList(BuildContext context) {
     if (recentTracks.isEmpty) {
@@ -316,7 +321,11 @@ class _MoodsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final moods = [
-      {'label': 'Foco', 'icon': Icons.center_focus_strong, 'color': Colors.blue},
+      {
+        'label': 'Foco',
+        'icon': Icons.center_focus_strong,
+        'color': Colors.blue
+      },
       {'label': 'Treino', 'icon': Icons.fitness_center, 'color': Colors.red},
       {'label': 'Festa', 'icon': Icons.celebration, 'color': Colors.purple},
       {'label': 'Viagem', 'icon': Icons.directions_car, 'color': Colors.green},
@@ -334,8 +343,10 @@ class _MoodsWidget extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => MoodExplorerScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const MoodExplorerScreen()));
                 },
                 borderRadius: BorderRadius.circular(50),
                 child: Container(
@@ -344,7 +355,8 @@ class _MoodsWidget extends StatelessWidget {
                     color: (m['color'] as Color).withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(m['icon'] as IconData, color: m['color'] as Color),
+                  child:
+                      Icon(m['icon'] as IconData, color: m['color'] as Color),
                 ),
               ),
               const SizedBox(height: 8),
@@ -371,33 +383,32 @@ class _SmartCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        height: 80,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(8),
+  Widget build(BuildContext context) => InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          height: 80,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(icon, color: color),
               ),
-              child: Icon(icon, color: color),
-            ),
-            const SizedBox(width: 12),
-            Text(title,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          ],
+              const SizedBox(width: 12),
+              Text(title,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16)),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

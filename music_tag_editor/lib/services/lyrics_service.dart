@@ -32,10 +32,11 @@ class LyricsService {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        return data['syncedLyrics'] as String? ?? data['plainLyrics'] as String?;
+        return data['syncedLyrics'] as String? ??
+            data['plainLyrics'] as String?;
       }
     } catch (e) {
-      StartupLogger.log("Error fetching raw lyrics: $e");
+      StartupLogger.log('Error fetching raw lyrics: $e');
     }
     return null;
   }

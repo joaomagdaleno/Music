@@ -14,12 +14,10 @@ void main() {
     await setupMusicTest();
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: const MyTracksScreen(),
-    );
-  }
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const MyTracksScreen(),
+      );
 
   group('MyTracksScreen', () {
     testWidgets('renders loading state', (tester) async {

@@ -60,9 +60,14 @@ class _VaultScreenState extends State<VaultScreen> {
     if (platform == TargetPlatform.windows ||
         platform == TargetPlatform.macOS ||
         platform == TargetPlatform.linux) {
-      fluent.displayInfoBar(context, builder: (_, close) => fluent.InfoBar(title: Text(message), severity: fluent.InfoBarSeverity.error, onClose: close));
+      fluent.displayInfoBar(context,
+          builder: (_, close) => fluent.InfoBar(
+              title: Text(message),
+              severity: fluent.InfoBarSeverity.error,
+              onClose: close));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
     }
   }
 

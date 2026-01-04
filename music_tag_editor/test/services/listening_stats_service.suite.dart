@@ -49,8 +49,8 @@ void main() {
 
       expect(stats.totalTracks, 3);
       expect(stats.totalPlays, 15);
-      expect(
-          stats.estimatedListeningTime, Duration(seconds: 10 * 180 + 5 * 200));
+      expect(stats.estimatedListeningTime,
+          const Duration(seconds: 10 * 180 + 5 * 200));
     });
 
     test('getStats identifies top items correctly', () async {

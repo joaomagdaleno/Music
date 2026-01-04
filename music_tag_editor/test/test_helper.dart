@@ -56,38 +56,64 @@ class MockLocalDuoService extends Mock implements LocalDuoService {}
 class MockEqualizerService extends Mock implements EqualizerService {}
 
 class MockPlayer extends Mock implements Player {}
+
 class MockVideoController extends Mock implements VideoController {}
 
 class FakePlayerStream extends Fake implements PlayerStream {
-  @override Stream<bool> get playing => Stream.value(false);
-  @override Stream<Duration> get position => Stream.value(Duration.zero);
-  @override Stream<Duration> get buffer => Stream.value(Duration.zero);
-  @override Stream<Duration> get duration => Stream.value(Duration.zero);
-  @override Stream<bool> get completed => Stream.value(false);
-  @override Stream<double> get volume => Stream.value(100.0);
-  @override Stream<PlaylistMode> get playlistMode => Stream.value(PlaylistMode.none);
-  @override Stream<bool> get shuffle => Stream.value(false);
-  @override Stream<double> get pitch => Stream.value(1.0);
-  @override Stream<double> get rate => Stream.value(1.0);
-  
-  @override Stream<PlayerLog> get log => Stream.empty();
-  @override Stream<String> get error => Stream.empty();
-  @override Stream<Track> get track => Stream.value(Track());
-  @override Stream<Tracks> get tracks => Stream.value(Tracks()); 
-  
-  @override Stream<Playlist> get playlist => Stream.value(Playlist([]));
-  @override Stream<int?> get width => Stream.value(null);
-  @override Stream<int?> get height => Stream.value(null);
-  @override Stream<AudioParams> get audioParams => Stream.value(AudioParams());
-  @override Stream<VideoParams> get videoParams => Stream.value(VideoParams());
-  @override Stream<double?> get audioBitrate => Stream.value(null);
+  @override
+  Stream<bool> get playing => Stream.value(false);
+  @override
+  Stream<Duration> get position => Stream.value(Duration.zero);
+  @override
+  Stream<Duration> get buffer => Stream.value(Duration.zero);
+  @override
+  Stream<Duration> get duration => Stream.value(Duration.zero);
+  @override
+  Stream<bool> get completed => Stream.value(false);
+  @override
+  Stream<double> get volume => Stream.value(100.0);
+  @override
+  Stream<PlaylistMode> get playlistMode => Stream.value(PlaylistMode.none);
+  @override
+  Stream<bool> get shuffle => Stream.value(false);
+  @override
+  Stream<double> get pitch => Stream.value(1.0);
+  @override
+  Stream<double> get rate => Stream.value(1.0);
+
+  @override
+  Stream<PlayerLog> get log => const Stream.empty();
+  @override
+  Stream<String> get error => const Stream.empty();
+  @override
+  Stream<Track> get track => Stream.value(const Track());
+  @override
+  Stream<Tracks> get tracks => Stream.value(const Tracks());
+
+  @override
+  Stream<Playlist> get playlist => Stream.value(const Playlist([]));
+  @override
+  Stream<int?> get width => Stream.value(null);
+  @override
+  Stream<int?> get height => Stream.value(null);
+  @override
+  Stream<AudioParams> get audioParams => Stream.value(const AudioParams());
+  @override
+  Stream<VideoParams> get videoParams => Stream.value(const VideoParams());
+  @override
+  Stream<double?> get audioBitrate => Stream.value(null);
   Stream<double?> get videoBitrate => Stream.value(null);
-  @override Stream<AudioDevice> get audioDevice => Stream.value(AudioDevice('auto', ''));
-  @override Stream<List<AudioDevice>> get audioDevices => Stream.value([]);
-  
-  @override Stream<List<String>> get subtitle => Stream.value(['']);
-  
-  @override Stream<bool> get buffering => Stream.value(false);
+  @override
+  Stream<AudioDevice> get audioDevice =>
+      Stream.value(const AudioDevice('auto', ''));
+  @override
+  Stream<List<AudioDevice>> get audioDevices => Stream.value([]);
+
+  @override
+  Stream<List<String>> get subtitle => Stream.value(['']);
+
+  @override
+  Stream<bool> get buffering => Stream.value(false);
 }
 
 // Global mock instances for easy access
@@ -131,7 +157,7 @@ Future<void> setupMusicTest({
       platform: MediaPlatform.youtube,
     ));
     registerFallbackValue(MediaPlatform.youtube);
-    registerFallbackValue(Media( 'http://fallback' ));
+    registerFallbackValue(Media('http://fallback'));
     registerFallbackValue(const MediaItem(id: 'fallback', title: 'Fallback'));
     registerFallbackValue(PlaybackState(
       processingState: AudioProcessingState.idle,
@@ -205,11 +231,11 @@ Future<void> setupMusicTest({
   when(() => mockDb.getAllTracks()).thenAnswer((_) async => []);
   when(() => mockPlayback.sleepTimerStream)
       .thenAnswer((_) => Stream.value(null));
-  when(() => mockPlayback.lyricsStream)
-      .thenAnswer((_) => Stream.value([]));
+  when(() => mockPlayback.lyricsStream).thenAnswer((_) => Stream.value([]));
   when(() => mockDb.getMusicFolders()).thenAnswer((_) async => []);
   when(() => mockDb.addMusicFolder(any())).thenAnswer((_) async {});
-  when(() => mockDb.removeMusicFolder(any())).thenAnswer((_) async {}); // Added remove mock
+  when(() => mockDb.removeMusicFolder(any()))
+      .thenAnswer((_) async {}); // Added remove mock
   when(() => mockPlayback.queue).thenReturn([]);
 
   when(() => mockTheme.updateThemeFromImage(any())).thenAnswer((_) async {});
@@ -217,11 +243,10 @@ Future<void> setupMusicTest({
   when(() => mockEqualizer.applyPresetForGenre(any())).thenAnswer((_) async {});
   when(() => mockEqualizer.calculateNormalizedVolume(any())).thenReturn(1.0);
   when(() => mockEqualizer.isAutoMode).thenReturn(false);
-  when(() => mockLyrics.fetchLyrics(any(), any()))
-      .thenAnswer((_) async => []);
+  when(() => mockLyrics.fetchLyrics(any(), any())).thenAnswer((_) async => []);
   when(() => mockDuo.sendMessage(any())).thenAnswer((_) async {});
   when(() => mockDb.trackPlay(any())).thenAnswer((_) async {});
-  
+
   when(() => mockSearch.getStreamUrl(
         any(),
         resolution: any(named: 'resolution'),
@@ -233,8 +258,8 @@ Future<void> setupMusicTest({
 
   // Wire up MockPlayer properties
   when(() => mockPlayer.stream).thenReturn(mockPlayerStreams);
-  when(() => mockPlayer.state).thenReturn(PlayerState()); // default state
-  
+  when(() => mockPlayer.state).thenReturn(const PlayerState()); // default state
+
   // Note: No need to stub mockPlayerStreams getters as they are now real implementation
 
   when(() => mockPlayer.setVolume(any())).thenAnswer((_) async {});
@@ -242,10 +267,11 @@ Future<void> setupMusicTest({
   when(() => mockPlayer.pause()).thenAnswer((_) async {});
   when(() => mockPlayer.stop()).thenAnswer((_) async {});
   when(() => mockPlayer.seek(any())).thenAnswer((_) async {});
-  when(() => mockPlayer.open(any(), play: any(named: 'play'))).thenAnswer((_) async {});
+  when(() => mockPlayer.open(any(), play: any(named: 'play')))
+      .thenAnswer((_) async {});
   when(() => mockPlayer.setPlaylistMode(any())).thenAnswer((_) async {});
   when(() => mockPlayer.setShuffle(any())).thenAnswer((_) async {});
-  
+
   when(() => mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
       .thenAnswer((invocation) async {
     final callback = invocation.namedArguments[#onProgress] as void Function(
@@ -256,8 +282,6 @@ Future<void> setupMusicTest({
       .thenAnswer((_) async => true);
 }
 
-
-
 bool _registerFallbackValueWasCalled = false;
 bool _sqfliteInitialized = false;
 
@@ -267,17 +291,17 @@ void setupHttpOverrides() {
 
 class _MockHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    return _MockHttpClient();
-  }
+  HttpClient createHttpClient(SecurityContext? context) => _MockHttpClient();
 }
 
 class _MockHttpClient extends Mock implements HttpClient {
   @override
-  Future<HttpClientRequest> getUrl(Uri url) => Future.value(_MockHttpClientRequest());
+  Future<HttpClientRequest> getUrl(Uri url) =>
+      Future.value(_MockHttpClientRequest());
 
   @override
-  Future<HttpClientRequest> openUrl(String method, Uri url) => Future.value(_MockHttpClientRequest());
+  Future<HttpClientRequest> openUrl(String method, Uri url) =>
+      Future.value(_MockHttpClientRequest());
 }
 
 class _MockHttpClientRequest extends Mock implements HttpClientRequest {
@@ -314,16 +338,77 @@ class _MockHttpClientResponse extends Mock implements HttpClientResponse {
 
   @override
   StreamSubscription<List<int>> listen(void Function(List<int> event)? onData,
-      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
-    return Stream<List<int>>.fromIterable([
-      [
-        0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D,
-        0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
-        0x08, 0x06, 0x00, 0x00, 0x00, 0x1F, 0x15, 0xC4, 0x89, 0x00, 0x00, 0x00,
-        0x0A, 0x49, 0x44, 0x41, 0x54, 0x78, 0x9C, 0x63, 0x00, 0x01, 0x00, 0x00,
-        0x05, 0x00, 0x01, 0x0D, 0x0A, 0x2D, 0xB4, 0x00, 0x00, 0x00, 0x00, 0x49,
-        0x45, 0x4E, 0x44, 0xAE, 0x42, 0x60, 0x82
-      ]
-    ]).listen(onData, onError: onError, onDone: onDone, cancelOnError: cancelOnError);
-  }
+          {Function? onError, void Function()? onDone, bool? cancelOnError}) =>
+      Stream<List<int>>.fromIterable([
+        [
+          0x89,
+          0x50,
+          0x4E,
+          0x47,
+          0x0D,
+          0x0A,
+          0x1A,
+          0x0A,
+          0x00,
+          0x00,
+          0x00,
+          0x0D,
+          0x49,
+          0x48,
+          0x44,
+          0x52,
+          0x00,
+          0x00,
+          0x00,
+          0x01,
+          0x00,
+          0x00,
+          0x00,
+          0x01,
+          0x08,
+          0x06,
+          0x00,
+          0x00,
+          0x00,
+          0x1F,
+          0x15,
+          0xC4,
+          0x89,
+          0x00,
+          0x00,
+          0x00,
+          0x0A,
+          0x49,
+          0x44,
+          0x41,
+          0x54,
+          0x78,
+          0x9C,
+          0x63,
+          0x00,
+          0x01,
+          0x00,
+          0x00,
+          0x05,
+          0x00,
+          0x01,
+          0x0D,
+          0x0A,
+          0x2D,
+          0xB4,
+          0x00,
+          0x00,
+          0x00,
+          0x00,
+          0x49,
+          0x45,
+          0x4E,
+          0x44,
+          0xAE,
+          0x42,
+          0x60,
+          0x82
+        ]
+      ]).listen(onData,
+          onError: onError, onDone: onDone, cancelOnError: cancelOnError);
 }

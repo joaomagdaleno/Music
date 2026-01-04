@@ -44,7 +44,7 @@ class LocalDuoService {
   Function(String)? onMessageReceived;
 
   Future<bool> requestPermissions() async {
-    Map<Permission, PermissionStatus> statuses = await [
+    final Map<Permission, PermissionStatus> statuses = await [
       Permission.location,
       Permission.bluetooth,
       Permission.bluetoothScan,
@@ -113,7 +113,7 @@ class LocalDuoService {
     if (status == Status.CONNECTED) {
       _connectedEndpoints.add(id);
       onConnected?.call(id);
-      final name = _discoveredNames[id] ?? "Convidado";
+      final name = _discoveredNames[id] ?? 'Convidado';
       DatabaseService.instance.saveGuest(id, name);
       if (role == DuoRole.guest) {
         _nearby.stopDiscovery();

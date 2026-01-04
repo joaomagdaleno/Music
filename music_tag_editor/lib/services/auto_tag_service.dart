@@ -160,5 +160,3 @@ class AutoTagResult {
     this.warning,
   });
 }
-
-

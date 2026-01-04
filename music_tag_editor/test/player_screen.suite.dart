@@ -18,19 +18,29 @@ class CustomizablePlayerStream extends Fake implements PlayerStream {
 
   CustomizablePlayerStream(this.playingController, this.positionController);
 
-  @override Stream<bool> get playing => playingController.stream;
-  @override Stream<Duration> get position => positionController.stream;
-  
-  @override Stream<Duration> get buffer => Stream.value(Duration.zero);
-  @override Stream<Duration> get duration => Stream.value(Duration.zero);
-  @override Stream<bool> get completed => Stream.value(false);
-  @override Stream<double> get volume => Stream.value(100.0);
-  @override Stream<PlaylistMode> get playlistMode => Stream.value(PlaylistMode.none);
-  @override Stream<bool> get shuffle => Stream.value(false);
-  @override Stream<double> get pitch => Stream.value(1.0);
-  @override Stream<double> get rate => Stream.value(1.0);
-  @override Stream<PlayerLog> get log => Stream.empty();
+  @override
+  Stream<bool> get playing => playingController.stream;
+  @override
+  Stream<Duration> get position => positionController.stream;
 
+  @override
+  Stream<Duration> get buffer => Stream.value(Duration.zero);
+  @override
+  Stream<Duration> get duration => Stream.value(Duration.zero);
+  @override
+  Stream<bool> get completed => Stream.value(false);
+  @override
+  Stream<double> get volume => Stream.value(100.0);
+  @override
+  Stream<PlaylistMode> get playlistMode => Stream.value(PlaylistMode.none);
+  @override
+  Stream<bool> get shuffle => Stream.value(false);
+  @override
+  Stream<double> get pitch => Stream.value(1.0);
+  @override
+  Stream<double> get rate => Stream.value(1.0);
+  @override
+  Stream<PlayerLog> get log => const Stream.empty();
 }
 
 void main() {
@@ -44,10 +54,11 @@ void main() {
       positionController = StreamController<Duration>.broadcast();
 
       // Use customizable stream for mocking
-      when(() => mockPlayer.stream).thenReturn(CustomizablePlayerStream(playingController, positionController));
-      
+      when(() => mockPlayer.stream).thenReturn(
+          CustomizablePlayerStream(playingController, positionController));
+
       // Default state stubbing
-      when(() => mockPlayer.state).thenReturn(PlayerState());
+      when(() => mockPlayer.state).thenReturn(const PlayerState());
 
       when(() => mockPlayback.sleepTimerStream)
           .thenAnswer((_) => Stream.value(null));
@@ -68,14 +79,14 @@ void main() {
     testWidgets('Shows empty state when no track is playing', (tester) async {
       when(() => mockPlayback.currentTrack).thenReturn(null);
       // We need to emit initial state
-      
+
       await tester.pumpWidget(MaterialApp(
         theme: ThemeData(platform: TargetPlatform.android),
         home: const PlayerScreen(),
       ));
 
       await tester.pump(); // Start building
-      
+
       playingController.add(false);
       await tester.pump();
 
@@ -121,13 +132,14 @@ void main() {
 
       // Initially paused
       playingController.add(false);
-      when(() => mockPlayer.state).thenReturn(PlayerState(playing: false)); // state getter is used for button icon?
+      when(() => mockPlayer.state).thenReturn(const PlayerState(
+          playing: false)); // state getter is used for button icon?
       // Wait, StreamBuilder usually drives UI. But if UI checks player.state.playing directly, we need to stub state getter too.
       // But we can't update state valid return dynamically easily unless we use a variable.
-      
+
       // Let's assume StreamBuilder logic handles it. But PlayerScreen might check `playback.player.state.playing`.
       // The `PlayerScreen` likely listens to `stream.playing`.
-      
+
       await tester.pump();
 
       final playButton = find.byIcon(Icons.play_arrow);
@@ -139,8 +151,8 @@ void main() {
       // Simulate playing state update
       playingController.add(true);
       // Update state mock to reflect playing
-      when(() => mockPlayer.state).thenReturn(PlayerState(playing: true));
-      
+      when(() => mockPlayer.state).thenReturn(const PlayerState(playing: true));
+
       await tester.pump();
 
       final pauseButton = find.byIcon(Icons.pause);

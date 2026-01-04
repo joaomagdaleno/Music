@@ -32,14 +32,20 @@ class _RingtoneMakerScreenState extends State<RingtoneMakerScreen> {
       final duration = await _player.setFilePath(widget.track.localPath!);
       setState(() {
         _totalDuration = duration ?? Duration.zero;
-        _currentRange = RangeValues(0, _totalDuration.inSeconds > 30 ? 30 : _totalDuration.inSeconds.toDouble());
+        _currentRange = RangeValues(
+            0,
+            _totalDuration.inSeconds > 30
+                ? 30
+                : _totalDuration.inSeconds.toDouble());
       });
     }
   }
 
   void _playSegment() async {
-    if (_isPlayingSegment) { await _player.pause(); setState(() => _isPlayingSegment = false); }
-    else {
+    if (_isPlayingSegment) {
+      await _player.pause();
+      setState(() => _isPlayingSegment = false);
+    } else {
       await _player.seek(Duration(seconds: _currentRange.start.toInt()));
       _player.play();
       setState(() => _isPlayingSegment = true);
@@ -58,7 +64,9 @@ class _RingtoneMakerScreenState extends State<RingtoneMakerScreen> {
   }
 
   void _save() async {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Toque salvo com sucesso!'), backgroundColor: Colors.green));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Toque salvo com sucesso!'),
+        backgroundColor: Colors.green));
     Navigator.pop(context);
   }
 
@@ -68,7 +76,10 @@ class _RingtoneMakerScreenState extends State<RingtoneMakerScreen> {
   }
 
   @override
-  void dispose() { _player.dispose(); super.dispose(); }
+  void dispose() {
+    _player.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +88,25 @@ class _RingtoneMakerScreenState extends State<RingtoneMakerScreen> {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:
-        return FluentRingtoneMakerView(track: widget.track, currentRange: _currentRange, totalDuration: _totalDuration, isPlayingSegment: _isPlayingSegment, onPlaySegment: _playSegment, onSave: _save, onRangeChanged: _onRangeChanged, formatDuration: _formatDuration);
+        return FluentRingtoneMakerView(
+            track: widget.track,
+            currentRange: _currentRange,
+            totalDuration: _totalDuration,
+            isPlayingSegment: _isPlayingSegment,
+            onPlaySegment: _playSegment,
+            onSave: _save,
+            onRangeChanged: _onRangeChanged,
+            formatDuration: _formatDuration);
       default:
-        return MaterialRingtoneMakerView(track: widget.track, currentRange: _currentRange, totalDuration: _totalDuration, isPlayingSegment: _isPlayingSegment, onPlaySegment: _playSegment, onSave: _save, onRangeChanged: _onRangeChanged, formatDuration: _formatDuration);
+        return MaterialRingtoneMakerView(
+            track: widget.track,
+            currentRange: _currentRange,
+            totalDuration: _totalDuration,
+            isPlayingSegment: _isPlayingSegment,
+            onPlaySegment: _playSegment,
+            onSave: _save,
+            onRangeChanged: _onRangeChanged,
+            formatDuration: _formatDuration);
     }
   }
 }

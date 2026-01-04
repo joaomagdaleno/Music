@@ -316,29 +316,29 @@ class _DownloadPageState extends State<DownloadPage> {
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                         ),
-                        items: _mediaInfo!.formats.map((f) {
-                          return DropdownMenuItem(
-                            value: f,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  f.isAudioOnly
-                                      ? Icons.audiotrack
-                                      : Icons.videocam,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(f.displayName),
-                                if (f.filesize != null)
-                                  Text(
-                                    ' (${(f.filesize! / 1024 / 1024).toStringAsFixed(1)} MB)',
-                                    style:
-                                        TextStyle(color: Colors.grey.shade600),
+                        items: _mediaInfo!.formats
+                            .map((f) => DropdownMenuItem(
+                                  value: f,
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        f.isAudioOnly
+                                            ? Icons.audiotrack
+                                            : Icons.videocam,
+                                        size: 20,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(f.displayName),
+                                      if (f.filesize != null)
+                                        Text(
+                                          ' (${(f.filesize! / 1024 / 1024).toStringAsFixed(1)} MB)',
+                                          style: TextStyle(
+                                              color: Colors.grey.shade600),
+                                        ),
+                                    ],
                                   ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
+                                ))
+                            .toList(),
                         onChanged: (f) => setState(() => _selectedFormat = f),
                       ),
                       const SizedBox(height: 16),

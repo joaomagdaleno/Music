@@ -36,16 +36,20 @@ class _MoodExplorerScreenState extends State<MoodExplorerScreen> {
       categorized[mood]!.add(track);
     }
 
-    if (mounted) setState(() { _moodTracks = categorized; _isLoading = false; });
+    if (mounted)
+      setState(() {
+        _moodTracks = categorized;
+        _isLoading = false;
+      });
   }
 
   void _playTrack(Map<String, dynamic> trackData) {
     final result = SearchResult.fromJson(trackData);
     PlaybackService.instance.playSearchResult(result);
-    
+
     if (mounted && result.mediaType == 'video') {
-      if (defaultTargetPlatform == TargetPlatform.windows || 
-          defaultTargetPlatform == TargetPlatform.linux || 
+      if (defaultTargetPlatform == TargetPlatform.windows ||
+          defaultTargetPlatform == TargetPlatform.linux ||
           defaultTargetPlatform == TargetPlatform.macOS) {
         Navigator.of(context).push(
           fluent.FluentPageRoute(builder: (_) => const PlayerScreen()),
@@ -65,9 +69,15 @@ class _MoodExplorerScreenState extends State<MoodExplorerScreen> {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:
-        return FluentMoodExplorerView(moodTracks: _moodTracks, isLoading: _isLoading, onPlayTrack: _playTrack);
+        return FluentMoodExplorerView(
+            moodTracks: _moodTracks,
+            isLoading: _isLoading,
+            onPlayTrack: _playTrack);
       default:
-        return MaterialMoodExplorerView(moodTracks: _moodTracks, isLoading: _isLoading, onPlayTrack: _playTrack);
+        return MaterialMoodExplorerView(
+            moodTracks: _moodTracks,
+            isLoading: _isLoading,
+            onPlayTrack: _playTrack);
     }
   }
 }

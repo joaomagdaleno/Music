@@ -30,12 +30,10 @@ void main() {
     when(() => mockTheme.removeListener(any())).thenReturn(null);
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: const DiscoModeScreen(),
-    );
-  }
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const DiscoModeScreen(),
+      );
 
   group('DiscoModeScreen', () {
     testWidgets('renders with no track playing', (tester) async {

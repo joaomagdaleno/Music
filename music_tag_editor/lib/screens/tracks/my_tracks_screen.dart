@@ -40,11 +40,11 @@ class _MyTracksScreenState extends State<MyTracksScreen> {
 
   void _playTrack(SearchResult track) {
     PlaybackService.instance.playSearchResult(track);
-    
+
     if (mounted && track.mediaType == 'video') {
       final platform = Theme.of(context).platform;
-      if (platform == TargetPlatform.windows || 
-          platform == TargetPlatform.linux || 
+      if (platform == TargetPlatform.windows ||
+          platform == TargetPlatform.linux ||
           platform == TargetPlatform.macOS) {
         Navigator.of(context).push(
           fluent.FluentPageRoute(builder: (_) => const PlayerScreen()),
@@ -65,49 +65,62 @@ class _MyTracksScreenState extends State<MyTracksScreen> {
 
   void _importPlaylist() {
     final platform = Theme.of(context).platform;
-    if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
-      Navigator.push(context, fluent.FluentPageRoute(builder: (_) => const PlaylistImporterScreen()));
+    if (platform == TargetPlatform.windows ||
+        platform == TargetPlatform.macOS ||
+        platform == TargetPlatform.linux) {
+      Navigator.push(
+          context,
+          fluent.FluentPageRoute(
+              builder: (_) => const PlaylistImporterScreen()));
     } else {
-      Navigator.push(context, MaterialPageRoute(builder: (_) => const PlaylistImporterScreen()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => const PlaylistImporterScreen()));
     }
   }
 
   void _showSuccess(String message) {
     final platform = Theme.of(context).platform;
-    if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
-      fluent.displayInfoBar(context, builder: (_, close) => fluent.InfoBar(title: Text(message), severity: fluent.InfoBarSeverity.success, onClose: close));
+    if (platform == TargetPlatform.windows ||
+        platform == TargetPlatform.macOS ||
+        platform == TargetPlatform.linux) {
+      fluent.displayInfoBar(context,
+          builder: (_, close) => fluent.InfoBar(
+              title: Text(message),
+              severity: fluent.InfoBarSeverity.success,
+              onClose: close));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final platform = Theme.of(context).platform;
-    
+
     return StreamBuilder<SearchResult?>(
       stream: PlaybackService.instance.currentTrackStream,
       builder: (context, snapshot) {
         final currentTrack = snapshot.data;
-        
+
         switch (platform) {
           case TargetPlatform.windows:
           case TargetPlatform.macOS:
           case TargetPlatform.linux:
             return FluentMyTracksView(
-              tracks: _tracks, 
-              isLoading: _isLoading, 
-              onPlayTrack: _playTrack, 
-              onAddToVault: _addToVault, 
+              tracks: _tracks,
+              isLoading: _isLoading,
+              onPlayTrack: _playTrack,
+              onAddToVault: _addToVault,
               onImportPlaylist: _importPlaylist,
               currentTrack: currentTrack,
             );
           default:
             return MaterialMyTracksView(
-              tracks: _tracks, 
-              isLoading: _isLoading, 
-              onPlayTrack: _playTrack, 
-              onAddToVault: _addToVault, 
+              tracks: _tracks,
+              isLoading: _isLoading,
+              onPlayTrack: _playTrack,
+              onAddToVault: _addToVault,
               onImportPlaylist: _importPlaylist,
               currentTrack: currentTrack,
             );

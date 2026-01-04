@@ -20,29 +20,25 @@ import 'package:media_kit/media_kit.dart';
 
 final GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
 
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
   runZonedGuarded(
     () {
-      
-      ErrorWidget.builder = (FlutterErrorDetails details) {
-        return MaterialApp(
-          home: Scaffold(
-            backgroundColor: Colors.red,
-            body: Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  details.exceptionAsString(),
-                  style: const TextStyle(color: Colors.white, fontSize: 16),
+      ErrorWidget.builder = (FlutterErrorDetails details) => MaterialApp(
+            home: Scaffold(
+              backgroundColor: Colors.red,
+              body: Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    details.exceptionAsString(),
+                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      };
+          );
 
       if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
         sqfliteFfiInit();
@@ -105,28 +101,28 @@ class _AppBootstrapState extends State<AppBootstrap> {
       try {
         await StartupLogger.log('Initializing SecurityService...');
         await SecurityService.instance.init();
-        
+
         await StartupLogger.log('Initializing DependencyManager...');
         await DependencyManager.instance.ensureDependencies();
-        
+
         await StartupLogger.log('Initializing AuthService...');
         AuthService.instance.init();
-        
+
         await StartupLogger.log('Initializing ConnectivityService...');
         await ConnectivityService.instance.init();
-        
+
         await StartupLogger.log('Initializing PersonaService...');
         await PersonaService.instance.init();
 
         await StartupLogger.log('Initializing ThemeService...');
         await ThemeService.instance.init();
-        
+
         await StartupLogger.log('Initializing DesktopIntegrationService...');
         await DesktopIntegrationService.instance.init();
-        
+
         StartupLogger.log('Initializing PlaybackService...');
         await PlaybackService.instance.init();
-        
+
         StartupLogger.log('✅ Core services initialized successfully');
       } catch (e) {
         StartupLogger.log('❌ Service initialization failed: $e');
@@ -142,7 +138,7 @@ class _AppBootstrapState extends State<AppBootstrap> {
     } catch (e, stack) {
       await StartupLogger.log('🔥 FATAL: App initialization failed: $e');
       await StartupLogger.log(stack.toString());
-      
+
       // If it's a known non-critical error, we might want to continue
       // For now, fail safe to avoid corrupt state
       if (mounted) {
@@ -230,33 +226,33 @@ class MusicTagEditorApp extends StatelessWidget {
   const MusicTagEditorApp({super.key, this.platform});
 
   @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: ThemeService.instance,
-      builder: (context, child) {
-        final primaryColor = ThemeService.instance.primaryColor;
-        if (platform == TargetPlatform.windows || (platform == null && Platform.isWindows)) {
-          return fluent.FluentApp(
-            title: 'Music Tag Editor',
-            themeMode: fluent.ThemeMode.system,
-            darkTheme: fluent.FluentThemeData(
-              brightness: fluent.Brightness.dark,
-              accentColor: fluent.Colors.blue,
-              scaffoldBackgroundColor: const fluent.Color(0xFF1E1E1E),
-            ),
-            theme: fluent.FluentThemeData(
-              brightness: fluent.Brightness.light,
-              accentColor: fluent.Colors.blue,
-              scaffoldBackgroundColor: fluent.Colors.white,
-            ),
-            home: const AppShell(),
-            navigatorKey: appNavigatorKey,
-            builder: (context, child) {
-              return Overlay(
+  Widget build(BuildContext context) => AnimatedBuilder(
+        animation: ThemeService.instance,
+        builder: (context, child) {
+          final primaryColor = ThemeService.instance.primaryColor;
+          if (platform == TargetPlatform.windows ||
+              (platform == null && Platform.isWindows)) {
+            return fluent.FluentApp(
+              title: 'Music Tag Editor',
+              themeMode: fluent.ThemeMode.system,
+              darkTheme: fluent.FluentThemeData(
+                brightness: fluent.Brightness.dark,
+                accentColor: fluent.Colors.blue,
+                scaffoldBackgroundColor: const fluent.Color(0xFF1E1E1E),
+              ),
+              theme: fluent.FluentThemeData(
+                brightness: fluent.Brightness.light,
+                accentColor: fluent.Colors.blue,
+                scaffoldBackgroundColor: fluent.Colors.white,
+              ),
+              home: const AppShell(),
+              navigatorKey: appNavigatorKey,
+              builder: (context, child) => Overlay(
                 initialEntries: [
                   OverlayEntry(
                     builder: (_) => fluent.Container(
-                      color: fluent.FluentTheme.of(context).scaffoldBackgroundColor,
+                      color: fluent.FluentTheme.of(context)
+                          .scaffoldBackgroundColor,
                       child: Column(
                         children: [
                           Expanded(child: child ?? const SizedBox.shrink()),
@@ -266,46 +262,41 @@ class MusicTagEditorApp extends StatelessWidget {
                     ),
                   ),
                 ],
-              );
-            },
-          );
-        }
+              ),
+            );
+          }
 
-        return MaterialApp(
-          title: 'Music Tag Editor',
-          theme: ThemeData(
-            useMaterial3: true,
-            platform: platform,
-            scaffoldBackgroundColor: Colors.white,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: primaryColor,
-              brightness: Brightness.light,
+          return MaterialApp(
+            title: 'Music Tag Editor',
+            theme: ThemeData(
+              useMaterial3: true,
+              platform: platform,
+              scaffoldBackgroundColor: Colors.white,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: primaryColor,
+                brightness: Brightness.light,
+              ),
             ),
-          ),
-          darkTheme: ThemeData(
-            useMaterial3: true,
-            platform: platform,
-            scaffoldBackgroundColor: Colors.black,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: primaryColor,
-              brightness: Brightness.dark,
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              platform: platform,
+              scaffoldBackgroundColor: Colors.black,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: primaryColor,
+                brightness: Brightness.dark,
+              ),
             ),
-          ),
-          home: const AppShell(),
-          navigatorKey: appNavigatorKey,
-          builder: (context, child) {
-            return Material(
+            home: const AppShell(),
+            navigatorKey: appNavigatorKey,
+            builder: (context, child) => Material(
               child: Column(
                 children: [
                   Expanded(child: child ?? const SizedBox.shrink()),
                   const MiniPlayer(),
                 ],
               ),
-            );
-          },
-        );
-      },
-    );
-  }
+            ),
+          );
+        },
+      );
 }
-

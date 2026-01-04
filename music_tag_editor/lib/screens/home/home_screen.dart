@@ -48,10 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void _playTrack(Map<String, dynamic> trackData) {
     final result = SearchResult.fromJson(trackData);
     _playbackService.playSearchResult(result);
-    
+
     if (mounted && result.mediaType == 'video') {
-      if (defaultTargetPlatform == TargetPlatform.windows || 
-          defaultTargetPlatform == TargetPlatform.linux || 
+      if (defaultTargetPlatform == TargetPlatform.windows ||
+          defaultTargetPlatform == TargetPlatform.linux ||
           defaultTargetPlatform == TargetPlatform.macOS) {
         Navigator.of(context).push(
           fluent.FluentPageRoute(builder: (_) => const PlayerScreen()),

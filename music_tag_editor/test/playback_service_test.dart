@@ -13,6 +13,11 @@ class MockBaseAudioHandler extends Mock implements BaseAudioHandler {
   final playbackState = BehaviorSubject<PlaybackState>();
   @override
   final mediaItem = BehaviorSubject<MediaItem?>();
+
+  void dispose() {
+    playbackState.close();
+    mediaItem.close();
+  }
 }
 
 class MockMediaItem extends Mock implements MediaItem {}
@@ -36,7 +41,7 @@ void main() {
   setUpAll(() {
     registerFallbackValue(testTrack);
     registerFallbackValue(Duration.zero);
-    registerFallbackValue(MediaItem(id: '1', title: 'T', artist: 'A'));
+    registerFallbackValue(const MediaItem(id: '1', title: 'T', artist: 'A'));
     registerFallbackValue(PlaybackState(
         processingState: AudioProcessingState.idle, playing: false));
   });
@@ -44,10 +49,14 @@ void main() {
   setUp(() async {
     await setupMusicTest();
     mockHandler = MockBaseAudioHandler();
-    mockVideoController = MockVideoController(); // Initialized mockVideoController
-    
+    mockVideoController =
+        MockVideoController(); // Initialized mockVideoController
+
     // PlaybackService needs specific handler for testing
-    service = PlaybackService.forTesting(player: mockPlayer, handler: mockHandler, videoController: mockVideoController); // Passed to constructor
+    service = PlaybackService.forTesting(
+        player: mockPlayer,
+        handler: mockHandler,
+        videoController: mockVideoController); // Passed to constructor
     // service.searchService = mockSearch; // Injected via singleton
 
     // Additional stubs for this test specifically
@@ -61,7 +70,7 @@ void main() {
     // Stub mockPlayer methods used in PlaybackService
     // Note: Most checks are redundant as setupMusicTest provides default stubs.
     // However, verify calls need these to be valid.
-    
+
     when(() => mockPlayer.open(any(), play: any(named: 'play')))
         .thenAnswer((_) async {});
 
@@ -125,25 +134,25 @@ void main() {
 
   group('Sleep Timer', () {
     test('setSleepTimer initiates countdown', () async {
-      final timerDuration = Duration(seconds: 2);
+      const timerDuration = Duration(seconds: 2);
       service.setSleepTimer(timerDuration);
 
       expect(service.sleepTimeLeft, timerDuration);
 
       // Wait for timer to tick
-      await Future.delayed(Duration(seconds: 1, milliseconds: 100));
+      await Future.delayed(const Duration(seconds: 1, milliseconds: 100));
       // Wait for timer to tick: 1 -> 0
-      await Future.delayed(Duration(seconds: 1, milliseconds: 200));
+      await Future.delayed(const Duration(seconds: 1, milliseconds: 200));
       expect(service.sleepTimeLeft!.inSeconds, 0);
 
       // Wait for the next tick to trigger cancel
-      await Future.delayed(Duration(seconds: 1, milliseconds: 200));
+      await Future.delayed(const Duration(seconds: 1, milliseconds: 200));
       expect(service.sleepTimeLeft, null); // Cancelled after reaching 0
       verify(() => mockPlayer.stop()).called(1);
     });
 
     test('cancelSleepTimer clears timer', () {
-      service.setSleepTimer(Duration(minutes: 5));
+      service.setSleepTimer(const Duration(minutes: 5));
       service.cancelSleepTimer();
       expect(service.sleepTimeLeft, null);
     });
@@ -159,7 +168,7 @@ void main() {
     });
 
     test('seek delegates to player and sends message', () async {
-      final pos = Duration(seconds: 30);
+      const pos = Duration(seconds: 30);
       await service.seek(pos);
       verify(() => mockPlayer.seek(pos)).called(1);
       verify(() => mockDuo.sendMessage(any())).called(1);

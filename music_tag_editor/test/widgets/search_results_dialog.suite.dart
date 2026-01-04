@@ -26,17 +26,16 @@ void main() {
     dynamic selectedRecording;
 
     await tester.pumpWidget(MaterialApp(
-      home: Builder(builder: (context) {
-        return TextButton(
-          onPressed: () async {
-            selectedRecording = await showDialog(
-              context: context,
-              builder: (_) => SearchResultsDialog(recordings: recordings),
-            );
-          },
-          child: const Text('Show Dialog'),
-        );
-      }),
+      home: Builder(
+          builder: (context) => TextButton(
+                onPressed: () async {
+                  selectedRecording = await showDialog(
+                    context: context,
+                    builder: (_) => SearchResultsDialog(recordings: recordings),
+                  );
+                },
+                child: const Text('Show Dialog'),
+              )),
     ));
 
     await tester.tap(find.text('Show Dialog'));
@@ -60,17 +59,16 @@ void main() {
     dynamic result;
 
     await tester.pumpWidget(MaterialApp(
-      home: Builder(builder: (context) {
-        return TextButton(
-          onPressed: () async {
-            result = await showDialog(
-              context: context,
-              builder: (_) => SearchResultsDialog(recordings: recordings),
-            );
-          },
-          child: const Text('Show Dialog'),
-        );
-      }),
+      home: Builder(
+          builder: (context) => TextButton(
+                onPressed: () async {
+                  result = await showDialog(
+                    context: context,
+                    builder: (_) => SearchResultsDialog(recordings: recordings),
+                  );
+                },
+                child: const Text('Show Dialog'),
+              )),
     ));
 
     await tester.tap(find.text('Show Dialog'));

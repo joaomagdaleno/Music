@@ -66,12 +66,10 @@ void main() {
         .thenAnswer((_) async => {'clientId': null, 'clientSecret': null});
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: const SettingsScreen(),
-    );
-  }
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const SettingsScreen(),
+      );
 
   group('SettingsScreen', () {
     testWidgets('renders Scaffold', (tester) async {

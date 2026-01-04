@@ -64,15 +64,12 @@ void main() {
     fakeCastService.dispose();
   });
 
-  Widget createWidgetUnderTest() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-
-      home: Scaffold(
-        body: CastDialog(),
-      ),
-    );
-  }
+  Widget createWidgetUnderTest() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const Scaffold(
+          body: CastDialog(),
+        ),
+      );
 
   testWidgets('CastDialog displays title and loading state', (tester) async {
     await tester.pumpWidget(createWidgetUnderTest());

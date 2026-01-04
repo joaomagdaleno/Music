@@ -48,7 +48,8 @@ class _KaraokeScreenState extends State<KaraokeScreen> {
 
   void _scrollToActive() {
     if (_activeLineIndex != -1 && _scrollController.hasClients) {
-      _scrollController.animateTo(_activeLineIndex * 80.0, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+      _scrollController.animateTo(_activeLineIndex * 80.0,
+          duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
     }
   }
 
@@ -67,9 +68,21 @@ class _KaraokeScreenState extends State<KaraokeScreen> {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:
-        return FluentKaraokeView(track: widget.track, lyrics: lyrics, activeLineIndex: _activeLineIndex, scrollController: _scrollController, onResume: () => PlaybackService.instance.resume(), onClose: () => Navigator.pop(context));
+        return FluentKaraokeView(
+            track: widget.track,
+            lyrics: lyrics,
+            activeLineIndex: _activeLineIndex,
+            scrollController: _scrollController,
+            onResume: () => PlaybackService.instance.resume(),
+            onClose: () => Navigator.pop(context));
       default:
-        return MaterialKaraokeView(track: widget.track, lyrics: lyrics, activeLineIndex: _activeLineIndex, scrollController: _scrollController, onResume: () => PlaybackService.instance.resume(), onClose: () => Navigator.pop(context));
+        return MaterialKaraokeView(
+            track: widget.track,
+            lyrics: lyrics,
+            activeLineIndex: _activeLineIndex,
+            scrollController: _scrollController,
+            onResume: () => PlaybackService.instance.resume(),
+            onClose: () => Navigator.pop(context));
     }
   }
 }

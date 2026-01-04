@@ -26,7 +26,7 @@ class SearchService {
   static void resetInstance() => _instance = null;
 
   SearchService._internal();
-  
+
   spot.SpotifyApi? _spotifyApi;
   bool _spotifyInitAttempted = false;
 
@@ -47,7 +47,8 @@ class SearchService {
           creds['clientId']!,
           creds['clientSecret']!,
         ));
-        StartupLogger.log('[SearchService] Spotify API initialized successfully');
+        StartupLogger.log(
+            '[SearchService] Spotify API initialized successfully');
       }
     } catch (e) {
       StartupLogger.log('[SearchService] Failed to initialize Spotify API: $e');
@@ -144,10 +145,11 @@ class SearchService {
         // 1. URL Deduplication
         if (downloadedTracks.containsKey(item.url)) {
           item.localPath = downloadedTracks[item.url];
-        } 
+        }
         // 2. Metadata Deduplication (Fall back if URL didn't match)
         else {
-          final itemKey = '${toMatchKey(item.artist)}:${toMatchKey(item.title)}';
+          final itemKey =
+              '${toMatchKey(item.artist)}:${toMatchKey(item.title)}';
           if (metadataToPath.containsKey(itemKey)) {
             item.localPath = metadataToPath[itemKey];
           }
@@ -167,7 +169,8 @@ class SearchService {
     try {
       StartupLogger.log('[SearchService] Executing ${platform.name} search...');
       final results = await searchFn();
-      StartupLogger.log('[SearchService] ${platform.name} search finished with ${results.length} results');
+      StartupLogger.log(
+          '[SearchService] ${platform.name} search finished with ${results.length} results');
       if (results.isEmpty) {
         onStatusUpdate?.call(platform, SearchStatus.noResults);
       } else {
@@ -188,29 +191,27 @@ class SearchService {
   @visibleForTesting
   set ytExplode(yt.YoutubeExplode instance) => _ytExplodeOverride = instance;
 
-  static String cleanMetadata(String s) {
-    return s
-        .replaceAll(RegExp(r'\(Official.*?\)', caseSensitive: false), '')
-        .replaceAll(RegExp(r'\[Official.*?\]', caseSensitive: false), '')
-        .replaceAll(RegExp(r'\(Lyrics\)', caseSensitive: false), '')
-        .replaceAll(RegExp(r'\(Audio\)', caseSensitive: false), '')
-        .replaceAll(RegExp(r'\(Video\)', caseSensitive: false), '')
-        .replaceAll(RegExp(r'\(Visualizer\)', caseSensitive: false), '')
-        .replaceAll(RegExp(r'\[Visualizer\]', caseSensitive: false), '')
-        .replaceAll(RegExp(r'\(.*?\)', caseSensitive: false), '') // Remove anything else in parens
-        .replaceAll(RegExp(r'\[.*?\]', caseSensitive: false), '') // Remove anything else in brackets
-        .replaceAll(RegExp(r' - YouTube$', caseSensitive: false), '')
-        .trim();
-  }
+  static String cleanMetadata(String s) => s
+      .replaceAll(RegExp(r'\(Official.*?\)', caseSensitive: false), '')
+      .replaceAll(RegExp(r'\[Official.*?\]', caseSensitive: false), '')
+      .replaceAll(RegExp(r'\(Lyrics\)', caseSensitive: false), '')
+      .replaceAll(RegExp(r'\(Audio\)', caseSensitive: false), '')
+      .replaceAll(RegExp(r'\(Video\)', caseSensitive: false), '')
+      .replaceAll(RegExp(r'\(Visualizer\)', caseSensitive: false), '')
+      .replaceAll(RegExp(r'\[Visualizer\]', caseSensitive: false), '')
+      .replaceAll(RegExp(r'\(.*?\)', caseSensitive: false),
+          '') // Remove anything else in parens
+      .replaceAll(RegExp(r'\[.*?\]', caseSensitive: false),
+          '') // Remove anything else in brackets
+      .replaceAll(RegExp(r' - YouTube$', caseSensitive: false), '')
+      .trim();
 
-  static String toMatchKey(String s) {
-    return s.toLowerCase().trim();
-  }
+  static String toMatchKey(String s) => s.toLowerCase().trim();
 
   SearchResult _parseYouTubeVideo(yt.Video video, MediaPlatform platform) {
     String title = video.title;
     String artist = video.author.replaceAll(' - Topic', '').trim();
-    
+
     // Clean title from common YouTube suffixes before splitting
     title = cleanMetadata(title);
 
@@ -220,12 +221,29 @@ class SearchService {
       if (parts.length >= 2) {
         final potentialArtist = cleanMetadata(parts[0]);
         final potentialTitle = cleanMetadata(parts.sublist(1).join(' - '));
-        
+
         // If author is generic, or if the author is NOT the first part of the title,
         // we assume the uploader is just a fan/channel and the title has the real metadata.
-        final genericAuthors = ['7clouds', 'proximity', 'trap nation', 'official music', 'official', 'vevo', 'lyrics', 'audio', 'music', 'videos', 'records', 'entertainment'];
-        bool isGeneric = genericAuthors.any((g) => artist.toLowerCase().contains(g)) || video.author.toLowerCase().contains('topic');
-        bool authorMatchesTitle = toMatchKey(artist).contains(toMatchKey(potentialArtist)) || toMatchKey(potentialArtist).contains(toMatchKey(artist));
+        final genericAuthors = [
+          '7clouds',
+          'proximity',
+          'trap nation',
+          'official music',
+          'official',
+          'vevo',
+          'lyrics',
+          'audio',
+          'music',
+          'videos',
+          'records',
+          'entertainment'
+        ];
+        final bool isGeneric =
+            genericAuthors.any((g) => artist.toLowerCase().contains(g)) ||
+                video.author.toLowerCase().contains('topic');
+        final bool authorMatchesTitle =
+            toMatchKey(artist).contains(toMatchKey(potentialArtist)) ||
+                toMatchKey(potentialArtist).contains(toMatchKey(artist));
 
         if (isGeneric || !authorMatchesTitle) {
           artist = potentialArtist;
@@ -259,15 +277,15 @@ class SearchService {
       final seenMeta = <String>{};
       final client = _ytExplodeOverride ?? _defaultYtExplode;
       final searchList = await client.search.search(query);
-      
+
       for (final video in searchList) {
         if (seenIds.contains(video.id.value)) continue;
-        
+
         final res = _parseYouTubeVideo(video, MediaPlatform.youtube);
         final metaKey = '${toMatchKey(res.artist)}:${toMatchKey(res.title)}';
-        
+
         if (seenMeta.contains(metaKey)) continue;
-        
+
         results.add(res);
         seenIds.add(video.id.value);
         seenMeta.add(metaKey);
@@ -275,13 +293,15 @@ class SearchService {
       return results;
     } catch (e, stack) {
       StartupLogger.logError('YouTube Explode Error', e, stack);
-      StartupLogger.log('[SearchService] YouTube Explode search failed, falling back to yt-dlp');
+      StartupLogger.log(
+          '[SearchService] YouTube Explode search failed, falling back to yt-dlp');
       return _searchWithYtDlp(query, MediaPlatform.youtube);
     }
   }
 
   /// Search using yt-dlp (Robust Fallback).
-  Future<List<SearchResult>> _searchWithYtDlp(String query, MediaPlatform platform) async {
+  Future<List<SearchResult>> _searchWithYtDlp(
+      String query, MediaPlatform platform) async {
     try {
       final results = <SearchResult>[];
       final args = [
@@ -308,7 +328,11 @@ class SearchService {
             results.add(SearchResult(
               id: json['id'] as String? ?? '',
               title: cleanMetadata(json['title'] as String? ?? 'Unknown'),
-              artist: (json['uploader'] as String? ?? json['channel'] as String? ?? 'Unknown').replaceAll(' - Topic', '').trim(),
+              artist: (json['uploader'] as String? ??
+                      json['channel'] as String? ??
+                      'Unknown')
+                  .replaceAll(' - Topic', '')
+                  .trim(),
               thumbnail: json['thumbnail'] as String?,
               duration: (json['duration'] as num?)?.toInt(),
               url: 'https://www.youtube.com/watch?v=${json['id']}',
@@ -332,7 +356,7 @@ class SearchService {
       final seenMeta = <String>{};
       final client = _ytExplodeOverride ?? _defaultYtExplode;
       final searchList = await client.search.search('$query topic');
-      
+
       for (final video in searchList) {
         if (seenIds.contains(video.id.value)) continue;
 
@@ -345,11 +369,13 @@ class SearchService {
         seenIds.add(video.id.value);
         seenMeta.add(metaKey);
       }
-      
+
       // Sort to put topic/official results first if they exist
       results.sort((a, b) {
-        final aTopic = a.artist.toLowerCase().contains('topic') || a.title.toLowerCase().contains('official audio');
-        final bTopic = b.artist.toLowerCase().contains('topic') || b.title.toLowerCase().contains('official audio');
+        final aTopic = a.artist.toLowerCase().contains('topic') ||
+            a.title.toLowerCase().contains('official audio');
+        final bTopic = b.artist.toLowerCase().contains('topic') ||
+            b.title.toLowerCase().contains('official audio');
         if (aTopic && !bTopic) return -1;
         if (!aTopic && bTopic) return 1;
         return 0;
@@ -358,32 +384,33 @@ class SearchService {
       return results;
     } catch (e, stack) {
       StartupLogger.logError('YT Music Error', e, stack);
-      StartupLogger.log('[SearchService] YT Music search failed, falling back to yt-dlp');
+      StartupLogger.log(
+          '[SearchService] YT Music search failed, falling back to yt-dlp');
       return _searchWithYtDlp('$query topic', MediaPlatform.youtubeMusic);
     }
   }
 
   Future<List<SearchResult>> searchSpotify(String query) async {
     try {
-       final client = _ytExplodeOverride ?? _defaultYtExplode;
-       final searchList = await client.search.search('$query official audio');
-       final results = <SearchResult>[];
-       final seenIds = <String>{};
-       final seenMeta = <String>{};
+      final client = _ytExplodeOverride ?? _defaultYtExplode;
+      final searchList = await client.search.search('$query official audio');
+      final results = <SearchResult>[];
+      final seenIds = <String>{};
+      final seenMeta = <String>{};
 
-       for (final video in searchList) {
-         if (seenIds.contains(video.id.value)) continue;
+      for (final video in searchList) {
+        if (seenIds.contains(video.id.value)) continue;
 
-         final res = _parseYouTubeVideo(video, MediaPlatform.spotify);
-         final metaKey = '${toMatchKey(res.artist)}:${toMatchKey(res.title)}';
+        final res = _parseYouTubeVideo(video, MediaPlatform.spotify);
+        final metaKey = '${toMatchKey(res.artist)}:${toMatchKey(res.title)}';
 
-         if (seenMeta.contains(metaKey)) continue;
+        if (seenMeta.contains(metaKey)) continue;
 
-         results.add(res);
-         seenIds.add(video.id.value);
-         seenMeta.add(metaKey);
-       }
-       return results;
+        results.add(res);
+        seenIds.add(video.id.value);
+        seenMeta.add(metaKey);
+      }
+      return results;
     } catch (e) {
       StartupLogger.log('[SearchService] Authentic Spotify Fallback Error: $e');
       return [];
@@ -500,31 +527,33 @@ class SearchService {
     }
   }
 
-  List<DownloadFormat> _defaultFormats() {
-    return [
-      DownloadFormat(
-          formatId: 'bestaudio/best',
-          quality: 'Best Audio (MP3)',
-          extension: 'mp3',
-          isAudioOnly: true),
-      DownloadFormat(
-          formatId: 'bestaudio[ext=m4a]/bestaudio',
-          quality: 'Best Audio (M4A)',
-          extension: 'm4a',
-          isAudioOnly: true),
-    ];
-  }
+  List<DownloadFormat> _defaultFormats() => [
+        DownloadFormat(
+            formatId: 'bestaudio/best',
+            quality: 'Best Audio (MP3)',
+            extension: 'mp3',
+            isAudioOnly: true),
+        DownloadFormat(
+            formatId: 'bestaudio[ext=m4a]/bestaudio',
+            quality: 'Best Audio (M4A)',
+            extension: 'm4a',
+            isAudioOnly: true),
+      ];
 
   /// Get direct streaming URL for a given media URL.
-  Future<String?> getStreamUrl(String url, {
-    String? resolution, 
+  Future<String?> getStreamUrl(
+    String url, {
+    String? resolution,
     MediaPlatform? platform,
     bool isVideo = false,
   }) async {
     // 0. Direct Link Detection (Skip extractors for direct files)
-    if (url.startsWith('http') && (url.contains('.slavart-api.') || url.endsWith('.flac') || url.endsWith('.mp3'))) {
-       StartupLogger.log('[SearchService] Direct link detected: $url');
-       return url;
+    if (url.startsWith('http') &&
+        (url.contains('.slavart-api.') ||
+            url.endsWith('.flac') ||
+            url.endsWith('.mp3'))) {
+      StartupLogger.log('[SearchService] Direct link detected: $url');
+      return url;
     }
 
     // 1. Try youtube_explode_dart for YouTube URLs (Fast & Native)
@@ -533,32 +562,41 @@ class SearchService {
         final client = _ytExplodeOverride ?? _defaultYtExplode;
         final videoId = yt.VideoId.parseVideoId(url);
         if (videoId != null) {
-          final manifest = await client.videos.streamsClient.getManifest(videoId);
-          
+          final manifest =
+              await client.videos.streamsClient.getManifest(videoId);
+
           if (isVideo) {
             // Priority: Muxed streams for video
             if (resolution != null && resolution != 'Auto') {
-              final resValue = int.tryParse(resolution.replaceAll('p', '')) ?? 720;
-              final stream = manifest.muxed.where((s) => s.videoQuality.index <= resValue).toList();
+              final resValue =
+                  int.tryParse(resolution.replaceAll('p', '')) ?? 720;
+              final stream = manifest.muxed
+                  .where((s) => s.videoQuality.index <= resValue)
+                  .toList();
               if (stream.isNotEmpty) {
-                stream.sort((a, b) => b.videoQuality.index.compareTo(a.videoQuality.index));
-                StartupLogger.log('[SearchService] Found native video stream URL (YouTube Explode) with resolution $resolution');
+                stream.sort((a, b) =>
+                    b.videoQuality.index.compareTo(a.videoQuality.index));
+                StartupLogger.log(
+                    '[SearchService] Found native video stream URL (YouTube Explode) with resolution $resolution');
                 return stream.first.url.toString();
               }
             }
             // Fallback for video: highest muxed
             final stream = manifest.muxed.withHighestBitrate();
-            StartupLogger.log('[SearchService] Found highest quality muxed stream URL (YouTube Explode)');
+            StartupLogger.log(
+                '[SearchService] Found highest quality muxed stream URL (YouTube Explode)');
             return stream.url.toString();
           } else {
-             // Priority: Audio only for music
-             final audioStream = manifest.audioOnly.withHighestBitrate();
-             StartupLogger.log('[SearchService] Found native audio-only stream URL (YouTube Explode)');
-             return audioStream.url.toString();
+            // Priority: Audio only for music
+            final audioStream = manifest.audioOnly.withHighestBitrate();
+            StartupLogger.log(
+                '[SearchService] Found native audio-only stream URL (YouTube Explode)');
+            return audioStream.url.toString();
           }
         }
       } catch (e) {
-        StartupLogger.log('[SearchService] YouTube Explode native extract failed, falling back to yt-dlp: $e');
+        StartupLogger.log(
+            '[SearchService] YouTube Explode native extract failed, falling back to yt-dlp: $e');
       }
     }
 
@@ -580,14 +618,12 @@ class SearchService {
         // Music only: search for best audio, prefer m4a for compatibility
         args.addAll(['-f', 'bestaudio[ext=m4a]/bestaudio/best']);
       }
-      
-      args.addAll([
-        '--no-playlist',
-        '--format-sort', 'res:720,ext:mp4:m4a',
-        url
-      ]);
 
-      debugPrint('[SearchService] getStreamUrl Command: ${_deps.ytDlpPath} ${args.join(' ')}');
+      args.addAll(
+          ['--no-playlist', '--format-sort', 'res:720,ext:mp4:m4a', url]);
+
+      debugPrint(
+          '[SearchService] getStreamUrl Command: ${_deps.ytDlpPath} ${args.join(' ')}');
       final result = await processRunner(
         _deps.ytDlpPath,
         args,
@@ -596,21 +632,24 @@ class SearchService {
       );
 
       if (result.exitCode == 0) {
-        // yt-dlp -g can return multiple lines (video + audio separately). 
-        // We only want the first one if we requested a combined format, 
+        // yt-dlp -g can return multiple lines (video + audio separately).
+        // We only want the first one if we requested a combined format,
         // but if it returned both, we can only really play one easily in media_kit without complex DASH/HLS merging.
-        // Actually, bestvideo+bestaudio/best should return a single URL if it's a direct resource, 
+        // Actually, bestvideo+bestaudio/best should return a single URL if it's a direct resource,
         // or multiple if they are split. MediaKit usually takes a single source.
         final streamUrls = (result.stdout as String).trim().split('\n');
-        final streamUrl = streamUrls.first; 
-        final displayUrl = streamUrl.length > 50 ? '${streamUrl.substring(0, 50)}...' : streamUrl;
-        StartupLogger.log('[SearchService] Found Stream URL (yt-dlp): $displayUrl');
+        final streamUrl = streamUrls.first;
+        final displayUrl = streamUrl.length > 50
+            ? '${streamUrl.substring(0, 50)}...'
+            : streamUrl;
+        StartupLogger.log(
+            '[SearchService] Found Stream URL (yt-dlp): $displayUrl');
         return streamUrl;
       }
       return null;
-
     } catch (e, stack) {
-      StartupLogger.log('[SearchService] Error extracting stream with yt-dlp: $e\n$stack');
+      StartupLogger.log(
+          '[SearchService] Error extracting stream with yt-dlp: $e\n$stack');
       return null;
     }
   }
@@ -650,17 +689,17 @@ class SearchService {
       if (result.exitCode == 0) {
         return jsonDecode(result.stdout as String);
       } else {
-        StartupLogger.log('[SearchService] getVideoDetails FAILED. Exit code: ${result.exitCode}');
+        StartupLogger.log(
+            '[SearchService] getVideoDetails FAILED. Exit code: ${result.exitCode}');
         StartupLogger.log('[SearchService] stderr: ${result.stderr}');
         return null;
       }
     } catch (e, stack) {
-      StartupLogger.log('[SearchService] Error getting video details: $e\n$stack');
+      StartupLogger.log(
+          '[SearchService] Error getting video details: $e\n$stack');
       return null;
     }
   }
-
-
 
   /// Import a playlist from YouTube or Spotify URL.
   Future<List<SearchResult>> importPlaylist(String url) async {

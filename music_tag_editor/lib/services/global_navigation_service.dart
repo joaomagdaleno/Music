@@ -44,11 +44,17 @@ class GlobalNavigationService extends ChangeNotifier {
     // Index 2 = Librarian, 3 = Host, 4 = Artisan in current AppShell structure.
     int mainIdx = 0;
     switch (persona) {
-      case AppPersona.librarian: mainIdx = 2; break;
-      case AppPersona.host: mainIdx = 3; break;
-      case AppPersona.artisan: mainIdx = 4; break;
+      case AppPersona.librarian:
+        mainIdx = 2;
+        break;
+      case AppPersona.host:
+        mainIdx = 3;
+        break;
+      case AppPersona.artisan:
+        mainIdx = 4;
+        break;
     }
-    
+
     setSubIndex(persona, tabIndex);
     setMainIndex(mainIdx);
   }

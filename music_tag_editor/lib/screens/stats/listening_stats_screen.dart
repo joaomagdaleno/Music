@@ -47,9 +47,17 @@ class _ListeningStatsScreenState extends State<ListeningStatsScreen> {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:
-        return FluentListeningStatsView(totalMinutes: _totalMinutes, topArtists: _topArtists, topTracks: _topTracks, isLoading: _isLoading);
+        return FluentListeningStatsView(
+            totalMinutes: _totalMinutes,
+            topArtists: _topArtists,
+            topTracks: _topTracks,
+            isLoading: _isLoading);
       default:
-        return MaterialListeningStatsView(totalMinutes: _totalMinutes, topArtists: _topArtists, topTracks: _topTracks, isLoading: _isLoading);
+        return MaterialListeningStatsView(
+            totalMinutes: _totalMinutes,
+            topArtists: _topArtists,
+            topTracks: _topTracks,
+            isLoading: _isLoading);
     }
   }
 }

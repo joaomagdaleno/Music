@@ -21,56 +21,65 @@ class MaterialKaraokeView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          _buildGlow(context),
-          SafeArea(
-            child: Column(
-              children: [
-                _buildHeader(),
-                Expanded(child: _buildLyrics(context)),
-                _buildControls(),
-              ],
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: Colors.black,
+        body: Stack(
+          children: [
+            _buildGlow(context),
+            SafeArea(
+              child: Column(
+                children: [
+                  _buildHeader(),
+                  Expanded(child: _buildLyrics(context)),
+                  _buildControls(),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildGlow(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: RadialGradient(
-          center: const Alignment(0, -0.5),
-          radius: 1.5,
-          colors: [Theme.of(context).colorScheme.primary.withValues(alpha: 0.3), Colors.black],
+          ],
         ),
-      ),
-    );
-  }
+      );
 
-  Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: [
-          IconButton(icon: const Icon(Icons.close, color: Colors.white), onPressed: onClose),
-          const SizedBox(width: 8),
-          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(track['title'] ?? 'Karaoke', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-            Text(track['artist'] ?? '', style: const TextStyle(color: Colors.white70, fontSize: 12)),
-          ])),
-        ],
-      ),
-    );
-  }
+  Widget _buildGlow(BuildContext context) => Container(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            center: const Alignment(0, -0.5),
+            radius: 1.5,
+            colors: [
+              Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+              Colors.black
+            ],
+          ),
+        ),
+      );
+
+  Widget _buildHeader() => Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            IconButton(
+                icon: const Icon(Icons.close, color: Colors.white),
+                onPressed: onClose),
+            const SizedBox(width: 8),
+            Expanded(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                  Text(track['title'] ?? 'Karaoke',
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
+                  Text(track['artist'] ?? '',
+                      style:
+                          const TextStyle(color: Colors.white70, fontSize: 12)),
+                ])),
+          ],
+        ),
+      );
 
   Widget _buildLyrics(BuildContext context) {
-    if (lyrics.isEmpty) return const Center(child: Text('Letras não sincronizadas...', style: TextStyle(color: Colors.white54)));
+    if (lyrics.isEmpty)
+      return const Center(
+          child: Text('Letras não sincronizadas...',
+              style: TextStyle(color: Colors.white54)));
     return ListView.builder(
       controller: scrollController,
       itemExtent: 80.0, // ⚡ Bolt: Fixed extent for efficient scrolling
@@ -96,10 +105,11 @@ class MaterialKaraokeView extends StatelessWidget {
     );
   }
 
-  Widget _buildControls() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 24),
-      child: IconButton(iconSize: 48, icon: const Icon(Icons.play_circle_filled, color: Colors.white), onPressed: onResume),
-    );
-  }
+  Widget _buildControls() => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 24),
+        child: IconButton(
+            iconSize: 48,
+            icon: const Icon(Icons.play_circle_filled, color: Colors.white),
+            onPressed: onResume),
+      );
 }

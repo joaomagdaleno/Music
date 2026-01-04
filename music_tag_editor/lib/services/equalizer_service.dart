@@ -25,9 +25,8 @@ class EqualizerService {
                 : null);
 
   @visibleForTesting
-  factory EqualizerService.test({AndroidEqualizer? equalizer}) {
-    return EqualizerService._internal(equalizer: equalizer);
-  }
+  factory EqualizerService.test({AndroidEqualizer? equalizer}) =>
+      EqualizerService._internal(equalizer: equalizer);
 
   AndroidEqualizer get equalizer => _equalizer!;
   bool get isAutoMode => _isAutoMode;
@@ -124,7 +123,5 @@ class EqualizerService {
     return _dbToLinear(adjustment).clamp(0.1, 2.0);
   }
 
-  double _dbToLinear(double db) {
-    return math.pow(10.0, db / 20.0).toDouble();
-  }
+  double _dbToLinear(double db) => math.pow(10.0, db / 20.0).toDouble();
 }

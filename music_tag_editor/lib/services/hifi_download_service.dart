@@ -15,9 +15,8 @@ class HiFiDownloadService {
       : _slavArt = slavArt ?? SlavArtApi();
 
   @visibleForTesting
-  factory HiFiDownloadService.test({SlavArtApi? slavArt}) {
-    return HiFiDownloadService._internal(slavArt: slavArt);
-  }
+  factory HiFiDownloadService.test({SlavArtApi? slavArt}) =>
+      HiFiDownloadService._internal(slavArt: slavArt);
 
   final SlavArtApi _slavArt;
   bool preferHiFi = true;

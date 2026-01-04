@@ -92,25 +92,23 @@ class SearchResult {
     return '$minutes:$seconds';
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'artist': artist,
-      'album': album,
-      'thumbnail': thumbnail,
-      'duration': duration,
-      'url': url,
-      'platform': platform.toString(),
-      'local_path': localPath,
-      'is_downloaded': localPath != null ? 1 : 0,
-      'genre': genre,
-      'hifi_source': hifiSource,
-      'hifi_quality': hifiQuality,
-      'is_vault': isVault ? 1 : 0,
-      'media_type': mediaType,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'title': title,
+        'artist': artist,
+        'album': album,
+        'thumbnail': thumbnail,
+        'duration': duration,
+        'url': url,
+        'platform': platform.toString(),
+        'local_path': localPath,
+        'is_downloaded': localPath != null ? 1 : 0,
+        'genre': genre,
+        'hifi_source': hifiSource,
+        'hifi_quality': hifiQuality,
+        'is_vault': isVault ? 1 : 0,
+        'media_type': mediaType,
+      };
 
   factory SearchResult.fromJson(Map<String, dynamic> json) {
     // Handle platform safely
@@ -121,7 +119,8 @@ class SearchResult {
         platform = MediaPlatform.values[platformRaw];
       }
     } else if (platformRaw != null) {
-      final cleanPlatform = platformRaw.toString().split('.').last.toLowerCase();
+      final cleanPlatform =
+          platformRaw.toString().split('.').last.toLowerCase();
       platform = MediaPlatform.values.firstWhere(
         (e) => e.name.toLowerCase() == cleanPlatform,
         orElse: () => MediaPlatform.unknown,
@@ -142,7 +141,8 @@ class SearchResult {
       hifiSource: json['hifi_source']?.toString(),
       hifiQuality: json['hifi_quality']?.toString(),
       isVault: (json['is_vault'] == 1 || json['is_vault'] == true),
-      isDownloaded: (json['is_downloaded'] == 1 || json['is_downloaded'] == true),
+      isDownloaded:
+          (json['is_downloaded'] == 1 || json['is_downloaded'] == true),
       mediaType: json['media_type']?.toString() ?? 'audio',
     );
   }
@@ -259,7 +259,8 @@ class DownloadService {
     );
 
     if (result.exitCode != 0) {
-      StartupLogger.log('[DownloadService] getMediaInfo FAILED: ${result.stderr}');
+      StartupLogger.log(
+          '[DownloadService] getMediaInfo FAILED: ${result.stderr}');
       throw Exception('Failed to get video info: ${result.stderr}');
     }
 
@@ -318,7 +319,8 @@ class DownloadService {
         ));
 
     final platform = detectPlatform(url);
-    StartupLogger.log('[DownloadService] Successfully parsed info for: ${json['title']}');
+    StartupLogger.log(
+        '[DownloadService] Successfully parsed info for: ${json['title']}');
 
     return MediaInfo(
       title: json['title'] as String? ?? 'Unknown',
@@ -334,38 +336,36 @@ class DownloadService {
   }
 
   /// Get Spotify track info (spotdl handles the actual download).
-  Future<MediaInfo> _getSpotifyInfo(String url) async {
-    // spotdl doesn't have a JSON info mode, so we use yt-dlp to search
-    // For now, return basic info
-    return MediaInfo(
-      title: 'Spotify Track',
-      artist: null,
-      album: null,
-      thumbnail: null,
-      duration: null,
-      platform: MediaPlatform.spotify,
-      formats: [
-        DownloadFormat(
-          formatId: 'mp3',
-          extension: 'mp3',
-          quality: 'MP3 320kbps',
-          isAudioOnly: true,
-        ),
-        DownloadFormat(
-          formatId: 'm4a',
-          extension: 'm4a',
-          quality: 'M4A AAC',
-          isAudioOnly: true,
-        ),
-        DownloadFormat(
-          formatId: 'opus',
-          extension: 'opus',
-          quality: 'OPUS',
-          isAudioOnly: true,
-        ),
-      ],
-    );
-  }
+  // spotdl doesn't have a JSON info mode, so we use yt-dlp to search.
+  // For now, return basic info.
+  Future<MediaInfo> _getSpotifyInfo(String url) async => MediaInfo(
+        title: 'Spotify Track',
+        artist: null,
+        album: null,
+        thumbnail: null,
+        duration: null,
+        platform: MediaPlatform.spotify,
+        formats: [
+          DownloadFormat(
+            formatId: 'mp3',
+            extension: 'mp3',
+            quality: 'MP3 320kbps',
+            isAudioOnly: true,
+          ),
+          DownloadFormat(
+            formatId: 'm4a',
+            extension: 'm4a',
+            quality: 'M4A AAC',
+            isAudioOnly: true,
+          ),
+          DownloadFormat(
+            formatId: 'opus',
+            extension: 'opus',
+            quality: 'OPUS',
+            isAudioOnly: true,
+          ),
+        ],
+      );
 
   /// Download media with selected format.
   Future<String> download(
@@ -469,7 +469,7 @@ class DownloadService {
         outputFile = line.split('downloaded').last.trim();
         // Sometimes it's just the path
         if (outputFile!.contains(outputDir)) {
-           // We have the path
+          // We have the path
         }
       }
     });
@@ -485,7 +485,7 @@ class DownloadService {
 
     if (outputFile != null) {
       onProgress?.call(0.90, 'Buscando metadados autênticos (MusicBrainz)...');
-      
+
       String searchTitle;
       String searchArtist;
 
@@ -497,7 +497,7 @@ class DownloadService {
         // Fallback: Extract from filename
         String baseName = outputFile!.split(Platform.pathSeparator).last;
         baseName = baseName.substring(0, baseName.lastIndexOf('.'));
-        
+
         searchTitle = SearchService.cleanMetadata(baseName);
         searchArtist = '';
 
@@ -513,13 +513,15 @@ class DownloadService {
       // 2. Fetch High-Quality Metadata
       final aggregator = MetadataAggregatorService.instance;
       // We pass the clean title/artist to the aggregator
-      final metadata = await aggregator.aggregateMetadata(searchTitle, searchArtist);
+      final metadata =
+          await aggregator.aggregateMetadata(searchTitle, searchArtist);
 
       // 3. Fetch lyrics online
-      final lyrics = await LyricsService.instance.fetchRawLyrics(searchTitle, searchArtist);
+      final lyrics = await LyricsService.instance
+          .fetchRawLyrics(searchTitle, searchArtist);
 
       onProgress?.call(0.95, 'Embutindo metadados e capa...');
-      
+
       // Embed the enhanced metadata using FFmpeg
       await _embedMetadata(outputFile!, metadata, lyrics: lyrics);
     }
@@ -535,7 +537,7 @@ class DownloadService {
   }) async {
     try {
       final tempOut = '${audioPath}_temp.mp3';
-      
+
       final args = <String>[
         '-y',
         '-i',
@@ -556,11 +558,16 @@ class DownloadService {
       args.addAll(['-c', 'copy', '-id3v2_version', '3']);
 
       // Add Metadata Tags
-      if (metadata.title != null) args.addAll(['-metadata', 'title=${metadata.title}']);
-      if (metadata.artist != null) args.addAll(['-metadata', 'artist=${metadata.artist}']);
-      if (metadata.album != null) args.addAll(['-metadata', 'album=${metadata.album}']);
-      if (metadata.genre != null) args.addAll(['-metadata', 'genre=${metadata.genre}']);
-      if (metadata.year != null) args.addAll(['-metadata', 'date=${metadata.year}']);
+      if (metadata.title != null)
+        args.addAll(['-metadata', 'title=${metadata.title}']);
+      if (metadata.artist != null)
+        args.addAll(['-metadata', 'artist=${metadata.artist}']);
+      if (metadata.album != null)
+        args.addAll(['-metadata', 'album=${metadata.album}']);
+      if (metadata.genre != null)
+        args.addAll(['-metadata', 'genre=${metadata.genre}']);
+      if (metadata.year != null)
+        args.addAll(['-metadata', 'date=${metadata.year}']);
       if (lyrics != null) {
         args.addAll(['-metadata', 'lyrics=$lyrics']);
         args.addAll(['-metadata', 'USLT=$lyrics']);

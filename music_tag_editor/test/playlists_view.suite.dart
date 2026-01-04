@@ -17,12 +17,10 @@ void main() {
     DatabaseService.instance = mockDb;
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: const PlaylistsScreen(),
-    );
-  }
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const PlaylistsScreen(),
+      );
 
   group('PlaylistsScreen', () {
     testWidgets('renders empty state', (tester) async {

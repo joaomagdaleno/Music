@@ -21,9 +21,8 @@ class ConnectivityService {
       : _connectivity = connectivity ?? Connectivity();
 
   @visibleForTesting
-  factory ConnectivityService.test({Connectivity? connectivity}) {
-    return ConnectivityService._internal(connectivity: connectivity);
-  }
+  factory ConnectivityService.test({Connectivity? connectivity}) =>
+      ConnectivityService._internal(connectivity: connectivity);
 
   Future<void> init() async {
     final results = await _connectivity.checkConnectivity();

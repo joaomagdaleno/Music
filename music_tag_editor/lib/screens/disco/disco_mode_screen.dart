@@ -55,9 +55,17 @@ class _DiscoModeScreenState extends State<DiscoModeScreen> {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:
-        return FluentDiscoModeView(currentTrack: track, bars: _bars, primaryColor: primaryColor, onTap: () => Navigator.pop(context));
+        return FluentDiscoModeView(
+            currentTrack: track,
+            bars: _bars,
+            primaryColor: primaryColor,
+            onTap: () => Navigator.pop(context));
       default:
-        return MaterialDiscoModeView(currentTrack: track, bars: _bars, primaryColor: primaryColor, onTap: () => Navigator.pop(context));
+        return MaterialDiscoModeView(
+            currentTrack: track,
+            bars: _bars,
+            primaryColor: primaryColor,
+            onTap: () => Navigator.pop(context));
     }
   }
 }

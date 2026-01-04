@@ -8,13 +8,11 @@ import 'package:flutter/foundation.dart';
 /// Service for reading and writing audio metadata using pure Dart.
 /// Supports ID3v1 and ID3v2 tags for MP3 files.
 class MetadataService {
-  
   /// Reads metadata from an audio file.
   /// Returns a map with keys: title, artist, album, track
-  Future<Map<String, dynamic>> readMetadata(String filePath) async {
-    // ⚡ Bolt: Offload heavy I/O and parsing to background isolate
-    return compute(_readMetadataIsolate, filePath);
-  }
+  // ⚡ Bolt: Offload heavy I/O and parsing to background isolate
+  Future<Map<String, dynamic>> readMetadata(String filePath) =>
+      compute(_readMetadataIsolate, filePath);
 
   /// Writes metadata to an audio file.
   Future<void> writeMetadata(
@@ -81,7 +79,9 @@ Future<Map<String, dynamic>> _readMetadataIsolate(String filePath) async {
     'album': tag.tags['album'] ?? tag.tags['TALB'] ?? 'Unknown Album',
     'track': service.parseTrackNumber(tag.tags['track'] ?? tag.tags['TRCK']),
     'genre': tag.tags['genre'] ?? tag.tags['TCON'] ?? 'Unknown Genre',
-    'lyrics': tag.tags['lyrics'] ?? tag.tags['USLT'] ?? tag.tags['unsynchronized_lyrics'],
+    'lyrics': tag.tags['lyrics'] ??
+        tag.tags['USLT'] ??
+        tag.tags['unsynchronized_lyrics'],
   };
 }
 
@@ -113,7 +113,7 @@ Future<void> _writeMetadataIsolate(_WriteMetadataArgs args) async {
       'TALB': args.album,
       'TRCK': args.trackNumber.toString(),
       if (args.genre != null) 'TCON': args.genre,
-      if (args.year != null) 'TDRC': args.year.toString(), 
+      if (args.year != null) 'TDRC': args.year.toString(),
       if (args.year != null) 'TYER': args.year.toString(),
       if (args.lyrics != null) 'USLT': args.lyrics,
     };
