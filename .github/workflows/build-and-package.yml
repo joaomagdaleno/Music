@@ -41,10 +41,13 @@ jobs:
 
       - name: Generate Version Info
         id: generate_version
+        shell: bash
         run: |
-          VERSION=$(grep "version:" music_tag_editor/pubspec.yaml | sed 's/version: //')
+          VERSION=$(grep "version:" music_tag_editor/pubspec.yaml | sed 's/version: //' | xargs)
           if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
             FULL_VERSION="${{ github.ref_name }}"
+          elif [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
+            FULL_VERSION="1.1.0-dev.${GITHUB_RUN_NUMBER}"
           else
             FULL_VERSION="$VERSION-local.${GITHUB_RUN_NUMBER}"
           fi
@@ -56,6 +59,13 @@ jobs:
       - name: Flutter Pub Get
         working-directory: music_tag_editor
         run: flutter pub get
+
+      - name: Configure Android Firebase
+        shell: bash
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          echo "$GOOGLE_SERVICES_JSON" > music_tag_editor/android/app/google-services.json
 
       - name: Setup Android Signing
         env:
@@ -171,6 +181,20 @@ jobs:
           flutter-version: '3.38.2'
           cache: true
 
+      - name: Generate Version Info
+        id: generate_version
+        shell: bash
+        run: |
+          VERSION=$(grep "version:" music_tag_editor/pubspec.yaml | sed 's/version: //' | xargs)
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            FULL_VERSION="${{ github.ref_name }}"
+          elif [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
+            FULL_VERSION="1.1.0-dev.${GITHUB_RUN_NUMBER}"
+          else
+            FULL_VERSION="$VERSION-local.${GITHUB_RUN_NUMBER}"
+          fi
+          echo "full_version=$FULL_VERSION" >> $GITHUB_OUTPUT
+
       - name: Configure Firebase
         shell: bash
         env:
@@ -185,18 +209,14 @@ jobs:
         run: flutter build windows --release
 
       - name: Package Windows Installer
-        working-directory: music_tag_editor
         run: |
-          # Placeholder for installer packaging step
-          # Example: iscc windows/installer.iss
-          mkdir -p Output
-          echo "Dummy Installer" > Output/MusicTagEditorSetup-1.0.0.exe
+          iscc /DMyAppVersion="${{ steps.generate_version.outputs.full_version }}" installer.iss
 
       - name: Upload Windows Artifact
         uses: actions/upload-artifact@v6
         with:
           name: windows-installer
-          path: music_tag_editor/Output/MusicTagEditorSetup-*.exe
+          path: Output/MusicTagEditorSetup-${{ steps.generate_version.outputs.full_version }}.exe
 
       - name: Record Windows Metrics ⏱️
         shell: bash
@@ -230,6 +250,20 @@ jobs:
           flutter-version: '3.38.2'
           cache: true
 
+      - name: Generate Version Info
+        id: generate_version
+        shell: bash
+        run: |
+          VERSION=$(grep "version:" music_tag_editor/pubspec.yaml | sed 's/version: //' | xargs)
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            FULL_VERSION="${{ github.ref_name }}"
+          elif [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
+            FULL_VERSION="1.1.0-dev.${GITHUB_RUN_NUMBER}"
+          else
+            FULL_VERSION="$VERSION-local.${GITHUB_RUN_NUMBER}"
+          fi
+          echo "full_version=$FULL_VERSION" >> $GITHUB_OUTPUT
+
       - name: Configure Firebase
         shell: bash
         env:
@@ -251,9 +285,9 @@ jobs:
       - name: Compress Linux Build
         working-directory: music_tag_editor
         run: |
-          VERSION=$(grep "version:" pubspec.yaml | sed 's/version: //')
+          FULL_VERSION="${{ steps.generate_version.outputs.full_version }}"
           cd build/linux/x64/release/bundle
-          tar -czf ../../../../../music_tag_editor-linux-v$VERSION.tar.gz .
+          tar -czf ../../../../../music_tag_editor-linux-v$FULL_VERSION.tar.gz .
 
       - name: Upload Linux Artifact
         uses: actions/upload-artifact@v6
