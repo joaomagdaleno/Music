@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:music_tag_editor/services/global_navigation_service.dart';
+import 'package:music_tag_editor/models/persona_model.dart';
 
 class PersonaShell extends StatefulWidget {
   final List<PersonaDestination> destinations;
@@ -18,7 +20,29 @@ class PersonaShell extends StatefulWidget {
 }
 
 class _PersonaShellState extends State<PersonaShell> {
-  int _currentIndex = 0;
+  AppPersona get _persona {
+    final key = widget.key;
+    if (key is ValueKey<AppPersona>) {
+      return key.value;
+    }
+    return AppPersona.librarian; // Fallback
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    GlobalNavigationService.instance.addListener(_handleNavigationChange);
+  }
+
+  @override
+  void dispose() {
+    GlobalNavigationService.instance.removeListener(_handleNavigationChange);
+    super.dispose();
+  }
+
+  void _handleNavigationChange() {
+    if (mounted) setState(() {});
+  }
 
   bool get _isFluent {
     if (kIsWeb) return false;
@@ -29,11 +53,13 @@ class _PersonaShellState extends State<PersonaShell> {
 
   @override
   Widget build(BuildContext context) {
+    final currentIndex = GlobalNavigationService.instance.getSubIndex(_persona);
+
     if (_isFluent) {
       return fluent.NavigationView(
         pane: fluent.NavigationPane(
-          selected: _currentIndex,
-          onChanged: (index) => setState(() => _currentIndex = index),
+          selected: currentIndex,
+          onChanged: (index) => GlobalNavigationService.instance.setSubIndex(_persona, index),
           displayMode: fluent.PaneDisplayMode.top,
           items: widget.destinations.map<fluent.NavigationPaneItem>((d) {
             return fluent.PaneItem(
@@ -43,7 +69,7 @@ class _PersonaShellState extends State<PersonaShell> {
             );
           }).toList(),
         ),
-        paneBodyBuilder: (item, body) => widget.children[_currentIndex],
+        paneBodyBuilder: (item, body) => widget.children[currentIndex],
       );
     }
 

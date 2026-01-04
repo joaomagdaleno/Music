@@ -21,6 +21,7 @@ import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/views/app_shell/fluent_app_shell.dart';
 import 'package:music_tag_editor/views/app_shell/material_app_shell.dart';
 import 'package:music_tag_editor/views/app_shell/persona_shell.dart';
+import 'package:music_tag_editor/services/global_navigation_service.dart';
 import 'package:fluent_ui/fluent_ui.dart' show FluentIcons;
 
 class AppShell extends StatefulWidget {
@@ -31,18 +32,22 @@ class AppShell extends StatefulWidget {
 }
 
 class _AppShellState extends State<AppShell> {
-  int _selectedIndex = 0;
-
   @override
   void initState() {
     super.initState();
     PersonaService.instance.addListener(_handlePersonaChange);
+    GlobalNavigationService.instance.addListener(_handleNavigationChange);
   }
 
   @override
   void dispose() {
     PersonaService.instance.removeListener(_handlePersonaChange);
+    GlobalNavigationService.instance.removeListener(_handleNavigationChange);
     super.dispose();
+  }
+
+  void _handleNavigationChange() {
+    if (mounted) setState(() {});
   }
 
   void _handlePersonaChange() {
@@ -52,8 +57,8 @@ class _AppShellState extends State<AppShell> {
     
     // If a persona is selected, and we are not already on that persona's tab,
     // and we are NOT on a special global tab (Início/Buscar), update the index.
-    if (index != -1 && _selectedIndex != index) {
-      setState(() => _selectedIndex = index);
+    if (index != -1 && GlobalNavigationService.instance.mainIndex != index) {
+      GlobalNavigationService.instance.setMainIndex(index);
     }
   }
 
@@ -67,11 +72,13 @@ class _AppShellState extends State<AppShell> {
         PersonaService.instance.setPersona(persona);
       }
     }
-    setState(() => _selectedIndex = targetIndex);
+    GlobalNavigationService.instance.setMainIndex(targetIndex);
   }
 
   @override
   Widget build(BuildContext context) {
+    final selectedIndex = GlobalNavigationService.instance.mainIndex;
+
     return ListenableBuilder(
       listenable: PersonaService.instance,
       builder: (context, child) {
@@ -91,14 +98,14 @@ class _AppShellState extends State<AppShell> {
             final appShell = _isFluent(context)
                 ? FluentAppShell(
                     body: _buildBody(persona),
-                    selectedIndex: _selectedIndex,
+                    selectedIndex: selectedIndex,
                     onSelectedIndexChanged: (index) =>
                         _onSelectedIndexChanged(index, appShellDestinations),
                     destinations: appShellDestinations,
                   )
                 : MaterialAppShell(
                     body: _buildBody(persona),
-                    selectedIndex: _selectedIndex,
+                    selectedIndex: selectedIndex,
                     onSelectedIndexChanged: (index) =>
                         _onSelectedIndexChanged(index, appShellDestinations),
                     destinations: appShellDestinations,
@@ -144,15 +151,16 @@ class _AppShellState extends State<AppShell> {
   }
 
   Widget _buildBody(AppPersona persona) {
-    if (_selectedIndex == 99) {
+    final selectedIndex = GlobalNavigationService.instance.mainIndex;
+    if (selectedIndex == 99) {
       return const SettingsScreen();
     }
     
-    if (_selectedIndex == 0) {
+    if (selectedIndex == 0) {
       return const HomeScreen();
     }
     
-    if (_selectedIndex == 1) {
+    if (selectedIndex == 1) {
       return const SearchScreen();
     }
     

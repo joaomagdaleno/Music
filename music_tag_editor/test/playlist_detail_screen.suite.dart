@@ -6,18 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/screens/playlists/playlist_detail_screen.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 
-class MockDatabaseService extends Mock implements DatabaseService {}
-
-class MockPlaybackService extends Mock implements PlaybackService {}
+import 'test_helper.dart';
 
 void main() {
-  late MockDatabaseService mockDb;
-  late MockPlaybackService mockPlayback;
-
   setUpAll(() {
     registerFallbackValue(SearchResult(
       id: 'fallback',
@@ -28,14 +21,16 @@ void main() {
     ));
   });
 
-  setUp(() {
-    mockDb = MockDatabaseService();
-    mockPlayback = MockPlaybackService();
-
-    DatabaseService.instance = mockDb;
-    PlaybackService.instance = mockPlayback;
-
+  setUp(() async {
+    await setupMusicTest();
+    
     when(() => mockPlayback.playSearchResult(any())).thenAnswer((_) async {});
+    when(() => mockPlayback.currentTrackStream).thenAnswer((_) => Stream.value(null));
+    when(() => mockPlayback.sleepTimerStream).thenAnswer((_) => Stream.value(null));
+    when(() => mockPlayback.lyricsStream).thenAnswer((_) => Stream.value([]));
+    when(() => mockPlayback.queue).thenReturn([]);
+    when(() => mockPlayback.currentTrack).thenReturn(null);
+    when(() => mockPlayback.player).thenReturn(mockPlayer);
   });
 
   Widget createTestWidget(

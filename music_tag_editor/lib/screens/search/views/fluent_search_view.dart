@@ -1,6 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/search_service.dart';
+import 'package:music_tag_editor/services/global_navigation_service.dart';
+import 'package:music_tag_editor/models/persona_model.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/screens/player/player_screen.dart';
 
@@ -223,7 +225,7 @@ class FluentSearchView extends StatelessWidget {
                                         leading: const Icon(FluentIcons.library),
                                         text: const Text('Ver na Biblioteca'),
                                         onPressed: () {
-                                          // TODO: Navigate to library?
+                                          GlobalNavigationService.instance.navigateToPersonaTab(AppPersona.librarian, 1);
                                         },
                                       ),
                                   ],
