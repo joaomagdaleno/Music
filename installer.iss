@@ -1,5 +1,7 @@
 #define MyAppName "Music Tag Editor"
+#ifndef MyAppVersion
 #define MyAppVersion "1.0.0"
+#endif
 #define MyAppPublisher "João Magdaleno"
 #define MyAppExeName "music_tag_editor.exe"
 
