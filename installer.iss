@@ -28,3 +28,8 @@ Name: desktopicon; Description: "Create a desktop shortcut"; GroupDescription: "
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall shellexec
+
+[UninstallDelete]
+Type: filesandordirs; Name: "{userappdata}\music_tag_editor"
+Type: filesandordirs; Name: "{userappdata}\com.example\music_tag_editor"
+Type: files; Name: "{userdocs}\startup_log.txt"

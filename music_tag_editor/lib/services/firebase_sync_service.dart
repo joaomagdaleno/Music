@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:music_tag_editor/services/database_service.dart';
+import 'package:music_tag_editor/widgets/learning_dialog.dart';
 
 /// Service for syncing library data to Firebase Cloud.
 class FirebaseSyncService {
@@ -46,12 +47,25 @@ class FirebaseSyncService {
 
   /// Initialize the sync service.
   Future<void> init() async {
-    _authSubscription = _auth.authStateChanges().listen((user) {
+    _authSubscription = _auth.authStateChanges().listen((user) async {
       _currentUser = user;
-      if (user != null && _syncEnabled) {
-        _startSync();
+      if (user != null) {
+        if (_syncEnabled) {
+          _startSync();
+        }
+        await _checkAndRestore();
       }
     });
+  }
+
+  /// Check if library is empty and restore from cloud if so.
+  Future<void> _checkAndRestore() async {
+    if (_currentUser == null) return;
+    
+    final tracks = await _db.getTracks();
+    if (tracks.isEmpty) {
+      await pullFromCloud();
+    }
   }
 
   /// Enable cloud sync with anonymous sign-in.
@@ -83,6 +97,35 @@ class FirebaseSyncService {
     await _syncTracks();
     await _syncPlaylists();
     await _syncSettings();
+    await _syncLearningRules();
+  }
+
+  /// Sync learning rules to Firestore.
+  Future<void> _syncLearningRules() async {
+    if (_currentUser == null) return;
+
+    final userId = _currentUser!.uid;
+    final rules = await _db.getLearningRules();
+
+    final batch = _firestore.batch();
+    final rulesRef = _firestore.collection('users').doc(userId).collection('learning_rules');
+
+    for (final rule in rules) {
+      final docId = '${rule.field}_${rule.originalValue.hashCode}';
+      batch.set(
+        rulesRef.doc(docId),
+        {
+          'artist': rule.artist,
+          'field': rule.field,
+          'originalValue': rule.originalValue,
+          'correctedValue': rule.correctedValue,
+          'choice': rule.choice.toString(),
+          'updatedAt': FieldValue.serverTimestamp(),
+        },
+        SetOptions(merge: true),
+      );
+    }
+    await batch.commit();
   }
 
   /// Sync tracks to Firestore.
@@ -175,6 +218,28 @@ class FirebaseSyncService {
 
     for (final doc in tracksSnapshot.docs) {
       await _db.saveTrack(doc.data());
+      syncedCount++;
+    }
+
+    // Pull learning rules
+    final rulesSnapshot = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('learning_rules')
+        .get();
+
+    for (final doc in rulesSnapshot.docs) {
+      final data = doc.data();
+      await _db.saveLearningRule(LearningRule(
+        artist: data['artist'],
+        field: data['field'],
+        originalValue: data['originalValue'],
+        correctedValue: data['correctedValue'],
+        choice: LearningChoice.values.firstWhere(
+          (e) => e.toString() == data['choice'],
+          orElse: () => LearningChoice.justThisOnce,
+        ),
+      ));
       syncedCount++;
     }
 
