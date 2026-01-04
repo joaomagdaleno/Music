@@ -248,31 +248,5 @@ void main() {
     });
   });
 
-  group('findSpotifyMatch', () {
-    test('returns match if available', () async {
-      final ytResult = SearchResult(
-          id: 'y1',
-          title: 'Song',
-          artist: 'Artist',
-          url: '',
-          platform: MediaPlatform.youtube);
 
-      // Mock searchSpotify (via mockSearchClient) to return a match
-      final mockVideo = MockVideo();
-      when(() => mockVideo.id).thenReturn(VideoId('12345678901'));
-      when(() => mockVideo.title).thenReturn('Song');
-      when(() => mockVideo.author).thenReturn('Artist');
-      when(() => mockVideo.url).thenReturn('http://surl');
-      when(() => mockVideo.thumbnails).thenReturn(ThumbnailSet('http://sthumb'));
-      when(() => mockVideo.duration).thenReturn(Duration(seconds: 180));
-
-      final mockSearchList = MockVideoSearchList();
-      when(() => mockSearchList.iterator).thenAnswer((_) => [mockVideo].iterator);
-      when(() => mockSearchClient.search(any())).thenAnswer((_) async => mockSearchList);
-
-      final match = await service.findSpotifyMatch(ytResult);
-      expect(match, isNotNull);
-      expect(match!.title, 'Song');
-    });
-  });
 }

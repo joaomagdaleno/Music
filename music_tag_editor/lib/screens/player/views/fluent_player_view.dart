@@ -28,6 +28,15 @@ class FluentPlayerView extends StatelessWidget {
     return ScaffoldPage(
       header: PageHeader(
         title: const Text('Tocando Agora'),
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(FluentIcons.back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
         commandBar: CommandBar(
           mainAxisAlignment: MainAxisAlignment.end,
           primaryItems: [
@@ -44,90 +53,30 @@ class FluentPlayerView extends StatelessWidget {
           final track = snapshot.data;
           if (track == null) return const Center(child: Text('Nenhuma música tocando'));
 
-          return Container(
-            padding: const EdgeInsets.all(24),
-            child: Row(
-              children: [
-                // Album Art / Video
+// Video Surface Only
                 Expanded(
-                  flex: 5,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  child: Stack(
+                    alignment: Alignment.center,
                     children: [
-                      Card(
-                        child: AspectRatio(
-                          aspectRatio: 16 / 9,
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Video(controller: playback.videoController),
-                              // Optional: Show album art if video is not available/loading?
-                              // For now, media_kit handles black screen if no video track.
-                            ],
+                        if (track.mediaType == 'video')
+                          Video(controller: playback.videoController)
+                        else
+                           // Fallback for audio if somehow we end up here, though we shouldn't.
+                           // User wants "Native" look, so maybe just a nice background or visualization if forced?
+                           // But the plan is to NOT open this screen for audio.
+                           // So this acts as the "Video Only" view.
+                           const Center(child: Text("Reproduzindo no Mini Player...", style: TextStyle(color: Colors.white))),
+                        
+                        // Overlay Resolution Selector (optional, sleek)
+                        if (track.mediaType == 'video')
+                          Positioned(
+                            top: 20,
+                            right: 20,
+                            child: _buildResolutionSelector(context),
                           ),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      Text(track.title, style: FluentTheme.of(context).typography.title, textAlign: TextAlign.center),
-                      Text(track.artist, style: FluentTheme.of(context).typography.body, textAlign: TextAlign.center),
-                      const SizedBox(height: 16),
-                      _buildResolutionSelector(context),
                     ],
                   ),
                 ),
-                // Controls & Lyrics
-                Expanded(
-                  flex: 5,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FluentProgressBar(player: playback.player),
-                      const SizedBox(height: 24), // Reduced spacing
-                      StreamBuilder<bool>(
-                        stream: playback.player.stream.playing,
-                        builder: (context, playingSnapshot) {
-                          final playing = playingSnapshot.data ?? false;
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                icon: const Icon(FluentIcons.previous, size: 20), // Smaller icon
-                                onPressed: () => playback.player.previous(),
-                              ),
-                              const SizedBox(width: 16), // Smaller spacing
-                              FilledButton(
-                                onPressed: () => playing ? playback.pause() : playback.resume(),
-                                style: ButtonStyle(
-                                  padding: WidgetStateProperty.all(const EdgeInsets.all(12)), // Smaller padding
-                                ),
-                                child: Icon(playing ? FluentIcons.pause : FluentIcons.play, size: 24), // Smaller icon
-                              ),
-                              const SizedBox(width: 16),
-                              IconButton(
-                                icon: const Icon(FluentIcons.next, size: 20),
-                                onPressed: () => playback.player.next(),
-                              ),
-                              const SizedBox(width: 16),
-                              IconButton(
-                                icon: Icon(
-                                  track.isVault ? FluentIcons.heart_fill : FluentIcons.heart,
-                                  color: track.isVault ? Colors.red : null,
-                                  size: 20,
-                                ),
-                                onPressed: () => playback.toggleFavorite(),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 24),
-                      const Expanded(child: FluentLyricsView()),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
         },
       ),
     );

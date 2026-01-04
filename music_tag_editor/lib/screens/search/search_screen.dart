@@ -252,16 +252,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
     });
 
     try {
-      String? overrideThumbnail;
-      if (result.platform == MediaPlatform.youtube ||
-          result.platform == MediaPlatform.youtubeMusic) {
-        StartupLogger.log('[SearchScreen] Looking for Spotify metadata match for YouTube result...');
-        final match = await _searchService.findSpotifyMatch(result);
-        if (match != null) {
-          StartupLogger.log('[SearchScreen] Found Spotify match for metadata');
-          overrideThumbnail = match.thumbnail;
-        }
-      }
+
 
       final musicDir = '${Platform.environment['USERPROFILE']}\\Music';
       StartupLogger.log('[SearchScreen] Target directory: $musicDir');
@@ -270,7 +261,6 @@ class _SearchScreenState extends material.State<SearchScreen> {
         result.url,
         selectedFormat,
         musicDir,
-        overrideThumbnailUrl: overrideThumbnail,
         title: result.title,
         artist: result.artist,
         onProgress: (progress, status) {
@@ -344,7 +334,23 @@ class _SearchScreenState extends material.State<SearchScreen> {
       await _playbackService.playSearchResult(result);
       StartupLogger.log('[SearchScreen] Playback started for ${result.id}');
       if (mounted) {
-        openFullPlayer();
+        // Only open full player if it is a video
+        // We might need to check the actual established mediaType from the service if available,
+        // but SearchResult usually has platform info. 
+        // If the user explicitly wants "Native Video Player", we assume YouTube (non-music) is video.
+        // Or check `result.platform`.
+        // However, `result.mediaType` might not be populated yet if it comes from search.
+        // Let's trust the Platform for now: 
+        // YouTube -> Video (mostly)
+        // YouTubeMusic -> Audio
+        // Spotify -> Audio
+        // HiFi -> Audio
+        
+        bool isVideo = result.platform == MediaPlatform.youtube; 
+        
+        if (isVideo) {
+           openFullPlayer();
+        }
       }
     } catch (e, stack) {
       StartupLogger.logError('Playback FAILED in SearchScreen', e, stack);
