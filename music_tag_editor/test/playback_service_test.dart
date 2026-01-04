@@ -65,8 +65,12 @@ void main() {
     when(() => mockPlayer.open(any(), play: any(named: 'play')))
         .thenAnswer((_) async {});
 
-    when(() => mockSearch.getStreamUrl(any()))
-        .thenAnswer((_) async => 'http://stream');
+    when(() => mockSearch.getStreamUrl(
+          any(),
+          resolution: any(named: 'resolution'),
+          platform: any(named: 'platform'),
+          isVideo: any(named: 'isVideo'),
+        )).thenAnswer((_) async => 'http://stream');
     when(() => mockLyrics.fetchLyrics(any(), any()))
         .thenAnswer((_) => Future.value([]));
   });
