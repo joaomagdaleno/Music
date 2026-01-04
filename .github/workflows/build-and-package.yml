@@ -23,6 +23,15 @@ jobs:
           flutter-version: '3.38.2'
           cache: true
 
+      - name: Configure Firebase
+        shell: bash
+        env:
+          FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
+        run: |
+          mkdir -p music_tag_editor/lib
+          echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
+          dart format music_tag_editor/lib/firebase_options.dart
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -162,6 +171,15 @@ jobs:
           flutter-version: '3.38.2'
           cache: true
 
+      - name: Configure Firebase
+        shell: bash
+        env:
+          FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
+        run: |
+          mkdir -p music_tag_editor/lib
+          echo "${{ secrets.FIREBASE_OPTIONS_DART }}" > music_tag_editor/lib/firebase_options.dart
+          dart format music_tag_editor/lib/firebase_options.dart
+
       - name: Flutter Build Windows
         working-directory: music_tag_editor
         run: flutter build windows --release
@@ -211,6 +229,15 @@ jobs:
         with:
           flutter-version: '3.38.2'
           cache: true
+
+      - name: Configure Firebase
+        shell: bash
+        env:
+          FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
+        run: |
+          mkdir -p music_tag_editor/lib
+          echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
+          dart format music_tag_editor/lib/firebase_options.dart
 
       - name: Install dependencies
         run: |
