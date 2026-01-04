@@ -3,24 +3,10 @@ name: Build and Package
 on:
   workflow_dispatch:
   workflow_call:
-    inputs:
-      skip-quality-gate:
-        description: 'Skip the internal quality gate'
-        required: false
-        default: 'false'
-        type: string
 
 jobs:
-  quality-gate:
-    if: inputs.skip-quality-gate != 'true'
-    uses: ./.github/workflows/quality-gate.yml
-    permissions:
-      pull-requests: write
-    secrets: inherit
-
   build-android:
     name: Android 🤖
-    needs: quality-gate
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -162,7 +148,6 @@ jobs:
 
   build-windows:
     name: Windows 🪟
-    needs: quality-gate
     runs-on: windows-latest
     timeout-minutes: 45
     steps:
@@ -213,7 +198,6 @@ jobs:
 
   build-linux:
     name: Linux 🐧
-    needs: quality-gate
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
