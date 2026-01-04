@@ -133,7 +133,7 @@ class _FluentMyTracksViewState extends State<FluentMyTracksView> {
             ]),
             onPressed: () => widget.onPlayTrack(track),
             tileColor: track.id == widget.currentTrack?.id 
-                ? ButtonState.all(FluentTheme.of(context).accentColor.withValues(alpha: 0.1))
+                ? WidgetStateProperty.all(FluentTheme.of(context).accentColor.withValues(alpha: 0.1))
                 : null,
           ),
         );
