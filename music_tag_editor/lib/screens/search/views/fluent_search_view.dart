@@ -121,7 +121,7 @@ class FluentSearchView extends StatelessWidget {
                 final isDownloading = downloadingProgress.containsKey(result.url);
                 final isDownloaded = downloadedUrls.contains(result.url);
 
-                final isVideo = result.platform == MediaPlatform.youtube;
+                final isVideo = result.mediaType == 'video';
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -358,7 +358,7 @@ class FluentSearchView extends StatelessWidget {
   }
 
   Widget _buildPlaybackButtons(BuildContext context, SearchResult result) {
-    final isVideo = result.platform == MediaPlatform.youtube;
+    final isVideo = result.mediaType == 'video';
     
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -380,8 +380,8 @@ class FluentSearchView extends StatelessWidget {
     // Play the track using PlaybackService
     await PlaybackService.instance.playSearchResult(result);
     
-    // Navigate to the native PlayerScreen
-    if (context.mounted) {
+    // Navigate to the native PlayerScreen ONLY if it's a video
+    if (context.mounted && result.mediaType == 'video') {
       Navigator.of(context).push(
         FluentPageRoute(builder: (_) => const PlayerScreen()),
       );

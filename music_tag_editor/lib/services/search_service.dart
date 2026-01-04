@@ -572,16 +572,20 @@ class SearchService {
       if (isVideo) {
         if (resolution != null && resolution != 'Auto') {
           final res = resolution.replaceAll('p', '');
-          args.addAll(['-f', 'bestvideo[height<=$res]+bestaudio/best[height<=$res]/best[height<=$res]']);
+          args.addAll(['-f', 'best[height<=$res][ext=mp4]/best[height<=$res]']);
         } else {
-          args.addAll(['-f', 'bestvideo+bestaudio/best']);
+          args.addAll(['-f', 'best[ext=mp4]/best']);
         }
       } else {
-        // Music only: search for best audio
-        args.addAll(['-f', 'bestaudio/best']);
+        // Music only: search for best audio, prefer m4a for compatibility
+        args.addAll(['-f', 'bestaudio[ext=m4a]/bestaudio/best']);
       }
       
-      args.add(url);
+      args.addAll([
+        '--no-playlist',
+        '--format-sort', 'res:720,ext:mp4:m4a',
+        url
+      ]);
 
       debugPrint('[SearchService] getStreamUrl Command: ${_deps.ytDlpPath} ${args.join(' ')}');
       final result = await processRunner(

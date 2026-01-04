@@ -88,7 +88,7 @@ class DatabaseService {
     }
     return await openDatabase(
       path,
-      version: 8, // Incremented for media_type support
+      version: 9, // Incremented for Hi-Fi columns support
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE $_settingsTable (
@@ -123,7 +123,9 @@ class DatabaseService {
             play_count INTEGER DEFAULT 0,
             last_played INTEGER,
             is_vault INTEGER DEFAULT 0,
-            media_type TEXT DEFAULT 'audio'
+            media_type TEXT DEFAULT 'audio',
+            hifi_source TEXT,
+            hifi_quality TEXT
           )
         ''');
         await db.execute('''
@@ -251,8 +253,15 @@ class DatabaseService {
             await db.execute(
                 "ALTER TABLE $_tracksTable ADD COLUMN media_type TEXT DEFAULT 'audio'");
           } catch (e) {
-            // Check if column exists or ignore error on some platforms if redundant
             debugPrint('Error adding media_type column: $e');
+          }
+        }
+        if (oldVersion < 9) {
+          try {
+            await db.execute("ALTER TABLE $_tracksTable ADD COLUMN hifi_source TEXT");
+            await db.execute("ALTER TABLE $_tracksTable ADD COLUMN hifi_quality TEXT");
+          } catch (e) {
+            debugPrint('Error adding hifi columns: $e');
           }
         }
       },
