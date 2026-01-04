@@ -12,7 +12,7 @@ on:
 
 jobs:
   quality-gate:
-    if: inputs.skip-quality-gate != true
+    if: ${{ !inputs.skip-quality-gate }}
     uses: ./.github/workflows/quality-gate.yml
     permissions:
       pull-requests: write
