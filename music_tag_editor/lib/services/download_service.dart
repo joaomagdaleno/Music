@@ -471,14 +471,15 @@ class DownloadService {
         }
       } else if (line.contains('[download]') &&
           line.contains('has already been downloaded')) {
-        final parts = line.split('downloaded');
-        if (parts.length > 1) {
-          final path = parts.last.trim();
-          if (path.isNotEmpty) {
-            outputFile = path;
-            debugPrint(
-                '[DownloadService] Captured already downloaded: $outputFile');
-          }
+        // Robust extraction: remove prefix and suffix
+        final path = line
+            .replaceFirst('[download]', '')
+            .replaceFirst('has already been downloaded', '')
+            .trim();
+        if (path.isNotEmpty) {
+          outputFile = path;
+          debugPrint(
+              '[DownloadService] Captured already downloaded: $outputFile');
         }
       }
     });
