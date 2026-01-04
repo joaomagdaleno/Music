@@ -35,7 +35,8 @@ class PlaybackService {
       player.setProperty('user-agent',
           'Mozilla/5.0 (Android 14; Mobile; rv:128.0) Gecko/128.0 Firefox/128.0');
       player.setProperty('referrer', 'https://www.youtube.com/');
-      player.setProperty('demuxer-max-bytes', '67108864'); // 64MB for better caching
+      player.setProperty(
+          'demuxer-max-bytes', '67108864'); // 64MB for better caching
       player.setProperty('demuxer-readahead-secs', '60');
       player.setProperty('ytdl-format', 'bestaudio/best');
     }

@@ -607,7 +607,8 @@ class DownloadService {
         }
         await File(tempOut).rename(audioPath);
       } else {
-        StartupLogger.log('FFmpeg metadata embed failed for $audioPath: ${result.stderr}');
+        StartupLogger.log(
+            'FFmpeg metadata embed failed for $audioPath: ${result.stderr}');
       }
 
       if (imageFile != null && await imageFile.exists()) {
