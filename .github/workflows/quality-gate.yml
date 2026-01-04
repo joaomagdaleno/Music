@@ -115,17 +115,6 @@ jobs:
       - name: The Warden's Patrol ⚖️ (License Audit)
         run: python scripts/license_warden.py >> $GITHUB_STEP_SUMMARY || true
 
-      - name: Upload Test Report
-        uses: actions/upload-artifact@v6
-        with:
-          name: test-results
-          path: music_tag_editor/test_results.json
-
-      - name: Upload Coverage
-        uses: actions/upload-artifact@v6
-        with:
-          name: coverage-report
-          path: music_tag_editor/coverage/html
 
       - name: Upload Quality Artifacts
         uses: actions/upload-artifact@v6
@@ -177,6 +166,18 @@ jobs:
         run: |
           # Use JSON reporter to capture durations while still showing output
           (flutter test --coverage --reporter json | tee test_results.json) || (echo "TEST_FAILED=true" >> $GITHUB_ENV)
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v6
+        with:
+          name: test-results
+          path: music_tag_editor/test_results.json
+
+      - name: Upload Coverage
+        uses: actions/upload-artifact@v6
+        with:
+          name: coverage-report
+          path: music_tag_editor/coverage/html
           
       - name: The Ghost Hunter's Audit 🔦
         working-directory: music_tag_editor
