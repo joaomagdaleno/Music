@@ -30,7 +30,6 @@ jobs:
         run: |
           mkdir -p music_tag_editor/lib
           echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
-          dart format music_tag_editor/lib/firebase_options.dart
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -84,7 +83,12 @@ jobs:
         working-directory: music_tag_editor
         run: |
           mkdir -p debug-info
-          flutter build apk --release --target-platform=android-arm64 --obfuscate --split-debug-info=debug-info | tee size_analysis.log
+          # Only obfuscate on tags for speed in dev
+          BUILD_COMMAND="flutter build apk --release --target-platform=android-arm64"
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            BUILD_COMMAND="$BUILD_COMMAND --obfuscate --split-debug-info=debug-info"
+          fi
+          $BUILD_COMMAND | tee size_analysis.log
 
       - name: The Cartographer 🗺️ (Size Analysis Summary)
         working-directory: music_tag_editor
@@ -202,7 +206,6 @@ jobs:
         run: |
           mkdir -p music_tag_editor/lib
           echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
-          dart format music_tag_editor/lib/firebase_options.dart
 
       - name: Flutter Build Windows
         working-directory: music_tag_editor
@@ -271,12 +274,11 @@ jobs:
         run: |
           mkdir -p music_tag_editor/lib
           echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
-          dart format music_tag_editor/lib/firebase_options.dart
 
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev
+          # Only install what is strictly necessary and missing
+          sudo apt-get install -y libgtk-3-dev liblzma-dev libstdc++-12-dev
 
       - name: Flutter Build Linux
         working-directory: music_tag_editor
