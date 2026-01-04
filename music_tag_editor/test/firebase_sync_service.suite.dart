@@ -82,8 +82,13 @@ void main() {
     // Default DB Stubs to prevent crashes in _startSync
     when(() => mockDb.getTracks()).thenAnswer((_) async => []);
     when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
+    when(() => mockDb.getLearningRules()).thenAnswer((_) async => []);
     when(() => mockDb.getAllSettings()).thenAnswer((_) async => {});
     when(() => mockDb.getPlaylistTracks(any())).thenAnswer((_) async => []);
+    when(() => mockDb.saveLearningRule(any())).thenAnswer((_) async => null);
+    when(() => mockDb.createPlaylist(any(), description: any(named: 'description')))
+        .thenAnswer((_) async => 'playlist1');
+    when(() => mockDb.addTrackToPlaylist(any(), any())).thenAnswer((_) async => null);
   });
 
   group('enableSync', () {
@@ -96,6 +101,7 @@ void main() {
       // Need to avoid _startSync crashing on mocks
       when(() => mockDb.getTracks()).thenAnswer((_) async => []);
       when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
+      when(() => mockDb.getLearningRules()).thenAnswer((_) async => []);
       when(() => mockDb.getAllSettings()).thenAnswer((_) async => {});
 
       // We manually set _currentUser in startSync via listen, but enableSync calls it.
@@ -134,22 +140,30 @@ void main() {
       final mockPlaylistsSnapshot = MockQuerySnapshot();
       when(() => mockPlaylistsSnapshot.docs).thenReturn([]);
 
+      final mockRulesSnapshot = MockQuerySnapshot();
+      when(() => mockRulesSnapshot.docs).thenReturn([]);
+
       // Mock specific collection paths
       final usersCollection = MockCollectionReference();
       final userDoc = MockDocumentReference();
       final tracksCollection = MockCollectionReference();
       final playlistsCollection = MockCollectionReference();
+      final rulesCollection = MockCollectionReference();
 
       when(() => mockFirestore.collection('users')).thenReturn(usersCollection);
       when(() => usersCollection.doc('test_uid')).thenReturn(userDoc);
       when(() => userDoc.collection('tracks')).thenReturn(tracksCollection);
       when(() => userDoc.collection('playlists'))
           .thenReturn(playlistsCollection);
+      when(() => userDoc.collection('learning_rules'))
+          .thenReturn(rulesCollection);
 
       when(() => tracksCollection.get())
           .thenAnswer((_) async => mockTracksSnapshot);
       when(() => playlistsCollection.get())
           .thenAnswer((_) async => mockPlaylistsSnapshot);
+      when(() => rulesCollection.get())
+          .thenAnswer((_) async => mockRulesSnapshot);
 
       when(() => mockDb.saveTrack(any())).thenAnswer((_) async => 1);
 
@@ -160,4 +174,3 @@ void main() {
     });
   });
 }
-
