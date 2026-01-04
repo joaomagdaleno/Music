@@ -20,6 +20,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2 # v2.16.0
+        with:
+          flutter-version: '3.38.2'
+          cache: true
+
       - name: Configure Firebase
         shell: bash
         env:
@@ -28,12 +34,6 @@ jobs:
           mkdir -p music_tag_editor/lib
           echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
           dart format music_tag_editor/lib/firebase_options.dart
-
-      - name: Install Flutter
-        uses: subosito/flutter-action@v2 # v2.16.0
-        with:
-          flutter-version: '3.38.2'
-          cache: true
 
       - name: Cache Pub Dependencies
         uses: actions/cache@v5
@@ -143,6 +143,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2 # v2.16.0
+        with:
+          flutter-version: '3.38.2'
+          cache: true
+
       - name: Configure Firebase
         shell: bash
         env:
@@ -151,12 +157,6 @@ jobs:
           mkdir -p music_tag_editor/lib
           echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
           dart format music_tag_editor/lib/firebase_options.dart
-
-      - name: Install Flutter
-        uses: subosito/flutter-action@v2 # v2.16.0
-        with:
-          flutter-version: '3.38.2'
-          cache: true
 
       - name: Cache Pub Dependencies
         uses: actions/cache@v5
@@ -287,4 +287,3 @@ jobs:
           | **Unit Tests** | ✅ Verificado |
           
           Verifique o [Job Summary](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) para detalhes de cobertura, bloat e inventário."
-
