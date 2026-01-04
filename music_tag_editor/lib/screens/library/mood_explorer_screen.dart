@@ -43,7 +43,7 @@ class _MoodExplorerScreenState extends State<MoodExplorerScreen> {
     final result = SearchResult.fromJson(trackData);
     PlaybackService.instance.playSearchResult(result);
     
-    if (mounted) {
+    if (mounted && result.mediaType == 'video') {
       if (defaultTargetPlatform == TargetPlatform.windows || 
           defaultTargetPlatform == TargetPlatform.linux || 
           defaultTargetPlatform == TargetPlatform.macOS) {

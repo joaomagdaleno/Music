@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final result = SearchResult.fromJson(trackData);
     _playbackService.playSearchResult(result);
     
-    if (mounted) {
+    if (mounted && result.mediaType == 'video') {
       if (defaultTargetPlatform == TargetPlatform.windows || 
           defaultTargetPlatform == TargetPlatform.linux || 
           defaultTargetPlatform == TargetPlatform.macOS) {

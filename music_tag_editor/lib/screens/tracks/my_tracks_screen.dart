@@ -41,7 +41,7 @@ class _MyTracksScreenState extends State<MyTracksScreen> {
   void _playTrack(SearchResult track) {
     PlaybackService.instance.playSearchResult(track);
     
-    if (mounted) {
+    if (mounted && track.mediaType == 'video') {
       final platform = Theme.of(context).platform;
       if (platform == TargetPlatform.windows || 
           platform == TargetPlatform.linux || 

@@ -13,6 +13,7 @@ import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
 import 'package:music_tag_editor/services/metadata_service.dart';
 import 'package:music_tag_editor/services/startup_logger.dart';
+import 'package:rxdart/rxdart.dart';
 import 'dart:async';
 
 class PlaybackService {
@@ -67,7 +68,7 @@ class PlaybackService {
   Timer? _sleepTimer;
   final _sleepTimerController = StreamController<Duration?>.broadcast();
   final _lyricsController = StreamController<List<LyricLine>>.broadcast();
-  final _trackController = StreamController<SearchResult?>.broadcast();
+  final _trackController = BehaviorSubject<SearchResult?>();
   Duration? _sleepTimeLeft;
 
   SearchResult? get currentTrack => _currentTrack;

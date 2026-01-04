@@ -53,7 +53,7 @@ class _PlaylistDetailScreenState extends State<PlaylistDetailScreen> {
     debugPrint('[PlaylistDetail] Playing: ${result.title} - ${result.url} - ${result.platform}');
     PlaybackService.instance.playSearchResult(result);
     
-    if (context.mounted) {
+    if (context.mounted && result.mediaType == 'video') {
       if (defaultTargetPlatform == TargetPlatform.windows || 
           defaultTargetPlatform == TargetPlatform.linux || 
           defaultTargetPlatform == TargetPlatform.macOS) {
