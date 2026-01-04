@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/services/global_navigation_service.dart';
+import 'package:music_tag_editor/models/persona_model.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 
 class MaterialSearchView extends StatelessWidget {
@@ -442,9 +444,12 @@ class MaterialSearchView extends StatelessWidget {
           ),
         ),
         if (result.localPath != null)
-          const PopupMenuItem(
+          PopupMenuItem(
             value: 'library',
-            child: ListTile(
+            onTap: () {
+              GlobalNavigationService.instance.navigateToPersonaTab(AppPersona.librarian, 1);
+            },
+            child: const ListTile(
               leading: Icon(Icons.library_music),
               title: Text('Ver na Biblioteca'),
             ),

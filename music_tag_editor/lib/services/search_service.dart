@@ -61,11 +61,7 @@ class SearchService {
 
   // For backwards compatibility and internal use
   SearchService() : this._internal();
-  DependencyManager get _deps {
-    final d = DependencyManager.instance;
-    // StartupLogger.log('[SearchService] Using DependencyManager: ${identityHashCode(d)}');
-    return d;
-  }
+  final DependencyManager _deps = DependencyManager.instance;
   bool _ageBypassEnabled = false;
 
   /// For testing: allows mocking process execution
@@ -404,15 +400,11 @@ class SearchService {
         stderrEncoding: utf8,
       );
 
-      if (result.exitCode != 0 || result.stdout == null) {
+      if (result.exitCode != 0) {
         return _defaultFormats();
       }
 
-      final String stdout = result.stdout is String 
-          ? result.stdout as String 
-          : utf8.decode(result.stdout as List<int>);
-      
-      final json = jsonDecode(stdout);
+      final json = jsonDecode(result.stdout as String);
       final formats = <DownloadFormat>[];
 
       // Add convenient audio options first
@@ -603,7 +595,7 @@ class SearchService {
       final args = _getBaseArgs();
       args.addAll(['--dump-json', videoUrl]);
 
-      final result = await processRunner(ytDlp, args);
+      final result = await Process.run(ytDlp, args);
 
       if (result.exitCode == 0) {
         return jsonDecode(result.stdout as String);
@@ -667,16 +659,12 @@ class SearchService {
         stderrEncoding: utf8,
       );
 
-      if (result.exitCode != 0 || result.stdout == null) {
+      if (result.exitCode != 0) {
         return [];
       }
 
-      final String stdout = result.stdout is String 
-          ? result.stdout as String 
-          : utf8.decode(result.stdout as List<int>);
-      
       final results = <SearchResult>[];
-      final lines = stdout.trim().split('\n');
+      final lines = (result.stdout as String).split('\n');
 
       for (final line in lines) {
         if (line.trim().isEmpty) continue;
