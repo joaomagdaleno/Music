@@ -222,7 +222,12 @@ Future<void> setupMusicTest({
   when(() => mockDuo.sendMessage(any())).thenAnswer((_) async {});
   when(() => mockDb.trackPlay(any())).thenAnswer((_) async {});
   
-  when(() => mockSearch.getStreamUrl(any())).thenAnswer((_) async => null);
+  when(() => mockSearch.getStreamUrl(
+        any(),
+        resolution: any(named: 'resolution'),
+        platform: any(named: 'platform'),
+        isVideo: any(named: 'isVideo'),
+      )).thenAnswer((_) async => null);
   when(() => mockSearch.getFormats(any(), any())).thenAnswer((_) async => []);
   when(() => mockDuo.role).thenReturn(DuoRole.none);
 
