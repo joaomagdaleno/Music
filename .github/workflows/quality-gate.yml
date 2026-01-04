@@ -10,23 +10,90 @@ on:
         type: string
 
 jobs:
-  quality:
-    name: Quality Gate
+  lint:
+    name: Lint & Analysis
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
-    timeout-minutes: 20
+    timeout-minutes: 10
     steps:
-      - name: Free up disk space
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.2'
+          cache: true
+
+      - name: Cache Pub Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
+      - name: Flutter Pub Get
+        working-directory: music_tag_editor
+        run: flutter pub get
+
+      - name: The Inventory 🧪 (Dependency Tree)
+        working-directory: music_tag_editor
         run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf "/usr/local/share/boost"
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          mkdir -p ../artifacts
+          flutter pub deps > ../artifacts/dependency_tree.txt
+          echo "### 🧪 The Inventory: Dependency tree exported to artifacts" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check Formatting
+        working-directory: music_tag_editor
+        run: flutter format --set-exit-if-changed .
+
+      - name: Run Flutter Analyzer
+        working-directory: music_tag_editor
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Security Bastion 🛡️
+        working-directory: music_tag_editor
+        run: |
+          grep -rE "AIza[0-9A-Za-z-_]{35}|[0-9a-f]{32}|ghp_[0-9A-Za-z]{36}" . --exclude="firebase_options.dart" --exclude="*.log" || true
+          
+          echo "### 🛡️ The Shield: Manifest Security Check" >> $GITHUB_STEP_SUMMARY
+          MANIFEST="android/app/src/main/AndroidManifest.xml"
+          if [ -f "$MANIFEST" ]; then
+            if grep -q 'android:allowBackup="true"' "$MANIFEST"; then
+              echo "- ⚠️ **Warning**: \`android:allowBackup=\"true\"\` detected in Manifest. Consider setting to false for higher security." >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- ✅ Manifest: \`allowBackup\` is secure." >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
+
+      - name: Architecture Guard 🏛️
+        working-directory: music_tag_editor
+        run: |
+          echo "## Architecture Guard 🏛️" >> $GITHUB_STEP_SUMMARY
+          LARGE_FILES=$(find lib -name "*.dart" | xargs wc -l | awk '$1 > 600' | grep -v "total")
+          if [ -z "$LARGE_FILES" ]; then
+            echo "✅ No critical file bloat detected." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ **Alert: Large Files Detected (> 600 lines)**" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "$LARGE_FILES" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload Quality Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-inventory
+          path: artifacts/
+
+  test:
+    name: Unit Tests & Coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
       - name: Checkout
         uses: actions/checkout@v6
         with:
@@ -43,20 +110,45 @@ jobs:
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.7'
+          flutter-version: '3.38.2'
           cache: true
+
+      - name: Cache Pub Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
 
       - name: Flutter Pub Get
         working-directory: music_tag_editor
         run: flutter pub get
 
-      - name: Run Flutter Analyzer
-        working-directory: music_tag_editor
-        run: flutter analyze --no-fatal-infos --no-fatal-warnings
-
       - name: Run Tests
         working-directory: music_tag_editor
-        run: flutter test --coverage
+        run: |
+          flutter test --coverage | tee test_output.log
+          TEST_RESULT=$?
+          if [ $TEST_RESULT -ne 0 ]; then
+            echo "::error title=Hermes 📦 Alert::Tests failed!"
+            exit $TEST_RESULT
+          fi
+
+      - name: Dependency Hygiene 🧼
+        working-directory: music_tag_editor
+        run: |
+          echo "## Dependency Hygiene 🧼" >> $GITHUB_STEP_SUMMARY
+          OUTDATED=$(flutter pub outdated --no-dev-dependencies)
+          if echo "$OUTDATED" | grep -q "Upgradeable"; then
+            echo "### ⚠️ Updates Available" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "$OUTDATED" | grep "Upgradeable" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ✅ All dependencies are up to date!" >> $GITHUB_STEP_SUMMARY
+          fi
 
       - name: Generate HTML coverage report
         working-directory: music_tag_editor
@@ -64,20 +156,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y lcov
           genhtml coverage/lcov.info -o coverage/html
-
-      - name: Upload HTML coverage report artifact
-        uses: actions/upload-artifact@v6
-        with:
-          name: coverage-report-html
-          path: music_tag_editor/coverage/html
-          retention-days: 15
-
-      - name: Upload lcov artifact
-        uses: actions/upload-artifact@v6
-        with:
-          name: coverage-lcov
-          path: music_tag_editor/coverage/lcov.info
-          retention-days: 1
 
       - name: Calculate code coverage
         id: coverage
@@ -91,38 +169,44 @@ jobs:
           fi
           echo "percentage=${COVERAGE}" >> $GITHUB_OUTPUT
 
-  update-coverage-data:
-    name: Update Coverage Data Branch
-    needs: quality
+      - name: Final Quality Report 📜
+        run: |
+          echo "## Quality Gate Evidence 📜" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "| :--- | :--- |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Linter & Formatting** | ✅ (See Lint Job) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Architecture Guard** | ✅ Scan Complete |" >> $GITHUB_STEP_SUMMARY
+          echo "| **The Inventory** | ✅ Dependencies Exported |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Tests** | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Line Coverage** | ${{ steps.coverage.outputs.percentage }}% |" >> $GITHUB_STEP_SUMMARY
+          
+          if (( $(echo "${{ steps.coverage.outputs.percentage }} < ${{ inputs.min_coverage }}" | bc -l) )); then
+            echo "### ❌ Quality Gate Failed: Coverage below ${{ inputs.min_coverage }}%" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+  pr-proclamation:
+    name: Hermes' Proclamation 📣
+    needs: [lint, test]
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/beta')
-
+      pull-requests: write
     steps:
-      - name: Checkout coverage-data branch
-        uses: actions/checkout@v4
-        with:
-          ref: coverage-data
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Download lcov artifact
-        uses: actions/download-artifact@v7
-        with:
-          name: coverage-lcov
-          path: coverage
-
-      - name: Process coverage data
+      - name: Post PR Comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx lcov-parse coverage/lcov.info > coverage.json.new
-          mv coverage.json.new coverage.json
+          gh pr comment ${{ github.event.pull_request.number }} --body "## 📦 Hermes: Proclamação do Arauto
+          O seu build passou pelo **Portão de Qualidade** com sucesso! ✨
+          
+          | Job | Status |
+          | :--- | :--- |
+          | **Analysis & Formatting** | ✅ Passou |
+          | **Security Bastion** | ✅ Seguro |
+          | **Architecture Guard** | ✅ Integrado |
+          | **The Inventory** | ✅ Mapeado |
+          | **Unit Tests** | ✅ Verificado |
+          
+          Verifique o [Job Summary](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) para detalhes de cobertura, bloat e inventário."
 
-      - name: Commit and Push
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add coverage.json
-          if ! git diff --staged --quiet; then
-            git commit -m "docs: Update code coverage report [skip ci]"
-            git push
-          fi

@@ -258,8 +258,8 @@ class DatabaseService {
         }
         if (oldVersion < 9) {
           try {
-            await db.execute("ALTER TABLE $_tracksTable ADD COLUMN hifi_source TEXT");
-            await db.execute("ALTER TABLE $_tracksTable ADD COLUMN hifi_quality TEXT");
+            await db.execute('ALTER TABLE $_tracksTable ADD COLUMN hifi_source TEXT');
+            await db.execute('ALTER TABLE $_tracksTable ADD COLUMN hifi_quality TEXT');
           } catch (e) {
             debugPrint('Error adding hifi columns: $e');
           }

@@ -41,26 +41,26 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<bool> login(String email, String password) async {
-    StartupLogger.log("[AuthService] Attempting login for: $email");
+    StartupLogger.log('[AuthService] Attempting login for: $email');
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      StartupLogger.log("[AuthService] Login SUCCESS for: $email");
+      StartupLogger.log('[AuthService] Login SUCCESS for: $email');
       return true;
     } catch (e) {
-      StartupLogger.log("[AuthService] Login FAILED for $email: $e");
+      StartupLogger.log('[AuthService] Login FAILED for $email: $e');
       return false;
     }
   }
 
   Future<bool> register(String email, String password) async {
-    StartupLogger.log("[AuthService] Attempting registration for: $email");
+    StartupLogger.log('[AuthService] Attempting registration for: $email');
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      StartupLogger.log("[AuthService] Registration SUCCESS for: $email");
+      StartupLogger.log('[AuthService] Registration SUCCESS for: $email');
       return true;
     } catch (e) {
-      StartupLogger.log("[AuthService] Registration FAILED for $email: $e");
+      StartupLogger.log('[AuthService] Registration FAILED for $email: $e');
       return false;
     }
   }
@@ -70,13 +70,13 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<bool> sendPasswordReset(String email) async {
-    StartupLogger.log("[AuthService] Attempting password reset for: $email");
+    StartupLogger.log('[AuthService] Attempting password reset for: $email');
     try {
       await _auth.sendPasswordResetEmail(email: email);
-      StartupLogger.log("[AuthService] Password reset email SENT to: $email");
+      StartupLogger.log('[AuthService] Password reset email SENT to: $email');
       return true;
     } catch (e) {
-      StartupLogger.log("[AuthService] Password reset FAILED for $email: $e");
+      StartupLogger.log('[AuthService] Password reset FAILED for $email: $e');
       return false;
     }
   }
