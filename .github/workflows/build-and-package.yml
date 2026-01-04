@@ -244,9 +244,8 @@ jobs:
           flutter build appbundle --release --obfuscate --split-debug-info=debug-info
 
       - name: Check Build Health (APK Size)
-        working-directory: music_tag_editor
         run: |
-          APK_SIZE=$(stat -c%s build/app/outputs/flutter-apk/app-release.apk)
+          APK_SIZE=$(stat -c%s music_tag_editor/build/app/outputs/flutter-apk/app-release.apk)
           THRESHOLD=80000000 # 80MB
           echo "APK Size: $APK_SIZE bytes"
           if [ "$APK_SIZE" -gt "$THRESHOLD" ]; then
