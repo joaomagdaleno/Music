@@ -11,6 +11,8 @@ on:
 jobs:
   quality-gate:
     uses: ./.github/workflows/quality-gate.yml
+    permissions:
+      pull-requests: write
     secrets: inherit
 
   build-android:
