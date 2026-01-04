@@ -30,9 +30,9 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
 
   void _createPlaylist() async {
     String? name;
-    
+
     final platform = defaultTargetPlatform;
-    if (platform == TargetPlatform.windows || 
+    if (platform == TargetPlatform.windows ||
         platform == TargetPlatform.macOS ||
         platform == TargetPlatform.linux) {
       // Fluent dialog
@@ -41,10 +41,17 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
         context: context,
         builder: (_) => fluent.ContentDialog(
           title: const Text('Nova Playlist'),
-          content: fluent.TextBox(controller: controller, placeholder: 'Nome da playlist', autofocus: true),
+          content: fluent.TextBox(
+              controller: controller,
+              placeholder: 'Nome da playlist',
+              autofocus: true),
           actions: [
-            fluent.Button(child: const Text('Cancelar'), onPressed: () => Navigator.pop(context)),
-            fluent.FilledButton(child: const Text('Criar'), onPressed: () => Navigator.pop(context, controller.text)),
+            fluent.Button(
+                child: const Text('Cancelar'),
+                onPressed: () => Navigator.pop(context)),
+            fluent.FilledButton(
+                child: const Text('Criar'),
+                onPressed: () => Navigator.pop(context, controller.text)),
           ],
         ),
       );
@@ -55,15 +62,22 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
         context: context,
         builder: (_) => AlertDialog(
           title: const Text('Nova Playlist'),
-          content: TextField(controller: controller, decoration: const InputDecoration(hintText: 'Nome da playlist'), autofocus: true),
+          content: TextField(
+              controller: controller,
+              decoration: const InputDecoration(hintText: 'Nome da playlist'),
+              autofocus: true),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar')),
-            TextButton(onPressed: () => Navigator.pop(context, controller.text), child: const Text('Criar')),
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancelar')),
+            TextButton(
+                onPressed: () => Navigator.pop(context, controller.text),
+                child: const Text('Criar')),
           ],
         ),
       );
     }
-    
+
     if (name != null && name.trim().isNotEmpty) {
       await _dbService.createPlaylist(name.trim());
       _loadPlaylists();
@@ -77,9 +91,11 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:
-        return FluentPlaylistsView(playlists: _playlists, onCreatePlaylist: _createPlaylist);
+        return FluentPlaylistsView(
+            playlists: _playlists, onCreatePlaylist: _createPlaylist);
       default:
-        return MaterialPlaylistsView(playlists: _playlists, onCreatePlaylist: _createPlaylist);
+        return MaterialPlaylistsView(
+            playlists: _playlists, onCreatePlaylist: _createPlaylist);
     }
   }
 }

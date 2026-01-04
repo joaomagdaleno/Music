@@ -13,12 +13,13 @@ class PartyQueueScreen extends StatefulWidget {
 
 class _PartyQueueScreenState extends State<PartyQueueScreen> {
   bool _isSharing = false;
-  final String _qrData = "DUO_PARTY_SESSION_7788";
+  final String _qrData = 'DUO_PARTY_SESSION_7788';
 
   void _toggleSharing() => setState(() => _isSharing = !_isSharing);
 
   void _scan() {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Abrindo câmera para escanear...')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Abrindo câmera para escanear...')));
   }
 
   @override
@@ -28,9 +29,17 @@ class _PartyQueueScreenState extends State<PartyQueueScreen> {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:
-        return FluentPartyQueueView(isSharing: _isSharing, qrData: _qrData, onToggleSharing: _toggleSharing, onScan: _scan);
+        return FluentPartyQueueView(
+            isSharing: _isSharing,
+            qrData: _qrData,
+            onToggleSharing: _toggleSharing,
+            onScan: _scan);
       default:
-        return MaterialPartyQueueView(isSharing: _isSharing, qrData: _qrData, onToggleSharing: _toggleSharing, onScan: _scan);
+        return MaterialPartyQueueView(
+            isSharing: _isSharing,
+            qrData: _qrData,
+            onToggleSharing: _toggleSharing,
+            onScan: _scan);
     }
   }
 }

@@ -23,13 +23,13 @@ void main() {
     await setupMusicTest();
     mockPlayback = MockPlaybackService();
     // mockLyrics = MockLyricsService(); // Removed as unused
-    mockPlayer = MockPlayer(); // Or used global? setupMusicTest provides global mockPlayer.
+    mockPlayer =
+        MockPlayer(); // Or used global? setupMusicTest provides global mockPlayer.
     // Use the global one or local if needed.
     // If we use local, we shadow global. Let's use local for safety within suite if it was using local.
     // Actually, to avoid conflicts, just use the global one if possible?
     // But suite declares `late MockAudioPlayer mockPlayer;`.
     // I'll reuse the variable name `mockPlayer` but type `MockPlayer`.
-
 
     PlaybackService.instance = mockPlayback;
 
@@ -37,21 +37,20 @@ void main() {
     // Stub position if needed, or removing if test doesn't use it.
     // when(() => mockPlayer.state.position).thenReturn(Duration.zero);
     // But better toStub state:
-    when(() => mockPlayer.state).thenReturn(PlayerState(position: Duration.zero));
+    when(() => mockPlayer.state)
+        .thenReturn(const PlayerState(position: Duration.zero));
 
     when(() => mockPlayback.currentLyrics).thenReturn([]);
     when(() => mockPlayback.lyricsStream).thenAnswer((_) => Stream.value([]));
     when(() => mockPlayback.resume()).thenAnswer((_) async => {});
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: KaraokeScreen(
-        track: const {'id': '1', 'title': 'Test Song', 'artist': 'Test Artist'},
-      ),
-    );
-  }
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const KaraokeScreen(
+          track: {'id': '1', 'title': 'Test Song', 'artist': 'Test Artist'},
+        ),
+      );
 
   group('KaraokeScreen', () {
     testWidgets('renders track title', (tester) async {

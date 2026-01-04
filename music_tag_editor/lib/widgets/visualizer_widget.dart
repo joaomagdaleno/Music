@@ -23,7 +23,9 @@ class _VisualizerWidgetState extends State<VisualizerWidget>
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500))
       ..repeat(reverse: true);
-    if (!widget.isPlaying) { _controller.stop(); }
+    if (!widget.isPlaying) {
+      _controller.stop();
+    }
   }
 
   @override
@@ -43,11 +45,10 @@ class _VisualizerWidgetState extends State<VisualizerWidget>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return RepaintBoundary( // ⚡ Bolt: Isolate 60fps paints
+  Widget build(BuildContext context) => AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) => RepaintBoundary(
+          // ⚡ Bolt: Isolate 60fps paints
           child: CustomPaint(
             size: const Size(double.infinity, 50),
             painter: _VisualizerPainter(
@@ -56,10 +57,8 @@ class _VisualizerWidgetState extends State<VisualizerWidget>
               color: widget.color.withValues(alpha: 0.5),
             ),
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
 }
 
 class _VisualizerPainter extends CustomPainter {

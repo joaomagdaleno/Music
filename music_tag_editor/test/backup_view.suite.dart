@@ -23,12 +23,10 @@ void main() {
     when(() => mockBackup.estimateBackupSize()).thenAnswer((_) async => 1024);
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: const BackupScreen(),
-    );
-  }
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const BackupScreen(),
+      );
 
   group('BackupScreen', () {
     testWidgets('renders app bar', (tester) async {

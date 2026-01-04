@@ -12,7 +12,7 @@ void main() {
   final lines = lcovFile.readAsLinesSync();
   int totalLines = 0;
   int coveredLines = 0;
-  Map<String, List<int>> fileCoverage = {};
+  final Map<String, List<int>> fileCoverage = {};
   String? currentFile;
 
   for (final line in lines) {

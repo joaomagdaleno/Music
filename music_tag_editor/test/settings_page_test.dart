@@ -25,7 +25,6 @@ class MockThemeService extends Mock implements ThemeService {}
 
 // MockAudioPlayer removed
 
-
 class MockAuthService extends Mock implements AuthService {}
 
 void main() {
@@ -40,7 +39,7 @@ void main() {
   setUpAll(() {
     registerFallbackValue(FilenameFormat.artistTitle);
     registerFallbackValue(Duration.zero);
-    registerFallbackValue(Color(0xFF000000));
+    registerFallbackValue(const Color(0xFF000000));
   });
 
   setUp(() {
@@ -118,7 +117,7 @@ void main() {
     final dropdownFinder = find.text('Artist - Title.mp3');
     await tester.ensureVisible(dropdownFinder);
     await tester.pumpAndSettle();
-    
+
     await tester.tap(dropdownFinder);
     await tester.pumpAndSettle();
 
@@ -143,7 +142,7 @@ void main() {
     final cleanBtn = find.text('Polir Biblioteca');
     await tester.ensureVisible(cleanBtn);
     await tester.pumpAndSettle();
-    
+
     await tester.tap(cleanBtn);
     await tester.pump(); // Start async
     await tester.pump(const Duration(milliseconds: 100)); // Show snackbar
@@ -216,12 +215,13 @@ void main() {
     await tester.pump(const Duration(milliseconds: 100)); // Show it
 
     verify(() => mockSync.pullFromCloud()).called(1);
-    
+
     // Check if ANY SnackBar is there
     final snackBarFinder = find.byType(SnackBar);
     expect(snackBarFinder, findsOneWidget);
-    
-    final textFinder = find.descendant(of: snackBarFinder, matching: find.byType(Text));
+
+    final textFinder =
+        find.descendant(of: snackBarFinder, matching: find.byType(Text));
     final Text textWidget = tester.widget<Text>(textFinder);
     expect(textWidget.data, '10 itens sincronizados!');
 

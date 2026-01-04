@@ -102,19 +102,19 @@ class _InteractiveEqualizerWidgetState
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: List.generate(_frequencies.length, (i) {
-                return _EqualizerBand(
-                  frequency: _formatFrequency(_frequencies[i]),
-                  gain: _gains[i],
-                  minGain: _minGain,
-                  maxGain: _maxGain,
-                  enabled: !_service.isAutoMode,
-                  onChanged: (newGain) {
-                    setState(() => _gains[i] = newGain);
-                    _service.setCustomBand(i, newGain);
-                  },
-                );
-              }),
+              children: List.generate(
+                  _frequencies.length,
+                  (i) => _EqualizerBand(
+                        frequency: _formatFrequency(_frequencies[i]),
+                        gain: _gains[i],
+                        minGain: _minGain,
+                        maxGain: _maxGain,
+                        enabled: !_service.isAutoMode,
+                        onChanged: (newGain) {
+                          setState(() => _gains[i] = newGain);
+                          _service.setCustomBand(i, newGain);
+                        },
+                      )),
             ),
           ),
           const SizedBox(height: 8),
@@ -237,25 +237,22 @@ class _PresetButton extends StatelessWidget {
   const _PresetButton({required this.label, required this.onTap});
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
+  Widget build(BuildContext context) => InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
-

@@ -32,7 +32,7 @@ void main() {
       final service = SecurityService.instance;
       await service.init();
 
-      final original = 'Hello World';
+      const original = 'Hello World';
       final encrypted = await service.encryptString(original);
       final decrypted = await service.decryptString(encrypted);
 

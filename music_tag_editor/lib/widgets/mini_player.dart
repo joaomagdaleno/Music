@@ -42,7 +42,7 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
       stream: playback.player.stream.playing,
       builder: (context, playingSnapshot) {
         final playing = playingSnapshot.data ?? false;
-        
+
         return StreamBuilder<SearchResult?>(
           stream: playback.currentTrackStream.startWith(playback.currentTrack),
           builder: (context, trackSnapshot) {
@@ -53,7 +53,8 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
               onTap: () {
                 if (track.mediaType == 'video') {
                   appNavigatorKey.currentState?.push(
-                    fluent.FluentPageRoute(builder: (context) => const PlayerScreen()),
+                    fluent.FluentPageRoute(
+                        builder: (context) => const PlayerScreen()),
                   );
                 }
               },
@@ -77,24 +78,25 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
                       child: Row(
                         children: [
                           if (track.thumbnail != null)
-                             Hero(
-                                tag: 'player_art',
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(4),
-                                  child: Image.network(
-                                    track.thumbnail!,
+                            Hero(
+                              tag: 'player_art',
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(4),
+                                child: Image.network(
+                                  track.thumbnail!,
+                                  width: 56,
+                                  height: 56,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, __, ___) => Container(
                                     width: 56,
                                     height: 56,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (_, __, ___) => Container(
-                                      width: 56,
-                                      height: 56,
-                                      color: theme.menuColor,
-                                      child: const Icon(fluent.FluentIcons.music_note),
-                                    ),
+                                    color: theme.menuColor,
+                                    child: const Icon(
+                                        fluent.FluentIcons.music_note),
                                   ),
                                 ),
-                             ),
+                              ),
+                            ),
                           const SizedBox(width: 12),
                           Flexible(
                             child: Column(
@@ -105,7 +107,8 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
                                   track.title,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
@@ -123,7 +126,9 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
                           const SizedBox(width: 16),
                           fluent.IconButton(
                             icon: Icon(
-                              track.isVault ? fluent.FluentIcons.heart_fill : fluent.FluentIcons.heart,
+                              track.isVault
+                                  ? fluent.FluentIcons.heart_fill
+                                  : fluent.FluentIcons.heart,
                               color: track.isVault ? fluent.Colors.red : null,
                             ),
                             onPressed: () => playback.toggleFavorite(),
@@ -138,93 +143,106 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                            // Controls Row
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                StreamBuilder<bool>(
-                                  stream: playback.player.stream.shuffle,
-                                  builder: (context, snapshot) {
-                                    final isShuffle = snapshot.data ?? false;
-                                    return fluent.IconButton(
-                                      icon: Icon(
-                                        Icons.shuffle,
-                                        color: isShuffle ? theme.accentColor : null,
-                                      ),
-                                      onPressed: () => playback.toggleShuffle(),
-                                    );
-                                  },
-                                ),
-                                const SizedBox(width: 8),
-                                fluent.IconButton(
-                                  icon: const Icon(fluent.FluentIcons.previous),
-                                  onPressed: () => playback.previous(),
-                                ),
-                                const SizedBox(width: 16),
-                                Container(
-                                  width: 32,
-                                  height: 32,
-                                  decoration: BoxDecoration(
-                                    color: theme.accentColor,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: fluent.IconButton(
+                          // Controls Row
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              StreamBuilder<bool>(
+                                stream: playback.player.stream.shuffle,
+                                builder: (context, snapshot) {
+                                  final isShuffle = snapshot.data ?? false;
+                                  return fluent.IconButton(
                                     icon: Icon(
-                                      playing ? fluent.FluentIcons.pause : fluent.FluentIcons.play,
-                                      color: Colors.white,
-                                      size: 14,
+                                      Icons.shuffle,
+                                      color:
+                                          isShuffle ? theme.accentColor : null,
                                     ),
-                                    onPressed: () => playing ? playback.pause() : playback.resume(),
+                                    onPressed: () => playback.toggleShuffle(),
+                                  );
+                                },
+                              ),
+                              const SizedBox(width: 8),
+                              fluent.IconButton(
+                                icon: const Icon(fluent.FluentIcons.previous),
+                                onPressed: () => playback.previous(),
+                              ),
+                              const SizedBox(width: 16),
+                              Container(
+                                width: 32,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                  color: theme.accentColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: fluent.IconButton(
+                                  icon: Icon(
+                                    playing
+                                        ? fluent.FluentIcons.pause
+                                        : fluent.FluentIcons.play,
+                                    color: Colors.white,
+                                    size: 14,
                                   ),
+                                  onPressed: () => playing
+                                      ? playback.pause()
+                                      : playback.resume(),
                                 ),
-                                const SizedBox(width: 16),
-                                fluent.IconButton(
-                                  icon: const Icon(fluent.FluentIcons.next),
-                                  onPressed: () => playback.next(),
-                                ),
-                                const SizedBox(width: 8),
-                                StreamBuilder<PlaylistMode>(
-                                  stream: playback.player.stream.playlistMode,
-                                  builder: (context, snapshot) {
-                                    final mode = snapshot.data ?? PlaylistMode.none;
-                                    IconData icon;
-                                    Color? color;
-                                    if (mode == PlaylistMode.single) {
-                                      icon = Icons.repeat_one;
-                                      color = theme.accentColor;
-                                    } else if (mode == PlaylistMode.loop) {
-                                      icon = Icons.repeat;
-                                      color = theme.accentColor;
-                                    } else {
-                                      icon = Icons.repeat;
-                                      color = null;
-                                    }
-                                    return fluent.IconButton(
-                                      icon: Icon(icon, color: color),
-                                      onPressed: () => playback.toggleRepeat(),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(width: 16),
+                              fluent.IconButton(
+                                icon: const Icon(fluent.FluentIcons.next),
+                                onPressed: () => playback.next(),
+                              ),
+                              const SizedBox(width: 8),
+                              StreamBuilder<PlaylistMode>(
+                                stream: playback.player.stream.playlistMode,
+                                builder: (context, snapshot) {
+                                  final mode =
+                                      snapshot.data ?? PlaylistMode.none;
+                                  IconData icon;
+                                  Color? color;
+                                  if (mode == PlaylistMode.single) {
+                                    icon = Icons.repeat_one;
+                                    color = theme.accentColor;
+                                  } else if (mode == PlaylistMode.loop) {
+                                    icon = Icons.repeat;
+                                    color = theme.accentColor;
+                                  } else {
+                                    icon = Icons.repeat;
+                                    color = null;
+                                  }
+                                  return fluent.IconButton(
+                                    icon: Icon(icon, color: color),
+                                    onPressed: () => playback.toggleRepeat(),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                           const SizedBox(height: 4),
                           // Progress Bar
                           StreamBuilder<Duration>(
                             stream: playback.player.stream.position,
                             builder: (context, posSnapshot) {
-                              final position = posSnapshot.data ?? Duration.zero;
+                              final position =
+                                  posSnapshot.data ?? Duration.zero;
                               final duration = playback.player.state.duration;
                               final max = duration.inMilliseconds.toDouble();
-                              final value = position.inMilliseconds.toDouble().clamp(0.0, max > 0 ? max : 1.0);
-                              
-                              return RepaintBoundary( // ⚡ Bolt: Isolate progress bar
+                              final value = position.inMilliseconds
+                                  .toDouble()
+                                  .clamp(0.0, max > 0 ? max : 1.0);
+
+                              return RepaintBoundary(
+                                // ⚡ Bolt: Isolate progress bar
                                 child: SizedBox(
                                   width: 400,
                                   child: Row(
                                     children: [
                                       Text(
                                         _formatDuration(position),
-                                        style: TextStyle(fontSize: 11, color: theme.typography.caption?.color),
+                                        style: TextStyle(
+                                            fontSize: 11,
+                                            color: theme
+                                                .typography.caption?.color),
                                       ),
                                       const SizedBox(width: 8),
                                       Expanded(
@@ -232,14 +250,18 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
                                           value: value,
                                           max: max > 0 ? max : 1.0,
                                           onChanged: (val) {
-                                            playback.seek(Duration(milliseconds: val.toInt()));
+                                            playback.seek(Duration(
+                                                milliseconds: val.toInt()));
                                           },
                                         ),
                                       ),
                                       const SizedBox(width: 8),
                                       Text(
                                         _formatDuration(duration),
-                                        style: TextStyle(fontSize: 11, color: theme.typography.caption?.color),
+                                        style: TextStyle(
+                                            fontSize: 11,
+                                            color: theme
+                                                .typography.caption?.color),
                                       ),
                                     ],
                                   ),
@@ -251,50 +273,51 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
                       ),
                     ),
 
-                      // RIGHT: Volume & Extras
-                      Expanded(
-                        flex: 3,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            fluent.IconButton(
-                              icon: const Icon(fluent.FluentIcons.playlist_music),
-                              onPressed: () {
-                                 // Show Queue
-                               
-                              },
-                            ),
-                            const SizedBox(width: 12),
-                            SizedBox(
-                              width: 100,
-                              child: Row(
-                                children: [
-                                  const Icon(fluent.FluentIcons.volume2, size: 16),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: fluent.Slider(
-                                      value: _volume,
-                                      max: 100,
-                                      onChanged: (v) {
-                                        setState(() => _volume = v);
-                                        playback.player.setVolume(v);
-                                      },
-                                    ),
+                    // RIGHT: Volume & Extras
+                    Expanded(
+                      flex: 3,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          fluent.IconButton(
+                            icon: const Icon(fluent.FluentIcons.playlist_music),
+                            onPressed: () {
+                              // Show Queue
+                            },
+                          ),
+                          const SizedBox(width: 12),
+                          SizedBox(
+                            width: 100,
+                            child: Row(
+                              children: [
+                                const Icon(fluent.FluentIcons.volume2,
+                                    size: 16),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: fluent.Slider(
+                                    value: _volume,
+                                    max: 100,
+                                    onChanged: (v) {
+                                      setState(() => _volume = v);
+                                      playback.player.setVolume(v);
+                                    },
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 12),
-                             fluent.IconButton(
-                                    icon: const fluent.Icon(fluent.FluentIcons.chrome_close),
-                                    onPressed: () => playback.stop(),
-                              ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(width: 12),
+                          fluent.IconButton(
+                            icon: const fluent.Icon(
+                                fluent.FluentIcons.chrome_close),
+                            onPressed: () => playback.stop(),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+              ),
             );
           },
         );
@@ -342,53 +365,56 @@ class _MaterialMiniPlayer extends StatelessWidget {
               ),
               child: InkWell(
                 onTap: () {
-                   if (track.mediaType == 'video') {
-                     appNavigatorKey.currentState?.push(
-                        MaterialPageRoute(builder: (context) => const PlayerScreen()),
-                     );
-                   }
+                  if (track.mediaType == 'video') {
+                    appNavigatorKey.currentState?.push(
+                      MaterialPageRoute(
+                          builder: (context) => const PlayerScreen()),
+                    );
+                  }
                 },
                 borderRadius: BorderRadius.circular(12),
                 child: Column(
                   children: [
                     // Progress Indicator (Thin line at top)
-                       RepaintBoundary( // ⚡ Bolt: Isolate progress bar
-                         child: StreamBuilder<Duration>(
-                            stream: playback.player.stream.position,
-                            builder: (context, posSnapshot) {
-                              final position = posSnapshot.data ?? Duration.zero;
-                              final duration = playback.player.state.duration;
-                              final progress = duration.inMilliseconds > 0 
-                                  ? position.inMilliseconds / duration.inMilliseconds 
-                                  : 0.0;
-                               return LinearProgressIndicator(
-                                 value: progress,
-                                 minHeight: 2,
-                                 backgroundColor: Colors.transparent,
-                                 valueColor: AlwaysStoppedAnimation(
-                                   Theme.of(context).colorScheme.primary,
-                                 ),
-                               );
-                            }
-                         ),
-                       ),
+                    RepaintBoundary(
+                      // ⚡ Bolt: Isolate progress bar
+                      child: StreamBuilder<Duration>(
+                          stream: playback.player.stream.position,
+                          builder: (context, posSnapshot) {
+                            final position = posSnapshot.data ?? Duration.zero;
+                            final duration = playback.player.state.duration;
+                            final progress = duration.inMilliseconds > 0
+                                ? position.inMilliseconds /
+                                    duration.inMilliseconds
+                                : 0.0;
+                            return LinearProgressIndicator(
+                              value: progress,
+                              minHeight: 2,
+                              backgroundColor: Colors.transparent,
+                              valueColor: AlwaysStoppedAnimation(
+                                Theme.of(context).colorScheme.primary,
+                              ),
+                            );
+                          }),
+                    ),
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Row(
                           children: [
-                             // Art
-                             if (track.thumbnail != null)
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.network(
-                                    track.thumbnail!,
-                                    width: 48,
-                                    height: 48,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (_,__,___) => const Icon(Icons.music_note),
-                                  ),
+                            // Art
+                            if (track.thumbnail != null)
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  track.thumbnail!,
+                                  width: 48,
+                                  height: 48,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, __, ___) =>
+                                      const Icon(Icons.music_note),
                                 ),
+                              ),
                             const SizedBox(width: 12),
                             // Info
                             Expanded(
@@ -400,7 +426,8 @@ class _MaterialMiniPlayer extends StatelessWidget {
                                     track.title,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   Text(
                                     track.artist,
@@ -408,7 +435,9 @@ class _MaterialMiniPlayer extends StatelessWidget {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
                                     ),
                                   ),
                                 ],
@@ -417,7 +446,9 @@ class _MaterialMiniPlayer extends StatelessWidget {
                             // Controls
                             // Controls
                             IconButton(
-                              icon: Icon(track.isVault ? Icons.favorite : Icons.favorite_border),
+                              icon: Icon(track.isVault
+                                  ? Icons.favorite
+                                  : Icons.favorite_border),
                               color: track.isVault ? Colors.red : null,
                               onPressed: () => playback.toggleFavorite(),
                             ),
@@ -429,7 +460,9 @@ class _MaterialMiniPlayer extends StatelessWidget {
                                 final isShuffle = snapshot.data ?? false;
                                 return IconButton(
                                   icon: const Icon(Icons.shuffle),
-                                  color: isShuffle ? Theme.of(context).colorScheme.primary : null,
+                                  color: isShuffle
+                                      ? Theme.of(context).colorScheme.primary
+                                      : null,
                                   onPressed: () => playback.toggleShuffle(),
                                 );
                               },
@@ -439,10 +472,14 @@ class _MaterialMiniPlayer extends StatelessWidget {
                               onPressed: () => playback.previous(),
                             ),
                             IconButton(
-                              icon: Icon(playing ? Icons.pause_circle_filled : Icons.play_circle_filled),
+                              icon: Icon(playing
+                                  ? Icons.pause_circle_filled
+                                  : Icons.play_circle_filled),
                               iconSize: 40,
                               color: Theme.of(context).colorScheme.primary,
-                              onPressed: () => playing ? playback.pause() : playback.resume(),
+                              onPressed: () => playing
+                                  ? playback.pause()
+                                  : playback.resume(),
                             ),
                             IconButton(
                               icon: const Icon(Icons.skip_next),

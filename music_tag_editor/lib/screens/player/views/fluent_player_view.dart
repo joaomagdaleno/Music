@@ -40,10 +40,22 @@ class FluentPlayerView extends StatelessWidget {
         commandBar: CommandBar(
           mainAxisAlignment: MainAxisAlignment.end,
           primaryItems: [
-            CommandBarButton(icon: const Icon(FluentIcons.timer), label: const Text('Timer'), onPressed: () => onShowSleepTimer(context)),
-            CommandBarButton(icon: const Icon(FluentIcons.playlist_music), label: const Text('Fila'), onPressed: () => onShowQueue(context)),
-            CommandBarButton(icon: const Icon(FluentIcons.people), label: const Text('Duo'), onPressed: () => onShowDuoMatching(context)),
-            CommandBarButton(icon: const Icon(FluentIcons.air_tickets), label: const Text('Cast'), onPressed: () => onShowCast(context)),
+            CommandBarButton(
+                icon: const Icon(FluentIcons.timer),
+                label: const Text('Timer'),
+                onPressed: () => onShowSleepTimer(context)),
+            CommandBarButton(
+                icon: const Icon(FluentIcons.playlist_music),
+                label: const Text('Fila'),
+                onPressed: () => onShowQueue(context)),
+            CommandBarButton(
+                icon: const Icon(FluentIcons.people),
+                label: const Text('Duo'),
+                onPressed: () => onShowDuoMatching(context)),
+            CommandBarButton(
+                icon: const Icon(FluentIcons.air_tickets),
+                label: const Text('Cast'),
+                onPressed: () => onShowCast(context)),
           ],
         ),
       ),
@@ -51,72 +63,82 @@ class FluentPlayerView extends StatelessWidget {
         stream: playback.currentTrackStream,
         builder: (context, snapshot) {
           final track = snapshot.data;
-          if (track == null) return const Center(child: Text('Nenhuma música tocando'));
+          if (track == null) {
+            return const Center(child: Text('Nenhuma música tocando'));
+          }
 
 // Video Surface Only
-                return Expanded(
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                        if (track.mediaType == 'video')
-                          Video(controller: playback.videoController)
-                        else
-                           // Fallback for audio if somehow we end up here, though we shouldn't.
-                           // User wants "Native" look, so maybe just a nice background or visualization if forced?
-                           // But the plan is to NOT open this screen for audio.
-                           // So this acts as the "Video Only" view.
-                           const Center(child: Text("Reproduzindo no Mini Player...", style: TextStyle(color: Colors.white))),
-                        
-                        // Overlay Resolution Selector (optional, sleek)
-                        if (track.mediaType == 'video')
-                          Positioned(
-                            top: 20,
-                            right: 20,
-                            child: _buildResolutionSelector(context),
-                          ),
-                    ],
+          return Expanded(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                if (track.mediaType == 'video')
+                  Video(controller: playback.videoController)
+                else
+                  // Fallback for audio if somehow we end up here, though we shouldn't.
+                  // User wants "Native" look, so maybe just a nice background or visualization if forced?
+                  // But the plan is to NOT open this screen for audio.
+                  // So this acts as the "Video Only" view.
+                  const Center(
+                      child: Text('Reproduzindo no Mini Player...',
+                          style: TextStyle(color: Colors.white))),
+
+                // Overlay Resolution Selector (optional, sleek)
+                if (track.mediaType == 'video')
+                  Positioned(
+                    top: 20,
+                    right: 20,
+                    child: _buildResolutionSelector(context),
                   ),
-                );
+              ],
+            ),
+          );
         },
       ),
     );
   }
 
-  Widget _buildResolutionSelector(BuildContext context) {
-    return FutureBuilder<List<String>>(
-      future: PlaybackService.instance.currentTrack != null 
-          ? SearchService.instance.getAvailableResolutions(PlaybackService.instance.currentTrack!.url)
-          : Future.value(['Auto']),
-      builder: (context, snapshot) {
-        final resolutions = snapshot.data ?? ['Auto'];
-        return DropDownButton(
-          title: const Text('Resolução'),
-          items: resolutions.map((r) => MenuFlyoutItem(
-            text: Text(r),
-            onPressed: () async {
-              final track = PlaybackService.instance.currentTrack;
-              if (track != null) {
-                StartupLogger.log('Selected resolution: $r');
-                // Implementation for changing resolution:
-                // We fetch the new stream URL and open it at current position
-                final newUrl = await SearchService.instance.getStreamUrl(
-                  track.url, 
-                  resolution: r,
-                  platform: track.platform,
-                  isVideo: track.mediaType == 'video',
-                );
-                if (newUrl != null) {
-                   final position = PlaybackService.instance.player.state.position;
-                   await PlaybackService.instance.player.open(Media(newUrl));
-                   await PlaybackService.instance.player.seek(position);
-                }
-              }
-            },
-          )).toList(),
-        );
-      },
-    );
-  }
+  Widget _buildResolutionSelector(BuildContext context) =>
+      FutureBuilder<List<String>>(
+        future: PlaybackService.instance.currentTrack != null
+            ? SearchService.instance.getAvailableResolutions(
+                PlaybackService.instance.currentTrack!.url)
+            : Future.value(['Auto']),
+        builder: (context, snapshot) {
+          final resolutions = snapshot.data ?? ['Auto'];
+          return DropDownButton(
+            title: const Text('Resolução'),
+            items: resolutions
+                .map((r) => MenuFlyoutItem(
+                      text: Text(r),
+                      onPressed: () async {
+                        final track = PlaybackService.instance.currentTrack;
+                        if (track != null) {
+                          StartupLogger.log('Selected resolution: $r');
+                          // Implementation for changing resolution:
+                          // We fetch the new stream URL and open it at current position
+                          final newUrl =
+                              await SearchService.instance.getStreamUrl(
+                            track.url,
+                            resolution: r,
+                            platform: track.platform,
+                            isVideo: track.mediaType == 'video',
+                          );
+                          if (newUrl != null) {
+                            final position =
+                                PlaybackService.instance.player.state.position;
+                            await PlaybackService.instance.player
+                                .open(Media(newUrl));
+                            await PlaybackService.instance.player
+                                .seek(position);
+                          }
+                        }
+                      },
+                    ))
+                .toList(),
+          );
+        },
+      );
 }
 
 class FluentProgressBar extends StatelessWidget {
@@ -124,76 +146,83 @@ class FluentProgressBar extends StatelessWidget {
   const FluentProgressBar({super.key, required this.player});
 
   @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<Duration>(
-      stream: player.stream.position,
-      builder: (context, snapshot) {
-        final position = snapshot.data ?? Duration.zero;
-        final duration = player.state.duration;
-        final maxVal = duration.inMilliseconds.toDouble().clamp(1.0, double.infinity);
+  Widget build(BuildContext context) => StreamBuilder<Duration>(
+        stream: player.stream.position,
+        builder: (context, snapshot) {
+          final position = snapshot.data ?? Duration.zero;
+          final duration = player.state.duration;
+          final maxVal =
+              duration.inMilliseconds.toDouble().clamp(1.0, double.infinity);
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-          child: Column(
-            children: [
-              Slider(
-                value: position.inMilliseconds.toDouble().clamp(0, maxVal),
-                max: maxVal,
-                onChanged: (val) => PlaybackService.instance.seek(Duration(milliseconds: val.toInt())),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(_formatDuration(position)),
-                  Text(_formatDuration(duration)),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            child: Column(
+              children: [
+                Slider(
+                  value: position.inMilliseconds.toDouble().clamp(0, maxVal),
+                  max: maxVal,
+                  onChanged: (val) => PlaybackService.instance
+                      .seek(Duration(milliseconds: val.toInt())),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(_formatDuration(position)),
+                    Text(_formatDuration(duration)),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      );
 
-  String _formatDuration(Duration d) => '${d.inMinutes}:${(d.inSeconds % 60).toString().padLeft(2, '0')}';
+  String _formatDuration(Duration d) =>
+      '${d.inMinutes}:${(d.inSeconds % 60).toString().padLeft(2, '0')}';
 }
 
 class FluentLyricsView extends StatelessWidget {
   const FluentLyricsView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<List<LyricLine>>(
-      stream: PlaybackService.instance.lyricsStream,
-      builder: (context, snapshot) {
-        final lyrics = snapshot.data ?? [];
-        if (lyrics.isEmpty) {
-          return Center(child: Text('Buscando letras...', style: FluentTheme.of(context).typography.caption));
-        }
+  Widget build(BuildContext context) => StreamBuilder<List<LyricLine>>(
+        stream: PlaybackService.instance.lyricsStream,
+        builder: (context, snapshot) {
+          final lyrics = snapshot.data ?? [];
+          if (lyrics.isEmpty) {
+            return Center(
+                child: Text('Buscando letras...',
+                    style: FluentTheme.of(context).typography.caption));
+          }
 
-        return StreamBuilder<Duration>(
-          stream: PlaybackService.instance.player.stream.position,
-          builder: (context, posSnapshot) {
-            final position = posSnapshot.data ?? Duration.zero;
-            return ListView.builder(
-              itemCount: lyrics.length,
-              itemBuilder: (context, index) {
-                final line = lyrics[index];
-                final isCurrent = index < lyrics.length - 1 ? position >= line.time && position < lyrics[index + 1].time : position >= line.time;
+          return StreamBuilder<Duration>(
+            stream: PlaybackService.instance.player.stream.position,
+            builder: (context, posSnapshot) {
+              final position = posSnapshot.data ?? Duration.zero;
+              return ListView.builder(
+                itemCount: lyrics.length,
+                itemBuilder: (context, index) {
+                  final line = lyrics[index];
+                  final isCurrent = index < lyrics.length - 1
+                      ? position >= line.time &&
+                          position < lyrics[index + 1].time
+                      : position >= line.time;
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
-                  child: Text(
-                    line.text,
-                    textAlign: TextAlign.center,
-                    style: isCurrent ? FluentTheme.of(context).typography.bodyStrong : FluentTheme.of(context).typography.body,
-                  ),
-                );
-              },
-            );
-          },
-        );
-      },
-    );
-  }
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 24),
+                    child: Text(
+                      line.text,
+                      textAlign: TextAlign.center,
+                      style: isCurrent
+                          ? FluentTheme.of(context).typography.bodyStrong
+                          : FluentTheme.of(context).typography.body,
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
+      );
 }

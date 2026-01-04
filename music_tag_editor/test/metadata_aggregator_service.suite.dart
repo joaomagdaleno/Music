@@ -65,7 +65,8 @@ void main() {
           .thenAnswer((_) async => [
                 {
                   'title': 'Correct Title',
-                  'artist': 'Artist', // Must match our input 'Artist' to pass similarity check
+                  'artist':
+                      'Artist', // Must match our input 'Artist' to pass similarity check
                   'album': 'Correct Album',
                   'genres': ['Pop'],
                 }
@@ -118,7 +119,9 @@ void main() {
 
   group('fetchSyncedLyrics', () {
     test('returns lyrics from LrcLib if found and valid', () async {
-      final lyrics = [LyricLine(time: Duration(seconds: 10), text: 'Line 1')];
+      final lyrics = [
+        LyricLine(time: const Duration(seconds: 10), text: 'Line 1')
+      ];
       when(() => mockLyrics.fetchLyrics(any(), any()))
           .thenAnswer((_) async => lyrics);
 
@@ -134,7 +137,7 @@ void main() {
       when(() => mockLyrics.fetchLyrics(any(), any()))
           .thenAnswer((_) async => []);
       final lyrics = [
-        LyricLine(time: Duration(seconds: 10), text: 'Netease Line')
+        LyricLine(time: const Duration(seconds: 10), text: 'Netease Line')
       ];
       when(() => mockNetease.fetchSyncedLyrics(any(), any()))
           .thenAnswer((_) async => lyrics);
@@ -148,7 +151,7 @@ void main() {
 
     test('validates duration mismatch', () async {
       final lyrics = [
-        LyricLine(time: Duration(seconds: 400), text: 'Out of range')
+        LyricLine(time: const Duration(seconds: 400), text: 'Out of range')
       ];
       when(() => mockLyrics.fetchLyrics(any(), any()))
           .thenAnswer((_) async => lyrics);

@@ -10,15 +10,21 @@ import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/hifi_download_service.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart' hide SearchResult;
-
+import 'package:youtube_explode_dart/youtube_explode_dart.dart'
+    hide SearchResult;
 
 class MockDependencyManager extends Mock implements DependencyManager {}
+
 class MockDatabaseService extends Mock implements DatabaseService {}
+
 class MockHiFiDownloadService extends Mock implements HiFiDownloadService {}
+
 class MockYoutubeExplode extends Mock implements YoutubeExplode {}
+
 class MockSearchClient extends Mock implements SearchClient {}
+
 class MockVideoSearchList extends Mock implements VideoSearchList {}
+
 class MockVideo extends Mock implements Video {}
 
 void main() {
@@ -64,9 +70,8 @@ void main() {
       runInShell = false,
       stdoutEncoding,
       stderrEncoding,
-    }) async {
-      return ProcessResult(0, mockExitCode, mockStdout, mockStderr);
-    };
+    }) async =>
+        ProcessResult(0, mockExitCode, mockStdout, mockStderr);
 
     when(() => sMockDeps.ytDlpPath).thenReturn('yt-dlp');
     when(() => sMockDb.loadAgeBypass()).thenAnswer((_) async => false);
@@ -79,13 +84,16 @@ void main() {
       when(() => mockVideo.title).thenReturn('Test Title');
       when(() => mockVideo.author).thenReturn('Test Artist');
       when(() => mockVideo.url).thenReturn('http://url');
-      when(() => mockVideo.thumbnails).thenReturn(ThumbnailSet('http://thumb'));
-      when(() => mockVideo.duration).thenReturn(Duration(seconds: 180));
-      
+      when(() => mockVideo.thumbnails)
+          .thenReturn(const ThumbnailSet('http://thumb'));
+      when(() => mockVideo.duration).thenReturn(const Duration(seconds: 180));
+
       final mockSearchList = MockVideoSearchList();
-      when(() => mockSearchList.iterator).thenAnswer((_) => [mockVideo].iterator);
-      
-      when(() => mockSearchClient.search(any())).thenAnswer((_) async => mockSearchList);
+      when(() => mockSearchList.iterator)
+          .thenAnswer((_) => [mockVideo].iterator);
+
+      when(() => mockSearchClient.search(any()))
+          .thenAnswer((_) async => mockSearchList);
 
       final results = await service.searchYouTube('query');
 
@@ -96,7 +104,8 @@ void main() {
     });
 
     test('returns empty list on error', () async {
-      when(() => mockSearchClient.search(any())).thenThrow(Exception('YT Error'));
+      when(() => mockSearchClient.search(any()))
+          .thenThrow(Exception('YT Error'));
       final results = await service.searchYouTube('query');
       expect(results, isEmpty);
     });
@@ -109,20 +118,23 @@ void main() {
       when(() => mockVideo.title).thenReturn('M Song');
       when(() => mockVideo.author).thenReturn('M Artist');
       when(() => mockVideo.url).thenReturn('http://murl');
-      when(() => mockVideo.thumbnails).thenReturn(ThumbnailSet('http://mthumb'));
-      when(() => mockVideo.duration).thenReturn(Duration(seconds: 200));
+      when(() => mockVideo.thumbnails)
+          .thenReturn(const ThumbnailSet('http://mthumb'));
+      when(() => mockVideo.duration).thenReturn(const Duration(seconds: 200));
 
       final mockSearchList = MockVideoSearchList();
-      when(() => mockSearchList.iterator).thenAnswer((_) => [mockVideo].iterator);
+      when(() => mockSearchList.iterator)
+          .thenAnswer((_) => [mockVideo].iterator);
 
-      when(() => mockSearchClient.search(any())).thenAnswer((_) async => mockSearchList);
+      when(() => mockSearchClient.search(any()))
+          .thenAnswer((_) async => mockSearchList);
 
       final results = await service.searchYouTubeMusic('query');
 
       expect(results.length, 1);
       expect(results[0].title, 'M Song');
       expect(results[0].platform, MediaPlatform.youtubeMusic);
-      
+
       verify(() => mockSearchClient.search('query topic')).called(1);
     });
   });
@@ -170,7 +182,8 @@ void main() {
 
       final mockSearchList = MockVideoSearchList();
       when(() => mockSearchList.iterator).thenAnswer((_) => <Video>[].iterator);
-      when(() => mockSearchClient.search(any())).thenAnswer((_) async => mockSearchList);
+      when(() => mockSearchClient.search(any()))
+          .thenAnswer((_) async => mockSearchList);
       when(() => sMockDb.getDownloadedUrls()).thenAnswer((_) async => {});
       when(() => sMockDb.getAllTracks()).thenAnswer((_) async => []);
 
@@ -223,7 +236,7 @@ void main() {
       expect(formats.any((f) => f.quality == '720p'), isTrue);
       expect(formats.any((f) => f.formatId == 'bestaudio/best'), isTrue);
     });
-     test('returns default formats on process failure', () async {
+    test('returns default formats on process failure', () async {
       mockExitCode = 1;
       final formats = await service.getFormats(
           'https://youtube.com/watch?v=123', MediaPlatform.youtube);
@@ -234,9 +247,17 @@ void main() {
 
   group('importPlaylist', () {
     test('importYouTubePlaylist parses results correctly', () async {
-      final jsonOutput = '${jsonEncode(
-              {'id': 'v1', 'title': 'T1', 'uploader': 'A1', 'duration': 100})}\n${jsonEncode(
-              {'id': 'v2', 'title': 'T2', 'uploader': 'A2', 'duration': 200})}';
+      final jsonOutput = '${jsonEncode({
+            'id': 'v1',
+            'title': 'T1',
+            'uploader': 'A1',
+            'duration': 100
+          })}\n${jsonEncode({
+            'id': 'v2',
+            'title': 'T2',
+            'uploader': 'A2',
+            'duration': 200
+          })}';
       mockExitCode = 0;
       mockStdout = jsonOutput;
 
@@ -247,6 +268,4 @@ void main() {
       expect(results[1].artist, 'A2');
     });
   });
-
-
 }

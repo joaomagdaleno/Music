@@ -96,9 +96,10 @@ void main() {
     when(() => mockDb.getAllSettings()).thenAnswer((_) async => {});
     when(() => mockDb.getPlaylistTracks(any())).thenAnswer((_) async => []);
     when(() => mockDb.saveLearningRule(any())).thenAnswer((_) async {});
-    when(() => mockDb.createPlaylist(any(), description: any(named: 'description')))
-        .thenAnswer((_) async => 1);
-    when(() => mockDb.addTrackToPlaylist(any(), any())).thenAnswer((_) async {});
+    when(() => mockDb.createPlaylist(any(),
+        description: any(named: 'description'))).thenAnswer((_) async => 1);
+    when(() => mockDb.addTrackToPlaylist(any(), any()))
+        .thenAnswer((_) async {});
   });
 
   group('enableSync', () {
@@ -128,7 +129,7 @@ void main() {
   group('pullFromCloud', () {
     test('pulls tracks and playlists', () async {
       // Note: service.currentUser is read from _currentUser field which is set in init() via stream.
-      
+
       // Mock specific collection paths
       final usersCollection = MockCollectionReference();
       final userDoc = MockDocumentReference();
@@ -167,7 +168,9 @@ void main() {
       when(() => mockDb.saveTrack(any())).thenAnswer((_) async => 1);
 
       // Prevent automatic restore in init() by making library non-empty
-      when(() => mockDb.getTracks()).thenAnswer((_) async => [{'id': 'existing'}]);
+      when(() => mockDb.getTracks()).thenAnswer((_) async => [
+            {'id': 'existing'}
+          ]);
 
       // Trigger init after mocks are ready
       when(() => mockAuth.authStateChanges())

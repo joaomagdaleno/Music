@@ -21,12 +21,19 @@ import 'package:music_tag_editor/services/download_service.dart';
 import 'test_helper.dart';
 
 class MockAuthService extends Mock implements AuthService {}
+
 class MockDatabaseService extends Mock implements DatabaseService {}
+
 class MockThemeService extends Mock implements ThemeService {}
+
 class MockPlaybackService extends Mock implements PlaybackService {}
+
 class MockConnectivityService extends Mock implements ConnectivityService {}
+
 class MockSecurityService extends Mock implements SecurityService {}
-class MockDesktopIntegrationService extends Mock implements DesktopIntegrationService {}
+
+class MockDesktopIntegrationService extends Mock
+    implements DesktopIntegrationService {}
 // Removed MockAudioPlayer
 
 void main() {
@@ -37,7 +44,8 @@ void main() {
   late MockConnectivityService mockConnectivity;
   late MockSecurityService mockSecurity;
   late MockDesktopIntegrationService mockDesktop;
-  late MockPlayer mockAudioPlayer; // Renamed to keep usage consistent if it was mockAudioPlayer
+  late MockPlayer
+      mockAudioPlayer; // Renamed to keep usage consistent if it was mockAudioPlayer
 
   setUp(() {
     mockAuth = MockAuthService();
@@ -48,7 +56,6 @@ void main() {
     mockSecurity = MockSecurityService();
     mockDesktop = MockDesktopIntegrationService();
     mockAudioPlayer = MockPlayer();
-
 
     DatabaseService.instance = mockDb;
     ThemeService.instance = mockTheme;
@@ -66,7 +73,8 @@ void main() {
     when(() => mockTheme.removeListener(any())).thenReturn(null);
     when(() => mockTheme.useCustomColor).thenReturn(false);
     when(() => mockConnectivity.isOffline).thenReturn(ValueNotifier(false));
-    when(() => mockDb.loadFilenameFormat()).thenAnswer((_) async => FilenameFormat.artistTitle);
+    when(() => mockDb.loadFilenameFormat())
+        .thenAnswer((_) async => FilenameFormat.artistTitle);
     when(() => mockDb.loadCrossfadeDuration()).thenAnswer((_) async => 3);
     when(() => mockDb.loadAgeBypass()).thenAnswer((_) async => false);
     when(() => mockDb.getSetting(any())).thenAnswer((_) async => null);
@@ -76,25 +84,25 @@ void main() {
     // Fake streams
     final fakeStream = FakePlayerStream();
     when(() => mockAudioPlayer.stream).thenReturn(fakeStream);
-    
+
     // Stub individual streams via the fake if accessed directly (though test might access via stream property)
     // If the test accesses `mockPlayer.playerStateStream` (old API), we must remove that.
     // Assuming the test code under verification has been updated, we just need to ensure generic stream access works.
-    
+
     when(() => mockAuth.isAuthenticated).thenReturn(false);
     when(() => mockPlayback.player).thenReturn(mockAudioPlayer);
     when(() => mockPlayback.currentTrack).thenReturn(null);
-    when(() => mockPlayback.currentTrackStream).thenAnswer((_) => const Stream.empty());
-    when(() => mockPlayback.lyricsStream).thenAnswer((_) => const Stream.empty());
+    when(() => mockPlayback.currentTrackStream)
+        .thenAnswer((_) => const Stream.empty());
+    when(() => mockPlayback.lyricsStream)
+        .thenAnswer((_) => const Stream.empty());
     when(() => mockPlayback.currentLyrics).thenReturn([]);
   });
 
-  Widget createWidgetUnderTest(Widget home) {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: home,
-    );
-  }
+  Widget createWidgetUnderTest(Widget home) => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: home,
+      );
 
   group('Global Navigation (AppShell)', () {
     testWidgets('Displays global navigation items in AppShell', (tester) async {
@@ -128,13 +136,13 @@ void main() {
         of: find.byType(BottomNavigationBar),
         matching: find.text('Anfitrião'),
       );
-      
+
       expect(navBarItem, findsOneWidget);
       await tester.tap(navBarItem);
       await tester.pump(const Duration(milliseconds: 500));
 
       expect(PersonaService.instance.activePersona, AppPersona.host);
-      
+
       PersonaService.instance.setPersona(AppPersona.librarian);
     });
   });
@@ -159,7 +167,7 @@ void main() {
       PersonaService.instance.setPersona(AppPersona.librarian);
       await tester.pumpWidget(createWidgetUnderTest(const AppShell()));
       await tester.pumpAndSettle();
-      
+
       // Select Librarian persona via Nav Bar
       final libItem = find.descendant(
         of: find.byType(BottomNavigationBar),
@@ -174,7 +182,8 @@ void main() {
   });
 
   group('Home Screen Interaction', () {
-    testWidgets('Tapping persona card on Home screen switches persona', (tester) async {
+    testWidgets('Tapping persona card on Home screen switches persona',
+        (tester) async {
       tester.view.physicalSize = const Size(400, 800);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() => tester.view.resetPhysicalSize());

@@ -43,7 +43,8 @@ class _LocalSourcesScreenState extends State<LocalSourcesScreen> {
   }
 
   Future<void> _addFolder() async {
-    String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+    final String? selectedDirectory =
+        await FilePicker.platform.getDirectoryPath();
     if (selectedDirectory != null) {
       await _dbService.addMusicFolder(selectedDirectory);
       _loadFolders();
@@ -57,7 +58,7 @@ class _LocalSourcesScreenState extends State<LocalSourcesScreen> {
 
   Future<void> _scanAllFolders() async {
     if (_isScanning) return;
-    
+
     setState(() {
       _isScanning = true;
       _scanStatus = 'Iniciando...';
@@ -68,12 +69,13 @@ class _LocalSourcesScreenState extends State<LocalSourcesScreen> {
     for (final folder in _folders) {
       final path = folder['path'] as String;
       setState(() => _scanStatus = 'Escaneando: $path');
-      
+
       try {
         final directory = Directory(path);
         if (!await directory.exists()) continue;
 
-        await for (var entity in directory.list(recursive: true, followLinks: false)) {
+        await for (var entity
+            in directory.list(recursive: true, followLinks: false)) {
           if (entity is File) {
             final path = entity.path.toLowerCase();
             String? mediaType;
@@ -98,15 +100,17 @@ class _LocalSourcesScreenState extends State<LocalSourcesScreen> {
 
                 if (mediaType == 'audio') {
                   try {
-                    final metadata = await _metadataService.readMetadata(entity.path);
-                    title = metadata['title'] ?? title.replaceAll(RegExp(r'\.(mp3|wav|flac|m4a)$'), '');
+                    final metadata =
+                        await _metadataService.readMetadata(entity.path);
+                    title = metadata['title'] ??
+                        title.replaceAll(RegExp(r'\.(mp3|wav|flac|m4a)$'), '');
                     artist = metadata['artist'] ?? artist;
                     album = metadata['album'];
                   } catch (e) {
-                     // ignore metadata read errors
+                    // ignore metadata read errors
                   }
                 } else {
-                   title = title.replaceAll(RegExp(r'\.(mp4|mkv|avi|mov)$'), '');
+                  title = title.replaceAll(RegExp(r'\.(mp4|mkv|avi|mov)$'), '');
                 }
 
                 await _dbService.saveTrack({
@@ -122,7 +126,8 @@ class _LocalSourcesScreenState extends State<LocalSourcesScreen> {
                 });
                 totalTracksFound++;
                 if (totalTracksFound % 10 == 0) {
-                  setState(() => _scanStatus = '$totalTracksFound arquivos encontrados...');
+                  setState(() => _scanStatus =
+                      '$totalTracksFound arquivos encontrados...');
                 }
               } catch (e) {
                 debugPrint('Error processing file ${entity.path}: $e');

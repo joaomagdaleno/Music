@@ -32,7 +32,8 @@ class PlaybackService {
   void _applyStreamingConfigs() {
     if (_player.platform is NativePlayer) {
       final player = _player.platform as NativePlayer;
-      player.setProperty('user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+      player.setProperty('user-agent',
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
       player.setProperty('referrer', 'https://www.youtube.com/');
       player.setProperty('demuxer-max-bytes', '33554432'); // 32MB
       player.setProperty('demuxer-readahead-secs', '30');
@@ -42,7 +43,7 @@ class PlaybackService {
 
   @visibleForTesting
   PlaybackService.forTesting({
-    Player? player, 
+    Player? player,
     BaseAudioHandler? handler,
     VideoController? videoController,
   }) {
@@ -106,7 +107,8 @@ class PlaybackService {
     });
 
     _player.stream.error.listen((error) {
-      StartupLogger.logError('[PlaybackService] Player Error', error, StackTrace.current);
+      StartupLogger.logError(
+          '[PlaybackService] Player Error', error, StackTrace.current);
     });
 
     _player.stream.playing.listen((playing) {
@@ -129,8 +131,9 @@ class PlaybackService {
         final lastTrack = SearchResult.fromJson(lastTrackData);
         _currentTrack = lastTrack;
         _trackController.add(lastTrack);
-        
-        StartupLogger.log('[PlaybackService] Restored last track metadata: ${lastTrack.title}');
+
+        StartupLogger.log(
+            '[PlaybackService] Restored last track metadata: ${lastTrack.title}');
 
         _restoreAudioSource(lastTrack);
       }
@@ -145,20 +148,19 @@ class PlaybackService {
     try {
       _queue.clear();
       _queue.add(track);
-      
+
       final source = await _createSource(track);
       if (source != null) {
         await _player.open(Media(source), play: false);
       }
-      
+
       _audioHandler.mediaItem.add(MediaItem(
         id: track.id,
         album: track.album ?? 'Unknown Album',
         title: track.title,
         artist: track.artist,
-        duration: track.duration != null
-            ? Duration(seconds: track.duration!)
-            : null,
+        duration:
+            track.duration != null ? Duration(seconds: track.duration!) : null,
         artUri: track.thumbnail != null ? Uri.parse(track.thumbnail!) : null,
       ));
       StartupLogger.log('[PlaybackService] Source restored and ready');
@@ -169,7 +171,7 @@ class PlaybackService {
 
   void _updatePlaybackState() {
     final playing = _player.state.playing;
-    
+
     // Manage wakelock based on playback state
     if (playing) {
       WakelockPlus.enable();
@@ -178,26 +180,26 @@ class PlaybackService {
     }
 
     _audioHandler.playbackState.add(PlaybackState(
-          controls: [
-            MediaControl.skipToPrevious,
-            if (playing) MediaControl.pause else MediaControl.play,
-            MediaControl.stop,
-            MediaControl.skipToNext,
-          ],
-          systemActions: const {
-            MediaAction.seek,
-            MediaAction.seekForward,
-            MediaAction.seekBackward,
-            MediaAction.skipToNext,
-            MediaAction.skipToPrevious,
-          },
-          androidCompactActionIndices: const [0, 1, 3],
-          processingState: _mapProcessingState(),
-          playing: playing,
-          updatePosition: _player.state.position,
-          bufferedPosition: _player.state.buffer,
-          speed: _player.state.rate,
-        ));
+      controls: [
+        MediaControl.skipToPrevious,
+        if (playing) MediaControl.pause else MediaControl.play,
+        MediaControl.stop,
+        MediaControl.skipToNext,
+      ],
+      systemActions: const {
+        MediaAction.seek,
+        MediaAction.seekForward,
+        MediaAction.seekBackward,
+        MediaAction.skipToNext,
+        MediaAction.skipToPrevious,
+      },
+      androidCompactActionIndices: const [0, 1, 3],
+      processingState: _mapProcessingState(),
+      playing: playing,
+      updatePosition: _player.state.position,
+      bufferedPosition: _player.state.buffer,
+      speed: _player.state.rate,
+    ));
   }
 
   AudioProcessingState _mapProcessingState() {
@@ -216,15 +218,14 @@ class PlaybackService {
     _fetchLyrics(track);
 
     _audioHandler.mediaItem.add(MediaItem(
-          id: track.id,
-          album: track.album ?? 'Unknown Album',
-          title: track.title,
-          artist: track.artist,
-          duration: track.duration != null
-              ? Duration(seconds: track.duration!)
-              : null,
-          artUri: track.thumbnail != null ? Uri.parse(track.thumbnail!) : null,
-        ));
+      id: track.id,
+      album: track.album ?? 'Unknown Album',
+      title: track.title,
+      artist: track.artist,
+      duration:
+          track.duration != null ? Duration(seconds: track.duration!) : null,
+      artUri: track.thumbnail != null ? Uri.parse(track.thumbnail!) : null,
+    ));
   }
 
   Future<void> toggleFavorite() async {
@@ -237,12 +238,13 @@ class PlaybackService {
 
   Future<void> playSearchResult(SearchResult result,
       {bool fromRemote = false}) async {
-    StartupLogger.log('[PlaybackService] Playing search result: ${result.title} (${result.platform})');
+    StartupLogger.log(
+        '[PlaybackService] Playing search result: ${result.title} (${result.platform})');
     _currentTrack = result;
 
     _queue.clear();
     _queue.add(result);
-    
+
     final source = await _createSource(result);
     if (source != null) {
       await _player.open(Media(source));
@@ -262,10 +264,12 @@ class PlaybackService {
 
   Future<String?> _createSource(SearchResult track) async {
     if (track.localPath != null) {
-      StartupLogger.log('[PlaybackService] Playing local file: ${track.localPath}');
+      StartupLogger.log(
+          '[PlaybackService] Playing local file: ${track.localPath}');
       return track.localPath;
     }
-    StartupLogger.log('[PlaybackService] Fetching stream URL for: ${track.url}');
+    StartupLogger.log(
+        '[PlaybackService] Fetching stream URL for: ${track.url}');
     // Logic for highest quality resolution should be in search_service
     final streamUrl = await _searchService.getStreamUrl(
       track.url,
@@ -276,7 +280,8 @@ class PlaybackService {
       StartupLogger.log('[PlaybackService] Stream URL obtained successfully');
       return streamUrl;
     }
-    StartupLogger.log('[PlaybackService] ERROR: Could not get stream URL for ${track.id}');
+    StartupLogger.log(
+        '[PlaybackService] ERROR: Could not get stream URL for ${track.id}');
     return null;
   }
 
@@ -343,7 +348,6 @@ class PlaybackService {
   }
 
   void playFromRemote(Duration position) {
-
     _player.seek(position);
     _player.play();
   }
@@ -404,20 +408,20 @@ class PlaybackService {
 
     // 1. Try to read from local file if it exists
     if (track.url.startsWith('/') || track.url.startsWith('file://')) {
-       try {
-         final path = track.url.replaceFirst('file://', '');
-         final metadata = await MetadataService().readMetadata(path);
-         final localLyrics = metadata['lyrics'] as String?;
-         if (localLyrics != null && localLyrics.isNotEmpty) {
-           _currentLyrics = LyricsService.instance.parseLrc(localLyrics);
-           if (_currentLyrics.isNotEmpty) {
-             _lyricsController.add(_currentLyrics);
-             return;
-           }
-         }
-       } catch (e) {
-         debugPrint('Error reading local lyrics: $e');
-       }
+      try {
+        final path = track.url.replaceFirst('file://', '');
+        final metadata = await MetadataService().readMetadata(path);
+        final localLyrics = metadata['lyrics'] as String?;
+        if (localLyrics != null && localLyrics.isNotEmpty) {
+          _currentLyrics = LyricsService.instance.parseLrc(localLyrics);
+          if (_currentLyrics.isNotEmpty) {
+            _lyricsController.add(_currentLyrics);
+            return;
+          }
+        }
+      } catch (e) {
+        debugPrint('Error reading local lyrics: $e');
+      }
     }
 
     // 2. Fallback to online fetching
@@ -446,8 +450,10 @@ class MusicAudioHandler extends BaseAudioHandler {
   MusicAudioHandler(this._service);
 
   @override
-  Future<void> updateMediaItem(MediaItem mediaItem) async => this.mediaItem.add(mediaItem);
-  Future<void> updatePlaybackState(PlaybackState state) async => playbackState.add(state);
+  Future<void> updateMediaItem(MediaItem mediaItem) async =>
+      this.mediaItem.add(mediaItem);
+  Future<void> updatePlaybackState(PlaybackState state) async =>
+      playbackState.add(state);
 
   @override
   Future<void> play() => _service.resume();

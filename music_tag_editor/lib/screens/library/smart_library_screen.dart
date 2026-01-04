@@ -22,15 +22,18 @@ class _SmartLibraryScreenState extends State<SmartLibraryScreen> {
   void initState() {
     super.initState();
     _topHitsFuture = _loadTracks(DatabaseService.instance.getMostPlayed());
-    _recentDiscoveriesFuture = _loadTracks(DatabaseService.instance.getRecentlyPlayed());
+    _recentDiscoveriesFuture =
+        _loadTracks(DatabaseService.instance.getRecentlyPlayed());
   }
 
-  Future<List<SearchResult>> _loadTracks(Future<List<Map<String, dynamic>>> source) async {
+  Future<List<SearchResult>> _loadTracks(
+      Future<List<Map<String, dynamic>>> source) async {
     final data = await source;
     return data.map((t) => SearchResult.fromJson(t)).toList();
   }
 
-  void _playTrack(SearchResult track) => PlaybackService.instance.playSearchResult(track);
+  void _playTrack(SearchResult track) =>
+      PlaybackService.instance.playSearchResult(track);
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +42,15 @@ class _SmartLibraryScreenState extends State<SmartLibraryScreen> {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:
-        return FluentSmartLibraryView(topHitsFuture: _topHitsFuture, recentDiscoveriesFuture: _recentDiscoveriesFuture, onPlayTrack: _playTrack);
+        return FluentSmartLibraryView(
+            topHitsFuture: _topHitsFuture,
+            recentDiscoveriesFuture: _recentDiscoveriesFuture,
+            onPlayTrack: _playTrack);
       default:
-        return MaterialSmartLibraryView(topHitsFuture: _topHitsFuture, recentDiscoveriesFuture: _recentDiscoveriesFuture, onPlayTrack: _playTrack);
+        return MaterialSmartLibraryView(
+            topHitsFuture: _topHitsFuture,
+            recentDiscoveriesFuture: _recentDiscoveriesFuture,
+            onPlayTrack: _playTrack);
     }
   }
 }

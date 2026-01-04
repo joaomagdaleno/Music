@@ -61,7 +61,7 @@ class FirebaseSyncService {
   /// Check if library is empty and restore from cloud if so.
   Future<void> _checkAndRestore() async {
     if (_currentUser == null) return;
-    
+
     final tracks = await _db.getTracks();
     if (tracks.isEmpty) {
       await pullFromCloud();
@@ -108,7 +108,8 @@ class FirebaseSyncService {
     final rules = await _db.getLearningRules();
 
     final batch = _firestore.batch();
-    final rulesRef = _firestore.collection('users').doc(userId).collection('learning_rules');
+    final rulesRef =
+        _firestore.collection('users').doc(userId).collection('learning_rules');
 
     for (final rule in rules) {
       final docId = '${rule.field}_${rule.originalValue.hashCode}';

@@ -25,16 +25,19 @@ class _LoginScreenState extends State<LoginScreen> {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
-    debugPrint('[LoginScreen] Starting ${_isLogin ? 'LOGIN' : 'REGISTRATION'} process for: $email');
-    bool success = _isLogin
+    debugPrint(
+        '[LoginScreen] Starting ${_isLogin ? 'LOGIN' : 'REGISTRATION'} process for: $email');
+    final bool success = _isLogin
         ? await AuthService.instance.login(email, password)
         : await AuthService.instance.register(email, password);
-    debugPrint('[LoginScreen] Auth process finished. Result: ${success ? 'SUCCESS' : 'FAILURE'}');
+    debugPrint(
+        '[LoginScreen] Auth process finished. Result: ${success ? 'SUCCESS' : 'FAILURE'}');
 
     if (mounted) {
       setState(() => _isLoading = false);
       if (success) {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const AppShell()));
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const AppShell()));
       } else {
         _showError();
       }
@@ -43,47 +46,84 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _showError() {
     final platform = defaultTargetPlatform;
-    if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
-      fluent.displayInfoBar(context, builder: (_, close) => fluent.InfoBar(title: const Text('Falha na autenticação'), severity: fluent.InfoBarSeverity.error, onClose: close));
+    if (platform == TargetPlatform.windows ||
+        platform == TargetPlatform.macOS ||
+        platform == TargetPlatform.linux) {
+      fluent.displayInfoBar(context,
+          builder: (_, close) => fluent.InfoBar(
+              title: const Text('Falha na autenticação'),
+              severity: fluent.InfoBarSeverity.error,
+              onClose: close));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Falha na autenticação')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Falha na autenticação')));
     }
   }
 
   void _showRecoveryDialog() {
-    final recoveryEmailController = TextEditingController(text: _emailController.text);
-    
+    final recoveryEmailController =
+        TextEditingController(text: _emailController.text);
+
     final platform = defaultTargetPlatform;
-    if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
-      fluent.showDialog(context: context, builder: (_) => fluent.ContentDialog(
-        title: const Text('Recuperação 2FA'),
-        content: Column(mainAxisSize: MainAxisSize.min, children: [const Text('Enviaremos um link de recuperação para o seu email.'), const SizedBox(height: 16), fluent.TextBox(controller: recoveryEmailController, placeholder: 'Confirmar Email')]),
-        actions: [
-          fluent.Button(child: const Text('Cancelar'), onPressed: () => Navigator.pop(context)),
-          fluent.FilledButton(child: const Text('Enviar'), onPressed: () async {
-            final email = recoveryEmailController.text.trim();
-            if (email.isNotEmpty) {
-              await AuthService.instance.sendPasswordReset(email);
-              if (mounted) Navigator.pop(context);
-            }
-          }),
-        ],
-      ));
+    if (platform == TargetPlatform.windows ||
+        platform == TargetPlatform.macOS ||
+        platform == TargetPlatform.linux) {
+      fluent.showDialog(
+          context: context,
+          builder: (_) => fluent.ContentDialog(
+                title: const Text('Recuperação 2FA'),
+                content: Column(mainAxisSize: MainAxisSize.min, children: [
+                  const Text(
+                      'Enviaremos um link de recuperação para o seu email.'),
+                  const SizedBox(height: 16),
+                  fluent.TextBox(
+                      controller: recoveryEmailController,
+                      placeholder: 'Confirmar Email')
+                ]),
+                actions: [
+                  fluent.Button(
+                      child: const Text('Cancelar'),
+                      onPressed: () => Navigator.pop(context)),
+                  fluent.FilledButton(
+                      child: const Text('Enviar'),
+                      onPressed: () async {
+                        final email = recoveryEmailController.text.trim();
+                        if (email.isNotEmpty) {
+                          await AuthService.instance.sendPasswordReset(email);
+                          if (mounted) Navigator.pop(context);
+                        }
+                      }),
+                ],
+              ));
     } else {
-      showDialog(context: context, builder: (_) => AlertDialog(
-        title: const Text('Recuperação 2FA'),
-        content: Column(mainAxisSize: MainAxisSize.min, children: [const Text('Enviaremos um link de recuperação para o seu email.'), const SizedBox(height: 16), TextField(controller: recoveryEmailController, decoration: const InputDecoration(labelText: 'Confirmar Email'))]),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar')),
-          ElevatedButton(onPressed: () async {
-            final email = recoveryEmailController.text.trim();
-            if (email.isNotEmpty) {
-              await AuthService.instance.sendPasswordReset(email);
-              if (mounted) Navigator.pop(context);
-            }
-          }, child: const Text('Enviar')),
-        ],
-      ));
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Recuperação 2FA'),
+                content: Column(mainAxisSize: MainAxisSize.min, children: [
+                  const Text(
+                      'Enviaremos um link de recuperação para o seu email.'),
+                  const SizedBox(height: 16),
+                  TextField(
+                      controller: recoveryEmailController,
+                      decoration:
+                          const InputDecoration(labelText: 'Confirmar Email'))
+                ]),
+                actions: [
+                  TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Cancelar')),
+                  ElevatedButton(
+                      onPressed: () async {
+                        final email = recoveryEmailController.text.trim();
+                        if (email.isNotEmpty) {
+                          await AuthService.instance.sendPasswordReset(email);
+                          if (mounted) Navigator.pop(context);
+                        }
+                      },
+                      child: const Text('Enviar')),
+                ],
+              ));
     }
   }
 

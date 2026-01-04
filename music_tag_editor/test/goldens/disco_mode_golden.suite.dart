@@ -130,9 +130,9 @@ void main() {
           GoldenTestScenario(
             name: 'phone',
             constraints: BoxConstraints.tight(const Size(400, 1000)),
-            child: MediaQuery(
-              data: const MediaQueryData(size: Size(400, 1000)),
-              child: const DiscoModeScreen(),
+            child: const MediaQuery(
+              data: MediaQueryData(size: Size(400, 1000)),
+              child: DiscoModeScreen(),
             ),
           ),
         ],

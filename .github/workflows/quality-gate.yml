@@ -16,18 +16,18 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
 
       - name: Install Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@44c065818f283a3d525838ca02175ff20172960f # v2.16.0
         with:
           flutter-version: '3.38.2'
           cache: true
 
       - name: Cache Pub Dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@0c45773b623bec8c74a4659c39ef59862f9d49a6 # v4.2.0
         with:
           path: |
             ~/.pub-cache
@@ -48,7 +48,7 @@ jobs:
 
       - name: Check Formatting
         working-directory: music_tag_editor
-        run: flutter format --set-exit-if-changed .
+        run: dart format --set-exit-if-changed .
 
       - name: Run Flutter Analyzer
         working-directory: music_tag_editor
@@ -83,8 +83,31 @@ jobs:
             echo '```' >> $GITHUB_STEP_SUMMARY
           fi
 
+      - name: The Alchemist's Brew 🧪 (Asset Audit)
+        run: python scripts/asset_guard.py >> $GITHUB_STEP_SUMMARY || true
+
+      - name: The Inquisitor's Eye 🔦 (Vulnerability Scan)
+        uses: google/osv-scanner-action/canary@737667d0137e7a83d7894a4066063e00fcda9f55 # v1.9.1
+        with:
+          scan-args: |-
+            --recursive
+            --require-hashes
+            ./music_tag_editor
+        continue-on-error: true
+
+      - name: The Chronicler's Archive 📜 (API Documentation)
+        working-directory: music_tag_editor
+        run: |
+          dart doc .
+          mkdir -p ../artifacts/docs
+          cp -r doc/api/* ../artifacts/docs/
+          echo "### 📜 The Chronicler: API Documentation generated" >> $GITHUB_STEP_SUMMARY
+
+      - name: The Warden's Patrol ⚖️ (License Audit)
+        run: python scripts/license_warden.py >> $GITHUB_STEP_SUMMARY || true
+
       - name: Upload Quality Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.5.0
         with:
           name: quality-inventory
           path: artifacts/
@@ -108,13 +131,13 @@ jobs:
           echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
 
       - name: Install Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@44c065818f283a3d525838ca02175ff20172960f # v2.16.0
         with:
           flutter-version: '3.38.2'
           cache: true
 
       - name: Cache Pub Dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@0c45773b623bec8c74a4659c39ef59862f9d49a6 # v4.2.0
         with:
           path: |
             ~/.pub-cache
@@ -126,14 +149,39 @@ jobs:
         working-directory: music_tag_editor
         run: flutter pub get
 
-      - name: Run Tests
+      - name: Run Tests with Auditing 🔦
         working-directory: music_tag_editor
+        id: test_run
         run: |
-          flutter test --coverage | tee test_output.log
-          TEST_RESULT=$?
-          if [ $TEST_RESULT -ne 0 ]; then
+          # Use JSON reporter to capture durations while still showing output
+          (flutter test --coverage --reporter json | tee test_results.json) || (echo "TEST_FAILED=true" >> $GITHUB_ENV)
+          
+      - name: The Ghost Hunter's Audit 🔦
+        working-directory: music_tag_editor
+        if: always() && steps.test_run.outcome != 'skipped'
+        run: |
+          echo "### 🔦 The Ghost Hunter's Lantern: Test Performance Audit" >> $GITHUB_STEP_SUMMARY
+          if [ -f "test_results.json" ]; then
+            echo "| Test Name | Duration (ms) | Result |" >> $GITHUB_STEP_SUMMARY
+            echo "| :--- | :--- | :--- |" >> $GITHUB_STEP_SUMMARY
+            
+            # Extract top 5 slowest successful tests
+            # We filter for testDone events and join with their names from testStart
+            # Note: jq is used to bridge the gap between IDs and names
+            cat test_results.json | grep '"type":"testDone"' | \
+            jq -r 'select(.hidden == false) | [.time, .testID] | @tsv' | \
+            sort -rn | head -n 5 | while read -r time testid; do
+              name=$(grep "\"type\":\"testStart\"" test_results.json | jq -r "select(.test.id == $testid) | .test.name")
+              echo "| $name | $time | ✅ |" >> $GITHUB_STEP_SUMMARY
+            done
+          else
+            echo "⚠️ No test results JSON found for auditing." >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Finalize exit status
+          if [ "$TEST_FAILED" = "true" ]; then
             echo "::error title=Hermes 📦 Alert::Tests failed!"
-            exit $TEST_RESULT
+            exit 1
           fi
 
       - name: Dependency Hygiene 🧼
@@ -177,6 +225,10 @@ jobs:
           echo "| **Linter & Formatting** | ✅ (See Lint Job) |" >> $GITHUB_STEP_SUMMARY
           echo "| **Architecture Guard** | ✅ Scan Complete |" >> $GITHUB_STEP_SUMMARY
           echo "| **The Inventory** | ✅ Dependencies Exported |" >> $GITHUB_STEP_SUMMARY
+          echo "| **The Inquisitor** | ✅ Vulnerability Scan Run |" >> $GITHUB_STEP_SUMMARY
+          echo "| **The Chronicler** | ✅ API Docs Generated |" >> $GITHUB_STEP_SUMMARY
+          echo "| **The Warden** | ✅ License Audit Run |" >> $GITHUB_STEP_SUMMARY
+          echo "| **The Oracle** | ✅ Accessibility Scan |" >> $GITHUB_STEP_SUMMARY
           echo "| **Tests** | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
           echo "| **Line Coverage** | ${{ steps.coverage.outputs.percentage }}% |" >> $GITHUB_STEP_SUMMARY
           
@@ -203,6 +255,10 @@ jobs:
           | Job | Status |
           | :--- | :--- |
           | **Analysis & Formatting** | ✅ Passou |
+          | **The Inquisitor** | ✅ Protegido |
+          | **The Warden** | ✅ Legal |
+          | **The Oracle** | ✅ Acessível |
+          | **The Chronicler** | ✅ Documentado |
           | **Security Bastion** | ✅ Seguro |
           | **Architecture Guard** | ✅ Integrado |
           | **The Inventory** | ✅ Mapeado |

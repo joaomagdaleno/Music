@@ -109,7 +109,7 @@ void main() {
 
   group('Duo', () {
     test('save guest and add session tracks', () async {
-      final guestId = 'g1';
+      const guestId = 'g1';
       await service.saveGuest(guestId, 'Guest 1');
       await service.saveTrack(
           {'id': 'd_track', 'title': 'DT', 'platform': 'yt', 'url': 'u'});

@@ -61,25 +61,28 @@ void main() {
     when(() => mockPlayback.currentTrack).thenReturn(null);
     when(() => mockPlayback.currentTrackStream)
         .thenAnswer((_) => const Stream.empty());
-    
+
     // Use FakePlayerStream for all streams
     when(() => mockPlayer.stream).thenReturn(FakePlayerStream());
-    when(() => mockPlayer.state).thenReturn(PlayerState());
-
+    when(() => mockPlayer.state).thenReturn(const PlayerState());
   });
 
   group('MusicTagEditorApp', () {
     testWidgets('renders MaterialApp', (tester) async {
-      await tester.pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
+      await tester.pumpWidget(
+          const MusicTagEditorApp(platform: TargetPlatform.android));
       await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.byType(MaterialApp), findsOneWidget);
     });
 
-    testWidgets('shows HomeScreen in AppShell when not authenticated (Guest Mode)', (tester) async {
+    testWidgets(
+        'shows HomeScreen in AppShell when not authenticated (Guest Mode)',
+        (tester) async {
       when(() => mockAuth.isAuthenticated).thenReturn(false);
 
-      await tester.pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
+      await tester.pumpWidget(
+          const MusicTagEditorApp(platform: TargetPlatform.android));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 200));
 
@@ -89,7 +92,8 @@ void main() {
     testWidgets('uses theme color from ThemeService', (tester) async {
       when(() => mockTheme.primaryColor).thenReturn(Colors.purple);
 
-      await tester.pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
+      await tester.pumpWidget(
+          const MusicTagEditorApp(platform: TargetPlatform.android));
       await tester.pump(const Duration(milliseconds: 100));
 
       final MaterialApp app =

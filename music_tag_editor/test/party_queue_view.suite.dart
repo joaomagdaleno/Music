@@ -11,12 +11,10 @@ void main() {
     setupHttpOverrides();
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: const PartyQueueScreen(),
-    );
-  }
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const PartyQueueScreen(),
+      );
 
   group('PartyQueueScreen', () {
     testWidgets('renders app bar', (tester) async {
@@ -35,7 +33,8 @@ void main() {
     testWidgets('renders description text', (tester) async {
       await tester.pumpWidget(createTestWidget());
 
-      expect(find.textContaining('Escaneie para adicionar músicas!'), findsOneWidget);
+      expect(find.textContaining('Escaneie para adicionar músicas!'),
+          findsOneWidget);
     });
 
     testWidgets('has generate QR button', (tester) async {

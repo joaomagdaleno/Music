@@ -59,11 +59,10 @@ void main() {
       // Expectation
       expectLater(
         castService.devicesStream,
-        emits(predicate<List<CastDevice>>((devices) {
-          return devices.isNotEmpty &&
-              devices.first.name == 'Living Room TV' &&
-              devices.first.host == '192.168.1.50';
-        })),
+        emits(predicate<List<CastDevice>>((devices) =>
+            devices.isNotEmpty &&
+            devices.first.name == 'Living Room TV' &&
+            devices.first.host == '192.168.1.50')),
       );
 
       await castService.parseSsdpResponse(responseMsg);
@@ -115,9 +114,8 @@ void main() {
 
       expectLater(
         castService.devicesStream,
-        emits(predicate<List<CastDevice>>((devices) {
-          return devices.first.controlUrl == 'http://192.168.1.50:8008/control';
-        })),
+        emits(predicate<List<CastDevice>>((devices) =>
+            devices.first.controlUrl == 'http://192.168.1.50:8008/control')),
       );
 
       await castService.parseSsdpResponse(responseMsg);

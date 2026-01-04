@@ -256,11 +256,8 @@ class MetadataAggregatorService {
     return null;
   }
 
-  AggregatedMetadata _vote(
-      Map<String, Map<String, dynamic>> results,
-      String title,
-      String artist,
-      int? durationMs) {
+  AggregatedMetadata _vote(Map<String, Map<String, dynamic>> results,
+      String title, String artist, int? durationMs) {
     // 1. Establish Source Hierarchy
     final mb = results['musicbrainz'] ?? {};
     final discogs = results['discogs'] ?? {};
@@ -269,14 +266,14 @@ class MetadataAggregatorService {
     final spotify = results['spotify'] ?? {};
 
     // 2. Voting / Gap Filling Algorithm
-    
+
     // Sensitivity check: If a source has a wildly different artist, we ignore its title/artist votes
     // but might still keep its other data if confidence is high.
     bool sourceMatches(Map<String, dynamic> source) {
       if (source['artist'] == null || artist.isEmpty) return true;
       final sArtist = source['artist'].toString().toLowerCase();
       final targetArtist = artist.toLowerCase();
-      
+
       // Simple inclusion or overlap check
       return sArtist.contains(targetArtist) || targetArtist.contains(sArtist);
     }
@@ -288,61 +285,88 @@ class MetadataAggregatorService {
     final geniusMatch = sourceMatches(genius);
 
     // Title/Artist: Trust MusicBrainz/Spotify first (if they match the intended artist), otherwise vote
-    String? finalTitle = (mbMatch ? mb['title'] : null) ?? (spotifyMatch ? spotify['title'] : null) ?? _getMostCommon([
-      if (discogsMatch) discogs['title'], 
-      if (lastfmMatch) lastfm['title'], 
-      if (geniusMatch) genius['title']
-    ].whereType<String>().toList());
+    String? finalTitle = (mbMatch ? mb['title'] : null) ??
+        (spotifyMatch ? spotify['title'] : null) ??
+        _getMostCommon([
+          if (discogsMatch) discogs['title'],
+          if (lastfmMatch) lastfm['title'],
+          if (geniusMatch) genius['title']
+        ].whereType<String>().toList());
 
-    String? finalArtist = (mbMatch ? mb['artist'] : null) ?? (spotifyMatch ? spotify['artist'] : null) ?? _getMostCommon([
-      if (discogsMatch) discogs['artist'], 
-      if (lastfmMatch) lastfm['artist'], 
-      if (geniusMatch) genius['artist']
-    ].whereType<String>().toList());
+    String? finalArtist = (mbMatch ? mb['artist'] : null) ??
+        (spotifyMatch ? spotify['artist'] : null) ??
+        _getMostCommon([
+          if (discogsMatch) discogs['artist'],
+          if (lastfmMatch) lastfm['artist'],
+          if (geniusMatch) genius['artist']
+        ].whereType<String>().toList());
 
     // Fallback to initial if nothing matched reasonably
     finalTitle ??= title;
     finalArtist ??= artist;
-    
+
     // Album: MusicBrainz > Spotify > Discogs > LastFM
-    String? finalAlbum = mb['album'] ?? spotify['album'] ?? discogs['title'] ?? lastfm['album']; 
-    
+    final String? finalAlbum =
+        mb['album'] ?? spotify['album'] ?? discogs['title'] ?? lastfm['album'];
+
     // Year: Spotify/Discogs > MusicBrainz
-    int? finalYear = spotify['year'] ?? (discogs['year'] != null ? int.tryParse(discogs['year'].toString()) : null);
+    int? finalYear = spotify['year'] ??
+        (discogs['year'] != null
+            ? int.tryParse(discogs['year'].toString())
+            : null);
     if (finalYear == null && mb['year'] != null) {
-       finalYear = int.tryParse(mb['year'].toString());
+      finalYear = int.tryParse(mb['year'].toString());
     }
 
     // Fallback to voting for year if multiple sources have it
     if (finalYear == null) {
-       final years = [lastfm['year'], discogs['year'], mb['year']].whereType<num>().map((e) => e.toInt()).toList();
-       if (years.isNotEmpty) finalYear = years.first;
+      final years = [lastfm['year'], discogs['year'], mb['year']]
+          .whereType<num>()
+          .map((e) => e.toInt())
+          .toList();
+      if (years.isNotEmpty) finalYear = years.first;
     }
 
     // Genre: Combine ALL unique genres found
     final Set<String> combinedGenres = {};
     for (var source in results.values) {
       if (source['genres'] is List) {
-        combinedGenres.addAll((source['genres'] as List).map((e) => e.toString()));
+        combinedGenres
+            .addAll((source['genres'] as List).map((e) => e.toString()));
       }
     }
     // Pick the most popular genre as primary
-    String? finalGenre = _getMostCommon(combinedGenres.toList());
+    final String? finalGenre = _getMostCommon(combinedGenres.toList());
 
     // Thumbnail: Priority to high res: Spotify > Genius > Discogs
-    String? finalThumbnail = spotify['thumbnail'] ?? genius['thumbnail'] ?? discogs['cover'] ?? discogs['thumbnail'] ?? lastfm['thumbnail'] ?? mb['thumbnail'];
+    final String? finalThumbnail = spotify['thumbnail'] ??
+        genius['thumbnail'] ??
+        discogs['cover'] ??
+        discogs['thumbnail'] ??
+        lastfm['thumbnail'] ??
+        mb['thumbnail'];
 
     // Calculate confidence based on agreement
     int agreements = 0;
     int total = 0;
-    
-    final titleVotes = [mb['title'], discogs['title'], lastfm['title'], genius['title']].whereType<String>().toList();
+
+    final titleVotes = [
+      mb['title'],
+      discogs['title'],
+      lastfm['title'],
+      genius['title']
+    ].whereType<String>().toList();
     if (titleVotes.isNotEmpty) {
       total++;
-       if (titleVotes.length > 1 || mb['title'] != null) agreements++;
+      if (titleVotes.length > 1 || mb['title'] != null) agreements++;
     }
 
-    final artistVotes = [mb['artist'], discogs['artist'], lastfm['artist'], genius['artist']].whereType<String>().toList();
+    final artistVotes = [
+      mb['artist'],
+      discogs['artist'],
+      lastfm['artist'],
+      genius['artist']
+    ].whereType<String>().toList();
     if (artistVotes.isNotEmpty) {
       total++;
       if (artistVotes.length > 1 || mb['artist'] != null) agreements++;
@@ -358,25 +382,31 @@ class MetadataAggregatorService {
       year: finalYear,
       thumbnail: finalThumbnail,
       allGenres: combinedGenres.toList(),
-      confidence: confidence, 
+      confidence: confidence,
     );
   }
 
-  Future<Map<String, dynamic>?> _fetchSpotify(String title, String artist) async {
+  Future<Map<String, dynamic>?> _fetchSpotify(
+      String title, String artist) async {
     try {
       final spotify = await _searchService.spotifyApi;
       if (spotify == null) return null;
 
-      final results = await spotify.search.get('$title $artist', types: [spot.SearchType.track]).first(1);
+      final results = await spotify.search
+          .get('$title $artist', types: [spot.SearchType.track]).first(1);
       if (results.isNotEmpty && results.first.items?.isNotEmpty == true) {
         final track = results.first.items!.first as spot.Track;
         return {
           'title': track.name,
           'artist': track.artists?.map((a) => a.name).join(', '),
           'album': track.album?.name,
-          'year': track.album?.releaseDate != null ? int.tryParse(track.album!.releaseDate!.split('-')[0]) : null,
-          'thumbnail': track.album?.images?.isNotEmpty == true ? track.album!.images!.first.url : null,
-          'genres': [], 
+          'year': track.album?.releaseDate != null
+              ? int.tryParse(track.album!.releaseDate!.split('-')[0])
+              : null,
+          'thumbnail': track.album?.images?.isNotEmpty == true
+              ? track.album!.images!.first.url
+              : null,
+          'genres': [],
         };
       }
     } catch (_) {}
@@ -401,8 +431,6 @@ class MetadataAggregatorService {
     final winner = sorted.first.key;
     return votes.firstWhere((v) => v.toLowerCase() == winner);
   }
-
-
 
   bool _validateDuration(List<LyricLine> lyrics, int? durationMs) {
     if (durationMs == null || lyrics.isEmpty) {

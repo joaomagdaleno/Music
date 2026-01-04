@@ -38,12 +38,10 @@ void main() {
     when(() => mockDb.getRecentlyPlayed()).thenAnswer((_) async => []);
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: const Scaffold(body: SmartLibraryScreen()),
-    );
-  }
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const Scaffold(body: SmartLibraryScreen()),
+      );
 
   group('SmartLibraryScreen', () {
     testWidgets('renders tab bar', (tester) async {

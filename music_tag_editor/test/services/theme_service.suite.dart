@@ -17,9 +17,8 @@ class FakePaletteColor extends Fake implements PaletteColorMaster {
   FakePaletteColor(this.color);
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'FakePaletteColor($color)';
-  }
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) =>
+      'FakePaletteColor($color)';
 }
 
 class FakePaletteGenerator extends Fake implements PaletteGeneratorMaster {
@@ -30,9 +29,8 @@ class FakePaletteGenerator extends Fake implements PaletteGeneratorMaster {
   PaletteColorMaster? get dominantColor => _colors['dominant'];
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'FakePaletteGenerator';
-  }
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) =>
+      'FakePaletteGenerator';
 }
 
 void main() {
@@ -77,14 +75,12 @@ void main() {
 
       // Mock the generator function
       service.paletteGenerator = (image,
-          {int? maximumColorCount,
-          Size? size,
-          Rect? region,
-          List<PaletteFilterMaster>? filters,
-          List<PaletteTargetMaster>? targets}) async {
-        return FakePaletteGenerator(
-            {'dominant': FakePaletteColor(Colors.green)});
-      };
+              {int? maximumColorCount,
+              Size? size,
+              Rect? region,
+              List<PaletteFilterMaster>? filters,
+              List<PaletteTargetMaster>? targets}) async =>
+          FakePaletteGenerator({'dominant': FakePaletteColor(Colors.green)});
 
       await service.updateThemeFromImage('http://test.com/image.jpg');
 

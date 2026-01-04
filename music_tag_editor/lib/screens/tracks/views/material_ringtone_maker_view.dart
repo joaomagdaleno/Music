@@ -25,37 +25,45 @@ class MaterialRingtoneMakerView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Criador de Toques')),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            track.thumbnail != null ? Image.network(track.thumbnail!, width: 150, cacheWidth: 450) : const Icon(Icons.music_note, size: 100),
-            const SizedBox(height: 24),
-            Text(track.title, style: Theme.of(context).textTheme.headlineSmall),
-            Text(track.artist, style: const TextStyle(color: Colors.grey)),
-            const SizedBox(height: 48),
-            RangeSlider(
-              values: currentRange,
-              min: 0,
-              max: totalDuration.inSeconds.toDouble() > 0 ? totalDuration.inSeconds.toDouble() : 100,
-              onChanged: onRangeChanged,
-            ),
-            const SizedBox(height: 32),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(icon: Icon(isPlayingSegment ? Icons.pause : Icons.play_arrow), onPressed: onPlaySegment, iconSize: 48),
-                const SizedBox(width: 24),
-                ElevatedButton(onPressed: onSave, child: const Text('Salvar Toque')),
-              ],
-            ),
-          ],
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(title: const Text('Criador de Toques')),
+        body: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              track.thumbnail != null
+                  ? Image.network(track.thumbnail!, width: 150, cacheWidth: 450)
+                  : const Icon(Icons.music_note, size: 100),
+              const SizedBox(height: 24),
+              Text(track.title,
+                  style: Theme.of(context).textTheme.headlineSmall),
+              Text(track.artist, style: const TextStyle(color: Colors.grey)),
+              const SizedBox(height: 48),
+              RangeSlider(
+                values: currentRange,
+                min: 0,
+                max: totalDuration.inSeconds.toDouble() > 0
+                    ? totalDuration.inSeconds.toDouble()
+                    : 100,
+                onChanged: onRangeChanged,
+              ),
+              const SizedBox(height: 32),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                      icon: Icon(
+                          isPlayingSegment ? Icons.pause : Icons.play_arrow),
+                      onPressed: onPlaySegment,
+                      iconSize: 48),
+                  const SizedBox(width: 24),
+                  ElevatedButton(
+                      onPressed: onSave, child: const Text('Salvar Toque')),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

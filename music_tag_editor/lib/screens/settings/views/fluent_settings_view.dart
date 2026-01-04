@@ -8,7 +8,7 @@ class FluentSettingsView extends StatefulWidget {
   final FilenameFormat selectedFormat;
   final int crossfadeSeconds;
   final bool ageBypass;
-  
+
   final bool isAuthenticated;
   final ValueChanged<FilenameFormat?> onFormatChanged;
   final ValueChanged<double> onCrossfadeChanged;
@@ -50,165 +50,172 @@ class FluentSettingsView extends StatefulWidget {
 
 class _FluentSettingsViewState extends State<FluentSettingsView> {
   @override
-  Widget build(BuildContext context) {
-    return ScaffoldPage(
-      header: PageHeader(
-        title: const Text('Configurações'),
-        leading: Navigator.canPop(context)
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: IconButton(
-                  icon: const Icon(FluentIcons.back),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              )
-            : null,
-      ),
-      content: widget.isLoading
-          ? const Center(child: ProgressRing())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 24),
-                  Text('Formato do Nome do Arquivo',
-                      style: FluentTheme.of(context).typography.subtitle),
-                  const SizedBox(height: 8),
-                  ComboBox<FilenameFormat>(
-                    value: widget.selectedFormat,
-                    onChanged: widget.onFormatChanged,
-                    items: const [
-                      ComboBoxItem(
-                        value: FilenameFormat.artistTitle,
-                        child: Text('Artist - Title.mp3'),
-                      ),
-                      ComboBoxItem(
-                        value: FilenameFormat.titleArtist,
-                        child: Text('Title (Artist).mp3'),
-                      ),
-                      ComboBoxItem(
-                        value: FilenameFormat.trackArtistTitle,
-                        child: Text('01. Artist - Title.mp3'),
-                      ),
-                    ],
+  Widget build(BuildContext context) => ScaffoldPage(
+        header: PageHeader(
+          title: const Text('Configurações'),
+          leading: Navigator.canPop(context)
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: IconButton(
+                    icon: const Icon(FluentIcons.back),
+                    onPressed: () => Navigator.pop(context),
                   ),
-                  const SizedBox(height: 24),
-                  const Divider(),
-                  const SizedBox(height: 24),
-                  _buildThemeColorSection(),
-                  const SizedBox(height: 24),
-                  const Divider(),
-                  const SizedBox(height: 24),
-                  Text('Manutenção da Biblioteca',
-                      style: FluentTheme.of(context).typography.subtitle),
-                  const SizedBox(height: 8),
-                  Card(
-                    child: ListTile(
-                      title: const Text('Polir Biblioteca'),
-                      subtitle: const Text(
-                          'Remove lixo dos nomes (ex: [OFFICIAL VIDEO]) e organiza gêneros.'),
-                      leading: const Icon(FluentIcons.auto_enhance_on),
-                      onPressed: widget.onCleanupLibrary,
+                )
+              : null,
+        ),
+        content: widget.isLoading
+            ? const Center(child: ProgressRing())
+            : SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0, vertical: 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 24),
+                    Text('Formato do Nome do Arquivo',
+                        style: FluentTheme.of(context).typography.subtitle),
+                    const SizedBox(height: 8),
+                    ComboBox<FilenameFormat>(
+                      value: widget.selectedFormat,
+                      onChanged: widget.onFormatChanged,
+                      items: const [
+                        ComboBoxItem(
+                          value: FilenameFormat.artistTitle,
+                          child: Text('Artist - Title.mp3'),
+                        ),
+                        ComboBoxItem(
+                          value: FilenameFormat.titleArtist,
+                          child: Text('Title (Artist).mp3'),
+                        ),
+                        ComboBoxItem(
+                          value: FilenameFormat.trackArtistTitle,
+                          child: Text('01. Artist - Title.mp3'),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  const Divider(),
-                  const SizedBox(height: 24),
-                  Text('Áudio Avançado',
-                      style: FluentTheme.of(context).typography.subtitle),
-                  const SizedBox(height: 8),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              const Icon(FluentIcons.timer),
-                              const SizedBox(width: 8),
-                              Text('Duração do Crossfade: ${widget.crossfadeSeconds}s'),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Slider(
-                            value: widget.crossfadeSeconds.toDouble(),
-                            min: 0,
-                            max: 10,
-                            divisions: 10,
-                            label: '${widget.crossfadeSeconds} s',
-                            onChanged: widget.onCrossfadeChanged,
-                            onChangeEnd: (val) => widget.onCrossfadeSaved(val.toInt()),
-                          ),
-                        ],
+                    const SizedBox(height: 24),
+                    const Divider(),
+                    const SizedBox(height: 24),
+                    _buildThemeColorSection(),
+                    const SizedBox(height: 24),
+                    const Divider(),
+                    const SizedBox(height: 24),
+                    Text('Manutenção da Biblioteca',
+                        style: FluentTheme.of(context).typography.subtitle),
+                    const SizedBox(height: 8),
+                    Card(
+                      child: ListTile(
+                        title: const Text('Polir Biblioteca'),
+                        subtitle: const Text(
+                            'Remove lixo dos nomes (ex: [OFFICIAL VIDEO]) e organiza gêneros.'),
+                        leading: const Icon(FluentIcons.auto_enhance_on),
+                        onPressed: widget.onCleanupLibrary,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  const Divider(),
-                  const SizedBox(height: 24),
-                  Text('Segurança de Dados',
-                      style: FluentTheme.of(context).typography.subtitle),
-                  const SizedBox(height: 8),
-                  Card(
-                    child: ListTile(
-                      title: const Text('Backup & Restauração'),
-                      subtitle: const Text(
-                          'Exporte ou importe sua biblioteca e configurações.'),
-                      leading: const Icon(FluentIcons.cloud_download),
-                      onPressed: () {
-                         // We need a Fluent version of BackupView or wrap standard one
-                         // For now, standard navigation
-                         Navigator.push(
-                          context,
-                          FluentPageRoute(builder: (_) => const BackupScreen()),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildCloudSyncSection(),
-                   const SizedBox(height: 24),
-                  const Divider(),
-                  const SizedBox(height: 24),
-                  Text('Conteúdo Restrito',
-                      style: FluentTheme.of(context).typography.subtitle),
-                  const SizedBox(height: 8),
-                   Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        children: [
-                          Icon(FluentIcons.warning, color: Colors.orange),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text('Sou maior de 18 anos', style: TextStyle(fontWeight: FontWeight.bold)),
-                                  Text('Permite downloads de conteúdo restrito. Usa cookies do navegador.', style: FluentTheme.of(context).typography.caption),
-                                ]
+                    const SizedBox(height: 24),
+                    const Divider(),
+                    const SizedBox(height: 24),
+                    Text('Áudio Avançado',
+                        style: FluentTheme.of(context).typography.subtitle),
+                    const SizedBox(height: 8),
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(FluentIcons.timer),
+                                const SizedBox(width: 8),
+                                Text(
+                                    'Duração do Crossfade: ${widget.crossfadeSeconds}s'),
+                              ],
                             ),
-                          ),
-                          ToggleSwitch(
-                            checked: widget.ageBypass,
-                            onChanged: _handleAgeBypassChanged,
-                          ),
-                        ],
+                            const SizedBox(height: 8),
+                            Slider(
+                              value: widget.crossfadeSeconds.toDouble(),
+                              min: 0,
+                              max: 10,
+                              divisions: 10,
+                              label: '${widget.crossfadeSeconds} s',
+                              onChanged: widget.onCrossfadeChanged,
+                              onChangeEnd: (val) =>
+                                  widget.onCrossfadeSaved(val.toInt()),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                   ),
-                   const SizedBox(height: 24),
-                   const Divider(),
-                   const SizedBox(height: 24),
-                   _buildSpotifySection(),
-                   const SizedBox(height: 48),
-                ],
+                    const SizedBox(height: 24),
+                    const Divider(),
+                    const SizedBox(height: 24),
+                    Text('Segurança de Dados',
+                        style: FluentTheme.of(context).typography.subtitle),
+                    const SizedBox(height: 8),
+                    Card(
+                      child: ListTile(
+                        title: const Text('Backup & Restauração'),
+                        subtitle: const Text(
+                            'Exporte ou importe sua biblioteca e configurações.'),
+                        leading: const Icon(FluentIcons.cloud_download),
+                        onPressed: () {
+                          // We need a Fluent version of BackupView or wrap standard one
+                          // For now, standard navigation
+                          Navigator.push(
+                            context,
+                            FluentPageRoute(
+                                builder: (_) => const BackupScreen()),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildCloudSyncSection(),
+                    const SizedBox(height: 24),
+                    const Divider(),
+                    const SizedBox(height: 24),
+                    Text('Conteúdo Restrito',
+                        style: FluentTheme.of(context).typography.subtitle),
+                    const SizedBox(height: 8),
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          children: [
+                            Icon(FluentIcons.warning, color: Colors.orange),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('Sou maior de 18 anos',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    Text(
+                                        'Permite downloads de conteúdo restrito. Usa cookies do navegador.',
+                                        style: FluentTheme.of(context)
+                                            .typography
+                                            .caption),
+                                  ]),
+                            ),
+                            ToggleSwitch(
+                              checked: widget.ageBypass,
+                              onChanged: _handleAgeBypassChanged,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    const Divider(),
+                    const SizedBox(height: 24),
+                    _buildSpotifySection(),
+                    const SizedBox(height: 48),
+                  ],
+                ),
               ),
-            ),
-    );
-  }
+      );
 
   final _spotifyIdController = TextEditingController();
   final _spotifySecretController = TextEditingController();
@@ -227,67 +234,67 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
     super.dispose();
   }
 
-  Widget _buildSpotifySection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Integração com Spotify',
-            style: FluentTheme.of(context).typography.subtitle),
-        const SizedBox(height: 8),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(FluentIcons.music_in_collection, color: Colors.green),
-                    const SizedBox(width: 8),
-                    const Text('Conecte sua conta de desenvolvedor para resultados autênticos.'),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                InfoLabel(
-                  label: 'Client ID',
-                  child: TextBox(
-                    controller: _spotifyIdController,
-                    placeholder: 'Insira seu Client ID',
+  Widget _buildSpotifySection() => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Integração com Spotify',
+              style: FluentTheme.of(context).typography.subtitle),
+          const SizedBox(height: 8),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(FluentIcons.music_in_collection,
+                          color: Colors.green),
+                      const SizedBox(width: 8),
+                      const Text(
+                          'Conecte sua conta de desenvolvedor para resultados autênticos.'),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 12),
-                InfoLabel(
-                  label: 'Client Secret',
-                  child: PasswordBox(
-                    controller: _spotifySecretController,
-                    placeholder: 'Insira seu Client Secret',
-                    revealMode: PasswordRevealMode.peek,
+                  const SizedBox(height: 16),
+                  InfoLabel(
+                    label: 'Client ID',
+                    child: TextBox(
+                      controller: _spotifyIdController,
+                      placeholder: 'Insira seu Client ID',
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                FilledButton(
-                  onPressed: () {
-                    widget.onSpotifyCredentialsSaved(
-                      _spotifyIdController.text.trim(),
-                      _spotifySecretController.text.trim(),
-                    );
-                    displayInfoBar(context, builder: (context, close) {
-                      return const InfoBar(
-                        title: Text('Sucesso'),
-                        content: Text('Credenciais do Spotify salvas com sucesso!'),
-                        severity: InfoBarSeverity.success,
+                  const SizedBox(height: 12),
+                  InfoLabel(
+                    label: 'Client Secret',
+                    child: PasswordBox(
+                      controller: _spotifySecretController,
+                      placeholder: 'Insira seu Client Secret',
+                      revealMode: PasswordRevealMode.peek,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  FilledButton(
+                    onPressed: () {
+                      widget.onSpotifyCredentialsSaved(
+                        _spotifyIdController.text.trim(),
+                        _spotifySecretController.text.trim(),
                       );
-                    });
-                  },
-                  child: const Text('Salvar Credenciais'),
-                ),
-              ],
+                      displayInfoBar(context,
+                          builder: (context, close) => const InfoBar(
+                                title: Text('Sucesso'),
+                                content: Text(
+                                    'Credenciais do Spotify salvas com sucesso!'),
+                                severity: InfoBarSeverity.success,
+                              ));
+                    },
+                    child: const Text('Salvar Credenciais'),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 
   Future<void> _handleAgeBypassChanged(bool val) async {
     if (val) {
@@ -319,145 +326,157 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
     widget.onAgeBypassChanged(val);
   }
 
+  Widget _buildCloudSyncSection() => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(FluentIcons.cloud, color: Colors.blue),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Sincronização na Nuvem',
+                    style: FluentTheme.of(context).typography.bodyStrong,
+                  ),
+                  const Spacer(),
+                  if (!widget.isAuthenticated)
+                    Button(
+                      onPressed: widget.onLogin,
+                      child: const Text('Conectar Conta'),
+                    )
+                  else
+                    Button(
+                      onPressed: widget.onLogout,
+                      child: const Text('Sair'),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Sincronize sua biblioteca entre dispositivos.',
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  FilledButton(
+                    onPressed: widget.isAuthenticated
+                        ? widget.onEnableCloudSync
+                        : null,
+                    child: const Row(
+                      children: [
+                        Icon(FluentIcons.cloud_import_export),
+                        SizedBox(width: 8),
+                        Text('Sincronizar Agora'),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Button(
+                    onPressed:
+                        widget.isAuthenticated ? widget.onPullFromCloud : null,
+                    child: const Tooltip(
+                      message: 'Baixar da Nuvem',
+                      child: Icon(FluentIcons.cloud_download),
+                    ),
+                  ),
+                  if (!widget.isAuthenticated)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        '(Necessário Login)',
+                        style: FluentTheme.of(context)
+                            .typography
+                            .caption
+                            ?.copyWith(
+                              color: Colors.grey,
+                            ),
+                      ),
+                    ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
 
-  Widget _buildCloudSyncSection() {
+  Widget _buildThemeColorSection() {
+    final themeService = ThemeService.instance;
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(FluentIcons.cloud, color: Colors.blue),
+                Icon(FluentIcons.color, color: Colors.purple),
                 const SizedBox(width: 8),
-                Text(
-                  'Sincronização na Nuvem',
-                  style: FluentTheme.of(context).typography.bodyStrong,
-                ),
-                const Spacer(),
-                if (!widget.isAuthenticated)
-                  Button(
-                    onPressed: widget.onLogin,
-                    child: const Text('Conectar Conta'),
-                  )
-                else
-                  Button(
-                    onPressed: widget.onLogout,
-                    child: const Text('Sair'),
-                  ),
+                Text('Tema de Cores',
+                    style: FluentTheme.of(context).typography.bodyStrong),
               ],
             ),
-            const SizedBox(height: 8),
-            const Text(
-              'Sincronize sua biblioteca entre dispositivos.',
-            ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             Row(
               children: [
-                FilledButton(
-                  onPressed: widget.isAuthenticated ? widget.onEnableCloudSync : null,
-                  child: const Row(
-                    children: [
-                      Icon(FluentIcons.cloud_import_export),
-                      SizedBox(width: 8),
-                      Text('Sincronizar Agora'),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Button(
-                  onPressed: widget.isAuthenticated ? widget.onPullFromCloud : null,
-                  child: const Tooltip(
-                    message: 'Baixar da Nuvem',
-                    child: Icon(FluentIcons.cloud_download),
-                  ),
-                ),
-                if (!widget.isAuthenticated)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      '(Necessário Login)',
-                      style: FluentTheme.of(context).typography.caption?.copyWith(
-                            color: Colors.grey,
-                          ),
-                    ),
-                  ),
+                RadioButton(
+                    checked: !themeService.useCustomColor,
+                    content: const Text('Auto'),
+                    onChanged: (v) {
+                      if (v) {
+                        themeService.setAutoMode();
+                        setState(() {});
+                      }
+                    }),
+                const SizedBox(width: 16),
+                RadioButton(
+                    checked: themeService.useCustomColor,
+                    content: const Text('Personalizado'),
+                    onChanged: (v) {
+                      if (v) {
+                        setState(
+                            () {}); // Just visual update, selection logic is in palette
+                      }
+                    }),
               ],
+            ),
+            const SizedBox(height: 16),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: ThemeService.presetColors.map((color) {
+                // Convert Material Color to Fluent AccentColor if possible, or just use Color
+                final isSelected = themeService.customColor == color &&
+                    themeService.useCustomColor;
+                return GestureDetector(
+                  onTap: () {
+                    themeService.setCustomColor(color);
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: color,
+                      shape: BoxShape.circle,
+                      border: isSelected
+                          ? Border.all(
+                              color: FluentTheme.of(context).accentColor,
+                              width: 2)
+                          : null,
+                    ),
+                    child: isSelected
+                        ? const Icon(FluentIcons.check_mark,
+                            color: Colors.white, size: 16)
+                        : null,
+                  ),
+                );
+              }).toList(),
             ),
           ],
         ),
       ),
     );
-  }
-
-  Widget _buildThemeColorSection() {
-     final themeService = ThemeService.instance;
-     return Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-                Row(
-                  children: [
-                    Icon(FluentIcons.color, color: Colors.purple),
-                    const SizedBox(width: 8),
-                    Text('Tema de Cores', style: FluentTheme.of(context).typography.bodyStrong),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                 Row(
-                  children: [
-                    RadioButton(
-                      checked: !themeService.useCustomColor,
-                      content: const Text('Auto'),
-                      onChanged: (v) {
-                         if (v) {
-                            themeService.setAutoMode();
-                            setState(() {});
-                         }
-                      }
-                    ),
-                    const SizedBox(width: 16),
-                    RadioButton(
-                      checked: themeService.useCustomColor,
-                      content: const Text('Personalizado'),
-                      onChanged: (v) {
-                         if (v) setState(() {}); // Just visual update, selection logic is in palette
-                      }
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                 Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: ThemeService.presetColors.map((color) {
-                    // Convert Material Color to Fluent AccentColor if possible, or just use Color
-                    final isSelected = themeService.customColor == color &&
-                        themeService.useCustomColor;
-                    return GestureDetector(
-                      onTap: () {
-                         themeService.setCustomColor(color);
-                         setState(() {});
-                      },
-                      child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(
-                          color: color,
-                          shape: BoxShape.circle,
-                          border: isSelected ? Border.all(color: FluentTheme.of(context).accentColor, width: 2) : null,
-                        ),
-                        child: isSelected ? const Icon(FluentIcons.check_mark, color: Colors.white, size: 16) : null,
-                      ),
-                    );
-                  }).toList(),
-                ),
-             ],
-          ),
-        ),
-     );
   }
 }

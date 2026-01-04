@@ -23,10 +23,12 @@ void main() {
 
   setUp(() async {
     await setupMusicTest();
-    
+
     when(() => mockPlayback.playSearchResult(any())).thenAnswer((_) async {});
-    when(() => mockPlayback.currentTrackStream).thenAnswer((_) => Stream.value(null));
-    when(() => mockPlayback.sleepTimerStream).thenAnswer((_) => Stream.value(null));
+    when(() => mockPlayback.currentTrackStream)
+        .thenAnswer((_) => Stream.value(null));
+    when(() => mockPlayback.sleepTimerStream)
+        .thenAnswer((_) => Stream.value(null));
     when(() => mockPlayback.lyricsStream).thenAnswer((_) => Stream.value([]));
     when(() => mockPlayback.queue).thenReturn([]);
     when(() => mockPlayback.currentTrack).thenReturn(null);
@@ -34,15 +36,14 @@ void main() {
   });
 
   Widget createTestWidget(
-      {int playlistId = 1, String playlistName = 'Test Playlist'}) {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: PlaylistDetailScreen(
-        playlistId: playlistId,
-        playlistName: playlistName,
-      ),
-    );
-  }
+          {int playlistId = 1, String playlistName = 'Test Playlist'}) =>
+      MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: PlaylistDetailScreen(
+          playlistId: playlistId,
+          playlistName: playlistName,
+        ),
+      );
 
   group('PlaylistDetailScreen', () {
     testWidgets('shows loading indicator initially', (tester) async {

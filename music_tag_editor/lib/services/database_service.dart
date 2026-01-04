@@ -258,8 +258,10 @@ class DatabaseService {
         }
         if (oldVersion < 9) {
           try {
-            await db.execute('ALTER TABLE $_tracksTable ADD COLUMN hifi_source TEXT');
-            await db.execute('ALTER TABLE $_tracksTable ADD COLUMN hifi_quality TEXT');
+            await db.execute(
+                'ALTER TABLE $_tracksTable ADD COLUMN hifi_source TEXT');
+            await db.execute(
+                'ALTER TABLE $_tracksTable ADD COLUMN hifi_quality TEXT');
           } catch (e) {
             debugPrint('Error adding hifi columns: $e');
           }
@@ -360,18 +362,18 @@ class DatabaseService {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(_rulesTable);
 
-    return List.generate(maps.length, (i) {
-      return LearningRule(
-        artist: maps[i]['artist'],
-        field: maps[i]['field'],
-        originalValue: maps[i]['originalValue'],
-        correctedValue: maps[i]['correctedValue'],
-        choice: LearningChoice.values.firstWhere(
-          (e) => e.toString() == maps[i]['choice'],
-          orElse: () => LearningChoice.justThisOnce,
-        ),
-      );
-    });
+    return List.generate(
+        maps.length,
+        (i) => LearningRule(
+              artist: maps[i]['artist'],
+              field: maps[i]['field'],
+              originalValue: maps[i]['originalValue'],
+              correctedValue: maps[i]['correctedValue'],
+              choice: LearningChoice.values.firstWhere(
+                (e) => e.toString() == maps[i]['choice'],
+                orElse: () => LearningChoice.justThisOnce,
+              ),
+            ));
   }
 
   // --- Track Methods ---
@@ -396,8 +398,11 @@ class DatabaseService {
 
   Future<Map<String, String?>> getDownloadedUrls() async {
     final db = await database;
-    final results = await db.query(_tracksTable, columns: ['url', 'local_path']);
-    return {for (var r in results) r['url'] as String: r['local_path'] as String?};
+    final results =
+        await db.query(_tracksTable, columns: ['url', 'local_path']);
+    return {
+      for (var r in results) r['url'] as String: r['local_path'] as String?
+    };
   }
 
   Future<void> toggleVault(String trackId, bool inVault) async {
@@ -441,8 +446,9 @@ class DatabaseService {
     // Deduplicate by metadata (Title + Artist)
     final Map<String, SearchResult> uniqueMap = {};
     for (var track in allResults) {
-      final key = '${SearchService.toMatchKey(track.artist)}:${SearchService.toMatchKey(track.title)}';
-      
+      final key =
+          '${SearchService.toMatchKey(track.artist)}:${SearchService.toMatchKey(track.title)}';
+
       final existing = uniqueMap[key];
       if (existing == null) {
         uniqueMap[key] = track;
@@ -452,11 +458,11 @@ class DatabaseService {
         if (track.localPath != null && existing.localPath == null) {
           shouldReplace = true;
         } else if (track.isDownloaded && !existing.isDownloaded) {
-           shouldReplace = true;
+          shouldReplace = true;
         } else if (track.isVault && !existing.isVault) {
           shouldReplace = true;
         }
-        
+
         if (shouldReplace) {
           uniqueMap[key] = track;
         }
@@ -689,9 +695,12 @@ class DatabaseService {
     };
   }
 
-  Future<void> saveSpotifyCredentials(String? clientId, String? clientSecret) async {
+  Future<void> saveSpotifyCredentials(
+      String? clientId, String? clientSecret) async {
     if (clientId != null) await saveSetting('spotify_client_id', clientId);
-    if (clientSecret != null) await saveSetting('spotify_client_secret', clientSecret);
+    if (clientSecret != null) {
+      await saveSetting('spotify_client_secret', clientSecret);
+    }
   }
 
   // --- Music Folders ---

@@ -53,70 +53,70 @@ class _EditTrackDialogState extends State<EditTrackDialog> {
     return _buildMaterial(context);
   }
 
-  Widget _buildFluent(BuildContext context) {
-    return fluent.ContentDialog(
-      title: const Text('Editar Informações'),
-      content: SizedBox(
-        width: 350,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            fluent.InfoLabel(label: 'Título', child: fluent.TextBox(controller: _titleController)),
-            const SizedBox(height: 8),
-            fluent.InfoLabel(label: 'Artista', child: fluent.TextBox(controller: _artistController)),
-            const SizedBox(height: 8),
-            fluent.InfoLabel(label: 'Álbum', child: fluent.TextBox(controller: _albumController)),
-          ],
+  Widget _buildFluent(BuildContext context) => fluent.ContentDialog(
+        title: const Text('Editar Informações'),
+        content: SizedBox(
+          width: 350,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              fluent.InfoLabel(
+                  label: 'Título',
+                  child: fluent.TextBox(controller: _titleController)),
+              const SizedBox(height: 8),
+              fluent.InfoLabel(
+                  label: 'Artista',
+                  child: fluent.TextBox(controller: _artistController)),
+              const SizedBox(height: 8),
+              fluent.InfoLabel(
+                  label: 'Álbum',
+                  child: fluent.TextBox(controller: _albumController)),
+            ],
+          ),
         ),
-      ),
-      actions: [
-        fluent.Button(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancelar'),
-        ),
-        fluent.FilledButton(
-          onPressed: _save,
-          child: const Text('Salvar'),
-        ),
-      ],
-    );
-  }
+        actions: [
+          fluent.Button(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancelar'),
+          ),
+          fluent.FilledButton(
+            onPressed: _save,
+            child: const Text('Salvar'),
+          ),
+        ],
+      );
 
-  Widget _buildMaterial(BuildContext context) {
-    return material.AlertDialog(
-      title: const Text('Edit Track Info'),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            material.TextField(
-              controller: _titleController,
-              decoration: const material.InputDecoration(labelText: 'Title'),
-            ),
-            material.TextField(
-              controller: _artistController,
-              decoration: const material.InputDecoration(labelText: 'Artist'),
-            ),
-            material.TextField(
-              controller: _albumController,
-              decoration: const material.InputDecoration(labelText: 'Album'),
-            ),
-          ],
+  Widget _buildMaterial(BuildContext context) => material.AlertDialog(
+        title: const Text('Edit Track Info'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              material.TextField(
+                controller: _titleController,
+                decoration: const material.InputDecoration(labelText: 'Title'),
+              ),
+              material.TextField(
+                controller: _artistController,
+                decoration: const material.InputDecoration(labelText: 'Artist'),
+              ),
+              material.TextField(
+                controller: _albumController,
+                decoration: const material.InputDecoration(labelText: 'Album'),
+              ),
+            ],
+          ),
         ),
-      ),
-      actions: [
-        material.TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
-        ),
-        material.TextButton(
-          onPressed: _save,
-          child: const Text('Save'),
-        ),
-      ],
-    );
-  }
+        actions: [
+          material.TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          material.TextButton(
+            onPressed: _save,
+            child: const Text('Save'),
+          ),
+        ],
+      );
 }
-
-

@@ -21,18 +21,16 @@ void main() {
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(platform: TargetPlatform.android),
-
-      home: Builder(builder: (context) {
-        return TextButton(
-          onPressed: () async {
-            result = await showDialog<MusicTrack>(
-              context: context,
-              builder: (_) => EditTrackDialog(track: track),
-            );
-          },
-          child: const Text('Edit'),
-        );
-      }),
+      home: Builder(
+          builder: (context) => TextButton(
+                onPressed: () async {
+                  result = await showDialog<MusicTrack>(
+                    context: context,
+                    builder: (_) => EditTrackDialog(track: track),
+                  );
+                },
+                child: const Text('Edit'),
+              )),
     ));
 
     await tester.tap(find.text('Edit'));

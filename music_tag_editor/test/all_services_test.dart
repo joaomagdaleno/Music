@@ -32,7 +32,6 @@ import 'services/listening_stats_service.suite.dart' as stats;
 import 'services/theme_service.suite.dart' as theme;
 
 void main() {
-
   group('AuthService', () => auth.main());
   group('BackupService', () => backup.main());
   group('ConnectivityRoot', () => connectivity_root.main());

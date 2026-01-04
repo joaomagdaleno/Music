@@ -22,40 +22,39 @@ class MaterialMyTracksView extends StatelessWidget {
   final SearchResult? currentTrack;
 
   @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Biblioteca'),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.playlist_add),
-              onPressed: onImportPlaylist,
-              tooltip: 'Importar Playlist',
-            )
-          ],
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: 'Músicas', icon: Icon(Icons.music_note)),
-              Tab(text: 'Vídeos', icon: Icon(Icons.video_library)),
+  Widget build(BuildContext context) => DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Biblioteca'),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.playlist_add),
+                onPressed: onImportPlaylist,
+                tooltip: 'Importar Playlist',
+              )
             ],
+            bottom: const TabBar(
+              tabs: [
+                Tab(text: 'Músicas', icon: Icon(Icons.music_note)),
+                Tab(text: 'Vídeos', icon: Icon(Icons.video_library)),
+              ],
+            ),
           ),
+          body: isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : TabBarView(
+                  children: [
+                    _buildTrackList(context, 'audio'),
+                    _buildTrackList(context, 'video'),
+                  ],
+                ),
         ),
-        body: isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : TabBarView(
-                children: [
-                  _buildTrackList(context, 'audio'),
-                  _buildTrackList(context, 'video'),
-                ],
-              ),
-      ),
-    );
-  }
+      );
 
   Widget _buildTrackList(BuildContext context, String mediaType) {
-    final filteredTracks = tracks.where((t) => t.mediaType == mediaType).toList();
+    final filteredTracks =
+        tracks.where((t) => t.mediaType == mediaType).toList();
 
     if (filteredTracks.isEmpty) {
       return Center(
@@ -68,7 +67,8 @@ class MaterialMyTracksView extends StatelessWidget {
               color: Colors.grey[400],
             ),
             const SizedBox(height: 16),
-            Text('Nenhum(a) ${mediaType == 'audio' ? 'música' : 'vídeo'} salvo(a).'),
+            Text(
+                'Nenhum(a) ${mediaType == 'audio' ? 'música' : 'vídeo'} salvo(a).'),
           ],
         ),
       );
@@ -89,14 +89,19 @@ class MaterialMyTracksView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: track.thumbnail != null
-                  ? ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.network(track.thumbnail!, fit: BoxFit.cover, cacheWidth: 150))
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(track.thumbnail!,
+                          fit: BoxFit.cover, cacheWidth: 150))
                   : const Icon(Icons.music_note),
             ),
             title: Text(
-              track.title, 
+              track.title,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: track.id == currentTrack?.id ? Theme.of(context).colorScheme.primary : null,
+                color: track.id == currentTrack?.id
+                    ? Theme.of(context).colorScheme.primary
+                    : null,
               ),
             ),
             subtitle: Text(track.artist),
@@ -106,19 +111,32 @@ class MaterialMyTracksView extends StatelessWidget {
                 if (track.id == currentTrack?.id)
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
-                    child: Icon(Icons.equalizer, color: Theme.of(context).colorScheme.primary),
+                    child: Icon(Icons.equalizer,
+                        color: Theme.of(context).colorScheme.primary),
                   ),
                 PopupMenuButton(
                   itemBuilder: (_) => [
-                    const PopupMenuItem(value: 'play', child: ListTile(leading: Icon(Icons.play_arrow), title: Text('Tocar'))),
-                    const PopupMenuItem(value: 'vault', child: ListTile(leading: Icon(Icons.lock), title: Text('Adicionar ao Cofre'))),
+                    const PopupMenuItem(
+                        value: 'play',
+                        child: ListTile(
+                            leading: Icon(Icons.play_arrow),
+                            title: Text('Tocar'))),
+                    const PopupMenuItem(
+                        value: 'vault',
+                        child: ListTile(
+                            leading: Icon(Icons.lock),
+                            title: Text('Adicionar ao Cofre'))),
                   ],
-                  onSelected: (v) => v == 'play' ? onPlayTrack(track) : onAddToVault(track),
+                  onSelected: (v) =>
+                      v == 'play' ? onPlayTrack(track) : onAddToVault(track),
                 ),
               ],
             ),
             selected: track.id == currentTrack?.id,
-            selectedTileColor: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
+            selectedTileColor: Theme.of(context)
+                .colorScheme
+                .primaryContainer
+                .withValues(alpha: 0.3),
             onTap: () => onPlayTrack(track),
           ),
         );

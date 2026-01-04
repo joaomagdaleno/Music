@@ -34,28 +34,36 @@ class _PlaylistDetailScreenState extends State<PlaylistDetailScreen> {
   }
 
   Future<void> _loadTracks() async {
-    final tracks = await DatabaseService.instance.getPlaylistTracks(widget.playlistId);
-    if (mounted) setState(() { _tracks = tracks; _isLoading = false; });
+    final tracks =
+        await DatabaseService.instance.getPlaylistTracks(widget.playlistId);
+    if (mounted) {
+      setState(() {
+        _tracks = tracks;
+        _isLoading = false;
+      });
+    }
   }
 
   void _playTrack(Map<String, dynamic> trackData) {
     debugPrint('[PlaylistDetail] Track data: $trackData');
-    
+
     if (trackData['url'] == null || trackData['url'].toString().isEmpty) {
       debugPrint('[PlaylistDetail] ERROR: Track has no URL!');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Erro: Esta música não possui URL de reprodução.')),
+        const SnackBar(
+            content: Text('Erro: Esta música não possui URL de reprodução.')),
       );
       return;
     }
-    
+
     final result = SearchResult.fromJson(trackData);
-    debugPrint('[PlaylistDetail] Playing: ${result.title} - ${result.url} - ${result.platform}');
+    debugPrint(
+        '[PlaylistDetail] Playing: ${result.title} - ${result.url} - ${result.platform}');
     PlaybackService.instance.playSearchResult(result);
-    
+
     if (context.mounted && result.mediaType == 'video') {
-      if (defaultTargetPlatform == TargetPlatform.windows || 
-          defaultTargetPlatform == TargetPlatform.linux || 
+      if (defaultTargetPlatform == TargetPlatform.windows ||
+          defaultTargetPlatform == TargetPlatform.linux ||
           defaultTargetPlatform == TargetPlatform.macOS) {
         Navigator.of(context).push(
           fluent.FluentPageRoute(builder: (_) => const PlayerScreen()),
@@ -75,9 +83,17 @@ class _PlaylistDetailScreenState extends State<PlaylistDetailScreen> {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:
-        return FluentPlaylistDetailView(playlistName: widget.playlistName, tracks: _tracks, isLoading: _isLoading, onPlayTrack: _playTrack);
+        return FluentPlaylistDetailView(
+            playlistName: widget.playlistName,
+            tracks: _tracks,
+            isLoading: _isLoading,
+            onPlayTrack: _playTrack);
       default:
-        return MaterialPlaylistDetailView(playlistName: widget.playlistName, tracks: _tracks, isLoading: _isLoading, onPlayTrack: _playTrack);
+        return MaterialPlaylistDetailView(
+            playlistName: widget.playlistName,
+            tracks: _tracks,
+            isLoading: _isLoading,
+            onPlayTrack: _playTrack);
     }
   }
 }

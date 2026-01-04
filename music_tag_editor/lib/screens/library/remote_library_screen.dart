@@ -22,7 +22,12 @@ class _RemoteLibraryScreenState extends State<RemoteLibraryScreen> {
   void initState() {
     super.initState();
     LocalDuoService.instance.onLibraryReceived = (tracks) {
-      if (mounted) setState(() { _tracks = tracks; _isLoading = false; });
+      if (mounted) {
+        setState(() {
+          _tracks = tracks;
+          _isLoading = false;
+        });
+      }
     };
     _refresh();
   }
@@ -38,11 +43,13 @@ class _RemoteLibraryScreenState extends State<RemoteLibraryScreen> {
     LocalDuoService.instance.requestRemoteLibrary();
   }
 
-  void _playTrack(SearchResult track) => PlaybackService.instance.playSearchResult(track);
+  void _playTrack(SearchResult track) =>
+      PlaybackService.instance.playSearchResult(track);
 
   void _addToQueue(SearchResult track) {
     PlaybackService.instance.addToQueue(track);
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Adicionado à fila compartilhada!')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Adicionado à fila compartilhada!')));
   }
 
   @override
@@ -52,9 +59,19 @@ class _RemoteLibraryScreenState extends State<RemoteLibraryScreen> {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:
-        return FluentRemoteLibraryView(tracks: _tracks, isLoading: _isLoading, onRefresh: _refresh, onPlayTrack: _playTrack, onAddToQueue: _addToQueue);
+        return FluentRemoteLibraryView(
+            tracks: _tracks,
+            isLoading: _isLoading,
+            onRefresh: _refresh,
+            onPlayTrack: _playTrack,
+            onAddToQueue: _addToQueue);
       default:
-        return MaterialRemoteLibraryView(tracks: _tracks, isLoading: _isLoading, onRefresh: _refresh, onPlayTrack: _playTrack, onAddToQueue: _addToQueue);
+        return MaterialRemoteLibraryView(
+            tracks: _tracks,
+            isLoading: _isLoading,
+            onRefresh: _refresh,
+            onPlayTrack: _playTrack,
+            onAddToQueue: _addToQueue);
     }
   }
 }

@@ -21,40 +21,52 @@ class MaterialPlaylistImporterView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Importador de Playlist')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(controller: urlController, decoration: InputDecoration(labelText: 'URL da Playlist', suffixIcon: IconButton(icon: const Icon(Icons.search), onPressed: onScan), border: const OutlineInputBorder())),
-            const SizedBox(height: 20),
-            if (isLoading)
-              const Center(child: CircularProgressIndicator())
-            else if (error != null)
-              Text(error!, style: const TextStyle(color: Colors.red))
-            else if (tracks.isNotEmpty) ...[
-              Expanded(
-                child: ListView.builder(
-                  itemCount: tracks.length,
-                  itemBuilder: (context, index) {
-                    final track = tracks[index];
-                    return ListTile(
-                      leading: track.thumbnail != null ? Image.network(track.thumbnail!, width: 40, cacheWidth: 120) : const Icon(Icons.music_note),
-                      title: Text(track.title),
-                      subtitle: Text(track.artist),
-                    );
-                  },
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(title: const Text('Importador de Playlist')),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextField(
+                  controller: urlController,
+                  decoration: InputDecoration(
+                      labelText: 'URL da Playlist',
+                      suffixIcon: IconButton(
+                          icon: const Icon(Icons.search), onPressed: onScan),
+                      border: const OutlineInputBorder())),
+              const SizedBox(height: 20),
+              if (isLoading)
+                const Center(child: CircularProgressIndicator())
+              else if (error != null)
+                Text(error!, style: const TextStyle(color: Colors.red))
+              else if (tracks.isNotEmpty) ...[
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: tracks.length,
+                    itemBuilder: (context, index) {
+                      final track = tracks[index];
+                      return ListTile(
+                        leading: track.thumbnail != null
+                            ? Image.network(track.thumbnail!,
+                                width: 40, cacheWidth: 120)
+                            : const Icon(Icons.music_note),
+                        title: Text(track.title),
+                        subtitle: Text(track.artist),
+                      );
+                    },
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(onPressed: onImportAll, style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 50)), child: Text('Importar ${tracks.length} Músicas')),
-            ] else
-              const Expanded(child: Center(child: Text('Cole um link para começar.'))),
-          ],
+                const SizedBox(height: 10),
+                ElevatedButton(
+                    onPressed: onImportAll,
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 50)),
+                    child: Text('Importar ${tracks.length} Músicas')),
+              ] else
+                const Expanded(
+                    child: Center(child: Text('Cole um link para começar.'))),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

@@ -31,14 +31,13 @@ class _MockHttpClientResponse extends Mock implements HttpClientResponse {
 
   @override
   StreamSubscription<List<int>> listen(void Function(List<int>)? onData,
-      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
-    return Stream.fromIterable([transparentImage]).listen(
-      onData,
-      onError: onError,
-      onDone: onDone,
-      cancelOnError: cancelOnError,
-    );
-  }
+          {Function? onError, void Function()? onDone, bool? cancelOnError}) =>
+      Stream.fromIterable([transparentImage]).listen(
+        onData,
+        onError: onError,
+        onDone: onDone,
+        cancelOnError: cancelOnError,
+      );
 }
 
 final transparentImage = Uint8List.fromList([

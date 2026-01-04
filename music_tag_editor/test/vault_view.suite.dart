@@ -45,12 +45,10 @@ void main() {
     when(() => mockDb.toggleVault(any(), any())).thenAnswer((_) async {});
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: const VaultScreen(),
-    );
-  }
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const VaultScreen(),
+      );
 
   group('VaultScreen', () {
     testWidgets('renders locked state', (tester) async {

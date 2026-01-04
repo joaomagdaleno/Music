@@ -21,50 +21,69 @@ class FluentKaraokeView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black,
-      child: Stack(
-        children: [
-          _buildGlow(context),
-          _buildHeader(),
-          _buildLyrics(context),
-          _buildControls(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildGlow(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: RadialGradient(
-          center: const Alignment(0, -0.5),
-          radius: 1.5,
-          colors: [FluentTheme.of(context).accentColor.withValues(alpha: 0.3), Colors.black],
+  Widget build(BuildContext context) => Container(
+        color: Colors.black,
+        child: Stack(
+          children: [
+            _buildGlow(context),
+            _buildHeader(),
+            _buildLyrics(context),
+            _buildControls(),
+          ],
         ),
-      ),
-    );
-  }
+      );
 
-  Widget _buildHeader() {
-    return Positioned(
-      top: 40, left: 24, right: 24,
-      child: Row(
-        children: [
-          IconButton(icon: const Icon(FluentIcons.chrome_close, color: Colors.white), onPressed: onClose),
-          const SizedBox(width: 16),
-          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(track['title'] ?? 'Karaoke', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18, decoration: TextDecoration.none)),
-            Text(track['artist'] ?? '', style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: 14, decoration: TextDecoration.none)),
-          ])),
-        ],
-      ),
-    );
-  }
+  Widget _buildGlow(BuildContext context) => Container(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            center: const Alignment(0, -0.5),
+            radius: 1.5,
+            colors: [
+              FluentTheme.of(context).accentColor.withValues(alpha: 0.3),
+              Colors.black
+            ],
+          ),
+        ),
+      );
+
+  Widget _buildHeader() => Positioned(
+        top: 40,
+        left: 24,
+        right: 24,
+        child: Row(
+          children: [
+            IconButton(
+                icon: const Icon(FluentIcons.chrome_close, color: Colors.white),
+                onPressed: onClose),
+            const SizedBox(width: 16),
+            Expanded(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                  Text(track['title'] ?? 'Karaoke',
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          decoration: TextDecoration.none)),
+                  Text(track['artist'] ?? '',
+                      style: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.7),
+                          fontSize: 14,
+                          decoration: TextDecoration.none)),
+                ])),
+          ],
+        ),
+      );
 
   Widget _buildLyrics(BuildContext context) {
-    if (lyrics.isEmpty) return Center(child: Text('Letras não sincronizadas...', style: TextStyle(color: Colors.white.withValues(alpha: 0.5), decoration: TextDecoration.none)));
+    if (lyrics.isEmpty) {
+      return Center(
+          child: Text('Letras não sincronizadas...',
+              style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.5),
+                  decoration: TextDecoration.none)));
+    }
 
     return ListView.builder(
       controller: scrollController,
@@ -83,9 +102,16 @@ class FluentKaraokeView extends StatelessWidget {
             style: TextStyle(
               fontSize: isActive ? 40 : 28,
               fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-              color: isActive ? Colors.white : Colors.white.withValues(alpha: 0.3),
+              color:
+                  isActive ? Colors.white : Colors.white.withValues(alpha: 0.3),
               decoration: TextDecoration.none,
-              shadows: isActive ? [Shadow(color: FluentTheme.of(context).accentColor, blurRadius: 15)] : null,
+              shadows: isActive
+                  ? [
+                      Shadow(
+                          color: FluentTheme.of(context).accentColor,
+                          blurRadius: 15)
+                    ]
+                  : null,
             ),
           ),
         );
@@ -93,15 +119,15 @@ class FluentKaraokeView extends StatelessWidget {
     );
   }
 
-  Widget _buildControls() {
-    return Positioned(
-      bottom: 40, left: 0, right: 0,
-      child: Center(
-        child: IconButton(
-          icon: const Icon(FluentIcons.play, size: 48, color: Colors.white),
-          onPressed: onResume,
+  Widget _buildControls() => Positioned(
+        bottom: 40,
+        left: 0,
+        right: 0,
+        child: Center(
+          child: IconButton(
+            icon: const Icon(FluentIcons.play, size: 48, color: Colors.white),
+            onPressed: onResume,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

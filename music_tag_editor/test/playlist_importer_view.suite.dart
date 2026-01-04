@@ -34,9 +34,8 @@ void main() {
     when(() => mockDb.saveTrack(any())).thenAnswer((_) async {});
   });
 
-  Widget createTestWidget() {
-    return const MaterialApp(home: PlaylistImporterScreen());
-  }
+  Widget createTestWidget() =>
+      const MaterialApp(home: PlaylistImporterScreen());
 
   group('PlaylistImporterScreen', () {
     testWidgets('renders correctly', (tester) async {

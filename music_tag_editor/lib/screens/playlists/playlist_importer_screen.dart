@@ -24,12 +24,29 @@ class _PlaylistImporterScreenState extends State<PlaylistImporterScreen> {
   Future<void> _scan() async {
     final url = _urlController.text.trim();
     if (url.isEmpty) return;
-    setState(() { _isLoading = true; _error = null; _tracks = []; });
+    setState(() {
+      _isLoading = true;
+      _error = null;
+      _tracks = [];
+    });
     try {
       final results = await _searchService.importPlaylist(url);
-      if (mounted) setState(() { _tracks = results; _isLoading = false; if (_tracks.isEmpty) _error = "Nenhuma música encontrada."; });
+      if (mounted) {
+        setState(() {
+          _tracks = results;
+          _isLoading = false;
+          if (_tracks.isEmpty) {
+            _error = 'Nenhuma música encontrada.';
+          }
+        });
+      }
     } catch (e) {
-      if (mounted) setState(() { _error = "Erro ao carregar: $e"; _isLoading = false; });
+      if (mounted) {
+        setState(() {
+          _error = 'Erro ao carregar: $e';
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -38,7 +55,8 @@ class _PlaylistImporterScreenState extends State<PlaylistImporterScreen> {
       await DatabaseService.instance.saveTrack(track.toJson());
     }
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${_tracks.length} músicas importadas!')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${_tracks.length} músicas importadas!')));
       Navigator.pop(context);
     }
   }
@@ -50,9 +68,21 @@ class _PlaylistImporterScreenState extends State<PlaylistImporterScreen> {
       case TargetPlatform.windows:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:
-        return FluentPlaylistImporterView(urlController: _urlController, tracks: _tracks, isLoading: _isLoading, error: _error, onScan: _scan, onImportAll: _importAll);
+        return FluentPlaylistImporterView(
+            urlController: _urlController,
+            tracks: _tracks,
+            isLoading: _isLoading,
+            error: _error,
+            onScan: _scan,
+            onImportAll: _importAll);
       default:
-        return MaterialPlaylistImporterView(urlController: _urlController, tracks: _tracks, isLoading: _isLoading, error: _error, onScan: _scan, onImportAll: _importAll);
+        return MaterialPlaylistImporterView(
+            urlController: _urlController,
+            tracks: _tracks,
+            isLoading: _isLoading,
+            error: _error,
+            onScan: _scan,
+            onImportAll: _importAll);
     }
   }
 }

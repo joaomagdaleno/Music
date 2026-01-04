@@ -14,8 +14,8 @@ class PlayerScreen extends StatelessWidget {
   bool _isFluent(BuildContext context) {
     final platform = defaultTargetPlatform;
     return platform == TargetPlatform.windows ||
-           platform == TargetPlatform.linux ||
-           platform == TargetPlatform.macOS;
+        platform == TargetPlatform.linux ||
+        platform == TargetPlatform.macOS;
   }
 
   @override
@@ -45,10 +45,33 @@ class PlayerScreen extends StatelessWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ListTile(title: const Text('Desligar'), onTap: () { PlaybackService.instance.cancelSleepTimer(); Navigator.pop(context); }),
-            ListTile(title: const Text('15 minutos'), onTap: () { PlaybackService.instance.setSleepTimer(const Duration(minutes: 15)); Navigator.pop(context); }),
-            ListTile(title: const Text('30 minutos'), onTap: () { PlaybackService.instance.setSleepTimer(const Duration(minutes: 30)); Navigator.pop(context); }),
-            ListTile(title: const Text('60 minutos'), onTap: () { PlaybackService.instance.setSleepTimer(const Duration(minutes: 60)); Navigator.pop(context); }),
+            ListTile(
+                title: const Text('Desligar'),
+                onTap: () {
+                  PlaybackService.instance.cancelSleepTimer();
+                  Navigator.pop(context);
+                }),
+            ListTile(
+                title: const Text('15 minutos'),
+                onTap: () {
+                  PlaybackService.instance
+                      .setSleepTimer(const Duration(minutes: 15));
+                  Navigator.pop(context);
+                }),
+            ListTile(
+                title: const Text('30 minutos'),
+                onTap: () {
+                  PlaybackService.instance
+                      .setSleepTimer(const Duration(minutes: 30));
+                  Navigator.pop(context);
+                }),
+            ListTile(
+                title: const Text('60 minutos'),
+                onTap: () {
+                  PlaybackService.instance
+                      .setSleepTimer(const Duration(minutes: 60));
+                  Navigator.pop(context);
+                }),
           ],
         ),
       ),
@@ -75,7 +98,8 @@ class PlayerScreen extends StatelessWidget {
         ),
       );
     } else {
-      showModalBottomSheet(context: context, builder: (_) => const QueueSheet());
+      showModalBottomSheet(
+          context: context, builder: (_) => const QueueSheet());
     }
   }
 

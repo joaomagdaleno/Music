@@ -29,7 +29,7 @@ void main() {
   late MockDependencyManager mockDeps;
   late MockDatabaseService mockDb;
   late MockHiFiDownloadService mockHiFi;
-  
+
   // Mock YoutubeExplode
   late MockYoutubeExplode mockYt;
   late MockSearchClient mockSearchClient;
@@ -43,7 +43,7 @@ void main() {
     mockDeps = MockDependencyManager();
     mockDb = MockDatabaseService();
     mockHiFi = MockHiFiDownloadService();
-    
+
     // Setup YT mocks
     mockYt = MockYoutubeExplode();
     mockSearchClient = MockSearchClient();
@@ -70,9 +70,8 @@ void main() {
       runInShell = false,
       stdoutEncoding,
       stderrEncoding,
-    }) async {
-      return ProcessResult(0, mockExitCode, mockStdout, mockStderr);
-    };
+    }) async =>
+        ProcessResult(0, mockExitCode, mockStdout, mockStderr);
 
     when(() => mockDeps.ytDlpPath).thenReturn('yt-dlp');
     when(() => mockDb.loadAgeBypass()).thenAnswer((_) async => false);
@@ -88,13 +87,16 @@ void main() {
       when(() => mockVideo.title).thenReturn('Test Title');
       when(() => mockVideo.author).thenReturn('Test Artist');
       when(() => mockVideo.url).thenReturn('http://url');
-      when(() => mockVideo.thumbnails).thenReturn(ThumbnailSet('http://thumb'));
-      when(() => mockVideo.duration).thenReturn(Duration(seconds: 180));
-      
+      when(() => mockVideo.thumbnails)
+          .thenReturn(const ThumbnailSet('http://thumb'));
+      when(() => mockVideo.duration).thenReturn(const Duration(seconds: 180));
+
       final mockSearchList = MockVideoSearchList();
-      when(() => mockSearchList.iterator).thenAnswer((_) => [mockVideo].iterator);
-      
-      when(() => mockSearchClient.search(any())).thenAnswer((_) async => mockSearchList);
+      when(() => mockSearchList.iterator)
+          .thenAnswer((_) => [mockVideo].iterator);
+
+      when(() => mockSearchClient.search(any()))
+          .thenAnswer((_) async => mockSearchList);
 
       final results = await service.searchYouTube('query');
 
@@ -106,11 +108,13 @@ void main() {
 
     test('falls back to yt-dlp on YouTube Explode error', () async {
       // 1. Force YT Explode to fail
-      when(() => mockSearchClient.search(any())).thenThrow(Exception('YT Error'));
-      
+      when(() => mockSearchClient.search(any()))
+          .thenThrow(Exception('YT Error'));
+
       // 2. Mock yt-dlp output for fallback
       mockExitCode = 0;
-      mockStdout = '{"id": "ytdlp_id", "title": "yt-dlp Title", "uploader": "yt-dlp Artist", "thumbnail": "http://thumb", "duration": 120}\n';
+      mockStdout =
+          '{"id": "ytdlp_id", "title": "yt-dlp Title", "uploader": "yt-dlp Artist", "thumbnail": "http://thumb", "duration": 120}\n';
 
       final results = await service.searchYouTube('query');
 
@@ -129,29 +133,34 @@ void main() {
       when(() => mockVideo.title).thenReturn('M Song');
       when(() => mockVideo.author).thenReturn('M Artist');
       when(() => mockVideo.url).thenReturn('http://murl');
-      when(() => mockVideo.thumbnails).thenReturn(ThumbnailSet('http://mthumb'));
-      when(() => mockVideo.duration).thenReturn(Duration(seconds: 200));
+      when(() => mockVideo.thumbnails)
+          .thenReturn(const ThumbnailSet('http://mthumb'));
+      when(() => mockVideo.duration).thenReturn(const Duration(seconds: 200));
 
       final mockSearchList = MockVideoSearchList();
-      when(() => mockSearchList.iterator).thenAnswer((_) => [mockVideo].iterator);
+      when(() => mockSearchList.iterator)
+          .thenAnswer((_) => [mockVideo].iterator);
 
-      when(() => mockSearchClient.search(any())).thenAnswer((_) async => mockSearchList);
+      when(() => mockSearchClient.search(any()))
+          .thenAnswer((_) async => mockSearchList);
 
       final results = await service.searchYouTubeMusic('query');
 
       expect(results.length, 1);
       expect(results[0].title, 'M Song');
       expect(results[0].platform, MediaPlatform.youtubeMusic);
-      
+
       // Verify " topic" was appended
       verify(() => mockSearchClient.search('query topic')).called(1);
     });
 
     test('falls back to yt-dlp on YT Music error', () async {
-      when(() => mockSearchClient.search(any())).thenThrow(Exception('YT Music Error'));
-      
+      when(() => mockSearchClient.search(any()))
+          .thenThrow(Exception('YT Music Error'));
+
       mockExitCode = 0;
-      mockStdout = '{"id": "m_fallback", "title": "YT Music Fallback", "uploader": "Artist Topic", "thumbnail": "http://thumb", "duration": 180}\n';
+      mockStdout =
+          '{"id": "m_fallback", "title": "YT Music Fallback", "uploader": "Artist Topic", "thumbnail": "http://thumb", "duration": 180}\n';
 
       final results = await service.searchYouTubeMusic('query');
 
@@ -204,7 +213,8 @@ void main() {
 
       final mockSearchList = MockVideoSearchList();
       when(() => mockSearchList.iterator).thenAnswer((_) => <Video>[].iterator);
-      when(() => mockSearchClient.search(any())).thenAnswer((_) async => mockSearchList);
+      when(() => mockSearchClient.search(any()))
+          .thenAnswer((_) async => mockSearchList);
 
       final statuses = <MediaPlatform, List<SearchStatus>>{};
       await service.searchAll('query', onStatusUpdate: (p, s) {

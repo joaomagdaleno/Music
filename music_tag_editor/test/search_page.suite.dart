@@ -136,10 +136,8 @@ void main() {
   testWidgets('Shows no results message', (tester) async {
     when(() => mockSearch.searchYouTubeMusic(any()))
         .thenAnswer((_) async => []);
-    when(() => mockSearch.searchYouTube(any()))
-        .thenAnswer((_) async => []);
-    when(() => mockSearch.searchSpotify(any()))
-        .thenAnswer((_) async => []);
+    when(() => mockSearch.searchYouTube(any())).thenAnswer((_) async => []);
+    when(() => mockSearch.searchSpotify(any())).thenAnswer((_) async => []);
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(platform: TargetPlatform.android),
@@ -169,5 +167,4 @@ void main() {
     expect(find.textContaining('Erro ao inicializar: Init failed'),
         findsOneWidget);
   });
-
 }

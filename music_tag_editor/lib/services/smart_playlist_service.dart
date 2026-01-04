@@ -216,4 +216,3 @@ class SmartPlaylistResult {
     this.error,
   });
 }
-

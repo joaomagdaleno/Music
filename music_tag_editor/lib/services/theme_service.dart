@@ -98,7 +98,7 @@ class ThemeService extends ChangeNotifier {
       _primaryColor = palette.dominantColor?.color ?? Colors.blue;
       notifyListeners();
     } catch (e) {
-      StartupLogger.log("Error extracting palette: $e");
+      StartupLogger.log('Error extracting palette: $e');
       _primaryColor = Colors.blue;
       notifyListeners();
     }

@@ -35,7 +35,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
   String? _currentDirectory;
 
   Future<void> _addMusicFolder() async {
-    String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+    final String? selectedDirectory =
+        await FilePicker.platform.getDirectoryPath();
 
     if (selectedDirectory != null) {
       _currentDirectory = selectedDirectory;
@@ -86,7 +87,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
   void _searchOnline(MusicTrack track) async {
     debugPrint('Searching online for: ${track.artist} - ${track.title}');
     setState(() {
-       _isLoading = true;
+      _isLoading = true;
     });
 
     try {
@@ -96,7 +97,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
       // 2. Use Aggregator for multi-source results
       final result = await MetadataAggregatorService.instance.aggregateMetadata(
-        cleanTitle, 
+        cleanTitle,
         cleanArtist,
       );
 
@@ -104,25 +105,26 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
       // Automatically apply if results were found with reasonable confidence
       if (result.confidence > 0.3) {
-         await _applyTags(
-            originalTrack: track, 
-            aggregatedResult: result,
-         );
+        await _applyTags(
+          originalTrack: track,
+          aggregatedResult: result,
+        );
       } else {
-         if (!_isFluent) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Could not find high-confidence metadata.')),
-            );
-         }
+        if (!_isFluent) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Could not find high-confidence metadata.')),
+          );
+        }
       }
     } catch (e) {
       debugPrint('Error searching online: $e');
     } finally {
-       if (mounted) {
-         setState(() {
-           _isLoading = false;
-         });
-       }
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -145,9 +147,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
       // Apply learning rules
       final rules = await _dbService.getLearningRules();
       for (var rule in rules) {
-        bool artistMatch = rule.choice == LearningChoice.forThisArtist &&
+        final bool artistMatch = rule.choice == LearningChoice.forThisArtist &&
             rule.artist == newArtist;
-        bool forAll = rule.choice == LearningChoice.forAll;
+        final bool forAll = rule.choice == LearningChoice.forAll;
 
         if (artistMatch || forAll) {
           if (rule.field == 'title' && newTitle == rule.originalValue) {
@@ -166,7 +168,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
       newArtist = manualTrack.artist;
       newAlbum = manualTrack.album;
       newTrackNumber = manualTrack.trackNumber;
-      newGenre = ''; // Manual edit doesn't support genre yet in MusicTrack model
+      newGenre =
+          ''; // Manual edit doesn't support genre yet in MusicTrack model
       newYear = 0;
     } else {
       return; // Nothing to do
@@ -176,8 +179,10 @@ class _LibraryScreenState extends State<LibraryScreen> {
     // Check if this track is currently playing. If so, we must stop playback to release the file handle.
     try {
       final currentTrack = PlaybackService.instance.currentTrack;
-      if (currentTrack != null && currentTrack.localPath == originalTrack.filePath) {
-        debugPrint('Track is currently playing. Stopping playback to release file lock.');
+      if (currentTrack != null &&
+          currentTrack.localPath == originalTrack.filePath) {
+        debugPrint(
+            'Track is currently playing. Stopping playback to release file lock.');
         await PlaybackService.instance.stop();
       }
     } catch (e) {
@@ -213,16 +218,15 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
       if (!mounted) return;
       if (!_isFluent) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Updated: $newFileName')),
-          );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Updated: $newFileName')),
+        );
       }
-      
+
       _loadMusicFromDirectory();
-      
+
       // Optional: Restore playback if needed (complex because file path changed)
       // For now, simpler to just let user re-play.
-
     } catch (e) {
       debugPrint('Error applying tags: $e');
       if (!_isFluent && mounted) {
@@ -235,22 +239,21 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   void _editTrack(MusicTrack track) async {
     dynamic updatedTrack;
-    
+
     // Unified adaptive dialog call
     if (_isFluent) {
-         updatedTrack = await showDialog<MusicTrack>(
-            context: context,
-            builder: (context) => EditTrackDialog(track: track),
-        );
+      updatedTrack = await showDialog<MusicTrack>(
+        context: context,
+        builder: (context) => EditTrackDialog(track: track),
+      );
     } else {
-        updatedTrack = await showDialog<MusicTrack>(
-            context: context,
-            builder: (context) => EditTrackDialog(track: track),
-        );
+      updatedTrack = await showDialog<MusicTrack>(
+        context: context,
+        builder: (context) => EditTrackDialog(track: track),
+      );
     }
-    
+
     if (!mounted) return;
-    
 
     if (updatedTrack != null) {
       if (updatedTrack.title != track.title) {
@@ -269,19 +272,18 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   void _handleManualEdit(MusicTrack track, String field, String originalValue,
       String correctedValue) async {
-    
     LearningChoice? choice;
-    
+
     if (_isFluent) {
-         choice = await showDialog<LearningChoice>(
-            context: context,
-            builder: (context) => const LearningDialog(),
-        );
+      choice = await showDialog<LearningChoice>(
+        context: context,
+        builder: (context) => const LearningDialog(),
+      );
     } else {
-         choice = await showDialog<LearningChoice>(
-            context: context,
-            builder: (context) => const LearningDialog(),
-        );
+      choice = await showDialog<LearningChoice>(
+        context: context,
+        builder: (context) => const LearningDialog(),
+      );
     }
 
     if (choice != null && choice != LearningChoice.justThisOnce) {
@@ -295,16 +297,16 @@ class _LibraryScreenState extends State<LibraryScreen> {
       await _dbService.saveLearningRule(rule);
       if (!mounted) return;
       if (!_isFluent) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Learning rule saved!')),
-          );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Learning rule saved!')),
+        );
       }
     }
   }
-  
+
   bool get _isFluent {
-      final platform = defaultTargetPlatform;
-      return !kIsWeb &&
+    final platform = defaultTargetPlatform;
+    return !kIsWeb &&
         (platform == TargetPlatform.windows ||
             platform == TargetPlatform.linux ||
             platform == TargetPlatform.macOS);

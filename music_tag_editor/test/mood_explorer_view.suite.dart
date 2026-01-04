@@ -39,12 +39,10 @@ void main() {
     when(() => mockDb.getTracksByMood(any())).thenAnswer((_) async => []);
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: Scaffold(body: MoodExplorerScreen()),
-    );
-  }
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const Scaffold(body: MoodExplorerScreen()),
+      );
 
   group('MoodExplorerScreen', () {
     testWidgets('renders mood sections', (tester) async {

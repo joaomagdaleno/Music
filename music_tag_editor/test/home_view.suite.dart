@@ -14,12 +14,10 @@ void main() {
     await setupMusicTest();
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: const HomeScreen(),
-    );
-  }
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const HomeScreen(),
+      );
 
   group('HomeScreen', () {
     testWidgets('renders greeting', (tester) async {

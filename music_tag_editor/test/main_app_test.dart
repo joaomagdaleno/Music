@@ -48,7 +48,6 @@ class MockDownloadService extends Mock implements DownloadService {}
 
 // MockAudioPlayer removed. Using MockPlayer from test_helper.dart or media_kit imports.
 
-
 // Mock HTTP for NetworkImage
 class MockHttpClient extends Mock implements HttpClient {}
 
@@ -140,13 +139,13 @@ void main() {
     when(() => mockTheme.removeListener(any())).thenReturn(null);
 
     when(() => mockPlayback.player).thenReturn(mockPlayer);
-    when(() => mockPlayer.stream).thenReturn(FakePlayerStream()); // Wire up streams
-    when(() => mockPlayer.state).thenReturn(PlayerState());
-    
+    when(() => mockPlayer.stream)
+        .thenReturn(FakePlayerStream()); // Wire up streams
+    when(() => mockPlayer.state).thenReturn(const PlayerState());
+
     when(() => mockPlayback.currentTrack).thenReturn(null);
     when(() => mockPlayback.currentTrackStream)
         .thenAnswer((_) => const Stream.empty());
-
 
     when(() => mockConnectivity.isOffline).thenReturn(ValueNotifier(false));
 
@@ -155,14 +154,16 @@ void main() {
         .thenAnswer((_) async {});
   });
 
-  testWidgets('MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)',
+  testWidgets(
+      'MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)',
       (tester) async {
     when(() => mockDb.loadFilenameFormat())
         .thenAnswer((_) async => FilenameFormat.artistTitle);
     when(() => mockDb.getTracks()).thenAnswer((_) async => []);
     when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
 
-    await tester.pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
+    await tester
+        .pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -180,7 +181,8 @@ void main() {
     when(() => mockDb.getTracks()).thenAnswer((_) async => []);
     when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
 
-    await tester.pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
+    await tester
+        .pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 200));
 

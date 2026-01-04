@@ -54,7 +54,7 @@ class _AppShellState extends State<AppShell> {
     final persona = PersonaService.instance.activePersona;
     final destinations = _getGlobalDestinations();
     final index = destinations.indexWhere((d) => d.persona == persona);
-    
+
     // If a persona is selected, and we are not already on that persona's tab,
     // and we are NOT on a special global tab (Início/Buscar), update the index.
     if (index != -1 && GlobalNavigationService.instance.mainIndex != index) {
@@ -62,7 +62,8 @@ class _AppShellState extends State<AppShell> {
     }
   }
 
-  void _onSelectedIndexChanged(int index, List<AppShellDestination> destinations) {
+  void _onSelectedIndexChanged(
+      int index, List<AppShellDestination> destinations) {
     int targetIndex = index;
     if (index == 99 || index == destinations.length) {
       targetIndex = 99; // Settings
@@ -133,38 +134,36 @@ class _AppShellState extends State<AppShell> {
         platform == TargetPlatform.macOS;
   }
 
-  Widget _buildOfflineBanner() {
-    return Container(
-      width: double.infinity,
-      color: Colors.orange.withValues(alpha: 0.9),
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: const Center(
-        child: Text(
-          'Modo Offline Ativado',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 12,
+  Widget _buildOfflineBanner() => Container(
+        width: double.infinity,
+        color: Colors.orange.withValues(alpha: 0.9),
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: const Center(
+          child: Text(
+            'Modo Offline Ativado',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   Widget _buildBody(AppPersona persona) {
     final selectedIndex = GlobalNavigationService.instance.mainIndex;
     if (selectedIndex == 99) {
       return const SettingsScreen();
     }
-    
+
     if (selectedIndex == 0) {
       return const HomeScreen();
     }
-    
+
     if (selectedIndex == 1) {
       return const SearchScreen();
     }
-    
+
     // Each Persona now has its own internal shell/container
     switch (persona) {
       case AppPersona.librarian:
@@ -176,75 +175,104 @@ class _AppShellState extends State<AppShell> {
     }
   }
 
-  List<_Destination> _getGlobalDestinations() {
-    return [
-      const _Destination('Início', Icons.home, Icons.home_outlined, FluentIcons.home),
-      const _Destination('Buscar', Icons.search, Icons.search_outlined, FluentIcons.search),
-      const _Destination('Bibliotecário', Icons.library_books, Icons.library_books_outlined, FluentIcons.library, persona: AppPersona.librarian),
-      const _Destination('Anfitrião', Icons.celebration, Icons.celebration_outlined, FluentIcons.party_leader, persona: AppPersona.host),
-      const _Destination('Artesão', Icons.architecture, Icons.architecture_outlined, FluentIcons.developer_tools, persona: AppPersona.artisan),
-    ];
-  }
+  List<_Destination> _getGlobalDestinations() => [
+        const _Destination(
+            'Início', Icons.home, Icons.home_outlined, FluentIcons.home),
+        const _Destination(
+            'Buscar', Icons.search, Icons.search_outlined, FluentIcons.search),
+        const _Destination('Bibliotecário', Icons.library_books,
+            Icons.library_books_outlined, FluentIcons.library,
+            persona: AppPersona.librarian),
+        const _Destination('Anfitrião', Icons.celebration,
+            Icons.celebration_outlined, FluentIcons.party_leader,
+            persona: AppPersona.host),
+        const _Destination('Artesão', Icons.architecture,
+            Icons.architecture_outlined, FluentIcons.developer_tools,
+            persona: AppPersona.artisan),
+      ];
 
+  Widget _buildLibrarianPersona() => const PersonaShell(
+        key: ValueKey(AppPersona.librarian),
+        destinations: [
+          PersonaDestination(
+              label: 'Tags',
+              materialIcon: Icons.edit_note,
+              fluentIcon: FluentIcons.tag),
+          PersonaDestination(
+              label: 'Biblioteca',
+              materialIcon: Icons.library_music,
+              fluentIcon: FluentIcons.music_note),
+          PersonaDestination(
+              label: 'Playlists',
+              materialIcon: Icons.playlist_play,
+              fluentIcon: FluentIcons.list),
+          PersonaDestination(
+              label: 'Pastas',
+              materialIcon: Icons.folder,
+              fluentIcon: FluentIcons.folder),
+        ],
+        children: [
+          LibraryScreen(title: 'Editor de Tags'),
+          MyTracksScreen(),
+          PlaylistsScreen(),
+          LocalSourcesScreen(),
+        ],
+      );
 
-  Widget _buildLibrarianPersona() {
-    return const PersonaShell(
-      key: ValueKey(AppPersona.librarian),
-      destinations: [
-        PersonaDestination(label: 'Tags', materialIcon: Icons.edit_note, fluentIcon: FluentIcons.tag),
-        PersonaDestination(label: 'Biblioteca', materialIcon: Icons.library_music, fluentIcon: FluentIcons.music_note),
-        PersonaDestination(label: 'Playlists', materialIcon: Icons.playlist_play, fluentIcon: FluentIcons.list),
-        PersonaDestination(label: 'Pastas', materialIcon: Icons.folder, fluentIcon: FluentIcons.folder),
-      ],
-      children: [
-        LibraryScreen(title: 'Editor de Tags'),
-        MyTracksScreen(),
-        PlaylistsScreen(),
-        LocalSourcesScreen(),
-      ],
-    );
-  }
+  Widget _buildHostPersona() => const PersonaShell(
+        key: ValueKey(AppPersona.host),
+        destinations: [
+          PersonaDestination(
+              label: 'Disco',
+              materialIcon: Icons.album,
+              fluentIcon: FluentIcons.album),
+          PersonaDestination(
+              label: 'Karaoke',
+              materialIcon: Icons.mic,
+              fluentIcon: FluentIcons.microphone),
+          PersonaDestination(
+              label: 'Fila',
+              materialIcon: Icons.queue_music,
+              fluentIcon: FluentIcons.list),
+        ],
+        children: [
+          DiscoModeScreen(),
+          KaraokeScreen(track: {}),
+          PartyQueueScreen(),
+        ],
+      );
 
-  Widget _buildHostPersona() {
-    return const PersonaShell(
-      key: ValueKey(AppPersona.host),
-      destinations: [
-        PersonaDestination(label: 'Disco', materialIcon: Icons.album, fluentIcon: FluentIcons.album),
-        PersonaDestination(label: 'Karaoke', materialIcon: Icons.mic, fluentIcon: FluentIcons.microphone),
-        PersonaDestination(label: 'Fila', materialIcon: Icons.queue_music, fluentIcon: FluentIcons.list),
-      ],
-      children: [
-        DiscoModeScreen(),
-        KaraokeScreen(track: {}),
-        PartyQueueScreen(),
-      ],
-    );
-  }
-
-  Widget _buildArtisanPersona() {
-    return PersonaShell(
-      key: const ValueKey(AppPersona.artisan),
-      destinations: const [
-        PersonaDestination(label: 'Toques', materialIcon: Icons.content_cut, fluentIcon: FluentIcons.cut),
-        PersonaDestination(label: 'Cofre', materialIcon: Icons.enhanced_encryption, fluentIcon: FluentIcons.lock),
-        PersonaDestination(label: 'Estatísticas', materialIcon: Icons.bar_chart, fluentIcon: FluentIcons.b_i_dashboard),
-      ],
-      children: [
-        RingtoneMakerScreen(
-          track: SearchResult(
-            id: '0',
-            title: 'Selecione uma música',
-            artist: '',
-            url: '',
-            platform: MediaPlatform.unknown,
-            thumbnail: '',
+  Widget _buildArtisanPersona() => PersonaShell(
+        key: const ValueKey(AppPersona.artisan),
+        destinations: const [
+          PersonaDestination(
+              label: 'Toques',
+              materialIcon: Icons.content_cut,
+              fluentIcon: FluentIcons.cut),
+          PersonaDestination(
+              label: 'Cofre',
+              materialIcon: Icons.enhanced_encryption,
+              fluentIcon: FluentIcons.lock),
+          PersonaDestination(
+              label: 'Estatísticas',
+              materialIcon: Icons.bar_chart,
+              fluentIcon: FluentIcons.b_i_dashboard),
+        ],
+        children: [
+          RingtoneMakerScreen(
+            track: SearchResult(
+              id: '0',
+              title: 'Selecione uma música',
+              artist: '',
+              url: '',
+              platform: MediaPlatform.unknown,
+              thumbnail: '',
+            ),
           ),
-        ),
-        const VaultScreen(),
-        const ListeningStatsScreen(),
-      ],
-    );
-  }
+          const VaultScreen(),
+          const ListeningStatsScreen(),
+        ],
+      );
 }
 
 class _Destination {
@@ -253,5 +281,6 @@ class _Destination {
   final IconData iconOutline;
   final IconData fluentIcon;
   final AppPersona? persona;
-  const _Destination(this.label, this.icon, this.iconOutline, this.fluentIcon, {this.persona});
+  const _Destination(this.label, this.icon, this.iconOutline, this.fluentIcon,
+      {this.persona});
 }

@@ -106,20 +106,18 @@ void main() {
         .thenAnswer((_) => Stream.value(Duration.zero));
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: RingtoneMakerScreen(
-        track: SearchResult(
-          id: '1',
-          title: 'Test Song',
-          artist: 'Test Artist',
-          url: 'http://test.mp3',
-          platform: MediaPlatform.youtube,
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: RingtoneMakerScreen(
+          track: SearchResult(
+            id: '1',
+            title: 'Test Song',
+            artist: 'Test Artist',
+            url: 'http://test.mp3',
+            platform: MediaPlatform.youtube,
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   group('RingtoneMakerScreen', () {
     testWidgets('renders Scaffold', (tester) async {

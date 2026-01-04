@@ -47,11 +47,10 @@ void main() {
       final count = await service.cleanupLibrary();
 
       expect(count, equals(1));
-      verify(() =>
-          mockDb.saveTrack(any(that: predicate((Map<String, dynamic> track) {
-            return track['title'] == 'Song Title' &&
-                track['artist'] == 'Artist';
-          })))).called(1);
+      verify(() => mockDb.saveTrack(any(
+          that: predicate((Map<String, dynamic> track) =>
+              track['title'] == 'Song Title' &&
+              track['artist'] == 'Artist')))).called(1);
     });
 
     test('cleanupLibrary fetches missing metadata', () async {
@@ -82,10 +81,10 @@ void main() {
       final count = await service.cleanupLibrary();
 
       expect(count, equals(1));
-      verify(() =>
-          mockDb.saveTrack(any(that: predicate((Map<String, dynamic> track) {
-            return track['genre'] == 'Rock' && track['album'] == 'Best Hits';
-          })))).called(1);
+      verify(() => mockDb.saveTrack(any(
+              that: predicate((Map<String, dynamic> track) =>
+                  track['genre'] == 'Rock' && track['album'] == 'Best Hits'))))
+          .called(1);
     });
 
     test('cleanupLibrary handles aggregator errors gracefully', () async {

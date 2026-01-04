@@ -39,12 +39,10 @@ void main() {
     when(() => mockPlayback.addToQueue(any())).thenAnswer((_) async {});
   });
 
-  Widget createTestWidget() {
-    return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.android),
-      home: const RemoteLibraryScreen(),
-    );
-  }
+  Widget createTestWidget() => MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
+        home: const RemoteLibraryScreen(),
+      );
 
   group('RemoteLibraryScreen', () {
     testWidgets('shows loading indicator initially', (tester) async {
