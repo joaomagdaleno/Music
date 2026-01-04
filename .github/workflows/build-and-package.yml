@@ -65,7 +65,7 @@ jobs:
         working-directory: music_tag_editor
         run: |
           mkdir -p debug-info
-          flutter build apk --release --target-platform=android-arm64 --obfuscate --split-debug-info=debug-info --analyze-size | tee size_analysis.log
+          flutter build apk --release --target-platform=android-arm64 --obfuscate --split-debug-info=debug-info | tee size_analysis.log
 
       - name: The Cartographer 🗺️ (Size Analysis Summary)
         working-directory: music_tag_editor
