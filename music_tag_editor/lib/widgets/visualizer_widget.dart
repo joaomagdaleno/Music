@@ -47,12 +47,14 @@ class _VisualizerWidgetState extends State<VisualizerWidget>
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        return CustomPaint(
-          size: const Size(double.infinity, 50),
-          painter: _VisualizerPainter(
-            heights: _heights,
-            progress: _controller.value,
-            color: widget.color.withValues(alpha: 0.5),
+        return RepaintBoundary( // ⚡ Bolt: Isolate 60fps paints
+          child: CustomPaint(
+            size: const Size(double.infinity, 50),
+            painter: _VisualizerPainter(
+              heights: _heights,
+              progress: _controller.value,
+              color: widget.color.withValues(alpha: 0.5),
+            ),
           ),
         );
       },

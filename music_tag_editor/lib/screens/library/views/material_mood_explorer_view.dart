@@ -49,7 +49,7 @@ class MaterialMoodExplorerView extends StatelessWidget {
                     width: 120,
                     child: Column(
                       children: [
-                        Expanded(child: track['thumbnail'] != null ? ClipRRect(borderRadius: const BorderRadius.vertical(top: Radius.circular(8)), child: Image.network(track['thumbnail'], fit: BoxFit.cover, width: double.infinity)) : const Center(child: Icon(Icons.music_note, size: 32))),
+                        Expanded(child: track['thumbnail'] != null ? ClipRRect(borderRadius: const BorderRadius.vertical(top: Radius.circular(8)), child: Image.network(track['thumbnail'], fit: BoxFit.cover, width: double.infinity, cacheWidth: 360)) : const Center(child: Icon(Icons.music_note, size: 32))),
                         Padding(padding: const EdgeInsets.all(8.0), child: Text(track['title'], maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold))),
                       ],
                     ),

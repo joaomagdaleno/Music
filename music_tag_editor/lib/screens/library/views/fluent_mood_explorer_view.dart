@@ -61,7 +61,7 @@ class FluentMoodExplorerView extends StatelessWidget {
                     width: 140,
                     child: Column(
                       children: [
-                        Expanded(child: track['thumbnail'] != null ? ClipRRect(borderRadius: const BorderRadius.vertical(top: Radius.circular(4)), child: Image.network(track['thumbnail'], fit: BoxFit.cover, width: double.infinity)) : const Center(child: Icon(FluentIcons.music_note, size: 32))),
+                        Expanded(child: track['thumbnail'] != null ? ClipRRect(borderRadius: const BorderRadius.vertical(top: Radius.circular(4)), child: Image.network(track['thumbnail'], fit: BoxFit.cover, width: double.infinity, cacheWidth: 420)) : const Center(child: Icon(FluentIcons.music_note, size: 32))),
                         Padding(padding: const EdgeInsets.all(8.0), child: Text(track['title'], maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.bold))),
                       ],
                     ),

@@ -69,7 +69,7 @@ class FluentRingtoneMakerView extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: track.thumbnail != null
-            ? Image.network(track.thumbnail!, fit: BoxFit.cover)
+            ? Image.network(track.thumbnail!, fit: BoxFit.cover, cacheWidth: 300)
             : Container(color: FluentTheme.of(context).cardColor, child: const Icon(FluentIcons.music_note, size: 80)),
       ),
     );

@@ -9,7 +9,9 @@ class QueueSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final queue = PlaybackService.instance.queue;
     
-    return Container(
+    return Material(
+      color: Colors.transparent,
+      child: Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -25,6 +27,7 @@ class QueueSheet extends StatelessWidget {
             child: queue.isEmpty
                 ? const Center(child: Text('A fila está vazia.'))
                 : ListView.builder(
+                    itemExtent: 72.0, // ⚡ Bolt: Fixed extent for faster scrolling
                     itemCount: queue.length,
                     itemBuilder: (context, index) {
                       final track = queue[index];
@@ -33,10 +36,17 @@ class QueueSheet extends StatelessWidget {
                       
                       return ListTile(
                         leading: track.thumbnail != null 
-                             ? Image.network(track.thumbnail!, width: 40, height: 40, fit: BoxFit.cover)
+                             ? Image.network(
+                                 track.thumbnail!, 
+                                 width: 40, 
+                                 height: 40, 
+                                 fit: BoxFit.cover,
+                                 cacheWidth: 120, // ⚡ Bolt: Optimize memory (40px * 3x)
+                                 cacheHeight: 120,
+                               )
                              : const Icon(Icons.music_note),
-                        title: Text(track.title),
-                        subtitle: Text(track.artist),
+                        title: Text(track.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        subtitle: Text(track.artist, maxLines: 1, overflow: TextOverflow.ellipsis),
                         trailing: isCurrent ? const Icon(Icons.equalizer, color: Colors.blue) : null,
                         tileColor: isCurrent ? Colors.blue.withValues(alpha: 0.1) : null,
                         onTap: () {
@@ -48,6 +58,7 @@ class QueueSheet extends StatelessWidget {
                   ),
           ),
         ],
+      ),
       ),
     );
   }

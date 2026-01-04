@@ -43,7 +43,7 @@ class FluentPlaylistDetailView extends StatelessWidget {
                     return Card(
                       margin: const EdgeInsets.only(bottom: 8),
                       child: ListTile(
-                        leading: Container(width: 48, height: 48, decoration: BoxDecoration(color: FluentTheme.of(context).accentColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)), child: track['thumbnail'] != null ? ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.network(track['thumbnail'], fit: BoxFit.cover)) : const Icon(FluentIcons.music_note)),
+                        leading: Container(width: 48, height: 48, decoration: BoxDecoration(color: FluentTheme.of(context).accentColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)), child: track['thumbnail'] != null ? ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.network(track['thumbnail'], fit: BoxFit.cover, cacheWidth: 150)) : const Icon(FluentIcons.music_note)),
                         title: Text(track['title'], style: const TextStyle(fontWeight: FontWeight.bold)),
                         subtitle: Text(track['artist'] ?? ''),
                         trailing: IconButton(icon: const Icon(FluentIcons.play), onPressed: () => onPlayTrack(track)),

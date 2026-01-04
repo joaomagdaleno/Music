@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' as material;
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:music_tag_editor/services/local_duo_service.dart';
 
 class DuoChatDialog extends StatefulWidget {
@@ -43,7 +46,72 @@ class _DuoChatDialogState extends State<DuoChatDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    // Platform check
+    if (defaultTargetPlatform == TargetPlatform.windows) {
+      return _buildFluent(context);
+    }
+    return _buildMaterial(context);
+  }
+
+  Widget _buildFluent(BuildContext context) {
+    return fluent.ContentDialog(
+      title: const Text('Chat Duo (Offline)'),
+      content: SizedBox(
+        width: 400, // Fixed width for consistent look
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text('Envie mensagens via Bluetooth/Wi-Fi Direct',
+                style: TextStyle(fontSize: 12, color: fluent.Colors.grey)),
+            const SizedBox(height: 12),
+            Container(
+              height: 200,
+              decoration: BoxDecoration(
+                border: Border.all(color: fluent.FluentTheme.of(context).resources.dividerStrokeColorDefault),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: ListView.builder(
+                padding: const EdgeInsets.all(8),
+                shrinkWrap: true,
+                itemCount: _messages.length,
+                itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Text(_messages[index]),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: fluent.TextBox(
+                    controller: _controller,
+                    onSubmitted: (_) => _sendMessage(),
+                    placeholder: 'Digite uma mensagem...',
+                  ),
+                ),
+                const SizedBox(width: 8),
+                fluent.IconButton(
+                  icon: const Icon(fluent.FluentIcons.send),
+                  onPressed: _sendMessage,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        fluent.Button(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Fechar'),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMaterial(BuildContext context) {
+    return material.AlertDialog(
       title: const Text('Chat Duo (Offline)'),
       content: SizedBox(
         width: double.maxFinite,
@@ -51,8 +119,8 @@ class _DuoChatDialogState extends State<DuoChatDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text('Envie mensagens via Bluetooth/Wi-Fi Direct',
-                style: TextStyle(fontSize: 12, color: Colors.grey)),
-            const Divider(),
+                style: TextStyle(fontSize: 12, color: material.Colors.grey)),
+            const material.Divider(),
             Flexible(
               child: ListView.builder(
                 shrinkWrap: true,
@@ -67,15 +135,15 @@ class _DuoChatDialogState extends State<DuoChatDialog> {
             Row(
               children: [
                 Expanded(
-                  child: TextField(
+                  child: material.TextField(
                     controller: _controller,
                     onSubmitted: (_) => _sendMessage(),
-                    decoration: const InputDecoration(
+                    decoration: const material.InputDecoration(
                         hintText: 'Digite uma mensagem...'),
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.send),
+                material.IconButton(
+                  icon: const Icon(material.Icons.send),
                   onPressed: _sendMessage,
                 ),
               ],
@@ -84,7 +152,7 @@ class _DuoChatDialogState extends State<DuoChatDialog> {
         ),
       ),
       actions: [
-        TextButton(
+        material.TextButton(
           onPressed: () => Navigator.pop(context),
           child: const Text('Fechar'),
         ),

@@ -28,7 +28,7 @@ class MaterialPlaylistDetailView extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final track = tracks[index];
                     return ListTile(
-                      leading: track['thumbnail'] != null ? Image.network(track['thumbnail'], width: 40) : const Icon(Icons.music_note),
+                      leading: track['thumbnail'] != null ? Image.network(track['thumbnail'], width: 40, cacheWidth: 150) : const Icon(Icons.music_note),
                       title: Text(track['title']),
                       subtitle: Text(track['artist'] ?? ''),
                       trailing: IconButton(icon: const Icon(Icons.play_arrow), onPressed: () => onPlayTrack(track)),

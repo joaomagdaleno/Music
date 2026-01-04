@@ -143,6 +143,7 @@ class FluentSearchView extends StatelessWidget {
                                       width: 48,
                                       height: 48,
                                       fit: BoxFit.cover,
+                                      cacheWidth: 150, // ⚡ Bolt: Optimize memory
                                       errorBuilder: (_, __, ___) => const Icon(FluentIcons.music_note, size: 24),
                                     ),
                                   )

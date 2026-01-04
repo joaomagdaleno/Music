@@ -278,6 +278,7 @@ class MaterialHomeView extends StatelessWidget {
                       child: Image.network(
                         track['thumbnail'] ?? 'https://via.placeholder.com/150',
                         fit: BoxFit.cover,
+                        cacheWidth: 360, // ⚡ Bolt: Optimize memory (120px * 3x)
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: Colors.grey[900],
                           child: const Icon(Icons.music_note,

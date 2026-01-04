@@ -68,6 +68,7 @@ class FluentKaraokeView extends StatelessWidget {
 
     return ListView.builder(
       controller: scrollController,
+      itemExtent: 100.0, // ⚡ Bolt: Fixed extent for efficient scrolling
       padding: const EdgeInsets.symmetric(vertical: 400, horizontal: 48),
       itemCount: lyrics.length,
       itemBuilder: (context, index) {

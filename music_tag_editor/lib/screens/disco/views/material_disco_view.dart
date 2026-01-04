@@ -75,7 +75,7 @@ class MaterialDiscoModeView extends StatelessWidget {
         ),
         child: ClipOval(
           child: currentTrack?.thumbnail != null
-              ? Image.network(currentTrack!.thumbnail!, fit: BoxFit.cover)
+              ? Image.network(currentTrack!.thumbnail!, fit: BoxFit.cover, cacheWidth: 600)
               : Container(color: Colors.grey[900], child: const Icon(Icons.music_note, size: 80, color: Colors.white54)),
         ),
       ),

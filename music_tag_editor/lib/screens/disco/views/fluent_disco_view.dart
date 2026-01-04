@@ -80,7 +80,7 @@ class FluentDiscoModeView extends StatelessWidget {
         ),
         child: ClipOval(
           child: currentTrack?.thumbnail != null
-              ? Image.network(currentTrack!.thumbnail!, fit: BoxFit.cover)
+              ? Image.network(currentTrack!.thumbnail!, fit: BoxFit.cover, cacheWidth: 600)
               : Container(color: Colors.grey.withValues(alpha: 0.1), child: const Icon(FluentIcons.music_note, size: 100, color: Colors.white)),
         ),
       ),

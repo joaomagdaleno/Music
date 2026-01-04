@@ -89,7 +89,7 @@ class MaterialMyTracksView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: track.thumbnail != null
-                  ? ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.network(track.thumbnail!, fit: BoxFit.cover))
+                  ? ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.network(track.thumbnail!, fit: BoxFit.cover, cacheWidth: 150))
                   : const Icon(Icons.music_note),
             ),
             title: Text(

@@ -60,7 +60,7 @@ class MaterialVaultView extends StatelessWidget {
       itemBuilder: (context, index) {
         final track = tracks[index];
         return ListTile(
-          leading: track.thumbnail != null ? ClipRRect(borderRadius: BorderRadius.circular(4), child: Image.network(track.thumbnail!, width: 40, height: 40, fit: BoxFit.cover)) : const Icon(Icons.music_note),
+          leading: track.thumbnail != null ? ClipRRect(borderRadius: BorderRadius.circular(4), child: Image.network(track.thumbnail!, width: 40, height: 40, fit: BoxFit.cover, cacheWidth: 120)) : const Icon(Icons.music_note),
           title: Text(track.title),
           subtitle: Text(track.artist),
           trailing: Row(

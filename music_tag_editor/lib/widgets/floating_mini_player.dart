@@ -69,6 +69,7 @@ class _FloatingMiniPlayerState extends State<FloatingMiniPlayer> {
                               width: 80,
                               height: 80,
                               fit: BoxFit.cover,
+                              cacheWidth: 240, // ⚡ Bolt: Optimize memory (80px * 3x)
                             )
                           : Container(
                               width: 80,
