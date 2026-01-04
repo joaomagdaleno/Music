@@ -87,7 +87,7 @@ jobs:
         run: python scripts/asset_guard.py >> $GITHUB_STEP_SUMMARY || true
 
       - name: The Inquisitor's Eye 🔦 (Vulnerability Scan)
-        uses: google/osv-scanner-action@v2
+        uses: google/osv-scanner-action@v2.3.1
         with:
           scan-args: |-
             --recursive
