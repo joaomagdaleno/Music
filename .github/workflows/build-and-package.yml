@@ -10,7 +10,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           fetch-tags: true
@@ -24,13 +24,13 @@ jobs:
           echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
 
       - name: Install Flutter
-        uses: subosito/flutter-action@44c065818f283a3d525838ca02175ff20172960f # v2.16.0
+        uses: subosito/flutter-action@v2 # v2.16.0
         with:
           flutter-version: '3.38.2'
           cache: true
 
       - name: Cache Pub Dependencies
-        uses: actions/cache@0c45773b623bec8c74a4659c39ef59862f9d49a6 # v4.2.0
+        uses: actions/cache@v5
         with:
           path: |
             ~\AppData\Local\Pub\Cache
@@ -91,13 +91,13 @@ jobs:
           & "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" installer.iss
 
       - name: Upload Installer Artifact
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.5.0
+        uses: actions/upload-artifact@v6
         with:
           name: windows-installer
           path: Output/MusicTagEditorSetup-*.exe
 
       - name: Upload Version Artifact (Windows)
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.5.0
+        uses: actions/upload-artifact@v6
         with:
           name: version-info
           path: music_tag_editor/version.txt
@@ -123,7 +123,7 @@ jobs:
           }" > metrics/windows_telemetry.json
 
       - name: Upload Telemetry
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.5.0
+        uses: actions/upload-artifact@v6
         with:
           name: telemetry-windows
           path: metrics/windows_telemetry.json
@@ -133,7 +133,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           fetch-tags: true
@@ -149,13 +149,13 @@ jobs:
           echo "$GOOGLE_SERVICES_JSON" > music_tag_editor/android/app/google-services.json
 
       - name: Install Flutter
-        uses: subosito/flutter-action@44c065818f283a3d525838ca02175ff20172960f # v2.16.0
+        uses: subosito/flutter-action@v2 # v2.16.0
         with:
           flutter-version: '3.38.2'
           cache: true
 
       - name: Cache Pub Dependencies
-        uses: actions/cache@0c45773b623bec8c74a4659c39ef59862f9d49a6 # v4.2.0
+        uses: actions/cache@v5
         with:
           path: |
             ~/.pub-cache
@@ -164,14 +164,14 @@ jobs:
             ${{ runner.os }}-pub-
 
       - name: Setup Java
-        uses: actions/setup-java@3a4ad2a64b4c19e7268595d9154ef228ec5a1c30 # v4.5.0
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
           cache: 'gradle'
 
       - name: Cache Gradle Dependencies
-        uses: actions/cache@0c45773b623bec8c74a4659c39ef59862f9d49a6 # v4.2.0
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches
@@ -254,14 +254,14 @@ jobs:
           fi
 
       - name: Upload APK Artifact
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.5.0
+        uses: actions/upload-artifact@v6
         with:
           name: android-apk
           path: music_tag_editor/build/app/outputs/flutter-apk/app-release.apk
 
       - name: Upload AAB Artifact
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.5.0
+        uses: actions/upload-artifact@v6
         with:
           name: android-aab
           path: music_tag_editor/build/app/outputs/bundle/release/app-release.aab
@@ -296,7 +296,7 @@ jobs:
           }" > metrics/android_telemetry.json
 
       - name: Upload Telemetry
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.5.0
+        uses: actions/upload-artifact@v6
         with:
           name: telemetry-android
           path: metrics/android_telemetry.json
@@ -306,7 +306,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           fetch-tags: true
@@ -325,7 +325,7 @@ jobs:
           cache: true
 
       - name: Cache Pub Dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.pub-cache
@@ -376,7 +376,7 @@ jobs:
           tar -czvf ../../../../../music_tag_editor-linux-v${{ steps.generate_version.outputs.full_version }}.tar.gz .
 
       - name: Upload Linux Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: linux-release
           path: music_tag_editor/music_tag_editor-linux-v*.tar.gz
