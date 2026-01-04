@@ -54,7 +54,7 @@ class FluentPlayerView extends StatelessWidget {
           if (track == null) return const Center(child: Text('Nenhuma música tocando'));
 
 // Video Surface Only
-                Expanded(
+                return Expanded(
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
@@ -76,7 +76,7 @@ class FluentPlayerView extends StatelessWidget {
                           ),
                     ],
                   ),
-                ),
+                );
         },
       ),
     );

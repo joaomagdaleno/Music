@@ -60,7 +60,7 @@ class FluentPlaylistImporterView extends StatelessWidget {
                     return Card(
                       margin: const EdgeInsets.only(bottom: 8),
                       child: ListTile(
-                        leading: Container(width: 40, height: 40, decoration: BoxDecoration(color: FluentTheme.of(context).accentColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)), child: track.thumbnail != null ? ClipRRect(borderRadius: BorderRadius.circular(4), child: Image.network(track.thumbnail!, fit: BoxFit.cover)) : const Icon(FluentIcons.music_note)),
+                        leading: Container(width: 40, height: 40, decoration: BoxDecoration(color: FluentTheme.of(context).accentColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)), child: track.thumbnail != null ? ClipRRect(borderRadius: BorderRadius.circular(4), child: Image.network(track.thumbnail!, fit: BoxFit.cover, cacheWidth: 120)) : const Icon(FluentIcons.music_note)),
                         title: Text(track.title, style: const TextStyle(fontWeight: FontWeight.bold)),
                         subtitle: Text(track.artist),
                       ),

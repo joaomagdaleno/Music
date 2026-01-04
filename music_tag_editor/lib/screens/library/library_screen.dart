@@ -174,13 +174,11 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
     // FIX: File Locking on Windows
     // Check if this track is currently playing. If so, we must stop playback to release the file handle.
-    bool wasPlaying = false;
     try {
       final currentTrack = PlaybackService.instance.currentTrack;
       if (currentTrack != null && currentTrack.localPath == originalTrack.filePath) {
         debugPrint('Track is currently playing. Stopping playback to release file lock.');
         await PlaybackService.instance.stop();
-        wasPlaying = true;
       }
     } catch (e) {
       debugPrint('Error checking playback status: $e');

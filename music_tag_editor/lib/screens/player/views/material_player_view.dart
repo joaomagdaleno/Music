@@ -109,7 +109,7 @@ class MaterialPlayerView extends StatelessWidget {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Image.network(track.thumbnail!, width: 300, height: 300, fit: BoxFit.cover),
+                      child: Image.network(track.thumbnail!, width: 300, height: 300, fit: BoxFit.cover, cacheWidth: 600),
                     ),
                   ),
                 ),
@@ -126,11 +126,11 @@ class MaterialPlayerView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 48),
-              const ProgressBar(),
+              const RepaintBoundary(child: ProgressBar()), // ⚡ Bolt: Isolate frequent updates
               const SizedBox(height: 32),
               _buildControlButtons(context, playing, playback, track),
               const SizedBox(height: 32),
-              const Expanded(child: LyricsView()),
+              const Expanded(child: RepaintBoundary(child: LyricsView())), // ⚡ Bolt: Isolate lyrics repaints
             ],
           ),
         ),

@@ -148,14 +148,14 @@ class _DuoMatchingDialogState extends State<DuoMatchingDialog> {
               ),
             ] else ...[
               if (_connectedGuests.isNotEmpty) ...[
-                const Center(child: Icon(fluent.FluentIcons.group, size: 48, color: fluent.Colors.green)),
+                Center(child: Icon(fluent.FluentIcons.group, size: 48, color: fluent.Colors.green)),
                 const SizedBox(height: 10),
                 Text("Broadcast Ativo (${_connectedGuests.length})", textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
                 ..._connectedGuests.entries.map((e) => fluent.ListTile(
                       leading: const Icon(fluent.FluentIcons.people),
                       title: Text(e.value),
-                      trailing: const Icon(fluent.FluentIcons.check_mark, color: fluent.Colors.green),
+                      trailing: Icon(fluent.FluentIcons.check_mark, color: fluent.Colors.green),
                     )),
                 const SizedBox(height: 20),
                 fluent.FilledButton(

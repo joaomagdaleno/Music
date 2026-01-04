@@ -215,30 +215,32 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
                               final max = duration.inMilliseconds.toDouble();
                               final value = position.inMilliseconds.toDouble().clamp(0.0, max > 0 ? max : 1.0);
                               
-                              return SizedBox(
-                                width: 400,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      _formatDuration(position),
-                                      style: TextStyle(fontSize: 11, color: theme.typography.caption?.color),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Expanded(
-                                      child: fluent.Slider(
-                                        value: value,
-                                        max: max > 0 ? max : 1.0,
-                                        onChanged: (val) {
-                                          playback.seek(Duration(milliseconds: val.toInt()));
-                                        },
+                              return RepaintBoundary( // ⚡ Bolt: Isolate progress bar
+                                child: SizedBox(
+                                  width: 400,
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        _formatDuration(position),
+                                        style: TextStyle(fontSize: 11, color: theme.typography.caption?.color),
                                       ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      _formatDuration(duration),
-                                      style: TextStyle(fontSize: 11, color: theme.typography.caption?.color),
-                                    ),
-                                  ],
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: fluent.Slider(
+                                          value: value,
+                                          max: max > 0 ? max : 1.0,
+                                          onChanged: (val) {
+                                            playback.seek(Duration(milliseconds: val.toInt()));
+                                          },
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        _formatDuration(duration),
+                                        style: TextStyle(fontSize: 11, color: theme.typography.caption?.color),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
@@ -346,24 +348,26 @@ class _MaterialMiniPlayer extends StatelessWidget {
                 child: Column(
                   children: [
                     // Progress Indicator (Thin line at top)
-                     StreamBuilder<Duration>(
-                        stream: playback.player.stream.position,
-                        builder: (context, posSnapshot) {
-                          final position = posSnapshot.data ?? Duration.zero;
-                          final duration = playback.player.state.duration;
-                          final progress = duration.inMilliseconds > 0 
-                              ? position.inMilliseconds / duration.inMilliseconds 
-                              : 0.0;
-                           return LinearProgressIndicator(
-                             value: progress,
-                             minHeight: 2,
-                             backgroundColor: Colors.transparent,
-                             valueColor: AlwaysStoppedAnimation(
-                               Theme.of(context).colorScheme.primary,
-                             ),
-                           );
-                        }
-                     ),
+                       RepaintBoundary( // ⚡ Bolt: Isolate progress bar
+                         child: StreamBuilder<Duration>(
+                            stream: playback.player.stream.position,
+                            builder: (context, posSnapshot) {
+                              final position = posSnapshot.data ?? Duration.zero;
+                              final duration = playback.player.state.duration;
+                              final progress = duration.inMilliseconds > 0 
+                                  ? position.inMilliseconds / duration.inMilliseconds 
+                                  : 0.0;
+                               return LinearProgressIndicator(
+                                 value: progress,
+                                 minHeight: 2,
+                                 backgroundColor: Colors.transparent,
+                                 valueColor: AlwaysStoppedAnimation(
+                                   Theme.of(context).colorScheme.primary,
+                                 ),
+                               );
+                            }
+                         ),
+                       ),
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),

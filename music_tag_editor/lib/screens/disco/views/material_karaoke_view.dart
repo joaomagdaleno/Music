@@ -73,6 +73,7 @@ class MaterialKaraokeView extends StatelessWidget {
     if (lyrics.isEmpty) return const Center(child: Text('Letras não sincronizadas...', style: TextStyle(color: Colors.white54)));
     return ListView.builder(
       controller: scrollController,
+      itemExtent: 80.0, // ⚡ Bolt: Fixed extent for efficient scrolling
       padding: const EdgeInsets.symmetric(vertical: 300, horizontal: 32),
       itemCount: lyrics.length,
       itemBuilder: (context, index) {

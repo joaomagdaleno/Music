@@ -106,6 +106,7 @@ class MaterialSearchView extends StatelessWidget {
                                 width: 50,
                                 height: 50,
                                 fit: BoxFit.cover,
+                                cacheWidth: 150, // ⚡ Bolt: Optimize memory
                                 errorBuilder: (_, __, ___) => const Icon(Icons.music_note))
                             : const Icon(Icons.music_note),
                         title: Text(

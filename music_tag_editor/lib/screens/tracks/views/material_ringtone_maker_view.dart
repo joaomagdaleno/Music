@@ -33,7 +33,7 @@ class MaterialRingtoneMakerView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            track.thumbnail != null ? Image.network(track.thumbnail!, width: 150) : const Icon(Icons.music_note, size: 100),
+            track.thumbnail != null ? Image.network(track.thumbnail!, width: 150, cacheWidth: 450) : const Icon(Icons.music_note, size: 100),
             const SizedBox(height: 24),
             Text(track.title, style: Theme.of(context).textTheme.headlineSmall),
             Text(track.artist, style: const TextStyle(color: Colors.grey)),

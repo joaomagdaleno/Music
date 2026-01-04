@@ -1,39 +1,19 @@
 import 'dart:io';
-import 'package:meta/meta.dart';
 import 'package:dart_tags/dart_tags.dart';
 
 /// Service for reading and writing audio metadata using pure Dart.
 /// Supports ID3v1 and ID3v2 tags for MP3 files.
-class MetadataService {
-  final TagProcessor _tagProcessor = TagProcessor();
+import 'package:flutter/foundation.dart';
 
+/// Service for reading and writing audio metadata using pure Dart.
+/// Supports ID3v1 and ID3v2 tags for MP3 files.
+class MetadataService {
+  
   /// Reads metadata from an audio file.
   /// Returns a map with keys: title, artist, album, track
   Future<Map<String, dynamic>> readMetadata(String filePath) async {
-    final file = File(filePath);
-    if (!await file.exists()) {
-      throw FileSystemException('File not found', filePath);
-    }
-
-    final bytes = await file.readAsBytes();
-    final tags = await _tagProcessor.getTagsFromByteArray(
-      Future.value(bytes.toList()),
-    );
-
-    // Prefer ID3v2 tags over ID3v1 if available
-    final tag = tags.firstWhere(
-      (t) => t.type == 'ID3' && t.version?.startsWith('2') == true,
-      orElse: () => tags.isNotEmpty ? tags.first : Tag(),
-    );
-
-    return {
-      'title': tag.tags['title'] ?? tag.tags['TIT2'] ?? 'Unknown Title',
-      'artist': tag.tags['artist'] ?? tag.tags['TPE1'] ?? 'Unknown Artist',
-      'album': tag.tags['album'] ?? tag.tags['TALB'] ?? 'Unknown Album',
-      'track': parseTrackNumber(tag.tags['track'] ?? tag.tags['TRCK']),
-      'genre': tag.tags['genre'] ?? tag.tags['TCON'] ?? 'Unknown Genre',
-      'lyrics': tag.tags['lyrics'] ?? tag.tags['USLT'] ?? tag.tags['unsynchronized_lyrics'],
-    };
+    // ⚡ Bolt: Offload heavy I/O and parsing to background isolate
+    return compute(_readMetadataIsolate, filePath);
   }
 
   /// Writes metadata to an audio file.
@@ -47,44 +27,18 @@ class MetadataService {
     int? year,
     String? lyrics,
   }) async {
-    final file = File(filePath);
-    if (!await file.exists()) {
-      throw FileSystemException('File not found', filePath);
-    }
-
-    final bytes = await file.readAsBytes();
-
-    // Create ID3v2.4 tag with the new metadata
-    final tag = Tag()
-      ..type = 'ID3'
-      ..version = '2.4.0'
-      ..tags = {
-        'title': title,
-        'artist': artist,
-        'album': album,
-        'track': trackNumber.toString(),
-        if (genre != null) 'genre': genre,
-        if (year != null) 'year': year.toString(),
-        if (lyrics != null) 'lyrics': lyrics,
-        // ID3v2 frame IDs
-        'TIT2': title,
-        'TPE1': artist,
-        'TALB': album,
-        'TRCK': trackNumber.toString(),
-        if (genre != null) 'TCON': genre,
-        if (year != null) 'TDRC': year.toString(), 
-        if (year != null) 'TYER': year.toString(),
-        if (lyrics != null) 'USLT': lyrics,
-      };
-
-    // Write the tags to the byte array
-    final newBytes = await _tagProcessor.putTagsToByteArray(
-      Future.value(bytes.toList()),
-      [tag],
+    // ⚡ Bolt: Offload heavy I/O and parsing to background isolate
+    final args = _WriteMetadataArgs(
+      filePath: filePath,
+      title: title,
+      artist: artist,
+      album: album,
+      trackNumber: trackNumber,
+      genre: genre,
+      year: year,
+      lyrics: lyrics,
     );
-
-    // Write the modified bytes back to the file
-    await file.writeAsBytes(newBytes);
+    await compute(_writeMetadataIsolate, args);
   }
 
   /// Parses track number from various formats (e.g., "5", "5/12")
@@ -98,4 +52,101 @@ class MetadataService {
     final parts = str.split('/');
     return int.tryParse(parts.first.trim()) ?? 0;
   }
+}
+
+// ⚡ Bolt: Top-level function for compute
+Future<Map<String, dynamic>> _readMetadataIsolate(String filePath) async {
+  final file = File(filePath);
+  if (!await file.exists()) {
+    throw FileSystemException('File not found', filePath);
+  }
+
+  // Note: TagProcessor is lightweight to instantiate
+  final tagProcessor = TagProcessor();
+  final bytes = await file.readAsBytes();
+  final tags = await tagProcessor.getTagsFromByteArray(
+    Future.value(bytes.toList()),
+  );
+
+  // Prefer ID3v2 tags over ID3v1 if available
+  final tag = tags.firstWhere(
+    (t) => t.type == 'ID3' && t.version?.startsWith('2') == true,
+    orElse: () => tags.isNotEmpty ? tags.first : Tag(),
+  );
+
+  final service = MetadataService();
+  return {
+    'title': tag.tags['title'] ?? tag.tags['TIT2'] ?? 'Unknown Title',
+    'artist': tag.tags['artist'] ?? tag.tags['TPE1'] ?? 'Unknown Artist',
+    'album': tag.tags['album'] ?? tag.tags['TALB'] ?? 'Unknown Album',
+    'track': service.parseTrackNumber(tag.tags['track'] ?? tag.tags['TRCK']),
+    'genre': tag.tags['genre'] ?? tag.tags['TCON'] ?? 'Unknown Genre',
+    'lyrics': tag.tags['lyrics'] ?? tag.tags['USLT'] ?? tag.tags['unsynchronized_lyrics'],
+  };
+}
+
+// ⚡ Bolt: Top-level function for compute
+Future<void> _writeMetadataIsolate(_WriteMetadataArgs args) async {
+  final file = File(args.filePath);
+  if (!await file.exists()) {
+    throw FileSystemException('File not found', args.filePath);
+  }
+
+  final tagProcessor = TagProcessor();
+  final bytes = await file.readAsBytes();
+
+  // Create ID3v2.4 tag with the new metadata
+  final tag = Tag()
+    ..type = 'ID3'
+    ..version = '2.4.0'
+    ..tags = {
+      'title': args.title,
+      'artist': args.artist,
+      'album': args.album,
+      'track': args.trackNumber.toString(),
+      if (args.genre != null) 'genre': args.genre,
+      if (args.year != null) 'year': args.year.toString(),
+      if (args.lyrics != null) 'lyrics': args.lyrics,
+      // ID3v2 frame IDs
+      'TIT2': args.title,
+      'TPE1': args.artist,
+      'TALB': args.album,
+      'TRCK': args.trackNumber.toString(),
+      if (args.genre != null) 'TCON': args.genre,
+      if (args.year != null) 'TDRC': args.year.toString(), 
+      if (args.year != null) 'TYER': args.year.toString(),
+      if (args.lyrics != null) 'USLT': args.lyrics,
+    };
+
+  // Write the tags to the byte array
+  final newBytes = await tagProcessor.putTagsToByteArray(
+    Future.value(bytes.toList()),
+    [tag],
+  );
+
+  // Write the modified bytes back to the file
+  await file.writeAsBytes(newBytes);
+}
+
+// ⚡ Bolt: Arguments class for write isolate
+class _WriteMetadataArgs {
+  final String filePath;
+  final String title;
+  final String artist;
+  final String album;
+  final int trackNumber;
+  final String? genre;
+  final int? year;
+  final String? lyrics;
+
+  _WriteMetadataArgs({
+    required this.filePath,
+    required this.title,
+    required this.artist,
+    required this.album,
+    required this.trackNumber,
+    this.genre,
+    this.year,
+    this.lyrics,
+  });
 }
