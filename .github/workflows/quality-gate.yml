@@ -27,6 +27,7 @@ jobs:
         run: |
           mkdir -p music_tag_editor/lib
           echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
+          dart format music_tag_editor/lib/firebase_options.dart
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2 # v2.16.0
@@ -149,6 +150,7 @@ jobs:
         run: |
           mkdir -p music_tag_editor/lib
           echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
+          dart format music_tag_editor/lib/firebase_options.dart
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2 # v2.16.0
