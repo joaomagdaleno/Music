@@ -46,6 +46,8 @@ jobs:
     name: Build & Package
     needs: quality_gate
     if: github.event_name == 'push'
+    permissions:
+      pull-requests: write
     uses: ./.github/workflows/build-and-package.yml
     secrets: inherit
 
