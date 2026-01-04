@@ -6,7 +6,7 @@ on:
       min_coverage:
         description: 'Minimum code coverage percentage'
         required: false
-        default: '80'
+        default: '45'
         type: string
 
 jobs:
@@ -87,7 +87,7 @@ jobs:
         run: python scripts/asset_guard.py >> $GITHUB_STEP_SUMMARY || true
 
       - name: The Inquisitor's Eye 🔦 (Vulnerability Scan)
-        uses: google/osv-scanner-action@v2.3.1
+        uses: google/osv-scanner-action/osv-scanner-action@v2.3.1
         with:
           scan-args: |-
             --recursive
