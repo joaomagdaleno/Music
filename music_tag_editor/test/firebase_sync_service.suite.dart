@@ -85,10 +85,10 @@ void main() {
     when(() => mockDb.getLearningRules()).thenAnswer((_) async => []);
     when(() => mockDb.getAllSettings()).thenAnswer((_) async => {});
     when(() => mockDb.getPlaylistTracks(any())).thenAnswer((_) async => []);
-    when(() => mockDb.saveLearningRule(any())).thenAnswer((_) async => null);
+    when(() => mockDb.saveLearningRule(any())).thenAnswer((_) async {});
     when(() => mockDb.createPlaylist(any(), description: any(named: 'description')))
-        .thenAnswer((_) async => 'playlist1');
-    when(() => mockDb.addTrackToPlaylist(any(), any())).thenAnswer((_) async => null);
+        .thenAnswer((_) async => 1);
+    when(() => mockDb.addTrackToPlaylist(any(), any())).thenAnswer((_) async {});
   });
 
   group('enableSync', () {
