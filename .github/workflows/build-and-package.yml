@@ -7,12 +7,12 @@ on:
       skip-quality-gate:
         description: 'Skip the internal quality gate'
         required: false
-        default: false
-        type: boolean
+        default: 'false'
+        type: string
 
 jobs:
   quality-gate:
-    if: ${{ !inputs.skip-quality-gate }}
+    if: inputs.skip-quality-gate != 'true'
     uses: ./.github/workflows/quality-gate.yml
     permissions:
       pull-requests: write
