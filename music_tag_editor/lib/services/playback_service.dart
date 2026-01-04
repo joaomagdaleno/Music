@@ -29,8 +29,8 @@ class PlaybackService {
   }
 
   void _applyStreamingConfigs() {
-    if (_player.platform is libmpvPlayer) {
-      final player = _player.platform as libmpvPlayer;
+    if (_player.platform is NativePlayer) {
+      final player = _player.platform as NativePlayer;
       player.setProperty('user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
       player.setProperty('referrer', 'https://www.youtube.com/');
       player.setProperty('demuxer-max-bytes', '33554432'); // 32MB
