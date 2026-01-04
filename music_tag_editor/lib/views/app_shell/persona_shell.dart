@@ -44,22 +44,27 @@ class _PersonaShellState extends State<PersonaShell> {
     if (mounted) setState(() {});
   }
 
-  bool get _isFluent {
+  bool _isFluent(BuildContext context) {
     if (kIsWeb) return false;
-    return defaultTargetPlatform == TargetPlatform.windows ||
-        defaultTargetPlatform == TargetPlatform.linux ||
-        defaultTargetPlatform == TargetPlatform.macOS;
+    final platform = material.Theme.of(context).platform;
+    return platform == TargetPlatform.windows ||
+        platform == TargetPlatform.linux ||
+        platform == TargetPlatform.macOS;
+  }
+
+  void _onTabChanged(int index) {
+    GlobalNavigationService.instance.setSubIndex(_persona, index);
   }
 
   @override
   Widget build(BuildContext context) {
     final currentIndex = GlobalNavigationService.instance.getSubIndex(_persona);
 
-    if (_isFluent) {
+    if (_isFluent(context)) {
       return fluent.NavigationView(
         pane: fluent.NavigationPane(
           selected: currentIndex,
-          onChanged: (index) => GlobalNavigationService.instance.setSubIndex(_persona, index),
+          onChanged: _onTabChanged,
           displayMode: fluent.PaneDisplayMode.top,
           items: widget.destinations.map<fluent.NavigationPaneItem>((d) {
             return fluent.PaneItem(
@@ -75,10 +80,12 @@ class _PersonaShellState extends State<PersonaShell> {
 
     return material.DefaultTabController(
       length: widget.destinations.length,
+      initialIndex: currentIndex,
       child: material.Scaffold(
         appBar: material.AppBar(
           toolbarHeight: 0,
           bottom: material.TabBar(
+            onTap: _onTabChanged,
             isScrollable: widget.destinations.length > 3,
             tabs: widget.destinations.map((d) {
               return material.Tab(
@@ -89,6 +96,7 @@ class _PersonaShellState extends State<PersonaShell> {
           ),
         ),
         body: material.TabBarView(
+          physics: const material.NeverScrollableScrollPhysics(), // Sync with outer sub-index
           children: widget.children,
         ),
       ),
