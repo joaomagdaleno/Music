@@ -196,7 +196,7 @@ jobs:
           path: artifacts
 
       - name: Create Release and Upload Assets
-        uses: softprops/action-gh-release@c95fe1489396fe8a2187334629f95292c2db237d # v2.1.0
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           generate_release_notes: true
