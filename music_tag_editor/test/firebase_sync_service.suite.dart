@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:music_tag_editor/services/firebase_sync_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
+import 'package:music_tag_editor/widgets/learning_dialog.dart';
 
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
@@ -47,6 +48,12 @@ void main() {
     registerFallbackValue(MockDocumentReference());
     registerFallbackValue(SetOptions(merge: true));
     registerFallbackValue({}); // for data map
+    registerFallbackValue(LearningRule(
+      field: '',
+      originalValue: '',
+      correctedValue: '',
+      choice: LearningChoice.justThisOnce,
+    ));
   });
 
   setUp(() {
