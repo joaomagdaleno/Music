@@ -3,9 +3,16 @@ name: Build and Package
 on:
   workflow_dispatch:
   workflow_call:
+    inputs:
+      skip-quality-gate:
+        description: 'Skip the internal quality gate'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   quality-gate:
+    if: inputs.skip-quality-gate != true
     uses: ./.github/workflows/quality-gate.yml
     permissions:
       pull-requests: write
