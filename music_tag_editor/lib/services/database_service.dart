@@ -698,8 +698,9 @@ class DatabaseService {
   Future<void> saveSpotifyCredentials(
       String? clientId, String? clientSecret) async {
     if (clientId != null) await saveSetting('spotify_client_id', clientId);
-    if (clientSecret != null)
+    if (clientSecret != null) {
       await saveSetting('spotify_client_secret', clientSecret);
+    }
   }
 
   // --- Music Folders ---

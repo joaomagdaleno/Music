@@ -77,8 +77,9 @@ class MaterialPlayerView extends StatelessWidget {
         stream: playback.player.stream.playing,
         builder: (context, snapshot) {
           final track = playback.currentTrack;
-          if (track == null)
+          if (track == null) {
             return const Center(child: Text('Nenhuma música tocando'));
+          }
 
           final playing = snapshot.data ?? false;
 

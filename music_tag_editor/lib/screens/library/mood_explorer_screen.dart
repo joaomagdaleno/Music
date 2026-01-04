@@ -36,11 +36,12 @@ class _MoodExplorerScreenState extends State<MoodExplorerScreen> {
       categorized[mood]!.add(track);
     }
 
-    if (mounted)
+    if (mounted) {
       setState(() {
         _moodTracks = categorized;
         _isLoading = false;
       });
+    }
   }
 
   void _playTrack(Map<String, dynamic> trackData) {

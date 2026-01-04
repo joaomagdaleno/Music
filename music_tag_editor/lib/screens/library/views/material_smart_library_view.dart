@@ -57,13 +57,15 @@ class _SmartList extends StatelessWidget {
   Widget build(BuildContext context) => FutureBuilder<List<SearchResult>>(
         future: future,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
+          }
           final tracks = snapshot.data ?? [];
-          if (tracks.isEmpty)
+          if (tracks.isEmpty) {
             return Center(
                 child: Text(emptyText,
                     style: const TextStyle(color: Colors.grey)));
+          }
 
           return ListView.builder(
             itemCount: tracks.length,

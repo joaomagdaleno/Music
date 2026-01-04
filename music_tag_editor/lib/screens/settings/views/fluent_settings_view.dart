@@ -434,9 +434,10 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
                     checked: themeService.useCustomColor,
                     content: const Text('Personalizado'),
                     onChanged: (v) {
-                      if (v)
+                      if (v) {
                         setState(
                             () {}); // Just visual update, selection logic is in palette
+                      }
                     }),
               ],
             ),

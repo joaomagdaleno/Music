@@ -77,12 +77,13 @@ class FluentKaraokeView extends StatelessWidget {
       );
 
   Widget _buildLyrics(BuildContext context) {
-    if (lyrics.isEmpty)
+    if (lyrics.isEmpty) {
       return Center(
           child: Text('Letras não sincronizadas...',
               style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.5),
                   decoration: TextDecoration.none)));
+    }
 
     return ListView.builder(
       controller: scrollController,

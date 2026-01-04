@@ -36,18 +36,16 @@ env:
 jobs:
   quality_gate:
     name: Quality Gate
+    uses: ./.github/workflows/quality-gate.yml
     permissions:
       contents: write
       pull-requests: write
-    timeout-minutes: 15
-    uses: ./.github/workflows/quality-gate.yml
     secrets: inherit
 
   build:
     name: Build & Package
-    if: github.event_name == 'push'
     needs: quality_gate
-    timeout-minutes: 60
+    if: github.event_name == 'push'
     uses: ./.github/workflows/build-and-package.yml
     secrets: inherit
 
@@ -177,12 +175,12 @@ jobs:
 
   pre_release:
     name: Pre-release
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/beta')
     needs: build
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/beta')
+    uses: ./.github/workflows/prerelease.yml
     permissions:
       contents: write
     timeout-minutes: 10
-    uses: ./.github/workflows/prerelease.yml
     secrets: inherit
 
   release:

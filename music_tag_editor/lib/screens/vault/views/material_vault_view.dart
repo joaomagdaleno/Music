@@ -61,8 +61,9 @@ class MaterialVaultView extends StatelessWidget {
       );
 
   Widget _buildVaultContent(BuildContext context) {
-    if (tracks.isEmpty)
+    if (tracks.isEmpty) {
       return const Center(child: Text('Nenhuma música no cofre'));
+    }
     return ListView.builder(
       itemCount: tracks.length,
       itemBuilder: (context, index) {

@@ -63,8 +63,9 @@ class FluentPlayerView extends StatelessWidget {
         stream: playback.currentTrackStream,
         builder: (context, snapshot) {
           final track = snapshot.data;
-          if (track == null)
+          if (track == null) {
             return const Center(child: Text('Nenhuma música tocando'));
+          }
 
 // Video Surface Only
           return Expanded(

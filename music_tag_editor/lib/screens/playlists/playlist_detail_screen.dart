@@ -36,11 +36,12 @@ class _PlaylistDetailScreenState extends State<PlaylistDetailScreen> {
   Future<void> _loadTracks() async {
     final tracks =
         await DatabaseService.instance.getPlaylistTracks(widget.playlistId);
-    if (mounted)
+    if (mounted) {
       setState(() {
         _tracks = tracks;
         _isLoading = false;
       });
+    }
   }
 
   void _playTrack(Map<String, dynamic> trackData) {

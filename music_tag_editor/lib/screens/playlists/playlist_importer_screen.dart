@@ -31,18 +31,22 @@ class _PlaylistImporterScreenState extends State<PlaylistImporterScreen> {
     });
     try {
       final results = await _searchService.importPlaylist(url);
-      if (mounted)
+      if (mounted) {
         setState(() {
           _tracks = results;
           _isLoading = false;
-          if (_tracks.isEmpty) _error = 'Nenhuma música encontrada.';
+          if (_tracks.isEmpty) {
+            _error = 'Nenhuma música encontrada.';
+          }
         });
+      }
     } catch (e) {
-      if (mounted)
+      if (mounted) {
         setState(() {
           _error = 'Erro ao carregar: $e';
           _isLoading = false;
         });
+      }
     }
   }
 

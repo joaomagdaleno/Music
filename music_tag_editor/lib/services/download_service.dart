@@ -558,16 +558,21 @@ class DownloadService {
       args.addAll(['-c', 'copy', '-id3v2_version', '3']);
 
       // Add Metadata Tags
-      if (metadata.title != null)
+      if (metadata.title != null) {
         args.addAll(['-metadata', 'title=${metadata.title}']);
-      if (metadata.artist != null)
+      }
+      if (metadata.artist != null) {
         args.addAll(['-metadata', 'artist=${metadata.artist}']);
-      if (metadata.album != null)
+      }
+      if (metadata.album != null) {
         args.addAll(['-metadata', 'album=${metadata.album}']);
-      if (metadata.genre != null)
+      }
+      if (metadata.genre != null) {
         args.addAll(['-metadata', 'genre=${metadata.genre}']);
-      if (metadata.year != null)
+      }
+      if (metadata.year != null) {
         args.addAll(['-metadata', 'date=${metadata.year}']);
+      }
       if (lyrics != null) {
         args.addAll(['-metadata', 'lyrics=$lyrics']);
         args.addAll(['-metadata', 'USLT=$lyrics']);

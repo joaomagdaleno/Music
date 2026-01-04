@@ -1,0 +1,411 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/accessibility_test.dart
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ÔÖ┐
+00:02 +1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi searchRelease returns parsed data on success
+00:02 +2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi searchRelease returns null on empty results
+00:02 +3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi searchRelease handles errors gracefully
+00:02 +4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong returns parsed data on success
+00:02 +5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong returns null on empty hits
+00:02 +6: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong handles errors gracefully
+00:02 +7: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: LastFmApi getTrackInfo returns parsed data on success
+00:02 +8: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: LastFmApi getTrackInfo returns null on error
+00:02 +9: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: LastFmApi getTrackInfo returns null on 404
+00:02 +10: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: MusicBrainzApi searchMetadata returns parsed recordings
+00:03 +11: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: MusicBrainzApi searchMetadata returns empty list on error response
+00:03 +12: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi searchRelease returns null on empty query
+00:03 +13: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi searchRelease handles network errors gracefully
+00:04 +14: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: DiscogsApi DiscogsApi can be instantiated
+00:04 +15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong returns null on empty query
+00:05 +15: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: AuthService AuthService login success returns true
+[2026-01-04T14:42:30.865248] [AuthService] Attempting login for: test@test.com
+[2026-01-04T14:42:30.884261] [AuthService] Login SUCCESS for: test@test.com
+00:05 +16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong returns null on empty query
+00:05 +16: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: AuthService AuthService login failure returns false
+[2026-01-04T14:42:30.972157] [AuthService] Attempting login for: test@test.com
+[2026-01-04T14:42:30.973143] [AuthService] Login FAILED for test@test.com: [firebase_auth/user-not-found] null
+00:05 +17: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong returns null on empty query
+00:05 +17: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: AuthService AuthService register success returns true
+[2026-01-04T14:42:30.989189] [AuthService] Attempting registration for: test@test.com
+[2026-01-04T14:42:30.990167] [AuthService] Registration SUCCESS for: test@test.com
+00:05 +18: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong returns null on empty query
+00:05 +19: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong returns null on empty query
+00:05 +20: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong returns null on empty query
+00:05 +21: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: BackupService BackupService createBackup creates a zip file with data
+00:05 +22: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong handles network errors gracefully
+00:05 +23: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: GeniusApi searchSong handles network errors gracefully
+00:05 +24: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: BackupService BackupService estimateBackupSize returns valid size
+00:05 +25: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: BackupService BackupService estimateBackupSize returns valid size
+00:05 +26: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: LastFmApi getTrackInfo returns null when API key is placeholder
+00:05 +27: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: ConnectivityRoot ConnectivityService instance is accessible
+00:05 +28: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: ConnectivityRoot ConnectivityService instance is accessible
+00:05 +29: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: ConnectivityRoot ConnectivityService instance is accessible
+00:05 +30: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: ConnectivityRoot ConnectivityService instance is accessible
+00:05 +31: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: ConnectivityRoot ConnectivityService instance is accessible
+00:05 +32: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: ConnectivityRoot ConnectivityService instance is accessible
+00:05 +33: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: MusicBrainzApi (tearDownAll)
+00:05 +33: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: ConnectivityRoot ConnectivityService isOffline is a ValueNotifier
+00:05 +34: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:05 +35: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:05 +36: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +37: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +38: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +39: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +40: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +41: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +42: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +43: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +44: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +45: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +46: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +47: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +48: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +49: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +50: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +51: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +52: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +53: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +54: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +54: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: DownloadService DownloadService - Media Info getMediaInfo returns YouTube info correctly
+[2026-01-04T14:42:32.191518] [DownloadService] Getting MediaInfo for YouTube: https://youtube.com/watch?v=abc
+[2026-01-04T14:42:32.193523] [DownloadService] Successfully parsed info for: Test Song
+00:06 +55: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +56: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +57: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +58: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +59: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +60: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +61: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +62: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +63: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +64: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +65: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +66: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +67: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +68: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +68: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: LyricsService LyricsService fetchLyrics returns empty list on network error
+[2026-01-04T14:42:32.532097] Error fetching raw lyrics: type 'Null' is not a subtype of type 'bool'
+00:06 +69: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +70: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +71: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +72: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +73: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +74: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +75: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +76: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +77: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +78: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +79: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:06 +80: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:07 +81: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +82: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +83: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +84: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +85: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +86: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +87: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +87: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: PlaybackService PlaybackService Tests playSearchResult opens media and updates queue
+[2026-01-04T14:42:34.348938] [PlaybackService] Playing search result: Title (MediaPlatform.youtube)
+[2026-01-04T14:42:34.350935] [PlaybackService] Fetching stream URL for: url
+[2026-01-04T14:42:34.351946] [PlaybackService] Stream URL obtained successfully
+00:08 +88: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +89: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +90: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +91: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +92: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +92: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: SearchService searchYouTube returns empty list on error
+[2026-01-04T14:42:34.461493] ÔØî YouTube Explode Error: Exception: YT Error
+[2026-01-04T14:42:34.462493] [SearchService] YouTube Explode search failed, falling back to yt-dlp
+00:08 +93: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +94: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +95: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +95: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: SearchService getStreamUrl returns trimmed stdout on success
+[SearchService] getStreamUrl Command: yt-dlp --no-check-certificates --no-cache-dir -g -f bestaudio[ext=m4a]/bestaudio/best --no-playlist --format-sort res:720,ext:mp4:m4a http://origin
+[2026-01-04T14:42:34.504683] [SearchService] Found Stream URL (yt-dlp): http://direct-url
+00:08 +96: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +96: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: SearchService getStreamUrl returns null on failure
+[SearchService] getStreamUrl Command: yt-dlp --no-check-certificates --no-cache-dir -g -f bestaudio[ext=m4a]/bestaudio/best --no-playlist --format-sort res:720,ext:mp4:m4a http://origin
+00:08 +97: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +97: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: SearchService searchAll calls all platforms and updates status
+[2026-01-04T14:42:34.532833] [SearchService] Executing youtube search...
+[2026-01-04T14:42:34.533826] [SearchService] Executing youtubeMusic search...
+[2026-01-04T14:42:34.533826] [SearchService] Executing spotify search...
+[2026-01-04T14:42:34.535821] [SearchService] Executing hifi search...
+[2026-01-04T14:42:34.536829] [SearchService] youtube search finished with 0 results
+[2026-01-04T14:42:34.539835] [SearchService] youtubeMusic search finished with 0 results
+[2026-01-04T14:42:34.540826] [SearchService] spotify search finished with 0 results
+[2026-01-04T14:42:34.540826] [SearchService] hifi search finished with 0 results
+00:08 +98: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +99: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +100: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +101: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +102: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +103: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +104: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +105: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +106: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +107: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +108: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +109: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +110: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +111: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +112: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:08 +113: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +114: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +115: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +116: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +117: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +118: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +119: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +119: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_services_test.dart: DesktopIntegration init calls initialization methods
+[2026-01-04T14:42:34.947292] Desktop: ensuring WindowManager initialized
+[2026-01-04T14:42:34.951335] Desktop: initializing SystemTray
+[2026-01-04T14:42:34.952340] Desktop: creating menu
+[2026-01-04T14:42:34.953340] Desktop: setting context menu
+[2026-01-04T14:42:34.954338] Desktop: waiting for WindowManager ready
+[2026-01-04T14:42:34.956337] Desktop: init complete
+00:09 +120: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +121: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +122: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +123: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +124: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +125: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +126: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +127: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +128: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +129: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +130: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +131: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +132: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +133: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:09 +134: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: AppShell AppShell Widget Tests Global Rail switches Personas
+00:10 +135: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics handles empty strings
+00:10 +136: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics handles empty strings
+00:10 +137: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics handles empty strings
+00:10 +138: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics handles empty strings
+00:10 +139: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics handles empty strings
+00:10 +140: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics handles empty strings
+00:10 +141: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen renders with no track playing
+00:10 +142: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen renders with no track playing
+00:10 +143: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen renders with no track playing
+00:10 +144: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen renders with no track playing
+00:10 +145: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_api_test.dart: SlavArtApi downloadFlac streams content to file
+00:10 +146: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen renders with track playing
+00:10 +147: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen tap closes the view
+00:11 +148: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen visualizer bars animate
+00:11 +149: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: DiscoMode DiscoModeScreen rotation animation runs
+00:11 +150: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage renders initial UI
+00:11 +151: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage shows paste button
+00:11 +152: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage has dropdown selector after search
+00:12 +153: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: DownloadPage DownloadPage button bar is present
+00:12 +154: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:12 +155: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:13 +156: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:13 +157: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:13 +158: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:13 +159: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:13 +160: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:14 +161: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:14 +162: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: HomeView HomeScreen scaffold renders correctly
+00:14 +163: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: CastDialog lists discovered devices
+00:14 +164: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: CastDialog lists discovered devices
+00:15 +165: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: CastDialog lists discovered devices
+00:15 +166: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: KaraokeView KaraokeScreen shows no lyrics message when empty
+00:15 +167: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: Tapping device calls castFile if track is local
+00:15 +168: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: Tapping device calls castFile if track is local
+00:16 +169: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: Tapping device calls castFile if track is local
+00:16 +170: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: Tapping device calls castFile if track is local
+00:16 +171: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: Tapping device calls castFile if track is local
+00:16 +172: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: Tapping device calls castFile if track is local
+00:16 +173: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: Settings save and load filename format
+00:16 +174: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: Settings save and load filename format
+00:17 +175: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: Settings save and load filename format
+00:17 +176: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: Settings save and load filename format
+00:17 +177: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:17 +178: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:17 +179: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:17 +180: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:17 +181: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:17 +182: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:17 +183: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:17 +184: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: DuoMatchingDialog displays initial state correctly
+00:17 +185: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: DuoMatchingDialog displays initial state correctly
+00:17 +186: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: DuoMatchingDialog displays initial state correctly
+00:17 +187: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: DuoMatchingDialog displays initial state correctly
+00:18 +188: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: LoginPage LoginScreen calls login on button press
+[LoginScreen] Starting LOGIN process for: test@test.com
+[LoginScreen] Auth process finished. Result: SUCCESS
+00:18 +189: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/database_service_test.dart: Moods getTracksByMood returns matching genres
+00:18 +190: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: MiniPlayer MiniPlayer Widget Tests MiniPlayer renders track info
+00:18 +191: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: MiniPlayer MiniPlayer Widget Tests MiniPlayer renders track info
+00:18 +192: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: Start Host button updates state
+00:19 +193: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_widgets_test.dart: Start Host button updates state
+00:19 +194: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: MoodExplorer MoodExplorerScreen shows loading indicator
+00:19 +195: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: MoodExplorer MoodExplorerScreen shows loading indicator
+00:19 +196: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:19 +197: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:19 +198: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:19 +199: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:19 +200: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:20 +201: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:24 +202: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:24 +203: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:24 +204: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:24 +205: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:24 +206: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:25 +207: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:25 +208: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:25 +209: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:25 +210: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:25 +211: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:26 +212: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:26 +213: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)
+00:26 +214: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: PartyQueue PartyQueueScreen tapping end party returns to initial state
+00:26 +215: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when authenticated
+00:27 +216: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_app_test.dart: MusicTagEditorApp shows AppShell when authenticated
+00:27 +217: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:27 +218: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:27 +219: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:28 +220: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:28 +221: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:28 +222: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:28 +223: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:28 +224: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:28 +225: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:29 +226: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:30 +226: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: playSearchResult updates current track and plays
+[2026-01-04T14:42:55.847848] [PlaybackService] Playing search result: Test Song (MediaPlatform.youtube)
+[2026-01-04T14:42:55.859701] [PlaybackService] Fetching stream URL for: http://test
+00:30 +227: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:30 +227: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: playSearchResult updates current track and plays
+[2026-01-04T14:42:55.871731] [PlaybackService] Stream URL obtained successfully
+00:30 +228: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:30 +229: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:30 +229: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: playSearchResult fetches lyrics and applies theme
+[2026-01-04T14:42:56.415517] [PlaybackService] Playing search result: Test Song (MediaPlatform.youtube)
+[2026-01-04T14:42:56.416519] [PlaybackService] Fetching stream URL for: http://test
+[2026-01-04T14:42:56.417533] [PlaybackService] Stream URL obtained successfully
+00:30 +230: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:30 +230: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Queue Management addToQueue adds to list and playlist
+[2026-01-04T14:42:56.433584] [PlaybackService] Playing search result: Test Song (MediaPlatform.youtube)
+[2026-01-04T14:42:56.433584] [PlaybackService] Fetching stream URL for: http://test
+[2026-01-04T14:42:56.434585] [PlaybackService] Stream URL obtained successfully
+00:30 +231: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:30 +232: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: MusicTagEditorApp renders MaterialApp
+00:30 +233: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: PlayerScreen PlayerScreen Widget Tests Shows Duo chat button when in Duo mode
+00:30 +234: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:31 +235: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:31 +236: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:31 +237: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:31 +238: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:31 +239: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:31 +239: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen calls playSearchResult on play button tap
+[PlaylistDetail] Track data: {id: 1, title: Song 1, artist: Artist 1, url: http://1, platform: MediaPlatform.youtube}
+[PlaylistDetail] Playing: Song 1 - http://1 - MediaPlatform.youtube
+00:31 +240: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:31 +241: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:31 +242: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:31 +243: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:31 +244: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:31 +245: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:32 +246: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:32 +247: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:32 +248: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:32 +249: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:32 +250: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:32 +251: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:32 +252: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:32 +253: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:33 +254: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:33 +255: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:33 +256: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:33 +257: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:33 +257: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_service_test.dart: searchYouTube falls back to yt-dlp on YouTube Explode error
+[2026-01-04T14:42:59.022713] ÔØî YouTube Explode Error: Exception: YT Error
+00:33 +258: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:33 +258: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_service_test.dart: searchYouTube falls back to yt-dlp on YouTube Explode error
+[2026-01-04T14:42:59.035155] [SearchService] YouTube Explode search failed, falling back to yt-dlp
+00:33 +259: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:33 +260: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:33 +261: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:33 +262: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:33 +263: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:33 +264: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:33 +265: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:33 +266: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:34 +266: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_service_test.dart: searchYouTubeMusic falls back to yt-dlp on YT Music error
+[2026-01-04T14:42:59.895463] ÔØî YT Music Error: Exception: YT Music Error
+[2026-01-04T14:42:59.896466] [SearchService] YT Music search failed, falling back to yt-dlp
+00:34 +267: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:34 +268: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:34 +268: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_service_test.dart: getStreamUrl returns trimmed stdout on success
+[SearchService] getStreamUrl Command: yt-dlp --no-check-certificates --no-cache-dir -g -f bestaudio[ext=m4a]/bestaudio/best --no-playlist --format-sort res:720,ext:mp4:m4a http://origin
+[2026-01-04T14:43:00.044445] [SearchService] Found Stream URL (yt-dlp): http://direct-url
+00:34 +269: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:34 +269: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_service_test.dart: getStreamUrl returns null on failure
+[SearchService] getStreamUrl Command: yt-dlp --no-check-certificates --no-cache-dir -g -f bestaudio[ext=m4a]/bestaudio/best --no-playlist --format-sort res:720,ext:mp4:m4a http://origin
+00:34 +270: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:34 +271: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:34 +271: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/search_service_test.dart: searchAll calls all platforms and updates status
+[2026-01-04T14:43:00.144999] [SearchService] Executing youtube search...
+[2026-01-04T14:43:00.145994] [SearchService] Executing youtubeMusic search...
+[2026-01-04T14:43:00.146994] [SearchService] Executing spotify search...
+[2026-01-04T14:43:00.150004] [SearchService] Executing hifi search...
+[2026-01-04T14:43:00.150993] [SearchService] youtube search finished with 0 results
+[2026-01-04T14:43:00.153995] [SearchService] youtubeMusic search finished with 0 results
+[2026-01-04T14:43:00.153995] [SearchService] spotify search finished with 0 results
+[2026-01-04T14:43:00.154996] [SearchService] hifi search finished with 0 results
+00:34 +272: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:34 +273: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryScreen has download button in app bar
+00:34 +274: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryScreen has download button in app bar
+00:34 +275: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: RingtoneMaker RingtoneMakerScreen has play/pause button
+00:34 +276: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Controls pause/resume delegates to player
+00:34 +277: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: RingtoneMaker RingtoneMakerScreen has app bar with title
+00:34 +278: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: RingtoneMaker RingtoneMakerScreen has app bar with title
+00:34 +279: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryScreen shows empty folder message
+00:34 +279: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: SearchPage Shows initialization progress then content
+[2026-01-04T14:43:00.486027] [SearchScreen] Initializing dependencies...
+[2026-01-04T14:43:00.517051] [SearchScreen] Dependencies initialized successfully
+00:34 +280: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryScreen shows empty folder message
+00:34 +280: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: SearchPage Performs search and displays results
+[2026-01-04T14:43:00.605711] [SearchScreen] Initializing dependencies...
+[2026-01-04T14:43:00.625736] [SearchScreen] Dependencies initialized successfully
+[2026-01-04T14:43:00.694586] [SearchScreen] Starting search #1 for: "test query" (Platform: MediaPlatform.youtubeMusic)
+[2026-01-04T14:43:00.694586] [SearchScreen] Searching single platform: MediaPlatform.youtubeMusic
+[2026-01-04T14:43:00.696588] [SearchScreen] Single platform search returned 2 results
+00:34 +281: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/main_test.dart: LibraryScreen shows empty folder message
+00:35 +282: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: SearchPage Handles play track interaction
+[2026-01-04T14:43:00.847400] [SearchScreen] Initializing dependencies...
+[2026-01-04T14:43:00.867765] [SearchScreen] Dependencies initialized successfully
+[2026-01-04T14:43:00.922337] [SearchScreen] Starting search #1 for: "test" (Platform: MediaPlatform.youtubeMusic)
+[2026-01-04T14:43:00.922337] [SearchScreen] Searching single platform: MediaPlatform.youtubeMusic
+[2026-01-04T14:43:00.923332] [SearchScreen] Single platform search returned 1 results
+[2026-01-04T14:43:00.986938] [SearchScreen] Playing track: 1
+[2026-01-04T14:43:00.995937] [SearchScreen] Playback started for 1
+[2026-01-04T14:43:00.995937] [SearchScreen] Opening full player
+00:35 +283: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: SearchPage Shows no results message
+[2026-01-04T14:43:01.242889] [SearchScreen] Initializing dependencies...
+[2026-01-04T14:43:01.260939] [SearchScreen] Dependencies initialized successfully
+[2026-01-04T14:43:01.332056] [SearchScreen] Starting search #1 for: "unknown" (Platform: MediaPlatform.youtubeMusic)
+[2026-01-04T14:43:01.333056] [SearchScreen] Searching single platform: MediaPlatform.youtubeMusic
+[2026-01-04T14:43:01.333056] [SearchScreen] Single platform search returned 0 results
+[2026-01-04T14:43:01.333056] [SearchScreen] No results found for query: "unknown"
+00:35 +284: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: SearchPage Shows error message on initialization failure
+[2026-01-04T14:43:01.458492] [SearchScreen] Initializing dependencies...
+[2026-01-04T14:43:01.460497] ÔØî Dependency initialization FAILED: Init failed
+00:35 +285: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/all_views_test.dart: SettingsPage SettingsScreen renders Scaffold
+00:36 +286: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Loads and displays settings
+00:36 +287: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Loads and displays settings
+00:36 +288: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Loads and displays settings
+00:36 +289: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Loads and displays settings
+00:36 +290: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Loads and displays settings
+00:36 +291: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Loads and displays settings
+00:37 +292: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Loads and displays settings
+00:37 +293: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Loads and displays settings
+00:37 +294: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Loads and displays settings
+00:37 +295: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Loads and displays settings
+00:39 +296: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/windows_persona_test.dart: Windows Persona Switching Tests Switching persona on Windows updates view
+00:40 +297: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/windows_persona_test.dart: Windows Persona Switching Tests Switching persona on Windows updates view
+00:41 +298: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/windows_persona_test.dart: Windows Persona Switching Tests Switching persona on Windows updates view
+00:41 +299: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/windows_persona_test.dart: Windows Persona Switching Tests Switching persona on Windows updates view
+00:42 +300: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: Sync interactions
+00:42 +301: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/settings_page_test.dart: (tearDownAll)
+00:42 +301: All tests passed!

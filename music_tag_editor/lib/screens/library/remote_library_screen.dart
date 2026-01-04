@@ -22,11 +22,12 @@ class _RemoteLibraryScreenState extends State<RemoteLibraryScreen> {
   void initState() {
     super.initState();
     LocalDuoService.instance.onLibraryReceived = (tracks) {
-      if (mounted)
+      if (mounted) {
         setState(() {
           _tracks = tracks;
           _isLoading = false;
         });
+      }
     };
     _refresh();
   }

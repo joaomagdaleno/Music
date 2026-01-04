@@ -202,8 +202,9 @@ class _SearchScreenState extends material.State<SearchScreen> {
   }
 
   void _setPlatform(MediaPlatform? platform) {
-    if (platform == null || _selectedPlatform == platform)
+    if (platform == null || _selectedPlatform == platform) {
       return; // Prevent deselection
+    }
     StartupLogger.log('[SearchScreen] Platform changed to: $platform');
     setState(() {
       _selectedPlatform = platform;
