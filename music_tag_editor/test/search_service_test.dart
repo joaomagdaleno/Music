@@ -104,10 +104,21 @@ void main() {
       expect(results[0].platform, MediaPlatform.youtube);
     });
 
-    test('returns empty list on error', () async {
+    test('falls back to yt-dlp on YouTube Explode error', () async {
+      // 1. Force YT Explode to fail
       when(() => mockSearchClient.search(any())).thenThrow(Exception('YT Error'));
+      
+      // 2. Mock yt-dlp output for fallback
+      mockExitCode = 0;
+      mockStdout = '{"id": "ytdlp_id", "title": "yt-dlp Title", "uploader": "yt-dlp Artist", "thumbnail": "http://thumb", "duration": 120}\n';
+
       final results = await service.searchYouTube('query');
-      expect(results, isEmpty);
+
+      // 3. Verify it used the fallback instead of returning empty
+      expect(results.length, 1);
+      expect(results[0].id, 'ytdlp_id');
+      expect(results[0].title, 'yt-dlp Title');
+      expect(results[0].platform, MediaPlatform.youtube);
     });
   });
 
@@ -134,6 +145,19 @@ void main() {
       
       // Verify " topic" was appended
       verify(() => mockSearchClient.search('query topic')).called(1);
+    });
+
+    test('falls back to yt-dlp on YT Music error', () async {
+      when(() => mockSearchClient.search(any())).thenThrow(Exception('YT Music Error'));
+      
+      mockExitCode = 0;
+      mockStdout = '{"id": "m_fallback", "title": "YT Music Fallback", "uploader": "Artist Topic", "thumbnail": "http://thumb", "duration": 180}\n';
+
+      final results = await service.searchYouTubeMusic('query');
+
+      expect(results.length, 1);
+      expect(results[0].id, 'm_fallback');
+      expect(results[0].platform, MediaPlatform.youtubeMusic);
     });
   });
 
