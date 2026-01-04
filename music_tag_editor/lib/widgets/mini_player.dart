@@ -51,9 +51,11 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
 
             return GestureDetector(
               onTap: () {
-                appNavigatorKey.currentState?.push(
-                  fluent.FluentPageRoute(builder: (context) => const PlayerScreen()),
-                );
+                if (track.mediaType == 'video') {
+                  appNavigatorKey.currentState?.push(
+                    fluent.FluentPageRoute(builder: (context) => const PlayerScreen()),
+                  );
+                }
               },
               child: Container(
                 height: 84,
@@ -340,9 +342,11 @@ class _MaterialMiniPlayer extends StatelessWidget {
               ),
               child: InkWell(
                 onTap: () {
-                   appNavigatorKey.currentState?.push(
-                      MaterialPageRoute(builder: (context) => const PlayerScreen()),
-                   );
+                   if (track.mediaType == 'video') {
+                     appNavigatorKey.currentState?.push(
+                        MaterialPageRoute(builder: (context) => const PlayerScreen()),
+                     );
+                   }
                 },
                 borderRadius: BorderRadius.circular(12),
                 child: Column(
