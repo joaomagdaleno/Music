@@ -57,6 +57,7 @@ void main() {
   });
 
   setUp(() {
+    FirebaseSyncService.resetInstance();
     mockAuth = MockFirebaseAuth();
     mockFirestore = MockFirebaseFirestore();
     mockDb = MockDatabaseService();
@@ -79,7 +80,9 @@ void main() {
     final mockDoc = MockDocumentReference();
     when(() => mockFirestore.collection(any())).thenReturn(mockCollection);
     when(() => mockCollection.doc(any())).thenReturn(mockDoc);
-    when(() => mockDoc.collection(any())).thenReturn(mockCollection);
+    final mockSnapshot = MockQuerySnapshot();
+    when(() => mockSnapshot.docs).thenReturn([]);
+    when(() => mockCollection.get()).thenAnswer((_) async => mockSnapshot);
     when(() => mockDoc.set(any(), any())).thenAnswer((_) async {});
     final mockBatch = MockWriteBatch();
     when(() => mockFirestore.batch()).thenReturn(mockBatch);
@@ -124,32 +127,8 @@ void main() {
 
   group('pullFromCloud', () {
     test('pulls tracks and playlists', () async {
-      // Mock signed in user
       // Note: service.currentUser is read from _currentUser field which is set in init() via stream.
-      // We can't easily set _currentUser private field without reflection or via the stream in init.
-      // Alternatively, we can assume enableSync was called or init was called.
-
-      // Workaround: Call init() and emit user
-      when(() => mockAuth.authStateChanges())
-          .thenAnswer((_) => Stream.value(mockUser));
-      await service.init();
-
-      // Allow current event loop to process stream
-      await Future.delayed(Duration.zero);
-
-      // Mock Firestore data
-      final mockTracksSnapshot = MockQuerySnapshot();
-      final mockTrackDoc = MockQueryDocumentSnapshot();
-      when(() => mockTrackDoc.data())
-          .thenReturn({'id': 'track1', 'title': 'Track 1'});
-      when(() => mockTracksSnapshot.docs).thenReturn([mockTrackDoc]);
-
-      final mockPlaylistsSnapshot = MockQuerySnapshot();
-      when(() => mockPlaylistsSnapshot.docs).thenReturn([]);
-
-      final mockRulesSnapshot = MockQuerySnapshot();
-      when(() => mockRulesSnapshot.docs).thenReturn([]);
-
+      
       // Mock specific collection paths
       final usersCollection = MockCollectionReference();
       final userDoc = MockDocumentReference();
@@ -165,6 +144,19 @@ void main() {
       when(() => userDoc.collection('learning_rules'))
           .thenReturn(rulesCollection);
 
+      // Mock Firestore data
+      final mockTracksSnapshot = MockQuerySnapshot();
+      final mockTrackDoc = MockQueryDocumentSnapshot();
+      when(() => mockTrackDoc.data())
+          .thenReturn({'id': 'track1', 'title': 'Track 1'});
+      when(() => mockTracksSnapshot.docs).thenReturn([mockTrackDoc]);
+
+      final mockPlaylistsSnapshot = MockQuerySnapshot();
+      when(() => mockPlaylistsSnapshot.docs).thenReturn([]);
+
+      final mockRulesSnapshot = MockQuerySnapshot();
+      when(() => mockRulesSnapshot.docs).thenReturn([]);
+
       when(() => tracksCollection.get())
           .thenAnswer((_) async => mockTracksSnapshot);
       when(() => playlistsCollection.get())
@@ -173,6 +165,17 @@ void main() {
           .thenAnswer((_) async => mockRulesSnapshot);
 
       when(() => mockDb.saveTrack(any())).thenAnswer((_) async => 1);
+
+      // Prevent automatic restore in init() by making library non-empty
+      when(() => mockDb.getTracks()).thenAnswer((_) async => [{'id': 'existing'}]);
+
+      // Trigger init after mocks are ready
+      when(() => mockAuth.authStateChanges())
+          .thenAnswer((_) => Stream.value(mockUser));
+      await service.init();
+
+      // Allow current event loop to process stream
+      await Future.delayed(Duration.zero);
 
       await service.pullFromCloud();
 
