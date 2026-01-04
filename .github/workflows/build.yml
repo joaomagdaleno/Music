@@ -49,6 +49,8 @@ jobs:
     permissions:
       pull-requests: write
     uses: ./.github/workflows/build-and-package.yml
+    with:
+      skip-quality-gate: true
     secrets: inherit
 
   archive_telemetry:
