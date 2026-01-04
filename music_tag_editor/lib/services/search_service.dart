@@ -275,6 +275,51 @@ class SearchService {
       return results;
     } catch (e, stack) {
       StartupLogger.logError('YouTube Explode Error', e, stack);
+      StartupLogger.log('[SearchService] YouTube Explode search failed, falling back to yt-dlp');
+      return _searchWithYtDlp(query, MediaPlatform.youtube);
+    }
+  }
+
+  /// Search using yt-dlp (Robust Fallback).
+  Future<List<SearchResult>> _searchWithYtDlp(String query, MediaPlatform platform) async {
+    try {
+      final results = <SearchResult>[];
+      final args = [
+        ..._getBaseArgs(),
+        '--dump-json',
+        '--flat-playlist',
+        '--no-playlist',
+        'ytsearch10:$query',
+      ];
+
+      final result = await processRunner(
+        _deps.ytDlpPath,
+        args,
+        stdoutEncoding: utf8,
+        stderrEncoding: utf8,
+      );
+
+      if (result.exitCode == 0) {
+        final lines = (result.stdout as String).split('\n');
+        for (final line in lines) {
+          if (line.trim().isEmpty) continue;
+          try {
+            final json = jsonDecode(line);
+            results.add(SearchResult(
+              id: json['id'] as String? ?? '',
+              title: cleanMetadata(json['title'] as String? ?? 'Unknown'),
+              artist: (json['uploader'] as String? ?? json['channel'] as String? ?? 'Unknown').replaceAll(' - Topic', '').trim(),
+              thumbnail: json['thumbnail'] as String?,
+              duration: (json['duration'] as num?)?.toInt(),
+              url: 'https://www.youtube.com/watch?v=${json['id']}',
+              platform: platform,
+            ));
+          } catch (_) {}
+        }
+      }
+      return results;
+    } catch (e) {
+      StartupLogger.log('[SearchService] yt-dlp search fallback failed: $e');
       return [];
     }
   }
@@ -313,7 +358,8 @@ class SearchService {
       return results;
     } catch (e, stack) {
       StartupLogger.logError('YT Music Error', e, stack);
-      return [];
+      StartupLogger.log('[SearchService] YT Music search failed, falling back to yt-dlp');
+      return _searchWithYtDlp('$query topic', MediaPlatform.youtubeMusic);
     }
   }
 
