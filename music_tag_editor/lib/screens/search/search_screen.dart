@@ -45,8 +45,9 @@ class _SearchScreenState extends material.State<SearchScreen> {
   Set<String> _downloadedUrls = {};
   Set<String> _localMetadataKeys = {}; // artist:title
 
-  bool get _isFluent {
-    final platform = defaultTargetPlatform;
+  bool _isFluent(material.BuildContext context) {
+    if (kIsWeb) return false;
+    final platform = material.Theme.of(context).platform;
     return platform == TargetPlatform.windows ||
         platform == TargetPlatform.linux ||
         platform == TargetPlatform.macOS;
@@ -355,7 +356,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
 
   void openFullPlayer() {
     StartupLogger.log('[SearchScreen] Opening full player');
-    if (_isFluent) {
+    if (_isFluent(context)) {
       fluent.Navigator.push(
         context,
         fluent.FluentPageRoute(builder: (context) => const PlayerScreen()),
@@ -369,7 +370,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
   }
 
   void showSnackBar(String message, {bool isError = false}) {
-    if (_isFluent) {
+    if (_isFluent(context)) {
       StartupLogger.log('[SearchScreen][SnackBar/Fluent] $message');
       fluent.displayInfoBar(
         context,
@@ -396,7 +397,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
   }
 
   Future<int?> showPlaylistDialog(List<Map<String, dynamic>> playlistsList) {
-    if (_isFluent) {
+    if (_isFluent(context)) {
        return fluent.showDialog<int?>(
         context: context,
         builder: (context) => fluent.ContentDialog(
@@ -450,7 +451,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
   @override
   material.Widget build(material.BuildContext context) {
     if (_isInitializing) {
-      if (_isFluent) {
+      if (_isFluent(context)) {
          return fluent.ScaffoldPage(
           header: const fluent.PageHeader(title: fluent.Text('Busca de Músicas')),
           content: fluent.Center(
@@ -504,7 +505,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
       loadFormats(result);
     }
 
-    if (_isFluent) {
+    if (_isFluent(context)) {
       return FluentSearchView(
         searchController: _searchController,
         isLoading: _isLoading,

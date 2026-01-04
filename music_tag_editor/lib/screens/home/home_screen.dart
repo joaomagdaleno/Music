@@ -21,8 +21,8 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Map<String, dynamic>> _recentTracks = [];
   bool _isLoading = true;
 
-  bool get _isFluent {
-    final platform = defaultTargetPlatform;
+  bool _isFluent(BuildContext context) {
+    final platform = Theme.of(context).platform;
     return platform == TargetPlatform.windows ||
         platform == TargetPlatform.linux ||
         platform == TargetPlatform.macOS;
@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isFluent) {
+    if (_isFluent(context)) {
       return FluentHomeView(
         isLoading: _isLoading,
         recentTracks: _recentTracks,

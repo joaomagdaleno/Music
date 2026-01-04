@@ -146,7 +146,7 @@ void main() {
       addTearDown(() => tester.view.resetPhysicalSize());
 
       await tester.pumpWidget(createWidgetUnderTest(const AppShell()));
-      await tester.pump();
+      await tester.pumpAndSettle();
 
       expect(find.text('Minhas Personas'), findsOneWidget);
     });

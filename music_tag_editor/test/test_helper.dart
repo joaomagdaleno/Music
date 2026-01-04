@@ -15,6 +15,8 @@ import 'package:music_tag_editor/services/local_duo_service.dart';
 import 'package:music_tag_editor/services/equalizer_service.dart';
 // import 'package:music_tag_editor/services/firebase_sync_service.dart'; // Unused
 import 'package:music_tag_editor/services/persona_service.dart';
+import 'package:music_tag_editor/services/global_navigation_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:media_kit/media_kit.dart';
@@ -139,6 +141,9 @@ Future<void> setupMusicTest({
     _registerFallbackValueWasCalled = true;
   }
 
+  // Ensure global debug variables are reset
+  debugDefaultTargetPlatformOverride = null;
+
   // Reset ALL core singletons
   AuthService.resetInstance();
   DatabaseService.resetInstance();
@@ -151,6 +156,7 @@ Future<void> setupMusicTest({
   ThemeService.resetInstance();
   DependencyManager.resetInstance();
   PersonaService.resetInstance();
+  GlobalNavigationService.resetInstance();
 
   // Create and inject standard mocks
   mockAuth = MockAuthService();
@@ -215,6 +221,10 @@ Future<void> setupMusicTest({
       .thenAnswer((_) async => []);
   when(() => mockDuo.sendMessage(any())).thenAnswer((_) async {});
   when(() => mockDb.trackPlay(any())).thenAnswer((_) async {});
+  
+  when(() => mockSearch.getStreamUrl(any())).thenAnswer((_) async => null);
+  when(() => mockSearch.getFormats(any(), any())).thenAnswer((_) async => []);
+  when(() => mockDuo.role).thenReturn(DuoRole.none);
 
   // Wire up MockPlayer properties
   when(() => mockPlayer.stream).thenReturn(mockPlayerStreams);

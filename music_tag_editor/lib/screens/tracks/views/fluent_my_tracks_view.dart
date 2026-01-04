@@ -16,7 +16,10 @@ class FluentMyTracksView extends StatefulWidget {
     required this.onPlayTrack,
     required this.onAddToVault,
     required this.onImportPlaylist,
+    this.currentTrack,
   });
+
+  final SearchResult? currentTrack;
 
   @override
   State<FluentMyTracksView> createState() => _FluentMyTracksViewState();
@@ -111,13 +114,27 @@ class _FluentMyTracksViewState extends State<FluentMyTracksView> {
                   ? ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.network(track.thumbnail!, fit: BoxFit.cover))
                   : const Icon(FluentIcons.music_note),
             ),
-            title: Text(track.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            title: Text(
+              track.title, 
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: track.id == widget.currentTrack?.id ? FluentTheme.of(context).accentColor : null,
+              ),
+            ),
             subtitle: Text(track.artist),
             trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+              if (track.id == widget.currentTrack?.id)
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Icon(FluentIcons.music_in_collection, color: FluentTheme.of(context).accentColor),
+                ),
               IconButton(icon: const Icon(FluentIcons.play), onPressed: () => widget.onPlayTrack(track)),
               IconButton(icon: const Icon(FluentIcons.lock), onPressed: () => widget.onAddToVault(track)),
             ]),
             onPressed: () => widget.onPlayTrack(track),
+            tileColor: track.id == widget.currentTrack?.id 
+                ? ButtonState.all(FluentTheme.of(context).accentColor.withValues(alpha: 0.1))
+                : null,
           ),
         );
       },

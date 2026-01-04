@@ -127,9 +127,10 @@ class _AppShellState extends State<AppShell> {
 
   bool _isFluent(BuildContext context) {
     if (kIsWeb) return false;
-    return defaultTargetPlatform == TargetPlatform.windows ||
-        defaultTargetPlatform == TargetPlatform.linux ||
-        defaultTargetPlatform == TargetPlatform.macOS;
+    final platform = Theme.of(context).platform;
+    return platform == TargetPlatform.windows ||
+        platform == TargetPlatform.linux ||
+        platform == TargetPlatform.macOS;
   }
 
   Widget _buildOfflineBanner() {

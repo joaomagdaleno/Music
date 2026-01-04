@@ -16,7 +16,10 @@ class MaterialMyTracksView extends StatelessWidget {
     required this.onPlayTrack,
     required this.onAddToVault,
     required this.onImportPlaylist,
+    this.currentTrack,
   });
+
+  final SearchResult? currentTrack;
 
   @override
   Widget build(BuildContext context) {
@@ -89,15 +92,33 @@ class MaterialMyTracksView extends StatelessWidget {
                   ? ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.network(track.thumbnail!, fit: BoxFit.cover))
                   : const Icon(Icons.music_note),
             ),
-            title: Text(track.title, style: const TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text(track.artist),
-            trailing: PopupMenuButton(
-              itemBuilder: (_) => [
-                const PopupMenuItem(value: 'play', child: ListTile(leading: Icon(Icons.play_arrow), title: Text('Tocar'))),
-                const PopupMenuItem(value: 'vault', child: ListTile(leading: Icon(Icons.lock), title: Text('Adicionar ao Cofre'))),
-              ],
-              onSelected: (v) => v == 'play' ? onPlayTrack(track) : onAddToVault(track),
+            title: Text(
+              track.title, 
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: track.id == currentTrack?.id ? Theme.of(context).colorScheme.primary : null,
+              ),
             ),
+            subtitle: Text(track.artist),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (track.id == currentTrack?.id)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Icon(Icons.equalizer, color: Theme.of(context).colorScheme.primary),
+                  ),
+                PopupMenuButton(
+                  itemBuilder: (_) => [
+                    const PopupMenuItem(value: 'play', child: ListTile(leading: Icon(Icons.play_arrow), title: Text('Tocar'))),
+                    const PopupMenuItem(value: 'vault', child: ListTile(leading: Icon(Icons.lock), title: Text('Adicionar ao Cofre'))),
+                  ],
+                  onSelected: (v) => v == 'play' ? onPlayTrack(track) : onAddToVault(track),
+                ),
+              ],
+            ),
+            selected: track.id == currentTrack?.id,
+            selectedTileColor: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
             onTap: () => onPlayTrack(track),
           ),
         );

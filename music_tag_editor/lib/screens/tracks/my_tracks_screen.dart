@@ -42,9 +42,10 @@ class _MyTracksScreenState extends State<MyTracksScreen> {
     PlaybackService.instance.playSearchResult(track);
     
     if (mounted) {
-      if (defaultTargetPlatform == TargetPlatform.windows || 
-          defaultTargetPlatform == TargetPlatform.linux || 
-          defaultTargetPlatform == TargetPlatform.macOS) {
+      final platform = Theme.of(context).platform;
+      if (platform == TargetPlatform.windows || 
+          platform == TargetPlatform.linux || 
+          platform == TargetPlatform.macOS) {
         Navigator.of(context).push(
           fluent.FluentPageRoute(builder: (_) => const PlayerScreen()),
         );
@@ -63,7 +64,7 @@ class _MyTracksScreenState extends State<MyTracksScreen> {
   }
 
   void _importPlaylist() {
-    final platform = defaultTargetPlatform;
+    final platform = Theme.of(context).platform;
     if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
       Navigator.push(context, fluent.FluentPageRoute(builder: (_) => const PlaylistImporterScreen()));
     } else {
@@ -72,7 +73,7 @@ class _MyTracksScreenState extends State<MyTracksScreen> {
   }
 
   void _showSuccess(String message) {
-    final platform = defaultTargetPlatform;
+    final platform = Theme.of(context).platform;
     if (platform == TargetPlatform.windows || platform == TargetPlatform.macOS || platform == TargetPlatform.linux) {
       fluent.displayInfoBar(context, builder: (_, close) => fluent.InfoBar(title: Text(message), severity: fluent.InfoBarSeverity.success, onClose: close));
     } else {
@@ -82,14 +83,36 @@ class _MyTracksScreenState extends State<MyTracksScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final platform = defaultTargetPlatform;
-    switch (platform) {
-      case TargetPlatform.windows:
-      case TargetPlatform.macOS:
-      case TargetPlatform.linux:
-        return FluentMyTracksView(tracks: _tracks, isLoading: _isLoading, onPlayTrack: _playTrack, onAddToVault: _addToVault, onImportPlaylist: _importPlaylist);
-      default:
-        return MaterialMyTracksView(tracks: _tracks, isLoading: _isLoading, onPlayTrack: _playTrack, onAddToVault: _addToVault, onImportPlaylist: _importPlaylist);
-    }
+    final platform = Theme.of(context).platform;
+    
+    return StreamBuilder<SearchResult?>(
+      stream: PlaybackService.instance.currentTrackStream,
+      builder: (context, snapshot) {
+        final currentTrack = snapshot.data;
+        
+        switch (platform) {
+          case TargetPlatform.windows:
+          case TargetPlatform.macOS:
+          case TargetPlatform.linux:
+            return FluentMyTracksView(
+              tracks: _tracks, 
+              isLoading: _isLoading, 
+              onPlayTrack: _playTrack, 
+              onAddToVault: _addToVault, 
+              onImportPlaylist: _importPlaylist,
+              currentTrack: currentTrack,
+            );
+          default:
+            return MaterialMyTracksView(
+              tracks: _tracks, 
+              isLoading: _isLoading, 
+              onPlayTrack: _playTrack, 
+              onAddToVault: _addToVault, 
+              onImportPlaylist: _importPlaylist,
+              currentTrack: currentTrack,
+            );
+        }
+      },
+    );
   }
 }

@@ -2,13 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:music_tag_editor/models/persona_model.dart';
 
 class GlobalNavigationService extends ChangeNotifier {
-  static final GlobalNavigationService instance = GlobalNavigationService._();
+  static GlobalNavigationService _instance = GlobalNavigationService._();
+  static GlobalNavigationService get instance => _instance;
+
+  static void resetInstance() {
+    // _instance.dispose(); // ChangeNotifier.dispose renders it unusable, do not dispose before replacement if possible, or just replace.
+    // Actually, if we dispose the old one, any listeners attached to it might complain if they try to use it?
+    // But resetInstance is for tests.
+    _instance = GlobalNavigationService._();
+  }
+
   GlobalNavigationService._();
 
   int _mainIndex = 0;
   int get mainIndex => _mainIndex;
 
-  Map<AppPersona, int> _personaSubIndices = {
+  final Map<AppPersona, int> _personaSubIndices = {
     AppPersona.librarian: 0,
     AppPersona.host: 0,
     AppPersona.artisan: 0,
