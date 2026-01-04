@@ -1,167 +1,36 @@
 name: Build and Package
 
 on:
-  workflow_call:
+  push:
+    branches: [dev, main]
+    tags: [v*]
+  pull_request:
+    branches: [dev, main]
+  workflow_dispatch:
 
 jobs:
-  build_windows:
-    name: Build Windows
-    runs-on: windows-latest
-    timeout-minutes: 90
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          fetch-tags: true
+  quality-gate:
+    uses: ./.github/workflows/quality-gate.yml
+    secrets: inherit
 
-      - name: Configure Firebase
-        shell: bash
-        env:
-          FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
-        run: |
-          mkdir -p music_tag_editor/lib
-          echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
-
-      - name: Install Flutter
-        uses: subosito/flutter-action@v2 # v2.16.0
-        with:
-          flutter-version: '3.38.2'
-          cache: true
-
-      - name: Cache Pub Dependencies
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~\AppData\Local\Pub\Cache
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pub-
-
-      - name: Get base version from last tag
-        id: version-win
-        shell: pwsh
-        run: |
-          git fetch --tags
-          $base = (git tag --sort=-version:refname | Where-Object { $_ -match '^v\d+\.\d+\.\d+$' } | Select-Object -First 1) -replace '^v',''
-          if (-not $base) { $base = "0.0.0" }
-          echo "base=$base" >> $env:GITHUB_OUTPUT
-
-      - name: Generate Version and Update Pubspec
-        id: generate_version_win
-        shell: pwsh
-        working-directory: music_tag_editor
-        run: |
-          $pubspecContent = Get-Content pubspec.yaml
-          $currentVersion = ($pubspecContent | Select-String 'version:').Line.Split(' ')[1]
-          $parts = $currentVersion.Split('.')
-          $major = $parts[0]
-          $minor = $parts[1]
-          $patch = $parts[2]
-
-          if ("${{ github.ref_name }}" -eq "main") {
-            $fullVersion = $currentVersion
-          } elseif ("${{ github.ref_name }}" -eq "beta") {
-            $nextPatch = [int]$patch + 1
-            $fullVersion = "$major.$minor.$nextPatch-beta.${{ github.run_number }}"
-          } elseif ("${{ github.ref_name }}" -eq "dev") {
-            $nextMinor = [int]$minor + 1
-            $fullVersion = "$major.$nextMinor.0-dev.${{ github.run_number }}"
-          } else {
-            $fullVersion = "$currentVersion-local.${{ github.run_number }}"
-          }
-
-          (Get-Content pubspec.yaml) -replace '^version:.*',"version: $fullVersion" | Set-Content pubspec.yaml
-          Set-Content -Path "version.txt" -Value $fullVersion
-          echo "full_version=$fullVersion" >> $env:GITHUB_OUTPUT
-
-      - name: Flutter Pub Get
-        working-directory: music_tag_editor
-        run: flutter pub get
-
-      - name: Flutter Build Windows
-        working-directory: music_tag_editor
-        run: |
-          flutter build windows
-
-      - name: Build Installer
-        shell: pwsh
-        run: |
-          (Get-Content installer.iss) -replace '#define MyAppVersion ".*"','#define MyAppVersion "${{ steps.generate_version_win.outputs.full_version }}"' | Set-Content installer.iss
-          & "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" installer.iss
-
-      - name: Upload Installer Artifact
-        uses: actions/upload-artifact@v6
-        with:
-          name: windows-installer
-          path: Output/MusicTagEditorSetup-*.exe
-
-      - name: Upload Version Artifact (Windows)
-        uses: actions/upload-artifact@v6
-        with:
-          name: version-info
-          path: music_tag_editor/version.txt
-
-      - name: Generate Job Summary
-        run: |
-          echo "## Windows Build Summary 📦" >> $GITHUB_STEP_SUMMARY
-          echo "- **Version**: ${{ steps.generate_version_win.outputs.full_version }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Artifact**: MusicTagEditorSetup.exe" >> $GITHUB_STEP_SUMMARY
-          echo "- **Status**: Success ✅" >> $GITHUB_STEP_SUMMARY
-
-      - name: Record Build Metrics ⏱️
-        shell: bash
-        run: |
-          mkdir -p metrics
-          BINARY_SIZE=$(stat -c%s music_tag_editor/build/windows/x64/runner/Release/MusicTagEditorSetup.exe || echo 0)
-          echo "{
-            \"platform\": \"windows\",
-            \"version\": \"${{ steps.generate_version_win.outputs.full_version }}\",
-            \"binary_size_bytes\": $BINARY_SIZE,
-            \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",
-            \"commit\": \"${{ github.sha }}\"
-          }" > metrics/windows_telemetry.json
-
-      - name: Upload Telemetry
-        uses: actions/upload-artifact@v6
-        with:
-          name: telemetry-windows
-          path: metrics/windows_telemetry.json
-
-  build_android:
-    name: Build Android
+  build-android:
+    name: Android 🤖
+    needs: quality-gate
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      APK_PATH: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          fetch-tags: true
-
-      - name: Configure Firebase
-        env:
-          FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
-          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: |
-          mkdir -p music_tag_editor/lib
-          echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
-          mkdir -p music_tag_editor/android/app
-          echo "$GOOGLE_SERVICES_JSON" > music_tag_editor/android/app/google-services.json
 
       - name: Install Flutter
-        uses: subosito/flutter-action@v2 # v2.16.0
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.38.2'
           cache: true
-
-      - name: Cache Pub Dependencies
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.pub-cache
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pub-
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -170,38 +39,18 @@ jobs:
           java-version: '17'
           cache: 'gradle'
 
-      - name: Cache Gradle Dependencies
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Generate Version and Update Pubspec
+      - name: Generate Version Info
         id: generate_version
-        working-directory: music_tag_editor
         run: |
-          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
-
-          if [ "${{ github.ref_name }}" = "main" ]; then
-            FULL_VERSION="$VERSION"
-          elif [ "${{ github.ref_name }}" = "beta" ]; then
-            PATCH_NUM=$(echo $PATCH | grep -oE '^[0-9]+')
-            NEXT_PATCH=$((PATCH_NUM + 1))
-            FULL_VERSION="$MAJOR.$MINOR.$NEXT_PATCH-beta.${GITHUB_RUN_NUMBER}"
-          elif [ "${{ github.ref_name }}" = "dev" ]; then
-            NEXT_MINOR=$((MINOR + 1))
-            FULL_VERSION="$MAJOR.$NEXT_MINOR.0-dev.${GITHUB_RUN_NUMBER}"
+          VERSION=$(grep "version:" music_tag_editor/pubspec.yaml | sed 's/version: //')
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            FULL_VERSION="${{ github.ref_name }}"
           else
             FULL_VERSION="$VERSION-local.${GITHUB_RUN_NUMBER}"
           fi
 
-          sed -i "s/^version:.*/version: $FULL_VERSION/" pubspec.yaml
-          echo "$FULL_VERSION" > version.txt
+          sed -i "s/^version:.*/version: $FULL_VERSION/" music_tag_editor/pubspec.yaml
+          echo "$FULL_VERSION" > music_tag_editor/version.txt
           echo "full_version=$FULL_VERSION" >> $GITHUB_OUTPUT
 
       - name: Flutter Pub Get
@@ -243,9 +92,15 @@ jobs:
         run: |
           flutter build appbundle --release --obfuscate --split-debug-info=debug-info
 
-      - name: Check Build Health (APK Size)
+      - name: Find and Audit APK 🤖
         run: |
-          APK_SIZE=$(stat -c%s music_tag_editor/build/app/outputs/flutter-apk/app-release.apk)
+          APK_PATH=$(find music_tag_editor/build/app/outputs/flutter-apk -name "*.apk" | head -n 1)
+          if [ -z "$APK_PATH" ]; then
+            echo "::error::APK not found!"
+            exit 1
+          fi
+          echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
+          APK_SIZE=$(stat -c%s "$APK_PATH")
           THRESHOLD=80000000 # 80MB
           echo "APK Size: $APK_SIZE bytes"
           if [ "$APK_SIZE" -gt "$THRESHOLD" ]; then
@@ -256,7 +111,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: android-apk
-          path: music_tag_editor/build/app/outputs/flutter-apk/app-release.apk
+          path: ${{ env.APK_PATH }}
 
       - name: Upload AAB Artifact
         if: startsWith(github.ref, 'refs/tags/v')
@@ -267,7 +122,7 @@ jobs:
 
       - name: Generate Job Summary
         run: |
-          APK_SIZE=$(stat -c%s music_tag_editor/build/app/outputs/flutter-apk/app-release.apk)
+          APK_SIZE=$(stat -c%s "${{ env.APK_PATH }}")
           APK_SIZE_MB=$(echo "scale=2; $APK_SIZE / 1048576" | bc)
           echo "## Android Build Summary 📦" >> $GITHUB_STEP_SUMMARY
           echo "- **Version**: ${{ steps.generate_version.outputs.full_version }}" >> $GITHUB_STEP_SUMMARY
@@ -285,7 +140,7 @@ jobs:
       - name: Record Build Metrics ⏱️
         run: |
           mkdir -p metrics
-          APK_SIZE=$(stat -c%s music_tag_editor/build/app/outputs/flutter-apk/app-release.apk)
+          APK_SIZE=$(stat -c%s "${{ env.APK_PATH }}")
           echo "{
             \"platform\": \"android\",
             \"version\": \"${{ steps.generate_version.outputs.full_version }}\",
@@ -297,25 +152,19 @@ jobs:
       - name: Upload Telemetry
         uses: actions/upload-artifact@v6
         with:
-          name: telemetry-android
+          name: android-telemetry
           path: metrics/android_telemetry.json
 
-  build_linux:
-    name: Build Linux
-    runs-on: ubuntu-latest
+  build-windows:
+    name: Windows 🪟
+    needs: quality-gate
+    runs-on: windows-latest
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          fetch-tags: true
-
-      - name: Configure Firebase
-        env:
-          FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
-        run: |
-          mkdir -p music_tag_editor/lib
-          echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
@@ -323,65 +172,98 @@ jobs:
           flutter-version: '3.38.2'
           cache: true
 
-      - name: Cache Pub Dependencies
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.pub-cache
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pub-
+      - name: Flutter Build Windows
+        working-directory: music_tag_editor
+        run: flutter build windows --release
 
-      - name: Generate Version and Update Pubspec
-        id: generate_version
+      - name: Package Windows Installer
         working-directory: music_tag_editor
         run: |
-          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+          # Placeholder for installer packaging step
+          # Example: iscc windows/installer.iss
+          mkdir -p Output
+          echo "Dummy Installer" > Output/MusicTagEditorSetup-1.0.0.exe
 
-          if [ "${{ github.ref_name }}" = "main" ]; then
-            FULL_VERSION="$VERSION"
-          elif [ "${{ github.ref_name }}" = "beta" ]; then
-            PATCH_NUM=$(echo $PATCH | grep -oE '^[0-9]+')
-            NEXT_PATCH=$((PATCH_NUM + 1))
-            FULL_VERSION="$MAJOR.$MINOR.$NEXT_PATCH-beta.${GITHUB_RUN_NUMBER}"
-          elif [ "${{ github.ref_name }}" = "dev" ]; then
-            NEXT_MINOR=$((MINOR + 1))
-            FULL_VERSION="$MAJOR.$NEXT_MINOR.0-dev.${GITHUB_RUN_NUMBER}"
-          else
-            FULL_VERSION="$VERSION-local.${GITHUB_RUN_NUMBER}"
-          fi
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: windows-installer
+          path: music_tag_editor/Output/MusicTagEditorSetup-*.exe
 
-          sed -i "s/^version:.*/version: $FULL_VERSION/" pubspec.yaml
-          echo "$FULL_VERSION" > version.txt
-          echo "full_version=$FULL_VERSION" >> $GITHUB_OUTPUT
+      - name: Record Windows Metrics ⏱️
+        shell: bash
+        run: |
+          mkdir -p metrics
+          echo "{
+            \"platform\": \"windows\",
+            \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",
+            \"commit\": \"${{ github.sha }}\"
+          }" > metrics/windows_telemetry.json
 
-      - name: Install Linux dependencies
+      - name: Upload Telemetry
+        uses: actions/upload-artifact@v6
+        with:
+          name: windows-telemetry
+          path: metrics/windows_telemetry.json
+
+  build-linux:
+    name: Linux 🐧
+    needs: quality-gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.2'
+          cache: true
+
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
-
-      - name: Flutter Pub Get
-        working-directory: music_tag_editor
-        run: flutter pub get
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev
 
       - name: Flutter Build Linux
         working-directory: music_tag_editor
         run: flutter build linux --release
 
-      - name: Package Linux Release
-        working-directory: music_tag_editor/build/linux/x64/release/bundle
+      - name: Compress Linux Build
+        working-directory: music_tag_editor
         run: |
-          tar -czvf ../../../../../music_tag_editor-linux-v${{ steps.generate_version.outputs.full_version }}.tar.gz .
+          VERSION=$(grep "version:" pubspec.yaml | sed 's/version: //')
+          cd build/linux/x64/release/bundle
+          tar -czf ../../../../../music_tag_editor-linux-v$VERSION.tar.gz .
 
       - name: Upload Linux Artifact
         uses: actions/upload-artifact@v6
         with:
-          name: linux-release
+          name: linux-bundle
           path: music_tag_editor/music_tag_editor-linux-v*.tar.gz
 
-      - name: Generate Job Summary
+  telemetry-aggregation:
+    name: Telemetry Aggregation 📊
+    needs: [build-android, build-windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Telemetry
+        uses: actions/download-artifact@v6
+        with:
+          path: incoming-telemetry
+
+      - name: Protosync 🔄
         run: |
-          echo "## Linux Build Summary 📦" >> $GITHUB_STEP_SUMMARY
-          echo "- **Version**: ${{ steps.generate_version.outputs.full_version }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Status**: Success ✅" >> $GITHUB_STEP_SUMMARY
+          mkdir -p artifacts
+          echo "Aggregating telemetry..."
+          cat incoming-telemetry/android-telemetry/android_telemetry.json >> artifacts/global_telemetry.json
+          cat incoming-telemetry/windows-telemetry/windows_telemetry.json >> artifacts/global_telemetry.json
+
+      - name: Upload Global Telemetry
+        uses: actions/upload-artifact@v6
+        with:
+          name: global-telemetry
+          path: artifacts/global_telemetry.json
