@@ -180,7 +180,6 @@ jobs:
     uses: ./.github/workflows/prerelease.yml
     permissions:
       contents: write
-    timeout-minutes: 10
     secrets: inherit
 
   release:
