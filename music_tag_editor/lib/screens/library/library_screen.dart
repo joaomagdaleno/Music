@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:fluent_ui/fluent_ui.dart' as fluent;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/models/music_track.dart';
@@ -12,6 +12,7 @@ import 'package:music_tag_editor/widgets/edit_track_dialog.dart';
 import 'package:music_tag_editor/widgets/learning_dialog.dart';
 import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
 import 'package:music_tag_editor/services/search_service.dart';
+import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:path/path.dart' as p;
 
 import 'views/fluent_library_view.dart';
@@ -171,6 +172,20 @@ class _LibraryScreenState extends State<LibraryScreen> {
       return; // Nothing to do
     }
 
+    // FIX: File Locking on Windows
+    // Check if this track is currently playing. If so, we must stop playback to release the file handle.
+    bool wasPlaying = false;
+    try {
+      final currentTrack = PlaybackService.instance.currentTrack;
+      if (currentTrack != null && currentTrack.localPath == originalTrack.filePath) {
+        debugPrint('Track is currently playing. Stopping playback to release file lock.');
+        await PlaybackService.instance.stop();
+        wasPlaying = true;
+      }
+    } catch (e) {
+      debugPrint('Error checking playback status: $e');
+    }
+
     try {
       // Write metadata to the file using dart_tags (pure Dart, cross-platform)
       await _metadataService.writeMetadata(
@@ -205,39 +220,38 @@ class _LibraryScreenState extends State<LibraryScreen> {
           );
       }
       
-
       _loadMusicFromDirectory();
+      
+      // Optional: Restore playback if needed (complex because file path changed)
+      // For now, simpler to just let user re-play.
+
     } catch (e) {
       debugPrint('Error applying tags: $e');
+      if (!_isFluent && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
     }
   }
 
   void _editTrack(MusicTrack track) async {
     dynamic updatedTrack;
+    
+    // Unified adaptive dialog call
     if (_isFluent) {
-         updatedTrack = await fluent.showDialog<MusicTrack>(
-          context: context,
-          builder: (context) => fluent.ContentDialog(
-             content: EditTrackDialog(track: track), // Might need wrapper
-             // For now re-use Material Dialog inside
-          ), 
-        );
-        // Fluent Dialog is different, skipping full implementation for brevity
-        // Falling back to Material Dialog even in Fluent for complex dialogs temporarily
-        if (!mounted) return;
          updatedTrack = await showDialog<MusicTrack>(
             context: context,
-             builder: (context) => EditTrackDialog(track: track),
+            builder: (context) => EditTrackDialog(track: track),
         );
-        if (!mounted) return;
-
     } else {
         updatedTrack = await showDialog<MusicTrack>(
             context: context,
             builder: (context) => EditTrackDialog(track: track),
         );
-        if (!mounted) return;
     }
+    
+    if (!mounted) return;
     
 
     if (updatedTrack != null) {

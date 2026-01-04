@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:music_tag_editor/screens/player/views/fluent_player_view.dart';
 import 'package:music_tag_editor/screens/player/views/material_player_view.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
@@ -55,7 +56,27 @@ class PlayerScreen extends StatelessWidget {
   }
 
   void _showQueueSheet(BuildContext context) {
-    showModalBottomSheet(context: context, builder: (_) => const QueueSheet());
+    if (_isFluent(context)) {
+      showDialog(
+        context: context,
+        builder: (context) => fluent.ContentDialog(
+          title: const Text('Fila de Reprodução'),
+          content: const SizedBox(
+            height: 400,
+            width: 350,
+            child: QueueSheet(),
+          ),
+          actions: [
+            fluent.Button(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Fechar'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      showModalBottomSheet(context: context, builder: (_) => const QueueSheet());
+    }
   }
 
   void _showDuoMatchingDialog(BuildContext context) {

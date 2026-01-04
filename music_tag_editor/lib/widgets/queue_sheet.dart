@@ -9,7 +9,9 @@ class QueueSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final queue = PlaybackService.instance.queue;
     
-    return Container(
+    return Material(
+      color: Colors.transparent,
+      child: Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -48,6 +50,7 @@ class QueueSheet extends StatelessWidget {
                   ),
           ),
         ],
+      ),
       ),
     );
   }
