@@ -171,6 +171,8 @@ void main() {
       final mockSearchList = MockVideoSearchList();
       when(() => mockSearchList.iterator).thenAnswer((_) => <Video>[].iterator);
       when(() => mockSearchClient.search(any())).thenAnswer((_) async => mockSearchList);
+      when(() => sMockDb.getDownloadedUrls()).thenAnswer((_) async => {});
+      when(() => sMockDb.getAllTracks()).thenAnswer((_) async => []);
 
       final statuses = <MediaPlatform, List<SearchStatus>>{};
       await service.searchAll('query', onStatusUpdate: (p, s) {

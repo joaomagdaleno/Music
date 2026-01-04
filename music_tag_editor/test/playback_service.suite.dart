@@ -55,7 +55,8 @@ void main() {
     PlaybackService.instance = service; // Assign to singleton
 
     // Stubs
-    when(() => mockSearch.getStreamUrl(any())).thenAnswer((_) async => 'http://stream.url');
+    when(() => mockSearch.getStreamUrl(any(), platform: any(named: 'platform'), isVideo: any(named: 'isVideo')))
+        .thenAnswer((_) async => 'http://stream.url');
     when(() => mockLyrics.fetchLyrics(any(), any())).thenAnswer((_) async => []);
     when(() => mockPlayer.open(any(), play: any(named: 'play'))).thenAnswer((_) async {});
     when(() => mockPlayer.play()).thenAnswer((_) async {});
@@ -77,7 +78,7 @@ void main() {
 
       await service.playSearchResult(track);
 
-      verify(() => mockPlayer.open(any(), play: any(named: 'play'))).called(1);
+      verify(() => mockPlayer.open(any())).called(1);
       expect(service.currentTrack, track);
       expect(service.queue.contains(track), true);
     });
