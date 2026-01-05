@@ -29,8 +29,6 @@ class DependencyManager {
   /// URLs for downloading tools
   static const _ytDlpReleaseApi =
       'https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest';
-  static const _spotdlReleaseApi =
-      'https://api.github.com/repos/spotDL/spotify-downloader/releases/latest';
   static const _ffmpegUrl =
       'https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip';
 
@@ -50,7 +48,6 @@ class DependencyManager {
     // Check and download each tool
     final tools = [
       ('yt-dlp', _getYtDlpPath(), _downloadYtDlp),
-      ('spotdl', _getSpotdlPath(), _downloadSpotdl),
       ('ffmpeg', _getFFmpegPath(), _downloadFFmpeg),
       ('fpcalc', _getFpcalcPath(), _downloadFpcalc),
     ];
@@ -85,12 +82,6 @@ class DependencyManager {
     return p.join(_binDir!, 'yt-dlp$ext');
   }
 
-  /// Get path to spotdl executable.
-  String _getSpotdlPath() {
-    _binDir ??= _getBinDirectorySync();
-    final ext = Platform.isWindows ? '.exe' : '';
-    return p.join(_binDir!, 'spotdl$ext');
-  }
 
   /// Get path to FFmpeg executable.
   String _getFFmpegPath() {
@@ -108,7 +99,6 @@ class DependencyManager {
 
   /// Public getters for tool paths.
   String get ytDlpPath => _getYtDlpPath();
-  String get spotdlPath => _getSpotdlPath();
   String get ffmpegPath => _getFFmpegPath();
   String get fpcalcPath => _getFpcalcPath();
 
@@ -136,52 +126,6 @@ class DependencyManager {
     await _makeExecutable(_getYtDlpPath());
   }
 
-  /// Download spotdl from GitHub releases.
-  Future<void> _downloadSpotdl() async {
-    final response = await _client.get(Uri.parse(_spotdlReleaseApi));
-    final json = jsonDecode(response.body);
-    final assets = json['assets'] as List;
-
-    String assetName;
-    if (Platform.isWindows) {
-      assetName = 'spotdl-win32-x64.exe';
-    } else if (Platform.isLinux) {
-      assetName = 'spotdl-linux-x64';
-    } else if (Platform.isMacOS) {
-      assetName = 'spotdl-darwin-x64';
-    } else {
-      throw UnsupportedError('Unsupported platform');
-    }
-
-    // Find asset that matches (may have version in name)
-    final asset = assets.firstWhere(
-      (a) => (a['name'] as String).contains(
-        assetName.replaceAll('.exe', '').replaceAll('spotdl-', ''),
-      ),
-      orElse: () => null,
-    );
-
-    if (asset == null) {
-      // Fallback: try to find any Windows/Linux/macOS asset
-      final platform = Platform.isWindows
-          ? 'win'
-          : Platform.isLinux
-              ? 'linux'
-              : 'darwin';
-      final fallbackAsset = assets.firstWhere(
-        (a) =>
-            (a['name'] as String).contains(platform) &&
-            !(a['name'] as String).contains('.sha256'),
-      );
-      final downloadUrl = fallbackAsset['browser_download_url'] as String;
-      await downloadFile(downloadUrl, _getSpotdlPath());
-    } else {
-      final downloadUrl = asset['browser_download_url'] as String;
-      await downloadFile(downloadUrl, _getSpotdlPath());
-    }
-
-    await _makeExecutable(_getSpotdlPath());
-  }
 
   /// Download FFmpeg from yt-dlp's FFmpeg builds.
   Future<void> _downloadFFmpeg() async {
@@ -234,7 +178,6 @@ class DependencyManager {
   Future<bool> areAllDependenciesInstalled() async {
     _binDir ??= _getBinDirectorySync();
     return await File(_getYtDlpPath()).exists() &&
-        await File(_getSpotdlPath()).exists() &&
         await File(_getFFmpegPath()).exists() &&
         await File(_getFpcalcPath()).exists();
   }

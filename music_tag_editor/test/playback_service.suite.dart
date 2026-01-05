@@ -26,7 +26,6 @@ class MockBaseAudioHandler extends Mock implements BaseAudioHandler {
 
 void main() {
   late MockPlayer mockPlayer;
-  late MockVideoController mockVideoController;
   late MockBaseAudioHandler mockAudioHandler;
   late PlaybackService service;
 
@@ -45,7 +44,7 @@ void main() {
 
     // So we use the forTesting constructor.
     mockPlayer = MockPlayer();
-    mockVideoController = MockVideoController();
+    mockPlayer = MockPlayer();
     mockAudioHandler = MockBaseAudioHandler();
 
     // Wire up streams for mockPlayer as before
@@ -56,7 +55,6 @@ void main() {
     service = PlaybackService.forTesting(
       player: mockPlayer,
       handler: mockAudioHandler,
-      videoController: mockVideoController,
     );
     PlaybackService.instance = service; // Assign to singleton
 

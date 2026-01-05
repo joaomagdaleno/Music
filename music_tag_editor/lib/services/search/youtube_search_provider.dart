@@ -21,6 +21,9 @@ abstract class BaseYouTubeSearchProvider implements SearchProvider {
   SearchResult parseYouTubeVideo(yt.Video video, MediaPlatform platform) {
     String title = video.title;
     String artist = video.author.replaceAll(' - Topic', '').trim();
+    final bool isOfficial = video.author.toLowerCase().contains('topic') ||
+        video.title.toLowerCase().contains('official audio') ||
+        video.title.toLowerCase().contains('official music video');
 
     title = SearchResult.cleanMetadata(title);
 
@@ -65,7 +68,7 @@ abstract class BaseYouTubeSearchProvider implements SearchProvider {
         .replaceAll(RegExp(r'feat\..*$', caseSensitive: false), '')
         .trim();
 
-    return SearchResult(
+    final result = SearchResult(
       id: video.id.value,
       title: title,
       artist: artist,
@@ -74,6 +77,8 @@ abstract class BaseYouTubeSearchProvider implements SearchProvider {
       url: video.url,
       platform: platform,
     );
+    result.isOfficial = isOfficial;
+    return result;
   }
 
   @protected
@@ -85,6 +90,8 @@ abstract class BaseYouTubeSearchProvider implements SearchProvider {
         '--dump-json',
         '--flat-playlist',
         '--no-playlist',
+        '--cookies-from-browser',
+        'all',
         'ytsearch10:$query',
       ];
 
@@ -118,6 +125,11 @@ abstract class BaseYouTubeSearchProvider implements SearchProvider {
           } catch (_) {}
         }
       }
+      results.sort((a, b) {
+        if (a.isOfficial && !b.isOfficial) return -1;
+        if (!a.isOfficial && b.isOfficial) return 1;
+        return 0;
+      });
       return results;
     } catch (e) {
       StartupLogger.log(
@@ -131,7 +143,7 @@ abstract class BaseYouTubeSearchProvider implements SearchProvider {
     try {
       final result = await Process.run(
         _deps.ytDlpPath,
-        ['--dump-json', '--no-download', url],
+        ['--dump-json', '--no-download', '--cookies-from-browser', 'all', url],
         stdoutEncoding: utf8,
         stderrEncoding: utf8,
       );
@@ -210,7 +222,14 @@ abstract class BaseYouTubeSearchProvider implements SearchProvider {
 
     // Fallback to yt-dlp
     try {
-      final args = ['--get-url', '-f', 'bestaudio', url];
+      final args = [
+        '--get-url',
+        '-f',
+        'bestaudio',
+        '--cookies-from-browser',
+        'all',
+        url
+      ];
       final result = await Process.run(_deps.ytDlpPath, args);
       if (result.exitCode == 0) {
         return (result.stdout as String).trim();
@@ -228,6 +247,8 @@ abstract class BaseYouTubeSearchProvider implements SearchProvider {
           '--dump-json',
           '--flat-playlist',
           '--no-download',
+          '--cookies-from-browser',
+          'all',
           url,
         ],
         stdoutEncoding: utf8,
@@ -290,6 +311,11 @@ class YouTubeSearchProvider extends BaseYouTubeSearchProvider {
         seenIds.add(video.id.value);
         seenMeta.add(metaKey);
       }
+      results.sort((a, b) {
+        if (a.isOfficial && !b.isOfficial) return -1;
+        if (!a.isOfficial && b.isOfficial) return 1;
+        return 0;
+      });
       return results;
     } catch (e, stack) {
       StartupLogger.logError('YouTube Search Provider Error', e, stack);
@@ -325,12 +351,8 @@ class YouTubeMusicSearchProvider extends BaseYouTubeSearchProvider {
       }
 
       results.sort((a, b) {
-        final aTopic = a.artist.toLowerCase().contains('topic') ||
-            a.title.toLowerCase().contains('official audio');
-        final bTopic = b.artist.toLowerCase().contains('topic') ||
-            b.title.toLowerCase().contains('official audio');
-        if (aTopic && !bTopic) return -1;
-        if (!aTopic && bTopic) return 1;
+        if (a.isOfficial && !b.isOfficial) return -1;
+        if (!a.isOfficial && b.isOfficial) return 1;
         return 0;
       });
 

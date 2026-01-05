@@ -5,6 +5,8 @@ import 'package:music_tag_editor/models/metadata_models.dart';
 import 'package:music_tag_editor/services/download/download_provider.dart';
 import 'package:music_tag_editor/services/download/youtube_download_provider.dart';
 import 'package:music_tag_editor/services/download/metadata_embedder.dart';
+import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
+import 'package:music_tag_editor/services/startup_logger.dart';
 import 'package:path/path.dart' as p;
 
 /// Service for downloading music from various platforms.
@@ -63,18 +65,46 @@ class DownloadService {
 
     for (var provider in _providers) {
       if (provider.supports(url, platform)) {
-        onProgress?.call(0.1, 'Downloading...');
+        // Enforce metadata enrichment before download if possible
+        AggregatedMetadata? enriched;
+        if (title != null && artist != null) {
+          onProgress?.call(0.05, 'Buscando metadados oficiais...');
+          try {
+            enriched = await MetadataAggregatorService.instance
+                .aggregateMetadata(title, artist);
+          } catch (e) {
+            StartupLogger.log('[DownloadService] Enrichment failed: $e');
+          }
+        }
+
+        onProgress?.call(0.1, 'Descarregando áudio...');
         final downloadedPath = await provider.download(url, format,
-            onProgress: (p) => onProgress?.call(p, 'Downloading...'));
+            onProgress: (p) => onProgress?.call(p, 'Baixando...'));
 
-        onProgress?.call(0.8, 'Moving to final directory...');
-        final fileName = p.basename(downloadedPath);
-        final finalPath = p.join(outputDir, fileName);
+        onProgress?.call(0.8, 'Organizando arquivos...');
+        final ext = p.extension(downloadedPath);
+        final safeTitle = (enriched?.title ?? title ?? 'Unknown')
+            .replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
+        final safeArtist = (enriched?.artist ?? artist ?? 'Unknown')
+            .replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
+        
+        final finalFileName = '$safeArtist - $safeTitle$ext';
+        final finalPath = p.join(outputDir, finalFileName);
 
+        // Copy and ensure path exists
+        final targetFile = File(finalPath);
+        if (!await targetFile.parent.exists()) {
+          await targetFile.parent.create(recursive: true);
+        }
         await File(downloadedPath).copy(finalPath);
         await File(downloadedPath).delete();
 
-        onProgress?.call(1.0, 'Complete!');
+        if (enriched != null) {
+          onProgress?.call(0.9, 'Embutindo capa e tags...');
+          await embedMetadata(finalPath, enriched);
+        }
+
+        onProgress?.call(1.0, 'Concluído!');
         return finalPath;
       }
     }

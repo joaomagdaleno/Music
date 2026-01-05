@@ -21,7 +21,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:media_kit/media_kit.dart';
-import 'package:media_kit_video/media_kit_video.dart';
 import 'package:audio_service/audio_service.dart';
 
 Future<void> setupSqflite() async {
@@ -57,8 +56,6 @@ class MockLocalDuoService extends Mock implements LocalDuoService {}
 class MockEqualizerService extends Mock implements EqualizerService {}
 
 class MockPlayer extends Mock implements Player {}
-
-class MockVideoController extends Mock implements VideoController {}
 
 class FakePlayerStream extends Fake implements PlayerStream {
   @override
@@ -100,10 +97,7 @@ class FakePlayerStream extends Fake implements PlayerStream {
   @override
   Stream<AudioParams> get audioParams => Stream.value(const AudioParams());
   @override
-  Stream<VideoParams> get videoParams => Stream.value(const VideoParams());
-  @override
   Stream<double?> get audioBitrate => Stream.value(null);
-  Stream<double?> get videoBitrate => Stream.value(null);
   @override
   Stream<AudioDevice> get audioDevice =>
       Stream.value(const AudioDevice('auto', ''));

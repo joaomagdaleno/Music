@@ -89,7 +89,7 @@ class SettingsRepository extends DatabaseRepository {
     if (result.isNotEmpty) {
       return result.first['value'] == 'true';
     }
-    return false;
+    return true;
   }
 
   Future<void> saveAgeBypass(bool enabled) async {

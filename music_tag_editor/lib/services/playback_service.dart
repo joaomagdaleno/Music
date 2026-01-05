@@ -1,6 +1,5 @@
 import 'package:media_kit/media_kit.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-import 'package:media_kit_video/media_kit_video.dart';
 import 'package:flutter/foundation.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:audio_service/audio_service.dart';
@@ -12,6 +11,7 @@ import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
 import 'package:music_tag_editor/services/metadata_service.dart';
+import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
 import 'package:music_tag_editor/services/startup_logger.dart';
 import 'package:rxdart/rxdart.dart';
 import 'dart:async';
@@ -25,7 +25,6 @@ class PlaybackService {
 
   PlaybackService._internal() {
     _player = Player();
-    _videoController = VideoController(_player);
     _applyStreamingConfigs();
   }
 
@@ -46,19 +45,14 @@ class PlaybackService {
   PlaybackService.forTesting({
     Player? player,
     BaseAudioHandler? handler,
-    VideoController? videoController,
   }) {
     _player = player ?? Player();
-    _videoController = videoController ?? VideoController(_player);
     if (handler != null) {
       _audioHandler = handler;
     }
   }
 
   late final Player _player;
-  late final VideoController _videoController;
-
-  VideoController get videoController => _videoController;
 
   final SearchService _searchService = SearchService.instance;
 
@@ -246,7 +240,13 @@ class PlaybackService {
     _queue.clear();
     _queue.add(result);
 
-    final source = await _createSource(result);
+    // Parallelize stream extraction and metadata enrichment for faster start
+    final extractionFuture = _createSource(result);
+    final enrichmentFuture = _enrichMetadata(result);
+
+    final results = await Future.wait([extractionFuture, enrichmentFuture]);
+    final source = results[0] as String?;
+
     if (source != null) {
       // Add User-Agent to prevent 403 errors on direct streams
       final headers = source.startsWith('http')
@@ -268,6 +268,45 @@ class PlaybackService {
       if (result.localPath != null) {
         LocalDuoService.instance.sendFile(result.localPath!);
       }
+    }
+  }
+
+  Future<void> _enrichMetadata(SearchResult result) async {
+    try {
+      final aggregator = MetadataAggregatorService.instance;
+      final metadata = await aggregator.aggregateMetadata(
+        result.title,
+        result.artist,
+        durationMs: (result.duration ?? 0) * 1000,
+      );
+
+      result.isDownloaded = false; // Reset temporary flags if needed
+      // Prefer official metadata if found
+      final enrichedResult = SearchResult(
+        id: result.id,
+        title: metadata.title ?? result.title,
+        artist: metadata.artist ?? result.artist,
+        album: metadata.album ?? result.album,
+        thumbnail: metadata.thumbnail ?? result.thumbnail,
+        duration: result.duration,
+        url: result.url,
+        platform: result.platform,
+        localPath: result.localPath,
+        genre: metadata.genre ?? result.genre,
+        hifiSource: result.hifiSource,
+        hifiQuality: result.hifiQuality,
+        isVault: result.isVault,
+        isOfficial: result.isOfficial,
+      );
+
+      // Update current track if it's still the same ID
+      if (_currentTrack?.id == result.id) {
+        _currentTrack = enrichedResult;
+        _trackController.add(enrichedResult);
+        DatabaseService.instance.saveTrack(enrichedResult.toJson());
+      }
+    } catch (e) {
+      StartupLogger.log('[PlaybackService] Metadata enrichment failed: $e');
     }
   }
 

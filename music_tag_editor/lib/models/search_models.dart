@@ -45,6 +45,7 @@ class SearchResult {
   final String? hifiQuality; // e.g. '24-bit/96kHz', 'FLAC 16-bit'
   bool isVault;
   bool isDownloaded;
+  bool isOfficial;
 
   SearchResult({
     required this.id,
@@ -61,6 +62,7 @@ class SearchResult {
     this.hifiQuality,
     this.isVault = false,
     this.isDownloaded = false,
+    this.isOfficial = false,
   });
 
   String get durationFormatted {
@@ -87,6 +89,7 @@ class SearchResult {
         'hifi_quality': hifiQuality,
         'is_vault': isVault ? 1 : 0,
         'is_downloaded': isDownloaded ? 1 : 0,
+        'is_official': isOfficial ? 1 : 0,
       };
 
   factory SearchResult.fromJson(Map<String, dynamic> map) => SearchResult(
@@ -107,6 +110,7 @@ class SearchResult {
         hifiQuality: map['hifiQuality'] ?? map['hifi_quality'],
         isVault: (map['isVault'] ?? map['is_vault'] ?? 0) == 1,
         isDownloaded: (map['isDownloaded'] ?? map['is_downloaded'] ?? 0) == 1,
+        isOfficial: (map['isOfficial'] ?? map['is_official'] ?? 0) == 1,
       );
 
   static String cleanMetadata(String s) => s

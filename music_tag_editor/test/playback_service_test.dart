@@ -25,7 +25,6 @@ class MockMediaItem extends Mock implements MediaItem {}
 void main() {
   late PlaybackService service;
   late MockBaseAudioHandler mockHandler;
-  late MockVideoController mockVideoController;
 
   final testTrack = SearchResult(
     id: '1',
@@ -49,14 +48,11 @@ void main() {
   setUp(() async {
     await setupMusicTest();
     mockHandler = MockBaseAudioHandler();
-    mockVideoController =
-        MockVideoController(); // Initialized mockVideoController
 
     // PlaybackService needs specific handler for testing
     service = PlaybackService.forTesting(
         player: mockPlayer,
-        handler: mockHandler,
-        videoController: mockVideoController); // Passed to constructor
+        handler: mockHandler); // Passed to constructor
     // service.searchService = mockSearch; // Injected via singleton
 
     // Additional stubs for this test specifically
