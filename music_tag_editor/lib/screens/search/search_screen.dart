@@ -181,7 +181,6 @@ class _SearchScreenState extends material.State<SearchScreen>
     }
   }
 
-
   Future<void> loadFormats(SearchResult result) async {
     StartupLogger.log(
         '[SearchScreen] Loading formats for ${result.id} (${result.platform})');

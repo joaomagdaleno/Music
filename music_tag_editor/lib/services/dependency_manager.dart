@@ -82,7 +82,6 @@ class DependencyManager {
     return p.join(_binDir!, 'yt-dlp$ext');
   }
 
-
   /// Get path to FFmpeg executable.
   String _getFFmpegPath() {
     _binDir ??= _getBinDirectorySync();
@@ -125,7 +124,6 @@ class DependencyManager {
     await downloadFile(downloadUrl, _getYtDlpPath());
     await _makeExecutable(_getYtDlpPath());
   }
-
 
   /// Download FFmpeg from yt-dlp's FFmpeg builds.
   Future<void> _downloadFFmpeg() async {

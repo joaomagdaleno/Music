@@ -87,7 +87,7 @@ class DownloadService {
             .replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
         final safeArtist = (enriched?.artist ?? artist ?? 'Unknown')
             .replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
-        
+
         final finalFileName = '$safeArtist - $safeTitle$ext';
         final finalPath = p.join(outputDir, finalFileName);
 

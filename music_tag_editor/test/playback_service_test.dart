@@ -51,8 +51,7 @@ void main() {
 
     // PlaybackService needs specific handler for testing
     service = PlaybackService.forTesting(
-        player: mockPlayer,
-        handler: mockHandler); // Passed to constructor
+        player: mockPlayer, handler: mockHandler); // Passed to constructor
     // service.searchService = mockSearch; // Injected via singleton
 
     // Additional stubs for this test specifically

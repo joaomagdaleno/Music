@@ -18,7 +18,9 @@ class DownloadFormat {
 
   String get displayName {
     final base = '$extension - $quality';
-    return filesize != null ? '$base (${(filesize! / 1024 / 1024).toStringAsFixed(1)} MB)' : base;
+    return filesize != null
+        ? '$base (${(filesize! / 1024 / 1024).toStringAsFixed(1)} MB)'
+        : base;
   }
 
   @override
