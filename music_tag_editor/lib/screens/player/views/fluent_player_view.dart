@@ -156,13 +156,15 @@ class FluentPlayerView extends StatelessWidget {
                           builder: (context, playingSnapshot) {
                             final playing = playingSnapshot.data ?? false;
                             return Button(
-                              onPressed: () =>
-                                  playing ? playback.pause() : playback.resume(),
-                                style: ButtonStyle(
-                                  padding: WidgetStateProperty.all(
-                                      const EdgeInsets.all(12)),
-                                  shape: WidgetStateProperty.all(const CircleBorder()),
-                                ),
+                              onPressed: () => playing
+                                  ? playback.pause()
+                                  : playback.resume(),
+                              style: ButtonStyle(
+                                padding: WidgetStateProperty.all(
+                                    const EdgeInsets.all(12)),
+                                shape: WidgetStateProperty.all(
+                                    const CircleBorder()),
+                              ),
                               child: Icon(
                                 playing ? FluentIcons.pause : FluentIcons.play,
                                 size: 32,
@@ -275,10 +277,13 @@ class FluentLyricsView extends StatelessWidget {
                     duration: const Duration(milliseconds: 300),
                     textAlign: TextAlign.center,
                     style: isCurrent
-                        ? (FluentTheme.of(context).typography.bodyLarge ?? const TextStyle()).copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: FluentTheme.of(context).accentColor)
-                        : (FluentTheme.of(context).typography.body ?? const TextStyle()),
+                        ? (FluentTheme.of(context).typography.bodyLarge ??
+                                const TextStyle())
+                            .copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: FluentTheme.of(context).accentColor)
+                        : (FluentTheme.of(context).typography.body ??
+                            const TextStyle()),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 12.0, horizontal: 24),

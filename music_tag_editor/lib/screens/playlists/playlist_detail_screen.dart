@@ -58,8 +58,6 @@ class _PlaylistDetailScreenState extends State<PlaylistDetailScreen> {
     debugPrint(
         '[PlaylistDetail] Playing: ${result.title} - ${result.url} - ${result.platform}');
     PlaybackService.instance.playSearchResult(result);
-
-
   }
 
   @override

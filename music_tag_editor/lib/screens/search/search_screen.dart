@@ -32,7 +32,8 @@ class _SearchScreenState extends material.State<SearchScreen> {
   bool _isLoading = false;
   String? _errorMessage;
   final Map<MediaPlatform, SearchStatus> _platformStatuses = {};
-  MediaPlatform? _selectedPlatform = MediaPlatform.youtubeMusic; // Default to Music
+  MediaPlatform? _selectedPlatform =
+      MediaPlatform.youtubeMusic; // Default to Music
   int _currentSearchId = 0;
 
   final Map<String, List<DownloadFormat>> _formatsCache = {};
@@ -115,7 +116,8 @@ class _SearchScreenState extends material.State<SearchScreen> {
     });
 
     try {
-      final results = await _searchService.searchAll(query, onStatusUpdate: (p, s) {
+      final results =
+          await _searchService.searchAll(query, onStatusUpdate: (p, s) {
         if (mounted && searchId == _currentSearchId) {
           StartupLogger.log('[SearchScreen] Status update for $p: $s');
           setState(() => _platformStatuses[p] = s);
@@ -127,8 +129,8 @@ class _SearchScreenState extends material.State<SearchScreen> {
             '[SearchScreen] Search returned ${results.length} results');
         await _refreshDownloadedStatus();
 
-        final filtered = _selectedPlatform == null 
-            ? results 
+        final filtered = _selectedPlatform == null
+            ? results
             : results.where((r) => r.platform == _selectedPlatform).toList();
 
         final Set<String> updatedDownloaded = Set.from(_downloadedUrls);
@@ -248,7 +250,8 @@ class _SearchScreenState extends material.State<SearchScreen> {
         },
       );
 
-      StartupLogger.log('[SearchScreen] Download COMPLETED for ${result.id} at $path');
+      StartupLogger.log(
+          '[SearchScreen] Download COMPLETED for ${result.id} at $path');
 
       result.localPath = path;
       await DatabaseService.instance.saveTrack(result.toJson());
@@ -422,7 +425,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
               child: fluent.Column(
                 mainAxisSize: fluent.MainAxisSize.min,
                 children: [
-                   const fluent.ProgressRing(),
+                  const fluent.ProgressRing(),
                   const fluent.SizedBox(height: 24),
                   fluent.Text(_initStatus),
                   const fluent.SizedBox(height: 16),

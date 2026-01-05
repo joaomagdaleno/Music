@@ -61,8 +61,7 @@ void main() {
     PlaybackService.instance = service; // Assign to singleton
 
     // Stubs
-    when(() => mockSearch.getStreamUrl(any(),
-            platform: any(named: 'platform')))
+    when(() => mockSearch.getStreamUrl(any(), platform: any(named: 'platform')))
         .thenAnswer((_) async => 'http://stream.url');
     when(() => mockLyrics.fetchLyrics(any(), any()))
         .thenAnswer((_) async => []);

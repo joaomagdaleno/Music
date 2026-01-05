@@ -24,7 +24,8 @@ class DuoRepository extends DatabaseRepository {
 
   Future<List<Map<String, dynamic>>> getGuestHistory() async {
     final database = await db;
-    return await database.query(_duoGuestsTable, orderBy: 'last_connected DESC');
+    return await database.query(_duoGuestsTable,
+        orderBy: 'last_connected DESC');
   }
 
   Future<void> addTrackToDuoSession(String guestId, String trackId) async {

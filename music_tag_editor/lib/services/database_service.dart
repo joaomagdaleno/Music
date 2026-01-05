@@ -47,22 +47,26 @@ class DatabaseService {
   SettingsRepository get settings => _settings;
   TrackRepository get tracks => _tracks;
   PlaylistRepository get playlists => _playlists;
-  DuoRepository get duo => _duo; // Wait, I named it DuoRepository, let's keep it consistent.
+  DuoRepository get duo =>
+      _duo; // Wait, I named it DuoRepository, let's keep it consistent.
 
   // For backward compatibility, we can keep the methods or proxy them.
-  // Given the size of the project, proxying might be safer for now, 
+  // Given the size of the project, proxying might be safer for now,
   // but the goal is to use repositories directly.
   // I'll proxy the most used ones to avoid breaking everything immediately.
 
-  Future<void> saveTrack(Map<String, dynamic> track) => _tracks.saveTrack(track);
-  Future<List<Map<String, dynamic>>> getTracks({bool includeVault = false}) => _tracks.getTracks(includeVault: includeVault);
+  Future<void> saveTrack(Map<String, dynamic> track) =>
+      _tracks.saveTrack(track);
+  Future<List<Map<String, dynamic>>> getTracks({bool includeVault = false}) =>
+      _tracks.getTracks(includeVault: includeVault);
   Future<List<SearchResult>> getAllTracks() => _tracks.getAllTracks();
-  
-  Future<void> saveSetting(String key, String value) => _settings.saveSetting(key, value);
+
+  Future<void> saveSetting(String key, String value) =>
+      _settings.saveSetting(key, value);
   Future<String?> getSetting(String key) => _settings.getSetting(key);
 
   static Database? _database;
-  
+
   Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDB();
@@ -95,7 +99,8 @@ class DatabaseService {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    await db.execute('CREATE TABLE settings (key TEXT PRIMARY KEY, value TEXT)');
+    await db
+        .execute('CREATE TABLE settings (key TEXT PRIMARY KEY, value TEXT)');
     await db.execute('''
       CREATE TABLE learning_rules (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -128,7 +133,8 @@ class DatabaseService {
         hifi_quality TEXT
       )
     ''');
-    await db.execute('CREATE TABLE playlists (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, description TEXT)');
+    await db.execute(
+        'CREATE TABLE playlists (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, description TEXT)');
     await db.execute('''
       CREATE TABLE playlist_tracks (
         playlist_id INTEGER,
@@ -155,7 +161,8 @@ class DatabaseService {
         FOREIGN KEY (track_id) REFERENCES tracks (id) ON DELETE CASCADE
       )
     ''');
-    await db.execute('CREATE TABLE music_folders (path TEXT PRIMARY KEY, added_at INTEGER NOT NULL)');
+    await db.execute(
+        'CREATE TABLE music_folders (path TEXT PRIMARY KEY, added_at INTEGER NOT NULL)');
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -208,8 +215,7 @@ class DatabaseService {
       await db.execute('ALTER TABLE tracks ADD COLUMN genre TEXT');
       await db.execute(
           'ALTER TABLE tracks ADD COLUMN play_count INTEGER DEFAULT 0');
-      await db.execute(
-          'ALTER TABLE tracks ADD COLUMN last_played INTEGER');
+      await db.execute('ALTER TABLE tracks ADD COLUMN last_played INTEGER');
     }
     if (oldVersion < 5) {
       await db.execute('''
@@ -248,10 +254,8 @@ class DatabaseService {
     }
     if (oldVersion < 9) {
       try {
-        await db.execute(
-            'ALTER TABLE tracks ADD COLUMN hifi_source TEXT');
-        await db.execute(
-            'ALTER TABLE tracks ADD COLUMN hifi_quality TEXT');
+        await db.execute('ALTER TABLE tracks ADD COLUMN hifi_source TEXT');
+        await db.execute('ALTER TABLE tracks ADD COLUMN hifi_quality TEXT');
       } catch (e) {
         debugPrint('Error adding hifi columns: $e');
       }
@@ -259,34 +263,48 @@ class DatabaseService {
   }
 
   // --- Proxy methods for all existing functionality to avoid breaking UI ---
-  // (In a real refactor, we would update the callers, but for this "satisfy guard" task, 
+  // (In a real refactor, we would update the callers, but for this "satisfy guard" task,
   // we can proxy to keep the service slim and the UI working)
 
-  Future<void> saveFilenameFormat(FilenameFormat format) => _settings.saveFilenameFormat(format);
+  Future<void> saveFilenameFormat(FilenameFormat format) =>
+      _settings.saveFilenameFormat(format);
   Future<FilenameFormat> loadFilenameFormat() => _settings.loadFilenameFormat();
   Future<int> loadCrossfadeDuration() => _settings.loadCrossfadeDuration();
-  Future<void> saveCrossfadeDuration(int seconds) => _settings.saveCrossfadeDuration(seconds);
+  Future<void> saveCrossfadeDuration(int seconds) =>
+      _settings.saveCrossfadeDuration(seconds);
   Future<bool> loadAgeBypass() => _settings.loadAgeBypass();
   Future<void> saveAgeBypass(bool enabled) => _settings.saveAgeBypass(enabled);
 
-  Future<Map<String, String?>> getDownloadedUrls() => _tracks.getDownloadedUrls();
-  Future<void> toggleVault(String trackId, bool inVault) => _tracks.toggleVault(trackId, inVault);
+  Future<Map<String, String?>> getDownloadedUrls() =>
+      _tracks.getDownloadedUrls();
+  Future<void> toggleVault(String trackId, bool inVault) =>
+      _tracks.toggleVault(trackId, inVault);
   Future<void> deleteTrack(String id) => _tracks.deleteTrack(id);
   Future<void> trackPlay(String trackId) => _tracks.trackPlay(trackId);
-  Future<List<Map<String, dynamic>>> getMostPlayed({int limit = 20}) => _tracks.getMostPlayed(limit: limit);
-  Future<List<Map<String, dynamic>>> getRecentlyPlayed({int limit = 20}) => _tracks.getRecentlyPlayed(limit: limit);
+  Future<List<Map<String, dynamic>>> getMostPlayed({int limit = 20}) =>
+      _tracks.getMostPlayed(limit: limit);
+  Future<List<Map<String, dynamic>>> getRecentlyPlayed({int limit = 20}) =>
+      _tracks.getRecentlyPlayed(limit: limit);
 
-  Future<int> createPlaylist(String name, {String? description}) => _playlists.createPlaylist(name, description: description);
-  Future<List<Map<String, dynamic>>> getPlaylists() => _playlists.getPlaylists();
-  Future<void> addTrackToPlaylist(int playlistId, String trackId) => _playlists.addTrackToPlaylist(playlistId, trackId);
-  Future<List<Map<String, dynamic>>> getPlaylistTracks(int playlistId) => _playlists.getPlaylistTracks(playlistId);
+  Future<int> createPlaylist(String name, {String? description}) =>
+      _playlists.createPlaylist(name, description: description);
+  Future<List<Map<String, dynamic>>> getPlaylists() =>
+      _playlists.getPlaylists();
+  Future<void> addTrackToPlaylist(int playlistId, String trackId) =>
+      _playlists.addTrackToPlaylist(playlistId, trackId);
+  Future<List<Map<String, dynamic>>> getPlaylistTracks(int playlistId) =>
+      _playlists.getPlaylistTracks(playlistId);
 
   Future<void> saveGuest(String id, String name) => _duo.saveGuest(id, name);
-  Future<List<Map<String, dynamic>>> getGuestHistory() => _duo.getGuestHistory();
-  Future<void> addTrackToDuoSession(String guestId, String trackId) => _duo.addTrackToDuoSession(guestId, trackId);
-  Future<List<Map<String, dynamic>>> getDuoSessionTracks(String guestId) => _duo.getDuoSessionTracks(guestId);
+  Future<List<Map<String, dynamic>>> getGuestHistory() =>
+      _duo.getGuestHistory();
+  Future<void> addTrackToDuoSession(String guestId, String trackId) =>
+      _duo.addTrackToDuoSession(guestId, trackId);
+  Future<List<Map<String, dynamic>>> getDuoSessionTracks(String guestId) =>
+      _duo.getDuoSessionTracks(guestId);
   Future<void> addMusicFolder(String path) => _duo.addMusicFolder(path);
-  Future<List<Map<String, dynamic>>> getMusicFolders() => _duo.getMusicFolders();
+  Future<List<Map<String, dynamic>>> getMusicFolders() =>
+      _duo.getMusicFolders();
   Future<void> removeMusicFolder(String path) => _duo.removeMusicFolder(path);
 
   // The following methods are not yet delegated to a specific repository

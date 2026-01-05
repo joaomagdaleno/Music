@@ -18,22 +18,25 @@ void main() {
 
   group('DownloadService - Platform Detection', () {
     test('detects YouTube correctly', () {
-      expect(DownloadService.detectPlatform('https://www.youtube.com/watch?v=abc'),
+      expect(
+          DownloadService.detectPlatform('https://www.youtube.com/watch?v=abc'),
           equals(MediaPlatform.youtube));
       expect(DownloadService.detectPlatform('https://youtu.be/abc'),
           equals(MediaPlatform.youtube));
     });
 
     test('detects YouTube Music correctly', () {
-      expect(DownloadService.detectPlatform('https://music.youtube.com/watch?v=abc'),
+      expect(
+          DownloadService.detectPlatform(
+              'https://music.youtube.com/watch?v=abc'),
           equals(MediaPlatform.youtubeMusic));
     });
 
     test('returns unknown for invalid URLs', () {
       expect(DownloadService.detectPlatform('https://google.com'),
           equals(MediaPlatform.unknown));
-      expect(
-          DownloadService.detectPlatform('not-a-url'), equals(MediaPlatform.unknown));
+      expect(DownloadService.detectPlatform('not-a-url'),
+          equals(MediaPlatform.unknown));
     });
   });
 

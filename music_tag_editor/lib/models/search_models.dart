@@ -1,5 +1,3 @@
-
-
 /// Status of search on a specific platform.
 enum SearchStatus {
   searching,
@@ -92,24 +90,24 @@ class SearchResult {
       };
 
   factory SearchResult.fromJson(Map<String, dynamic> map) => SearchResult(
-      id: map['id'],
-      title: map['title'],
-      artist: map['artist'],
-      album: map['album'],
-      thumbnail: map['thumbnail'],
-      duration: map['duration'],
-      url: map['url'],
-      platform: MediaPlatform.values.firstWhere(
-        (e) => e.name == map['platform'],
-        orElse: () => MediaPlatform.unknown,
-      ),
-      localPath: map['localPath'],
-      genre: map['genre'],
-      hifiSource: map['hifiSource'],
-      hifiQuality: map['hifiQuality'],
-      isVault: (map['isVault'] ?? 0) == 1,
-      isDownloaded: (map['isDownloaded'] ?? 0) == 1,
-    );
+        id: map['id'],
+        title: map['title'],
+        artist: map['artist'],
+        album: map['album'],
+        thumbnail: map['thumbnail'],
+        duration: map['duration'],
+        url: map['url'],
+        platform: MediaPlatform.values.firstWhere(
+          (e) => e.name == map['platform'],
+          orElse: () => MediaPlatform.unknown,
+        ),
+        localPath: map['localPath'],
+        genre: map['genre'],
+        hifiSource: map['hifiSource'],
+        hifiQuality: map['hifiQuality'],
+        isVault: (map['isVault'] ?? 0) == 1,
+        isDownloaded: (map['isDownloaded'] ?? 0) == 1,
+      );
 
   static String cleanMetadata(String s) => s
       .replaceAll(RegExp(r'\(Official.*?\)', caseSensitive: false), '')

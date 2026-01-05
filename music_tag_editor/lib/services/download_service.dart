@@ -17,7 +17,6 @@ class DownloadService {
 
   DownloadService._internal();
 
-
   final List<DownloadProvider> _providers = [
     YouTubeDownloadProvider(),
   ];
@@ -65,15 +64,16 @@ class DownloadService {
     for (var provider in _providers) {
       if (provider.supports(url, platform)) {
         onProgress?.call(0.1, 'Downloading...');
-        final downloadedPath = await provider.download(url, format, onProgress: (p) => onProgress?.call(p, 'Downloading...'));
-        
+        final downloadedPath = await provider.download(url, format,
+            onProgress: (p) => onProgress?.call(p, 'Downloading...'));
+
         onProgress?.call(0.8, 'Moving to final directory...');
         final fileName = p.basename(downloadedPath);
         final finalPath = p.join(outputDir, fileName);
-        
+
         await File(downloadedPath).copy(finalPath);
         await File(downloadedPath).delete();
-        
+
         onProgress?.call(1.0, 'Complete!');
         return finalPath;
       }
@@ -82,5 +82,7 @@ class DownloadService {
   }
 
   /// Helper to embed metadata using extracted embedder.
-  Future<bool> embedMetadata(String audioPath, AggregatedMetadata metadata, {String? lyrics}) async => await _embedder.embed(audioPath, metadata, lyrics: lyrics);
+  Future<bool> embedMetadata(String audioPath, AggregatedMetadata metadata,
+          {String? lyrics}) async =>
+      await _embedder.embed(audioPath, metadata, lyrics: lyrics);
 }
