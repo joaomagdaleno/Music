@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_tag_editor/models/download_models.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 
 /// Page for downloading music from YouTube, YouTube Music, and Spotify.
@@ -138,9 +140,6 @@ class _DownloadPageState extends State<DownloadPage> {
       case MediaPlatform.youtubeMusic:
         icon = Icons.music_note;
         color = Colors.red;
-      case MediaPlatform.spotify:
-        icon = Icons.music_note;
-        color = Colors.green;
       case MediaPlatform.hifi:
         icon = Icons.high_quality;
         color = Colors.purple;
@@ -208,7 +207,7 @@ class _DownloadPageState extends State<DownloadPage> {
                             decoration: InputDecoration(
                               hintText: 'https://...',
                               border: const OutlineInputBorder(),
-                              prefixIcon: _buildPlatformIcon(_downloadService
+                              prefixIcon: _buildPlatformIcon(DownloadService
                                   .detectPlatform(_urlController.text)),
                             ),
                             onSubmitted: (_) => _fetchInfo(),

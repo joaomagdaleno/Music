@@ -4,8 +4,8 @@ import 'package:media_kit_video/media_kit_video.dart';
 import 'package:flutter/foundation.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:audio_service/audio_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/search_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/services/local_duo_service.dart';
 import 'package:music_tag_editor/services/equalizer_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
@@ -275,7 +275,6 @@ class PlaybackService {
     final streamUrl = await _searchService.getStreamUrl(
       track.url,
       platform: track.platform,
-      isVideo: track.mediaType == 'video',
     );
     if (streamUrl != null) {
       StartupLogger.log('[PlaybackService] Stream URL obtained successfully');

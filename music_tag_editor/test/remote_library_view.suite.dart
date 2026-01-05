@@ -7,7 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/screens/library/remote_library_screen.dart';
 import 'package:music_tag_editor/services/local_duo_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 
 class MockLocalDuoService extends Mock implements LocalDuoService {}
 

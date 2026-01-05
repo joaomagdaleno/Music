@@ -10,6 +10,7 @@ import 'golden_helper.dart';
 import 'package:music_tag_editor/screens/disco/disco_mode_screen.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/download_service.dart'; // For SearchResult
+import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
 import 'package:music_tag_editor/services/connectivity_service.dart';

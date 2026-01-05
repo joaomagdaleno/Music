@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
-// import 'package:music_tag_editor/services/search_service.dart'; // For SearchResult if needed
+// import 'package:music_tag_editor/services/search_service.dart';
+// For SearchResult if needed
 
 class QueueSheet extends StatelessWidget {
   const QueueSheet({super.key});

@@ -1,0 +1,221 @@
+Analyzing music_tag_editor...                                   
+
+   info - Unnecessary use of a block function body - lib\models\search_models.dart:74:59 - prefer_expression_function_bodies
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\disco\views\fluent_disco_view.dart:2:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\disco\views\fluent_disco_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\disco\views\fluent_disco_view.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\disco\views\material_disco_view.dart:2:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\disco\views\material_disco_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\disco\views\material_disco_view.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\home\home_screen.dart:6:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\home\home_screen.dart:7:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\home\home_screen.dart:9:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\library\library_screen.dart:16:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/search_models.dart' - lib\screens\library\library_screen.dart:17:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\library\mood_explorer_screen.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\library\mood_explorer_screen.dart:6:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\library\mood_explorer_screen.dart:8:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\library\remote_library_screen.dart:4:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\library\remote_library_screen.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\library\remote_library_screen.dart:7:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\library\smart_library_screen.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\library\smart_library_screen.dart:6:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\library\smart_library_screen.dart:8:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\library\views\fluent_library_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\library\views\fluent_library_view.dart:4:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\library\views\fluent_remote_library_view.dart:2:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\library\views\fluent_remote_library_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\library\views\fluent_remote_library_view.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\library\views\fluent_smart_library_view.dart:2:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\library\views\fluent_smart_library_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\library\views\fluent_smart_library_view.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\library\views\material_library_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\library\views\material_library_view.dart:4:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\library\views\material_remote_library_view.dart:2:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\library\views\material_remote_library_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\library\views\material_remote_library_view.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\library\views\material_smart_library_view.dart:2:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\library\views\material_smart_library_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\library\views\material_smart_library_view.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\player\views\fluent_player_view.dart:6:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\player\views\fluent_player_view.dart:7:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\player\views\fluent_player_view.dart:8:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\playlists\playlist_detail_screen.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\playlists\playlist_detail_screen.dart:6:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\playlists\playlist_detail_screen.dart:8:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\playlists\playlist_importer_screen.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\playlists\playlist_importer_screen.dart:6:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\playlists\playlist_importer_screen.dart:7:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\playlists\views\fluent_playlist_importer_view.dart:2:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\playlists\views\fluent_playlist_importer_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\playlists\views\fluent_playlist_importer_view.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\playlists\views\material_playlist_importer_view.dart:2:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\playlists\views\material_playlist_importer_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\playlists\views\material_playlist_importer_view.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\search\search_screen.dart:17:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\search\views\fluent_search_view.dart:2:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\search\views\fluent_search_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/search_service.dart' - lib\screens\search\views\fluent_search_view.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\search\views\material_search_view.dart:2:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\search\views\material_search_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/search_service.dart' - lib\screens\search\views\material_search_view.dart:7:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\settings\settings_screen.dart:14:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\settings\settings_screen.dart:15:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/search_models.dart' - lib\screens\settings\settings_screen.dart:16:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\tracks\my_tracks_screen.dart:4:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\tracks\my_tracks_screen.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\tracks\my_tracks_screen.dart:7:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\tracks\ringtone_maker_screen.dart:4:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\tracks\ringtone_maker_screen.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\tracks\ringtone_maker_screen.dart:7:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\tracks\views\fluent_my_tracks_view.dart:2:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\tracks\views\fluent_my_tracks_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\tracks\views\fluent_my_tracks_view.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\tracks\views\fluent_ringtone_maker_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\tracks\views\fluent_ringtone_maker_view.dart:4:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\tracks\views\fluent_ringtone_maker_view.dart:6:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\tracks\views\material_my_tracks_view.dart:2:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\tracks\views\material_my_tracks_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\tracks\views\material_my_tracks_view.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\tracks\views\material_ringtone_maker_view.dart:2:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\tracks\views\material_ringtone_maker_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\tracks\views\material_ringtone_maker_view.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\vault\vault_screen.dart:4:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\vault\vault_screen.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\vault\vault_screen.dart:7:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\vault\views\fluent_vault_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\vault\views\fluent_vault_view.dart:4:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\vault\views\fluent_vault_view.dart:6:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\screens\vault\views\material_vault_view.dart:2:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\screens\vault\views\material_vault_view.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\screens\vault\views\material_vault_view.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/search_models.dart' - lib\services\auto_tag_service.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\services\auto_tag_service.dart:4:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\services\database_service.dart:8:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\services\database_service.dart:9:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/search_models.dart' - lib\services\download_service.dart:12:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\services\duplicate_detector_service.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\services\duplicate_detector_service.dart:6:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\services\duplicate_detector_service.dart:8:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\services\local_duo_service.dart:6:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\services\local_duo_service.dart:7:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\services\metadata_aggregator_service.dart:17:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/search_models.dart' - lib\services\metadata_aggregator_service.dart:18:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/search_models.dart' - lib\services\metadata_cleanup_service.dart:4:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\services\metadata_cleanup_service.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\services\metadata_cleanup_service.dart:6:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\services\playback_service.dart:7:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\services\playback_service.dart:8:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\services\playback_service.dart:9:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\services\search_service.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\services\search_service.dart:6:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\services\smart_playlist_service.dart:3:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\services\smart_playlist_service.dart:4:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\services\smart_playlist_service.dart:6:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\views\app_shell.dart:20:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\views\app_shell.dart:21:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\views\download_page.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/search_models.dart' - lib\views\download_page.dart:6:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\widgets\duo_matching_dialog.dart:9:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\widgets\duo_matching_dialog.dart:10:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\widgets\duo_matching_dialog.dart:12:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\widgets\floating_mini_player.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\widgets\floating_mini_player.dart:6:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\widgets\floating_mini_player.dart:8:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/services/download_service.dart' - lib\widgets\mini_player.dart:7:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\widgets\mini_player.dart:8:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\widgets\mini_player.dart:10:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/metadata_models.dart' - lib\widgets\queue_sheet.dart:4:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/download_models.dart' - lib\widgets\queue_sheet.dart:5:8 - unused_import
+warning - Unused import: 'package:music_tag_editor/models/search_models.dart' - lib\widgets\queue_sheet.dart:6:8 - unused_import
+  error - The function 'SearchResult' isn't defined - test\disco_mode_view.suite.dart:50:21 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\disco_mode_view.suite.dart:55:19 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\download_page.suite.dart:16:21 - undefined_identifier
+  error - The function 'MediaInfo' isn't defined - test\download_page.suite.dart:50:36 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\download_page.suite.dart:53:27 - undefined_identifier
+  error - The function 'DownloadFormat' isn't defined - test\download_page.suite.dart:55:19 - undefined_function
+  error - The name 'DownloadFormat' isn't a type, so it can't be used as a type argument - test\download_page.suite.dart:73:47 - non_type_as_type_argument
+  error - Undefined name 'MediaPlatform' - test\download_service.suite.dart:23:18 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\download_service.suite.dart:25:18 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\download_service.suite.dart:30:18 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\download_service.suite.dart:35:18 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\download_service.suite.dart:40:18 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\download_service.suite.dart:42:55 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\download_service.suite.dart:90:36 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\download_service.suite.dart:97:36 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\goldens\disco_mode_golden.suite.dart:106:56 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\goldens\disco_mode_golden.suite.dart:111:19 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\local_duo_service.suite.dart:33:27 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\local_duo_service.suite.dart:38:19 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\local_duo_service.suite.dart:214:21 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\local_duo_service.suite.dart:218:21 - undefined_identifier
+  error - The function 'AggregatedMetadata' isn't defined - test\metadata_cleanup_service.suite.dart:73:36 - undefined_function
+  error - The function 'SearchResult' isn't defined - test\mini_player.suite.dart:57:21 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\mini_player.suite.dart:62:21 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\mood_explorer_view.suite.dart:21:27 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\mood_explorer_view.suite.dart:26:17 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\playback_service.suite.dart:79:21 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\playback_service.suite.dart:84:21 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\playback_service_test.dart:30:21 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\playback_service_test.dart:35:15 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\playback_service_test.dart:115:27 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\playback_service_test.dart:120:21 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\player_screen.suite.dart:97:21 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\player_screen.suite.dart:102:19 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\player_screen.suite.dart:119:21 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\player_screen.suite.dart:124:19 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\player_screen.suite.dart:166:21 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\player_screen.suite.dart:171:19 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\playlist_detail_screen.suite.dart:15:27 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\playlist_detail_screen.suite.dart:20:17 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\playlist_importer_view.suite.dart:20:27 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\playlist_importer_view.suite.dart:25:17 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\remote_library_view.suite.dart:21:27 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\remote_library_view.suite.dart:26:17 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\ringtone_maker_view.suite.dart:88:27 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\ringtone_maker_view.suite.dart:93:17 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\ringtone_maker_view.suite.dart:112:18 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\ringtone_maker_view.suite.dart:117:23 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\search_page.suite.dart:57:7 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\search_page.suite.dart:62:19 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\search_page.suite.dart:64:7 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\search_page.suite.dart:69:19 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\search_page.suite.dart:99:20 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\search_page.suite.dart:104:17 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\search_service.suite.dart:103:35 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\search_service.suite.dart:136:35 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\search_service.suite.dart:157:35 - undefined_identifier
+  error - The name 'MediaPlatform' isn't a type, so it can't be used as a type argument - test\search_service.suite.dart:190:25 - non_type_as_type_argument
+  error - The name 'SearchStatus' isn't a type, so it can't be used as a type argument - test\search_service.suite.dart:190:45 - non_type_as_type_argument
+  error - Undefined name 'MediaPlatform' - test\search_service.suite.dart:195:35 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\search_service.suite.dart:196:23 - undefined_identifier
+  error - Undefined name 'SearchStatus' - test\search_service.suite.dart:196:56 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\search_service.suite.dart:197:23 - undefined_identifier
+  error - Undefined name 'SearchStatus' - test\search_service.suite.dart:197:56 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\search_service.suite.dart:204:44 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\search_service.suite.dart:233:46 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\search_service.suite.dart:242:46 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\search_service_test.dart:106:35 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\search_service_test.dart:125:35 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\search_service_test.dart:151:35 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\search_service_test.dart:169:35 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\search_service_test.dart:188:35 - undefined_identifier
+  error - The name 'MediaPlatform' isn't a type, so it can't be used as a type argument - test\search_service_test.dart:219:25 - non_type_as_type_argument
+  error - The name 'SearchStatus' isn't a type, so it can't be used as a type argument - test\search_service_test.dart:219:45 - non_type_as_type_argument
+  error - Undefined name 'MediaPlatform' - test\search_service_test.dart:224:35 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\search_service_test.dart:225:23 - undefined_identifier
+  error - Undefined name 'SearchStatus' - test\search_service_test.dart:225:56 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\search_service_test.dart:226:23 - undefined_identifier
+  error - Undefined name 'SearchStatus' - test\search_service_test.dart:226:56 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\smart_library_view.suite.dart:21:27 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\smart_library_view.suite.dart:26:17 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\test_helper.dart:152:27 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\test_helper.dart:157:17 - undefined_identifier
+  error - Undefined name 'MediaPlatform' - test\test_helper.dart:159:27 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\vault_view.suite.dart:25:27 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\vault_view.suite.dart:30:19 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\widgets\cast_dialog.suite.dart:97:19 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\widgets\cast_dialog.suite.dart:102:19 - undefined_identifier
+  error - The function 'SearchResult' isn't defined - test\widgets\cast_dialog.suite.dart:128:19 - undefined_function
+  error - Undefined name 'MediaPlatform' - test\widgets\cast_dialog.suite.dart:133:19 - undefined_identifier
+

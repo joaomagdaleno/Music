@@ -1,10 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/global_navigation_service.dart';
 import 'package:music_tag_editor/models/persona_model.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/screens/player/player_screen.dart';
+import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_tag_editor/models/download_models.dart';
 
 class FluentSearchView extends StatelessWidget {
   final TextEditingController searchController;
@@ -122,8 +120,6 @@ class FluentSearchView extends StatelessWidget {
                       downloadingProgress.containsKey(result.url);
                   final isDownloaded = downloadedUrls.contains(result.url);
 
-                  final isVideo = result.mediaType == 'video';
-
                   return Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -137,9 +133,7 @@ class FluentSearchView extends StatelessWidget {
                               borderRadius: BorderRadius.circular(4),
                               child: result.thumbnail != null
                                   ? GestureDetector(
-                                      onTap: isVideo
-                                          ? () => _playVideo(context, result)
-                                          : () => onPlay(result),
+                                      onTap: () => onPlay(result),
                                       child: Image.network(
                                         result.thumbnail!,
                                         width: 48,
@@ -429,37 +423,17 @@ class FluentSearchView extends StatelessWidget {
     );
   }
 
-  Widget _buildPlaybackButtons(BuildContext context, SearchResult result) {
-    final isVideo = result.mediaType == 'video';
-
-    return Row(
+  Widget _buildPlaybackButtons(BuildContext context, SearchResult result) => Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (isVideo)
-          IconButton(
-            icon: const Icon(FluentIcons.video, size: 20),
-            onPressed: () => _playVideo(context, result),
-          ),
         IconButton(
-          icon:
-              Icon(isVideo ? FluentIcons.headset : FluentIcons.play, size: 20),
+          icon: const Icon(FluentIcons.play, size: 20),
           onPressed: () => onPlay(result),
         ),
       ],
     );
-  }
 
-  void _playVideo(BuildContext context, SearchResult result) async {
-    // Play the track using PlaybackService
-    await PlaybackService.instance.playSearchResult(result);
 
-    // Navigate to the native PlayerScreen ONLY if it's a video
-    if (context.mounted && result.mediaType == 'video') {
-      Navigator.of(context).push(
-        FluentPageRoute(builder: (_) => const PlayerScreen()),
-      );
-    }
-  }
 
   Widget _buildStatusIndicator(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
@@ -506,14 +480,6 @@ class FluentSearchView extends StatelessWidget {
           height: 24,
           errorBuilder: (_, __, ___) =>
               Icon(FluentIcons.music_note, color: Colors.red),
-        );
-      case MediaPlatform.spotify:
-        return Image.network(
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/1024px-Spotify_logo_without_text.svg.png',
-          width: 24,
-          height: 24,
-          errorBuilder: (_, __, ___) =>
-              Icon(FluentIcons.music_note, color: Colors.green),
         );
       case MediaPlatform.hifi:
         return _getHiFiLogo(hifiSource);

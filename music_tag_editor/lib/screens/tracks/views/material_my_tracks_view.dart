@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 
 /// Material Design view for MyTracksScreen
 class MaterialMyTracksView extends StatelessWidget {
@@ -22,62 +22,44 @@ class MaterialMyTracksView extends StatelessWidget {
   final SearchResult? currentTrack;
 
   @override
-  Widget build(BuildContext context) => DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Biblioteca'),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.playlist_add),
-                onPressed: onImportPlaylist,
-                tooltip: 'Importar Playlist',
-              )
-            ],
-            bottom: const TabBar(
-              tabs: [
-                Tab(text: 'Músicas', icon: Icon(Icons.music_note)),
-                Tab(text: 'Vídeos', icon: Icon(Icons.video_library)),
-              ],
-            ),
-          ),
-          body: isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : TabBarView(
-                  children: [
-                    _buildTrackList(context, 'audio'),
-                    _buildTrackList(context, 'video'),
-                  ],
-                ),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Biblioteca'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.playlist_add),
+              onPressed: onImportPlaylist,
+              tooltip: 'Importar Playlist',
+            )
+          ],
         ),
+        body: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : _buildTrackList(context),
       );
 
-  Widget _buildTrackList(BuildContext context, String mediaType) {
-    final filteredTracks =
-        tracks.where((t) => t.mediaType == mediaType).toList();
-
-    if (filteredTracks.isEmpty) {
+  Widget _buildTrackList(BuildContext context) {
+    if (tracks.isEmpty) {
       return Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              mediaType == 'audio' ? Icons.music_off : Icons.videocam_off,
+              Icons.music_off,
               size: 64,
               color: Colors.grey[400],
             ),
             const SizedBox(height: 16),
-            Text(
-                'Nenhum(a) ${mediaType == 'audio' ? 'música' : 'vídeo'} salvo(a).'),
+            const Text('Nenhuma música salva.'),
           ],
         ),
       );
     }
 
     return ListView.builder(
-      itemCount: filteredTracks.length,
+      itemCount: tracks.length,
       itemBuilder: (context, index) {
-        final track = filteredTracks[index];
+        final track = tracks[index];
         return Card(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           child: ListTile(

@@ -19,9 +19,6 @@ class MaterialSettingsView extends StatefulWidget {
   final VoidCallback onPullFromCloud;
   final VoidCallback onLogin;
   final VoidCallback onLogout;
-  final String? spotifyClientId;
-  final String? spotifyClientSecret;
-  final Function(String, String) onSpotifyCredentialsSaved;
 
   const MaterialSettingsView({
     super.key,
@@ -39,9 +36,6 @@ class MaterialSettingsView extends StatefulWidget {
     required this.onPullFromCloud,
     required this.onLogin,
     required this.onLogout,
-    this.spotifyClientId,
-    this.spotifyClientSecret,
-    required this.onSpotifyCredentialsSaved,
   });
 
   @override
@@ -163,93 +157,11 @@ class _MaterialSettingsViewState extends State<MaterialSettingsView> {
                         value: widget.ageBypass,
                         onChanged: _handleAgeBypassChanged,
                       ),
-                      const Divider(height: 32),
-                      _buildSpotifySection(),
                       const SizedBox(height: 32),
                     ],
                   ),
                 ),
               ),
-      );
-
-  final _spotifyIdController = TextEditingController();
-  final _spotifySecretController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _spotifyIdController.text = widget.spotifyClientId ?? '';
-    _spotifySecretController.text = widget.spotifyClientSecret ?? '';
-  }
-
-  @override
-  void dispose() {
-    _spotifyIdController.dispose();
-    _spotifySecretController.dispose();
-    super.dispose();
-  }
-
-  Widget _buildSpotifySection() => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Icon(Icons.music_note, color: Colors.green),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Integração com Spotify',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Obtenha resultados autênticos e capas de alta qualidade diretamente do Spotify.',
-                style: TextStyle(fontSize: 13, color: Colors.grey),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: _spotifyIdController,
-                decoration: const InputDecoration(
-                  labelText: 'Client ID',
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: _spotifySecretController,
-                decoration: const InputDecoration(
-                  labelText: 'Client Secret',
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                ),
-                obscureText: true,
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton.icon(
-                  onPressed: () {
-                    widget.onSpotifyCredentialsSaved(
-                      _spotifyIdController.text.trim(),
-                      _spotifySecretController.text.trim(),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Credenciais do Spotify salvas!')),
-                    );
-                  },
-                  icon: const Icon(Icons.save),
-                  label: const Text('Salvar Credenciais'),
-                ),
-              ),
-            ],
-          ),
-        ),
       );
 
   Future<void> _handleAgeBypassChanged(bool val) async {
@@ -376,8 +288,8 @@ class _MaterialSettingsViewState extends State<MaterialSettingsView> {
                 ChoiceChip(
                   label: const Text('Auto'),
                   selected: !themeService.useCustomColor,
-                  onSelected: (selected) {
-                    if (selected) {
+                  onSelected: (val) {
+                    if (val) {
                       themeService.setAutoMode();
                       setState(() {});
                     }
@@ -387,7 +299,12 @@ class _MaterialSettingsViewState extends State<MaterialSettingsView> {
                 ChoiceChip(
                   label: const Text('Personalizado'),
                   selected: themeService.useCustomColor,
-                  onSelected: (selected) {},
+                  onSelected: (val) {
+                    if (val) {
+                      themeService.setCustomColor(ThemeService.presetColors.first);
+                      setState(() {});
+                    }
+                  },
                 ),
               ],
             ),

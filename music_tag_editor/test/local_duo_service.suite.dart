@@ -9,7 +9,7 @@ import 'package:nearby_connections/nearby_connections.dart';
 import 'package:music_tag_editor/services/local_duo_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 
 class MockNearby extends Mock implements Nearby {}
 

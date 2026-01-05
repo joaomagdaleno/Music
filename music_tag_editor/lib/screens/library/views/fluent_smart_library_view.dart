@@ -1,5 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 
 /// Fluent UI view for SmartLibraryScreen - WinUI 3 styling
 class FluentSmartLibraryView extends StatefulWidget {

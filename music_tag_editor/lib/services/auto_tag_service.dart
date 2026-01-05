@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
+import 'package:music_tag_editor/models/metadata_models.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 
 /// Service for automatic metadata tagging using audio fingerprinting.

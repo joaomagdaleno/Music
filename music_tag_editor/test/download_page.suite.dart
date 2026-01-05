@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/views/download_page.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/download_models.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'test_helper.dart';
 
 void main() {
   setUp(() async {
     await setupMusicTest();
 
-    when(() => mockDownload.detectPlatform(any()))
-        .thenReturn(MediaPlatform.unknown);
+    // mockDownload.detectPlatform is static, no stub needed
 
     when(() =>
             mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
@@ -51,6 +51,7 @@ void main() {
                 title: 'Test Song',
                 artist: 'Test Artist',
                 platform: MediaPlatform.youtube,
+                url: 'http://test.com',
                 formats: [
                   DownloadFormat(
                     formatId: '1',

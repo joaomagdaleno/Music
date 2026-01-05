@@ -7,7 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/screens/playlists/playlist_importer_screen.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 
 class MockSearchService extends Mock implements SearchService {}
 

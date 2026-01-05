@@ -5,41 +5,35 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
+import 'package:music_tag_editor/services/download/youtube_download_provider.dart';
 import 'test_helper.dart';
 
 void main() {
-  late DownloadService service;
-
   setUp(() async {
     await setupMusicTest(mockDownloadInstance: false);
     DependencyManager.instance = DependencyManager.forTesting();
-    service = DownloadService.instance;
   });
 
   group('DownloadService - Platform Detection', () {
     test('detects YouTube correctly', () {
-      expect(service.detectPlatform('https://www.youtube.com/watch?v=abc'),
+      expect(DownloadService.detectPlatform('https://www.youtube.com/watch?v=abc'),
           equals(MediaPlatform.youtube));
-      expect(service.detectPlatform('https://youtu.be/abc'),
+      expect(DownloadService.detectPlatform('https://youtu.be/abc'),
           equals(MediaPlatform.youtube));
     });
 
     test('detects YouTube Music correctly', () {
-      expect(service.detectPlatform('https://music.youtube.com/watch?v=abc'),
+      expect(DownloadService.detectPlatform('https://music.youtube.com/watch?v=abc'),
           equals(MediaPlatform.youtubeMusic));
     });
 
-    test('detects Spotify correctly', () {
-      expect(service.detectPlatform('https://open.spotify.com/track/abc'),
-          equals(MediaPlatform.spotify));
-    });
-
     test('returns unknown for invalid URLs', () {
-      expect(service.detectPlatform('https://google.com'),
+      expect(DownloadService.detectPlatform('https://google.com'),
           equals(MediaPlatform.unknown));
       expect(
-          service.detectPlatform('not-a-url'), equals(MediaPlatform.unknown));
+          DownloadService.detectPlatform('not-a-url'), equals(MediaPlatform.unknown));
     });
   });
 
@@ -71,31 +65,26 @@ void main() {
 
       final result = ProcessResult(0, 0, jsonOutput, '');
 
-      service.processRunner = (
-        executable,
-        arguments, {
-        environment,
-        includeParentEnvironment = true,
-        runInShell = false,
-        stdoutEncoding,
-        stderrEncoding,
-      }) async =>
-          result;
+      final provider = YouTubeDownloadProvider(
+        processRunner: (
+          executable,
+          arguments, {
+          workingDirectory,
+          environment,
+          includeParentEnvironment = true,
+          runInShell = false,
+          stdoutEncoding,
+          stderrEncoding,
+        }) async =>
+            result,
+      );
 
-      final info =
-          await service.getMediaInfo('https://youtube.com/watch?v=abc');
+      final info = await provider.getInfo('https://youtube.com/watch?v=abc');
 
       expect(info.title, equals('Test Song'));
       expect(info.artist, equals('Test Artist'));
       expect(info.platform, equals(MediaPlatform.youtube));
       expect(info.formats.any((f) => f.formatId == '140'), isTrue);
-    });
-
-    test('getMediaInfo returns Spotify info correctly', () async {
-      final info =
-          await service.getMediaInfo('https://open.spotify.com/track/abc');
-      expect(info.platform, equals(MediaPlatform.spotify));
-      expect(info.title, equals('Spotify Track'));
     });
   });
 }

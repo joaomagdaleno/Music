@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/screens/home/views/fluent_home_view.dart';
 import 'package:music_tag_editor/screens/home/views/material_home_view.dart';
 import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/screens/player/player_screen.dart';
-import 'package:fluent_ui/fluent_ui.dart' as fluent;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -48,20 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void _playTrack(Map<String, dynamic> trackData) {
     final result = SearchResult.fromJson(trackData);
     _playbackService.playSearchResult(result);
-
-    if (mounted && result.mediaType == 'video') {
-      if (defaultTargetPlatform == TargetPlatform.windows ||
-          defaultTargetPlatform == TargetPlatform.linux ||
-          defaultTargetPlatform == TargetPlatform.macOS) {
-        Navigator.of(context).push(
-          fluent.FluentPageRoute(builder: (_) => const PlayerScreen()),
-        );
-      } else {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const PlayerScreen()),
-        );
-      }
-    }
   }
 
   @override

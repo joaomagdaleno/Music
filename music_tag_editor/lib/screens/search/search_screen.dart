@@ -12,6 +12,8 @@ import 'package:music_tag_editor/screens/player/player_screen.dart';
 import 'package:music_tag_editor/screens/search/views/material_search_view.dart';
 import 'package:music_tag_editor/screens/search/views/fluent_search_view.dart';
 import 'package:music_tag_editor/services/startup_logger.dart';
+import 'package:music_tag_editor/models/download_models.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 
 class SearchScreen extends material.StatefulWidget {
   const SearchScreen({super.key});
@@ -30,8 +32,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
   bool _isLoading = false;
   String? _errorMessage;
   final Map<MediaPlatform, SearchStatus> _platformStatuses = {};
-  MediaPlatform? _selectedPlatform =
-      MediaPlatform.youtubeMusic; // Default to Music
+  MediaPlatform? _selectedPlatform = MediaPlatform.youtubeMusic; // Default to Music
   int _currentSearchId = 0;
 
   final Map<String, List<DownloadFormat>> _formatsCache = {};
@@ -101,7 +102,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
 
     final searchId = ++_currentSearchId;
     StartupLogger.log(
-        '[SearchScreen] Starting search #$searchId for: "$query" (Platform: $_selectedPlatform)');
+        '[SearchScreen] Starting search #$searchId for: "$query"');
 
     setState(() {
       _isLoading = true;
@@ -114,73 +115,35 @@ class _SearchScreenState extends material.State<SearchScreen> {
     });
 
     try {
-      if (_selectedPlatform != null) {
-        StartupLogger.log(
-            '[SearchScreen] Searching single platform: $_selectedPlatform');
-        _platformStatuses[_selectedPlatform!] = SearchStatus.searching;
-
-        List<SearchResult> filtered = [];
-        if (_selectedPlatform == MediaPlatform.youtube) {
-          filtered = await _searchService.searchYouTube(query);
-        } else if (_selectedPlatform == MediaPlatform.youtubeMusic) {
-          filtered = await _searchService.searchYouTubeMusic(query);
-        } else if (_selectedPlatform == MediaPlatform.spotify) {
-          filtered = await _searchService.searchSpotify(query);
-        }
-
+      final results = await _searchService.searchAll(query, onStatusUpdate: (p, s) {
         if (mounted && searchId == _currentSearchId) {
-          StartupLogger.log(
-              '[SearchScreen] Single platform search returned ${filtered.length} results');
-          await _refreshDownloadedStatus();
-
-          // Add URLs that match by metadata
-          final Set<String> updatedDownloaded = Set.from(_downloadedUrls);
-          for (final res in filtered) {
-            final key =
-                '${SearchService.toMatchKey(res.artist)}:${SearchService.toMatchKey(res.title)}';
-            if (_localMetadataKeys.contains(key)) {
-              updatedDownloaded.add(res.url);
-            }
-          }
-
-          setState(() {
-            _downloadedUrls = updatedDownloaded;
-            _searchResults.addAll(filtered);
-            _platformStatuses[_selectedPlatform!] = filtered.isEmpty
-                ? SearchStatus.noResults
-                : SearchStatus.completed;
-          });
+          StartupLogger.log('[SearchScreen] Status update for $p: $s');
+          setState(() => _platformStatuses[p] = s);
         }
-      } else {
-        // Fallback or "Search All" logic if ever needed again, but currently unused in UI
+      });
+
+      if (mounted && searchId == _currentSearchId) {
         StartupLogger.log(
-            '[SearchScreen] Searching all platforms (Not expected in current UI)');
-        final results =
-            await _searchService.searchAll(query, onStatusUpdate: (p, s) {
-          if (mounted && searchId == _currentSearchId) {
-            StartupLogger.log('[SearchScreen] Status update for $p: $s');
-            setState(() => _platformStatuses[p] = s);
+            '[SearchScreen] Search returned ${results.length} results');
+        await _refreshDownloadedStatus();
+
+        final filtered = _selectedPlatform == null 
+            ? results 
+            : results.where((r) => r.platform == _selectedPlatform).toList();
+
+        final Set<String> updatedDownloaded = Set.from(_downloadedUrls);
+        for (final res in filtered) {
+          final key =
+              '${SearchResult.toMatchKey(res.artist)}:${SearchResult.toMatchKey(res.title)}';
+          if (_localMetadataKeys.contains(key)) {
+            updatedDownloaded.add(res.url);
           }
+        }
+
+        setState(() {
+          _downloadedUrls = updatedDownloaded;
+          _searchResults.addAll(filtered);
         });
-        if (mounted && searchId == _currentSearchId) {
-          StartupLogger.log(
-              '[SearchScreen] Search all returned ${results.length} results');
-          await _refreshDownloadedStatus();
-
-          final Set<String> updatedDownloaded = Set.from(_downloadedUrls);
-          for (final res in results) {
-            final key =
-                '${SearchService.toMatchKey(res.artist)}:${SearchService.toMatchKey(res.title)}';
-            if (_localMetadataKeys.contains(key)) {
-              updatedDownloaded.add(res.url);
-            }
-          }
-
-          setState(() {
-            _downloadedUrls = updatedDownloaded;
-            _searchResults.addAll(results);
-          });
-        }
       }
 
       if (mounted && searchId == _currentSearchId && _searchResults.isEmpty) {
@@ -203,13 +166,12 @@ class _SearchScreenState extends material.State<SearchScreen> {
 
   void _setPlatform(MediaPlatform? platform) {
     if (platform == null || _selectedPlatform == platform) {
-      return; // Prevent deselection
+      return;
     }
     StartupLogger.log('[SearchScreen] Platform changed to: $platform');
     setState(() {
       _selectedPlatform = platform;
     });
-    // Re-trigger search if we have a query
     if (_searchController.text.isNotEmpty) {
       _onSearch(_searchController.text);
     }
@@ -286,10 +248,8 @@ class _SearchScreenState extends material.State<SearchScreen> {
         },
       );
 
-      StartupLogger.log(
-          '[SearchScreen] Download COMPLETED for ${result.id} at $path');
+      StartupLogger.log('[SearchScreen] Download COMPLETED for ${result.id} at $path');
 
-      // Persist the localPath back to the result and database
       result.localPath = path;
       await DatabaseService.instance.saveTrack(result.toJson());
 
@@ -347,25 +307,6 @@ class _SearchScreenState extends material.State<SearchScreen> {
       }
       await _playbackService.playSearchResult(result);
       StartupLogger.log('[SearchScreen] Playback started for ${result.id}');
-      if (mounted) {
-        // Only open full player if it is a video
-        // We might need to check the actual established mediaType from the service if available,
-        // but SearchResult usually has platform info.
-        // If the user explicitly wants "Native Video Player", we assume YouTube (non-music) is video.
-        // Or check `result.platform`.
-        // However, `result.mediaType` might not be populated yet if it comes from search.
-        // Let's trust the Platform for now:
-        // YouTube -> Video (mostly)
-        // YouTubeMusic -> Audio
-        // Spotify -> Audio
-        // HiFi -> Audio
-
-        final bool isVideo = result.platform == MediaPlatform.youtube;
-
-        if (isVideo) {
-          openFullPlayer();
-        }
-      }
     } catch (e, stack) {
       StartupLogger.logError('Playback FAILED in SearchScreen', e, stack);
       if (mounted) {
@@ -375,7 +316,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
   }
 
   void openFullPlayer() {
-    StartupLogger.log('[SearchScreen] Opening full player');
+    StartupLogger.log('[SearchScreen] Opening player');
     if (_isFluent(context)) {
       fluent.Navigator.push(
         context,
@@ -481,7 +422,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
               child: fluent.Column(
                 mainAxisSize: fluent.MainAxisSize.min,
                 children: [
-                  const fluent.ProgressRing(),
+                   const fluent.ProgressRing(),
                   const fluent.SizedBox(height: 24),
                   fluent.Text(_initStatus),
                   const fluent.SizedBox(height: 16),
@@ -514,7 +455,6 @@ class _SearchScreenState extends material.State<SearchScreen> {
       }
     }
 
-    // Callback methods wrapper
     void handleFormatSelected(SearchResult result, String? val) {
       setState(() {
         _selectedFormats[result.url] =
@@ -572,7 +512,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
       onFormatSelected: handleFormatSelected,
       onToggleExpand: handleToggleExpand,
       onOpenFullPlayer: openFullPlayer,
-      downloadedUrls: _downloadedUrls, // Add this
+      downloadedUrls: _downloadedUrls,
     );
   }
 
@@ -584,7 +524,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
       final allLocalTracks = await DatabaseService.instance.getAllTracks();
       final metadataKeys = allLocalTracks
           .map((t) =>
-              '${SearchService.toMatchKey(t.artist)}:${SearchService.toMatchKey(t.title)}')
+              '${SearchResult.toMatchKey(t.artist)}:${SearchResult.toMatchKey(t.title)}')
           .toSet();
 
       if (mounted) {
