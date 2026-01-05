@@ -12,9 +12,8 @@ abstract class SearchProvider {
   /// Get available download formats for a specific URL.
   Future<List<DownloadFormat>> getFormats(String url);
 
-  /// Get direct streaming URL.
-  Future<String?> getStreamUrl(String url,
-      {bool isVideo = false, String? resolution});
+  /// Get direct streaming URL for audio.
+  Future<String?> getStreamUrl(String url);
 
   /// Import a playlist from a URL.
   Future<List<SearchResult>> importPlaylist(String url);

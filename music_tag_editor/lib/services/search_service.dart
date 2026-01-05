@@ -88,6 +88,13 @@ class SearchService {
       }
     }
 
+    // 3. Global Ranking: Prioritize official results across all sources
+    results.sort((a, b) {
+      if (a.isOfficial && !b.isOfficial) return -1;
+      if (!a.isOfficial && b.isOfficial) return 1;
+      return 0;
+    });
+
     return results;
   }
 

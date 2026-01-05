@@ -5,7 +5,6 @@ class DownloadFormat {
   final String formatId;
   final String extension;
   final String quality;
-  final String? resolution;
   final int? filesize;
   final bool isAudioOnly;
 
@@ -13,17 +12,15 @@ class DownloadFormat {
     required this.formatId,
     required this.extension,
     required this.quality,
-    this.resolution,
     this.filesize,
     required this.isAudioOnly,
   });
 
   String get displayName {
-    if (isAudioOnly) {
-      return '$extension - $quality';
-    } else {
-      return '$extension - ${resolution ?? quality}';
-    }
+    final base = '$extension - $quality';
+    return filesize != null
+        ? '$base (${(filesize! / 1024 / 1024).toStringAsFixed(1)} MB)'
+        : base;
   }
 
   @override

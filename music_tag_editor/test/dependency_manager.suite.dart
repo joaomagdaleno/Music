@@ -16,6 +16,10 @@ void main() {
   late DependencyManager manager;
   late MockHttpClient mockClient;
 
+  setUpAll(() {
+    registerFallbackValue(Uri.parse('http://test.com'));
+  });
+
   setUp(() {
     mockClient = MockHttpClient();
     manager = DependencyManager.forTesting(client: mockClient);
@@ -25,7 +29,6 @@ void main() {
     test('provides correct paths on Windows', () {
       expect(manager.ytDlpPath, contains('yt-dlp'));
       expect(manager.ffmpegPath, contains('ffmpeg'));
-      expect(manager.spotdlPath, contains('spotdl'));
     });
 
     test('downloadFile successful', () async {
@@ -83,22 +86,6 @@ void main() {
           },
         ]
       });
-      final spotDtlJson = jsonEncode({
-        'assets': [
-          {
-            'name': 'spotdl-win32-x64.exe',
-            'browser_download_url': 'http://spotdl-url'
-          },
-          {
-            'name': 'spotdl-linux-x64',
-            'browser_download_url': 'http://spotdl-url-linux'
-          },
-          {
-            'name': 'spotdl-darwin-x64',
-            'browser_download_url': 'http://spotdl-url-macos'
-          }
-        ]
-      });
 
       final ffmpegZipBytes = ZipEncoder().encode(Archive()
         ..addFile(ArchiveFile('ffmpeg.exe', 11, utf8.encode('exe_content'))))!;
@@ -106,10 +93,6 @@ void main() {
       when(() => mockClient.get(
               any(that: predicate((Uri u) => u.toString().contains('yt-dlp')))))
           .thenAnswer((_) async => http.Response(ytDlpJson, 200));
-      when(() => mockClient.get(any(
-              that: predicate(
-                  (Uri u) => u.toString().contains('spotify-downloader')))))
-          .thenAnswer((_) async => http.Response(spotDtlJson, 200));
       when(() => mockClient.get(any(
               that: predicate((Uri u) => u.toString().contains('ffmpeg.zip')))))
           .thenAnswer((_) async => http.Response.bytes(ffmpegZipBytes, 200));

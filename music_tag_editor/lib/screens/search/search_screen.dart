@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' as material;
@@ -22,7 +23,8 @@ class SearchScreen extends material.StatefulWidget {
   material.State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends material.State<SearchScreen> {
+class _SearchScreenState extends material.State<SearchScreen>
+    with material.AutomaticKeepAliveClientMixin {
   final _searchController = material.TextEditingController();
   final _searchService = SearchService.instance;
   final _downloadService = DownloadService.instance;
@@ -32,9 +34,12 @@ class _SearchScreenState extends material.State<SearchScreen> {
   bool _isLoading = false;
   String? _errorMessage;
   final Map<MediaPlatform, SearchStatus> _platformStatuses = {};
-  MediaPlatform? _selectedPlatform =
-      MediaPlatform.youtubeMusic; // Default to Music
   int _currentSearchId = 0;
+  String? _currentlyPlayingUrl;
+  StreamSubscription? _playbackSubscription;
+
+  @override
+  bool get wantKeepAlive => true;
 
   final Map<String, List<DownloadFormat>> _formatsCache = {};
   final Map<String, DownloadFormat?> _selectedFormats = {};
@@ -60,6 +65,17 @@ class _SearchScreenState extends material.State<SearchScreen> {
   void initState() {
     super.initState();
     _initDependencies();
+    _setupPlaybackListener();
+  }
+
+  void _setupPlaybackListener() {
+    _playbackSubscription = _playbackService.currentTrackStream.listen((track) {
+      if (mounted) {
+        setState(() {
+          _currentlyPlayingUrl = track?.url;
+        });
+      }
+    });
   }
 
   Future<void> _initDependencies() async {
@@ -89,6 +105,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
   @override
   void dispose() {
     _searchController.dispose();
+    _playbackSubscription?.cancel();
     super.dispose();
   }
 
@@ -129,9 +146,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
             '[SearchScreen] Search returned ${results.length} results');
         await _refreshDownloadedStatus();
 
-        final filtered = _selectedPlatform == null
-            ? results
-            : results.where((r) => r.platform == _selectedPlatform).toList();
+        final filtered = results;
 
         final Set<String> updatedDownloaded = Set.from(_downloadedUrls);
         for (final res in filtered) {
@@ -163,19 +178,6 @@ class _SearchScreenState extends material.State<SearchScreen> {
       if (mounted && searchId == _currentSearchId) {
         setState(() => _isLoading = false);
       }
-    }
-  }
-
-  void _setPlatform(MediaPlatform? platform) {
-    if (platform == null || _selectedPlatform == platform) {
-      return;
-    }
-    StartupLogger.log('[SearchScreen] Platform changed to: $platform');
-    setState(() {
-      _selectedPlatform = platform;
-    });
-    if (_searchController.text.isNotEmpty) {
-      _onSearch(_searchController.text);
     }
   }
 
@@ -211,7 +213,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
     } catch (e, stack) {
       StartupLogger.log('[SearchScreen] Error loading formats: $e\n$stack');
       if (mounted) {
-        showSnackBar('Erro ao carregar formatos: $e');
+        // showSnackBar('Erro ao carregar formatos: $e'); // Removed as per request
         setState(() => _loadingFormatsStatus.remove(result.url));
       }
     }
@@ -257,9 +259,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
       await DatabaseService.instance.saveTrack(result.toJson());
 
       await _refreshDownloadedStatus();
-      if (mounted) {
-        showSnackBar('Download de "${result.title}" concluído!');
-      }
+      // showSnackBar('Download de "${result.title}" concluído!'); // Removed redundant snackbar
     } catch (e, stack) {
       StartupLogger.log('[SearchScreen] Download FAILED: $e\n$stack');
       if (mounted) {
@@ -296,18 +296,13 @@ class _SearchScreenState extends material.State<SearchScreen> {
       await db.addTrackToPlaylist(selectedPlaylistId, result.id);
       await _refreshDownloadedStatus();
       debugPrint('[SearchScreen] Track added to playlist successfully');
-      if (mounted) {
-        showSnackBar('"${result.title}" adicionada à playlist!');
-      }
     }
   }
 
   Future<void> playTrack(SearchResult result) async {
     StartupLogger.log('[SearchScreen] Playing track: ${result.id}');
     try {
-      if (mounted) {
-        showSnackBar('Carregando áudio de "${result.title}"...');
-      }
+      // showSnackBar('Carregando áudio de "${result.title}"...'); // Removed intrusive snackbar
       await _playbackService.playSearchResult(result);
       StartupLogger.log('[SearchScreen] Playback started for ${result.id}');
     } catch (e, stack) {
@@ -414,6 +409,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
 
   @override
   material.Widget build(material.BuildContext context) {
+    super.build(context);
     if (_isInitializing) {
       if (_isFluent(context)) {
         return fluent.ScaffoldPage(
@@ -476,7 +472,6 @@ class _SearchScreenState extends material.State<SearchScreen> {
         errorMessage: _errorMessage,
         results: _searchResults,
         platformStatuses: _platformStatuses,
-        selectedPlatform: _selectedPlatform,
         isExpanding: _isExpanding,
         formatsCache: _formatsCache,
         selectedFormats: _selectedFormats,
@@ -492,7 +487,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
         onFormatSelected: handleFormatSelected,
         onToggleExpand: handleToggleExpand,
         onOpenFullPlayer: openFullPlayer,
-        onPlatformChanged: _setPlatform,
+        currentlyPlayingUrl: _currentlyPlayingUrl,
       );
     }
 
@@ -516,6 +511,7 @@ class _SearchScreenState extends material.State<SearchScreen> {
       onToggleExpand: handleToggleExpand,
       onOpenFullPlayer: openFullPlayer,
       downloadedUrls: _downloadedUrls,
+      currentlyPlayingUrl: _currentlyPlayingUrl,
     );
   }
 

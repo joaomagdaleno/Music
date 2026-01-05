@@ -6,7 +6,7 @@ import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/models/download_models.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 
-/// Page for downloading music from YouTube, YouTube Music, and Spotify.
+/// Page for downloading music from YouTube.
 class DownloadPage extends StatefulWidget {
   const DownloadPage({super.key});
 
@@ -195,7 +195,7 @@ class _DownloadPageState extends State<DownloadPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Cole uma URL do YouTube, YouTube Music ou Spotify',
+                      'Cole uma URL do YouTube',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 12),
@@ -321,10 +321,8 @@ class _DownloadPageState extends State<DownloadPage> {
                                   value: f,
                                   child: Row(
                                     children: [
-                                      Icon(
-                                        f.isAudioOnly
-                                            ? Icons.audiotrack
-                                            : Icons.videocam,
+                                      const Icon(
+                                        Icons.audiotrack,
                                         size: 20,
                                       ),
                                       const SizedBox(width: 8),

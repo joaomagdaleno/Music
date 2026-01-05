@@ -1,0 +1,159 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: (setUpAll)
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: playSearchResult updates current track and plays
+[2026-01-05T11:58:46.886921] [PlaybackService] Playing search result: Test Song (MediaPlatform.youtube)
+[2026-01-05T11:58:46.904255] [PlaybackService] Fetching stream URL for: http://test
+[2026-01-05T11:58:46.921244] [PlaybackService] Stream URL obtained successfully
+00:00 +1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: playSearchResult fetches lyrics and applies theme
+[2026-01-05T11:58:47.296236] [PlaybackService] Playing search result: Test Song (MediaPlatform.youtube)
+[2026-01-05T11:58:47.297234] [PlaybackService] Fetching stream URL for: http://test
+[2026-01-05T11:58:47.298230] [PlaybackService] Stream URL obtained successfully
+00:01 +2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Queue Management addToQueue adds to list and playlist
+[2026-01-05T11:58:47.321247] [PlaybackService] Playing search result: Test Song (MediaPlatform.youtube)
+[2026-01-05T11:58:47.322230] [PlaybackService] Fetching stream URL for: http://test
+[2026-01-05T11:58:47.322230] [PlaybackService] Stream URL obtained successfully
+00:01 +3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Queue Management clearQueue empties the list
+00:01 +4: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:03 +4: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service.suite.dart
+Warning: A tag was used that wasn't specified in dart_test.yaml.
+  service was used in the suite itself
+
+00:03 +5: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:03 +5 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:03 +5 -1: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager.suite.dart: DependencyManager downloadFile successful [E]
+  Bad state: A test tried to use `any` or `captureAny` on a parameter of type `Uri`, but
+  registerFallbackValue was not previously called to register a fallback value for `Uri`.
+  
+  To fix, do:
+  
+  ```
+  void main() {
+    setUpAll(() {
+      registerFallbackValue(/* create a dummy instance of `Uri` */);
+    });
+  }
+  ```
+  
+  This instance of `Uri` will only be passed around, but never be interacted with.
+  Therefore, if `Uri` is a function, it does not have to return a valid object and
+  could throw unconditionally.
+  If you cannot easily create an instance of `Uri`, consider defining a `Fake`:
+  
+  ```
+  class MyTypeFake extends Fake implements MyType {}
+  
+  void main() {
+    setUpAll(() {
+      registerFallbackValue(MyTypeFake());
+    });
+  }
+  ```
+  
+  Fallbacks are required because mocktail has to know of a valid `Uri` to prevent
+  TypeErrors from being thrown in Dart's sound null safe mode, while still
+  providing a convenient syntax.
+  
+  package:mocktail/src/_register_matcher.dart 49:5    _getFallbackValue
+  package:mocktail/src/_register_matcher.dart 160:25  _registerMatcher
+  package:mocktail/src/_register_matcher.dart 104:10  any
+  test\dependency_manager.suite.dart 31:33            main.<fn>.<fn>.<fn>
+  package:mocktail/src/mocktail.dart 211:9            when.<fn>
+  test\dependency_manager.suite.dart 31:11            main.<fn>.<fn>
+  
+00:03 +5 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:03 +5 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager.suite.dart: DependencyManager downloadFile failure throws HttpException [E]
+  Bad state: A test tried to use `any` or `captureAny` on a parameter of type `Uri`, but
+  registerFallbackValue was not previously called to register a fallback value for `Uri`.
+  
+  To fix, do:
+  
+  ```
+  void main() {
+    setUpAll(() {
+      registerFallbackValue(/* create a dummy instance of `Uri` */);
+    });
+  }
+  ```
+  
+  This instance of `Uri` will only be passed around, but never be interacted with.
+  Therefore, if `Uri` is a function, it does not have to return a valid object and
+  could throw unconditionally.
+  If you cannot easily create an instance of `Uri`, consider defining a `Fake`:
+  
+  ```
+  class MyTypeFake extends Fake implements MyType {}
+  
+  void main() {
+    setUpAll(() {
+      registerFallbackValue(MyTypeFake());
+    });
+  }
+  ```
+  
+  Fallbacks are required because mocktail has to know of a valid `Uri` to prevent
+  TypeErrors from being thrown in Dart's sound null safe mode, while still
+  providing a convenient syntax.
+  
+  package:mocktail/src/_register_matcher.dart 49:5    _getFallbackValue
+  package:mocktail/src/_register_matcher.dart 160:25  _registerMatcher
+  package:mocktail/src/_register_matcher.dart 104:10  any
+  test\dependency_manager.suite.dart 51:33            main.<fn>.<fn>.<fn>
+  package:mocktail/src/mocktail.dart 211:9            when.<fn>
+  test\dependency_manager.suite.dart 51:11            main.<fn>.<fn>
+  
+00:03 +5 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service.suite.dart: PlaybackService Tests playSearchResult opens media and updates queue
+[2026-01-05T11:58:49.559973] [PlaybackService] Playing search result: Title (MediaPlatform.youtube)
+00:03 +6 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:03 +6 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service.suite.dart: PlaybackService Tests playSearchResult opens media and updates queue
+[2026-01-05T11:58:49.572036] [PlaybackService] Fetching stream URL for: url
+[2026-01-05T11:58:49.588708] [PlaybackService] Stream URL obtained successfully
+00:03 +7 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:03 +8 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:03 +9 -2: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:03 +9 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:03 +9 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/dependency_manager.suite.dart: DependencyManager ensureDependencies executes downloads if missing [E]
+  Bad state: A test tried to use `any` or `captureAny` on a parameter of type `Uri`, but
+  registerFallbackValue was not previously called to register a fallback value for `Uri`.
+  
+  To fix, do:
+  
+  ```
+  void main() {
+    setUpAll(() {
+      registerFallbackValue(/* create a dummy instance of `Uri` */);
+    });
+  }
+  ```
+  
+  This instance of `Uri` will only be passed around, but never be interacted with.
+  Therefore, if `Uri` is a function, it does not have to return a valid object and
+  could throw unconditionally.
+  If you cannot easily create an instance of `Uri`, consider defining a `Fake`:
+  
+  ```
+  class MyTypeFake extends Fake implements MyType {}
+  
+  void main() {
+    setUpAll(() {
+      registerFallbackValue(MyTypeFake());
+    });
+  }
+  ```
+  
+  Fallbacks are required because mocktail has to know of a valid `Uri` to prevent
+  TypeErrors from being thrown in Dart's sound null safe mode, while still
+  providing a convenient syntax.
+  
+  package:mocktail/src/_register_matcher.dart 49:5    _getFallbackValue
+  package:mocktail/src/_register_matcher.dart 160:25  _registerMatcher
+  package:mocktail/src/_register_matcher.dart 104:10  any
+  test\dependency_manager.suite.dart 90:15            main.<fn>.<fn>.<fn>
+  package:mocktail/src/mocktail.dart 211:9            when.<fn>
+  test\dependency_manager.suite.dart 89:11            main.<fn>.<fn>
+  
+00:03 +10 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+00:04 +11 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Sleep Timer cancelSleepTimer clears timer
+00:04 +12 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Controls pause/resume delegates to player
+00:04 +13 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: Controls seek delegates to player and sends message
+00:04 +14 -3: C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/playback_service_test.dart: (tearDownAll)
+00:04 +14 -3: Some tests failed.

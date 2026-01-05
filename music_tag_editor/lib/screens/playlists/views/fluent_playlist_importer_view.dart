@@ -43,7 +43,7 @@ class FluentPlaylistImporterView extends StatelessWidget {
                   Expanded(
                       child: TextBox(
                           controller: urlController,
-                          placeholder: 'URL da Playlist (Spotify ou YouTube)',
+                          placeholder: 'URL da Playlist do YouTube',
                           suffix: IconButton(
                               icon: const Icon(FluentIcons.search),
                               onPressed: onScan))),

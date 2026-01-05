@@ -11,7 +11,6 @@ class FluentSearchView extends StatelessWidget {
   final List<SearchResult> results;
   final Map<MediaPlatform, SearchStatus> platformStatuses;
   // Platform Selection
-  final MediaPlatform? selectedPlatform;
   final Map<String, bool> isExpanding;
   final Map<String, List<DownloadFormat>> formatsCache;
   final Map<String, DownloadFormat?> selectedFormats;
@@ -19,6 +18,7 @@ class FluentSearchView extends StatelessWidget {
   final Map<String, String> downloadingStatus;
   final Map<String, String> loadingFormatsStatus;
   final Set<String> downloadedUrls;
+  final String? currentlyPlayingUrl;
 
   // Callbacks
   final VoidCallback onSearch;
@@ -29,7 +29,6 @@ class FluentSearchView extends StatelessWidget {
   final Function(SearchResult, String?) onFormatSelected;
   final Function(SearchResult) onToggleExpand;
   final VoidCallback onOpenFullPlayer;
-  final Function(MediaPlatform?) onPlatformChanged;
 
   const FluentSearchView({
     super.key,
@@ -38,7 +37,6 @@ class FluentSearchView extends StatelessWidget {
     required this.errorMessage,
     required this.results,
     required this.platformStatuses,
-    required this.selectedPlatform,
     required this.isExpanding,
     required this.formatsCache,
     required this.selectedFormats,
@@ -53,8 +51,8 @@ class FluentSearchView extends StatelessWidget {
     required this.onFormatSelected,
     required this.onToggleExpand,
     required this.onOpenFullPlayer,
-    required this.onPlatformChanged,
     required this.downloadedUrls,
+    this.currentlyPlayingUrl,
   });
 
   @override
@@ -94,8 +92,6 @@ class FluentSearchView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  _buildPlatformSelector(context),
                 ],
               ),
             ),
@@ -120,10 +116,17 @@ class FluentSearchView extends StatelessWidget {
                       downloadingProgress.containsKey(result.url);
                   final isDownloaded = downloadedUrls.contains(result.url);
 
+                  final isPlaying = result.url == currentlyPlayingUrl;
+
                   return Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     child: Card(
+                      backgroundColor: isPlaying
+                          ? FluentTheme.of(context)
+                              .accentColor
+                              .withValues(alpha: 0.15)
+                          : null,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -384,44 +387,6 @@ class FluentSearchView extends StatelessWidget {
           ],
         ),
       );
-
-  Widget _buildPlatformSelector(BuildContext context) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _platformButton(context, MediaPlatform.youtube, 'Vídeos (YouTube)',
-              FluentIcons.video),
-          const SizedBox(width: 12),
-          _platformButton(context, MediaPlatform.youtubeMusic,
-              'Músicas (YT Music)', FluentIcons.music_in_collection),
-        ],
-      );
-
-  Widget _platformButton(BuildContext context, MediaPlatform? platform,
-      String label, IconData icon) {
-    final isSelected = selectedPlatform == platform;
-    return Button(
-      style: ButtonStyle(
-        backgroundColor: isSelected
-            ? WidgetStateProperty.all(
-                FluentTheme.of(context).accentColor.withValues(alpha: 0.2))
-            : null,
-      ),
-      onPressed: () => onPlatformChanged(platform),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon,
-              size: 16,
-              color: isSelected ? FluentTheme.of(context).accentColor : null),
-          const SizedBox(width: 4),
-          Text(label,
-              style: TextStyle(
-                  color:
-                      isSelected ? FluentTheme.of(context).accentColor : null)),
-        ],
-      ),
-    );
-  }
 
   Widget _buildPlaybackButtons(BuildContext context, SearchResult result) =>
       Row(

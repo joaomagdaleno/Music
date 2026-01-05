@@ -88,6 +88,8 @@ jobs:
           if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
             BUILD_COMMAND="$BUILD_COMMAND --obfuscate --split-debug-info=debug-info"
           fi
+          # Ensure we catch errors from build even with tee
+          set -o pipefail
           $BUILD_COMMAND | tee size_analysis.log
 
       - name: The Cartographer 🗺️ (Size Analysis Summary)
@@ -108,9 +110,11 @@ jobs:
 
       - name: Find and Audit APK 🤖
         run: |
-          APK_PATH=$(find music_tag_editor/build/app/outputs/flutter-apk -name "*.apk" | head -n 1)
+          # Search anywhere in build/app/outputs for .apk
+          APK_PATH=$(find music_tag_editor/build/app/outputs -name "*.apk" | head -n 1)
           if [ -z "$APK_PATH" ]; then
-            echo "::error::APK not found!"
+            echo "::error::APK not found! Listing build directory for diagnostics:"
+            find music_tag_editor/build -maxdepth 4
             exit 1
           fi
           echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV

@@ -16,6 +16,7 @@ class MaterialSearchView extends StatelessWidget {
   final Map<String, double> downloadingProgress;
   final Map<String, String> downloadingStatus;
   final Set<String> downloadedUrls;
+  final String? currentlyPlayingUrl;
 
   // Callbacks
   final VoidCallback onSearch;
@@ -48,6 +49,7 @@ class MaterialSearchView extends StatelessWidget {
     required this.onToggleExpand,
     required this.onOpenFullPlayer,
     required this.downloadedUrls,
+    this.currentlyPlayingUrl,
   });
 
   @override
@@ -97,7 +99,15 @@ class MaterialSearchView extends StatelessWidget {
                   final isDownloading =
                       downloadingProgress.containsKey(result.url);
 
+                  final isPlaying = result.url == currentlyPlayingUrl;
+
                   return Card(
+                    color: isPlaying
+                        ? Theme.of(context)
+                            .colorScheme
+                            .primaryContainer
+                            .withValues(alpha: 0.7)
+                        : null,
                     margin:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Column(
@@ -242,8 +252,7 @@ class MaterialSearchView extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _platformStatusChip(MediaPlatform.youtube, 'YouTube'),
-            _platformStatusChip(MediaPlatform.youtubeMusic, 'YT Music'),
+            _platformStatusChip(MediaPlatform.youtube, 'Busca'),
           ],
         ),
       );

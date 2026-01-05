@@ -3,6 +3,7 @@ buildscript {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven { url = uri("https://www.jitpack.io") }
     }
     dependencies {
         classpath("com.android.tools.build:gradle:8.7.3")
@@ -14,15 +15,16 @@ allprojects {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven { url = uri("https://www.jitpack.io") }
     }
     configurations.all {
         resolutionStrategy {
             force("androidx.core:core:1.15.0")
             force("androidx.core:core-ktx:1.15.0")
-            // Resolve Kotlin version mismatch by forcing stable 2.0.21
-            force("org.jetbrains.kotlin:kotlin-stdlib:2.0.21")
-            force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21")
-            force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21")
+            // Resolve Kotlin version mismatch by forcing stable 2.1.0
+            force("org.jetbrains.kotlin:kotlin-stdlib:2.1.0")
+            force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.0")
+            force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0")
         }
     }
 }
