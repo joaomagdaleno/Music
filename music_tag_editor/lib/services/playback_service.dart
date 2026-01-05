@@ -248,7 +248,15 @@ class PlaybackService {
 
     final source = await _createSource(result);
     if (source != null) {
-      await _player.open(Media(source));
+      // Add User-Agent to prevent 403 errors on direct streams
+      final headers = source.startsWith('http')
+          ? {
+              'User-Agent':
+                  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+            }
+          : null;
+
+      await _player.open(Media(source, httpHeaders: headers));
       _onTrackChanged(result);
     }
 
