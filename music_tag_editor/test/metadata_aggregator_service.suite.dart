@@ -23,7 +23,6 @@ class MockNeteaseApi extends Mock implements NeteaseApi {}
 
 class MockLyricsService extends Mock implements LyricsService {}
 
-
 void main() {
   late MetadataAggregatorService service;
   late MockMusicBrainzApi mockMusicBrainz;
@@ -50,7 +49,6 @@ void main() {
       netease: mockNetease,
       lrcLib: mockLyrics,
     );
-
   });
 
   group('aggregateMetadata', () {

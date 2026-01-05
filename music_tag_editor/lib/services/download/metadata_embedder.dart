@@ -43,7 +43,7 @@ class MetadataEmbedder {
       if (metadata.year != null) {
         args.addAll(['-metadata', 'date=${metadata.year}']);
       }
-      
+
       if (lyrics != null) {
         // Embed USLT (Unsynchronized Lyrics)
         args.addAll(['-metadata', 'lyrics=$lyrics']);
@@ -62,7 +62,7 @@ class MetadataEmbedder {
       }
 
       StartupLogger.log('[MetadataEmbedder] FFmpeg failed: ${result.stderr}');
-      
+
       // Clean up temp file if it exists
       final tempFile = File(tempPath);
       if (await tempFile.exists()) {

@@ -1,6 +1,5 @@
 import 'package:music_tag_editor/models/search_models.dart';
 
-
 /// Available audio/video format for download.
 class DownloadFormat {
   final String formatId;

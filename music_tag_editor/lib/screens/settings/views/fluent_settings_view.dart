@@ -344,7 +344,7 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
                     content: const Text('Personalizado'),
                     onChanged: (v) {
                       if (v) {
-                        setState(() {}); 
+                        setState(() {});
                       }
                     }),
               ],

@@ -301,7 +301,8 @@ class _MaterialSettingsViewState extends State<MaterialSettingsView> {
                   selected: themeService.useCustomColor,
                   onSelected: (val) {
                     if (val) {
-                      themeService.setCustomColor(ThemeService.presetColors.first);
+                      themeService
+                          .setCustomColor(ThemeService.presetColors.first);
                       setState(() {});
                     }
                   },

@@ -39,8 +39,6 @@ class _MyTracksScreenState extends State<MyTracksScreen> {
 
   void _playTrack(SearchResult track) {
     PlaybackService.instance.playSearchResult(track);
-
-
   }
 
   void _addToVault(SearchResult track) async {

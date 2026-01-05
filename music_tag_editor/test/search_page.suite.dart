@@ -74,7 +74,6 @@ void main() {
             onStatusUpdate: any(named: 'onStatusUpdate')))
         .thenAnswer((_) async => results);
 
-
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(platform: TargetPlatform.android),
       home: const SearchScreen(),
@@ -133,7 +132,6 @@ void main() {
     when(() => mockSearch.searchAll(any(),
             onStatusUpdate: any(named: 'onStatusUpdate')))
         .thenAnswer((_) async => []);
-
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(platform: TargetPlatform.android),

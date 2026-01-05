@@ -48,9 +48,10 @@ abstract class BaseYouTubeSearchProvider implements SearchProvider {
         final bool isGeneric =
             genericAuthors.any((g) => artist.toLowerCase().contains(g)) ||
                 video.author.toLowerCase().contains('topic');
-        final bool authorMatchesTitle =
-            SearchResult.toMatchKey(artist).contains(SearchResult.toMatchKey(potentialArtist)) ||
-                SearchResult.toMatchKey(potentialArtist).contains(SearchResult.toMatchKey(artist));
+        final bool authorMatchesTitle = SearchResult.toMatchKey(artist)
+                .contains(SearchResult.toMatchKey(potentialArtist)) ||
+            SearchResult.toMatchKey(potentialArtist)
+                .contains(SearchResult.toMatchKey(artist));
 
         if (isGeneric || !authorMatchesTitle) {
           artist = potentialArtist;
@@ -102,7 +103,8 @@ abstract class BaseYouTubeSearchProvider implements SearchProvider {
             final json = jsonDecode(line);
             results.add(SearchResult(
               id: json['id'] as String? ?? '',
-              title: SearchResult.cleanMetadata(json['title'] as String? ?? 'Unknown'),
+              title: SearchResult.cleanMetadata(
+                  json['title'] as String? ?? 'Unknown'),
               artist: (json['uploader'] as String? ??
                       json['channel'] as String? ??
                       'Unknown')
@@ -118,7 +120,8 @@ abstract class BaseYouTubeSearchProvider implements SearchProvider {
       }
       return results;
     } catch (e) {
-      StartupLogger.log('[YouTubeSearchProvider] yt-dlp search fallback failed: $e');
+      StartupLogger.log(
+          '[YouTubeSearchProvider] yt-dlp search fallback failed: $e');
       return [];
     }
   }
@@ -196,7 +199,8 @@ abstract class BaseYouTubeSearchProvider implements SearchProvider {
     try {
       final videoId = yt.VideoId.parseVideoId(url);
       if (videoId != null) {
-        final manifest = await ytExplode.videos.streamsClient.getManifest(videoId);
+        final manifest =
+            await ytExplode.videos.streamsClient.getManifest(videoId);
         final audioStream = manifest.audioOnly.withHighestBitrate();
         return audioStream.url.toString();
       }
@@ -278,7 +282,8 @@ class YouTubeSearchProvider extends BaseYouTubeSearchProvider {
         if (seenIds.contains(video.id.value)) continue;
 
         final res = parseYouTubeVideo(video, platform);
-        final metaKey = '${SearchResult.toMatchKey(res.artist)}:${SearchResult.toMatchKey(res.title)}';
+        final metaKey =
+            '${SearchResult.toMatchKey(res.artist)}:${SearchResult.toMatchKey(res.title)}';
 
         if (seenMeta.contains(metaKey)) continue;
 
@@ -292,8 +297,6 @@ class YouTubeSearchProvider extends BaseYouTubeSearchProvider {
       return searchWithYtDlp(query, platform);
     }
   }
-
-
 }
 
 class YouTubeMusicSearchProvider extends BaseYouTubeSearchProvider {
@@ -312,7 +315,8 @@ class YouTubeMusicSearchProvider extends BaseYouTubeSearchProvider {
         if (seenIds.contains(video.id.value)) continue;
 
         final res = parseYouTubeVideo(video, platform);
-        final metaKey = '${SearchResult.toMatchKey(res.artist)}:${SearchResult.toMatchKey(res.title)}';
+        final metaKey =
+            '${SearchResult.toMatchKey(res.artist)}:${SearchResult.toMatchKey(res.title)}';
 
         if (seenMeta.contains(metaKey)) continue;
 

@@ -274,8 +274,8 @@ class MetadataAggregatorService {
         mb['album'] ?? discogs['title'] ?? lastfm['album'];
 
     int? finalYear = (discogs['year'] != null
-            ? int.tryParse(discogs['year'].toString())
-            : null);
+        ? int.tryParse(discogs['year'].toString())
+        : null);
     if (finalYear == null && mb['year'] != null) {
       finalYear = int.tryParse(mb['year'].toString());
     }
@@ -345,7 +345,6 @@ class MetadataAggregatorService {
       confidence: confidence,
     );
   }
-
 
   String? _getMostCommon(List<String> votes) {
     if (votes.isEmpty) {

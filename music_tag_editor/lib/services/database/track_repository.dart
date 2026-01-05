@@ -2,7 +2,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/services/database/database_repository.dart';
 
-
 class TrackRepository extends DatabaseRepository {
   static const String _tracksTable = 'tracks';
 
@@ -17,7 +16,8 @@ class TrackRepository extends DatabaseRepository {
     );
   }
 
-  Future<List<Map<String, dynamic>>> getTracks({bool includeVault = false}) async {
+  Future<List<Map<String, dynamic>>> getTracks(
+      {bool includeVault = false}) async {
     final database = await db;
     if (includeVault) {
       return await database.query(_tracksTable);
@@ -27,7 +27,8 @@ class TrackRepository extends DatabaseRepository {
 
   Future<Map<String, String?>> getDownloadedUrls() async {
     final database = await db;
-    final results = await database.query(_tracksTable, columns: ['url', 'local_path']);
+    final results =
+        await database.query(_tracksTable, columns: ['url', 'local_path']);
     return {
       for (var r in results) r['url'] as String: r['local_path'] as String?
     };
@@ -73,7 +74,8 @@ class TrackRepository extends DatabaseRepository {
     // Deduplicate by metadata (Title + Artist)
     final Map<String, SearchResult> uniqueMap = {};
     for (var track in allResults) {
-      final key = '${SearchResult.toMatchKey(track.artist)}:${SearchResult.toMatchKey(track.title)}';
+      final key =
+          '${SearchResult.toMatchKey(track.artist)}:${SearchResult.toMatchKey(track.title)}';
 
       final existing = uniqueMap[key];
       if (existing == null) {
@@ -137,7 +139,8 @@ class TrackRepository extends DatabaseRepository {
     );
   }
 
-  Future<List<Map<String, dynamic>>> getTracksByMood(List<String> genres) async {
+  Future<List<Map<String, dynamic>>> getTracksByMood(
+      List<String> genres) async {
     final database = await db;
     if (genres.isEmpty) return [];
 

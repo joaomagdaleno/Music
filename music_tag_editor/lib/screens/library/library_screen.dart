@@ -12,7 +12,8 @@ class LibraryScreen extends StatefulWidget {
 
 class _LibraryScreenState extends State<LibraryScreen> {
   final DatabaseService _dbService = DatabaseService.instance;
-  final MetadataAggregatorService _metadataService = MetadataAggregatorService.instance;
+  final MetadataAggregatorService _metadataService =
+      MetadataAggregatorService.instance;
   List<SearchResult> _musicTracks = [];
   bool _isLoading = true;
 
@@ -68,34 +69,34 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: const Text('Biblioteca'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _refreshLibrary,
-          ),
-          IconButton(
-            icon: const Icon(Icons.folder_open),
-            onPressed: _addMusicFolder,
-          ),
-        ],
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: _musicTracks.length,
-              itemBuilder: (context, index) {
-                final track = _musicTracks[index];
-                return ListTile(
-                  title: Text(track.title),
-                  subtitle: Text(track.artist),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.search),
-                    onPressed: () => _searchOnline(track),
-                  ),
-                );
-              },
+        appBar: AppBar(
+          title: const Text('Biblioteca'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: _refreshLibrary,
             ),
-    );
+            IconButton(
+              icon: const Icon(Icons.folder_open),
+              onPressed: _addMusicFolder,
+            ),
+          ],
+        ),
+        body: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                itemCount: _musicTracks.length,
+                itemBuilder: (context, index) {
+                  final track = _musicTracks[index];
+                  return ListTile(
+                    title: Text(track.title),
+                    subtitle: Text(track.artist),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.search),
+                      onPressed: () => _searchOnline(track),
+                    ),
+                  );
+                },
+              ),
+      );
 }

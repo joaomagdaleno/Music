@@ -100,5 +100,4 @@ class SettingsRepository extends DatabaseRepository {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
-
 }

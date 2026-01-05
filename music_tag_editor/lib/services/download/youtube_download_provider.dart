@@ -25,8 +25,9 @@ class YouTubeDownloadProvider implements DownloadProvider {
       : _processRunner = processRunner ?? Process.run;
 
   @override
-  bool supports(String url, MediaPlatform platform) => platform == MediaPlatform.youtube ||
-        platform == MediaPlatform.youtubeMusic;
+  bool supports(String url, MediaPlatform platform) =>
+      platform == MediaPlatform.youtube ||
+      platform == MediaPlatform.youtubeMusic;
 
   @override
   Future<MediaInfo> getInfo(String url) async {
@@ -48,7 +49,8 @@ class YouTubeDownloadProvider implements DownloadProvider {
       for (var f in json['formats']) {
         final formatId = f['format_id'] as String?;
         final ext = f['ext'] as String?;
-        final quality = f['format_note'] as String? ?? f['resolution'] as String?;
+        final quality =
+            f['format_note'] as String? ?? f['resolution'] as String?;
         final filesize = f['filesize'] as int? ?? f['filesize_approx'] as int?;
 
         if (formatId == null || ext == null) continue;
@@ -102,7 +104,8 @@ class YouTubeDownloadProvider implements DownloadProvider {
     void Function(double progress)? onProgress,
   }) async {
     final title = 'download_${DateTime.now().millisecondsSinceEpoch}';
-    final outputPath = '${Directory.systemTemp.path}/$title.${format.extension}';
+    final outputPath =
+        '${Directory.systemTemp.path}/$title.${format.extension}';
 
     final args = [
       '-f',

@@ -423,17 +423,16 @@ class FluentSearchView extends StatelessWidget {
     );
   }
 
-  Widget _buildPlaybackButtons(BuildContext context, SearchResult result) => Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        IconButton(
-          icon: const Icon(FluentIcons.play, size: 20),
-          onPressed: () => onPlay(result),
-        ),
-      ],
-    );
-
-
+  Widget _buildPlaybackButtons(BuildContext context, SearchResult result) =>
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: const Icon(FluentIcons.play, size: 20),
+            onPressed: () => onPlay(result),
+          ),
+        ],
+      );
 
   Widget _buildStatusIndicator(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),

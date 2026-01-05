@@ -207,8 +207,9 @@ class _DownloadPageState extends State<DownloadPage> {
                             decoration: InputDecoration(
                               hintText: 'https://...',
                               border: const OutlineInputBorder(),
-                              prefixIcon: _buildPlatformIcon(DownloadService
-                                  .detectPlatform(_urlController.text)),
+                              prefixIcon: _buildPlatformIcon(
+                                  DownloadService.detectPlatform(
+                                      _urlController.text)),
                             ),
                             onSubmitted: (_) => _fetchInfo(),
                           ),
