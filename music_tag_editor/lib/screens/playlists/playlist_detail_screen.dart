@@ -62,13 +62,11 @@ class _PlaylistDetailScreenState extends State<PlaylistDetailScreen> {
 
   void _showError(String message) {
     if (_isFluent) {
-      fluent.displayInfoBar(context, builder: (context, close) {
-        return fluent.InfoBar(
-          title: Text(message),
-          severity: fluent.InfoBarSeverity.error,
-          onClose: close,
-        );
-      });
+      fluent.displayInfoBar(context, builder: (context, close) => fluent.InfoBar(
+            title: Text(message),
+            severity: fluent.InfoBarSeverity.error,
+            onClose: close,
+          ));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(message)),

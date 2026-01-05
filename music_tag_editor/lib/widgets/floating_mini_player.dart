@@ -114,7 +114,7 @@ class _FloatingMiniPlayerState extends State<FloatingMiniPlayer> {
                       ),
                       // Playback Controls
                       StreamBuilder<bool>(
-                        stream: _playback.player.stream.playing,
+                        stream: _playback.player.playingStream,
                         builder: (context, snapshot) {
                           final isPlaying = snapshot.data ?? false;
                           return Row(

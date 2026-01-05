@@ -73,13 +73,11 @@ class _RingtoneMakerScreenState extends State<RingtoneMakerScreen> {
 
   void _showNotification(String message) {
     if (_isFluent) {
-      fluent.displayInfoBar(context, builder: (context, close) {
-        return fluent.InfoBar(
-          title: Text(message),
-          severity: fluent.InfoBarSeverity.success,
-          onClose: close,
-        );
-      });
+      fluent.displayInfoBar(context, builder: (context, close) => fluent.InfoBar(
+            title: Text(message),
+            severity: fluent.InfoBarSeverity.success,
+            onClose: close,
+          ));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

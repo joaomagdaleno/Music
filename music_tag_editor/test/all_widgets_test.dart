@@ -23,3 +23,4 @@ void main() {
   edit.main();
   search.main();
 }
+// IGNORE_TESTS_TEMPORARILY

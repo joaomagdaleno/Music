@@ -1,4 +1,4 @@
-import 'package:media_kit/media_kit.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:audio_session/audio_session.dart';
@@ -24,36 +24,21 @@ class PlaybackService {
   static void resetInstance() => _instance = null;
 
   PlaybackService._internal() {
-    _player = Player();
-    _applyStreamingConfigs();
-  }
-
-  void _applyStreamingConfigs() {
-    if (_player.platform is NativePlayer) {
-      final player = _player.platform as NativePlayer;
-      player.setProperty('user-agent',
-          'Mozilla/5.0 (Android 14; Mobile; rv:128.0) Gecko/128.0 Firefox/128.0');
-      player.setProperty('referrer', 'https://www.youtube.com/');
-      player.setProperty(
-          'demuxer-max-bytes', '67108864'); // 64MB for better caching
-      player.setProperty('demuxer-readahead-secs', '60');
-      player.setProperty('ytdl-format', 'bestaudio/best');
-    }
+    _player = AudioPlayer();
   }
 
   @visibleForTesting
   PlaybackService.forTesting({
-    Player? player,
+    AudioPlayer? player,
     BaseAudioHandler? handler,
   }) {
-    _player = player ?? Player();
+    _player = player ?? AudioPlayer();
     if (handler != null) {
       _audioHandler = handler;
     }
   }
 
-  late final Player _player;
-
+  late final AudioPlayer _player;
   final SearchService _searchService = SearchService.instance;
 
   SearchResult? _currentTrack;
@@ -71,7 +56,7 @@ class PlaybackService {
   SearchResult? get currentTrack => _currentTrack;
   List<SearchResult> get queue => List.unmodifiable(_queue);
   List<LyricLine> get currentLyrics => _currentLyrics;
-  Player get player => _player;
+  AudioPlayer get player => _player;
   Stream<Duration?> get sleepTimerStream => _sleepTimerController.stream;
   Stream<List<LyricLine>> get lyricsStream => _lyricsController.stream;
   Stream<SearchResult?> get currentTrackStream => _trackController.stream;
@@ -98,25 +83,22 @@ class PlaybackService {
         await DatabaseService.instance.loadCrossfadeDuration();
     _crossfadeDuration = Duration(seconds: savedDuration);
 
-    _player.stream.track.listen((track) {
-      // Logic for track changes if needed via media_kit streams
-    });
-
-    _player.stream.error.listen((error) {
-      StartupLogger.logError(
-          '[PlaybackService] Player Error', error, StackTrace.current);
-    });
-
-    _player.stream.playing.listen((playing) {
+    _player.playerStateStream.listen((state) {
       _updatePlaybackState();
     });
 
-    _player.stream.position.listen((position) {
+    _player.positionStream.listen((position) {
       _updatePlaybackState();
     });
 
-    _player.stream.buffer.listen((buffer) {
+    _player.bufferedPositionStream.listen((buffer) {
       _updatePlaybackState();
+    });
+
+    _player.playbackEventStream.listen((event) {
+      // Logic for events if needed
+    }, onError: (Object e, StackTrace st) {
+      StartupLogger.logError('[PlaybackService] Player Error', e, st);
     });
 
     // Restore last played track
@@ -147,7 +129,7 @@ class PlaybackService {
 
       final source = await _createSource(track);
       if (source != null) {
-        await _player.open(Media(source), play: false);
+        await _player.setAudioSource(AudioSource.uri(Uri.parse(source)), preload: false);
       }
 
       _audioHandler.mediaItem.add(MediaItem(
@@ -166,7 +148,7 @@ class PlaybackService {
   }
 
   void _updatePlaybackState() {
-    final playing = _player.state.playing;
+    final playing = _player.playing;
 
     // Manage wakelock based on playback state
     if (playing) {
@@ -192,17 +174,25 @@ class PlaybackService {
       androidCompactActionIndices: const [0, 1, 3],
       processingState: _mapProcessingState(),
       playing: playing,
-      updatePosition: _player.state.position,
-      bufferedPosition: _player.state.buffer,
-      speed: _player.state.rate,
+      updatePosition: _player.position,
+      bufferedPosition: _player.bufferedPosition,
+      speed: _player.speed,
     ));
   }
 
   AudioProcessingState _mapProcessingState() {
-    if (_player.state.buffering) return AudioProcessingState.buffering;
-    if (_player.state.completed) return AudioProcessingState.completed;
-    // Always ready if loaded, even if paused
-    return AudioProcessingState.ready;
+    switch (_player.processingState) {
+      case ProcessingState.idle:
+        return AudioProcessingState.idle;
+      case ProcessingState.loading:
+        return AudioProcessingState.loading;
+      case ProcessingState.buffering:
+        return AudioProcessingState.buffering;
+      case ProcessingState.ready:
+        return AudioProcessingState.ready;
+      case ProcessingState.completed:
+        return AudioProcessingState.completed;
+    }
   }
 
   void _onTrackChanged(SearchResult track) {
@@ -270,22 +260,26 @@ class PlaybackService {
     }
 
     if (source != null) {
-      // Add User-Agent to prevent 403 errors on direct streams
-      final headers = source.startsWith('http')
-          ? {
-              'User-Agent':
-                  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
-            }
-          : null;
-
       try {
-        await _player.open(Media(source, httpHeaders: headers));
+        // just_audio supports setting headers via LockCachingAudioSource or just as a map in some cases,
+        // but for a simple Uri source, it's safer to use the factory.
+        final headers = source.startsWith('http')
+            ? {
+                'User-Agent':
+                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+                'Referer': 'https://www.youtube.com/'
+              }
+            : null;
+
+        await _player.setAudioSource(
+          AudioSource.uri(Uri.parse(source), headers: headers),
+        );
+        await _player.play();
         _onTrackChanged(result);
         _setupSelfHealing(result.id);
       } catch (e) {
         StartupLogger.logError('[PlaybackService] Failed to open player', e,
             StackTrace.current);
-        // If it fails here, we could potentially retry with next candidate...
       }
     } else {
       StartupLogger.log('[PlaybackService] CRITICAL: No playable source found');
@@ -302,27 +296,71 @@ class PlaybackService {
     }
   }
 
+  /// Plays a direct stream URL (e.g. from YouTubeStreamerService) with associated metadata.
+  Future<void> playStream(String streamUrl, SearchResult track) async {
+    StartupLogger.log('[PlaybackService] Playing direct stream for: ${track.title}');
+    _currentTrack = track;
+    _queue.clear();
+    _queue.add(track);
+
+    try {
+      final headers = streamUrl.startsWith('http')
+          ? {
+              'User-Agent':
+                  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+              'Referer': 'https://www.youtube.com/'
+            }
+          : null;
+
+      await _player.setAudioSource(
+        AudioSource.uri(Uri.parse(streamUrl), headers: headers),
+      );
+      await _player.play();
+      _onTrackChanged(track);
+      _setupSelfHealing(track.id);
+      
+      // Enrich metadata in background
+      _enrichMetadata(track);
+
+    } catch (e) {
+      StartupLogger.logError('[PlaybackService] Failed to play direct stream', e, StackTrace.current);
+    }
+  }
+
   void _setupSelfHealing(String trackId) {
     _selfHealingSubscription?.cancel();
     // Listen for unexpected stops (mid-track idling)
-    _selfHealingSubscription = _player.stream.playing.listen((isPlaying) async {
+    _selfHealingSubscription = _player.playerStateStream.listen((state) async {
+      final isPlaying = state.playing;
+      final processingState = state.processingState;
+
       if (!isPlaying &&
-          _player.state.position > Duration.zero &&
-          !_player.state.completed &&
+          _player.position > Duration.zero &&
+          processingState != ProcessingState.completed &&
           _currentTrack?.id == trackId) {
         StartupLogger.log(
             '[PlaybackService] Unexpected pause detected. Checking for stream expiration...');
         // Wait a bit to see if it's just a buffer lag or a real failure
         await Future.delayed(const Duration(seconds: 2));
-        if (!_player.state.playing &&
-            _player.state.position > Duration.zero &&
-            !_player.state.completed) {
+        if (!_player.playing &&
+            _player.position > Duration.zero &&
+            _player.processingState != ProcessingState.completed) {
           StartupLogger.log('[PlaybackService] Stream seems dead. Healing...');
-          final lastPos = _player.state.position;
+          final lastPos = _player.position;
           final source = await _createSource(_currentTrack!);
           if (source != null) {
-            await _player.open(Media(source), play: true);
-            await _player.seek(lastPos);
+            final headers = source.startsWith('http')
+                ? {
+                    'User-Agent':
+                        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+                    'Referer': 'https://www.youtube.com/'
+                  }
+                : null;
+            await _player.setAudioSource(
+              AudioSource.uri(Uri.parse(source), headers: headers),
+              initialPosition: lastPos,
+            );
+            await _player.play();
             StartupLogger.log('[PlaybackService] Self-healing successful');
           }
         }
@@ -396,7 +434,7 @@ class PlaybackService {
     if (!fromRemote) {
       LocalDuoService.instance.sendMessage({
         'type': 'pause',
-        'positionMs': _player.state.position.inMilliseconds,
+        'positionMs': _player.position.inMilliseconds,
       });
     }
   }
@@ -406,7 +444,7 @@ class PlaybackService {
     if (!fromRemote) {
       LocalDuoService.instance.sendMessage({
         'type': 'play',
-        'positionMs': _player.state.position.inMilliseconds,
+        'positionMs': _player.position.inMilliseconds,
       });
     }
   }
@@ -439,17 +477,18 @@ class PlaybackService {
   }
 
   Future<void> toggleShuffle() async {
-    await _player.setShuffle(!_player.state.shuffle);
+    await _player.setShuffleModeEnabled(!_player.shuffleModeEnabled);
   }
 
+  // just_audio uses LoopMode instead of PlaylistMode
   Future<void> toggleRepeat() async {
-    final mode = _player.state.playlistMode;
-    if (mode == PlaylistMode.none) {
-      await _player.setPlaylistMode(PlaylistMode.loop);
-    } else if (mode == PlaylistMode.loop) {
-      await _player.setPlaylistMode(PlaylistMode.single);
+    final mode = _player.loopMode;
+    if (mode == LoopMode.off) {
+      await _player.setLoopMode(LoopMode.all);
+    } else if (mode == LoopMode.all) {
+      await _player.setLoopMode(LoopMode.one);
     } else {
-      await _player.setPlaylistMode(PlaylistMode.none);
+      await _player.setLoopMode(LoopMode.off);
     }
   }
 
@@ -465,7 +504,8 @@ class PlaybackService {
   Future<void> playLocalFile(String path, SearchResult track) async {
     _currentTrack = track;
     EqualizerService.instance.applyPresetForGenre(track.genre);
-    await _player.open(Media(path));
+    await _player.setAudioSource(AudioSource.file(path));
+    await _player.play();
     _trackController.add(track);
   }
 

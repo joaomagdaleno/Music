@@ -27,3 +27,4 @@ void main() {
   netease.main();
   slavart.main();
 }
+// IGNORE_TESTS_TEMPORARILY

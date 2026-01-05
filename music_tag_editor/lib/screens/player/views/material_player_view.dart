@@ -76,7 +76,7 @@ class MaterialPlayerView extends StatelessWidget {
       ),
       extendBodyBehindAppBar: true,
       body: StreamBuilder<bool>(
-        stream: playback.player.stream.playing,
+        stream: playback.player.playingStream,
         builder: (context, snapshot) {
           final track = playback.currentTrack;
           if (track == null) {
@@ -287,10 +287,10 @@ class ProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final player = PlaybackService.instance.player;
     return StreamBuilder<Duration>(
-      stream: player.stream.position,
+      stream: player.positionStream,
       builder: (context, snapshot) {
         final position = snapshot.data ?? Duration.zero;
-        final duration = player.state.duration;
+        final duration = player.duration ?? Duration.zero;
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -341,7 +341,7 @@ class LyricsView extends StatelessWidget {
           }
 
           return StreamBuilder<Duration>(
-            stream: PlaybackService.instance.player.stream.position,
+            stream: PlaybackService.instance.player.positionStream,
             builder: (context, posSnapshot) {
               final position = posSnapshot.data ?? Duration.zero;
               return ListView.builder(

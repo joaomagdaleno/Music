@@ -1,5 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:media_kit/media_kit.dart';
+import 'package:just_audio/just_audio.dart'; // media_kit removed
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
 import 'package:music_tag_editor/models/search_models.dart';
@@ -101,7 +101,7 @@ class FluentPlayerView extends StatelessWidget {
                             ),
                           const SizedBox(height: 32),
                           StreamBuilder<bool>(
-                            stream: playback.player.stream.playing,
+                            stream: playback.player.playingStream,
                             builder: (context, playingSnapshot) {
                               final playing = playingSnapshot.data ?? false;
                               return VisualizerWidget(
@@ -153,7 +153,7 @@ class FluentPlayerView extends StatelessWidget {
                         ),
                         const SizedBox(width: 32),
                         StreamBuilder<bool>(
-                          stream: playback.player.stream.playing,
+                          stream: playback.player.playingStream,
                           builder: (context, playingSnapshot) {
                             final playing = playingSnapshot.data ?? false;
                             return Button(
@@ -224,15 +224,15 @@ class FluentPlayerView extends StatelessWidget {
 }
 
 class FluentProgressBar extends StatelessWidget {
-  final Player player;
+  final AudioPlayer player;
   const FluentProgressBar({super.key, required this.player});
 
   @override
   Widget build(BuildContext context) => StreamBuilder<Duration>(
-        stream: player.stream.position,
+        stream: player.positionStream,
         builder: (context, snapshot) {
           final position = snapshot.data ?? Duration.zero;
-          final duration = player.state.duration;
+          final duration = player.duration ?? Duration.zero;
           final maxVal =
               duration.inMilliseconds.toDouble().clamp(1.0, double.infinity);
 
@@ -276,7 +276,7 @@ class FluentLyricsView extends StatelessWidget {
           }
 
           return StreamBuilder<Duration>(
-            stream: PlaybackService.instance.player.stream.position,
+            stream: PlaybackService.instance.player.positionStream,
             builder: (context, posSnapshot) {
               final position = posSnapshot.data ?? Duration.zero;
               return ListView.builder(

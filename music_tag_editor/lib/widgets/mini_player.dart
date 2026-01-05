@@ -1,4 +1,4 @@
-import 'package:media_kit/media_kit.dart';
+import 'package:just_audio/just_audio.dart'; // media_kit removed
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +37,7 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
     final theme = fluent.FluentTheme.of(context);
 
     return StreamBuilder<bool>(
-      stream: playback.player.stream.playing,
+      stream: playback.player.playingStream,
       builder: (context, playingSnapshot) {
         final playing = playingSnapshot.data ?? false;
 
@@ -141,7 +141,7 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               StreamBuilder<bool>(
-                                stream: playback.player.stream.shuffle,
+                                stream: playback.player.shuffleModeEnabledStream,
                                 builder: (context, snapshot) {
                                   final isShuffle = snapshot.data ?? false;
                                   return fluent.IconButton(
@@ -186,17 +186,17 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
                                 onPressed: () => playback.next(),
                               ),
                               const SizedBox(width: 8),
-                              StreamBuilder<PlaylistMode>(
-                                stream: playback.player.stream.playlistMode,
+                              StreamBuilder<LoopMode>(
+                                stream: playback.player.loopModeStream,
                                 builder: (context, snapshot) {
                                   final mode =
-                                      snapshot.data ?? PlaylistMode.none;
+                                      snapshot.data ?? LoopMode.off;
                                   IconData icon;
                                   Color? color;
-                                  if (mode == PlaylistMode.single) {
+                                  if (mode == LoopMode.one) {
                                     icon = Icons.repeat_one;
                                     color = theme.accentColor;
-                                  } else if (mode == PlaylistMode.loop) {
+                                  } else if (mode == LoopMode.all) {
                                     icon = Icons.repeat;
                                     color = theme.accentColor;
                                   } else {
@@ -214,11 +214,11 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
                           const SizedBox(height: 4),
                           // Progress Bar
                           StreamBuilder<Duration>(
-                            stream: playback.player.stream.position,
+                            stream: playback.player.positionStream,
                             builder: (context, posSnapshot) {
                               final position =
                                   posSnapshot.data ?? Duration.zero;
-                              final duration = playback.player.state.duration;
+                              final duration = playback.player.duration ?? Duration.zero;
                               final max = duration.inMilliseconds.toDouble();
                               final value = position.inMilliseconds
                                   .toDouble()
@@ -333,7 +333,7 @@ class _MaterialMiniPlayer extends StatelessWidget {
     final playback = PlaybackService.instance;
 
     return StreamBuilder<bool>(
-      stream: playback.player.stream.playing,
+      stream: playback.player.playingStream,
       builder: (context, playingSnapshot) {
         final playing = playingSnapshot.data ?? false;
         return StreamBuilder<SearchResult?>(
@@ -367,10 +367,10 @@ class _MaterialMiniPlayer extends StatelessWidget {
                     RepaintBoundary(
                       // ⚡ Bolt: Isolate progress bar
                       child: StreamBuilder<Duration>(
-                          stream: playback.player.stream.position,
+                          stream: playback.player.positionStream,
                           builder: (context, posSnapshot) {
                             final position = posSnapshot.data ?? Duration.zero;
-                            final duration = playback.player.state.duration;
+                            final duration = playback.player.duration ?? Duration.zero;
                             final progress = duration.inMilliseconds > 0
                                 ? position.inMilliseconds /
                                     duration.inMilliseconds
@@ -443,7 +443,7 @@ class _MaterialMiniPlayer extends StatelessWidget {
                             const SizedBox(width: 8),
                             // Shuffle
                             StreamBuilder<bool>(
-                              stream: playback.player.stream.shuffle,
+                              stream: playback.player.shuffleModeEnabledStream,
                               builder: (context, snapshot) {
                                 final isShuffle = snapshot.data ?? false;
                                 return IconButton(
@@ -474,16 +474,16 @@ class _MaterialMiniPlayer extends StatelessWidget {
                               onPressed: () => playback.next(),
                             ),
                             // Repeat
-                            StreamBuilder<PlaylistMode>(
-                              stream: playback.player.stream.playlistMode,
+                            StreamBuilder<LoopMode>(
+                              stream: playback.player.loopModeStream,
                               builder: (context, snapshot) {
-                                final mode = snapshot.data ?? PlaylistMode.none;
+                                final mode = snapshot.data ?? LoopMode.off;
                                 IconData icon;
                                 Color? color;
-                                if (mode == PlaylistMode.single) {
+                                if (mode == LoopMode.one) {
                                   icon = Icons.repeat_one;
                                   color = Theme.of(context).colorScheme.primary;
-                                } else if (mode == PlaylistMode.loop) {
+                                } else if (mode == LoopMode.all) {
                                   icon = Icons.repeat;
                                   color = Theme.of(context).colorScheme.primary;
                                 } else {

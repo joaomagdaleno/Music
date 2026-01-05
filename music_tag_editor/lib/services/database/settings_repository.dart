@@ -148,18 +148,18 @@ class SettingsRepository extends DatabaseRepository {
   Future<List<LearningRule>> getLearningRules() async {
     final database = await db;
     final List<Map<String, dynamic>> maps = await database.query(_rulesTable);
-    return List.generate(maps.length, (i) {
-      return LearningRule(
-        artist: maps[i]['artist'],
-        field: maps[i]['field'],
-        originalValue: maps[i]['originalValue'],
-        correctedValue: maps[i]['correctedValue'],
-        choice: LearningChoice.values.firstWhere(
-          (e) => e.toString() == maps[i]['choice'],
-          orElse: () => LearningChoice.justThisOnce,
-        ),
-      );
-    });
+    return List.generate(
+        maps.length,
+        (i) => LearningRule(
+              artist: maps[i]['artist'],
+              field: maps[i]['field'],
+              originalValue: maps[i]['originalValue'],
+              correctedValue: maps[i]['correctedValue'],
+              choice: LearningChoice.values.firstWhere(
+                (e) => e.toString() == maps[i]['choice'],
+                orElse: () => LearningChoice.justThisOnce,
+              ),
+            ));
   }
 
   // All Settings
