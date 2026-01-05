@@ -84,7 +84,7 @@ jobs:
         run: |
           mkdir -p debug-info
           # Only obfuscate on tags for speed in dev
-          BUILD_COMMAND="flutter build apk --release --target-platform=android-arm64"
+          BUILD_COMMAND="flutter build apk --release --split-per-abi --target-platform=android-arm64"
           if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
             BUILD_COMMAND="$BUILD_COMMAND --obfuscate --split-debug-info=debug-info"
           fi
