@@ -388,11 +388,8 @@ class FluentSearchView extends StatelessWidget {
   Widget _buildPlatformSelector(BuildContext context) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _platformButton(context, MediaPlatform.youtube, 'Vídeos (YouTube)',
-              FluentIcons.video),
-          const SizedBox(width: 12),
           _platformButton(context, MediaPlatform.youtubeMusic,
-              'Músicas (YT Music)', FluentIcons.music_in_collection),
+              'YouTube Music', FluentIcons.music_in_collection),
         ],
       );
 

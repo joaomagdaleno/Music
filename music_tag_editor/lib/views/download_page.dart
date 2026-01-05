@@ -322,9 +322,7 @@ class _DownloadPageState extends State<DownloadPage> {
                                   child: Row(
                                     children: [
                                       Icon(
-                                        f.isAudioOnly
-                                            ? Icons.audiotrack
-                                            : Icons.videocam,
+                                        Icons.audiotrack,
                                         size: 20,
                                       ),
                                       const SizedBox(width: 8),

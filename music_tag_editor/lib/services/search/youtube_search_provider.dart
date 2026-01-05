@@ -194,8 +194,7 @@ abstract class BaseYouTubeSearchProvider implements SearchProvider {
       ];
 
   @override
-  Future<String?> getStreamUrl(String url,
-      {bool isVideo = false, String? resolution}) async {
+  Future<String?> getStreamUrl(String url) async {
     try {
       final videoId = yt.VideoId.parseVideoId(url);
       if (videoId != null) {

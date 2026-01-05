@@ -37,8 +37,7 @@ class SlavArtSearchProvider implements SearchProvider {
   Future<List<DownloadFormat>> getFormats(String url) async => [];
 
   @override
-  Future<String?> getStreamUrl(String url,
-      {bool isVideo = false, String? resolution}) async {
+  Future<String?> getStreamUrl(String url) async {
     // For SlavArt, the search URL is already a direct streamable link or API endpoint.
     if (url.startsWith('http') && url.contains('.slavart-api.')) {
       return url;
