@@ -66,7 +66,7 @@ jobs:
       - name: Security Bastion 🛡️
         working-directory: music_tag_editor
         run: |
-          grep -rE "AIza[0-9A-Za-z-_]{35}|[0-9a-f]{32}|ghp_[0-9A-Za-z]{36}" . --exclude="firebase_options.dart" --exclude="*.log" || true
+          grep -rE "AIza[0-9A-Za-z_-]{35}|[0-9a-f]{32}|ghp_[0-9A-Za-z]{36}" . --exclude="firebase_options.dart" --exclude="*.log" || true
           
           echo "### 🛡️ The Shield: Manifest Security Check" >> $GITHUB_STEP_SUMMARY
           MANIFEST="android/app/src/main/AndroidManifest.xml"
@@ -82,7 +82,7 @@ jobs:
         working-directory: music_tag_editor
         run: |
           echo "## Architecture Guard 🏛️" >> $GITHUB_STEP_SUMMARY
-          LARGE_FILES=$(find lib -name "*.dart" | xargs wc -l | awk '$1 > 600' | grep -v "total")
+          LARGE_FILES=$(find lib -name "*.dart" | xargs wc -l | awk '$1 > 600' | grep -v "total" || true)
           if [ -z "$LARGE_FILES" ]; then
             echo "✅ No critical file bloat detected." >> $GITHUB_STEP_SUMMARY
           else
