@@ -62,6 +62,7 @@ class PlaybackService {
   Duration _crossfadeDuration = const Duration(seconds: 2);
   List<LyricLine> _currentLyrics = [];
   Timer? _sleepTimer;
+  StreamSubscription? _selfHealingSubscription;
   final _sleepTimerController = StreamController<Duration?>.broadcast();
   final _lyricsController = StreamController<List<LyricLine>>.broadcast();
   final _trackController = BehaviorSubject<SearchResult?>();
@@ -244,8 +245,29 @@ class PlaybackService {
     final extractionFuture = _createSource(result);
     final enrichmentFuture = _enrichMetadata(result);
 
-    final results = await Future.wait([extractionFuture, enrichmentFuture]);
-    final source = results[0] as String?;
+    final extractionResults =
+        await Future.wait([extractionFuture, enrichmentFuture]);
+    String? source = extractionResults[0] as String?;
+
+    if (source == null && result.platform == MediaPlatform.youtube) {
+      StartupLogger.log(
+          '[PlaybackService] Primary source failed. Attempting Ultimate Recovery Loop...');
+      // Ultimate Recovery Loop: Search for candidates
+      final query = '${result.artist} ${result.title}';
+      final candidates = await SearchService.instance.searchAll(query);
+
+      for (final candidate in candidates.take(5)) {
+        if (candidate.id == result.id) continue;
+        StartupLogger.log(
+            '[PlaybackService] Trying alternate candidate: ${candidate.title} (${candidate.id})');
+        source = await _createSource(candidate);
+        if (source != null) {
+          result = candidate; // Update current track to the working candidate
+          _currentTrack = result;
+          break;
+        }
+      }
+    }
 
     if (source != null) {
       // Add User-Agent to prevent 403 errors on direct streams
@@ -256,8 +278,17 @@ class PlaybackService {
             }
           : null;
 
-      await _player.open(Media(source, httpHeaders: headers));
-      _onTrackChanged(result);
+      try {
+        await _player.open(Media(source, httpHeaders: headers));
+        _onTrackChanged(result);
+        _setupSelfHealing(result.id);
+      } catch (e) {
+        StartupLogger.logError('[PlaybackService] Failed to open player', e,
+            StackTrace.current);
+        // If it fails here, we could potentially retry with next candidate...
+      }
+    } else {
+      StartupLogger.log('[PlaybackService] CRITICAL: No playable source found');
     }
 
     if (!fromRemote) {
@@ -269,6 +300,34 @@ class PlaybackService {
         LocalDuoService.instance.sendFile(result.localPath!);
       }
     }
+  }
+
+  void _setupSelfHealing(String trackId) {
+    _selfHealingSubscription?.cancel();
+    // Listen for unexpected stops (mid-track idling)
+    _selfHealingSubscription = _player.stream.playing.listen((isPlaying) async {
+      if (!isPlaying &&
+          _player.state.position > Duration.zero &&
+          !_player.state.completed &&
+          _currentTrack?.id == trackId) {
+        StartupLogger.log(
+            '[PlaybackService] Unexpected pause detected. Checking for stream expiration...');
+        // Wait a bit to see if it's just a buffer lag or a real failure
+        await Future.delayed(const Duration(seconds: 2));
+        if (!_player.state.playing &&
+            _player.state.position > Duration.zero &&
+            !_player.state.completed) {
+          StartupLogger.log('[PlaybackService] Stream seems dead. Healing...');
+          final lastPos = _player.state.position;
+          final source = await _createSource(_currentTrack!);
+          if (source != null) {
+            await _player.open(Media(source), play: true);
+            await _player.seek(lastPos);
+            StartupLogger.log('[PlaybackService] Self-healing successful');
+          }
+        }
+      }
+    });
   }
 
   Future<void> _enrichMetadata(SearchResult result) async {
@@ -484,6 +543,7 @@ class PlaybackService {
 
   void dispose() {
     _sleepTimer?.cancel();
+    _selfHealingSubscription?.cancel();
     _sleepTimerController.close();
     _lyricsController.close();
     _trackController.close();

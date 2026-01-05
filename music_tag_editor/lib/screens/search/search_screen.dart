@@ -13,6 +13,7 @@ import 'package:music_tag_editor/screens/player/player_screen.dart';
 import 'package:music_tag_editor/screens/search/views/material_search_view.dart';
 import 'package:music_tag_editor/screens/search/views/fluent_search_view.dart';
 import 'package:music_tag_editor/services/startup_logger.dart';
+import 'package:music_tag_editor/services/music_manager_service.dart';
 import 'package:music_tag_editor/models/download_models.dart';
 import 'package:music_tag_editor/models/search_models.dart';
 
@@ -29,6 +30,7 @@ class _SearchScreenState extends material.State<SearchScreen>
   final _searchService = SearchService.instance;
   final _downloadService = DownloadService.instance;
   final _playbackService = PlaybackService.instance;
+  final _musicManager = MusicManagerService.instance;
 
   final List<SearchResult> _searchResults = [];
   bool _isLoading = false;
@@ -37,6 +39,7 @@ class _SearchScreenState extends material.State<SearchScreen>
   int _currentSearchId = 0;
   String? _currentlyPlayingUrl;
   StreamSubscription? _playbackSubscription;
+  StreamSubscription? _managerProgressSubscription;
 
   @override
   bool get wantKeepAlive => true;
@@ -66,6 +69,20 @@ class _SearchScreenState extends material.State<SearchScreen>
     super.initState();
     _initDependencies();
     _setupPlaybackListener();
+    _setupManagerListener();
+  }
+
+  void _setupManagerListener() {
+    _managerProgressSubscription = _musicManager.progressStream.listen((progressMap) {
+      if (mounted) {
+        setState(() {
+          for (final entry in progressMap.entries) {
+            _downloadingProgress[entry.key] = entry.value.progress;
+            _downloadingStatus[entry.key] = entry.value.status;
+          }
+        });
+      }
+    });
   }
 
   void _setupPlaybackListener() {
@@ -106,6 +123,7 @@ class _SearchScreenState extends material.State<SearchScreen>
   void dispose() {
     _searchController.dispose();
     _playbackSubscription?.cancel();
+    _managerProgressSubscription?.cancel();
     super.dispose();
   }
 
@@ -300,15 +318,27 @@ class _SearchScreenState extends material.State<SearchScreen>
   }
 
   Future<void> playTrack(SearchResult result) async {
-    StartupLogger.log('[SearchScreen] Playing track: ${result.id}');
+    StartupLogger.log('[SearchScreen] Playing track (Instant): ${result.id}');
     try {
-      // showSnackBar('Carregando áudio de "${result.title}"...'); // Removed intrusive snackbar
-      await _playbackService.playSearchResult(result);
+      await _musicManager.playInstant(result);
       StartupLogger.log('[SearchScreen] Playback started for ${result.id}');
     } catch (e, stack) {
       StartupLogger.logError('Playback FAILED in SearchScreen', e, stack);
       if (mounted) {
         showSnackBar('Erro ao reproduzir: $e', isError: true);
+      }
+    }
+  }
+
+  Future<void> instantDownload(SearchResult result) async {
+    StartupLogger.log('[SearchScreen] Requesting instant download for: ${result.id}');
+    try {
+      showSnackBar('Iniciando download de "${result.title}" em background...');
+      await _musicManager.downloadTrack(result);
+    } catch (e, stack) {
+      StartupLogger.logError('Instant download FAILED', e, stack);
+      if (mounted) {
+        showSnackBar('Erro ao iniciar download: $e', isError: true);
       }
     }
   }
@@ -484,6 +514,7 @@ class _SearchScreenState extends material.State<SearchScreen>
         onAddToPlaylist: addToPlaylist,
         onLoadFormats: loadFormats,
         onDownload: startDownload,
+        onInstantDownload: instantDownload,
         onFormatSelected: handleFormatSelected,
         onToggleExpand: handleToggleExpand,
         onOpenFullPlayer: openFullPlayer,
@@ -507,6 +538,7 @@ class _SearchScreenState extends material.State<SearchScreen>
       onAddToPlaylist: addToPlaylist,
       onLoadFormats: loadFormats,
       onDownload: startDownload,
+      onInstantDownload: instantDownload,
       onFormatSelected: handleFormatSelected,
       onToggleExpand: handleToggleExpand,
       onOpenFullPlayer: openFullPlayer,

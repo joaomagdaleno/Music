@@ -3,28 +3,29 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_tag_editor/models/music_track.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/widgets/edit_track_dialog.dart';
 
 void main() {
   testWidgets('EditTrackDialog renders properly and returns updated track',
       (tester) async {
-    final track = MusicTrack(
-      filePath: '/path/to/file.mp3',
+    final track = SearchResult(
+      id: 'test_id',
       title: 'Original Title',
       artist: 'Original Artist',
       album: 'Original Album',
-      trackNumber: 1,
+      url: 'https://youtube.com/watch?v=test_id',
+      platform: MediaPlatform.youtube,
     );
 
-    MusicTrack? result;
+    SearchResult? result;
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(platform: TargetPlatform.android),
       home: Builder(
           builder: (context) => TextButton(
                 onPressed: () async {
-                  result = await showDialog<MusicTrack>(
+                  result = await showDialog<SearchResult>(
                     context: context,
                     builder: (_) => EditTrackDialog(track: track),
                   );
@@ -53,6 +54,5 @@ void main() {
     expect(result!.title, 'New Title');
     expect(result!.artist, 'New Artist');
     expect(result!.album, 'Original Album'); // Unchanged
-    expect(result!.trackNumber, 1);
   });
 }

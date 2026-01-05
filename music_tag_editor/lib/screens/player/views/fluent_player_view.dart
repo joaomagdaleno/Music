@@ -4,6 +4,7 @@ import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
 import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/widgets/visualizer_widget.dart';
+import 'package:music_tag_editor/services/music_manager_service.dart';
 
 class FluentPlayerView extends StatelessWidget {
   final void Function(BuildContext) onShowSleepTimer;
@@ -183,15 +184,29 @@ class FluentPlayerView extends StatelessWidget {
                           builder: (context, snapshot) {
                             final current = snapshot.data;
                             final isFavorite = current?.isVault ?? false;
-                            return IconButton(
-                              icon: Icon(
-                                isFavorite
-                                    ? FluentIcons.favorite_star_fill
-                                    : FluentIcons.favorite_star,
-                                color: isFavorite ? Colors.orange : null,
-                                size: 24,
-                              ),
-                              onPressed: () => playback.toggleFavorite(),
+                            return Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Icon(
+                                    isFavorite
+                                        ? FluentIcons.favorite_star_fill
+                                        : FluentIcons.favorite_star,
+                                    color: isFavorite ? Colors.orange : null,
+                                    size: 24,
+                                  ),
+                                  onPressed: () => playback.toggleFavorite(),
+                                ),
+                                if (current != null && !current.isDownloaded) ...[
+                                  const SizedBox(width: 16),
+                                  IconButton(
+                                    icon: const Icon(FluentIcons.save, size: 24),
+                                    onPressed: () => MusicManagerService
+                                        .instance
+                                        .downloadTrack(current),
+                                  ),
+                                ],
+                              ],
                             );
                           },
                         ),

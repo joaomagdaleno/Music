@@ -46,6 +46,7 @@ class SearchResult {
   bool isVault;
   bool isDownloaded;
   bool isOfficial;
+  int? priorityScore;
 
   SearchResult({
     required this.id,
@@ -63,6 +64,7 @@ class SearchResult {
     this.isVault = false,
     this.isDownloaded = false,
     this.isOfficial = false,
+    this.priorityScore,
   });
 
   String get durationFormatted {
@@ -90,6 +92,7 @@ class SearchResult {
         'is_vault': isVault ? 1 : 0,
         'is_downloaded': isDownloaded ? 1 : 0,
         'is_official': isOfficial ? 1 : 0,
+        'priority_score': priorityScore,
       };
 
   factory SearchResult.fromJson(Map<String, dynamic> map) => SearchResult(
@@ -111,6 +114,7 @@ class SearchResult {
         isVault: (map['isVault'] ?? map['is_vault'] ?? 0) == 1,
         isDownloaded: (map['isDownloaded'] ?? map['is_downloaded'] ?? 0) == 1,
         isOfficial: (map['isOfficial'] ?? map['is_official'] ?? 0) == 1,
+        priorityScore: map['priorityScore'] ?? map['priority_score'],
       );
 
   static String cleanMetadata(String s) => s

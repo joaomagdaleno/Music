@@ -25,10 +25,15 @@ on:
       - 'docs/**'
   schedule:
     - cron: '0 0 * * *' # Daily at midnight UTC
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: write
 
 env:
   ACTIONS_STEP_DEBUG: true
@@ -210,3 +215,35 @@ jobs:
             artifacts/android-apk/music_tag_editor-v*.apk
             artifacts/linux-release/music_tag_editor-linux-v*.tar.gz
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  cleanup-cache:
+    name: 🗑️ Cleanup Old Caches
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: 🧹 Delete caches older than 1 day
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const caches = await github.rest.actions.listActionsCaches({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+
+            const oneDayMs = 24 * 60 * 60 * 1000;
+            const oneDayAgo = Date.now() - oneDayMs;
+
+            for (const cache of caches.data.actions_caches) {
+              const createdAt = new Date(cache.created_at).getTime();
+
+              if (createdAt < oneDayAgo) {
+                console.log(`Deleting cache ${cache.key} (ID: ${cache.id}) created at ${cache.created_at}`);
+                await github.rest.actions.deleteActionsCache({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                });
+              } else {
+                console.log(`Keeping cache ${cache.key} (recent: ${cache.created_at})`);
+              }
+            }

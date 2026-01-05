@@ -26,6 +26,7 @@ class FluentSearchView extends StatelessWidget {
   final Function(SearchResult) onAddToPlaylist;
   final Function(SearchResult) onLoadFormats;
   final Function(SearchResult) onDownload;
+  final Function(SearchResult) onInstantDownload;
   final Function(SearchResult, String?) onFormatSelected;
   final Function(SearchResult) onToggleExpand;
   final VoidCallback onOpenFullPlayer;
@@ -48,6 +49,7 @@ class FluentSearchView extends StatelessWidget {
     required this.onAddToPlaylist,
     required this.onLoadFormats,
     required this.onDownload,
+    required this.onInstantDownload,
     required this.onFormatSelected,
     required this.onToggleExpand,
     required this.onOpenFullPlayer,
@@ -392,9 +394,20 @@ class FluentSearchView extends StatelessWidget {
       Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          IconButton(
-            icon: const Icon(FluentIcons.play, size: 20),
-            onPressed: () => onPlay(result),
+          Tooltip(
+            message: 'Tocar Instantaneamente',
+            child: IconButton(
+              icon: const Icon(FluentIcons.play, size: 20),
+              onPressed: () => onPlay(result),
+            ),
+          ),
+          const SizedBox(width: 4),
+          Tooltip(
+            message: 'Salvar na Biblioteca (MP3 320kbps)',
+            child: IconButton(
+              icon: const Icon(FluentIcons.save, size: 20),
+              onPressed: () => onInstantDownload(result),
+            ),
           ),
         ],
       );

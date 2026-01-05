@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/models/download_models.dart';
 import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/search/search_provider.dart';
 import 'package:music_tag_editor/services/startup_logger.dart';
@@ -18,15 +19,42 @@ abstract class BaseYouTubeSearchProvider implements SearchProvider {
       url.contains('youtube.com') || url.contains('youtu.be');
 
   @protected
-  SearchResult parseYouTubeVideo(yt.Video video, MediaPlatform platform) {
+  SearchResult parseYouTubeVideo(yt.Video video, MediaPlatform platform,
+      {bool allowExplicit = false}) {
     String title = video.title;
     String artist = video.author.replaceAll(' - Topic', '').trim();
-    final bool isOfficial = video.author.toLowerCase().contains('topic') ||
-        video.title.toLowerCase().contains('official audio') ||
+
+    // Scoring Heuristics
+    int score = 0;
+    final bool isTopic = video.author.toLowerCase().contains('topic');
+    final bool isOfficialAudio =
+        video.title.toLowerCase().contains('official audio');
+    final bool isMusicVideo =
         video.title.toLowerCase().contains('official music video');
+    final bool isExplicit = video.title.toLowerCase().contains('explicit') ||
+        video.title.toLowerCase().contains('uncensored');
+    final bool isClean = video.title.toLowerCase().contains('clean') ||
+        video.title.toLowerCase().contains('radio edit') ||
+        video.title.toLowerCase().contains('censored');
+    final bool isInstrumental =
+        video.title.toLowerCase().contains('instrumental');
+
+    if (isTopic) score += 100;
+    if (isOfficialAudio) score += 50;
+    if (isMusicVideo) score -= 50;
+    if (isInstrumental) score -= 200;
+
+    if (allowExplicit) {
+      if (isExplicit) score += 80;
+    } else {
+      if (isClean) score += 80;
+      if (isExplicit) score -= 1000;
+    }
+
+    final bool isOfficial = isTopic || isOfficialAudio || isMusicVideo;
 
     title = SearchResult.cleanMetadata(title);
-
+    // ... rest of metadata cleaning logic ...
     if (video.title.contains(' - ')) {
       final parts = video.title.split(' - ');
       if (parts.length >= 2) {
@@ -78,6 +106,7 @@ abstract class BaseYouTubeSearchProvider implements SearchProvider {
       platform: platform,
     );
     result.isOfficial = isOfficial;
+    result.priorityScore = score; // We'll add this field to the model next
     return result;
   }
 
@@ -296,27 +325,47 @@ class YouTubeSearchProvider extends BaseYouTubeSearchProvider {
       final results = <SearchResult>[];
       final seenIds = <String>{};
       final seenMeta = <String>{};
-      final searchList = await ytExplode.search.search(query);
 
-      for (final video in searchList) {
-        if (seenIds.contains(video.id.value)) continue;
+      // Fetch allowExplicit preference
+      final allowExplicit = await DatabaseService.instance.loadAgeBypass();
 
-        final res = parseYouTubeVideo(video, platform);
-        final metaKey =
-            '${SearchResult.toMatchKey(res.artist)}:${SearchResult.toMatchKey(res.title)}';
+      // Search Cascade
+      final searchTerms = [
+        query, // Primary
+        '$query topic', // Studio Master fallback
+        '$query official audio', // Audio fallback
+      ];
 
-        if (seenMeta.contains(metaKey)) continue;
+      for (var term in searchTerms) {
+        if (results.length >= 10) break;
+        StartupLogger.log('[YouTubeSearchProvider] Trying cascade: $term');
+        final searchList = await ytExplode.search.search(term);
 
-        results.add(res);
-        seenIds.add(video.id.value);
-        seenMeta.add(metaKey);
+        for (final video in searchList) {
+          if (seenIds.contains(video.id.value)) continue;
+
+          // Duration Filter: Ignore short clips (< 60s)
+          if (video.duration != null && video.duration!.inSeconds < 60) continue;
+
+          final res = parseYouTubeVideo(video, platform,
+              allowExplicit: allowExplicit);
+          final metaKey =
+              '${SearchResult.toMatchKey(res.artist)}:${SearchResult.toMatchKey(res.title)}';
+
+          if (seenMeta.contains(metaKey)) continue;
+
+          results.add(res);
+          seenIds.add(video.id.value);
+          seenMeta.add(metaKey);
+
+          if (results.length >= 15) break; // Fetch a healthy pool
+        }
       }
-      results.sort((a, b) {
-        if (a.isOfficial && !b.isOfficial) return -1;
-        if (!a.isOfficial && b.isOfficial) return 1;
-        return 0;
-      });
-      return results;
+
+      // Rank by priority score
+      results.sort((a, b) => (b.priorityScore ?? 0).compareTo(a.priorityScore ?? 0));
+
+      return results.take(12).toList();
     } catch (e, stack) {
       StartupLogger.logError('YouTube Search Provider Error', e, stack);
       return searchWithYtDlp(query, platform);
@@ -334,12 +383,21 @@ class YouTubeMusicSearchProvider extends BaseYouTubeSearchProvider {
       final results = <SearchResult>[];
       final seenIds = <String>{};
       final seenMeta = <String>{};
+
+      // Fetch allowExplicit preference
+      final allowExplicit = await DatabaseService.instance.loadAgeBypass();
+
+      // YouTube Music Search is already specialized
       final searchList = await ytExplode.search.search('$query topic');
 
       for (final video in searchList) {
         if (seenIds.contains(video.id.value)) continue;
 
-        final res = parseYouTubeVideo(video, platform);
+        // Duration Filter: Ignore short clips (< 60s)
+        if (video.duration != null && video.duration!.inSeconds < 60) continue;
+
+        final res = parseYouTubeVideo(video, platform,
+            allowExplicit: allowExplicit);
         final metaKey =
             '${SearchResult.toMatchKey(res.artist)}:${SearchResult.toMatchKey(res.title)}';
 
@@ -350,13 +408,10 @@ class YouTubeMusicSearchProvider extends BaseYouTubeSearchProvider {
         seenMeta.add(metaKey);
       }
 
-      results.sort((a, b) {
-        if (a.isOfficial && !b.isOfficial) return -1;
-        if (!a.isOfficial && b.isOfficial) return 1;
-        return 0;
-      });
+      // Rank by priority score
+      results.sort((a, b) => (b.priorityScore ?? 0).compareTo(a.priorityScore ?? 0));
 
-      return results;
+      return results.take(12).toList();
     } catch (e, stack) {
       StartupLogger.logError('YouTube Music Search Provider Error', e, stack);
       return searchWithYtDlp('$query topic', platform);

@@ -101,7 +101,7 @@ class DatabaseService {
       _tracks.getTracksByMood([mood]);
 
   // Playlist helpers (to implement in repository)
-  Future<void> createPlaylist(String name, {String? description}) =>
+  Future<int> createPlaylist(String name, {String? description}) =>
       _playlists.createPlaylist(name, description: description);
   Future<void> addTrackToPlaylist(int playlistId, String trackId) =>
       _playlists.addTrackToPlaylist(playlistId, trackId);

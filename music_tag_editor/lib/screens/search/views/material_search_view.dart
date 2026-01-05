@@ -24,6 +24,7 @@ class MaterialSearchView extends StatelessWidget {
   final Function(SearchResult) onAddToPlaylist;
   final Function(SearchResult) onLoadFormats;
   final Function(SearchResult) onDownload;
+  final Function(SearchResult) onInstantDownload;
   final Function(SearchResult, String?) onFormatSelected;
   final Function(SearchResult) onToggleExpand;
   final VoidCallback onOpenFullPlayer;
@@ -45,6 +46,7 @@ class MaterialSearchView extends StatelessWidget {
     required this.onAddToPlaylist,
     required this.onLoadFormats,
     required this.onDownload,
+    required this.onInstantDownload,
     required this.onFormatSelected,
     required this.onToggleExpand,
     required this.onOpenFullPlayer,
@@ -170,7 +172,14 @@ class MaterialSearchView extends StatelessWidget {
                               IconButton(
                                 icon: const Icon(Icons.play_arrow,
                                     color: Colors.blue),
+                                tooltip: 'Tocar Instantaneamente',
                                 onPressed: () => onPlay(result),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.save_alt,
+                                    color: Colors.green),
+                                tooltip: 'Salvar na Biblioteca (MP3 320kbps)',
+                                onPressed: () => onInstantDownload(result),
                               ),
                               _buildOptionsButton(context, result),
                               _getPlatformLogo(result.platform,

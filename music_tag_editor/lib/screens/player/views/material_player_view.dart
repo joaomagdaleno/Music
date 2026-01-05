@@ -5,6 +5,8 @@ import 'package:music_tag_editor/widgets/duo_chat_dialog.dart';
 import 'package:music_tag_editor/widgets/visualizer_widget.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
 import 'package:music_tag_editor/screens/disco/karaoke_screen.dart';
+import 'package:music_tag_editor/services/music_manager_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 
 class MaterialPlayerView extends StatelessWidget {
   final void Function(BuildContext) onShowSleepTimer;
@@ -241,13 +243,21 @@ class MaterialPlayerView extends StatelessWidget {
               iconSize: 48,
               icon: const Icon(Icons.skip_next),
               onPressed: () {}),
-          const SizedBox(width: 16),
           IconButton(
             iconSize: 32,
             icon: Icon(track.isVault ? Icons.favorite : Icons.favorite_border),
             color: track.isVault ? Colors.red : null,
             onPressed: () => playback.toggleFavorite(),
           ),
+          const SizedBox(width: 16),
+          if (track is SearchResult && !track.isDownloaded)
+            IconButton(
+              iconSize: 32,
+              icon: const Icon(Icons.save_alt),
+              tooltip: 'Salvar na Biblioteca',
+              onPressed: () =>
+                  MusicManagerService.instance.downloadTrack(track),
+            ),
           if (showKaraoke) ...[
             const SizedBox(width: 16),
             IconButton(
