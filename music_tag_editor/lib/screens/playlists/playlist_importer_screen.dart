@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/services/database_service.dart';
@@ -55,9 +56,26 @@ class _PlaylistImporterScreenState extends State<PlaylistImporterScreen> {
       await DatabaseService.instance.saveTrack(track.toJson());
     }
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${_tracks.length} músicas importadas!')));
+      _showNotification('${_tracks.length} músicas importadas!');
       Navigator.pop(context);
+    }
+  }
+
+  bool get _isFluent => defaultTargetPlatform == TargetPlatform.windows;
+
+  void _showNotification(String message) {
+    if (_isFluent) {
+      fluent.displayInfoBar(context, builder: (context, close) {
+        return fluent.InfoBar(
+          title: Text(message),
+          severity: fluent.InfoBarSeverity.success,
+          onClose: close,
+        );
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
     }
   }
 

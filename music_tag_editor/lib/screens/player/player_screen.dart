@@ -38,44 +38,95 @@ class PlayerScreen extends StatelessWidget {
   }
 
   void _showSleepTimerDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Temporizador (Sleep Timer)'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
+    if (_isFluent(context)) {
+      fluent.showDialog(
+        context: context,
+        builder: (context) => fluent.ContentDialog(
+          title: const Text('Temporizador (Sleep Timer)'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              fluent.ListTile(
                 title: const Text('Desligar'),
-                onTap: () {
+                onPressed: () {
                   PlaybackService.instance.cancelSleepTimer();
                   Navigator.pop(context);
-                }),
-            ListTile(
+                },
+              ),
+              fluent.ListTile(
                 title: const Text('15 minutos'),
-                onTap: () {
+                onPressed: () {
                   PlaybackService.instance
                       .setSleepTimer(const Duration(minutes: 15));
                   Navigator.pop(context);
-                }),
-            ListTile(
+                },
+              ),
+              fluent.ListTile(
                 title: const Text('30 minutos'),
-                onTap: () {
+                onPressed: () {
                   PlaybackService.instance
                       .setSleepTimer(const Duration(minutes: 30));
                   Navigator.pop(context);
-                }),
-            ListTile(
+                },
+              ),
+              fluent.ListTile(
                 title: const Text('60 minutos'),
-                onTap: () {
+                onPressed: () {
                   PlaybackService.instance
                       .setSleepTimer(const Duration(minutes: 60));
                   Navigator.pop(context);
-                }),
+                },
+              ),
+            ],
+          ),
+          actions: [
+            fluent.Button(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancelar'),
+            ),
           ],
         ),
-      ),
-    );
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Temporizador (Sleep Timer)'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                  title: const Text('Desligar'),
+                  onTap: () {
+                    PlaybackService.instance.cancelSleepTimer();
+                    Navigator.pop(context);
+                  }),
+              ListTile(
+                  title: const Text('15 minutos'),
+                  onTap: () {
+                    PlaybackService.instance
+                        .setSleepTimer(const Duration(minutes: 15));
+                    Navigator.pop(context);
+                  }),
+              ListTile(
+                  title: const Text('30 minutos'),
+                  onTap: () {
+                    PlaybackService.instance
+                        .setSleepTimer(const Duration(minutes: 30));
+                    Navigator.pop(context);
+                  }),
+              ListTile(
+                  title: const Text('60 minutos'),
+                  onTap: () {
+                    PlaybackService.instance
+                        .setSleepTimer(const Duration(minutes: 60));
+                    Navigator.pop(context);
+                  }),
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   void _showQueueSheet(BuildContext context) {

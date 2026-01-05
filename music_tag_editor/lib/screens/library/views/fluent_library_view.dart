@@ -1,5 +1,4 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:music_tag_editor/models/music_track.dart';
 import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/screens/library/mood_explorer_screen.dart';
 import 'package:music_tag_editor/screens/tracks/my_tracks_screen.dart';
@@ -21,10 +20,10 @@ class FluentLibraryView extends StatefulWidget {
 
   final String title;
   final bool isLoading;
-  final List<MusicTrack> musicTracks;
+  final List<SearchResult> musicTracks;
   final VoidCallback onAddFolder;
-  final Function(MusicTrack) onSearchOnline;
-  final Function(MusicTrack) onEditTrack;
+  final Function(SearchResult) onSearchOnline;
+  final Function(SearchResult) onEditTrack;
 
   @override
   State<FluentLibraryView> createState() => _FluentLibraryViewState();
@@ -130,11 +129,10 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
         return ListTile(
           leading: const Icon(FluentIcons.music_note),
           title: Text(track.title),
-          subtitle: Text('${track.artist} - ${track.album}'),
+          subtitle: Text(track.artist),
           trailing: IconButton(
             icon: const Icon(FluentIcons.more),
             onPressed: () {
-              // Show flyout or context menu
               _showContextMenu(context, track, index);
             },
           ),
@@ -146,9 +144,7 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
     );
   }
 
-  void _showContextMenu(BuildContext context, MusicTrack track, int index) {
-    // Implementation of context menu using Flyout or similar would go here
-    // For brevity, we can just trigger actions directly or keep it simple
+  void _showContextMenu(BuildContext context, SearchResult track, int index) {
     showDialog(
         context: context,
         builder: (context) => ContentDialog(
@@ -164,16 +160,7 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
                         context,
                         FluentPageRoute(
                           builder: (context) => RingtoneMakerScreen(
-                            track: SearchResult(
-                              id: index.toString(),
-                              title: track.title,
-                              artist: track.artist,
-                              url: '',
-                              platform: MediaPlatform.unknown,
-                              thumbnail: 'https://via.placeholder.com/150',
-                              localPath: track.filePath,
-                              genre: 'Unknown',
-                            ),
+                            track: track,
                           ),
                         ),
                       );

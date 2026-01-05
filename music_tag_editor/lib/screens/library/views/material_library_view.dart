@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_tag_editor/models/music_track.dart';
 import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/screens/library/mood_explorer_screen.dart';
 import 'package:music_tag_editor/screens/tracks/my_tracks_screen.dart';
@@ -21,10 +20,10 @@ class MaterialLibraryView extends StatelessWidget {
 
   final String title;
   final bool isLoading;
-  final List<MusicTrack> musicTracks;
+  final List<SearchResult> musicTracks;
   final VoidCallback onAddFolder;
-  final Function(MusicTrack) onSearchOnline;
-  final Function(MusicTrack) onEditTrack;
+  final Function(SearchResult) onSearchOnline;
+  final Function(SearchResult) onEditTrack;
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
@@ -100,7 +99,7 @@ class MaterialLibraryView extends StatelessWidget {
                       return ListTile(
                         leading: const Icon(Icons.music_note),
                         title: Text(track.title),
-                        subtitle: Text('${track.artist} - ${track.album}'),
+                        subtitle: Text(track.artist),
                         trailing: PopupMenuButton<String>(
                           onSelected: (value) {
                             if (value == 'ringtone') {
@@ -108,17 +107,7 @@ class MaterialLibraryView extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => RingtoneMakerScreen(
-                                    track: SearchResult(
-                                      id: index.toString(),
-                                      title: track.title,
-                                      artist: track.artist,
-                                      url: '',
-                                      platform: MediaPlatform.unknown,
-                                      thumbnail:
-                                          'https://via.placeholder.com/150',
-                                      localPath: track.filePath,
-                                      genre: 'Unknown',
-                                    ),
+                                    track: track,
                                   ),
                                 ),
                               );

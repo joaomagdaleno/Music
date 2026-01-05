@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
-import 'package:music_tag_editor/models/music_track.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 
 class EditTrackDialog extends StatefulWidget {
-  final MusicTrack track;
+  final SearchResult track;
 
   const EditTrackDialog({super.key, required this.track});
 
@@ -23,7 +23,7 @@ class _EditTrackDialogState extends State<EditTrackDialog> {
     super.initState();
     _titleController = TextEditingController(text: widget.track.title);
     _artistController = TextEditingController(text: widget.track.artist);
-    _albumController = TextEditingController(text: widget.track.album);
+    _albumController = TextEditingController(text: widget.track.album ?? '');
   }
 
   @override
@@ -35,12 +35,19 @@ class _EditTrackDialogState extends State<EditTrackDialog> {
   }
 
   void _save() {
-    final updatedTrack = MusicTrack(
-      filePath: widget.track.filePath,
+    final updatedTrack = SearchResult(
+      id: widget.track.id,
       title: _titleController.text,
       artist: _artistController.text,
       album: _albumController.text,
-      trackNumber: widget.track.trackNumber,
+      url: widget.track.url,
+      platform: widget.track.platform,
+      thumbnail: widget.track.thumbnail,
+      localPath: widget.track.localPath,
+      genre: widget.track.genre,
+      isVault: widget.track.isVault,
+      isDownloaded: widget.track.isDownloaded,
+      isOfficial: widget.track.isOfficial,
     );
     Navigator.of(context).pop(updatedTrack);
   }
@@ -62,16 +69,19 @@ class _EditTrackDialogState extends State<EditTrackDialog> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               fluent.InfoLabel(
-                  label: 'Título',
-                  child: fluent.TextBox(controller: _titleController)),
+                label: 'Título',
+                child: fluent.TextBox(controller: _titleController),
+              ),
               const SizedBox(height: 8),
               fluent.InfoLabel(
-                  label: 'Artista',
-                  child: fluent.TextBox(controller: _artistController)),
+                label: 'Artista',
+                child: fluent.TextBox(controller: _artistController),
+              ),
               const SizedBox(height: 8),
               fluent.InfoLabel(
-                  label: 'Álbum',
-                  child: fluent.TextBox(controller: _albumController)),
+                label: 'Álbum',
+                child: fluent.TextBox(controller: _albumController),
+              ),
             ],
           ),
         ),

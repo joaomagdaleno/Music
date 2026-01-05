@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:music_tag_editor/services/local_duo_service.dart';
 import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
@@ -48,8 +49,25 @@ class _RemoteLibraryScreenState extends State<RemoteLibraryScreen> {
 
   void _addToQueue(SearchResult track) {
     PlaybackService.instance.addToQueue(track);
-    ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Adicionado à fila compartilhada!')));
+    _showNotification('Adicionado à fila compartilhada!');
+  }
+
+  bool get _isFluent => defaultTargetPlatform == TargetPlatform.windows;
+
+  void _showNotification(String message) {
+    if (_isFluent) {
+      fluent.displayInfoBar(context, builder: (context, close) {
+        return fluent.InfoBar(
+          title: Text(message),
+          severity: fluent.InfoBarSeverity.success,
+          onClose: close,
+        );
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    }
   }
 
   @override

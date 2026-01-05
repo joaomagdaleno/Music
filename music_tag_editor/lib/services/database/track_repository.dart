@@ -109,6 +109,21 @@ class TrackRepository extends DatabaseRepository {
     ''', [DateTime.now().millisecondsSinceEpoch, trackId]);
   }
 
+  Future<void> updateMetadata(
+      String id, String title, String artist, String album) async {
+    final database = await db;
+    await database.update(
+      _tracksTable,
+      {
+        'title': title,
+        'artist': artist,
+        'album': album,
+      },
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
   Future<List<Map<String, dynamic>>> getMostPlayed({int limit = 20}) async {
     final database = await db;
     return await database.query(

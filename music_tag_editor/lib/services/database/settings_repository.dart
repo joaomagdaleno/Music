@@ -1,9 +1,13 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:music_tag_editor/models/filename_format.dart';
 import 'package:music_tag_editor/services/database/database_repository.dart';
+import 'package:music_tag_editor/models/database_models.dart';
+import 'package:music_tag_editor/widgets/learning_dialog.dart';
 
 class SettingsRepository extends DatabaseRepository {
   static const String _settingsTable = 'settings';
+  static const String _foldersTable = 'music_folders';
+  static const String _rulesTable = 'learning_rules';
 
   SettingsRepository(super.getDatabase);
 
@@ -99,5 +103,69 @@ class SettingsRepository extends DatabaseRepository {
       {'key': 'age_bypass', 'value': enabled.toString()},
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+  }
+
+  // Music Folders
+  Future<void> addMusicFolder(String path) async {
+    final database = await db;
+    await database.insert(
+      _foldersTable,
+      {'path': path},
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getMusicFolders() async {
+    final database = await db;
+    return await database.query(_foldersTable);
+  }
+
+  Future<void> removeMusicFolder(String path) async {
+    final database = await db;
+    await database.delete(
+      _foldersTable,
+      where: 'path = ?',
+      whereArgs: [path],
+    );
+  }
+
+  // Learning Rules
+  Future<void> saveLearningRule(LearningRule rule) async {
+    final database = await db;
+    await database.insert(
+      _rulesTable,
+      {
+        'artist': rule.artist,
+        'field': rule.field,
+        'originalValue': rule.originalValue,
+        'correctedValue': rule.correctedValue,
+        'choice': rule.choice.toString(),
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<LearningRule>> getLearningRules() async {
+    final database = await db;
+    final List<Map<String, dynamic>> maps = await database.query(_rulesTable);
+    return List.generate(maps.length, (i) {
+      return LearningRule(
+        artist: maps[i]['artist'],
+        field: maps[i]['field'],
+        originalValue: maps[i]['originalValue'],
+        correctedValue: maps[i]['correctedValue'],
+        choice: LearningChoice.values.firstWhere(
+          (e) => e.toString() == maps[i]['choice'],
+          orElse: () => LearningChoice.justThisOnce,
+        ),
+      );
+    });
+  }
+
+  // All Settings
+  Future<Map<String, String>> getAllSettings() async {
+    final database = await db;
+    final List<Map<String, dynamic>> maps = await database.query(_settingsTable);
+    return {for (var m in maps) m['key'] as String: m['value'] as String};
   }
 }

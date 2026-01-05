@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
 import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_tag_editor/screens/library/views/fluent_library_view.dart';
+import 'package:music_tag_editor/screens/library/views/material_library_view.dart';
+import 'package:music_tag_editor/widgets/edit_track_dialog.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
@@ -46,19 +50,15 @@ class _LibraryScreenState extends State<LibraryScreen> {
     });
 
     try {
-      // 1. Clean metadata before searching
       final cleanTitle = SearchResult.cleanMetadata(track.title);
       final cleanArtist = SearchResult.cleanMetadata(track.artist);
 
-      // 2. Use Aggregator for multi-source results
       await _metadataService.aggregateMetadata(
         cleanTitle,
         cleanArtist,
       );
 
       if (!mounted) return;
-
-      // Handle result (e.g., update track)
       _refreshLibrary();
     } catch (e) {
       debugPrint('Error searching online: $e');
@@ -67,36 +67,49 @@ class _LibraryScreenState extends State<LibraryScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Biblioteca'),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: _refreshLibrary,
-            ),
-            IconButton(
-              icon: const Icon(Icons.folder_open),
-              onPressed: _addMusicFolder,
-            ),
-          ],
-        ),
-        body: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : ListView.builder(
-                itemCount: _musicTracks.length,
-                itemBuilder: (context, index) {
-                  final track = _musicTracks[index];
-                  return ListTile(
-                    title: Text(track.title),
-                    subtitle: Text(track.artist),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.search),
-                      onPressed: () => _searchOnline(track),
-                    ),
-                  );
-                },
-              ),
+  void _editTrack(SearchResult track) async {
+    final result = await showDialog<SearchResult>(
+      context: context,
+      builder: (context) => EditTrackDialog(track: track),
+    );
+
+    if (result != null) {
+      await _dbService.updateTrackMetadata(
+        result.id,
+        result.title,
+        result.artist,
+        result.album ?? '',
       );
+      _refreshLibrary();
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    final platform = defaultTargetPlatform;
+    final isFluent = platform == TargetPlatform.windows ||
+        platform == TargetPlatform.linux ||
+        platform == TargetPlatform.macOS;
+
+    if (isFluent) {
+      return FluentLibraryView(
+        title: 'Biblioteca',
+        isLoading: _isLoading,
+        musicTracks: _musicTracks,
+        onAddFolder: _addMusicFolder,
+        onSearchOnline: _searchOnline,
+        onEditTrack: _editTrack,
+      );
+    }
+
+    return MaterialLibraryView(
+      title: 'Biblioteca',
+      isLoading: _isLoading,
+      musicTracks: _musicTracks,
+      onAddFolder: _addMusicFolder,
+      onSearchOnline: _searchOnline,
+      onEditTrack: _editTrack,
+    );
+  }
 }

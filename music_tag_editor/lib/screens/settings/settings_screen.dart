@@ -58,9 +58,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     await _dbService.saveFilenameFormat(format);
     if (!mounted) return;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Preference saved!')),
-    );
+    _showNotification('Preferência salva!');
   }
 
   Future<void> _cleanupLibrary() async {
@@ -68,9 +66,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final count = await MetadataCleanupService.instance.cleanupLibrary();
     if (mounted) {
       setState(() => _isLoading = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$count músicas foram polidas e organizadas!')),
-      );
+      _showNotification('$count músicas foram polidas e organizadas!');
     }
   }
 
@@ -83,13 +79,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final success = await FirebaseSyncService.instance.enableSync();
     if (mounted) {
       setState(() => _isLoading = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(success
-              ? 'Sincronização ativada!'
-              : 'Erro ao ativar sincronização'),
-        ),
-      );
+      _showNotification(success
+          ? 'Sincronização ativada!'
+          : 'Erro ao ativar sincronização');
     }
   }
 
@@ -102,9 +94,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final count = await FirebaseSyncService.instance.pullFromCloud();
     if (mounted) {
       setState(() => _isLoading = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$count itens sincronizados!')),
-      );
+      _showNotification('$count itens sincronizados!');
     }
   }
 
@@ -132,6 +122,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _saveAgeBypass(bool val) async {
     setState(() => _ageBypass = val);
     await _dbService.saveAgeBypass(val);
+  }
+
+  void _showNotification(String message) {
+    if (_isFluent) {
+      fluent.displayInfoBar(context, builder: (context, close) {
+        return fluent.InfoBar(
+          title: Text(message),
+          severity: fluent.InfoBarSeverity.success,
+          onClose: close,
+        );
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    }
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/models/search_models.dart';
@@ -25,6 +26,8 @@ class _PlaylistDetailScreenState extends State<PlaylistDetailScreen> {
   List<Map<String, dynamic>> _tracks = [];
   bool _isLoading = true;
 
+  bool get _isFluent => defaultTargetPlatform == TargetPlatform.windows;
+
   @override
   void initState() {
     super.initState();
@@ -47,10 +50,7 @@ class _PlaylistDetailScreenState extends State<PlaylistDetailScreen> {
 
     if (trackData['url'] == null || trackData['url'].toString().isEmpty) {
       debugPrint('[PlaylistDetail] ERROR: Track has no URL!');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Erro: Esta música não possui URL de reprodução.')),
-      );
+      _showError('Erro: Esta música não possui URL de reprodução.');
       return;
     }
 
@@ -58,6 +58,22 @@ class _PlaylistDetailScreenState extends State<PlaylistDetailScreen> {
     debugPrint(
         '[PlaylistDetail] Playing: ${result.title} - ${result.url} - ${result.platform}');
     PlaybackService.instance.playSearchResult(result);
+  }
+
+  void _showError(String message) {
+    if (_isFluent) {
+      fluent.displayInfoBar(context, builder: (context, close) {
+        return fluent.InfoBar(
+          title: Text(message),
+          severity: fluent.InfoBarSeverity.error,
+          onClose: close,
+        );
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    }
   }
 
   @override
