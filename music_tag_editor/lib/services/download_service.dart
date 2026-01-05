@@ -471,14 +471,15 @@ class DownloadService {
         }
       } else if (line.contains('[download]') &&
           line.contains('has already been downloaded')) {
-        final parts = line.split('downloaded');
-        if (parts.length > 1) {
-          final path = parts.last.trim();
-          if (path.isNotEmpty) {
-            outputFile = path;
-            debugPrint(
-                '[DownloadService] Captured already downloaded: $outputFile');
-          }
+        // Robust extraction: remove prefix and suffix
+        final path = line
+            .replaceFirst('[download]', '')
+            .replaceFirst('has already been downloaded', '')
+            .trim();
+        if (path.isNotEmpty) {
+          outputFile = path;
+          debugPrint(
+              '[DownloadService] Captured already downloaded: $outputFile');
         }
       }
     });
@@ -607,7 +608,8 @@ class DownloadService {
         }
         await File(tempOut).rename(audioPath);
       } else {
-        StartupLogger.log('FFmpeg metadata embed failed for $audioPath: ${result.stderr}');
+        StartupLogger.log(
+            'FFmpeg metadata embed failed for $audioPath: ${result.stderr}');
       }
 
       if (imageFile != null && await imageFile.exists()) {
