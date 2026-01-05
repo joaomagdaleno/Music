@@ -2,7 +2,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:music_tag_editor/models/filename_format.dart';
 import 'package:music_tag_editor/services/database/database_repository.dart';
 import 'package:music_tag_editor/models/database_models.dart';
-import 'package:music_tag_editor/widgets/learning_dialog.dart';
+
+import 'package:music_tag_editor/models/learning_enums.dart';
 
 class SettingsRepository extends DatabaseRepository {
   static const String _settingsTable = 'settings';

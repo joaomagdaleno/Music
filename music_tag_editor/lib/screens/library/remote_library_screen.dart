@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:music_tag_editor/services/local_duo_service.dart';
 import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/screens/library/views/fluent_remote_library_view.dart';
 import 'package:music_tag_editor/screens/library/views/material_remote_library_view.dart';
+import 'package:music_tag_editor/services/notification_service.dart';
 
 /// RemoteLibraryScreen controller - platform-adaptive
 class RemoteLibraryScreen extends StatefulWidget {
@@ -52,20 +52,13 @@ class _RemoteLibraryScreenState extends State<RemoteLibraryScreen> {
     _showNotification('Adicionado à fila compartilhada!');
   }
 
-  bool get _isFluent => defaultTargetPlatform == TargetPlatform.windows;
 
   void _showNotification(String message) {
-    if (_isFluent) {
-      fluent.displayInfoBar(context, builder: (context, close) => fluent.InfoBar(
-            title: Text(message),
-            severity: fluent.InfoBarSeverity.success,
-            onClose: close,
-          ));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
-    }
+    NotificationService.instance.show(
+      context,
+      message,
+      severity: NotificationSeverity.success,
+    );
   }
 
   @override

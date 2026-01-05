@@ -3,7 +3,8 @@ import 'package:meta/meta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/widgets/learning_dialog.dart';
+
+import 'package:music_tag_editor/models/learning_enums.dart';
 import 'package:music_tag_editor/models/database_models.dart';
 
 /// Service for syncing library data to Firebase Cloud.

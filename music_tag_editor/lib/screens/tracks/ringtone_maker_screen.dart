@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:music_tag_editor/services/notification_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/screens/tracks/views/fluent_ringtone_maker_view.dart';
@@ -69,23 +69,12 @@ class _RingtoneMakerScreenState extends State<RingtoneMakerScreen> {
     Navigator.pop(context);
   }
 
-  bool get _isFluent => defaultTargetPlatform == TargetPlatform.windows;
-
   void _showNotification(String message) {
-    if (_isFluent) {
-      fluent.displayInfoBar(context, builder: (context, close) => fluent.InfoBar(
-            title: Text(message),
-            severity: fluent.InfoBarSeverity.success,
-            onClose: close,
-          ));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: Colors.green,
-        ),
-      );
-    }
+    NotificationService.instance.show(
+      context,
+      message,
+      severity: NotificationSeverity.success,
+    );
   }
 
   String _formatDuration(Duration d) {

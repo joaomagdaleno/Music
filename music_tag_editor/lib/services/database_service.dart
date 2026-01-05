@@ -141,6 +141,11 @@ class DatabaseService {
     return await openDatabase(
       dbPath,
       version: 5,
+      singleInstance: true, // Prevent multiple instances opening the same DB
+      onConfigure: (db) async {
+        // Enable WAL mode for better crash resilience and performance
+        await db.execute('PRAGMA journal_mode=WAL;');
+      },
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );

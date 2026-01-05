@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
+import 'package:flutter/foundation.dart';
+import 'package:music_tag_editor/services/dependency_manager.dart';
+import 'package:music_tag_editor/utils/rate_limiter.dart';
 
 /// SlavArt Divolt API for FLAC downloads from Tidal/Qobuz/Deezer.
 class SlavArtApi {
@@ -10,14 +13,17 @@ class SlavArtApi {
 
   final http.Client _client;
   final bool _isTestClient;
+  final RateLimiter _rateLimiter;
 
   SlavArtApi({http.Client? client})
-      : _client = client ?? http.Client(),
-        _isTestClient = client != null;
+      : _client = client ?? DependencyManager.instance.client,
+        _isTestClient = client != null,
+        _rateLimiter = RateLimiter(maxRequests: 30, interval: const Duration(minutes: 1));
 
   /// Search for a track across all Hi-Fi platforms.
   Future<List<SlavArtResult>> search(String query) async {
     try {
+      await _rateLimiter.wait();
       // SlavArt uses a simple search endpoint
       final uri = Uri.parse('$_baseUrl/api/search').replace(
         queryParameters: {'q': query},
@@ -34,16 +40,30 @@ class SlavArtApi {
       final data = jsonDecode(response.body);
       final results = <SlavArtResult>[];
 
-      // Parse results from different sources
+      // Parse results from different sources with defensive structure handling
       for (final source in ['qobuz', 'tidal', 'deezer']) {
-        final items = data[source] as List? ?? [];
+        final sourceData = data[source];
+        List<dynamic> items;
+        
+        // Handle both direct list and nested { "results": [...] } structures
+        if (sourceData is List) {
+          items = sourceData;
+        } else if (sourceData is Map && sourceData['results'] is List) {
+          items = sourceData['results'] as List;
+        } else {
+          items = [];
+        }
+        
         for (final item in items) {
-          results.add(SlavArtResult.fromJson(item, source));
+          if (item is Map<String, dynamic>) {
+            results.add(SlavArtResult.fromJson(item, source));
+          }
         }
       }
 
       return results;
     } catch (e) {
+      debugPrint('❌ SlavArt Search Error: $e');
       return [];
     }
   }
@@ -76,8 +96,16 @@ class SlavArtApi {
     String outputDir, {
     void Function(double progress)? onProgress,
   }) async {
+    IOSink? sink;
     try {
-      final request = http.Request('GET', Uri.parse(downloadUrl));
+      // SSRF Protection: Validate URL scheme
+      final uri = Uri.parse(downloadUrl);
+      if (uri.scheme != 'http' && uri.scheme != 'https') {
+        debugPrint('❌ SlavArt: Invalid URL scheme: ${uri.scheme}');
+        return null;
+      }
+
+      final request = http.Request('GET', uri);
       final streamedResponse = await _client.send(request);
 
       if (streamedResponse.statusCode != 200) {
@@ -94,33 +122,59 @@ class SlavArtApi {
         final match =
             RegExp(r'filename="?([^"]+)"?').firstMatch(contentDisposition);
         if (match != null) {
-          filename = match.group(1)!;
+          final rawName = match.group(1)!;
+          // Sanitize: Take basename only to prevent traversal, and filter chars
+          // This replaces any of / \ : * ? " < > | with '_'
+          var cleanName = p.basename(rawName).replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
+          
+          // Enforce extension
+          if (!cleanName.toLowerCase().endsWith('.flac') && !cleanName.toLowerCase().endsWith('.mp3')) {
+            cleanName += '.flac';
+          }
+           
+          filename = cleanName;
         }
       }
 
       final outputFile = File(p.join(outputDir, filename));
-      final sink = outputFile.openWrite();
+      sink = outputFile.openWrite();
 
       final totalBytes = streamedResponse.contentLength ?? 0;
-      int receivedBytes = 0;
 
-      await for (final chunk in streamedResponse.stream) {
-        sink.add(chunk);
-        receivedBytes += chunk.length;
-        if (totalBytes > 0 && onProgress != null) {
+      // Non-blocking: Use addStream to avoid UI freezes during large downloads.
+      // Progress reporting is sacrificed for performance; use onDone callback instead.
+      if (onProgress != null && totalBytes > 0) {
+        // If progress is needed, we have to use the manual loop, but we'll
+        // do it in a way that yields to the event loop more often.
+        int receivedBytes = 0;
+        await for (final chunk in streamedResponse.stream) {
+          sink.add(chunk);
+          receivedBytes += chunk.length;
           onProgress(receivedBytes / totalBytes);
+          // Yield to event loop every 1MB to prevent jank
+          if (receivedBytes % (1024 * 1024) < chunk.length) {
+            await Future<void>.delayed(Duration.zero);
+          }
         }
+      } else {
+        // Optimal: No progress callback, use efficient addStream
+        await sink.addStream(streamedResponse.stream);
       }
 
-      await sink.close();
+      await sink.flush();
       return outputFile;
     } catch (e) {
+      debugPrint('❌ SlavArt Download Error: $e');
       return null;
+    } finally {
+      await sink?.close();
     }
   }
 
   void dispose() {
-    if (!_isTestClient) {
+    // IMPORTANT: Never close the shared client from DependencyManager.
+    // Only close if we own a test client.
+    if (_isTestClient) {
       _client.close();
     }
   }

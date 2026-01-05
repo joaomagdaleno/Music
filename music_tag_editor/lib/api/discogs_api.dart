@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
+import 'package:music_tag_editor/services/dependency_manager.dart';
+import 'package:music_tag_editor/utils/rate_limiter.dart';
 
 /// Discogs API adapter for album art, labels, and release info.
 class DiscogsApi {
@@ -9,12 +12,16 @@ class DiscogsApi {
   static const String _userAgent = 'MusicTagEditor/1.0';
 
   final http.Client _client;
+  final RateLimiter _rateLimiter;
 
-  DiscogsApi({http.Client? client}) : _client = client ?? http.Client();
+  DiscogsApi({http.Client? client}) 
+      : _client = client ?? DependencyManager.instance.client,
+        _rateLimiter = RateLimiter(maxRequests: 20, interval: const Duration(minutes: 1));
 
   Future<Map<String, dynamic>?> searchRelease(
       String title, String artist) async {
     try {
+      await _rateLimiter.wait();
       final query = Uri.encodeComponent('$artist $title');
       final url = Uri.parse('$_baseUrl/database/search?q=$query&type=release');
 
@@ -40,7 +47,7 @@ class DiscogsApi {
         }
       }
     } catch (e) {
-      // Silently fail - other sources will compensate
+      debugPrint('❌ DiscogsApi Error: $e');
     }
     return null;
   }

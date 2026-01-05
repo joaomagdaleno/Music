@@ -10,6 +10,7 @@ import 'package:music_tag_editor/services/firebase_sync_service.dart';
 import 'package:music_tag_editor/services/metadata_cleanup_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/screens/login/login_screen.dart';
+import 'package:music_tag_editor/services/notification_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -125,17 +126,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _showNotification(String message) {
-    if (_isFluent) {
-      fluent.displayInfoBar(context, builder: (context, close) => fluent.InfoBar(
-            title: Text(message),
-            severity: fluent.InfoBarSeverity.success,
-            onClose: close,
-          ));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
-    }
+    NotificationService.instance.show(
+      context,
+      message,
+      severity: NotificationSeverity.success,
+    );
   }
 
   @override

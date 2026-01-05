@@ -1,5 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
+import 'package:music_tag_editor/services/dependency_manager.dart';
+import 'package:music_tag_editor/utils/rate_limiter.dart';
+import 'package:music_tag_editor/config/api_keys.dart';
 
 /// Genius API adapter for song metadata and plain lyrics.
 class GeniusApi {
@@ -8,11 +12,15 @@ class GeniusApi {
   static const String _baseUrl = 'https://api.genius.com';
 
   final http.Client _client;
+  final RateLimiter _rateLimiter;
 
-  GeniusApi({http.Client? client}) : _client = client ?? http.Client();
+  GeniusApi({http.Client? client})
+      : _client = client ?? DependencyManager.instance.client,
+        _rateLimiter = RateLimiter(maxRequests: 20, interval: const Duration(minutes: 1));
 
   Future<Map<String, dynamic>?> searchSong(String title, String artist) async {
     try {
+      await _rateLimiter.wait();
       // Genius public search (limited without token)
       final query = Uri.encodeComponent('$artist $title');
       final url = Uri.parse('$_baseUrl/search?q=$query');
@@ -21,6 +29,7 @@ class GeniusApi {
       // For full support, user would need to provide their own token
       final response = await _client.get(url, headers: {
         'User-Agent': 'MusicTagEditor/1.0',
+        'Authorization': 'Bearer ${ApiKeys.geniusAccessToken}',
       });
 
       if (response.statusCode == 200) {
@@ -39,7 +48,7 @@ class GeniusApi {
         }
       }
     } catch (e) {
-      // Silently fail
+      debugPrint('❌ GeniusApi Error: $e');
     }
     return null;
   }

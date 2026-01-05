@@ -76,6 +76,13 @@ class SearchResult {
     return '$minutes:$seconds';
   }
 
+  /// Generates a content-based hash for cross-API duplicate detection.
+  /// Allows identifying the same song from different sources.
+  String get contentHash {
+    final normalized = toMatchKey('$title|$artist|${duration ?? 0}');
+    return normalized.hashCode.toRadixString(16);
+  }
+
   Map<String, dynamic> toJson() => {
         'id': id,
         'title': title,
@@ -118,19 +125,31 @@ class SearchResult {
       );
 
   static String cleanMetadata(String s) => s
-      .replaceAll(RegExp(r'\(Official.*?\)', caseSensitive: false), '')
-      .replaceAll(RegExp(r'\[Official.*?\]', caseSensitive: false), '')
-      .replaceAll(RegExp(r'\(Lyrics\)', caseSensitive: false), '')
-      .replaceAll(RegExp(r'\(Audio\)', caseSensitive: false), '')
+      // Remove known video/noise suffixes
+      .replaceAll(RegExp(r'\(Official Video\)', caseSensitive: false), '')
+      .replaceAll(RegExp(r'\[Official Video\]', caseSensitive: false), '')
+      .replaceAll(RegExp(r'\(Music Video\)', caseSensitive: false), '')
+      .replaceAll(RegExp(r'\[Music Video\]', caseSensitive: false), '')
       .replaceAll(RegExp(r'\(Video\)', caseSensitive: false), '')
+      .replaceAll(RegExp(r'\[Video\]', caseSensitive: false), '')
+      .replaceAll(RegExp(r'\(Lyrics\)', caseSensitive: false), '')
+      .replaceAll(RegExp(r'\[Lyrics\]', caseSensitive: false), '')
       .replaceAll(RegExp(r'\(Visualizer\)', caseSensitive: false), '')
       .replaceAll(RegExp(r'\[Visualizer\]', caseSensitive: false), '')
-      .replaceAll(RegExp(r'\(.*?\)', caseSensitive: false),
-          '') // Remove anything else in parens
-      .replaceAll(RegExp(r'\[.*?\]', caseSensitive: false),
-          '') // Remove anything else in brackets
+      // Clean trailing " - YouTube"
       .replaceAll(RegExp(r' - YouTube$', caseSensitive: false), '')
       .trim();
 
-  static String toMatchKey(String s) => s.toLowerCase().trim();
+  static String toMatchKey(String s) => _removeDiacritics(s.toLowerCase().trim());
+
+  static String _removeDiacritics(String str) {
+    const withDia = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
+    const withoutDia = 'AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz';
+
+    for (int i = 0; i < withDia.length; i++) {
+      str = str.replaceAll(withDia[i], withoutDia[i]);
+    }
+
+    return str;
+  }
 }

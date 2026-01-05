@@ -85,4 +85,7 @@ class StartupLogger {
 
   /// Gets the full log content.
   static String getLogs() => _buffer.toString();
+  
+  /// Gets the path to the log file.
+  static String get logFilePath => _logFile?.path ?? 'Unknown (Log not initialized)';
 }

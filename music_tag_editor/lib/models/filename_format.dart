@@ -11,14 +11,19 @@ extension FilenameFormatExtension on FilenameFormat {
     required String title,
     required int trackNumber,
   }) {
+    final safeArtist = _sanitize(artist);
+    final safeTitle = _sanitize(title);
+    
     switch (this) {
       case FilenameFormat.artistTitle:
-        return '$artist - $title';
+        return '$safeArtist - $safeTitle';
       case FilenameFormat.titleArtist:
-        return '$title ($artist)';
+        return '$safeTitle ($safeArtist)';
       case FilenameFormat.trackArtistTitle:
         final trackStr = trackNumber.toString().padLeft(2, '0');
-        return '$trackStr. $artist - $title';
+        return '$trackStr. $safeArtist - $safeTitle';
     }
   }
+
+  String _sanitize(String input) => input.replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
 }

@@ -3,11 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 
-enum LearningChoice {
-  forThisArtist,
-  forAll,
-  justThisOnce,
-}
+import 'package:music_tag_editor/models/learning_enums.dart';
 
 class LearningDialog extends StatelessWidget {
   const LearningDialog({super.key});

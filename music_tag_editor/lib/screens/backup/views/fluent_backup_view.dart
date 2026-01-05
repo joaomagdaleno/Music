@@ -22,9 +22,13 @@ class FluentBackupView extends StatelessWidget {
           leading: Navigator.canPop(context)
               ? Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: IconButton(
-                    icon: const Icon(FluentIcons.back),
-                    onPressed: () => Navigator.pop(context),
+                  child: Semantics(
+                    label: 'Voltar para a tela anterior',
+                    button: true,
+                    child: IconButton(
+                      icon: const Icon(FluentIcons.back),
+                      onPressed: () => Navigator.pop(context),
+                    ),
                   ),
                 )
               : null,

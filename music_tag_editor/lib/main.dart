@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:music_tag_editor/firebase_options.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:music_tag_editor/services/auth_service.dart';
@@ -20,30 +23,55 @@ import 'package:music_tag_editor/views/app_shell.dart';
 
 final GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
 
-void main() {
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Removed MediaKit.ensureInitialized();
+  
   runZonedGuarded(
-    () {
-      ErrorWidget.builder = (FlutterErrorDetails details) => MaterialApp(
-            home: Scaffold(
-              backgroundColor: Colors.red,
-              body: Center(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    details.exceptionAsString(),
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
+    () async {
+      ErrorWidget.builder = (FlutterErrorDetails details) {
+            if (!kIsWeb && Platform.isWindows) {
+              return fluent.FluentApp(
+                home: fluent.ScaffoldPage(
+                  header: const fluent.PageHeader(title: Text('Error')),
+                  content: Center(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        details.exceptionAsString(),
+                        style: const TextStyle(color: fluent.Colors.white, fontSize: 16),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
+            return MaterialApp(
+              home: Scaffold(
+                // Accessibility: Use muted dark color instead of aggressive red
+                // Avoids photosensitivity issues and is easier for colorblind users
+                backgroundColor: const Color(0xFF424242), // Grey 800
+                body: Center(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(
+                      details.exceptionAsString(),
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
+            );
+          };
 
-      if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+      if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
         sqfliteFfiInit();
         databaseFactory = databaseFactoryFfi;
       }
+
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
 
       runApp(const AppBootstrap());
     },
@@ -59,6 +87,8 @@ void main() {
     },
   );
 }
+
+// ... (imports)
 
 /// Bootstrap widget that handles async initialization and shows a splash
 /// screen.
@@ -83,50 +113,57 @@ class _AppBootstrapState extends State<AppBootstrap> {
 
   Future<void> _initializeApp() async {
     try {
-      // Initialize StartupLogger first
+      // 1. Initialize Logger (Critical for debugging)
       await StartupLogger.init();
       await StartupLogger.log('🚀 App initialization started');
 
-      // Initialize Telemetry
+      // 2. Non-Critical Services (Fail safe)
       _updateStep('Initializing Telemetry...');
       try {
         await TelemetryService.instance.init();
         StartupLogger.log('✅ TelemetryService initialized');
       } catch (e) {
-        StartupLogger.log('❌ Telemetry init failed: $e');
+        StartupLogger.log('⚠️ Telemetry init failed (Non-critical): $e');
       }
 
-      // Initialize Core Services
+      // 3. Critical Services (Must succeed)
       _updateStep('Initializing Core Services...');
+      
+      await StartupLogger.log('Initializing SecurityService...');
+      await SecurityService.instance.init();
+
+      await StartupLogger.log('Initializing DependencyManager...');
+      await DependencyManager.instance.ensureDependencies();
+
+      await StartupLogger.log('Initializing AuthService...');
+      AuthService.instance.init();
+
+      await StartupLogger.log('Initializing ConnectivityService...');
+      await ConnectivityService.instance.init();
+
+      await StartupLogger.log('Initializing PersonaService...');
+      await PersonaService.instance.init();
+
+      await StartupLogger.log('Initializing ThemeService...');
+      await ThemeService.instance.init();
+
+      // Desktop Integration is platform specific but usually safe to fail if wrapped,
+      // but we'll treat as non-critical or semi-critical. Let's keep it here for now.
+      await StartupLogger.log('Initializing DesktopIntegrationService...');
+      await DesktopIntegrationService.instance.init();
+
+      // Creating a boundary for PlaybackService as it interacts with hardware
+      StartupLogger.log('Initializing PlaybackService...');
       try {
-        await StartupLogger.log('Initializing SecurityService...');
-        await SecurityService.instance.init();
-
-        await StartupLogger.log('Initializing DependencyManager...');
-        await DependencyManager.instance.ensureDependencies();
-
-        await StartupLogger.log('Initializing AuthService...');
-        AuthService.instance.init();
-
-        await StartupLogger.log('Initializing ConnectivityService...');
-        await ConnectivityService.instance.init();
-
-        await StartupLogger.log('Initializing PersonaService...');
-        await PersonaService.instance.init();
-
-        await StartupLogger.log('Initializing ThemeService...');
-        await ThemeService.instance.init();
-
-        await StartupLogger.log('Initializing DesktopIntegrationService...');
-        await DesktopIntegrationService.instance.init();
-
-        StartupLogger.log('Initializing PlaybackService...');
         await PlaybackService.instance.init();
-
-        StartupLogger.log('✅ Core services initialized successfully');
       } catch (e) {
-        StartupLogger.log('❌ Service initialization failed: $e');
+         // If playback fails, the app is useless as a music player. 
+         // Rethrow to trigger fatal error screen.
+         StartupLogger.log('❌ PlaybackService failed (CRITICAL): $e');
+         throw Exception('Audio Engine failed to initialize: $e');
       }
+
+      await StartupLogger.log('✅ Core services initialized successfully');
 
       await StartupLogger.log('🚀 App initialization complete, launching UI');
 
@@ -139,12 +176,10 @@ class _AppBootstrapState extends State<AppBootstrap> {
       await StartupLogger.log('🔥 FATAL: App initialization failed: $e');
       await StartupLogger.log(stack.toString());
 
-      // If it's a known non-critical error, we might want to continue
-      // For now, fail safe to avoid corrupt state
       if (mounted) {
         setState(() {
           _errorMessage =
-              'Initialization failed: $e\n\nCheck C:\\Users\\...\\startup_log.txt for details.';
+              'Critical Initialization Failed:\n$e\n\nPlease check logs at:\n${StartupLogger.logFilePath}';
         });
       }
     }
@@ -222,16 +257,14 @@ class _AppBootstrapState extends State<AppBootstrap> {
 }
 
 class MusicTagEditorApp extends StatelessWidget {
-  final TargetPlatform? platform;
-  const MusicTagEditorApp({super.key, this.platform});
+  const MusicTagEditorApp({super.key});
 
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
         animation: ThemeService.instance,
         builder: (context, child) {
           final primaryColor = ThemeService.instance.primaryColor;
-          if (platform == TargetPlatform.windows ||
-              (platform == null && Platform.isWindows)) {
+          if (Platform.isWindows) {
             return fluent.FluentApp(
               title: 'Music Tag Editor',
               themeMode: fluent.ThemeMode.system,
@@ -247,19 +280,14 @@ class MusicTagEditorApp extends StatelessWidget {
               ),
               home: const AppShell(),
               navigatorKey: appNavigatorKey,
-              builder: (context, child) => Overlay(
-                initialEntries: [
-                  OverlayEntry(
-                    builder: (_) => fluent.Container(
-                      color: fluent.FluentTheme.of(context)
-                          .scaffoldBackgroundColor,
-                      child: Column(
-                        children: [
-                          Expanded(child: child ?? const SizedBox.shrink()),
-                          const MiniPlayer(),
-                        ],
-                      ),
-                    ),
+              builder: (context, child) => Stack(
+                children: [
+                  child ?? const SizedBox.shrink(),
+                  const Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: MiniPlayer(),
                   ),
                 ],
               ),
@@ -270,7 +298,6 @@ class MusicTagEditorApp extends StatelessWidget {
             title: 'Music Tag Editor',
             theme: ThemeData(
               useMaterial3: true,
-              platform: platform,
               scaffoldBackgroundColor: Colors.white,
               colorScheme: ColorScheme.fromSeed(
                 seedColor: primaryColor,
@@ -279,7 +306,6 @@ class MusicTagEditorApp extends StatelessWidget {
             ),
             darkTheme: ThemeData(
               useMaterial3: true,
-              platform: platform,
               scaffoldBackgroundColor: Colors.black,
               colorScheme: ColorScheme.fromSeed(
                 seedColor: primaryColor,
@@ -289,10 +315,15 @@ class MusicTagEditorApp extends StatelessWidget {
             home: const AppShell(),
             navigatorKey: appNavigatorKey,
             builder: (context, child) => Material(
-              child: Column(
+              child: Stack(
                 children: [
-                  Expanded(child: child ?? const SizedBox.shrink()),
-                  const MiniPlayer(),
+                  child ?? const SizedBox.shrink(),
+                  const Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: MiniPlayer(),
+                  ),
                 ],
               ),
             ),
@@ -300,3 +331,4 @@ class MusicTagEditorApp extends StatelessWidget {
         },
       );
 }
+
