@@ -2,10 +2,8 @@ import 'package:media_kit/media_kit.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:music_tag_editor/screens/player/player_screen.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/main.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'package:rxdart/rxdart.dart';
 
 class MiniPlayer extends StatelessWidget {
@@ -51,12 +49,7 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
 
             return GestureDetector(
               onTap: () {
-                if (track.mediaType == 'video') {
-                  appNavigatorKey.currentState?.push(
-                    fluent.FluentPageRoute(
-                        builder: (context) => const PlayerScreen()),
-                  );
-                }
+                // Navigation to PlayerScreen disabled for Pure Music
               },
               child: Container(
                 height: 84,
@@ -365,12 +358,7 @@ class _MaterialMiniPlayer extends StatelessWidget {
               ),
               child: InkWell(
                 onTap: () {
-                  if (track.mediaType == 'video') {
-                    appNavigatorKey.currentState?.push(
-                      MaterialPageRoute(
-                          builder: (context) => const PlayerScreen()),
-                    );
-                  }
+                  // Navigation to PlayerScreen disabled for Pure Music
                 },
                 borderRadius: BorderRadius.circular(12),
                 child: Column(

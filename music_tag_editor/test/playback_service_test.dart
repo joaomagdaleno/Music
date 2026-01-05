@@ -4,7 +4,7 @@ import 'package:mocktail/mocktail.dart';
 // import 'package:just_audio/just_audio.dart'; // Removed
 import 'package:audio_service/audio_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'test_helper.dart';
 
 // Mocks are now sourced from test_helper.dart
@@ -76,9 +76,7 @@ void main() {
 
     when(() => mockSearch.getStreamUrl(
           any(),
-          resolution: any(named: 'resolution'),
           platform: any(named: 'platform'),
-          isVideo: any(named: 'isVideo'),
         )).thenAnswer((_) async => 'http://stream');
     when(() => mockLyrics.fetchLyrics(any(), any()))
         .thenAnswer((_) => Future.value([]));

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/services/local_duo_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/screens/library/views/fluent_remote_library_view.dart';
 import 'package:music_tag_editor/screens/library/views/material_remote_library_view.dart';

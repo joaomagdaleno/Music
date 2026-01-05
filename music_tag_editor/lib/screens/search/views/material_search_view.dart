@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/download_models.dart';
 import 'package:music_tag_editor/services/global_navigation_service.dart';
 import 'package:music_tag_editor/models/persona_model.dart';
-import 'package:music_tag_editor/services/search_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 
 class MaterialSearchView extends StatelessWidget {
   final TextEditingController searchController;
@@ -244,7 +244,6 @@ class MaterialSearchView extends StatelessWidget {
           children: [
             _platformStatusChip(MediaPlatform.youtube, 'YouTube'),
             _platformStatusChip(MediaPlatform.youtubeMusic, 'YT Music'),
-            _platformStatusChip(MediaPlatform.spotify, 'Spotify'),
           ],
         ),
       );
@@ -303,37 +302,7 @@ class MaterialSearchView extends StatelessWidget {
     );
   }
 
-  Widget _buildFallbackInfo() {
-    final spotifyStatus = platformStatuses[MediaPlatform.spotify];
-    final youtubeStatus = platformStatuses[MediaPlatform.youtube];
-
-    if (spotifyStatus == SearchStatus.noResults &&
-        (youtubeStatus == SearchStatus.completed ||
-            youtubeStatus == SearchStatus.searching)) {
-      return Container(
-        margin: const EdgeInsets.all(16),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Colors.blue.shade50,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.blue.shade200),
-        ),
-        child: Row(
-          children: [
-            Icon(Icons.lightbulb_outline, color: Colors.blue.shade700),
-            const SizedBox(width: 12),
-            const Expanded(
-              child: Text(
-                'Nenhuma correspondência exata no Spotify. Mostrando resultados similares do YouTube.',
-                style: TextStyle(fontSize: 13),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-    return const SizedBox.shrink();
-  }
+  Widget _buildFallbackInfo() => const SizedBox.shrink();
 
   Widget _getPlatformLogo(MediaPlatform platform, {String? hifiSource}) {
     switch (platform) {
@@ -352,14 +321,6 @@ class MaterialSearchView extends StatelessWidget {
           height: 24,
           errorBuilder: (_, __, ___) =>
               const Icon(Icons.music_note, color: Colors.red),
-        );
-      case MediaPlatform.spotify:
-        return Image.network(
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/1024px-Spotify_logo_without_text.svg.png',
-          width: 24,
-          height: 24,
-          errorBuilder: (_, __, ___) =>
-              const Icon(Icons.music_note, color: Colors.green),
         );
       case MediaPlatform.hifi:
         return _getHiFiLogo(hifiSource);

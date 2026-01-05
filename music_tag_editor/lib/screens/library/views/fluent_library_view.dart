@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:music_tag_editor/models/music_track.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/screens/library/mood_explorer_screen.dart';
 import 'package:music_tag_editor/screens/tracks/my_tracks_screen.dart';
 import 'package:music_tag_editor/screens/tracks/ringtone_maker_screen.dart';

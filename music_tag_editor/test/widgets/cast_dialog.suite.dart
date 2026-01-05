@@ -7,8 +7,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/services/cast_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/download_service.dart'; // Changed from search_service.dart
+// Changed from search_service.dart
 import 'package:music_tag_editor/widgets/cast_dialog.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 
 class FakeCastService extends Fake implements CastService {
   final _controller = StreamController<List<CastDevice>>.broadcast();

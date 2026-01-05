@@ -4,7 +4,6 @@ library;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
-import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/api/musicbrainz_api.dart';
 import 'package:music_tag_editor/api/lastfm_api.dart';
 import 'package:music_tag_editor/api/discogs_api.dart';
@@ -24,7 +23,6 @@ class MockNeteaseApi extends Mock implements NeteaseApi {}
 
 class MockLyricsService extends Mock implements LyricsService {}
 
-class MockSearchService extends Mock implements SearchService {}
 
 void main() {
   late MetadataAggregatorService service;
@@ -34,7 +32,6 @@ void main() {
   late MockGeniusApi mockGenius;
   late MockNeteaseApi mockNetease;
   late MockLyricsService mockLyrics;
-  late MockSearchService mockSearch;
 
   setUp(() {
     mockMusicBrainz = MockMusicBrainzApi();
@@ -43,7 +40,6 @@ void main() {
     mockGenius = MockGeniusApi();
     mockNetease = MockNeteaseApi();
     mockLyrics = MockLyricsService();
-    mockSearch = MockSearchService();
 
     service = MetadataAggregatorService.instance;
     service.setDependencies(
@@ -53,10 +49,8 @@ void main() {
       genius: mockGenius,
       netease: mockNetease,
       lrcLib: mockLyrics,
-      searchService: mockSearch,
     );
 
-    when(() => mockSearch.spotifyApi).thenAnswer((_) async => null);
   });
 
   group('aggregateMetadata', () {

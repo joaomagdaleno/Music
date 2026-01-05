@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 
 /// Material Design view for DiscoModeScreen
 class MaterialDiscoModeView extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/screens/tracks/views/fluent_ringtone_maker_view.dart';
 import 'package:music_tag_editor/screens/tracks/views/material_ringtone_maker_view.dart';
 

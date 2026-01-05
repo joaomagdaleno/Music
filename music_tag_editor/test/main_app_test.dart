@@ -196,7 +196,7 @@ void main() {
 
     await tester.pumpWidget(MaterialApp(
         theme: ThemeData(platform: TargetPlatform.android),
-        home: const LibraryScreen(title: 'Test Library')));
+        home: const LibraryScreen()));
     await tester.pump();
 
     expect(find.text('Nenhuma pasta selecionada.'), findsOneWidget);

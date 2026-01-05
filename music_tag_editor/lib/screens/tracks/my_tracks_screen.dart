@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 
 import 'package:music_tag_editor/screens/playlists/playlist_importer_screen.dart';
 import 'package:music_tag_editor/screens/tracks/views/fluent_my_tracks_view.dart';
 import 'package:music_tag_editor/screens/tracks/views/material_my_tracks_view.dart';
-import 'package:music_tag_editor/screens/player/player_screen.dart';
 
 /// MyTracksScreen controller - platform-adaptive
 class MyTracksScreen extends StatefulWidget {
@@ -41,20 +40,7 @@ class _MyTracksScreenState extends State<MyTracksScreen> {
   void _playTrack(SearchResult track) {
     PlaybackService.instance.playSearchResult(track);
 
-    if (mounted && track.mediaType == 'video') {
-      final platform = Theme.of(context).platform;
-      if (platform == TargetPlatform.windows ||
-          platform == TargetPlatform.linux ||
-          platform == TargetPlatform.macOS) {
-        Navigator.of(context).push(
-          fluent.FluentPageRoute(builder: (_) => const PlayerScreen()),
-        );
-      } else {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const PlayerScreen()),
-        );
-      }
-    }
+
   }
 
   void _addToVault(SearchResult track) async {

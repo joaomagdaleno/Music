@@ -19,9 +19,6 @@ class FluentSettingsView extends StatefulWidget {
   final VoidCallback onPullFromCloud;
   final VoidCallback onLogin;
   final VoidCallback onLogout;
-  final String? spotifyClientId;
-  final String? spotifyClientSecret;
-  final Function(String, String) onSpotifyCredentialsSaved;
 
   const FluentSettingsView({
     super.key,
@@ -39,9 +36,6 @@ class FluentSettingsView extends StatefulWidget {
     required this.onPullFromCloud,
     required this.onLogin,
     required this.onLogout,
-    this.spotifyClientId,
-    this.spotifyClientSecret,
-    required this.onSpotifyCredentialsSaved,
   });
 
   @override
@@ -160,8 +154,6 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
                             'Exporte ou importe sua biblioteca e configurações.'),
                         leading: const Icon(FluentIcons.cloud_download),
                         onPressed: () {
-                          // We need a Fluent version of BackupView or wrap standard one
-                          // For now, standard navigation
                           Navigator.push(
                             context,
                             FluentPageRoute(
@@ -207,93 +199,10 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 24),
-                    const Divider(),
-                    const SizedBox(height: 24),
-                    _buildSpotifySection(),
                     const SizedBox(height: 48),
                   ],
                 ),
               ),
-      );
-
-  final _spotifyIdController = TextEditingController();
-  final _spotifySecretController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _spotifyIdController.text = widget.spotifyClientId ?? '';
-    _spotifySecretController.text = widget.spotifyClientSecret ?? '';
-  }
-
-  @override
-  void dispose() {
-    _spotifyIdController.dispose();
-    _spotifySecretController.dispose();
-    super.dispose();
-  }
-
-  Widget _buildSpotifySection() => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Integração com Spotify',
-              style: FluentTheme.of(context).typography.subtitle),
-          const SizedBox(height: 8),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(FluentIcons.music_in_collection,
-                          color: Colors.green),
-                      const SizedBox(width: 8),
-                      const Text(
-                          'Conecte sua conta de desenvolvedor para resultados autênticos.'),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  InfoLabel(
-                    label: 'Client ID',
-                    child: TextBox(
-                      controller: _spotifyIdController,
-                      placeholder: 'Insira seu Client ID',
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  InfoLabel(
-                    label: 'Client Secret',
-                    child: PasswordBox(
-                      controller: _spotifySecretController,
-                      placeholder: 'Insira seu Client Secret',
-                      revealMode: PasswordRevealMode.peek,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  FilledButton(
-                    onPressed: () {
-                      widget.onSpotifyCredentialsSaved(
-                        _spotifyIdController.text.trim(),
-                        _spotifySecretController.text.trim(),
-                      );
-                      displayInfoBar(context,
-                          builder: (context, close) => const InfoBar(
-                                title: Text('Sucesso'),
-                                content: Text(
-                                    'Credenciais do Spotify salvas com sucesso!'),
-                                severity: InfoBarSeverity.success,
-                              ));
-                    },
-                    child: const Text('Salvar Credenciais'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
       );
 
   Future<void> _handleAgeBypassChanged(bool val) async {
@@ -435,8 +344,7 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
                     content: const Text('Personalizado'),
                     onChanged: (v) {
                       if (v) {
-                        setState(
-                            () {}); // Just visual update, selection logic is in palette
+                        setState(() {}); 
                       }
                     }),
               ],
@@ -446,7 +354,6 @@ class _FluentSettingsViewState extends State<FluentSettingsView> {
               spacing: 8,
               runSpacing: 8,
               children: ThemeService.presetColors.map((color) {
-                // Convert Material Color to Fluent AccentColor if possible, or just use Color
                 final isSelected = themeService.customColor == color &&
                     themeService.useCustomColor;
                 return GestureDetector(

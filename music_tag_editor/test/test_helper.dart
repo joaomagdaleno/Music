@@ -12,6 +12,7 @@ import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
 import 'package:music_tag_editor/services/local_duo_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/services/equalizer_service.dart';
 // import 'package:music_tag_editor/services/firebase_sync_service.dart'; // Unused
 import 'package:music_tag_editor/services/persona_service.dart';
@@ -219,8 +220,7 @@ Future<void> setupMusicTest({
   when(() => mockDb.saveSetting(any(), any())).thenAnswer((_) async {});
   when(() => mockDb.getSetting(any())).thenAnswer((_) async => null);
   when(() => mockDb.loadCrossfadeDuration()).thenAnswer((_) async => 3);
-  when(() => mockDb.getSpotifyCredentials())
-      .thenAnswer((_) async => {'clientId': null, 'clientSecret': null});
+  // Removed getSpotifyCredentials stub as it's no longer used
   when(() => mockDb.getDownloadedUrls())
       .thenAnswer((_) async => <String, String?>{});
   when(() => mockPlayback.player)
@@ -247,11 +247,10 @@ Future<void> setupMusicTest({
   when(() => mockDuo.sendMessage(any())).thenAnswer((_) async {});
   when(() => mockDb.trackPlay(any())).thenAnswer((_) async {});
 
+  // Fixed signature for getStreamUrl
   when(() => mockSearch.getStreamUrl(
         any(),
-        resolution: any(named: 'resolution'),
         platform: any(named: 'platform'),
-        isVideo: any(named: 'isVideo'),
       )).thenAnswer((_) async => null);
   when(() => mockSearch.getFormats(any(), any())).thenAnswer((_) async => []);
   when(() => mockDuo.role).thenReturn(DuoRole.none);

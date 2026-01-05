@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/screens/playlists/views/fluent_playlist_importer_view.dart';
 import 'package:music_tag_editor/screens/playlists/views/material_playlist_importer_view.dart';

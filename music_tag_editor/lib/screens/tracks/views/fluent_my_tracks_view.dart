@@ -1,5 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 
 /// Fluent UI view for MyTracksScreen - WinUI 3 styling
 class FluentMyTracksView extends StatefulWidget {
@@ -60,38 +60,29 @@ class _FluentMyTracksViewState extends State<FluentMyTracksView> {
             PaneItem(
               icon: const Icon(FluentIcons.music_note),
               title: const Text('Músicas'),
-              body: _buildTrackList(context, 'audio'),
-            ),
-            PaneItem(
-              icon: const Icon(FluentIcons.video),
-              title: const Text('Vídeos'),
-              body: _buildTrackList(context, 'video'),
+              body: _buildTrackList(context),
             ),
           ],
         ),
       );
 
-  Widget _buildTrackList(BuildContext context, String mediaType) {
+  Widget _buildTrackList(BuildContext context) {
     if (widget.isLoading) {
       return const Center(child: ProgressRing());
     }
 
-    final filteredTracks =
-        widget.tracks.where((t) => t.mediaType == mediaType).toList();
-
-    if (filteredTracks.isEmpty) {
+    if (widget.tracks.isEmpty) {
       return Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              mediaType == 'audio' ? FluentIcons.music_note : FluentIcons.video,
+              FluentIcons.music_note,
               size: 64,
               color: FluentTheme.of(context).inactiveColor,
             ),
             const SizedBox(height: 16),
-            Text(
-                'Nenhum(a) ${mediaType == 'audio' ? 'música' : 'vídeo'} salvo(a).'),
+            const Text('Nenhuma música salva.'),
           ],
         ),
       );
@@ -99,9 +90,9 @@ class _FluentMyTracksViewState extends State<FluentMyTracksView> {
 
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: filteredTracks.length,
+      itemCount: widget.tracks.length,
       itemBuilder: (context, index) {
-        final track = filteredTracks[index];
+        final track = widget.tracks[index];
         return Card(
           margin: const EdgeInsets.only(bottom: 8),
           child: ListTile(

@@ -10,31 +10,8 @@ import 'package:music_tag_editor/api/genius_api.dart';
 import 'package:music_tag_editor/api/netease_api.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/services/search_service.dart';
-import 'package:spotify/spotify.dart' as spot;
 
-/// Unified result from metadata aggregation.
-class AggregatedMetadata {
-  final String? title;
-  final String? artist;
-  final String? album;
-  final String? genre;
-  final int? year;
-  final String? thumbnail;
-  final List<String> allGenres;
-  final double confidence; // 0.0 to 1.0 based on source agreement
-
-  AggregatedMetadata({
-    this.title,
-    this.artist,
-    this.album,
-    this.genre,
-    this.year,
-    this.thumbnail,
-    this.allGenres = const [],
-    this.confidence = 0.0,
-  });
-}
+import 'package:music_tag_editor/models/metadata_models.dart';
 
 /// Multi-source metadata aggregator with voting and fallback logic.
 class MetadataAggregatorService {
@@ -52,7 +29,6 @@ class MetadataAggregatorService {
   GeniusApi _genius = GeniusApi();
   NeteaseApi _netease = NeteaseApi();
   LyricsService _lrcLib = LyricsService.instance;
-  SearchService _searchService = SearchService.instance;
 
   @visibleForTesting
   void setDependencies({
@@ -62,7 +38,6 @@ class MetadataAggregatorService {
     GeniusApi? genius,
     NeteaseApi? netease,
     LyricsService? lrcLib,
-    SearchService? searchService,
   }) {
     if (musicBrainz != null) _musicBrainz = musicBrainz;
     if (lastFm != null) _lastFm = lastFm;
@@ -70,10 +45,8 @@ class MetadataAggregatorService {
     if (genius != null) _genius = genius;
     if (netease != null) _netease = netease;
     if (lrcLib != null) _lrcLib = lrcLib;
-    if (searchService != null) _searchService = searchService;
   }
 
-  /// Aggregate metadata from all sources with voting.
   Future<AggregatedMetadata> aggregateMetadata(
     String title,
     String artist, {
@@ -81,7 +54,6 @@ class MetadataAggregatorService {
   }) async {
     final results = <String, Map<String, dynamic>>{};
 
-    // Query all sources in parallel
     // Query all sources in parallel with timeouts for speed
     await Future.wait([
       _fetchMusicBrainz(title, artist)
@@ -96,9 +68,6 @@ class MetadataAggregatorService {
       _fetchGenius(title, artist)
           .timeout(const Duration(seconds: 3), onTimeout: () => null)
           .then((r) => results['genius'] = r ?? {}),
-      _fetchSpotify(title, artist)
-          .timeout(const Duration(seconds: 3), onTimeout: () => null)
-          .then((r) => results['spotify'] = r ?? {}),
     ]);
 
     // Apply voting logic
@@ -263,7 +232,6 @@ class MetadataAggregatorService {
     final discogs = results['discogs'] ?? {};
     final lastfm = results['lastfm'] ?? {};
     final genius = results['genius'] ?? {};
-    final spotify = results['spotify'] ?? {};
 
     // 2. Voting / Gap Filling Algorithm
 
@@ -279,14 +247,12 @@ class MetadataAggregatorService {
     }
 
     final mbMatch = sourceMatches(mb);
-    final spotifyMatch = sourceMatches(spotify);
     final discogsMatch = sourceMatches(discogs);
     final lastfmMatch = sourceMatches(lastfm);
     final geniusMatch = sourceMatches(genius);
 
-    // Title/Artist: Trust MusicBrainz/Spotify first (if they match the intended artist), otherwise vote
+    // Title/Artist: Trust MusicBrainz first (if it matches the intended artist), otherwise vote
     String? finalTitle = (mbMatch ? mb['title'] : null) ??
-        (spotifyMatch ? spotify['title'] : null) ??
         _getMostCommon([
           if (discogsMatch) discogs['title'],
           if (lastfmMatch) lastfm['title'],
@@ -294,7 +260,6 @@ class MetadataAggregatorService {
         ].whereType<String>().toList());
 
     String? finalArtist = (mbMatch ? mb['artist'] : null) ??
-        (spotifyMatch ? spotify['artist'] : null) ??
         _getMostCommon([
           if (discogsMatch) discogs['artist'],
           if (lastfmMatch) lastfm['artist'],
@@ -305,13 +270,10 @@ class MetadataAggregatorService {
     finalTitle ??= title;
     finalArtist ??= artist;
 
-    // Album: MusicBrainz > Spotify > Discogs > LastFM
     final String? finalAlbum =
-        mb['album'] ?? spotify['album'] ?? discogs['title'] ?? lastfm['album'];
+        mb['album'] ?? discogs['title'] ?? lastfm['album'];
 
-    // Year: Spotify/Discogs > MusicBrainz
-    int? finalYear = spotify['year'] ??
-        (discogs['year'] != null
+    int? finalYear = (discogs['year'] != null
             ? int.tryParse(discogs['year'].toString())
             : null);
     if (finalYear == null && mb['year'] != null) {
@@ -338,9 +300,7 @@ class MetadataAggregatorService {
     // Pick the most popular genre as primary
     final String? finalGenre = _getMostCommon(combinedGenres.toList());
 
-    // Thumbnail: Priority to high res: Spotify > Genius > Discogs
-    final String? finalThumbnail = spotify['thumbnail'] ??
-        genius['thumbnail'] ??
+    final String? finalThumbnail = genius['thumbnail'] ??
         discogs['cover'] ??
         discogs['thumbnail'] ??
         lastfm['thumbnail'] ??
@@ -386,32 +346,6 @@ class MetadataAggregatorService {
     );
   }
 
-  Future<Map<String, dynamic>?> _fetchSpotify(
-      String title, String artist) async {
-    try {
-      final spotify = await _searchService.spotifyApi;
-      if (spotify == null) return null;
-
-      final results = await spotify.search
-          .get('$title $artist', types: [spot.SearchType.track]).first(1);
-      if (results.isNotEmpty && results.first.items?.isNotEmpty == true) {
-        final track = results.first.items!.first as spot.Track;
-        return {
-          'title': track.name,
-          'artist': track.artists?.map((a) => a.name).join(', '),
-          'album': track.album?.name,
-          'year': track.album?.releaseDate != null
-              ? int.tryParse(track.album!.releaseDate!.split('-')[0])
-              : null,
-          'thumbnail': track.album?.images?.isNotEmpty == true
-              ? track.album!.images!.first.url
-              : null,
-          'genres': [],
-        };
-      }
-    } catch (_) {}
-    return null;
-  }
 
   String? _getMostCommon(List<String> votes) {
     if (votes.isEmpty) {

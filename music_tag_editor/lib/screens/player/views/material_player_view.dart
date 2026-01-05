@@ -177,29 +177,42 @@ class MaterialPlayerView extends StatelessWidget {
   Widget _buildMobileLayout(BuildContext context, dynamic track, bool playing,
           PlaybackService playback) =>
       Center(
-        child: Stack(
-          alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (track.mediaType == 'video')
-              // Using basic Container for now as Video widget assumed available,
-              // but strictly we should use the same MediaKit Video widget from the package.
-              // Assuming material view has access to `playback.videoController` usage implies adding the widget if not present in imports?
-              // Actually `MaterialPlayerView` imports simpler things.
-              // Wait, `material_player_view.dart` didn't have `Video` widget imported in the previous `read_file`.
-              // It had `VisualizerWidget`.
-              // User wants Video. I need to make sure `media_kit_video` is imported and used.
-              // But for now, let's assume I need to add the import if I use `Video`.
-              // Actually, the previous view showed `MaterialPlayerView` does NOT use `Video` widget currently?
-              // It used `Image.network` and `VisualizerWidget`.
-              // I will ADD `Video` widget support here since the user wants NATIVE VIDEO.
-              // I'll leave a placeholder comment or try to use `Video` if imports allow.
-              // Let's check imports first? No, I'll just put the structure.
-              // Actually, I should probably check if `media_kit_video` is imported.
-              // For safety, I will stick to stripping controls first.
-              Text('Vídeo em Tela Cheia (Controles no Mini Player)',
-                  style: Theme.of(context).textTheme.headlineSmall)
-            else
-              const Text('Reproduzindo Áudio...'),
+            if (track.thumbnail != null)
+              Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Card(
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.network(track.thumbnail!,
+                        width: 250,
+                        height: 250,
+                        fit: BoxFit.cover,
+                        cacheWidth: 500),
+                  ),
+                ),
+              ),
+            Text(track.title,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center),
+            Text(track.artist,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(color: Colors.grey)),
+            const SizedBox(height: 32),
+            const ProgressBar(),
+            const SizedBox(height: 16),
+            _buildControlButtons(context, playing, playback, track),
+            const Expanded(child: LyricsView()),
           ],
         ),
       );

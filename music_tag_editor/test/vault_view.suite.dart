@@ -8,7 +8,8 @@ import 'package:music_tag_editor/screens/vault/vault_screen.dart';
 import 'package:music_tag_editor/services/security_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/download_service.dart'; // For SearchResult
+// For SearchResult
+import 'package:music_tag_editor/models/search_models.dart';
 
 class MockSecurityService extends Mock implements SecurityService {}
 

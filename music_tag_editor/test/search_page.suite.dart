@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/screens/search/search_screen.dart';
 
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'test_helper.dart';
 
 void main() {
@@ -66,16 +66,14 @@ void main() {
         title: 'Song 2',
         artist: 'Artist 2',
         url: 'http://2',
-        platform: MediaPlatform.spotify,
+        platform: MediaPlatform.unknown,
       ),
     ];
 
-    when(() => mockSearch.searchYouTubeMusic(any()))
+    when(() => mockSearch.searchAll(any(),
+            onStatusUpdate: any(named: 'onStatusUpdate')))
         .thenAnswer((_) async => results);
-    when(() => mockSearch.searchYouTube(any()))
-        .thenAnswer((_) async => results);
-    when(() => mockSearch.searchSpotify(any()))
-        .thenAnswer((_) async => results);
+
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(platform: TargetPlatform.android),
@@ -104,12 +102,10 @@ void main() {
       platform: MediaPlatform.youtube,
     );
 
-    when(() => mockSearch.searchYouTubeMusic(any()))
+    when(() => mockSearch.searchAll(any(),
+            onStatusUpdate: any(named: 'onStatusUpdate')))
         .thenAnswer((_) async => [result]);
-    when(() => mockSearch.searchYouTube(any()))
-        .thenAnswer((_) async => [result]);
-    when(() => mockSearch.searchSpotify(any()))
-        .thenAnswer((_) async => [result]);
+
     when(() => mockPlayback.playSearchResult(any()))
         .thenAnswer((_) async => Future.value());
 
@@ -134,10 +130,10 @@ void main() {
   });
 
   testWidgets('Shows no results message', (tester) async {
-    when(() => mockSearch.searchYouTubeMusic(any()))
+    when(() => mockSearch.searchAll(any(),
+            onStatusUpdate: any(named: 'onStatusUpdate')))
         .thenAnswer((_) async => []);
-    when(() => mockSearch.searchYouTube(any())).thenAnswer((_) async => []);
-    when(() => mockSearch.searchSpotify(any())).thenAnswer((_) async => []);
+
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(platform: TargetPlatform.android),

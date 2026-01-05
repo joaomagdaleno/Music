@@ -107,7 +107,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(platform: TargetPlatform.android),
-          home: const LibraryScreen(title: 'Test Library'),
+          home: const LibraryScreen(),
         ),
       );
       await tester.pump(const Duration(milliseconds: 100));
@@ -119,7 +119,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(platform: TargetPlatform.android),
-          home: const LibraryScreen(title: 'Library'),
+          home: const LibraryScreen(),
         ),
       );
       await tester.pump(const Duration(milliseconds: 100));
@@ -131,7 +131,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(platform: TargetPlatform.android),
-          home: const LibraryScreen(title: 'Library'),
+          home: const LibraryScreen(),
         ),
       );
       await tester.pump(const Duration(milliseconds: 100));
@@ -147,7 +147,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(platform: TargetPlatform.android),
-          home: const LibraryScreen(title: 'Library'),
+          home: const LibraryScreen(),
         ),
       );
       await tester.pump(const Duration(milliseconds: 100));
@@ -159,7 +159,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(platform: TargetPlatform.android),
-          home: const LibraryScreen(title: 'Library'),
+          home: const LibraryScreen(),
         ),
       );
       await tester.pump(const Duration(milliseconds: 100));
@@ -171,7 +171,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: ThemeData(platform: TargetPlatform.android),
-          home: const LibraryScreen(title: 'Library'),
+          home: const LibraryScreen(),
         ),
       );
       await tester.pump(const Duration(milliseconds: 100));

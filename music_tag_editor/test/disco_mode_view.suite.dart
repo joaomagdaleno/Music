@@ -8,7 +8,7 @@ import 'package:music_tag_editor/screens/disco/disco_mode_screen.dart';
 
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 
 class MockPlaybackService extends Mock implements PlaybackService {}
 

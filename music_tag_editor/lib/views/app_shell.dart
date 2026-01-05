@@ -17,7 +17,7 @@ import 'package:music_tag_editor/screens/stats/listening_stats_screen.dart';
 import 'package:music_tag_editor/screens/settings/settings_screen.dart';
 import 'package:music_tag_editor/screens/library/library_screen.dart';
 import 'package:music_tag_editor/screens/library/local_sources_screen.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/views/app_shell/fluent_app_shell.dart';
 import 'package:music_tag_editor/views/app_shell/material_app_shell.dart';
 import 'package:music_tag_editor/views/app_shell/persona_shell.dart';
@@ -212,7 +212,7 @@ class _AppShellState extends State<AppShell> {
               fluentIcon: FluentIcons.folder),
         ],
         children: [
-          LibraryScreen(title: 'Editor de Tags'),
+          LibraryScreen(),
           MyTracksScreen(),
           PlaylistsScreen(),
           LocalSourcesScreen(),
@@ -267,6 +267,7 @@ class _AppShellState extends State<AppShell> {
               url: '',
               platform: MediaPlatform.unknown,
               thumbnail: '',
+              isVault: false,
             ),
           ),
           const VaultScreen(),

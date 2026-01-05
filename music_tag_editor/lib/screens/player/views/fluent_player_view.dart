@@ -1,11 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:media_kit/media_kit.dart';
-import 'package:media_kit_video/media_kit_video.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/services/lyrics_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/services/startup_logger.dart';
+import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_tag_editor/widgets/visualizer_widget.dart';
 
 class FluentPlayerView extends StatelessWidget {
   final void Function(BuildContext) onShowSleepTimer;
@@ -67,78 +65,145 @@ class FluentPlayerView extends StatelessWidget {
             return const Center(child: Text('Nenhuma música tocando'));
           }
 
-// Video Surface Only
-          return Expanded(
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                if (track.mediaType == 'video')
-                  Video(controller: playback.videoController)
-                else
-                  // Fallback for audio if somehow we end up here, though we shouldn't.
-                  // User wants "Native" look, so maybe just a nice background or visualization if forced?
-                  // But the plan is to NOT open this screen for audio.
-                  // So this acts as the "Video Only" view.
-                  const Center(
-                      child: Text('Reproduzindo no Mini Player...',
-                          style: TextStyle(color: Colors.white))),
-
-                // Overlay Resolution Selector (optional, sleek)
-                if (track.mediaType == 'video')
-                  Positioned(
-                    top: 20,
-                    right: 20,
-                    child: _buildResolutionSelector(context),
-                  ),
-              ],
-            ),
+          return Column(
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    // Album Art and Title
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (track.thumbnail != null)
+                            Container(
+                              width: 300,
+                              height: 300,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.3),
+                                    blurRadius: 20,
+                                    offset: const Offset(0, 10),
+                                  ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.network(
+                                  track.thumbnail!,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          const SizedBox(height: 32),
+                          StreamBuilder<bool>(
+                            stream: playback.player.stream.playing,
+                            builder: (context, playingSnapshot) {
+                              final playing = playingSnapshot.data ?? false;
+                              return VisualizerWidget(
+                                isPlaying: playing,
+                                color: FluentTheme.of(context).accentColor,
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 24),
+                          Text(
+                            track.title,
+                            style: FluentTheme.of(context).typography.subtitle,
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            track.artist,
+                            style: FluentTheme.of(context).typography.body,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Lyrics View
+                    const Expanded(
+                      flex: 6,
+                      child: Padding(
+                        padding: EdgeInsets.all(32.0),
+                        child: FluentLyricsView(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Playback Controls
+              Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Column(
+                  children: [
+                    FluentProgressBar(player: playback.player),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: const Icon(FluentIcons.previous, size: 24),
+                          onPressed: () => playback.previous(),
+                        ),
+                        const SizedBox(width: 32),
+                        StreamBuilder<bool>(
+                          stream: playback.player.stream.playing,
+                          builder: (context, playingSnapshot) {
+                            final playing = playingSnapshot.data ?? false;
+                            return Button(
+                              onPressed: () =>
+                                  playing ? playback.pause() : playback.resume(),
+                                style: ButtonStyle(
+                                  padding: WidgetStateProperty.all(
+                                      const EdgeInsets.all(12)),
+                                  shape: WidgetStateProperty.all(const CircleBorder()),
+                                ),
+                              child: Icon(
+                                playing ? FluentIcons.pause : FluentIcons.play,
+                                size: 32,
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(width: 32),
+                        IconButton(
+                          icon: const Icon(FluentIcons.next, size: 24),
+                          onPressed: () => playback.next(),
+                        ),
+                        const SizedBox(width: 32),
+                        StreamBuilder<SearchResult?>(
+                          stream: playback.currentTrackStream,
+                          builder: (context, snapshot) {
+                            final current = snapshot.data;
+                            final isFavorite = current?.isVault ?? false;
+                            return IconButton(
+                              icon: Icon(
+                                isFavorite
+                                    ? FluentIcons.favorite_star_fill
+                                    : FluentIcons.favorite_star,
+                                color: isFavorite ? Colors.orange : null,
+                                size: 24,
+                              ),
+                              onPressed: () => playback.toggleFavorite(),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           );
         },
       ),
     );
   }
-
-  Widget _buildResolutionSelector(BuildContext context) =>
-      FutureBuilder<List<String>>(
-        future: PlaybackService.instance.currentTrack != null
-            ? SearchService.instance.getAvailableResolutions(
-                PlaybackService.instance.currentTrack!.url)
-            : Future.value(['Auto']),
-        builder: (context, snapshot) {
-          final resolutions = snapshot.data ?? ['Auto'];
-          return DropDownButton(
-            title: const Text('Resolução'),
-            items: resolutions
-                .map((r) => MenuFlyoutItem(
-                      text: Text(r),
-                      onPressed: () async {
-                        final track = PlaybackService.instance.currentTrack;
-                        if (track != null) {
-                          StartupLogger.log('Selected resolution: $r');
-                          // Implementation for changing resolution:
-                          // We fetch the new stream URL and open it at current position
-                          final newUrl =
-                              await SearchService.instance.getStreamUrl(
-                            track.url,
-                            resolution: r,
-                            platform: track.platform,
-                            isVideo: track.mediaType == 'video',
-                          );
-                          if (newUrl != null) {
-                            final position =
-                                PlaybackService.instance.player.state.position;
-                            await PlaybackService.instance.player
-                                .open(Media(newUrl));
-                            await PlaybackService.instance.player
-                                .seek(position);
-                          }
-                        }
-                      },
-                    ))
-                .toList(),
-          );
-        },
-      );
 }
 
 class FluentProgressBar extends StatelessWidget {
@@ -154,25 +219,23 @@ class FluentProgressBar extends StatelessWidget {
           final maxVal =
               duration.inMilliseconds.toDouble().clamp(1.0, double.infinity);
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32.0),
-            child: Column(
-              children: [
-                Slider(
-                  value: position.inMilliseconds.toDouble().clamp(0, maxVal),
-                  max: maxVal,
-                  onChanged: (val) => PlaybackService.instance
-                      .seek(Duration(milliseconds: val.toInt())),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(_formatDuration(position)),
-                    Text(_formatDuration(duration)),
-                  ],
-                ),
-              ],
-            ),
+          return Column(
+            children: [
+              Slider(
+                value: position.inMilliseconds.toDouble().clamp(0, maxVal),
+                max: maxVal,
+                onChanged: (val) => PlaybackService.instance
+                    .seek(Duration(milliseconds: val.toInt())),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(_formatDuration(position)),
+                  Text(_formatDuration(duration)),
+                ],
+              ),
+            ],
           );
         },
       );
@@ -208,15 +271,18 @@ class FluentLyricsView extends StatelessWidget {
                           position < lyrics[index + 1].time
                       : position >= line.time;
 
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 24),
-                    child: Text(
-                      line.text,
-                      textAlign: TextAlign.center,
-                      style: isCurrent
-                          ? FluentTheme.of(context).typography.bodyStrong
-                          : FluentTheme.of(context).typography.body,
+                  return AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 300),
+                    textAlign: TextAlign.center,
+                    style: isCurrent
+                        ? (FluentTheme.of(context).typography.bodyLarge ?? const TextStyle()).copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: FluentTheme.of(context).accentColor)
+                        : (FluentTheme.of(context).typography.body ?? const TextStyle()),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12.0, horizontal: 24),
+                      child: Text(line.text),
                     ),
                   );
                 },

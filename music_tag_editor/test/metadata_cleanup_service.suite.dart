@@ -6,6 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:music_tag_editor/services/metadata_cleanup_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
+import 'package:music_tag_editor/models/metadata_models.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
 

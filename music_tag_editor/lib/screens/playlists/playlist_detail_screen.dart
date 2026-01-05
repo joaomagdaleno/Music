@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/screens/playlists/views/fluent_playlist_detail_view.dart';
 import 'package:music_tag_editor/screens/playlists/views/material_playlist_detail_view.dart';
-import 'package:music_tag_editor/screens/player/player_screen.dart';
-import 'package:fluent_ui/fluent_ui.dart' as fluent;
 
 /// PlaylistDetailScreen controller - platform-adaptive
 class PlaylistDetailScreen extends StatefulWidget {
@@ -61,19 +59,7 @@ class _PlaylistDetailScreenState extends State<PlaylistDetailScreen> {
         '[PlaylistDetail] Playing: ${result.title} - ${result.url} - ${result.platform}');
     PlaybackService.instance.playSearchResult(result);
 
-    if (context.mounted && result.mediaType == 'video') {
-      if (defaultTargetPlatform == TargetPlatform.windows ||
-          defaultTargetPlatform == TargetPlatform.linux ||
-          defaultTargetPlatform == TargetPlatform.macOS) {
-        Navigator.of(context).push(
-          fluent.FluentPageRoute(builder: (_) => const PlayerScreen()),
-        );
-      } else {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const PlayerScreen()),
-        );
-      }
-    }
+
   }
 
   @override

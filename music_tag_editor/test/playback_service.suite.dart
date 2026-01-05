@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/models/search_models.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:rxdart/rxdart.dart';
 import 'test_helper.dart';
@@ -62,7 +62,7 @@ void main() {
 
     // Stubs
     when(() => mockSearch.getStreamUrl(any(),
-            platform: any(named: 'platform'), isVideo: any(named: 'isVideo')))
+            platform: any(named: 'platform')))
         .thenAnswer((_) async => 'http://stream.url');
     when(() => mockLyrics.fetchLyrics(any(), any()))
         .thenAnswer((_) async => []);

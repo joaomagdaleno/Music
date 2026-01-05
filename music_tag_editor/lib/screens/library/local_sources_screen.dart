@@ -78,39 +78,25 @@ class _LocalSourcesScreenState extends State<LocalSourcesScreen> {
             in directory.list(recursive: true, followLinks: false)) {
           if (entity is File) {
             final path = entity.path.toLowerCase();
-            String? mediaType;
             if (path.endsWith('.mp3') ||
                 path.endsWith('.wav') ||
                 path.endsWith('.flac') ||
                 path.endsWith('.m4a')) {
-              mediaType = 'audio';
-            } else if (path.endsWith('.mp4') ||
-                path.endsWith('.mkv') ||
-                path.endsWith('.avi') ||
-                path.endsWith('.mov')) {
-              mediaType = 'video';
-            }
-
-            if (mediaType != null) {
               try {
-                // Read metadata if audio, otherwise basic info for video
+                // Read metadata if audio
                 String title = entity.uri.pathSegments.last;
                 String artist = 'Desconhecido';
                 String? album;
 
-                if (mediaType == 'audio') {
-                  try {
-                    final metadata =
-                        await _metadataService.readMetadata(entity.path);
-                    title = metadata['title'] ??
-                        title.replaceAll(RegExp(r'\.(mp3|wav|flac|m4a)$'), '');
-                    artist = metadata['artist'] ?? artist;
-                    album = metadata['album'];
-                  } catch (e) {
-                    // ignore metadata read errors
-                  }
-                } else {
-                  title = title.replaceAll(RegExp(r'\.(mp4|mkv|avi|mov)$'), '');
+                try {
+                  final metadata =
+                      await _metadataService.readMetadata(entity.path);
+                  title = metadata['title'] ??
+                      title.replaceAll(RegExp(r'\.(mp3|wav|flac|m4a)$'), '');
+                  artist = metadata['artist'] ?? artist;
+                  album = metadata['album'];
+                } catch (e) {
+                  // ignore metadata read errors
                 }
 
                 await _dbService.saveTrack({
@@ -122,7 +108,7 @@ class _LocalSourcesScreenState extends State<LocalSourcesScreen> {
                   'url': entity.path,
                   'local_path': entity.path,
                   'is_downloaded': 1,
-                  'media_type': mediaType,
+                  'media_type': 'audio',
                 });
                 totalTracksFound++;
                 if (totalTracksFound % 10 == 0) {
