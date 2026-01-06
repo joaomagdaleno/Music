@@ -73,7 +73,8 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
   }
 
   void _setupManagerListener() {
-    _managerProgressSubscription = _musicManager.progressStream.listen((progressMap) {
+    _managerProgressSubscription =
+        _musicManager.progressStream.listen((progressMap) {
       if (mounted) {
         setState(() {
           for (final entry in progressMap.entries) {
@@ -106,7 +107,8 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
           });
         },
       );
-      StartupLogger.log('[DiscoveryScreen] Dependencies initialized successfully');
+      StartupLogger.log(
+          '[DiscoveryScreen] Dependencies initialized successfully');
       setState(() => _isInitializing = false);
     } catch (e, stack) {
       StartupLogger.logError('Dependency initialization FAILED', e, stack);
@@ -203,7 +205,8 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
     StartupLogger.log(
         '[DiscoveryScreen] Loading formats for ${result.id} (${result.platform})');
     if (_formatsCache.containsKey(result.url)) {
-      StartupLogger.log('[DiscoveryScreen] Using cached formats for ${result.id}');
+      StartupLogger.log(
+          '[DiscoveryScreen] Using cached formats for ${result.id}');
       setState(() =>
           _isExpanding[result.url] = !(_isExpanding[result.url] ?? false));
       return;
@@ -318,7 +321,8 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
   }
 
   Future<void> playTrack(SearchResult result) async {
-    StartupLogger.log('[DiscoveryScreen] Playing track (Instant): ${result.id}');
+    StartupLogger.log(
+        '[DiscoveryScreen] Playing track (Instant): ${result.id}');
     try {
       await _musicManager.playInstant(result);
       StartupLogger.log('[DiscoveryScreen] Playback started for ${result.id}');
@@ -331,7 +335,8 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
   }
 
   Future<void> instantDownload(SearchResult result) async {
-    StartupLogger.log('[DiscoveryScreen] Requesting instant download for: ${result.id}');
+    StartupLogger.log(
+        '[DiscoveryScreen] Requesting instant download for: ${result.id}');
     try {
       showSnackBar('Iniciando download de "${result.title}" em background...');
       await _musicManager.downloadTrack(result);

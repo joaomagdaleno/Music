@@ -49,9 +49,12 @@ class MaterialLibraryView extends StatelessWidget {
                 icon: const Icon(Icons.sort),
                 onSelected: onSortChanged,
                 itemBuilder: (context) => [
-                  const PopupMenuItem(value: 'title', child: Text('Sort by Title')),
-                  const PopupMenuItem(value: 'artist', child: Text('Sort by Artist')),
-                  const PopupMenuItem(value: 'year', child: Text('Sort by Year')),
+                  const PopupMenuItem(
+                      value: 'title', child: Text('Sort by Title')),
+                  const PopupMenuItem(
+                      value: 'artist', child: Text('Sort by Artist')),
+                  const PopupMenuItem(
+                      value: 'year', child: Text('Sort by Year')),
                 ],
               ),
               IconButton(
@@ -116,7 +119,8 @@ class MaterialLibraryView extends StatelessWidget {
                 : isGridView
                     ? GridView.builder(
                         padding: const EdgeInsets.all(8),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           childAspectRatio: 1,
                         ),
@@ -133,10 +137,13 @@ class MaterialLibraryView extends StatelessWidget {
                                   const Icon(Icons.music_note, size: 48),
                                   const SizedBox(height: 8),
                                   Text(track.title,
-                                      maxLines: 1, overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold)),
                                   Text(track.artist,
-                                      maxLines: 1, overflow: TextOverflow.ellipsis),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis),
                                 ],
                               ),
                             ),

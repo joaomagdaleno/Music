@@ -24,9 +24,9 @@ class _BackupScreenState extends State<BackupScreen> {
     setState(() => _isLoading = true);
     try {
       if (!await _checkPermission()) return;
-      
+
       String? dir;
-      
+
       // On Android 11+, FilePicker may return URIs that dart:io can't use.
       // Fallback to a safe default directory if needed.
       if (Platform.isAndroid) {
@@ -42,7 +42,7 @@ class _BackupScreenState extends State<BackupScreen> {
         dir = await FilePicker.platform
             .getDirectoryPath(dialogTitle: 'Escolha onde salvar o backup');
       }
-      
+
       if (dir != null) {
         try {
           final path = await BackupService.instance.createBackup(dir);
@@ -79,14 +79,14 @@ class _BackupScreenState extends State<BackupScreen> {
     // Android 13+ (API 33+): Use granular media permissions
     // This is Play Store compliant - no need for MANAGE_EXTERNAL_STORAGE
     if (await Permission.audio.request().isGranted) {
-       return true;
+      return true;
     }
 
     // Android 10 and below: Use legacy storage permission
     if (await Permission.storage.request().isGranted) {
       return true;
     }
-    
+
     // Check if permanently denied
     if (await Permission.audio.isPermanentlyDenied ||
         await Permission.storage.isPermanentlyDenied) {

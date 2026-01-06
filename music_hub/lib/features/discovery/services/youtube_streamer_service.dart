@@ -6,24 +6,25 @@ class YouTubeStreamerService {
 
   /// Busca o melhor ID de vídeo priorizando áudio limpo de estúdio.
   /// Retorna a URL direta de streaming para ser usada no just_audio.
-  Future<String?> getStreamUrl(String query, {bool allowExplicit = false}) async {
+  Future<String?> getStreamUrl(String query,
+      {bool allowExplicit = false}) async {
     try {
-    // Estratégia de busca em cascata
-    // final searchTerms = [
-    //   '$query topic',           // 1. Áudio do álbum (Melhor)
-    //   allowExplicit ? '$query explicit' : '$query official audio', // 2. Audio Oficial
-    //   '$query music video'          // 3. Último recurso (tem intro de vídeo)
-    // ];
+      // Estratégia de busca em cascata
+      // final searchTerms = [
+      //   '$query topic',           // 1. Áudio do álbum (Melhor)
+      //   allowExplicit ? '$query explicit' : '$query official audio', // 2. Audio Oficial
+      //   '$query music video'          // 3. Último recurso (tem intro de vídeo)
+      // ];
 
-    // Tenta buscar o melhor candidato
+      // Tenta buscar o melhor candidato
       // Por enquanto simplificado para usar o primeiro termo de busca que é o mais forte
       StartupLogger.log('[YouTubeStreamer] Searching stream for: $query');
       final results = await _yt.search.search('$query topic');
       final videoId = await _filterBestVideo(results);
 
       if (videoId == null) {
-         StartupLogger.log('[YouTubeStreamer] No valid video found for: $query');
-         return null;
+        StartupLogger.log('[YouTubeStreamer] No valid video found for: $query');
+        return null;
       }
 
       StartupLogger.log('[YouTubeStreamer] Found video ID: $videoId');
@@ -31,7 +32,7 @@ class YouTubeStreamerService {
       // Obtém manifesto e extrai o áudio de maior qualidade
       final manifest = await _yt.videos.streamsClient.getManifest(videoId);
       final streamInfo = manifest.audioOnly.withHighestBitrate();
-      
+
       // Retorna a URL de streaming
       return streamInfo.url.toString();
     } catch (e) {
@@ -52,16 +53,16 @@ class YouTubeStreamerService {
       if (channel.endsWith(' - topic')) {
         return video.id.value;
       }
-      
+
       // Prioridade 2: Official Audio
       if (title.contains('official audio') && !title.contains('lyrics')) {
-         return video.id.value;
+        return video.id.value;
       }
     }
-    
+
     // Fallback: Retorna o primeiro resultado se não for muito curto
     if (results.isNotEmpty) {
-       return results.first.id.value;
+      return results.first.id.value;
     }
 
     // Retorna null se não achar nada satisfatório

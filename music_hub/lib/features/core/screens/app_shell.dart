@@ -18,15 +18,16 @@ class _AppShellState extends State<AppShell> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    const HomeScreen(),      
-    const LibraryScreen(),   
-    const DiscoveryScreen(), 
-    const SettingsScreen(),  
+    const HomeScreen(),
+    const LibraryScreen(),
+    const DiscoveryScreen(),
+    const SettingsScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    final isFluent = !kIsWeb && (defaultTargetPlatform == TargetPlatform.windows);
+    final isFluent =
+        !kIsWeb && (defaultTargetPlatform == TargetPlatform.windows);
 
     if (isFluent) {
       return fluent.NavigationView(
@@ -65,7 +66,9 @@ class _AppShellState extends State<AppShell> {
           children: [
             fluent.ScaffoldPage(content: _screens[_currentIndex]),
             const Positioned(
-              bottom: 0, left: 0, right: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
               child: MiniPlayer(),
             ),
           ],
@@ -78,7 +81,9 @@ class _AppShellState extends State<AppShell> {
         children: [
           _screens[_currentIndex],
           const Positioned(
-            bottom: 0, left: 0, right: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
             child: MiniPlayer(),
           ),
         ],
@@ -88,7 +93,8 @@ class _AppShellState extends State<AppShell> {
         onDestinationSelected: (i) => setState(() => _currentIndex = i),
         destinations: const [
           NavigationDestination(icon: Icon(Icons.home), label: 'Início'),
-          NavigationDestination(icon: Icon(Icons.library_music), label: 'Biblioteca'),
+          NavigationDestination(
+              icon: Icon(Icons.library_music), label: 'Biblioteca'),
           NavigationDestination(icon: Icon(Icons.search), label: 'Explorar'),
           NavigationDestination(icon: Icon(Icons.settings), label: 'Ajustes'),
         ],

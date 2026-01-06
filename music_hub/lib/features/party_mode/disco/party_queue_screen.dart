@@ -22,7 +22,6 @@ class _PartyQueueScreenState extends State<PartyQueueScreen> {
     _showNotification('Abrindo câmera para escanear...');
   }
 
-
   void _showNotification(String message) {
     NotificationService.instance.show(context, message);
   }

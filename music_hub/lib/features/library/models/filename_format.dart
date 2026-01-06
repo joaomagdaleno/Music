@@ -15,7 +15,7 @@ extension FilenameFormatExtension on FilenameFormat {
   }) {
     final safeArtist = _sanitize(artist);
     final safeTitle = _sanitize(title);
-    
+
     switch (this) {
       case FilenameFormat.artistTitle:
         return '$safeArtist - $safeTitle';

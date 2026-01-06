@@ -3,7 +3,7 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:media_kit/media_kit.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:music_hub/features/player/services/playback_service.dart';
 import 'package:music_hub/features/library/models/search_models.dart';
 import 'package:audio_service/audio_service.dart';
@@ -30,7 +30,6 @@ void main() {
   late PlaybackService service;
 
   setUpAll(() {
-    registerFallbackValue(FakeMedia());
   });
 
   setUp(() async {
@@ -47,10 +46,13 @@ void main() {
     mockPlayer = MockPlayer();
     mockAudioHandler = MockBaseAudioHandler();
 
-    // Wire up streams for mockPlayer as before
-    final fakeStream = FakePlayerStream();
-    when(() => mockPlayer.stream).thenReturn(fakeStream);
-    when(() => mockPlayer.state).thenReturn(const PlayerState());
+    // Wire up MockPlayer properties
+    when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(PlayerState(false, ProcessingState.idle)));
+    when(() => mockPlayer.positionStream).thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockPlayer.bufferedPositionStream).thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockPlayer.playingStream).thenAnswer((_) => Stream.value(false));
+    when(() => mockPlayer.durationStream).thenAnswer((_) => Stream.value(null));
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => const Stream.empty());
 
     service = PlaybackService.forTesting(
       player: mockPlayer,
@@ -63,8 +65,8 @@ void main() {
         .thenAnswer((_) async => 'http://stream.url');
     when(() => mockLyrics.fetchLyrics(any(), any()))
         .thenAnswer((_) async => []);
-    when(() => mockPlayer.open(any(), play: any(named: 'play')))
-        .thenAnswer((_) async {});
+    when(() => mockPlayer.setAudioSource(any(), initialPosition: any(named: 'initialPosition'), preload: any(named: 'preload')))
+        .thenAnswer((_) async => null);
     when(() => mockPlayer.play()).thenAnswer((_) async {});
     when(() => mockPlayer.pause()).thenAnswer((_) async {});
     when(() => mockPlayer.stop()).thenAnswer((_) async {});
@@ -83,7 +85,7 @@ void main() {
 
       await service.playSearchResult(track);
 
-      verify(() => mockPlayer.open(any())).called(1);
+      verify(() => mockPlayer.setAudioSource(any())).called(1);
       expect(service.currentTrack, track);
       expect(service.queue.contains(track), true);
     });
@@ -106,4 +108,3 @@ void main() {
   });
 }
 
-class FakeMedia extends Fake implements Media {}

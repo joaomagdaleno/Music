@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:media_kit/media_kit.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:music_hub/features/party_mode/disco/karaoke_screen.dart';
 import 'package:music_hub/features/player/services/playback_service.dart';
 import 'package:music_hub/features/player/services/lyrics_service.dart';
@@ -35,10 +35,8 @@ void main() {
 
     when(() => mockPlayback.player).thenReturn(mockPlayer);
     // Stub position if needed, or removing if test doesn't use it.
-    // when(() => mockPlayer.state.position).thenReturn(Duration.zero);
-    // But better toStub state:
-    when(() => mockPlayer.state)
-        .thenReturn(const PlayerState(position: Duration.zero));
+    when(() => mockPlayer.positionStream).thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(PlayerState(false, ProcessingState.idle)));
 
     when(() => mockPlayback.currentLyrics).thenReturn([]);
     when(() => mockPlayback.lyricsStream).thenAnswer((_) => Stream.value([]));

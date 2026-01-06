@@ -1,65 +1,428 @@
-00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/widget/tag_editor_test.dart
-00:00 +0: TagEditorScreen shows original metadata
-ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-The following TestFailure was thrown running a test:
-Expected: exactly 2 matching candidates
-  Actual: _TextWidgetFinder:<Found 1 widget with text "Original Title": [
-            EditableText-[LabeledGlobalKey<EditableTextState>#28d1b](controller:
-TextEditingController#108d7(TextEditingValue(text: ÔöñOriginal TitleÔö£, selection:
-TextSelection.invalid, composing: TextRange(start: -1, end: -1))), focusNode: FocusNode#5177c,
-autocorrect: true, debugLabel: ((englishLike bodyLarge 2021).merge((blackMountainView
-bodyLarge).apply)).merge(unknown), inherit: false, color: Color(alpha: 1.0000, red: 0.1137, green:
-0.1059, blue: 0.1255, colorSpace: ColorSpace.sRGB), family: Roboto, size: 16.0, weight: 400,
-letterSpacing: 0.5, baseline: alphabetic, height: 1.5x, leadingDistribution: even, decoration:
-Color(alpha: 1.0000, red: 0.1137, green: 0.1059, blue: 0.1255, colorSpace: ColorSpace.sRGB)
-TextDecoration.none, textAlign: start, keyboardType: TextInputType(name: TextInputType.text, signed:
-null, decimal: null), autofillHints: [], spellCheckConfiguration: SpellCheckConfiguration(disabled,
-service: null, text style: null, toolbar builder: null), dependencies: [Directionality, MediaQuery,
-_EffectiveTickerMode], state: EditableTextState#4770c(tickers: tracking 1 ticker)),
-          ]>
-   Which: is not enough
-
-When the exception was thrown, this was the stack:
-#4      main.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/widget/tag_editor_test.dart:53:5)
-<asynchronous suspension>
-#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
-<asynchronous suspension>
-#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
-<asynchronous suspension>
-<asynchronous suspension>
-(elided one frame from package:stack_trace)
-
-This was caught by the test expectation on the following line:
-  file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/widget/tag_editor_test.dart line 53
-The test description was:
-  TagEditorScreen shows original metadata
-ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-00:03 +0 -1: TagEditorScreen shows original metadata [E]
-  Test failed. See exception logs above.
-  The test description was: TagEditorScreen shows original metadata
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ÔÖ┐
+00:01 +1: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ÔÖ┐
+00:01 +2: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ÔÖ┐
+00:01 +2: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease handles errors gracefully
+ÔØî DiscogsApi Error: Exception: Network error
+00:01 +3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ÔÖ┐
+00:01 +4: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ÔÖ┐
+00:01 +5: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ÔÖ┐
+00:01 +5: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong handles errors gracefully
+ÔØî GeniusApi Error: Exception: Network error
+00:01 +6: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ÔÖ┐
+00:01 +7: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ÔÖ┐
+00:01 +7: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo returns null on error
+ÔØî LastFmApi Error: Exception: Network error
+00:01 +8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ÔÖ┐
+00:01 +9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ÔÖ┐
+00:01 +10: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ÔÖ┐
+00:01 +11: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi searchMetadata returns empty list on error response
+00:02 +12: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease returns null on empty query
+00:03 +13: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease handles network errors gracefully
+00:03 +14: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi DiscogsApi can be instantiated
+00:03 +15: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong returns null on empty query
+00:04 +16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong handles network errors gracefully
+00:04 +17: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi GeniusApi can be instantiated
+00:04 +18: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo returns null when API key is placeholder
+ÔÜá´©Å LastFmApi: API Key not configured.
+00:04 +19: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo handles empty strings
+ÔÜá´©Å LastFmApi: API Key not configured.
+00:04 +20: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi LastFmApi can be instantiated
+00:05 +21: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi (setUpAll)
+00:05 +21: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi searchRecording returns map on query
+00:05 +22: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi searchRecording handles empty strings
+00:05 +23: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi MusicBrainzApi can be instantiated
+00:05 +24: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi (tearDownAll)
+00:05 +24: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+test/test_helper.dart:83:6: Error: Type 'FakePlayerStream' not found.
+late FakePlayerStream mockPlayerStreams;
+     ^^^^^^^^^^^^^^^^
+00:08 +25: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics handles empty strings
+00:10 +26: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: NeteaseApi NeteaseApi can be instantiated
+00:10 +27: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: SlavArtApi search returns parsed results on success
+00:10 +28: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: SlavArtApi getDownloadUrl returns URL on success
+00:10 +29: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: SlavArtApi downloadFlac streams content to file
+ÔØî SlavArt Download Error: UnimplementedError: flush
+00:10 +29 -1: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: SlavArtApi downloadFlac streams content to file [E]
+  Expected: not null
+    Actual: <null>
   
-00:03 +0 -1: Auto-fill updates controllers with mock data
-00:04 +1 -1: Save button is disabled when title is empty
-ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-The following _TypeError was thrown running a test:
-type 'Icon' is not a subtype of type 'IconButton' in type cast
-
-When the exception was thrown, this was the stack:
-#0      WidgetController.widget (package:flutter_test/src/controller.dart:808:44)
-#1      main.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/widget/tag_editor_test.dart:79:19)
-<asynchronous suspension>
-#2      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
-<asynchronous suspension>
-#3      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
-<asynchronous suspension>
-<asynchronous suspension>
-(elided one frame from package:stack_trace)
-
-The test description was:
-  Save button is disabled when title is empty
-ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-00:04 +1 -2: Save button is disabled when title is empty [E]
-  Test failed. See exception logs above.
-  The test description was: Save button is disabled when title is empty
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test\slavart_api.suite.dart 69:9                    main.<fn>.<fn>.<fn>
   
-00:04 +1 -2: Some tests failed.
+test/database_service.suite.dart:158:17: Error: Undefined name 'LearningChoice'.
+        choice: LearningChoice.forThisArtist,
+                ^^^^^^^^^^^^^^
+test/database_service_new.suite.dart:41:14: Error: Undefined name 'LearningChoice'.
+      expect(LearningChoice.values, contains(LearningChoice.justThisOnce));
+             ^^^^^^^^^^^^^^
+test/database_service_new.suite.dart:41:46: Error: Undefined name 'LearningChoice'.
+      expect(LearningChoice.values, contains(LearningChoice.justThisOnce));
+                                             ^^^^^^^^^^^^^^
+test/database_service_new.suite.dart:42:14: Error: Undefined name 'LearningChoice'.
+      expect(LearningChoice.values, contains(LearningChoice.forThisArtist));
+             ^^^^^^^^^^^^^^
+test/database_service_new.suite.dart:42:46: Error: Undefined name 'LearningChoice'.
+      expect(LearningChoice.values, contains(LearningChoice.forThisArtist));
+                                             ^^^^^^^^^^^^^^
+test/database_service_new.suite.dart:43:14: Error: Undefined name 'LearningChoice'.
+      expect(LearningChoice.values, contains(LearningChoice.forAll));
+             ^^^^^^^^^^^^^^
+test/database_service_new.suite.dart:43:46: Error: Undefined name 'LearningChoice'.
+      expect(LearningChoice.values, contains(LearningChoice.forAll));
+                                             ^^^^^^^^^^^^^^
+test/firebase_sync_service.suite.dart:56:15: Error: Undefined name 'LearningChoice'.
+      choice: LearningChoice.justThisOnce,
+              ^^^^^^^^^^^^^^
+test/playback_service.suite.dart:55:79: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                              ^
+test/test_helper.dart:83:6: Error: 'FakePlayerStream' isn't a type.
+late FakePlayerStream mockPlayerStreams;
+     ^^^^^^^^^^^^^^^^
+test/test_helper.dart:209:77: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+  when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                            ^
+00:38 +29 -2: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: test/test_helper.dart:83:6: Error: Type 'FakePlayerStream' not found.
+  late FakePlayerStream mockPlayerStreams;
+       ^^^^^^^^^^^^^^^^
+  test/database_service.suite.dart:158:17: Error: Undefined name 'LearningChoice'.
+          choice: LearningChoice.forThisArtist,
+                  ^^^^^^^^^^^^^^
+  test/database_service_new.suite.dart:41:14: Error: Undefined name 'LearningChoice'.
+        expect(LearningChoice.values, contains(LearningChoice.justThisOnce));
+               ^^^^^^^^^^^^^^
+  test/database_service_new.suite.dart:41:46: Error: Undefined name 'LearningChoice'.
+        expect(LearningChoice.values, contains(LearningChoice.justThisOnce));
+                                               ^^^^^^^^^^^^^^
+  test/database_service_new.suite.dart:42:14: Error: Undefined name 'LearningChoice'.
+        expect(LearningChoice.values, contains(LearningChoice.forThisArtist));
+               ^^^^^^^^^^^^^^
+  test/database_service_new.suite.dart:42:46: Error: Undefined name 'LearningChoice'.
+        expect(LearningChoice.values, contains(LearningChoice.forThisArtist));
+                                               ^^^^^^^^^^^^^^
+  test/database_service_new.suite.dart:43:14: Error: Undefined name 'LearningChoice'.
+        expect(LearningChoice.values, contains(LearningChoice.forAll));
+               ^^^^^^^^^^^^^^
+  test/database_service_new.suite.dart:43:46: Error: Undefined name 'LearningChoice'.
+        expect(LearningChoice.values, contains(LearningChoice.forAll));
+                                               ^^^^^^^^^^^^^^
+  test/firebase_sync_service.suite.dart:56:15: Error: Undefined name 'LearningChoice'.
+        choice: LearningChoice.justThisOnce,
+                ^^^^^^^^^^^^^^
+  test/playback_service.suite.dart:55:79: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+      when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                                ^
+  test/test_helper.dart:83:6: Error: 'FakePlayerStream' isn't a type.
+  late FakePlayerStream mockPlayerStreams;
+       ^^^^^^^^^^^^^^^^
+  test/test_helper.dart:209:77: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                              ^
+  .
+test/all_views_test.dart:20:8: Error: Error when reading 'test/personas_widget.suite.dart': O sistema n├úo pode encontrar o arquivo especificado.
+
+import 'personas_widget.suite.dart' as personas_widget;
+       ^
+test/download_page.suite.dart:7:8: Error: Error when reading 'lib/views/download_page.dart': O sistema n├úo pode encontrar o caminho especificado.
+
+import 'package:music_hub/views/download_page.dart';
+       ^
+test/test_helper.dart:83:6: Error: Type 'FakePlayerStream' not found.
+late FakePlayerStream mockPlayerStreams;
+     ^^^^^^^^^^^^^^^^
+test/all_views_test.dart:48:49: Error: Method not found: 'main'.
+  group('PersonasWidget', () => personas_widget.main());
+                                                ^^^^
+test/test_helper.dart:83:6: Error: 'FakePlayerStream' isn't a type.
+late FakePlayerStream mockPlayerStreams;
+     ^^^^^^^^^^^^^^^^
+test/test_helper.dart:209:77: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+  when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                            ^
+test/download_page.suite.dart:29:21: Error: Couldn't find constructor 'DownloadPage'.
+        home: const DownloadPage(),
+                    ^^^^^^^^^^^^
+test/mini_player.suite.dart:19:10: Error: 'MockPlayerStream' isn't a type.
+    late MockPlayerStream mockStream;
+         ^^^^^^^^^^^^^^^^
+test/mini_player.suite.dart:26:62: Error: Late variable 'playingSubject' without initializer is definitely unassigned.
+      when(() => mockPlayer.playingStream).thenAnswer((_) => playingSubject.stream);
+                                                             ^^^^^^^^^^^^^^
+test/mini_player.suite.dart:33:66: Error: Late variable 'playingSubject' without initializer is definitely unassigned.
+      when(() => mockPlayer.playerStateStream).thenAnswer((_) => playingSubject.stream
+                                                                 ^^^^^^^^^^^^^^
+test/mini_player.suite.dart:35:81: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+      when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                                ^
+test/mini_player.suite.dart:43:7: Error: Late variable 'playingSubject' without initializer is definitely unassigned.
+      playingSubject.close();
+      ^^^^^^^^^^^^^^
+test/player_screen.suite.dart:106:64: Error: Too few positional arguments: 2 required, 0 given.
+      when(() => mockPlayer.state).thenReturn(const PlayerState(
+                                                               ^
+../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart:2034:3: Context: Found this candidate, but the arguments don't match.
+  PlayerState(this.playing, this.processingState);
+  ^^^^^^^^^^^
+test/player_screen.suite.dart:125:64: Error: Too few positional arguments: 2 required, 0 given.
+      when(() => mockPlayer.state).thenReturn(const PlayerState(playing: true));
+                                                               ^
+../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart:2034:3: Context: Found this candidate, but the arguments don't match.
+  PlayerState(this.playing, this.processingState);
+  ^^^^^^^^^^^
+test/player_screen.suite.dart:32:81: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+      when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                                ^
+test/player_screen.suite.dart:106:29: Error: The getter 'state' isn't defined for the type 'MockPlayer'.
+ - 'MockPlayer' is from 'test/test_helper.dart'.
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'state'.
+      when(() => mockPlayer.state).thenReturn(const PlayerState(
+                            ^^^^^
+test/player_screen.suite.dart:125:29: Error: The getter 'state' isn't defined for the type 'MockPlayer'.
+ - 'MockPlayer' is from 'test/test_helper.dart'.
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'state'.
+      when(() => mockPlayer.state).thenReturn(const PlayerState(playing: true));
+                            ^^^^^
+01:16 +29 -3: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: test/all_views_test.dart:20:8: Error: Error when reading 'test/personas_widget.suite.dart': O sistema n├úo pode encontrar o arquivo especificado.
+  
+  import 'personas_widget.suite.dart' as personas_widget;
+         ^
+  test/download_page.suite.dart:7:8: Error: Error when reading 'lib/views/download_page.dart': O sistema n├úo pode encontrar o caminho especificado.
+  
+  import 'package:music_hub/views/download_page.dart';
+         ^
+  test/test_helper.dart:83:6: Error: Type 'FakePlayerStream' not found.
+  late FakePlayerStream mockPlayerStreams;
+       ^^^^^^^^^^^^^^^^
+  test/all_views_test.dart:48:49: Error: Method not found: 'main'.
+    group('PersonasWidget', () => personas_widget.main());
+                                                  ^^^^
+  test/test_helper.dart:83:6: Error: 'FakePlayerStream' isn't a type.
+  late FakePlayerStream mockPlayerStreams;
+       ^^^^^^^^^^^^^^^^
+  test/test_helper.dart:209:77: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                              ^
+  test/download_page.suite.dart:29:21: Error: Couldn't find constructor 'DownloadPage'.
+          home: const DownloadPage(),
+                      ^^^^^^^^^^^^
+  test/mini_player.suite.dart:19:10: Error: 'MockPlayerStream' isn't a type.
+      late MockPlayerStream mockStream;
+           ^^^^^^^^^^^^^^^^
+  test/mini_player.suite.dart:26:62: Error: Late variable 'playingSubject' without initializer is definitely unassigned.
+        when(() => mockPlayer.playingStream).thenAnswer((_) => playingSubject.stream);
+                                                               ^^^^^^^^^^^^^^
+  test/mini_player.suite.dart:33:66: Error: Late variable 'playingSubject' without initializer is definitely unassigned.
+        when(() => mockPlayer.playerStateStream).thenAnswer((_) => playingSubject.stream
+                                                                   ^^^^^^^^^^^^^^
+  test/mini_player.suite.dart:35:81: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+        when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                                  ^
+  test/mini_player.suite.dart:43:7: Error: Late variable 'playingSubject' without initializer is definitely unassigned.
+        playingSubject.close();
+        ^^^^^^^^^^^^^^
+  test/player_screen.suite.dart:106:64: Error: Too few positional arguments: 2 required, 0 given.
+        when(() => mockPlayer.state).thenReturn(const PlayerState(
+                                                                 ^
+  ../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart:2034:3: Context: Found this candidate, but the arguments don't match.
+    PlayerState(this.playing, this.processingState);
+    ^^^^^^^^^^^
+  test/player_screen.suite.dart:125:64: Error: Too few positional arguments: 2 required, 0 given.
+        when(() => mockPlayer.state).thenReturn(const PlayerState(playing: true));
+                                                                 ^
+  ../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart:2034:3: Context: Found this candidate, but the arguments don't match.
+    PlayerState(this.playing, this.processingState);
+    ^^^^^^^^^^^
+  test/player_screen.suite.dart:32:81: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+        when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                                  ^
+  test/player_screen.suite.dart:106:29: Error: The getter 'state' isn't defined for the type 'MockPlayer'.
+   - 'MockPlayer' is from 'test/test_helper.dart'.
+  Try correcting the name to the name of an existing getter, or defining a getter or field named 'state'.
+        when(() => mockPlayer.state).thenReturn(const PlayerState(
+                              ^^^^^
+  test/player_screen.suite.dart:125:29: Error: The getter 'state' isn't defined for the type 'MockPlayer'.
+   - 'MockPlayer' is from 'test/test_helper.dart'.
+  Try correcting the name to the name of an existing getter, or defining a getter or field named 'state'.
+        when(() => mockPlayer.state).thenReturn(const PlayerState(playing: true));
+                              ^^^^^
+  .
+test/test_helper.dart:83:6: Error: Type 'FakePlayerStream' not found.
+late FakePlayerStream mockPlayerStreams;
+     ^^^^^^^^^^^^^^^^
+test/test_helper.dart:83:6: Error: 'FakePlayerStream' isn't a type.
+late FakePlayerStream mockPlayerStreams;
+     ^^^^^^^^^^^^^^^^
+test/test_helper.dart:209:77: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+  when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                            ^
+01:46 +29 -4: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: test/test_helper.dart:83:6: Error: Type 'FakePlayerStream' not found.
+  late FakePlayerStream mockPlayerStreams;
+       ^^^^^^^^^^^^^^^^
+  test/test_helper.dart:83:6: Error: 'FakePlayerStream' isn't a type.
+  late FakePlayerStream mockPlayerStreams;
+       ^^^^^^^^^^^^^^^^
+  test/test_helper.dart:209:77: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                              ^
+  .
+test/database_service_test.dart:143:17: Error: Undefined name 'LearningChoice'.
+        choice: LearningChoice.forThisArtist,
+                ^^^^^^^^^^^^^^
+01:57 +29 -5: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: test/database_service_test.dart:143:17: Error: Undefined name 'LearningChoice'.
+          choice: LearningChoice.forThisArtist,
+                  ^^^^^^^^^^^^^^
+  .
+test/test_helper.dart:83:6: Error: Type 'FakePlayerStream' not found.
+late FakePlayerStream mockPlayerStreams;
+     ^^^^^^^^^^^^^^^^
+test/main_app_test.dart:168:27: Error: Couldn't find constructor 'MusicTagEditorApp'.
+        .pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
+                          ^^^^^^^^^^^^^^^^^
+test/main_app_test.dart:187:27: Error: Couldn't find constructor 'MusicTagEditorApp'.
+        .pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
+                          ^^^^^^^^^^^^^^^^^
+test/test_helper.dart:83:6: Error: 'FakePlayerStream' isn't a type.
+late FakePlayerStream mockPlayerStreams;
+     ^^^^^^^^^^^^^^^^
+test/test_helper.dart:209:77: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+  when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                            ^
+02:41 +29 -6: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: test/test_helper.dart:83:6: Error: Type 'FakePlayerStream' not found.
+  late FakePlayerStream mockPlayerStreams;
+       ^^^^^^^^^^^^^^^^
+  test/main_app_test.dart:168:27: Error: Couldn't find constructor 'MusicTagEditorApp'.
+          .pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
+                            ^^^^^^^^^^^^^^^^^
+  test/main_app_test.dart:187:27: Error: Couldn't find constructor 'MusicTagEditorApp'.
+          .pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
+                            ^^^^^^^^^^^^^^^^^
+  test/test_helper.dart:83:6: Error: 'FakePlayerStream' isn't a type.
+  late FakePlayerStream mockPlayerStreams;
+       ^^^^^^^^^^^^^^^^
+  test/test_helper.dart:209:77: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                              ^
+  .
+test/test_helper.dart:83:6: Error: Type 'FakePlayerStream' not found.
+late FakePlayerStream mockPlayerStreams;
+     ^^^^^^^^^^^^^^^^
+test/main_test.dart:71:79: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                              ^
+test/test_helper.dart:83:6: Error: 'FakePlayerStream' isn't a type.
+late FakePlayerStream mockPlayerStreams;
+     ^^^^^^^^^^^^^^^^
+test/test_helper.dart:209:77: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+  when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                            ^
+03:05 +29 -7: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: test/test_helper.dart:83:6: Error: Type 'FakePlayerStream' not found.
+  late FakePlayerStream mockPlayerStreams;
+       ^^^^^^^^^^^^^^^^
+  test/main_test.dart:71:79: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+      when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                                ^
+  test/test_helper.dart:83:6: Error: 'FakePlayerStream' isn't a type.
+  late FakePlayerStream mockPlayerStreams;
+       ^^^^^^^^^^^^^^^^
+  test/test_helper.dart:209:77: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                              ^
+  .
+test/test_helper.dart:83:6: Error: Type 'FakePlayerStream' not found.
+late FakePlayerStream mockPlayerStreams;
+     ^^^^^^^^^^^^^^^^
+test/test_helper.dart:83:6: Error: 'FakePlayerStream' isn't a type.
+late FakePlayerStream mockPlayerStreams;
+     ^^^^^^^^^^^^^^^^
+test/test_helper.dart:209:77: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+  when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                            ^
+03:18 +29 -8: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: test/test_helper.dart:83:6: Error: Type 'FakePlayerStream' not found.
+  late FakePlayerStream mockPlayerStreams;
+       ^^^^^^^^^^^^^^^^
+  test/test_helper.dart:83:6: Error: 'FakePlayerStream' isn't a type.
+  late FakePlayerStream mockPlayerStreams;
+       ^^^^^^^^^^^^^^^^
+  test/test_helper.dart:209:77: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                              ^
+  .
+test/test_helper.dart:83:6: Error: Type 'FakePlayerStream' not found.
+late FakePlayerStream mockPlayerStreams;
+     ^^^^^^^^^^^^^^^^
+test/test_helper.dart:83:6: Error: 'FakePlayerStream' isn't a type.
+late FakePlayerStream mockPlayerStreams;
+     ^^^^^^^^^^^^^^^^
+test/test_helper.dart:209:77: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+  when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                            ^
+03:35 +29 -9: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: test/test_helper.dart:83:6: Error: Type 'FakePlayerStream' not found.
+  late FakePlayerStream mockPlayerStreams;
+       ^^^^^^^^^^^^^^^^
+  test/test_helper.dart:83:6: Error: 'FakePlayerStream' isn't a type.
+  late FakePlayerStream mockPlayerStreams;
+       ^^^^^^^^^^^^^^^^
+  test/test_helper.dart:209:77: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                              ^
+  .
+03:42 +29 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.cleanMetadata should remove (Official Video) suffixes
+03:42 +30 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.cleanMetadata should remove (Music Video) suffixes
+03:42 +31 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.cleanMetadata should remove (Video) and [Video] suffixes
+03:42 +32 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.cleanMetadata should remove (Lyrics) and [Lyrics] suffixes
+03:42 +33 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.cleanMetadata should preserve (feat. X) and (Live at Wembley)
+03:43 +34 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.cleanMetadata should clean trailing " - YouTube"
+03:43 +35 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.cleanMetadata should trim whitespace after removal
+03:43 +36 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.toMatchKey (Normalization) should normalize diacritics
+03:43 +37 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.toMatchKey (Normalization) should lowercase and trim
+03:43 +38 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.toMatchKey (Normalization) should handle mixed diacritics and casing
+03:43 +39 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/utils/file_utils_test.dart: sanitizeFilename should replace colons with underscores
+03:44 +40 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/utils/file_utils_test.dart: sanitizeFilename should replace forward and backward slashes
+03:44 +41 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/utils/file_utils_test.dart: sanitizeFilename should replace angle brackets
+03:44 +42 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/utils/file_utils_test.dart: sanitizeFilename should replace other reserved characters (*, ?, ", |)
+03:44 +43 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/utils/file_utils_test.dart: sanitizeFilename should handle nested paths by flattening them
+03:44 +44 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/utils/file_utils_test.dart: sanitizeFilename should return same string if no illegal characters
+03:48 +45 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/widget/tag_editor_test.dart: TagEditorScreen shows original metadata
+03:50 +46 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/widget/tag_editor_test.dart: Auto-fill updates controllers with mock data
+03:51 +47 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/widget/tag_editor_test.dart: Save button is disabled when title is empty
+03:51 +48 -9: Some tests failed.

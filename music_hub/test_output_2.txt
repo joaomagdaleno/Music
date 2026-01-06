@@ -1,68 +1,297 @@
-00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_tag_editor/test/widget/tag_editor_test.dart
-00:00 +0: TagEditorScreen shows original metadata
-ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-The following assertion was thrown running a test:
-The value of a foundation debug variable was changed by the test.
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ÔÖ┐
+00:02 +1: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease returns parsed data on success
+00:02 +2: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease returns null on empty results
+00:02 +3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease handles errors gracefully
+ÔØî DiscogsApi Error: Exception: Network error
+00:02 +4: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong returns parsed data on success
+00:02 +5: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong returns null on empty hits
+00:02 +6: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong handles errors gracefully
+ÔØî GeniusApi Error: Exception: Network error
+00:03 +7: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo returns parsed data on success
+00:03 +8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo returns null on error
+ÔØî LastFmApi Error: Exception: Network error
+00:03 +9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo returns null on 404
+00:03 +10: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi searchMetadata returns parsed recordings
+00:03 +11: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi searchMetadata returns empty list on error response
+00:04 +12: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease returns null on empty query
+00:04 +13: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease handles network errors gracefully
+00:05 +14: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi DiscogsApi can be instantiated
+00:05 +15: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong returns null on empty query
+00:05 +16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong handles network errors gracefully
+00:05 +17: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi GeniusApi can be instantiated
+00:05 +18: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo returns null when API key is placeholder
+ÔÜá´©Å LastFmApi: API Key not configured.
+00:05 +19: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo handles empty strings
+ÔÜá´©Å LastFmApi: API Key not configured.
+00:05 +20: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi LastFmApi can be instantiated
+00:05 +21: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi (setUpAll)
+00:05 +21: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi searchRecording returns map on query
+00:05 +22: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi searchRecording handles empty strings
+00:05 +23: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi MusicBrainzApi can be instantiated
+00:05 +24: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi (tearDownAll)
+00:05 +24: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+test/playback_service.suite.dart:55:79: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                              ^
+test/test_helper.dart:208:64: Error: A value of type 'Stream<SequenceState?>' can't be returned from a function with return type 'Stream<SequenceState>'.
+ - 'Stream' is from 'dart:async'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+  when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream<SequenceState?>.value(null));
+                                                               ^
+00:09 +25: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics handles empty strings
+00:10 +26: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: NeteaseApi NeteaseApi can be instantiated
+00:10 +27: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: SlavArtApi search returns parsed results on success
+00:10 +28: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: SlavArtApi getDownloadUrl returns URL on success
+00:10 +29: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: SlavArtApi downloadFlac streams content to file
+00:16 +30 -1: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: test/playback_service.suite.dart:55:79: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+      when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                                ^
+  test/test_helper.dart:208:64: Error: A value of type 'Stream<SequenceState?>' can't be returned from a function with return type 'Stream<SequenceState>'.
+   - 'Stream' is from 'dart:async'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream<SequenceState?>.value(null));
+                                                                 ^
+  .
+test/download_page.suite.dart:7:8: Error: Error when reading 'lib/views/download_page.dart': O sistema n├úo pode encontrar o caminho especificado.
 
-When the exception was thrown, this was the stack:
-#0      debugAssertAllFoundationVarsUnset.<anonymous closure> (package:flutter/src/foundation/debug.dart:45:7)
-#1      debugAssertAllFoundationVarsUnset (package:flutter/src/foundation/debug.dart:48:4)
-#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1100:7)
-#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1599:11)
-#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1078:7)
-<asynchronous suspension>
-<asynchronous suspension>
-(elided one frame from package:stack_trace)
-
-The test description was:
-  TagEditorScreen shows original metadata
-ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-00:02 +0 -1: TagEditorScreen shows original metadata [E]
-  Test failed. See exception logs above.
-  The test description was: TagEditorScreen shows original metadata
+import 'package:music_hub/views/download_page.dart';
+       ^
+test/test_helper.dart:208:64: Error: A value of type 'Stream<SequenceState?>' can't be returned from a function with return type 'Stream<SequenceState>'.
+ - 'Stream' is from 'dart:async'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+  when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream<SequenceState?>.value(null));
+                                                               ^
+test/download_page.suite.dart:29:21: Error: Couldn't find constructor 'DownloadPage'.
+        home: const DownloadPage(),
+                    ^^^^^^^^^^^^
+test/mini_player.suite.dart:19:10: Error: 'MockPlayerStream' isn't a type.
+    late MockPlayerStream mockStream;
+         ^^^^^^^^^^^^^^^^
+test/mini_player.suite.dart:35:81: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+      when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                                ^
+test/player_screen.suite.dart:106:59: Error: Cannot invoke a non-'const' constructor where a const expression is expected.
+Try using a constructor or factory that is 'const'.
+      when(() => mockPlayer.playerState).thenReturn(const PlayerState(false, ProcessingState.ready));
+                                                          ^^^^^^^^^^^
+test/player_screen.suite.dart:119:59: Error: Cannot invoke a non-'const' constructor where a const expression is expected.
+Try using a constructor or factory that is 'const'.
+      when(() => mockPlayer.playerState).thenReturn(const PlayerState(true, ProcessingState.ready));
+                                                          ^^^^^^^^^^^
+test/player_screen.suite.dart:32:81: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+      when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                                ^
+00:33 +30 -2: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: test/download_page.suite.dart:7:8: Error: Error when reading 'lib/views/download_page.dart': O sistema n├úo pode encontrar o caminho especificado.
   
-00:02 +0 -1: Auto-fill updates controllers with mock data
-ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-The following assertion was thrown running a test:
-The value of a foundation debug variable was changed by the test.
-
-When the exception was thrown, this was the stack:
-#0      debugAssertAllFoundationVarsUnset.<anonymous closure> (package:flutter/src/foundation/debug.dart:45:7)
-#1      debugAssertAllFoundationVarsUnset (package:flutter/src/foundation/debug.dart:48:4)
-#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1100:7)
-#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1599:11)
-#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1078:7)
-<asynchronous suspension>
-<asynchronous suspension>
-(elided one frame from package:stack_trace)
-
-The test description was:
-  Auto-fill updates controllers with mock data
-ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-00:02 +0 -2: Auto-fill updates controllers with mock data [E]
-  Test failed. See exception logs above.
-  The test description was: Auto-fill updates controllers with mock data
+  import 'package:music_hub/views/download_page.dart';
+         ^
+  test/test_helper.dart:208:64: Error: A value of type 'Stream<SequenceState?>' can't be returned from a function with return type 'Stream<SequenceState>'.
+   - 'Stream' is from 'dart:async'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream<SequenceState?>.value(null));
+                                                                 ^
+  test/download_page.suite.dart:29:21: Error: Couldn't find constructor 'DownloadPage'.
+          home: const DownloadPage(),
+                      ^^^^^^^^^^^^
+  test/mini_player.suite.dart:19:10: Error: 'MockPlayerStream' isn't a type.
+      late MockPlayerStream mockStream;
+           ^^^^^^^^^^^^^^^^
+  test/mini_player.suite.dart:35:81: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+        when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                                  ^
+  test/player_screen.suite.dart:106:59: Error: Cannot invoke a non-'const' constructor where a const expression is expected.
+  Try using a constructor or factory that is 'const'.
+        when(() => mockPlayer.playerState).thenReturn(const PlayerState(false, ProcessingState.ready));
+                                                            ^^^^^^^^^^^
+  test/player_screen.suite.dart:119:59: Error: Cannot invoke a non-'const' constructor where a const expression is expected.
+  Try using a constructor or factory that is 'const'.
+        when(() => mockPlayer.playerState).thenReturn(const PlayerState(true, ProcessingState.ready));
+                                                            ^^^^^^^^^^^
+  test/player_screen.suite.dart:32:81: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+        when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                                  ^
+  .
+test/test_helper.dart:208:64: Error: A value of type 'Stream<SequenceState?>' can't be returned from a function with return type 'Stream<SequenceState>'.
+ - 'Stream' is from 'dart:async'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+  when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream<SequenceState?>.value(null));
+                                                               ^
+00:50 +30 -3: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: test/test_helper.dart:208:64: Error: A value of type 'Stream<SequenceState?>' can't be returned from a function with return type 'Stream<SequenceState>'.
+   - 'Stream' is from 'dart:async'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream<SequenceState?>.value(null));
+                                                                 ^
+  .
+00:58 +30 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: (setUpAll)
+00:58 +30 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Settings save and load filename format
+00:59 +31 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Settings save and load crossfade duration
+00:59 +32 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Settings save and load age bypass
+00:59 +33 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Tracks save and retrieve tracks
+01:00 +34 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Tracks toggle vault
+01:00 +35 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Tracks trackPlay increments count and sets lastPlayed
+01:00 +36 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Playlists create playlist and add tracks
+01:00 +37 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Duo save guest and add session tracks
+01:00 +37 -4: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Duo save guest and add session tracks [E]
+  SqfliteFfiException(sqlite_error: 1, , SqliteException(1): while preparing statement, no such table: duo_guests, SQL logic error (code 1)
+    Causing statement: INSERT OR REPLACE INTO duo_guests (id, name, last_connected) VALUES (?, ?, ?)}) DatabaseException(SqliteException(1): while preparing statement, no such table: duo_guests, SQL logic error (code 1)
+    Causing statement: INSERT OR REPLACE INTO duo_guests (id, name, last_connected) VALUES (?, ?, ?)) sql 'INSERT OR REPLACE INTO duo_guests (id, name, last_connected) VALUES (?, ?, ?)' args [g1, Guest 1, 1767674458218] {details: {database: {path: :memory:, id: 1, readOnly: false, singleInstance: false}}}
+  package:sqflite_common_ffi/src/method_call.dart 125:9  responseToResultOrThrow
+  package:sqflite_common_ffi/src/isolate.dart 35:12      SqfliteIsolate.handle
   
-00:03 +0 -2: Save button is disabled when title is empty
-ÔòÉÔòÉÔòí EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK Ôò×ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-The following assertion was thrown running a test:
-The value of a foundation debug variable was changed by the test.
-
-When the exception was thrown, this was the stack:
-#0      debugAssertAllFoundationVarsUnset.<anonymous closure> (package:flutter/src/foundation/debug.dart:45:7)
-#1      debugAssertAllFoundationVarsUnset (package:flutter/src/foundation/debug.dart:48:4)
-#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1100:7)
-#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1599:11)
-#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1078:7)
-<asynchronous suspension>
-<asynchronous suspension>
-(elided one frame from package:stack_trace)
-
-The test description was:
-  Save button is disabled when title is empty
-ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
-00:03 +0 -3: Save button is disabled when title is empty [E]
-  Test failed. See exception logs above.
-  The test description was: Save button is disabled when title is empty
+01:00 +37 -4: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Moods getTracksByMood returns matching genres
+01:00 +37 -5: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Moods getTracksByMood returns matching genres [E]
+  Expected: <true>
+    Actual: <false>
   
-00:03 +0 -3: Some tests failed.
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test\database_service_test.dart 132:7               main.<fn>.<fn>
+  
+01:00 +37 -5: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Learning Rules save and get learning rules
+01:00 +37 -6: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Learning Rules save and get learning rules [E]
+  SqfliteFfiException(sqlite_error: 1, , SqliteException(1): while preparing statement, table learning_rules has no column named artist, SQL logic error (code 1)
+    Causing statement: INSERT OR REPLACE INTO learning_rules (artist, field, originalValue, correctedValue, choice) VALUES (?, ?, ?, ?, ?)}) DatabaseException(SqliteException(1): while preparing statement, table learning_rules has no column named artist, SQL logic error (code 1)
+    Causing statement: INSERT OR REPLACE INTO learning_rules (artist, field, originalValue, correctedValue, choice) VALUES (?, ?, ?, ?, ?)) sql 'INSERT OR REPLACE INTO learning_rules (artist, field, originalValue, correctedValue, choice) VALUES (?, ?, ?, ?, ?)' args [A, title, O, C, LearningChoice.forThisArtist] {details: {database: {path: :memory:, id: 1, readOnly: false, singleInstance: false}}}
+  package:sqflite_common_ffi/src/method_call.dart 125:9  responseToResultOrThrow
+  package:sqflite_common_ffi/src/isolate.dart 35:12      SqfliteIsolate.handle
+  
+01:00 +37 -6: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: (tearDownAll)
+test/test_helper.dart:208:64: Error: A value of type 'Stream<SequenceState?>' can't be returned from a function with return type 'Stream<SequenceState>'.
+ - 'Stream' is from 'dart:async'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+  when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream<SequenceState?>.value(null));
+                                                               ^
+01:12 +37 -7: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: test/test_helper.dart:208:64: Error: A value of type 'Stream<SequenceState?>' can't be returned from a function with return type 'Stream<SequenceState>'.
+   - 'Stream' is from 'dart:async'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream<SequenceState?>.value(null));
+                                                                 ^
+  .
+test/main_test.dart:71:79: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                              ^
+test/test_helper.dart:208:64: Error: A value of type 'Stream<SequenceState?>' can't be returned from a function with return type 'Stream<SequenceState>'.
+ - 'Stream' is from 'dart:async'.
+ - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+  when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream<SequenceState?>.value(null));
+                                                               ^
+01:32 +37 -8: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: test/main_test.dart:71:79: Error: The argument type 'Null' can't be assigned to the parameter type 'SequenceState'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+      when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream.value(null));
+                                                                                ^
+  test/test_helper.dart:208:64: Error: A value of type 'Stream<SequenceState?>' can't be returned from a function with return type 'Stream<SequenceState>'.
+   - 'Stream' is from 'dart:async'.
+   - 'SequenceState' is from 'package:just_audio/just_audio.dart' ('../../../../AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.10.5/lib/just_audio.dart').
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => Stream<SequenceState?>.value(null));
+                                                                 ^
+  .
+01:52 +37 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: (setUpAll)
+01:52 +37 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: playSearchResult updates current track and plays
+01:52 +37 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: playSearchResult updates current track and plays [E]
+  Bad state: No method stub was called from within `when()`. Was a real method called, or perhaps an extension method?
+  package:mocktail/src/mocktail.dart 262:7   When._completeWhen
+  package:mocktail/src/mocktail.dart 257:12  When.thenAnswer
+  test\test_helper.dart 203:44               setupMusicTest
+  test\playback_service_test.dart 49:11      main.<fn>
+  
+01:52 +37 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: playSearchResult fetches lyrics and applies theme
+01:52 +37 -10: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: playSearchResult fetches lyrics and applies theme [E]
+  Bad state: No method stub was called from within `when()`. Was a real method called, or perhaps an extension method?
+  package:mocktail/src/mocktail.dart 262:7   When._completeWhen
+  package:mocktail/src/mocktail.dart 257:12  When.thenAnswer
+  test\test_helper.dart 203:44               setupMusicTest
+  test\playback_service_test.dart 49:11      main.<fn>
+  
+01:52 +37 -10: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: Queue Management addToQueue adds to list and playlist
+01:52 +37 -11: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: Queue Management addToQueue adds to list and playlist [E]
+  Bad state: No method stub was called from within `when()`. Was a real method called, or perhaps an extension method?
+  package:mocktail/src/mocktail.dart 262:7   When._completeWhen
+  package:mocktail/src/mocktail.dart 257:12  When.thenAnswer
+  test\test_helper.dart 203:44               setupMusicTest
+  test\playback_service_test.dart 49:11      main.<fn>
+  
+01:52 +37 -11: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: Queue Management clearQueue empties the list
+01:52 +37 -12: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: Queue Management clearQueue empties the list [E]
+  Bad state: No method stub was called from within `when()`. Was a real method called, or perhaps an extension method?
+  package:mocktail/src/mocktail.dart 262:7   When._completeWhen
+  package:mocktail/src/mocktail.dart 257:12  When.thenAnswer
+  test\test_helper.dart 203:44               setupMusicTest
+  test\playback_service_test.dart 49:11      main.<fn>
+  
+01:52 +37 -12: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown
+01:52 +37 -13: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: Sleep Timer setSleepTimer initiates countdown [E]
+  Bad state: No method stub was called from within `when()`. Was a real method called, or perhaps an extension method?
+  package:mocktail/src/mocktail.dart 262:7   When._completeWhen
+  package:mocktail/src/mocktail.dart 257:12  When.thenAnswer
+  test\test_helper.dart 203:44               setupMusicTest
+  test\playback_service_test.dart 49:11      main.<fn>
+  
+01:52 +37 -13: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: Sleep Timer cancelSleepTimer clears timer
+01:52 +37 -14: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: Sleep Timer cancelSleepTimer clears timer [E]
+  Bad state: No method stub was called from within `when()`. Was a real method called, or perhaps an extension method?
+  package:mocktail/src/mocktail.dart 262:7   When._completeWhen
+  package:mocktail/src/mocktail.dart 257:12  When.thenAnswer
+  test\test_helper.dart 203:44               setupMusicTest
+  test\playback_service_test.dart 49:11      main.<fn>
+  
+01:52 +37 -14: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: Controls pause/resume delegates to player
+01:52 +37 -15: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: Controls pause/resume delegates to player [E]
+  Bad state: No method stub was called from within `when()`. Was a real method called, or perhaps an extension method?
+  package:mocktail/src/mocktail.dart 262:7   When._completeWhen
+  package:mocktail/src/mocktail.dart 257:12  When.thenAnswer
+  test\test_helper.dart 203:44               setupMusicTest
+  test\playback_service_test.dart 49:11      main.<fn>
+  
+01:52 +37 -15: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: Controls seek delegates to player and sends message
+01:52 +37 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: Controls seek delegates to player and sends message [E]
+  Bad state: No method stub was called from within `when()`. Was a real method called, or perhaps an extension method?
+  package:mocktail/src/mocktail.dart 262:7   When._completeWhen
+  package:mocktail/src/mocktail.dart 257:12  When.thenAnswer
+  test\test_helper.dart 203:44               setupMusicTest
+  test\playback_service_test.dart 49:11      main.<fn>
+  
+01:52 +37 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: (tearDownAll)
+01:59 +37 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: (setUpAll)
+02:00 +38 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: (setUpAll)
+02:00 +39 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: (setUpAll)
+02:00 +40 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: (setUpAll)
+02:00 +41 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: (setUpAll)
+02:00 +42 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: (setUpAll)
+02:00 +43 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: (setUpAll)
+02:00 +44 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: (setUpAll)
+02:00 +45 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: (setUpAll)
+02:00 +46 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: (setUpAll)
+02:00 +47 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: (setUpAll)
+02:00 +47 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: Loads and displays settings
+02:03 +48 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: Loads and displays settings
+02:03 +49 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: Loads and displays settings
+02:03 +50 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: Loads and displays settings
+02:03 +51 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: Loads and displays settings
+02:03 +52 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: Loads and displays settings
+02:03 +53 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: Loads and displays settings
+02:04 +54 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/widget/tag_editor_test.dart: TagEditorScreen shows original metadata
+02:07 +55 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/widget/tag_editor_test.dart: TagEditorScreen shows original metadata
+02:07 +56 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: Clean Library interaction
+02:08 +57 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/widget/tag_editor_test.dart: Auto-fill updates controllers with mock data
+02:09 +58 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/widget/tag_editor_test.dart: Auto-fill updates controllers with mock data
+02:09 +59 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: Sync interactions
+02:09 +60 -16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/widget/tag_editor_test.dart: Save button is disabled when title is empty
+02:10 +61 -16: Some tests failed.

@@ -80,9 +80,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final success = await FirebaseSyncService.instance.enableSync();
     if (mounted) {
       setState(() => _isLoading = false);
-      _showNotification(success
-          ? 'Sincronização ativada!'
-          : 'Erro ao ativar sincronização');
+      _showNotification(
+          success ? 'Sincronização ativada!' : 'Erro ao ativar sincronização');
     }
   }
 

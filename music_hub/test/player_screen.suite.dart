@@ -5,43 +5,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:media_kit/media_kit.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:music_hub/features/player/screens/player_screen.dart';
 import 'package:music_hub/core/services/local_duo_service.dart';
 import 'package:music_hub/features/library/models/search_models.dart';
 import 'test_helper.dart';
 
-// Custom Fake Stream to allow controlling stream events
-class CustomizablePlayerStream extends Fake implements PlayerStream {
-  final StreamController<bool> playingController;
-  final StreamController<Duration> positionController;
-
-  CustomizablePlayerStream(this.playingController, this.positionController);
-
-  @override
-  Stream<bool> get playing => playingController.stream;
-  @override
-  Stream<Duration> get position => positionController.stream;
-
-  @override
-  Stream<Duration> get buffer => Stream.value(Duration.zero);
-  @override
-  Stream<Duration> get duration => Stream.value(Duration.zero);
-  @override
-  Stream<bool> get completed => Stream.value(false);
-  @override
-  Stream<double> get volume => Stream.value(100.0);
-  @override
-  Stream<PlaylistMode> get playlistMode => Stream.value(PlaylistMode.none);
-  @override
-  Stream<bool> get shuffle => Stream.value(false);
-  @override
-  Stream<double> get pitch => Stream.value(1.0);
-  @override
-  Stream<double> get rate => Stream.value(1.0);
-  @override
-  Stream<PlayerLog> get log => const Stream.empty();
-}
 
 void main() {
   group('PlayerScreen Widget Tests', () {
@@ -53,12 +22,14 @@ void main() {
       playingController = StreamController<bool>.broadcast();
       positionController = StreamController<Duration>.broadcast();
 
-      // Use customizable stream for mocking
-      when(() => mockPlayer.stream).thenReturn(
-          CustomizablePlayerStream(playingController, positionController));
-
-      // Default state stubbing
-      when(() => mockPlayer.state).thenReturn(const PlayerState());
+      // Use controllers for mocking streams
+      when(() => mockPlayer.playingStream).thenAnswer((_) => playingController.stream);
+      when(() => mockPlayer.positionStream).thenAnswer((_) => positionController.stream);
+      when(() => mockPlayer.bufferedPositionStream).thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockPlayer.durationStream).thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockPlayer.playerStateStream).thenAnswer((_) => playingController.stream
+          .map((p) => PlayerState(p, ProcessingState.ready)));
+      when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => const Stream.empty());
 
       when(() => mockPlayback.sleepTimerStream)
           .thenAnswer((_) => Stream.value(null));
@@ -132,13 +103,7 @@ void main() {
 
       // Initially paused
       playingController.add(false);
-      when(() => mockPlayer.state).thenReturn(const PlayerState(
-          playing: false)); // state getter is used for button icon?
-      // Wait, StreamBuilder usually drives UI. But if UI checks player.state.playing directly, we need to stub state getter too.
-      // But we can't update state valid return dynamically easily unless we use a variable.
-
-      // Let's assume StreamBuilder logic handles it. But PlayerScreen might check `playback.player.state.playing`.
-      // The `PlayerScreen` likely listens to `stream.playing`.
+      when(() => mockPlayer.playerState).thenReturn(PlayerState(false, ProcessingState.ready));
 
       await tester.pump();
 
@@ -151,7 +116,7 @@ void main() {
       // Simulate playing state update
       playingController.add(true);
       // Update state mock to reflect playing
-      when(() => mockPlayer.state).thenReturn(const PlayerState(playing: true));
+      when(() => mockPlayer.playerState).thenReturn(PlayerState(true, ProcessingState.ready));
 
       await tester.pump();
 

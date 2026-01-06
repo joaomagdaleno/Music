@@ -14,7 +14,8 @@ class LastFmApi {
   LastFmApi({http.Client? client, String apiKey = ApiKeys.lastFmApiKey})
       : _client = client ?? DependencyManager.instance.client,
         _apiKey = apiKey,
-        _rateLimiter = RateLimiter(maxRequests: 30, interval: const Duration(minutes: 1));
+        _rateLimiter =
+            RateLimiter(maxRequests: 30, interval: const Duration(minutes: 1));
 
   Future<Map<String, dynamic>?> getTrackInfo(
       String title, String artist) async {

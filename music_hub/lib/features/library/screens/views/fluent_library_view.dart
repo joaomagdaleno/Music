@@ -56,7 +56,9 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
           commandBar: CommandBar(
             primaryItems: [
               CommandBarButton(
-                icon: Icon(widget.isGridView ? FluentIcons.view_all : FluentIcons.list),
+                icon: Icon(widget.isGridView
+                    ? FluentIcons.view_all
+                    : FluentIcons.list),
                 label: Text(widget.isGridView ? 'List View' : 'Grid View'),
                 onPressed: widget.onToggleView,
               ),
@@ -74,7 +76,8 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    FluentPageRoute(builder: (context) => const DiscoveryScreen()),
+                    FluentPageRoute(
+                        builder: (context) => const DiscoveryScreen()),
                   );
                 },
               ),
@@ -157,46 +160,47 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
           return HoverButton(
             onPressed: () {},
             builder: (context, states) => Column(
-                children: [
-                   Expanded(
-                    child: Card(
-                      padding: EdgeInsets.zero,
-                      child: Stack(
-                        children: [
-                          Center(
-                            child: Icon(
-                              FluentIcons.music_note,
-                              size: 48,
-                              color: Colors.grey[100],
-                            ),
+              children: [
+                Expanded(
+                  child: Card(
+                    padding: EdgeInsets.zero,
+                    child: Stack(
+                      children: [
+                        Center(
+                          child: Icon(
+                            FluentIcons.music_note,
+                            size: 48,
+                            color: Colors.grey[100],
                           ),
-                          Positioned(
-                            right: 4,
-                            bottom: 4,
-                            child: IconButton(
-                              icon: const Icon(FluentIcons.more),
-                              onPressed: () => _showContextMenu(context, track, index),
-                            ),
+                        ),
+                        Positioned(
+                          right: 4,
+                          bottom: 4,
+                          child: IconButton(
+                            icon: const Icon(FluentIcons.more),
+                            onPressed: () =>
+                                _showContextMenu(context, track, index),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    track.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    track.artist,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: Colors.grey[100], fontSize: 12),
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  track.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  track.artist,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: Colors.grey[100], fontSize: 12),
+                ),
+              ],
+            ),
           );
         },
       );
@@ -262,7 +266,9 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
           ],
         ),
         actions: [
-          Button(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          Button(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel')),
         ],
       ),
     );
@@ -283,7 +289,8 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
                       Navigator.push(
                         context,
                         FluentPageRoute(
-                          builder: (context) => RingtoneMakerScreen(track: track),
+                          builder: (context) =>
+                              RingtoneMakerScreen(track: track),
                         ),
                       );
                     },

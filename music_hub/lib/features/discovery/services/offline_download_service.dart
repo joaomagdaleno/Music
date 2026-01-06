@@ -13,15 +13,17 @@ class OfflineDownloadService {
 
   /// Baixa e converte a música para MP3 em background.
   /// [searchResult] é o modelo que você já tem no seu projeto.
-  Future<bool> downloadAndConvert(model.SearchResult searchResult, String? coverUrl) async {
+  Future<bool> downloadAndConvert(
+      model.SearchResult searchResult, String? coverUrl) async {
     try {
-      StartupLogger.log('[OfflineDownload] Starting download for: ${searchResult.title}');
+      StartupLogger.log(
+          '[OfflineDownload] Starting download for: ${searchResult.title}');
 
       // 1. Prepara caminhos
       final tempDir = await getTemporaryDirectory();
       final docDir = await getApplicationDocumentsDirectory();
       final downloadsDir = Directory(p.join(docDir.path, 'Downloads'));
-       if (!await downloadsDir.exists()) {
+      if (!await downloadsDir.exists()) {
         await downloadsDir.create(recursive: true);
       }
 
@@ -30,15 +32,17 @@ class OfflineDownloadService {
       final safeArtist = _sanitizeFilename(searchResult.artist);
       final fileName = '$safeArtist - $safeTitle.mp3';
       final finalFile = File(p.join(downloadsDir.path, fileName));
-      
+
       // Arquivo temporário (formato nativo WebM do YouTube)
       final tempWebM = File(p.join(tempDir.path, '${searchResult.id}.webm'));
       // Arquivo temporário da capa
-      final tempCover = File(p.join(tempDir.path, '${searchResult.id}_cover.jpg'));
+      final tempCover =
+          File(p.join(tempDir.path, '${searchResult.id}_cover.jpg'));
 
       // 2. Baixa o áudio nativo
       StartupLogger.log('[OfflineDownload] Downloading native audio...');
-      final manifest = await _yt.videos.streamsClient.getManifest(searchResult.id);
+      final manifest =
+          await _yt.videos.streamsClient.getManifest(searchResult.id);
       final audioStream = manifest.audioOnly.withHighestBitrate();
       final sink = tempWebM.openWrite();
       await _yt.videos.streamsClient.get(audioStream).pipe(sink);
@@ -51,30 +55,31 @@ class OfflineDownloadService {
         final response = await http.get(Uri.parse(coverUrl));
         await tempCover.writeAsBytes(response.bodyBytes);
       } else {
-         // Se não tiver capa, tenta usar do próprio YouTube se disponivel
-         if (searchResult.thumbnail != null) {
-            final ytThumbResponse = await http.get(Uri.parse(searchResult.thumbnail!));
-            await tempCover.writeAsBytes(ytThumbResponse.bodyBytes);
-         }
+        // Se não tiver capa, tenta usar do próprio YouTube se disponivel
+        if (searchResult.thumbnail != null) {
+          final ytThumbResponse =
+              await http.get(Uri.parse(searchResult.thumbnail!));
+          await tempCover.writeAsBytes(ytThumbResponse.bodyBytes);
+        }
       }
 
       // 4. Conversão FFmpeg (Background - Não trava o app)
       StartupLogger.log('[OfflineDownload] Starting FFmpeg conversion...');
-      
+
       final command = [
-        '-y',               // Sobrescreve se existir
+        '-y', // Sobrescreve se existir
         '-i', '"${tempWebM.path}"', // Entrada (WebM)
         '-i', '"${tempCover.path}"', // Entrada (Capa)
-        '-map', '0:a',       // Seleciona apenas áudio do WebM
-        '-map', '1:0',       // Seleciona a capa
+        '-map', '0:a', // Seleciona apenas áudio do WebM
+        '-map', '1:0', // Seleciona a capa
         '-c:a', 'libmp3lame', // Codec MP3
-        '-b:a', '320k',       // Bitrate Alta
+        '-b:a', '320k', // Bitrate Alta
         '-id3v2_version', '3', // Tags ID3 Compatíveis
         '-metadata', 'title="${searchResult.title}"',
         '-metadata', 'artist="${searchResult.artist}"',
         '-metadata:s:v', 'title="Album cover"',
         '-metadata:s:v', 'comment="Cover (front)"',
-        '"${finalFile.path}"'      // Saída
+        '"${finalFile.path}"' // Saída
       ].join(' ');
 
       // Wrap in executeAsync to not block UI
@@ -83,11 +88,11 @@ class OfflineDownloadService {
 
       if (ReturnCode.isSuccess(returnCode)) {
         StartupLogger.log('[OfflineDownload] ✅ SUCCESS: ${finalFile.path}');
-        
+
         // Limpeza
         if (await tempWebM.exists()) await tempWebM.delete();
         if (await tempCover.exists()) await tempCover.delete();
-        
+
         return true;
       } else {
         StartupLogger.log('[OfflineDownload] ❌ FFmpeg failed. Logs:');
@@ -95,19 +100,19 @@ class OfflineDownloadService {
         for (final log in logs) {
           StartupLogger.log(log.getMessage());
         }
-        
-        if (await tempWebM.exists()) await tempWebM.delete(); 
+
+        if (await tempWebM.exists()) await tempWebM.delete();
         if (await tempCover.exists()) await tempCover.delete();
         return false;
       }
-
     } catch (e) {
       StartupLogger.log('[OfflineDownload] Fatal error: $e');
       return false;
     }
   }
 
-  String _sanitizeFilename(String name) => name.replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
+  String _sanitizeFilename(String name) =>
+      name.replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
 
   void dispose() => _yt.close();
 }

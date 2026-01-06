@@ -19,7 +19,8 @@ class SlavArtApi {
   SlavArtApi({http.Client? client})
       : _client = client ?? DependencyManager.instance.client,
         _isTestClient = client != null,
-        _rateLimiter = RateLimiter(maxRequests: 30, interval: const Duration(minutes: 1));
+        _rateLimiter =
+            RateLimiter(maxRequests: 30, interval: const Duration(minutes: 1));
 
   /// Search for a track across all Hi-Fi platforms.
   Future<List<SlavArtResult>> search(String query) async {
@@ -45,7 +46,7 @@ class SlavArtApi {
       for (final source in ['qobuz', 'tidal', 'deezer']) {
         final sourceData = data[source];
         List<dynamic> items;
-        
+
         // Handle both direct list and nested { "results": [...] } structures
         if (sourceData is List) {
           items = sourceData;
@@ -54,7 +55,7 @@ class SlavArtApi {
         } else {
           items = [];
         }
-        
+
         for (final item in items) {
           if (item is Map<String, dynamic>) {
             results.add(SlavArtResult.fromJson(item, source));
@@ -126,12 +127,13 @@ class SlavArtApi {
           final rawName = match.group(1)!;
           // Use shared utility for sanitization
           var cleanName = sanitizeFilename(rawName);
-          
+
           // Enforce extension
-          if (!cleanName.toLowerCase().endsWith('.flac') && !cleanName.toLowerCase().endsWith('.mp3')) {
+          if (!cleanName.toLowerCase().endsWith('.flac') &&
+              !cleanName.toLowerCase().endsWith('.mp3')) {
             cleanName += '.flac';
           }
-           
+
           filename = cleanName;
         }
       }

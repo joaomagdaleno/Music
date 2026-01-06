@@ -24,12 +24,15 @@ void main() {
     });
 
     test('should preserve (feat. X) and (Live at Wembley)', () {
-      expect(SearchResult.cleanMetadata('Song (feat. Artist)'), 'Song (feat. Artist)');
-      expect(SearchResult.cleanMetadata('Song (Live at Wembley)'), 'Song (Live at Wembley)');
+      expect(SearchResult.cleanMetadata('Song (feat. Artist)'),
+          'Song (feat. Artist)');
+      expect(SearchResult.cleanMetadata('Song (Live at Wembley)'),
+          'Song (Live at Wembley)');
     });
 
     test('should clean trailing " - YouTube"', () {
-      expect(SearchResult.cleanMetadata('Song Trailer - YouTube'), 'Song Trailer');
+      expect(
+          SearchResult.cleanMetadata('Song Trailer - YouTube'), 'Song Trailer');
     });
 
     test('should trim whitespace after removal', () {

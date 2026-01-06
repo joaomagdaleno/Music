@@ -197,10 +197,12 @@ class FluentPlayerView extends StatelessWidget {
                                   ),
                                   onPressed: () => playback.toggleFavorite(),
                                 ),
-                                if (current != null && !current.isDownloaded) ...[
+                                if (current != null &&
+                                    !current.isDownloaded) ...[
                                   const SizedBox(width: 16),
                                   IconButton(
-                                    icon: const Icon(FluentIcons.save, size: 24),
+                                    icon:
+                                        const Icon(FluentIcons.save, size: 24),
                                     onPressed: () => MusicManagerService
                                         .instance
                                         .downloadTrack(current),

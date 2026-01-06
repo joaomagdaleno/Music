@@ -11,6 +11,7 @@ import 'package:music_hub/features/player/services/playback_service.dart';
 import 'package:music_hub/core/services/firebase_sync_service.dart';
 import 'package:music_hub/core/services/theme_service.dart';
 import 'package:music_hub/core/services/auth_service.dart';
+import 'package:just_audio/just_audio.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
 

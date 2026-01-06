@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:music_hub/core/services/firebase_sync_service.dart';
 import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/features/library/models/learning_enums.dart';
 import 'package:music_hub/features/library/models/database_models.dart';
 import 'package:music_hub/core/widgets/learning_dialog.dart';
 

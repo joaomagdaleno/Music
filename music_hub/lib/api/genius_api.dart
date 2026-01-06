@@ -16,7 +16,8 @@ class GeniusApi {
 
   GeniusApi({http.Client? client})
       : _client = client ?? DependencyManager.instance.client,
-        _rateLimiter = RateLimiter(maxRequests: 20, interval: const Duration(minutes: 1));
+        _rateLimiter =
+            RateLimiter(maxRequests: 20, interval: const Duration(minutes: 1));
 
   Future<Map<String, dynamic>?> searchSong(String title, String artist) async {
     try {

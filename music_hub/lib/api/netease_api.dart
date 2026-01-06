@@ -14,7 +14,8 @@ class NeteaseApi {
 
   NeteaseApi({http.Client? client})
       : _client = client ?? DependencyManager.instance.client,
-        _rateLimiter = RateLimiter(maxRequests: 20, interval: const Duration(minutes: 1));
+        _rateLimiter =
+            RateLimiter(maxRequests: 20, interval: const Duration(minutes: 1));
 
   Future<List<LyricLine>> fetchSyncedLyrics(String title, String artist) async {
     try {

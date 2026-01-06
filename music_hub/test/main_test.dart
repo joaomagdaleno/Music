@@ -13,7 +13,7 @@ import 'package:music_hub/core/services/database_service.dart';
 import 'package:music_hub/features/player/services/playback_service.dart';
 import 'package:music_hub/features/library/models/filename_format.dart';
 // import 'package:music_hub/features/library/models/filename_format.dart'; // duplicate removed
-import 'package:media_kit/media_kit.dart';
+import 'package:just_audio/just_audio.dart';
 import 'test_helper.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
@@ -62,15 +62,19 @@ void main() {
     when(() => mockPlayback.currentTrackStream)
         .thenAnswer((_) => const Stream.empty());
 
-    // Use FakePlayerStream for all streams
-    when(() => mockPlayer.stream).thenReturn(FakePlayerStream());
-    when(() => mockPlayer.state).thenReturn(const PlayerState());
+    // Use MockPlayer properties
+    when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(PlayerState(false, ProcessingState.idle)));
+    when(() => mockPlayer.positionStream).thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockPlayer.bufferedPositionStream).thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockPlayer.playingStream).thenAnswer((_) => Stream.value(false));
+    when(() => mockPlayer.durationStream).thenAnswer((_) => Stream.value(null));
+    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => const Stream.empty());
   });
 
-  group('MusicTagEditorApp', () {
+  group('MusicHubApp', () {
     testWidgets('renders MaterialApp', (tester) async {
       await tester.pumpWidget(
-          const MusicTagEditorApp(platform: TargetPlatform.android));
+          const MusicHubApp());
       await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.byType(MaterialApp), findsOneWidget);
@@ -82,7 +86,7 @@ void main() {
       when(() => mockAuth.isAuthenticated).thenReturn(false);
 
       await tester.pumpWidget(
-          const MusicTagEditorApp(platform: TargetPlatform.android));
+          const MusicHubApp());
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 200));
 
@@ -93,12 +97,12 @@ void main() {
       when(() => mockTheme.primaryColor).thenReturn(Colors.purple);
 
       await tester.pumpWidget(
-          const MusicTagEditorApp(platform: TargetPlatform.android));
+          const MusicHubApp());
       await tester.pump(const Duration(milliseconds: 100));
 
       final MaterialApp app =
           tester.widget<MaterialApp>(find.byType(MaterialApp));
-      expect(app.title, 'Music Tag Editor');
+      expect(app.title, 'Music Hub');
     });
   });
 

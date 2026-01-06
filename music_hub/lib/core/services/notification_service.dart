@@ -33,18 +33,19 @@ class NotificationService {
 
   void _showFluent(
       BuildContext context, String message, NotificationSeverity severity) {
-    fluent.displayInfoBar(context, builder: (context, close) => fluent.InfoBar(
-          title: Text(message),
-          severity: _mapSeverityToFluent(severity),
-          onClose: close,
-        ));
+    fluent.displayInfoBar(context,
+        builder: (context, close) => fluent.InfoBar(
+              title: Text(message),
+              severity: _mapSeverityToFluent(severity),
+              onClose: close,
+            ));
   }
 
   void _showMaterial(
       BuildContext context, String message, NotificationSeverity severity) {
     // Check if ScaffoldMessenger is available
     final messenger = ScaffoldMessenger.of(context);
-    
+
     Color? backgroundColor;
     switch (severity) {
       case NotificationSeverity.error:

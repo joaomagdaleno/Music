@@ -129,7 +129,8 @@ class PlaybackService {
 
       final source = await _createSource(track);
       if (source != null) {
-        await _player.setAudioSource(AudioSource.uri(Uri.parse(source)), preload: false);
+        await _player.setAudioSource(AudioSource.uri(Uri.parse(source)),
+            preload: false);
       }
 
       _audioHandler.mediaItem.add(MediaItem(
@@ -278,8 +279,8 @@ class PlaybackService {
         _onTrackChanged(result);
         _setupSelfHealing(result.id);
       } catch (e) {
-        StartupLogger.logError('[PlaybackService] Failed to open player', e,
-            StackTrace.current);
+        StartupLogger.logError(
+            '[PlaybackService] Failed to open player', e, StackTrace.current);
       }
     } else {
       StartupLogger.log('[PlaybackService] CRITICAL: No playable source found');
@@ -298,7 +299,8 @@ class PlaybackService {
 
   /// Plays a direct stream URL (e.g. from YouTubeStreamerService) with associated metadata.
   Future<void> playStream(String streamUrl, SearchResult track) async {
-    StartupLogger.log('[PlaybackService] Playing direct stream for: ${track.title}');
+    StartupLogger.log(
+        '[PlaybackService] Playing direct stream for: ${track.title}');
     _currentTrack = track;
     _queue.clear();
     _queue.add(track);
@@ -318,12 +320,12 @@ class PlaybackService {
       await _player.play();
       _onTrackChanged(track);
       _setupSelfHealing(track.id);
-      
+
       // Enrich metadata in background
       _enrichMetadata(track);
-
     } catch (e) {
-      StartupLogger.logError('[PlaybackService] Failed to play direct stream', e, StackTrace.current);
+      StartupLogger.logError('[PlaybackService] Failed to play direct stream',
+          e, StackTrace.current);
     }
   }
 

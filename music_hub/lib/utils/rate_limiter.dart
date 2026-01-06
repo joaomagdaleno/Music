@@ -4,10 +4,10 @@ import 'dart:async';
 class RateLimiter {
   final int maxRequests;
   final Duration interval;
-  
+
   int _tokens;
   Timer? _replenishTimer;
-  
+
   RateLimiter({
     required this.maxRequests,
     required this.interval,

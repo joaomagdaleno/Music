@@ -3,6 +3,7 @@ class MusicTrack {
   final String title;
   final String artist;
   final String album;
+
   /// Track number in "x/y" format (e.g., "5/10") to preserve total tracks info.
   final String trackNumber;
 

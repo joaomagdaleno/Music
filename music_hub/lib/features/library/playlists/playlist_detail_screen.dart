@@ -26,7 +26,6 @@ class _PlaylistDetailScreenState extends State<PlaylistDetailScreen> {
   List<Map<String, dynamic>> _tracks = [];
   bool _isLoading = true;
 
-
   @override
   void initState() {
     super.initState();

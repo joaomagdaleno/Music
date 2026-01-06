@@ -14,13 +14,11 @@ import 'package:music_hub/features/player/services/lyrics_service.dart';
 import 'package:music_hub/core/services/local_duo_service.dart';
 import 'package:music_hub/features/library/models/search_models.dart';
 import 'package:music_hub/features/player/services/equalizer_service.dart';
-// import 'package:music_hub/core/services/firebase_sync_service.dart'; // Unused
-import 'package:music_hub/core/services/persona_service.dart';
 import 'package:music_hub/core/services/global_navigation_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:media_kit/media_kit.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:audio_service/audio_service.dart';
 
 Future<void> setupSqflite() async {
@@ -55,61 +53,7 @@ class MockLocalDuoService extends Mock implements LocalDuoService {}
 
 class MockEqualizerService extends Mock implements EqualizerService {}
 
-class MockPlayer extends Mock implements Player {}
-
-class FakePlayerStream extends Fake implements PlayerStream {
-  @override
-  Stream<bool> get playing => Stream.value(false);
-  @override
-  Stream<Duration> get position => Stream.value(Duration.zero);
-  @override
-  Stream<Duration> get buffer => Stream.value(Duration.zero);
-  @override
-  Stream<Duration> get duration => Stream.value(Duration.zero);
-  @override
-  Stream<bool> get completed => Stream.value(false);
-  @override
-  Stream<double> get volume => Stream.value(100.0);
-  @override
-  Stream<PlaylistMode> get playlistMode => Stream.value(PlaylistMode.none);
-  @override
-  Stream<bool> get shuffle => Stream.value(false);
-  @override
-  Stream<double> get pitch => Stream.value(1.0);
-  @override
-  Stream<double> get rate => Stream.value(1.0);
-
-  @override
-  Stream<PlayerLog> get log => const Stream.empty();
-  @override
-  Stream<String> get error => const Stream.empty();
-  @override
-  Stream<Track> get track => Stream.value(const Track());
-  @override
-  Stream<Tracks> get tracks => Stream.value(const Tracks());
-
-  @override
-  Stream<Playlist> get playlist => Stream.value(const Playlist([]));
-  @override
-  Stream<int?> get width => Stream.value(null);
-  @override
-  Stream<int?> get height => Stream.value(null);
-  @override
-  Stream<AudioParams> get audioParams => Stream.value(const AudioParams());
-  @override
-  Stream<double?> get audioBitrate => Stream.value(null);
-  @override
-  Stream<AudioDevice> get audioDevice =>
-      Stream.value(const AudioDevice('auto', ''));
-  @override
-  Stream<List<AudioDevice>> get audioDevices => Stream.value([]);
-
-  @override
-  Stream<List<String>> get subtitle => Stream.value(['']);
-
-  @override
-  Stream<bool> get buffering => Stream.value(false);
-}
+class MockPlayer extends Mock implements AudioPlayer {}
 
 // Global mock instances for easy access
 late MockAuthService mockAuth;
@@ -121,7 +65,6 @@ late MockLocalDuoService mockDuo;
 late MockConnectivityService mockConnectivity;
 late MockThemeService mockTheme;
 late MockPlayer mockPlayer;
-late FakePlayerStream mockPlayerStreams;
 late MockDependencyManager mockDeps;
 late MockLyricsService mockLyrics;
 late MockEqualizerService mockEqualizer;
@@ -152,13 +95,7 @@ Future<void> setupMusicTest({
       platform: MediaPlatform.youtube,
     ));
     registerFallbackValue(MediaPlatform.youtube);
-    registerFallbackValue(Media('http://fallback'));
-    registerFallbackValue(const MediaItem(id: 'fallback', title: 'Fallback'));
-    registerFallbackValue(PlaybackState(
-      processingState: AudioProcessingState.idle,
-      playing: false,
-    ));
-    registerFallbackValue(PlaylistMode.none);
+    registerFallbackValue(LoopMode.off);
     _registerFallbackValueWasCalled = true;
   }
 
@@ -176,7 +113,6 @@ Future<void> setupMusicTest({
   ConnectivityService.resetInstance();
   ThemeService.resetInstance();
   DependencyManager.resetInstance();
-  PersonaService.resetInstance();
   GlobalNavigationService.resetInstance();
 
   // Create and inject standard mocks
@@ -189,7 +125,6 @@ Future<void> setupMusicTest({
   mockConnectivity = MockConnectivityService();
   mockTheme = MockThemeService();
   mockPlayer = MockPlayer();
-  mockPlayerStreams = FakePlayerStream();
   mockDeps = MockDependencyManager();
   mockLyrics = MockLyricsService();
   mockEqualizer = MockEqualizerService();
@@ -250,8 +185,12 @@ Future<void> setupMusicTest({
   when(() => mockDuo.role).thenReturn(DuoRole.none);
 
   // Wire up MockPlayer properties
-  when(() => mockPlayer.stream).thenReturn(mockPlayerStreams);
-  when(() => mockPlayer.state).thenReturn(const PlayerState()); // default state
+  when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(PlayerState(false, ProcessingState.idle)));
+  when(() => mockPlayer.positionStream).thenAnswer((_) => Stream.value(Duration.zero));
+  when(() => mockPlayer.bufferedPositionStream).thenAnswer((_) => Stream.value(Duration.zero));
+  when(() => mockPlayer.playingStream).thenAnswer((_) => Stream.value(false));
+  when(() => mockPlayer.durationStream).thenAnswer((_) => Stream.value(null));
+  when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => const Stream.empty());
 
   // Note: No need to stub mockPlayerStreams getters as they are now real implementation
 
@@ -260,10 +199,10 @@ Future<void> setupMusicTest({
   when(() => mockPlayer.pause()).thenAnswer((_) async {});
   when(() => mockPlayer.stop()).thenAnswer((_) async {});
   when(() => mockPlayer.seek(any())).thenAnswer((_) async {});
-  when(() => mockPlayer.open(any(), play: any(named: 'play')))
-      .thenAnswer((_) async {});
-  when(() => mockPlayer.setPlaylistMode(any())).thenAnswer((_) async {});
-  when(() => mockPlayer.setShuffle(any())).thenAnswer((_) async {});
+  when(() => mockPlayer.setAudioSource(any(), initialPosition: any(named: 'initialPosition'), preload: any(named: 'preload')))
+      .thenAnswer((_) async => null);
+  when(() => mockPlayer.setLoopMode(any())).thenAnswer((_) async {});
+  when(() => mockPlayer.setShuffleModeEnabled(any())).thenAnswer((_) async {});
 
   when(() => mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
       .thenAnswer((invocation) async {

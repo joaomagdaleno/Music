@@ -79,27 +79,27 @@ class MetadataEmbedder {
 
       if (result.exitCode == 0) {
         // If we converted, the original file might be different format (e.g. .webm)
-        // so we delete original and rename temp to the new final path if needed, 
-        // but here we follow the original logic of replacing the original file 
-        // IF the extension matches. If it doesn't match, we might need a more 
+        // so we delete original and rename temp to the new final path if needed,
+        // but here we follow the original logic of replacing the original file
+        // IF the extension matches. If it doesn't match, we might need a more
         // sophisticated cleanup/renaming logic for the caller.
         // For simplicity in the instant download flow, the caller will handle the final path.
-        
+
         final originalFile = File(audioPath);
         if (await originalFile.exists()) {
           await originalFile.delete();
         }
-        
+
         // If extension changed (e.g. webm -> mp3), the audioPath is no longer correct
         // but the caller of DownloadService expects the file to be at audioPath.
-        // We should probably rename tempPath to a path with the original name but new extension 
+        // We should probably rename tempPath to a path with the original name but new extension
         // or just let the caller decide.
-        // Revised: Return the final path in the result or rename to audioPath 
+        // Revised: Return the final path in the result or rename to audioPath
         // but audioPath's extension might be wrong.
-        
+
         final finalFinalPath = p.join(dir, '$base$ext');
         await File(tempPath).rename(finalFinalPath);
-        
+
         return true;
       }
 

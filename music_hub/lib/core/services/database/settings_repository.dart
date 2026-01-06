@@ -166,7 +166,8 @@ class SettingsRepository extends DatabaseRepository {
   // All Settings
   Future<Map<String, String>> getAllSettings() async {
     final database = await db;
-    final List<Map<String, dynamic>> maps = await database.query(_settingsTable);
+    final List<Map<String, dynamic>> maps =
+        await database.query(_settingsTable);
     return {for (var m in maps) m['key'] as String: m['value'] as String};
   }
 }

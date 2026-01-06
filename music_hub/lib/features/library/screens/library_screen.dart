@@ -45,7 +45,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
   void _sortTracks(List<SearchResult> tracks) {
     switch (_sortBy) {
       case 'artist':
-        tracks.sort((a, b) => a.artist.toLowerCase().compareTo(b.artist.toLowerCase()));
+        tracks.sort(
+            (a, b) => a.artist.toLowerCase().compareTo(b.artist.toLowerCase()));
         break;
       case 'year':
         // Assuming year might be in album or not present yet, using title as fallback
@@ -55,7 +56,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
         // Placeholder for confidence logic if implemented in models
         break;
       default:
-        tracks.sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+        tracks.sort(
+            (a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
     }
   }
 
@@ -105,16 +107,17 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
     final dynamic result = await Navigator.push(
       context,
-      isFluent 
-        ? fluent.FluentPageRoute(builder: (context) => TagEditorScreen(track: track))
-        : MaterialPageRoute(builder: (context) => TagEditorScreen(track: track)),
+      isFluent
+          ? fluent.FluentPageRoute(
+              builder: (context) => TagEditorScreen(track: track))
+          : MaterialPageRoute(
+              builder: (context) => TagEditorScreen(track: track)),
     );
 
     if (result == true) {
       _refreshLibrary();
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

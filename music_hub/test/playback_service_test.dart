@@ -66,8 +66,8 @@ void main() {
     // Note: Most checks are redundant as setupMusicTest provides default stubs.
     // However, verify calls need these to be valid.
 
-    when(() => mockPlayer.open(any(), play: any(named: 'play')))
-        .thenAnswer((_) async {});
+    when(() => mockPlayer.setAudioSource(any(), initialPosition: any(named: 'initialPosition'), preload: any(named: 'preload')))
+        .thenAnswer((_) async => null);
 
     when(() => mockSearch.getStreamUrl(
           any(),
@@ -83,8 +83,9 @@ void main() {
 
       expect(service.currentTrack, testTrack);
       expect(service.queue, contains(testTrack));
-      // Verify usage of media_kit open with play: true
-      verify(() => mockPlayer.open(any(), play: true)).called(1);
+      // Verify usage of just_audio flow
+      verify(() => mockPlayer.setAudioSource(any())).called(1);
+      verify(() => mockPlayer.play()).called(1);
       verify(() => mockDuo.sendMessage(any())).called(1);
     });
 

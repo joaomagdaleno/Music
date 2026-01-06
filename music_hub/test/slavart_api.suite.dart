@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:http/http.dart' as http;
+import 'package:music_hub/features/library/models/learning_enums.dart';
 import 'package:music_hub/api/slavart_api.dart';
 
 class MockHttpClient extends Mock implements http.Client {}
@@ -89,6 +90,12 @@ class _MockFile extends Fake implements File {
 class _MockIOSink extends Fake implements IOSink {
   @override
   void add(List<int> data) {}
+  @override
+  Future<void> addStream(Stream<List<int>> stream) async {
+    await stream.listen((_) {}).asFuture();
+  }
+  @override
+  Future<void> flush() async {}
   @override
   Future<void> close() async {}
 }
