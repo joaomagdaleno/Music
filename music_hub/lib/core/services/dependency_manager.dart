@@ -100,7 +100,7 @@ class DependencyManager {
   String get ytDlpPath => _getYtDlpPath();
   String get ffmpegPath => _getFFmpegPath();
   String get fpcalcPath => _getFpcalcPath();
-  
+
   /// Global HTTP Client for the app.
   http.Client get client => _client;
 

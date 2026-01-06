@@ -16,7 +16,9 @@ class LearningRule {
     required this.choice,
   });
 
-  bool matches(String original) => _normalize(original) == _normalize(originalValue);
+  bool matches(String original) =>
+      _normalize(original) == _normalize(originalValue);
 
-  String _normalize(String s) => s.toLowerCase().trim().replaceAll(RegExp(r'\s+'), ' ');
+  String _normalize(String s) =>
+      s.toLowerCase().trim().replaceAll(RegExp(r'\s+'), ' ');
 }

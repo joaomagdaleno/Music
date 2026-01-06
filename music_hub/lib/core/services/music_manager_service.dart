@@ -34,32 +34,38 @@ class MusicManagerService {
   // New Services
   final YouTubeStreamerService _streamer = YouTubeStreamerService();
   final OfflineDownloadService _downloader = OfflineDownloadService();
-  
+
   final Set<String> _downloadingIds = {};
-  
-  final _progressController = BehaviorSubject<Map<String, DownloadProgress>>.seeded({});
-  Stream<Map<String, DownloadProgress>> get progressStream => _progressController.stream;
+
+  final _progressController =
+      BehaviorSubject<Map<String, DownloadProgress>>.seeded({});
+  Stream<Map<String, DownloadProgress>> get progressStream =>
+      _progressController.stream;
 
   /// Plays the track instantly via streaming using YouTubeStreamerService for best quality.
   Future<void> playInstant(SearchResult result) async {
-    StartupLogger.log('[MusicManager] Instant play requested for: ${result.title}');
-    
+    StartupLogger.log(
+        '[MusicManager] Instant play requested for: ${result.title}');
+
     // 1. Try to find a high quality stream
-    final streamUrl = await _streamer.getStreamUrl('${result.artist} - ${result.title}');
+    final streamUrl =
+        await _streamer.getStreamUrl('${result.artist} - ${result.title}');
 
     if (streamUrl != null) {
-       StartupLogger.log('[MusicManager] Playing via High Quality Stream');
-       await PlaybackService.instance.playStream(streamUrl, result);
+      StartupLogger.log('[MusicManager] Playing via High Quality Stream');
+      await PlaybackService.instance.playStream(streamUrl, result);
     } else {
-       StartupLogger.log('[MusicManager] Streamer failed, falling back to standard playback');
-       await PlaybackService.instance.playSearchResult(result);
+      StartupLogger.log(
+          '[MusicManager] Streamer failed, falling back to standard playback');
+      await PlaybackService.instance.playSearchResult(result);
     }
   }
 
   /// Downloads the track in the background using OfflineDownloadService.
   Future<void> downloadTrack(SearchResult result) async {
     if (_downloadingIds.contains(result.id)) {
-      StartupLogger.log('[MusicManager] Download already in progress for: ${result.id}');
+      StartupLogger.log(
+          '[MusicManager] Download already in progress for: ${result.id}');
       return;
     }
 
@@ -73,29 +79,30 @@ class MusicManagerService {
 
   Future<void> _backgroundDownload(SearchResult result) async {
     try {
-      StartupLogger.log('[MusicManager] Starting background download for: ${result.title}');
-      
+      StartupLogger.log(
+          '[MusicManager] Starting background download for: ${result.title}');
+
       // Delegate to OfflineDownloadService
       // Note: We don't have fine-grained progress from ffmpeg_kit yet in this simple implementation,
       // but the service handles the heavy lifting.
       _updateProgress(result.id, 0.3, 'Baixando e Convertendo...');
-      
-      final success = await _downloader.downloadAndConvert(result, result.thumbnail);
-      
-      if (success) {
-         _updateProgress(result.id, 1.0, 'Concluído', completed: true);
-         
-         // Update DB
-         result.isDownloaded = true;
-         // Note: localPath is determined inside OfflineDownloadService. 
-         // ideally the service should return the path or we assume standard location.
-         // For now, let's assume successful download means it's in the Downloads folder.
-         // We might need to refresh local files scan or similar.
-         await DatabaseService.instance.saveTrack(result.toJson());
-      } else {
-         _updateProgress(result.id, 0.0, 'Erro', failed: true);
-      }
 
+      final success =
+          await _downloader.downloadAndConvert(result, result.thumbnail);
+
+      if (success) {
+        _updateProgress(result.id, 1.0, 'Concluído', completed: true);
+
+        // Update DB
+        result.isDownloaded = true;
+        // Note: localPath is determined inside OfflineDownloadService.
+        // ideally the service should return the path or we assume standard location.
+        // For now, let's assume successful download means it's in the Downloads folder.
+        // We might need to refresh local files scan or similar.
+        await DatabaseService.instance.saveTrack(result.toJson());
+      } else {
+        _updateProgress(result.id, 0.0, 'Erro', failed: true);
+      }
     } catch (e) {
       StartupLogger.log('[MusicManager] Download failed: $e');
       _updateProgress(result.id, 0.0, 'Falha', failed: true);
@@ -104,27 +111,39 @@ class MusicManagerService {
     }
   }
 
-   void _updateProgress(String id, double progress, String status, {bool completed = false, bool failed = false}) {
-    final current = Map<String, DownloadProgress>.from(_progressController.value);
+  void _updateProgress(String id, double progress, String status,
+      {bool completed = false, bool failed = false}) {
+    final current =
+        Map<String, DownloadProgress>.from(_progressController.value);
     if (completed || failed) {
-      // Keep completed/failed state for a moment or remove? 
+      // Keep completed/failed state for a moment or remove?
       // Usually good to show checkmark.
       // For now let's just update the value.
-       current[id] = DownloadProgress(id: id, progress: progress, status: status, isCompleted: completed, isFailed: failed);
-       // Schedule removal if needed, or UI handles it.
-       if (completed || failed) {
-          Future.delayed(const Duration(seconds: 3), () {
-             final updated = Map<String, DownloadProgress>.from(_progressController.value);
-             updated.remove(id);
-             _progressController.add(updated);
-          });
-       }
+      current[id] = DownloadProgress(
+          id: id,
+          progress: progress,
+          status: status,
+          isCompleted: completed,
+          isFailed: failed);
+      // Schedule removal if needed, or UI handles it.
+      if (completed || failed) {
+        Future.delayed(const Duration(seconds: 3), () {
+          final updated =
+              Map<String, DownloadProgress>.from(_progressController.value);
+          updated.remove(id);
+          _progressController.add(updated);
+        });
+      }
     } else {
-      current[id] = DownloadProgress(id: id, progress: progress, status: status, isCompleted: completed, isFailed: failed);
+      current[id] = DownloadProgress(
+          id: id,
+          progress: progress,
+          status: status,
+          isCompleted: completed,
+          isFailed: failed);
     }
     _progressController.add(current);
   }
-
 
   void dispose() {
     _streamer.dispose();

@@ -141,7 +141,8 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               StreamBuilder<bool>(
-                                stream: playback.player.shuffleModeEnabledStream,
+                                stream:
+                                    playback.player.shuffleModeEnabledStream,
                                 builder: (context, snapshot) {
                                   final isShuffle = snapshot.data ?? false;
                                   return fluent.IconButton(
@@ -189,8 +190,7 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
                               StreamBuilder<LoopMode>(
                                 stream: playback.player.loopModeStream,
                                 builder: (context, snapshot) {
-                                  final mode =
-                                      snapshot.data ?? LoopMode.off;
+                                  final mode = snapshot.data ?? LoopMode.off;
                                   IconData icon;
                                   Color? color;
                                   if (mode == LoopMode.one) {
@@ -218,7 +218,8 @@ class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
                             builder: (context, posSnapshot) {
                               final position =
                                   posSnapshot.data ?? Duration.zero;
-                              final duration = playback.player.duration ?? Duration.zero;
+                              final duration =
+                                  playback.player.duration ?? Duration.zero;
                               final max = duration.inMilliseconds.toDouble();
                               final value = position.inMilliseconds
                                   .toDouble()
@@ -370,7 +371,8 @@ class _MaterialMiniPlayer extends StatelessWidget {
                           stream: playback.player.positionStream,
                           builder: (context, posSnapshot) {
                             final position = posSnapshot.data ?? Duration.zero;
-                            final duration = playback.player.duration ?? Duration.zero;
+                            final duration =
+                                playback.player.duration ?? Duration.zero;
                             final progress = duration.inMilliseconds > 0
                                 ? position.inMilliseconds /
                                     duration.inMilliseconds

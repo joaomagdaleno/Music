@@ -52,7 +52,6 @@ class _RemoteLibraryScreenState extends State<RemoteLibraryScreen> {
     _showNotification('Adicionado à fila compartilhada!');
   }
 
-
   void _showNotification(String message) {
     NotificationService.instance.show(
       context,

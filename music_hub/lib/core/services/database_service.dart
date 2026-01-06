@@ -75,14 +75,12 @@ class DatabaseService {
   // Settings helpers
   Future<void> saveFilenameFormat(FilenameFormat format) =>
       _settings.saveFilenameFormat(format);
-  Future<FilenameFormat> loadFilenameFormat() =>
-      _settings.loadFilenameFormat();
+  Future<FilenameFormat> loadFilenameFormat() => _settings.loadFilenameFormat();
   Future<int> loadCrossfadeDuration() => _settings.loadCrossfadeDuration();
   Future<void> saveCrossfadeDuration(int seconds) =>
       _settings.saveCrossfadeDuration(seconds);
   Future<bool> loadAgeBypass() => _settings.loadAgeBypass();
-  Future<void> saveAgeBypass(bool enabled) =>
-      _settings.saveAgeBypass(enabled);
+  Future<void> saveAgeBypass(bool enabled) => _settings.saveAgeBypass(enabled);
 
   // Track helpers
   Future<Map<String, String?>> getDownloadedUrls() =>
@@ -110,7 +108,8 @@ class DatabaseService {
 
   // Duo helpers (to implement in repository)
   Future<void> saveGuest(String id, String name) => _duo.saveGuest(id, name);
-  Future<List<Map<String, dynamic>>> getGuestHistory() => _duo.getGuestHistory();
+  Future<List<Map<String, dynamic>>> getGuestHistory() =>
+      _duo.getGuestHistory();
   Future<void> addTrackToDuoSession(String guestId, String trackId) =>
       _duo.addTrackToDuoSession(guestId, trackId);
   Future<List<Map<String, dynamic>>> getDuoSessionTracks(String guestId) =>
@@ -241,13 +240,16 @@ class DatabaseService {
       await db.execute('ALTER TABLE tracks ADD COLUMN genre TEXT');
     }
     if (oldVersion < 3) {
-      await db.execute('ALTER TABLE tracks ADD COLUMN is_vault INTEGER DEFAULT 0');
+      await db
+          .execute('ALTER TABLE tracks ADD COLUMN is_vault INTEGER DEFAULT 0');
     }
     if (oldVersion < 4) {
-      await db.execute('ALTER TABLE tracks ADD COLUMN is_downloaded INTEGER DEFAULT 0');
+      await db.execute(
+          'ALTER TABLE tracks ADD COLUMN is_downloaded INTEGER DEFAULT 0');
     }
     if (oldVersion < 5) {
-      await db.execute('ALTER TABLE tracks ADD COLUMN is_official INTEGER DEFAULT 0');
+      await db.execute(
+          'ALTER TABLE tracks ADD COLUMN is_official INTEGER DEFAULT 0');
     }
   }
 

@@ -15,7 +15,8 @@ class TagEditorScreen extends StatefulWidget {
 }
 
 class _TagEditorScreenState extends State<TagEditorScreen> {
-  final MetadataAggregatorService _metadataService = MetadataAggregatorService.instance;
+  final MetadataAggregatorService _metadataService =
+      MetadataAggregatorService.instance;
   final DatabaseService _dbService = DatabaseService.instance;
 
   late TextEditingController _titleController;
@@ -23,7 +24,7 @@ class _TagEditorScreenState extends State<TagEditorScreen> {
   late TextEditingController _albumController;
   late TextEditingController _genreController;
   late TextEditingController _yearController;
-  
+
   bool _isAutoFilling = false;
 
   @override
@@ -33,8 +34,8 @@ class _TagEditorScreenState extends State<TagEditorScreen> {
     _artistController = TextEditingController(text: widget.track.artist);
     _albumController = TextEditingController(text: widget.track.album ?? '');
     _genreController = TextEditingController(text: widget.track.genre ?? '');
-    _yearController = TextEditingController(text: ''); 
-    
+    _yearController = TextEditingController(text: '');
+
     // Add listener to rebuild when title changes (for Save button state)
     _titleController.addListener(_onTitleChanged);
   }
@@ -61,7 +62,7 @@ class _TagEditorScreenState extends State<TagEditorScreen> {
         _titleController.text,
         _artistController.text,
       );
-      
+
       setState(() {
         _titleController.text = result.title ?? _titleController.text;
         _artistController.text = result.artist ?? _artistController.text;
@@ -81,7 +82,7 @@ class _TagEditorScreenState extends State<TagEditorScreen> {
   }
 
   Future<void> _save() async {
-     final updatedTrack = SearchResult(
+    final updatedTrack = SearchResult(
       id: widget.track.id,
       title: _titleController.text,
       artist: _artistController.text,
@@ -109,7 +110,8 @@ class _TagEditorScreenState extends State<TagEditorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isWindows = !kIsWeb && defaultTargetPlatform == TargetPlatform.windows;
+    final isWindows =
+        !kIsWeb && defaultTargetPlatform == TargetPlatform.windows;
     if (isWindows) {
       return _buildFluent(context);
     }
@@ -137,7 +139,8 @@ class _TagEditorScreenState extends State<TagEditorScreen> {
                 fluent.CommandBarButton(
                   icon: const Icon(fluent.FluentIcons.save),
                   label: const Text('Salvar Alterações'),
-                  onPressed: _titleController.text.trim().isEmpty ? null : _save,
+                  onPressed:
+                      _titleController.text.trim().isEmpty ? null : _save,
                 ),
               ],
             ),
@@ -177,8 +180,9 @@ class _TagEditorScreenState extends State<TagEditorScreen> {
         appBar: AppBar(
           title: const Text('Tag Editor'),
           actions: [
-             if (_isAutoFilling)
-              const Center(child: CircularProgressIndicator(color: Colors.white)),
+            if (_isAutoFilling)
+              const Center(
+                  child: CircularProgressIndicator(color: Colors.white)),
             IconButton(
               icon: const Icon(Icons.auto_awesome),
               onPressed: _isAutoFilling ? null : _autoFill,

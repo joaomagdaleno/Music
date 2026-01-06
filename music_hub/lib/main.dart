@@ -22,48 +22,49 @@ import 'package:music_hub/features/core/screens/app_shell.dart';
 
 final GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   runZonedGuarded(
     () async {
       ErrorWidget.builder = (FlutterErrorDetails details) {
-            if (!kIsWeb && Platform.isWindows) {
-              return fluent.FluentApp(
-                home: fluent.ScaffoldPage(
-                  header: const fluent.PageHeader(title: Text('Error')),
-                  content: Center(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(16),
-                      child: Text(
-                        details.exceptionAsString(),
-                        style: const TextStyle(color: fluent.Colors.white, fontSize: 16),
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }
-            return MaterialApp(
-              home: Scaffold(
-                // Accessibility: Use muted dark color instead of aggressive red
-                // Avoids photosensitivity issues and is easier for colorblind users
-                backgroundColor: const Color(0xFF424242), // Grey 800
-                body: Center(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      details.exceptionAsString(),
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
-                    ),
+        if (!kIsWeb && Platform.isWindows) {
+          return fluent.FluentApp(
+            home: fluent.ScaffoldPage(
+              header: const fluent.PageHeader(title: Text('Error')),
+              content: Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    details.exceptionAsString(),
+                    style: const TextStyle(
+                        color: fluent.Colors.white, fontSize: 16),
                   ),
                 ),
               ),
-            );
-          };
+            ),
+          );
+        }
+        return MaterialApp(
+          home: Scaffold(
+            // Accessibility: Use muted dark color instead of aggressive red
+            // Avoids photosensitivity issues and is easier for colorblind users
+            backgroundColor: const Color(0xFF424242), // Grey 800
+            body: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  details.exceptionAsString(),
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+          ),
+        );
+      };
 
-      if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
+      if (!kIsWeb &&
+          (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
         sqfliteFfiInit();
         databaseFactory = databaseFactoryFfi;
       }
@@ -127,7 +128,7 @@ class _AppBootstrapState extends State<AppBootstrap> {
 
       // 3. Critical Services (Must succeed)
       _updateStep('Initializing Core Services...');
-      
+
       await StartupLogger.log('Initializing SecurityService...');
       await SecurityService.instance.init();
 
@@ -153,10 +154,10 @@ class _AppBootstrapState extends State<AppBootstrap> {
       try {
         await PlaybackService.instance.init();
       } catch (e) {
-         // If playback fails, the app is useless as a music player. 
-         // Rethrow to trigger fatal error screen.
-         StartupLogger.log('❌ PlaybackService failed (CRITICAL): $e');
-         throw Exception('Audio Engine failed to initialize: $e');
+        // If playback fails, the app is useless as a music player.
+        // Rethrow to trigger fatal error screen.
+        StartupLogger.log('❌ PlaybackService failed (CRITICAL): $e');
+        throw Exception('Audio Engine failed to initialize: $e');
       }
 
       await StartupLogger.log('✅ Core services initialized successfully');
@@ -196,14 +197,16 @@ class _AppBootstrapState extends State<AppBootstrap> {
         return fluent.FluentApp(
           debugShowCheckedModeBanner: false,
           home: fluent.ScaffoldPage(
-            header: const fluent.PageHeader(title: Text('Initialization Error')),
+            header:
+                const fluent.PageHeader(title: Text('Initialization Error')),
             content: Center(
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    fluent.Icon(fluent.FluentIcons.error, size: 64, color: fluent.Colors.red),
+                    fluent.Icon(fluent.FluentIcons.error,
+                        size: 64, color: fluent.Colors.red),
                     const SizedBox(height: 16),
                     Text(
                       _errorMessage!,
@@ -235,8 +238,8 @@ class _AppBootstrapState extends State<AppBootstrap> {
         home: Scaffold(
           body: Center(
             child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
+              padding: const EdgeInsets.all(24),
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Icon(Icons.error_outline, size: 64, color: Colors.red),
@@ -381,4 +384,3 @@ class MusicHubApp extends StatelessWidget {
         },
       );
 }
-

@@ -14,9 +14,10 @@ class DiscogsApi {
   final http.Client _client;
   final RateLimiter _rateLimiter;
 
-  DiscogsApi({http.Client? client}) 
+  DiscogsApi({http.Client? client})
       : _client = client ?? DependencyManager.instance.client,
-        _rateLimiter = RateLimiter(maxRequests: 20, interval: const Duration(minutes: 1));
+        _rateLimiter =
+            RateLimiter(maxRequests: 20, interval: const Duration(minutes: 1));
 
   Future<Map<String, dynamic>?> searchRelease(
       String title, String artist) async {

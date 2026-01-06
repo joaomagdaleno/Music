@@ -345,10 +345,11 @@ class YouTubeSearchProvider extends BaseYouTubeSearchProvider {
           if (seenIds.contains(video.id.value)) continue;
 
           // Duration Filter: Ignore short clips (< 60s)
-          if (video.duration != null && video.duration!.inSeconds < 60) continue;
+          if (video.duration != null && video.duration!.inSeconds < 60)
+            continue;
 
-          final res = parseYouTubeVideo(video, platform,
-              allowExplicit: allowExplicit);
+          final res =
+              parseYouTubeVideo(video, platform, allowExplicit: allowExplicit);
           final metaKey =
               '${SearchResult.toMatchKey(res.artist)}:${SearchResult.toMatchKey(res.title)}';
 
@@ -363,7 +364,8 @@ class YouTubeSearchProvider extends BaseYouTubeSearchProvider {
       }
 
       // Rank by priority score
-      results.sort((a, b) => (b.priorityScore ?? 0).compareTo(a.priorityScore ?? 0));
+      results.sort(
+          (a, b) => (b.priorityScore ?? 0).compareTo(a.priorityScore ?? 0));
 
       return results.take(12).toList();
     } catch (e, stack) {
@@ -396,8 +398,8 @@ class YouTubeMusicSearchProvider extends BaseYouTubeSearchProvider {
         // Duration Filter: Ignore short clips (< 60s)
         if (video.duration != null && video.duration!.inSeconds < 60) continue;
 
-        final res = parseYouTubeVideo(video, platform,
-            allowExplicit: allowExplicit);
+        final res =
+            parseYouTubeVideo(video, platform, allowExplicit: allowExplicit);
         final metaKey =
             '${SearchResult.toMatchKey(res.artist)}:${SearchResult.toMatchKey(res.title)}';
 
@@ -409,7 +411,8 @@ class YouTubeMusicSearchProvider extends BaseYouTubeSearchProvider {
       }
 
       // Rank by priority score
-      results.sort((a, b) => (b.priorityScore ?? 0).compareTo(a.priorityScore ?? 0));
+      results.sort(
+          (a, b) => (b.priorityScore ?? 0).compareTo(a.priorityScore ?? 0));
 
       return results.take(12).toList();
     } catch (e, stack) {

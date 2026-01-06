@@ -8,6 +8,7 @@ import 'package:music_hub/features/library/services/metadata_aggregator_service.
 import 'package:music_hub/core/services/database_service.dart';
 
 class MockMetadataService extends Mock implements MetadataAggregatorService {}
+
 class MockDatabaseService extends Mock implements DatabaseService {}
 
 void main() {
@@ -47,16 +48,20 @@ void main() {
     );
   }
 
-  testWidgets('TagEditorScreen shows original metadata', (WidgetTester tester) async {
-    await tester.pumpWidget(createTestableWidget(TagEditorScreen(track: testTrack)));
+  testWidgets('TagEditorScreen shows original metadata',
+      (WidgetTester tester) async {
+    await tester
+        .pumpWidget(createTestableWidget(TagEditorScreen(track: testTrack)));
 
     // On Material, title is in AppBar and potentially an EditableText/TextField
     expect(find.text('Original Title'), findsAtLeastNWidgets(1));
     expect(find.text('Original Artist'), findsOneWidget);
   });
 
-  testWidgets('Auto-fill updates controllers with mock data', (WidgetTester tester) async {
-    await tester.pumpWidget(createTestableWidget(TagEditorScreen(track: testTrack)));
+  testWidgets('Auto-fill updates controllers with mock data',
+      (WidgetTester tester) async {
+    await tester
+        .pumpWidget(createTestableWidget(TagEditorScreen(track: testTrack)));
 
     // Find and tap Auto-fill button (Material icon auto_awesome)
     final autoFillBtn = find.byIcon(Icons.auto_awesome);
@@ -64,7 +69,8 @@ void main() {
     await tester.tap(autoFillBtn);
     await tester.pumpAndSettle();
 
-    verify(() => mockMetadataService.aggregateMetadata('Original Title', 'Original Artist')).called(1);
+    verify(() => mockMetadataService.aggregateMetadata(
+        'Original Title', 'Original Artist')).called(1);
 
     expect(find.text('New Title'), findsOneWidget);
     expect(find.text('New Artist'), findsOneWidget);
@@ -73,15 +79,17 @@ void main() {
     expect(find.text('2024'), findsOneWidget);
   });
 
-  testWidgets('Save button is disabled when title is empty', (WidgetTester tester) async {
-    await tester.pumpWidget(createTestableWidget(TagEditorScreen(track: testTrack)));
+  testWidgets('Save button is disabled when title is empty',
+      (WidgetTester tester) async {
+    await tester
+        .pumpWidget(createTestableWidget(TagEditorScreen(track: testTrack)));
 
     // Find the save button IconButton
     final saveBtnFinder = find.ancestor(
       of: find.byIcon(Icons.save),
       matching: find.byType(IconButton),
     );
-    
+
     expect(tester.widget<IconButton>(saveBtnFinder).onPressed, isNotNull);
 
     // Clear title

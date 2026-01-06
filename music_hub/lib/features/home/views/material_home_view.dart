@@ -139,14 +139,16 @@ class MaterialHomeView extends StatelessWidget {
         'label': 'Busca',
         'desc': 'Festa e Karaoke',
         'icon': Icons.search,
-        'action': () => Navigator.push(context, MaterialPageRoute(builder: (_) => const DiscoveryScreen())),
+        'action': () => Navigator.push(context,
+            MaterialPageRoute(builder: (_) => const DiscoveryScreen())),
         'color': Colors.purple
       },
       {
         'label': 'Ajustes',
         'desc': 'Configurações do App',
         'icon': Icons.settings,
-        'action': () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen())),
+        'action': () => Navigator.push(
+            context, MaterialPageRoute(builder: (_) => const SettingsScreen())),
         'color': Colors.orange
       },
     ];

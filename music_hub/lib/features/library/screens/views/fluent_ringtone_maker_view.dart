@@ -26,50 +26,52 @@ class FluentRingtoneMakerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ScaffoldPage(
-      header: PageHeader(
-        title: Text('Criador de Toque: ${track.title}'),
-        leading: IconButton(
-          icon: const Icon(FluentIcons.back),
-          onPressed: () => Navigator.pop(context),
+        header: PageHeader(
+          title: Text('Criador de Toque: ${track.title}'),
+          leading: IconButton(
+            icon: const Icon(FluentIcons.back),
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
-      ),
-      content: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          children: [
-            const Icon(FluentIcons.music_note, size: 48),
-            const SizedBox(height: 16),
-            Text(track.artist, style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 32),
-            Text(
-              '${formatDuration(Duration(seconds: currentRange.start.toInt()))} - ${formatDuration(Duration(seconds: currentRange.end.toInt()))}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            const Text('Ajuste o intervalo (5s - 40s)'),
-            const SizedBox(height: 32),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Button(
-                  onPressed: onPlaySegment,
-                  child: Row(
-                    children: [
-                      Icon(isPlayingSegment ? FluentIcons.pause : FluentIcons.play),
-                      const SizedBox(width: 8),
-                      Text(isPlayingSegment ? 'Pausar' : 'Ouvir Trecho'),
-                    ],
+        content: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            children: [
+              const Icon(FluentIcons.music_note, size: 48),
+              const SizedBox(height: 16),
+              Text(track.artist, style: const TextStyle(fontSize: 18)),
+              const SizedBox(height: 32),
+              Text(
+                '${formatDuration(Duration(seconds: currentRange.start.toInt()))} - ${formatDuration(Duration(seconds: currentRange.end.toInt()))}',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              const Text('Ajuste o intervalo (5s - 40s)'),
+              const SizedBox(height: 32),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Button(
+                    onPressed: onPlaySegment,
+                    child: Row(
+                      children: [
+                        Icon(isPlayingSegment
+                            ? FluentIcons.pause
+                            : FluentIcons.play),
+                        const SizedBox(width: 8),
+                        Text(isPlayingSegment ? 'Pausar' : 'Ouvir Trecho'),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                FilledButton(
-                  onPressed: onSave,
-                  child: const Text('Exportar Toque'),
-                ),
-              ],
-            ),
-          ],
+                  const SizedBox(width: 16),
+                  FilledButton(
+                    onPressed: onSave,
+                    child: const Text('Exportar Toque'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
 }

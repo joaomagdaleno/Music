@@ -127,21 +127,23 @@ class FluentHomeView extends StatelessWidget {
         'label': 'Biblioteca',
         'desc': 'Organize sua música',
         'icon': FluentIcons.library,
-        'action': () {}, 
+        'action': () {},
         'color': Colors.blue
       },
       {
         'label': 'Busca',
         'desc': 'Encontre novas faixas',
         'icon': FluentIcons.search,
-        'action': () => Navigator.push(context, FluentPageRoute(builder: (_) => const DiscoveryScreen())),
+        'action': () => Navigator.push(
+            context, FluentPageRoute(builder: (_) => const DiscoveryScreen())),
         'color': Colors.purple
       },
       {
         'label': 'Ajustes',
         'desc': 'Configure o app',
         'icon': FluentIcons.settings,
-        'action': () => Navigator.push(context, FluentPageRoute(builder: (_) => const SettingsScreen())),
+        'action': () => Navigator.push(
+            context, FluentPageRoute(builder: (_) => const SettingsScreen())),
         'color': Colors.orange
       },
     ];

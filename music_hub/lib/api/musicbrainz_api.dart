@@ -11,7 +11,9 @@ class MusicBrainzApi {
 
   MusicBrainzApi({http.Client? client})
       : _client = client ?? DependencyManager.instance.client,
-        _rateLimiter = RateLimiter(maxRequests: 1, interval: const Duration(seconds: 1)); // Strict 1 req/sec
+        _rateLimiter = RateLimiter(
+            maxRequests: 1,
+            interval: const Duration(seconds: 1)); // Strict 1 req/sec
 
   /// Escapes Lucene special characters in a query string.
   String _escapeLucene(String s) => s.replaceAllMapped(
@@ -28,7 +30,8 @@ class MusicBrainzApi {
     final safeArtist = _escapeLucene(artist);
     final safeTitle = _escapeLucene(title);
     final query = 'artist:"$safeArtist" AND recording:"$safeTitle"';
-    final url = Uri.parse('${_baseUrl}recording?query=${Uri.encodeComponent(query)}&fmt=json');
+    final url = Uri.parse(
+        '${_baseUrl}recording?query=${Uri.encodeComponent(query)}&fmt=json');
 
     final response = await _client.get(
       url,
@@ -47,18 +50,19 @@ class MusicBrainzApi {
   Future<List<Map<String, dynamic>>> searchMetadata(
       String title, String artist) async {
     final results = await _executeSearch(title, artist);
-    
+
     // Fallback: If no results with Artist + Title, try Title only
     if (results.isEmpty && artist.isNotEmpty) {
       return await _executeSearch(title, '');
     }
-    
+
     return results;
   }
 
-  Future<List<Map<String, dynamic>>> _executeSearch(String title, String artist) async {
+  Future<List<Map<String, dynamic>>> _executeSearch(
+      String title, String artist) async {
     await _rateLimiter.wait();
-    
+
     String query;
     if (artist.isNotEmpty) {
       final safeArtist = _escapeLucene(artist);
@@ -68,8 +72,9 @@ class MusicBrainzApi {
       final safeTitle = _escapeLucene(title);
       query = 'recording:"$safeTitle"';
     }
-    
-    final url = Uri.parse('${_baseUrl}recording?query=${Uri.encodeComponent(query)}&fmt=json');
+
+    final url = Uri.parse(
+        '${_baseUrl}recording?query=${Uri.encodeComponent(query)}&fmt=json');
 
     final response = await _client.get(
       url,
@@ -92,10 +97,10 @@ class MusicBrainzApi {
         if (artistCredit != null) {
           final buffer = StringBuffer();
           for (final part in artistCredit) {
-             if (part is Map) {
-               buffer.write(part['name'] ?? '');
-               buffer.write(part['joinphrase'] ?? '');
-             }
+            if (part is Map) {
+              buffer.write(part['name'] ?? '');
+              buffer.write(part['joinphrase'] ?? '');
+            }
           }
           artistName = buffer.toString();
         }
@@ -103,7 +108,9 @@ class MusicBrainzApi {
         return {
           'id': rec['id'],
           'title': rec['title'],
-          'artist': artistName.isNotEmpty ? artistName : (rec['artist-credit']?[0]?['name'] ?? ''),
+          'artist': artistName.isNotEmpty
+              ? artistName
+              : (rec['artist-credit']?[0]?['name'] ?? ''),
           'album': rec['releases']?[0]?['title'] ?? '',
           'genres': genres,
         };
