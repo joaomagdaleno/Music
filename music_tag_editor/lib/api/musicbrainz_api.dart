@@ -46,10 +46,29 @@ class MusicBrainzApi {
 
   Future<List<Map<String, dynamic>>> searchMetadata(
       String title, String artist) async {
+    final results = await _executeSearch(title, artist);
+    
+    // Fallback: If no results with Artist + Title, try Title only
+    if (results.isEmpty && artist.isNotEmpty) {
+      return await _executeSearch(title, '');
+    }
+    
+    return results;
+  }
+
+  Future<List<Map<String, dynamic>>> _executeSearch(String title, String artist) async {
     await _rateLimiter.wait();
-    final safeArtist = _escapeLucene(artist);
-    final safeTitle = _escapeLucene(title);
-    final query = 'artist:"$safeArtist" AND recording:"$safeTitle"';
+    
+    String query;
+    if (artist.isNotEmpty) {
+      final safeArtist = _escapeLucene(artist);
+      final safeTitle = _escapeLucene(title);
+      query = 'artist:"$safeArtist" AND recording:"$safeTitle"';
+    } else {
+      final safeTitle = _escapeLucene(title);
+      query = 'recording:"$safeTitle"';
+    }
+    
     final url = Uri.parse('${_baseUrl}recording?query=${Uri.encodeComponent(query)}&fmt=json');
 
     final response = await _client.get(

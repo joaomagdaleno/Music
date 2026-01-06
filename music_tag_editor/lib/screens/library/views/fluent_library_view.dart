@@ -13,17 +13,25 @@ class FluentLibraryView extends StatefulWidget {
     required this.title,
     required this.isLoading,
     required this.musicTracks,
+    required this.isGridView,
+    required this.sortBy,
     required this.onAddFolder,
     required this.onSearchOnline,
     required this.onEditTrack,
+    required this.onToggleView,
+    required this.onSortChanged,
   });
 
   final String title;
   final bool isLoading;
   final List<SearchResult> musicTracks;
+  final bool isGridView;
+  final String sortBy;
   final VoidCallback onAddFolder;
   final Function(SearchResult) onSearchOnline;
   final Function(SearchResult) onEditTrack;
+  final VoidCallback onToggleView;
+  final Function(String) onSortChanged;
 
   @override
   State<FluentLibraryView> createState() => _FluentLibraryViewState();
@@ -47,6 +55,19 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
               : null,
           commandBar: CommandBar(
             primaryItems: [
+              CommandBarButton(
+                icon: Icon(widget.isGridView ? FluentIcons.view_all : FluentIcons.list),
+                label: Text(widget.isGridView ? 'List View' : 'Grid View'),
+                onPressed: widget.onToggleView,
+              ),
+              CommandBarButton(
+                icon: const Icon(FluentIcons.sort),
+                label: const Text('Sort'),
+                onPressed: () {
+                  _showSortMenu(context);
+                },
+              ),
+              const CommandBarSeparator(),
               CommandBarButton(
                 icon: const Icon(FluentIcons.download),
                 label: const Text('Download'),
@@ -121,6 +142,66 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
       );
     }
 
+    if (widget.isGridView) {
+      return GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          childAspectRatio: 0.8,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+        ),
+        itemCount: widget.musicTracks.length,
+        padding: const EdgeInsets.all(16),
+        itemBuilder: (context, index) {
+          final track = widget.musicTracks[index];
+          return HoverButton(
+            onPressed: () {},
+            builder: (context, states) => Column(
+                children: [
+                   Expanded(
+                    child: Card(
+                      padding: EdgeInsets.zero,
+                      child: Stack(
+                        children: [
+                          Center(
+                            child: Icon(
+                              FluentIcons.music_note,
+                              size: 48,
+                              color: Colors.grey[100],
+                            ),
+                          ),
+                          Positioned(
+                            right: 4,
+                            bottom: 4,
+                            child: IconButton(
+                              icon: const Icon(FluentIcons.more),
+                              onPressed: () => _showContextMenu(context, track, index),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    track.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    track.artist,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: Colors.grey[100], fontSize: 12),
+                  ),
+                ],
+              ),
+          );
+        },
+      );
+    }
+
     return ListView.builder(
       itemCount: widget.musicTracks.length,
       padding: const EdgeInsets.all(8),
@@ -144,6 +225,49 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
     );
   }
 
+  void _showSortMenu(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => ContentDialog(
+        title: const Text('Sort By'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RadioButton(
+              checked: widget.sortBy == 'title',
+              content: const Text('Title'),
+              onChanged: (v) {
+                if (v) widget.onSortChanged('title');
+                Navigator.pop(context);
+              },
+            ),
+            const SizedBox(height: 8),
+            RadioButton(
+              checked: widget.sortBy == 'artist',
+              content: const Text('Artist'),
+              onChanged: (v) {
+                if (v) widget.onSortChanged('artist');
+                Navigator.pop(context);
+              },
+            ),
+            const SizedBox(height: 8),
+            RadioButton(
+              checked: widget.sortBy == 'year',
+              content: const Text('Year/Album'),
+              onChanged: (v) {
+                if (v) widget.onSortChanged('year');
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+        actions: [
+          Button(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        ],
+      ),
+    );
+  }
+
   void _showContextMenu(BuildContext context, SearchResult track, int index) {
     showDialog(
         context: context,
@@ -159,9 +283,7 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
                       Navigator.push(
                         context,
                         FluentPageRoute(
-                          builder: (context) => RingtoneMakerScreen(
-                            track: track,
-                          ),
+                          builder: (context) => RingtoneMakerScreen(track: track),
                         ),
                       );
                     },

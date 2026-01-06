@@ -128,6 +128,13 @@ class DatabaseService {
       _settings.saveLearningRule(rule);
   Future<List<LearningRule>> getLearningRules() => _settings.getLearningRules();
 
+  /// Forces a WAL checkpoint to ensure all data is written to the main DB file.
+  /// Critical before performing file-based backups.
+  Future<void> checkpoint() async {
+    final db = await database;
+    await db.execute('PRAGMA wal_checkpoint(TRUNCATE);');
+  }
+
   Future<void> close() async {
     final db = _database;
     if (db != null) {

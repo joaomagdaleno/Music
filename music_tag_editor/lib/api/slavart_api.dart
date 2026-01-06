@@ -5,6 +5,7 @@ import 'package:path/path.dart' as p;
 import 'package:flutter/foundation.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/utils/rate_limiter.dart';
+import 'package:music_tag_editor/utils/file_utils.dart';
 
 /// SlavArt Divolt API for FLAC downloads from Tidal/Qobuz/Deezer.
 class SlavArtApi {
@@ -98,10 +99,10 @@ class SlavArtApi {
   }) async {
     IOSink? sink;
     try {
-      // SSRF Protection: Validate URL scheme
+      // SSRF Protection: Strictly validate URL scheme
       final uri = Uri.parse(downloadUrl);
       if (uri.scheme != 'http' && uri.scheme != 'https') {
-        debugPrint('❌ SlavArt: Invalid URL scheme: ${uri.scheme}');
+        debugPrint('❌ SlavArt: Invalid or dangerous URL scheme: ${uri.scheme}');
         return null;
       }
 
@@ -123,9 +124,8 @@ class SlavArtApi {
             RegExp(r'filename="?([^"]+)"?').firstMatch(contentDisposition);
         if (match != null) {
           final rawName = match.group(1)!;
-          // Sanitize: Take basename only to prevent traversal, and filter chars
-          // This replaces any of / \ : * ? " < > | with '_'
-          var cleanName = p.basename(rawName).replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
+          // Use shared utility for sanitization
+          var cleanName = sanitizeFilename(rawName);
           
           // Enforce extension
           if (!cleanName.toLowerCase().endsWith('.flac') && !cleanName.toLowerCase().endsWith('.mp3')) {

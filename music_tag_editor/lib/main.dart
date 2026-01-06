@@ -196,14 +196,51 @@ class _AppBootstrapState extends State<AppBootstrap> {
   @override
   Widget build(BuildContext context) {
     if (_errorMessage != null) {
+      if (!kIsWeb && Platform.isWindows) {
+        return fluent.FluentApp(
+          debugShowCheckedModeBanner: false,
+          home: fluent.ScaffoldPage(
+            header: const fluent.PageHeader(title: Text('Initialization Error')),
+            content: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    fluent.Icon(fluent.FluentIcons.error, size: 64, color: fluent.Colors.red),
+                    const SizedBox(height: 16),
+                    Text(
+                      _errorMessage!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 24),
+                    fluent.FilledButton(
+                      onPressed: () {
+                        setState(() {
+                          _errorMessage = null;
+                          _isInitialized = false;
+                          _currentStep = 'Retrying...';
+                        });
+                        _initializeApp();
+                      },
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      }
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Music Tag Editor - Error',
         home: Scaffold(
           body: Center(
             child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
+                padding: const EdgeInsets.all(24),
+                child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Icon(Icons.error_outline, size: 64, color: Colors.red),
@@ -234,6 +271,23 @@ class _AppBootstrapState extends State<AppBootstrap> {
     }
 
     if (!_isInitialized) {
+      if (!kIsWeb && Platform.isWindows) {
+        return fluent.FluentApp(
+          debugShowCheckedModeBanner: false,
+          home: fluent.ScaffoldPage(
+            content: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const fluent.ProgressBar(),
+                  const SizedBox(height: 24),
+                  Text(_currentStep, style: const TextStyle(fontSize: 16)),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Music Tag Editor - Loading',

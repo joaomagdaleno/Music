@@ -42,13 +42,14 @@ jobs:
         id: generate_version
         shell: bash
         run: |
-          VERSION=$(grep "version:" music_tag_editor/pubspec.yaml | sed 's/version: //' | xargs)
+          # Robust extraction ignoring comments and empty space
+          VERSION=$(grep -m 1 "^version:" music_tag_editor/pubspec.yaml | awk '{print $2}' | sed 's/[^0-9.]*//g')
           if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
             FULL_VERSION="${{ github.ref_name }}"
           elif [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
-            FULL_VERSION="1.1.0-dev.${GITHUB_RUN_NUMBER}"
+            FULL_VERSION="${VERSION}-dev.${GITHUB_RUN_NUMBER}"
           else
-            FULL_VERSION="$VERSION-local.${GITHUB_RUN_NUMBER}"
+            FULL_VERSION="${VERSION}-local.${GITHUB_RUN_NUMBER}"
           fi
 
           sed -i "s/^version:.*/version: $FULL_VERSION/" music_tag_editor/pubspec.yaml
@@ -214,6 +215,9 @@ jobs:
       - name: Flutter Build Windows
         working-directory: music_tag_editor
         run: flutter build windows --release
+
+      - name: Install Inno Setup
+        run: choco install innosetup -y
 
       - name: Package Windows Installer
         run: |

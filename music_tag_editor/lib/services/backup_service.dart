@@ -24,6 +24,9 @@ class BackupService {
     final backupDir = Directory(p.join(destinationPath, backupName));
     await backupDir.create(recursive: true);
 
+    // Ensure all WAL data is committed before backup
+    await _db.checkpoint();
+
     // Export database tables
     final tracks = await _db.getTracks();
     final playlists = await _db.getPlaylists();

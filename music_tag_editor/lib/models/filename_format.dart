@@ -1,4 +1,6 @@
 // Enum to represent the different filename formats.
+import 'package:music_tag_editor/utils/file_utils.dart';
+
 enum FilenameFormat {
   artistTitle,
   titleArtist,
@@ -25,5 +27,5 @@ extension FilenameFormatExtension on FilenameFormat {
     }
   }
 
-  String _sanitize(String input) => input.replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
+  String _sanitize(String input) => sanitizeFilename(input);
 }

@@ -5,7 +5,8 @@ import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
 import 'package:music_tag_editor/models/search_models.dart';
 import 'package:music_tag_editor/screens/library/views/fluent_library_view.dart';
 import 'package:music_tag_editor/screens/library/views/material_library_view.dart';
-import 'package:music_tag_editor/widgets/edit_track_dialog.dart';
+import 'package:music_tag_editor/screens/edit/tag_editor_screen.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
@@ -20,6 +21,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
       MetadataAggregatorService.instance;
   List<SearchResult> _musicTracks = [];
   bool _isLoading = true;
+  bool _isGridView = false;
+  String _sortBy = 'title'; // 'title', 'artist', 'year', 'confidence'
 
   @override
   void initState() {
@@ -30,12 +33,41 @@ class _LibraryScreenState extends State<LibraryScreen> {
   Future<void> _refreshLibrary() async {
     setState(() => _isLoading = true);
     final tracks = await _dbService.getAllTracks();
+    _sortTracks(tracks);
     if (mounted) {
       setState(() {
         _musicTracks = tracks;
         _isLoading = false;
       });
     }
+  }
+
+  void _sortTracks(List<SearchResult> tracks) {
+    switch (_sortBy) {
+      case 'artist':
+        tracks.sort((a, b) => a.artist.toLowerCase().compareTo(b.artist.toLowerCase()));
+        break;
+      case 'year':
+        // Assuming year might be in album or not present yet, using title as fallback
+        tracks.sort((a, b) => (a.album ?? '').compareTo(b.album ?? ''));
+        break;
+      case 'confidence':
+        // Placeholder for confidence logic if implemented in models
+        break;
+      default:
+        tracks.sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+    }
+  }
+
+  void _toggleView() {
+    setState(() => _isGridView = !_isGridView);
+  }
+
+  void _changeSort(String sort) {
+    setState(() {
+      _sortBy = sort;
+      _sortTracks(_musicTracks);
+    });
   }
 
   void _addMusicFolder() async {
@@ -68,18 +100,17 @@ class _LibraryScreenState extends State<LibraryScreen> {
   }
 
   void _editTrack(SearchResult track) async {
-    final result = await showDialog<SearchResult>(
-      context: context,
-      builder: (context) => EditTrackDialog(track: track),
+    final platform = defaultTargetPlatform;
+    final isFluent = !kIsWeb && platform == TargetPlatform.windows;
+
+    final dynamic result = await Navigator.push(
+      context,
+      isFluent 
+        ? fluent.FluentPageRoute(builder: (context) => TagEditorScreen(track: track))
+        : MaterialPageRoute(builder: (context) => TagEditorScreen(track: track)),
     );
 
-    if (result != null) {
-      await _dbService.updateTrackMetadata(
-        result.id,
-        result.title,
-        result.artist,
-        result.album ?? '',
-      );
+    if (result == true) {
       _refreshLibrary();
     }
   }
@@ -97,9 +128,13 @@ class _LibraryScreenState extends State<LibraryScreen> {
         title: 'Biblioteca',
         isLoading: _isLoading,
         musicTracks: _musicTracks,
+        isGridView: _isGridView,
+        sortBy: _sortBy,
         onAddFolder: _addMusicFolder,
         onSearchOnline: _searchOnline,
         onEditTrack: _editTrack,
+        onToggleView: _toggleView,
+        onSortChanged: _changeSort,
       );
     }
 
@@ -107,9 +142,13 @@ class _LibraryScreenState extends State<LibraryScreen> {
       title: 'Biblioteca',
       isLoading: _isLoading,
       musicTracks: _musicTracks,
+      isGridView: _isGridView,
+      sortBy: _sortBy,
       onAddFolder: _addMusicFolder,
       onSearchOnline: _searchOnline,
       onEditTrack: _editTrack,
+      onToggleView: _toggleView,
+      onSortChanged: _changeSort,
     );
   }
 }
