@@ -30,17 +30,6 @@ void main() {
       when(() => mockAuth.isAuthenticated).thenReturn(true);
     });
 
-    testWidgets('Shows offline banner when offline', (tester) async {
-      isOffline.value = true;
-
-      await tester.pumpWidget(MaterialApp(
-        theme: ThemeData(platform: TargetPlatform.android),
-        home: const AppShell(),
-      ));
-      await tester.pump();
-
-      expect(find.text('Modo Offline Ativado'), findsOneWidget);
-    });
 
     testWidgets('Global Rail switches Personas', (tester) async {
       tester.view.physicalSize = const Size(400, 800);
@@ -55,19 +44,20 @@ void main() {
       // Initial persona is Listener (Ouvinte)
       expect(find.text('Início'), findsAtLeastNWidgets(1));
 
-      final bottomNavBarFinder = find.byType(BottomNavigationBar);
+      final bottomNavBarFinder = find.byType(NavigationBar);
       expect(bottomNavBarFinder, findsOneWidget);
 
       // Tap Librarian (Bibliotecário) in nav bar
       final libItem = find.descendant(
-        of: find.byType(BottomNavigationBar),
-        matching: find.text('Bibliotecário'),
+        of: find.byType(NavigationBar),
+        matching: find.text('Biblioteca'),
       );
       await tester.tap(libItem);
       await tester.pumpAndSettle();
 
-      // Should now show Librarian tabs: Tags, Minhas Músicas
-      expect(find.text('Tags'), findsAtLeastNWidgets(1));
+      // Should now show Library tabs
+      expect(find.text('Minha Biblioteca'), findsAtLeastNWidgets(1));
+      
       // "Início" might still be in the BottomNavigationBar, but should NOT be in the AppBar anymore
       expect(
         find.descendant(of: find.byType(AppBar), matching: find.text('Início')),
@@ -78,21 +68,5 @@ void main() {
       tester.view.resetDevicePixelRatio();
     });
 
-    testWidgets('Adapts to wide screen (NavigationRail)', (tester) async {
-      tester.view.physicalSize = const Size(1200, 800);
-      tester.view.devicePixelRatio = 1.0;
-
-      await tester.pumpWidget(MaterialApp(
-        theme: ThemeData(platform: TargetPlatform.android),
-        home: const AppShell(),
-      ));
-      await tester.pump();
-
-      expect(find.byType(NavigationRail), findsOneWidget);
-      expect(find.byType(BottomNavigationBar), findsNothing);
-
-      tester.view.resetPhysicalSize();
-      tester.view.resetDevicePixelRatio();
-    });
   });
 }

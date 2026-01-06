@@ -66,8 +66,9 @@ void main() {
     // Note: Most checks are redundant as setupMusicTest provides default stubs.
     // However, verify calls need these to be valid.
 
-    when(() => mockPlayer.setAudioSource(any(), initialPosition: any(named: 'initialPosition'), preload: any(named: 'preload')))
-        .thenAnswer((_) async => null);
+    when(() => mockPlayer.setAudioSource(any(),
+        initialPosition: any(named: 'initialPosition'),
+        preload: any(named: 'preload'))).thenAnswer((_) async => null);
 
     when(() => mockSearch.getStreamUrl(
           any(),

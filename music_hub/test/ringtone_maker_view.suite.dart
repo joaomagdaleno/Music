@@ -2,6 +2,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_hub/features/library/screens/ringtone_maker_screen.dart';
@@ -121,6 +122,9 @@ void main() {
 
   group('RingtoneMakerScreen', () {
     testWidgets('renders Scaffold', (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
@@ -128,6 +132,9 @@ void main() {
     });
 
     testWidgets('displays track title', (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
@@ -135,6 +142,9 @@ void main() {
     });
 
     testWidgets('has play/pause button', (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
@@ -142,6 +152,9 @@ void main() {
     });
 
     testWidgets('has app bar with title', (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 

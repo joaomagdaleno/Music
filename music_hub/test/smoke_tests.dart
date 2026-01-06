@@ -136,9 +136,12 @@ void main() {
     when(() => mockPlayback.currentTrackStream)
         .thenAnswer((_) => Stream.value(null));
     when(() => mockPlayback.player).thenReturn(mockPlayer);
-    when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(PlayerState(false, ProcessingState.idle)));
-    when(() => mockPlayer.positionStream).thenAnswer((_) => Stream.value(Duration.zero));
-    when(() => mockPlayer.bufferedPositionStream).thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockPlayer.playerStateStream).thenAnswer(
+        (_) => Stream.value(PlayerState(false, ProcessingState.idle)));
+    when(() => mockPlayer.positionStream)
+        .thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockPlayer.bufferedPositionStream)
+        .thenAnswer((_) => Stream.value(Duration.zero));
     when(() => mockPlayer.playingStream).thenAnswer((_) => Stream.value(false));
     when(() => mockPlayer.durationStream).thenAnswer((_) => Stream.value(null));
 

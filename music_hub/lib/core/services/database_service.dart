@@ -211,9 +211,10 @@ class DatabaseService {
     ''');
 
     await db.execute('''
-      CREATE TABLE duo_shared_tracks(
+      CREATE TABLE duo_sessions(
         guest_id TEXT,
         track_id TEXT,
+        added_at INTEGER,
         PRIMARY KEY(guest_id, track_id)
       )
     ''');

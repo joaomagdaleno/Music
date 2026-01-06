@@ -21,14 +21,20 @@ class MetadataAggregatorService {
 
   @visibleForTesting
   static set instance(MetadataAggregatorService mock) => _instance = mock;
+
+  @visibleForTesting
+  static void resetInstance() {
+    _instance = MetadataAggregatorService._internal();
+  }
+
   MetadataAggregatorService._internal();
 
-  MusicBrainzApi _musicBrainz = MusicBrainzApi();
-  LastFmApi _lastFm = LastFmApi();
-  DiscogsApi _discogs = DiscogsApi();
-  GeniusApi _genius = GeniusApi();
-  NeteaseApi _netease = NeteaseApi();
-  LyricsService _lrcLib = LyricsService.instance;
+  late MusicBrainzApi _musicBrainz = MusicBrainzApi();
+  late LastFmApi _lastFm = LastFmApi();
+  late DiscogsApi _discogs = DiscogsApi();
+  late GeniusApi _genius = GeniusApi();
+  late NeteaseApi _netease = NeteaseApi();
+  late LyricsService _lrcLib = LyricsService.instance;
 
   @visibleForTesting
   void setDependencies({

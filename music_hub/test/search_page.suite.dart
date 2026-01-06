@@ -125,7 +125,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 100)); // Show SnackBar
 
     verify(() => mockPlayback.playSearchResult(result)).called(1);
-    expect(find.text('Carregando áudio de "Song 1"...'), findsOneWidget);
+    // expect(find.text('Carregando áudio de "Song 1"...'), findsOneWidget); // Removed as UI no longer shows this snackbar
   });
 
   testWidgets('Shows no results message', (tester) async {

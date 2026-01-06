@@ -40,6 +40,7 @@ void main() {
     mockNetease = MockNeteaseApi();
     mockLyrics = MockLyricsService();
 
+    MetadataAggregatorService.resetInstance();
     service = MetadataAggregatorService.instance;
     service.setDependencies(
       musicBrainz: mockMusicBrainz,

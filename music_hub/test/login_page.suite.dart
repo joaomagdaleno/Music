@@ -57,64 +57,16 @@ class MockLocalDuoService extends Mock implements LocalDuoService {}
 class MockLyricsService extends Mock implements LyricsService {}
 
 void main() {
-  late MockAuthService mockAuth;
-  late MockConnectivityService mockConnectivity;
-  late MockPlaybackService mockPlayback;
-  late MockDatabaseService mockDb;
-  late MockThemeService mockTheme;
-//  late MockPlayer mockPlayer; // Unused
-  late MockSecurityService mockSecurity;
-  late MockEqualizerService mockEqualizer;
-  late MockDesktopIntegrationService mockDesktop;
-  late MockAndroidEqualizer mockAndroidEqualizer;
-  late MockDependencyManager mockDeps;
-  late MockSearchService mockSearch;
-  late MockDownloadService mockDownload;
-  late MockFirebaseSyncService mockSync;
-  late MockLocalDuoService mockDuo;
-  late MockLyricsService mockLyrics;
-
-  setUp(() {
-    mockAuth = MockAuthService();
-    mockConnectivity = MockConnectivityService();
-    mockPlayback = MockPlaybackService();
-    mockDb = MockDatabaseService();
-    mockTheme = MockThemeService();
-    mockPlayer = MockPlayer();
-    mockSecurity = MockSecurityService();
-    mockEqualizer = MockEqualizerService();
-    mockDesktop = MockDesktopIntegrationService();
-    mockAndroidEqualizer = MockAndroidEqualizer();
-    mockDeps = MockDependencyManager();
-    mockSearch = MockSearchService();
-    mockDownload = MockDownloadService();
-    mockSync = MockFirebaseSyncService();
-    mockDuo = MockLocalDuoService();
-    mockLyrics = MockLyricsService();
-
-    AuthService.instance = mockAuth;
-    ConnectivityService.instance = mockConnectivity;
-    PlaybackService.instance = mockPlayback;
-    DatabaseService.instance = mockDb;
-    ThemeService.instance = mockTheme;
-    SecurityService.instance = mockSecurity;
-    EqualizerService.instance = mockEqualizer;
-    DesktopIntegrationService.instance = mockDesktop;
-    DependencyManager.instance = mockDeps;
-    SearchService.instance = mockSearch;
-    DownloadService.instance = mockDownload;
-    FirebaseSyncService.instance = mockSync;
-    LocalDuoService.instance = mockDuo;
-    LyricsService.instance = mockLyrics;
-
+  setUp(() async {
+    await setupMusicTest();
+    
+    // Additional login-specific stubs
     final isOffline = ValueNotifier<bool>(false);
     when(() => mockConnectivity.isOffline).thenReturn(isOffline);
     when(() => mockPlayback.currentTrack).thenReturn(null);
-    when(() => mockEqualizer.equalizer).thenReturn(mockAndroidEqualizer);
-    // Removed setAudioSessionId stub
-
-    when(() =>
-            mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
+    when(() => mockEqualizer.equalizer).thenReturn(MockAndroidEqualizer());
+    
+    when(() => mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
         .thenAnswer((_) async => {});
     when(() => mockDuo.role).thenReturn(DuoRole.none);
     when(() => mockDb.getTracks()).thenAnswer((_) async => []);
@@ -122,8 +74,12 @@ void main() {
 
     when(() => mockAuth.login(any(), any())).thenAnswer((_) async => true);
     when(() => mockAuth.register(any(), any())).thenAnswer((_) async => true);
+    
+    // Ensure mockPlayer is returned (crucial fix)
+    when(() => mockPlayback.player).thenReturn(mockPlayer);
   });
-
+  
+  // Helper for tests
   Widget createTestWidget() => MaterialApp(
         theme: ThemeData(platform: TargetPlatform.android),
         home: const LoginScreen(),

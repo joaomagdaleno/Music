@@ -11,7 +11,6 @@ import 'package:music_hub/core/services/local_duo_service.dart';
 import 'package:music_hub/features/library/models/search_models.dart';
 import 'test_helper.dart';
 
-
 void main() {
   group('PlayerScreen Widget Tests', () {
     late StreamController<bool> playingController;
@@ -23,13 +22,19 @@ void main() {
       positionController = StreamController<Duration>.broadcast();
 
       // Use controllers for mocking streams
-      when(() => mockPlayer.playingStream).thenAnswer((_) => playingController.stream);
-      when(() => mockPlayer.positionStream).thenAnswer((_) => positionController.stream);
-      when(() => mockPlayer.bufferedPositionStream).thenAnswer((_) => Stream.value(Duration.zero));
-      when(() => mockPlayer.durationStream).thenAnswer((_) => Stream.value(Duration.zero));
-      when(() => mockPlayer.playerStateStream).thenAnswer((_) => playingController.stream
-          .map((p) => PlayerState(p, ProcessingState.ready)));
-      when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => const Stream.empty());
+      when(() => mockPlayer.playingStream)
+          .thenAnswer((_) => playingController.stream);
+      when(() => mockPlayer.positionStream)
+          .thenAnswer((_) => positionController.stream);
+      when(() => mockPlayer.bufferedPositionStream)
+          .thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockPlayer.durationStream)
+          .thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockPlayer.playerStateStream).thenAnswer((_) =>
+          playingController.stream
+              .map((p) => PlayerState(p, ProcessingState.ready)));
+      when(() => mockPlayer.sequenceStateStream)
+          .thenAnswer((_) => const Stream.empty());
 
       when(() => mockPlayback.sleepTimerStream)
           .thenAnswer((_) => Stream.value(null));
@@ -103,7 +108,8 @@ void main() {
 
       // Initially paused
       playingController.add(false);
-      when(() => mockPlayer.playerState).thenReturn(PlayerState(false, ProcessingState.ready));
+      when(() => mockPlayer.playerState)
+          .thenReturn(PlayerState(false, ProcessingState.ready));
 
       await tester.pump();
 
@@ -116,7 +122,8 @@ void main() {
       // Simulate playing state update
       playingController.add(true);
       // Update state mock to reflect playing
-      when(() => mockPlayer.playerState).thenReturn(PlayerState(true, ProcessingState.ready));
+      when(() => mockPlayer.playerState)
+          .thenReturn(PlayerState(true, ProcessingState.ready));
 
       await tester.pump();
 

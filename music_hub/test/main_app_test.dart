@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 import 'test_helper.dart';
 import 'package:music_hub/main.dart';
 import 'package:music_hub/features/library/screens/library_screen.dart';
@@ -139,11 +141,26 @@ void main() {
     when(() => mockTheme.removeListener(any())).thenReturn(null);
 
     when(() => mockPlayback.player).thenReturn(mockPlayer);
-    when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(PlayerState(false, ProcessingState.idle)));
-    when(() => mockPlayer.positionStream).thenAnswer((_) => Stream.value(Duration.zero));
-    when(() => mockPlayer.bufferedPositionStream).thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockPlayer.playerStateStream).thenAnswer(
+        (_) => Stream.value(PlayerState(false, ProcessingState.idle)));
+    when(() => mockPlayer.positionStream)
+        .thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockPlayer.bufferedPositionStream)
+        .thenAnswer((_) => Stream.value(Duration.zero));
     when(() => mockPlayer.playingStream).thenAnswer((_) => Stream.value(false));
     when(() => mockPlayer.durationStream).thenAnswer((_) => Stream.value(null));
+    when(() => mockPlayer.sequenceStateStream)
+        .thenAnswer((_) => const Stream.empty());
+
+    when(() => mockPlayer.position).thenReturn(Duration.zero);
+    when(() => mockPlayer.bufferedPosition).thenReturn(Duration.zero);
+    when(() => mockPlayer.duration).thenReturn(null);
+    when(() => mockPlayer.volume).thenReturn(1.0);
+    when(() => mockPlayer.speed).thenReturn(1.0);
+    when(() => mockPlayer.loopMode).thenReturn(LoopMode.off);
+    when(() => mockPlayer.shuffleModeEnabled).thenReturn(false);
+    when(() => mockPlayer.processingState).thenReturn(ProcessingState.idle);
+    when(() => mockPlayer.playing).thenReturn(false);
 
     when(() => mockPlayback.currentTrack).thenReturn(null);
     when(() => mockPlayback.currentTrackStream)
@@ -154,18 +171,22 @@ void main() {
     when(() =>
             mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
         .thenAnswer((_) async {});
+    
+    when(() => mockDeps.client).thenReturn(MockClient((request) async {
+      return http.Response('{}', 200);
+    }));
+
+    when(() => mockDb.getAllTracks()).thenAnswer((_) async => []);
   });
 
-  testWidgets(
-      'MusicHubApp shows AppShell when not authenticated (Guest Mode)',
+  testWidgets('MusicHubApp shows AppShell when not authenticated (Guest Mode)',
       (tester) async {
     when(() => mockDb.loadFilenameFormat())
         .thenAnswer((_) async => FilenameFormat.artistTitle);
     when(() => mockDb.getTracks()).thenAnswer((_) async => []);
     when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
 
-    await tester
-        .pumpWidget(const MusicHubApp());
+    await tester.pumpWidget(const MusicHubApp());
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -173,8 +194,7 @@ void main() {
     expect(find.byType(LoginScreen), findsNothing);
   });
 
-  testWidgets('MusicHubApp shows AppShell when authenticated',
-      (tester) async {
+  testWidgets('MusicHubApp shows AppShell when authenticated', (tester) async {
     when(() => mockAuth.isAuthenticated).thenReturn(true);
 
     // Stubbing for AppShell and its sub-widgets
@@ -183,8 +203,7 @@ void main() {
     when(() => mockDb.getTracks()).thenAnswer((_) async => []);
     when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
 
-    await tester
-        .pumpWidget(const MusicHubApp());
+    await tester.pumpWidget(const MusicHubApp());
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 200));
 

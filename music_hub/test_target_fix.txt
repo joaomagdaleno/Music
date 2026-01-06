@@ -1,0 +1,340 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: MusicHubApp renders MaterialApp
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The value of a foundation debug variable was changed by the test.
+
+When the exception was thrown, this was the stack:
+#0      debugAssertAllFoundationVarsUnset.<anonymous closure> (package:flutter/src/foundation/debug.dart:45:7)
+#1      debugAssertAllFoundationVarsUnset (package:flutter/src/foundation/debug.dart:48:4)
+#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1100:7)
+#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1599:11)
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1078:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  renders MaterialApp
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:03 +0 -1: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/my_tracks_view.suite.dart: MyTracksScreen renders loading state
+00:03 +0 -1: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: MusicHubApp renders MaterialApp [E]
+  Test failed. See exception logs above.
+  The test description was: renders MaterialApp
+  
+00:04 +1 -1: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: MusicHubApp shows HomeScreen in AppShell when not authenticated (Guest Mode)
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The value of a foundation debug variable was changed by the test.
+
+When the exception was thrown, this was the stack:
+#0      debugAssertAllFoundationVarsUnset.<anonymous closure> (package:flutter/src/foundation/debug.dart:45:7)
+#1      debugAssertAllFoundationVarsUnset (package:flutter/src/foundation/debug.dart:48:4)
+#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1100:7)
+#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1599:11)
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1078:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  shows HomeScreen in AppShell when not authenticated (Guest Mode)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +1 -2: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/my_tracks_view.suite.dart: MyTracksScreen renders empty state
+00:04 +1 -2: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: MusicHubApp shows HomeScreen in AppShell when not authenticated (Guest Mode) [E]
+  Test failed. See exception logs above.
+  The test description was: shows HomeScreen in AppShell when not authenticated (Guest Mode)
+  
+00:05 +2 -2: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: MusicHubApp uses theme color from ThemeService
+00:07 +3 -2: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: MusicHubApp uses theme color from ThemeService
+00:07 +4 -2: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: MusicHubApp uses theme color from ThemeService
+00:07 +5 -2: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: MusicHubApp uses theme color from ThemeService
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The value of a foundation debug variable was changed by the test.
+
+When the exception was thrown, this was the stack:
+#0      debugAssertAllFoundationVarsUnset.<anonymous closure> (package:flutter/src/foundation/debug.dart:45:7)
+#1      debugAssertAllFoundationVarsUnset (package:flutter/src/foundation/debug.dart:48:4)
+#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1100:7)
+#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1599:11)
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1078:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  uses theme color from ThemeService
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:08 +5 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart: RingtoneMakerScreen renders Scaffold
+00:08 +5 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: MusicHubApp uses theme color from ThemeService [E]
+  Test failed. See exception logs above.
+  The test description was: uses theme color from ThemeService
+  
+00:09 +5 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: LibraryScreen renders with title
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The value of a foundation debug variable was changed by the test.
+
+When the exception was thrown, this was the stack:
+#0      debugAssertAllFoundationVarsUnset.<anonymous closure> (package:flutter/src/foundation/debug.dart:45:7)
+#1      debugAssertAllFoundationVarsUnset (package:flutter/src/foundation/debug.dart:48:4)
+#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1100:7)
+#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1599:11)
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1078:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  renders with title
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:09 +5 -4: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart: RingtoneMakerScreen renders Scaffold
+00:09 +5 -4: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: LibraryScreen renders with title [E]
+  Test failed. See exception logs above.
+  The test description was: renders with title
+  
+00:09 +5 -4: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: LibraryScreen has DefaultTabController
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The value of a foundation debug variable was changed by the test.
+
+When the exception was thrown, this was the stack:
+#0      debugAssertAllFoundationVarsUnset.<anonymous closure> (package:flutter/src/foundation/debug.dart:45:7)
+#1      debugAssertAllFoundationVarsUnset (package:flutter/src/foundation/debug.dart:48:4)
+#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1100:7)
+#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1599:11)
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1078:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  has DefaultTabController
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:09 +5 -5: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart: RingtoneMakerScreen renders Scaffold
+00:09 +5 -5: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: LibraryScreen has DefaultTabController [E]
+  Test failed. See exception logs above.
+  The test description was: has DefaultTabController
+  
+00:10 +5 -5: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: LibraryScreen renders tab bar with tabs
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The value of a foundation debug variable was changed by the test.
+
+When the exception was thrown, this was the stack:
+#0      debugAssertAllFoundationVarsUnset.<anonymous closure> (package:flutter/src/foundation/debug.dart:45:7)
+#1      debugAssertAllFoundationVarsUnset (package:flutter/src/foundation/debug.dart:48:4)
+#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1100:7)
+#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1599:11)
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1078:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  renders tab bar with tabs
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:10 +5 -6: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart: RingtoneMakerScreen renders Scaffold
+00:10 +5 -6: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: LibraryScreen renders tab bar with tabs [E]
+  Test failed. See exception logs above.
+  The test description was: renders tab bar with tabs
+  
+00:10 +5 -6: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: LibraryScreen has settings button in app bar
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The value of a foundation debug variable was changed by the test.
+
+When the exception was thrown, this was the stack:
+#0      debugAssertAllFoundationVarsUnset.<anonymous closure> (package:flutter/src/foundation/debug.dart:45:7)
+#1      debugAssertAllFoundationVarsUnset (package:flutter/src/foundation/debug.dart:48:4)
+#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1100:7)
+#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1599:11)
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1078:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  has settings button in app bar
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:10 +5 -7: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart: RingtoneMakerScreen renders Scaffold
+00:10 +5 -7: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: LibraryScreen has settings button in app bar [E]
+  Test failed. See exception logs above.
+  The test description was: has settings button in app bar
+  
+00:10 +5 -7: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: LibraryScreen has download button in app bar
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The value of a foundation debug variable was changed by the test.
+
+When the exception was thrown, this was the stack:
+#0      debugAssertAllFoundationVarsUnset.<anonymous closure> (package:flutter/src/foundation/debug.dart:45:7)
+#1      debugAssertAllFoundationVarsUnset (package:flutter/src/foundation/debug.dart:48:4)
+#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1100:7)
+#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1599:11)
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1078:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  has download button in app bar
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:10 +5 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart: RingtoneMakerScreen renders Scaffold
+00:10 +5 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: LibraryScreen has download button in app bar [E]
+  Test failed. See exception logs above.
+  The test description was: has download button in app bar
+  
+00:10 +5 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: LibraryScreen shows empty folder message
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The value of a foundation debug variable was changed by the test.
+
+When the exception was thrown, this was the stack:
+#0      debugAssertAllFoundationVarsUnset.<anonymous closure> (package:flutter/src/foundation/debug.dart:45:7)
+#1      debugAssertAllFoundationVarsUnset (package:flutter/src/foundation/debug.dart:48:4)
+#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1100:7)
+#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1599:11)
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1078:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  shows empty folder message
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:10 +5 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart: RingtoneMakerScreen renders Scaffold
+00:10 +5 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: LibraryScreen shows empty folder message [E]
+  Test failed. See exception logs above.
+  The test description was: shows empty folder message
+  
+00:11 +5 -9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart: RingtoneMakerScreen renders Scaffold
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The value of a foundation debug variable was changed by the test.
+
+When the exception was thrown, this was the stack:
+#0      debugAssertAllFoundationVarsUnset.<anonymous closure> (package:flutter/src/foundation/debug.dart:45:7)
+#1      debugAssertAllFoundationVarsUnset (package:flutter/src/foundation/debug.dart:48:4)
+#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1100:7)
+#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1599:11)
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1078:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  renders Scaffold
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:11 +5 -10: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/search_page.suite.dart: Shows initialization progress then content
+00:11 +5 -10: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart: RingtoneMakerScreen renders Scaffold [E]
+  Test failed. See exception logs above.
+  The test description was: renders Scaffold
+  
+00:11 +5 -10: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/search_page.suite.dart: Shows initialization progress then content
+[2026-01-06T09:15:16.418340] [DiscoveryScreen] Initializing dependencies...
+[2026-01-06T09:15:16.984103] [DiscoveryScreen] Dependencies initialized successfully
+00:11 +6 -10: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart: RingtoneMakerScreen displays track title
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "Test Song": []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart:140:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart line 140
+The test description was:
+  displays track title
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:11 +6 -11: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/search_page.suite.dart: Performs search and displays results
+00:11 +6 -11: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart: RingtoneMakerScreen displays track title [E]
+  Test failed. See exception logs above.
+  The test description was: displays track title
+  
+00:11 +6 -11: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart: RingtoneMakerScreen has play/pause button
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The value of a foundation debug variable was changed by the test.
+
+When the exception was thrown, this was the stack:
+#0      debugAssertAllFoundationVarsUnset.<anonymous closure> (package:flutter/src/foundation/debug.dart:45:7)
+#1      debugAssertAllFoundationVarsUnset (package:flutter/src/foundation/debug.dart:48:4)
+#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1100:7)
+#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:1599:11)
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1078:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  has play/pause button
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:12 +6 -12: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/search_page.suite.dart: Performs search and displays results
+00:12 +6 -12: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart: RingtoneMakerScreen has play/pause button [E]
+  Test failed. See exception logs above.
+  The test description was: has play/pause button
+  
+00:12 +6 -12: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart: RingtoneMakerScreen has app bar with title
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "Criador de Toques": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart:154:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart line 154
+The test description was:
+  has app bar with title
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:12 +6 -13: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/search_page.suite.dart: Performs search and displays results
+00:12 +6 -13: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart: RingtoneMakerScreen has app bar with title [E]
+  Test failed. See exception logs above.
+  The test description was: has app bar with title
+  
+00:12 +6 -13: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/search_page.suite.dart: Performs search and displays results
+[2026-01-06T09:15:17.923097] [DiscoveryScreen] Initializing dependencies...
+[2026-01-06T09:15:17.971887] [DiscoveryScreen] Dependencies initialized successfully
+[2026-01-06T09:15:18.800393] [DiscoveryScreen] Starting search #1 for: "test query"
+[2026-01-06T09:15:18.802418] [DiscoveryScreen] Search returned 2 results
+00:13 +7 -13: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/search_page.suite.dart: Handles play track interaction
+[2026-01-06T09:15:19.452138] [DiscoveryScreen] Initializing dependencies...
+[2026-01-06T09:15:19.479110] [DiscoveryScreen] Dependencies initialized successfully
+[2026-01-06T09:15:19.563396] [DiscoveryScreen] Starting search #1 for: "test"
+[2026-01-06T09:15:19.564397] [DiscoveryScreen] Search returned 1 results
+[2026-01-06T09:15:19.896839] [DiscoveryScreen] Playing track (Instant): 1
+[2026-01-06T09:15:19.896839] [MusicManager] Instant play requested for: Song 1
+[2026-01-06T09:15:19.898867] [YouTubeStreamer] Searching stream for: Artist 1 - Song 1
+[2026-01-06T09:15:19.924655] [YouTubeStreamer] Erro ao extrair stream YouTube: type 'Null' is not a subtype of type 'List<RedirectInfo>'
+[2026-01-06T09:15:19.925661] [MusicManager] Streamer failed, falling back to standard playback
+[2026-01-06T09:15:19.926657] [DiscoveryScreen] Playback started for 1
+00:13 +8 -13: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/search_page.suite.dart: Shows no results message
+[2026-01-06T09:15:20.037566] [DiscoveryScreen] Initializing dependencies...
+[2026-01-06T09:15:20.067502] [DiscoveryScreen] Dependencies initialized successfully
+[2026-01-06T09:15:20.172801] [DiscoveryScreen] Starting search #1 for: "unknown"
+[2026-01-06T09:15:20.173800] [DiscoveryScreen] Search returned 0 results
+[2026-01-06T09:15:20.174799] [DiscoveryScreen] No results found for query: "unknown"
+00:13 +9 -13: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/search_page.suite.dart: Shows error message on initialization failure
+[2026-01-06T09:15:20.273806] [DiscoveryScreen] Initializing dependencies...
+[2026-01-06T09:15:20.275808] ❌ Dependency initialization FAILED: Init failed
+00:14 +10 -13: Some tests failed.

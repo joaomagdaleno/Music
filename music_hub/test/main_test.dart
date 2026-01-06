@@ -1,6 +1,7 @@
 @Tags(['widget'])
 library;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -56,6 +57,7 @@ void main() {
     when(() => mockDb.loadFilenameFormat())
         .thenAnswer((_) async => FilenameFormat.artistTitle);
     when(() => mockDb.getTracks()).thenAnswer((_) async => []);
+    when(() => mockDb.getAllTracks()).thenAnswer((_) async => []); // Added stub
     when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
     when(() => mockPlayback.player).thenReturn(mockPlayer);
     when(() => mockPlayback.currentTrack).thenReturn(null);
@@ -63,18 +65,24 @@ void main() {
         .thenAnswer((_) => const Stream.empty());
 
     // Use MockPlayer properties
-    when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(PlayerState(false, ProcessingState.idle)));
-    when(() => mockPlayer.positionStream).thenAnswer((_) => Stream.value(Duration.zero));
-    when(() => mockPlayer.bufferedPositionStream).thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockPlayer.playerStateStream).thenAnswer(
+        (_) => Stream.value(PlayerState(false, ProcessingState.idle)));
+    when(() => mockPlayer.positionStream)
+        .thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockPlayer.bufferedPositionStream)
+        .thenAnswer((_) => Stream.value(Duration.zero));
     when(() => mockPlayer.playingStream).thenAnswer((_) => Stream.value(false));
     when(() => mockPlayer.durationStream).thenAnswer((_) => Stream.value(null));
-    when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => const Stream.empty());
+    when(() => mockPlayer.sequenceStateStream)
+        .thenAnswer((_) => const Stream.empty());
   });
 
   group('MusicHubApp', () {
     testWidgets('renders MaterialApp', (tester) async {
-      await tester.pumpWidget(
-          const MusicHubApp());
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
+      await tester.pumpWidget(const MusicHubApp());
       await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.byType(MaterialApp), findsOneWidget);
@@ -83,10 +91,12 @@ void main() {
     testWidgets(
         'shows HomeScreen in AppShell when not authenticated (Guest Mode)',
         (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
       when(() => mockAuth.isAuthenticated).thenReturn(false);
 
-      await tester.pumpWidget(
-          const MusicHubApp());
+      await tester.pumpWidget(const MusicHubApp());
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 200));
 
@@ -96,8 +106,7 @@ void main() {
     testWidgets('uses theme color from ThemeService', (tester) async {
       when(() => mockTheme.primaryColor).thenReturn(Colors.purple);
 
-      await tester.pumpWidget(
-          const MusicHubApp());
+      await tester.pumpWidget(const MusicHubApp());
       await tester.pump(const Duration(milliseconds: 100));
 
       final MaterialApp app =
@@ -116,7 +125,7 @@ void main() {
       );
       await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('Test Library'), findsOneWidget);
+      expect(find.text('Biblioteca'), findsOneWidget);
     });
 
     testWidgets('has DefaultTabController', (tester) async {

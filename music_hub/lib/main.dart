@@ -317,7 +317,9 @@ class MusicHubApp extends StatelessWidget {
         animation: ThemeService.instance,
         builder: (context, child) {
           final primaryColor = ThemeService.instance.primaryColor;
-          if (Platform.isWindows) {
+          final isFluent =
+              !kIsWeb && defaultTargetPlatform == TargetPlatform.windows;
+          if (isFluent) {
             return fluent.FluentApp(
               title: 'Music Hub',
               themeMode: fluent.ThemeMode.system,
