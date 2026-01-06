@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:http/http.dart' as http;
 import 'package:network_info_plus/network_info_plus.dart';
-import 'package:music_tag_editor/services/cast_service.dart';
+import 'package:music_hub/services/cast_service.dart';
 
 class MockHttpClient extends Mock implements http.Client {}
 

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:music_tag_editor/services/security_service.dart';
-import 'package:music_tag_editor/services/startup_logger.dart';
+import 'package:music_hub/services/security_service.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
 
 class AuthService extends ChangeNotifier {
   static AuthService? _instance;

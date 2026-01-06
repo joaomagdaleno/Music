@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
-import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/utils/rate_limiter.dart';
-import 'package:music_tag_editor/config/api_keys.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/utils/rate_limiter.dart';
+import 'package:music_hub/config/api_keys.dart';
 
 class LastFmApi {
   static const String _baseUrl = 'http://ws.audioscrobbler.com/2.0/';

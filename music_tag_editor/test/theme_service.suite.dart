@@ -2,7 +2,7 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_tag_editor/services/theme_service.dart';
+import 'package:music_hub/core/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'test_helper.dart';
 

@@ -212,8 +212,8 @@ jobs:
             Esta é a versão oficial estável. Verifique o changelog gerado abaixo.
           files: |
             artifacts/windows-installer/MusicTagEditorSetup-*.exe
-            artifacts/android-apk/music_tag_editor-v*.apk
-            artifacts/linux-release/music_tag_editor-linux-v*.tar.gz
+            artifacts/android-apk/music_hub-v*.apk
+            artifacts/linux-release/music_hub-linux-v*.tar.gz
           token: ${{ secrets.GITHUB_TOKEN }}
 
   cleanup-cache:

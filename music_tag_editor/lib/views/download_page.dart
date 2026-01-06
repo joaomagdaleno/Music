@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/models/search_models.dart';
-import 'package:music_tag_editor/models/download_models.dart';
-import 'package:music_tag_editor/services/dependency_manager.dart';
+import 'package:music_hub/features/discovery/services/download_service.dart';
+import 'package:music_hub/models/search_models.dart';
+import 'package:music_hub/models/download_models.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
 
 /// Page for downloading music from YouTube.
 class DownloadPage extends StatefulWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/models/filename_format.dart';
-import 'package:music_tag_editor/models/database_models.dart';
-import 'package:music_tag_editor/widgets/learning_dialog.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/models/filename_format.dart';
+import 'package:music_hub/features/library/models/database_models.dart';
+import 'package:music_hub/widgets/learning_dialog.dart';
 
 void main() {
   late DatabaseService service;

@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 
-import 'package:music_tag_editor/screens/playlists/playlist_detail_screen.dart';
+import 'package:music_hub/screens/playlists/playlist_detail_screen.dart';
 
 /// Fluent UI view for PlaylistsScreen
 class FluentPlaylistsView extends StatelessWidget {

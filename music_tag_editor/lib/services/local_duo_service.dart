@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:nearby_connections/nearby_connections.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/models/search_models.dart';
-import 'package:music_tag_editor/services/database_service.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/models/search_models.dart';
+import 'package:music_hub/core/services/database_service.dart';
 import 'package:meta/meta.dart';
 
 enum DuoRole { host, guest, none }

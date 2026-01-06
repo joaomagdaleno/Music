@@ -2,23 +2,22 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:music_tag_editor/firebase_options.dart';
+import 'package:music_hub/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:music_tag_editor/services/auth_service.dart';
-import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/services/connectivity_service.dart';
-import 'package:music_tag_editor/services/desktop_integration_service.dart';
-import 'package:music_tag_editor/services/persona_service.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/security_service.dart';
-import 'package:music_tag_editor/services/startup_logger.dart';
-import 'package:music_tag_editor/services/telemetry_service.dart';
-import 'package:music_tag_editor/services/theme_service.dart';
-import 'package:music_tag_editor/widgets/mini_player.dart';
-import 'package:music_tag_editor/views/app_shell.dart';
+import 'package:music_hub/services/auth_service.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/core/services/connectivity_service.dart';
+import 'package:music_hub/services/desktop_integration_service.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/services/security_service.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
+import 'package:music_hub/services/telemetry_service.dart';
+import 'package:music_hub/core/services/theme_service.dart';
+import 'package:music_hub/core/widgets/mini_player.dart';
+import 'package:music_hub/features/core/screens/app_shell.dart';
 // Removed media_kit
 
 final GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
@@ -141,9 +140,6 @@ class _AppBootstrapState extends State<AppBootstrap> {
       await StartupLogger.log('Initializing ConnectivityService...');
       await ConnectivityService.instance.init();
 
-      await StartupLogger.log('Initializing PersonaService...');
-      await PersonaService.instance.init();
-
       await StartupLogger.log('Initializing ThemeService...');
       await ThemeService.instance.init();
 
@@ -235,7 +231,7 @@ class _AppBootstrapState extends State<AppBootstrap> {
       }
       return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Music Tag Editor - Error',
+        title: 'Music Hub - Error',
         home: Scaffold(
           body: Center(
             child: Padding(
@@ -290,7 +286,7 @@ class _AppBootstrapState extends State<AppBootstrap> {
       }
       return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Music Tag Editor - Loading',
+        title: 'Music Hub - Loading',
         home: Scaffold(
           body: Center(
             child: Column(
@@ -306,12 +302,12 @@ class _AppBootstrapState extends State<AppBootstrap> {
       );
     }
 
-    return const MusicTagEditorApp();
+    return const MusicHubApp();
   }
 }
 
-class MusicTagEditorApp extends StatelessWidget {
-  const MusicTagEditorApp({super.key});
+class MusicHubApp extends StatelessWidget {
+  const MusicHubApp({super.key});
 
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
@@ -320,7 +316,7 @@ class MusicTagEditorApp extends StatelessWidget {
           final primaryColor = ThemeService.instance.primaryColor;
           if (Platform.isWindows) {
             return fluent.FluentApp(
-              title: 'Music Tag Editor',
+              title: 'Music Hub',
               themeMode: fluent.ThemeMode.system,
               darkTheme: fluent.FluentThemeData(
                 brightness: fluent.Brightness.dark,
@@ -349,7 +345,7 @@ class MusicTagEditorApp extends StatelessWidget {
           }
 
           return MaterialApp(
-            title: 'Music Tag Editor',
+            title: 'Music Hub',
             theme: ThemeData(
               useMaterial3: true,
               scaffoldBackgroundColor: Colors.white,

@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:media_kit/media_kit.dart';
-import 'package:music_tag_editor/screens/disco/karaoke_screen.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/lyrics_service.dart';
+import 'package:music_hub/features/party_mode/karaoke_screen.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/features/player/services/lyrics_service.dart';
 import 'test_helper.dart';
 
 class MockPlaybackService extends Mock implements PlaybackService {}

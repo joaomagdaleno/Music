@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/models/search_models.dart';
-import 'package:music_tag_editor/models/metadata_models.dart';
-import 'package:music_tag_editor/screens/edit/tag_editor_screen.dart';
-import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
-import 'package:music_tag_editor/services/database_service.dart';
+import 'package:music_hub/models/search_models.dart';
+import 'package:music_hub/features/library/models/metadata_models.dart';
+import 'package:music_hub/features/library/screens/tag_editor_screen.dart';
+import 'package:music_hub/features/library/services/metadata_aggregator_service.dart';
+import 'package:music_hub/core/services/database_service.dart';
 
 class MockMetadataService extends Mock implements MetadataAggregatorService {}
 class MockDatabaseService extends Mock implements DatabaseService {}

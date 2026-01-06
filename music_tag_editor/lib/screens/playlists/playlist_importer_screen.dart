@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:music_tag_editor/services/notification_service.dart';
-import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/models/search_models.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/screens/playlists/views/fluent_playlist_importer_view.dart';
-import 'package:music_tag_editor/screens/playlists/views/material_playlist_importer_view.dart';
+import 'package:music_hub/core/services/notification_service.dart';
+import 'package:music_hub/features/discovery/services/search_service.dart';
+import 'package:music_hub/models/search_models.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/screens/playlists/views/fluent_playlist_importer_view.dart';
+import 'package:music_hub/screens/playlists/views/material_playlist_importer_view.dart';
 
 /// PlaylistImporterScreen controller - platform-adaptive
 class PlaylistImporterScreen extends StatefulWidget {

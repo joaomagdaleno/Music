@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
 import 'package:flutter/foundation.dart';
-import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/utils/rate_limiter.dart';
-import 'package:music_tag_editor/utils/file_utils.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/utils/rate_limiter.dart';
+import 'package:music_hub/utils/file_utils.dart';
 
 /// SlavArt Divolt API for FLAC downloads from Tidal/Qobuz/Deezer.
 class SlavArtApi {

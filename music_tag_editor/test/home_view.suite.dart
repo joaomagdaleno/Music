@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/screens/home/home_screen.dart';
+import 'package:music_hub/screens/home/home_screen.dart';
 
 import 'test_helper.dart';
 

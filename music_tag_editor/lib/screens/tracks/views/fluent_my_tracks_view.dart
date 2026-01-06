@@ -1,5 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_hub/models/search_models.dart';
 
 /// Fluent UI view for MyTracksScreen - WinUI 3 styling
 class FluentMyTracksView extends StatefulWidget {

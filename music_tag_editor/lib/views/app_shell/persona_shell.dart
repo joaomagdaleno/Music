@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
-import 'package:music_tag_editor/services/global_navigation_service.dart';
-import 'package:music_tag_editor/models/persona_model.dart';
+import 'package:music_hub/core/services/global_navigation_service.dart';
+import 'package:music_hub/models/persona_model.dart';
 
 class PersonaShell extends StatefulWidget {
   final List<PersonaDestination> destinations;

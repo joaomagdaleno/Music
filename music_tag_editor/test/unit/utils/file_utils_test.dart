@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_tag_editor/utils/file_utils.dart';
+import 'package:music_hub/utils/file_utils.dart';
 
 void main() {
   group('sanitizeFilename', () {

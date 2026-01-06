@@ -4,7 +4,7 @@ library;
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/services/desktop_integration_service.dart';
+import 'package:music_hub/services/desktop_integration_service.dart';
 import 'package:system_tray/system_tray.dart';
 import 'package:window_manager/window_manager.dart';
 

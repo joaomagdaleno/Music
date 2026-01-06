@@ -3,9 +3,9 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/services/persona_service.dart';
-import 'package:music_tag_editor/models/persona_model.dart';
-import 'package:music_tag_editor/services/database_service.dart';
+import 'package:music_hub/services/persona_service.dart';
+import 'package:music_hub/models/persona_model.dart';
+import 'package:music_hub/core/services/database_service.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_tag_editor/screens/playlists/playlist_detail_screen.dart';
+import 'package:music_hub/screens/playlists/playlist_detail_screen.dart';
 
 /// Material Design view for PlaylistsScreen
 class MaterialPlaylistsView extends StatelessWidget {

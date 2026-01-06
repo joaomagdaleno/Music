@@ -7,22 +7,22 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:alchemist/alchemist.dart';
 import 'package:mocktail/mocktail.dart';
 import 'golden_helper.dart';
-import 'package:music_tag_editor/screens/disco/disco_mode_screen.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/download_service.dart'; // For SearchResult
-import 'package:music_tag_editor/models/search_models.dart';
-import 'package:music_tag_editor/services/theme_service.dart';
-import 'package:music_tag_editor/services/auth_service.dart';
-import 'package:music_tag_editor/services/connectivity_service.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/security_service.dart';
-import 'package:music_tag_editor/services/equalizer_service.dart';
-import 'package:music_tag_editor/services/desktop_integration_service.dart';
-import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/services/firebase_sync_service.dart';
-import 'package:music_tag_editor/services/local_duo_service.dart';
-import 'package:music_tag_editor/services/lyrics_service.dart';
+import 'package:music_hub/features/party_mode/disco_mode_screen.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/features/discovery/services/download_service.dart'; // For SearchResult
+import 'package:music_hub/models/search_models.dart';
+import 'package:music_hub/core/services/theme_service.dart';
+import 'package:music_hub/services/auth_service.dart';
+import 'package:music_hub/core/services/connectivity_service.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/services/security_service.dart';
+import 'package:music_hub/features/player/services/equalizer_service.dart';
+import 'package:music_hub/services/desktop_integration_service.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/features/discovery/services/search_service.dart';
+import 'package:music_hub/services/firebase_sync_service.dart';
+import 'package:music_hub/services/local_duo_service.dart';
+import 'package:music_hub/features/player/services/lyrics_service.dart';
 
 class MockPlaybackService extends Mock implements PlaybackService {}
 

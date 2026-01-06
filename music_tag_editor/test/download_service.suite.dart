@@ -4,10 +4,10 @@ library;
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/models/search_models.dart';
-import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/services/download/youtube_download_provider.dart';
+import 'package:music_hub/features/discovery/services/download_service.dart';
+import 'package:music_hub/models/search_models.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/features/discovery/services/download/youtube_download_provider.dart';
 import 'test_helper.dart';
 
 void main() {

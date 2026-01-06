@@ -2,7 +2,7 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_tag_editor/api/lastfm_api.dart';
+import 'package:music_hub/api/lastfm_api.dart';
 
 void main() {
   group('LastFmApi', () {

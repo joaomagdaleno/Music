@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/utils/rate_limiter.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/utils/rate_limiter.dart';
 
 class MusicBrainzApi {
   static const String _baseUrl = 'https://musicbrainz.org/ws/2/';

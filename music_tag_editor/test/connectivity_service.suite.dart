@@ -2,7 +2,7 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_tag_editor/services/connectivity_service.dart';
+import 'package:music_hub/core/services/connectivity_service.dart';
 import 'package:flutter/foundation.dart';
 import 'test_helper.dart';
 

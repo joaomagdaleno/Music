@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
-import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_hub/models/search_models.dart';
 
 /// Fluent UI view for RingtoneMakerScreen - WinUI 3 styling
 class FluentRingtoneMakerView extends StatelessWidget {

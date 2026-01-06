@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
-import 'package:music_tag_editor/services/auth_service.dart';
-import 'package:music_tag_editor/views/app_shell.dart';
-import 'package:music_tag_editor/screens/login/views/fluent_login_view.dart';
-import 'package:music_tag_editor/screens/login/views/material_login_view.dart';
+import 'package:music_hub/services/auth_service.dart';
+import 'package:music_hub/views/app_shell.dart';
+import 'package:music_hub/screens/login/views/fluent_login_view.dart';
+import 'package:music_hub/screens/login/views/material_login_view.dart';
 
 /// LoginScreen controller - platform-adaptive
 class LoginScreen extends StatefulWidget {

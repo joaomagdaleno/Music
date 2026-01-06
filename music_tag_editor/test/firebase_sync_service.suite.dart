@@ -5,10 +5,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:music_tag_editor/services/firebase_sync_service.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/models/database_models.dart';
-import 'package:music_tag_editor/widgets/learning_dialog.dart';
+import 'package:music_hub/services/firebase_sync_service.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/features/library/models/database_models.dart';
+import 'package:music_hub/widgets/learning_dialog.dart';
 
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 

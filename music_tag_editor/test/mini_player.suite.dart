@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:media_kit/media_kit.dart';
-import 'package:music_tag_editor/widgets/mini_player.dart';
+import 'package:music_hub/core/widgets/mini_player.dart';
 
-import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_hub/models/search_models.dart';
 import 'package:rxdart/rxdart.dart';
 import 'test_helper.dart';
 

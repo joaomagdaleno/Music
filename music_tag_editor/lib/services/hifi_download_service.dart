@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:meta/meta.dart';
-import 'package:music_tag_editor/api/slavart_api.dart';
+import 'package:music_hub/api/slavart_api.dart';
 import 'package:path/path.dart' as p;
 
 /// Unified Hi-Fi download service with multiple sources.

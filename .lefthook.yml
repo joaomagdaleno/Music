@@ -4,10 +4,10 @@
 pre-commit:
   commands:
     analyze:
-      root: music_tag_editor/
+      root: music_hub/
       glob: "*.dart"
       run: flutter analyze
     test:
-      root: music_tag_editor/
+      root: music_hub/
       glob: "{lib,test}/**/*.dart"
       run: flutter test

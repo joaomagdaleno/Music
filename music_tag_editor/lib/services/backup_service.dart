@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:archive/archive.dart';
 import 'package:path/path.dart' as p;
-import 'package:music_tag_editor/services/database_service.dart';
+import 'package:music_hub/core/services/database_service.dart';
 import 'package:meta/meta.dart';
 
 /// Service for backing up and restoring user data.

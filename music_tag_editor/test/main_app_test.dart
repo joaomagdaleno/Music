@@ -9,21 +9,21 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:media_kit/media_kit.dart';
 import 'test_helper.dart';
-import 'package:music_tag_editor/main.dart';
-import 'package:music_tag_editor/screens/library/library_screen.dart';
-import 'package:music_tag_editor/services/auth_service.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/theme_service.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/connectivity_service.dart';
-import 'package:music_tag_editor/services/security_service.dart';
-import 'package:music_tag_editor/services/desktop_integration_service.dart';
-import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/models/filename_format.dart';
-import 'package:music_tag_editor/views/app_shell.dart';
-import 'package:music_tag_editor/screens/login/login_screen.dart';
+import 'package:music_hub/main.dart';
+import 'package:music_hub/features/library/screens/library_screen.dart';
+import 'package:music_hub/services/auth_service.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/core/services/theme_service.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/core/services/connectivity_service.dart';
+import 'package:music_hub/services/security_service.dart';
+import 'package:music_hub/services/desktop_integration_service.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/features/discovery/services/search_service.dart';
+import 'package:music_hub/features/discovery/services/download_service.dart';
+import 'package:music_hub/models/filename_format.dart';
+import 'package:music_hub/views/app_shell.dart';
+import 'package:music_hub/screens/login/login_screen.dart';
 
 class MockAuthService extends Mock implements AuthService {}
 

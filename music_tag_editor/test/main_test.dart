@@ -4,15 +4,15 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/main.dart';
-import 'package:music_tag_editor/screens/library/library_screen.dart';
-import 'package:music_tag_editor/services/theme_service.dart';
-import 'package:music_tag_editor/services/auth_service.dart';
-import 'package:music_tag_editor/services/connectivity_service.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/models/filename_format.dart';
-// import 'package:music_tag_editor/models/filename_format.dart'; // duplicate removed
+import 'package:music_hub/main.dart';
+import 'package:music_hub/features/library/screens/library_screen.dart';
+import 'package:music_hub/core/services/theme_service.dart';
+import 'package:music_hub/services/auth_service.dart';
+import 'package:music_hub/core/services/connectivity_service.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/models/filename_format.dart';
+// import 'package:music_hub/models/filename_format.dart'; // duplicate removed
 import 'package:media_kit/media_kit.dart';
 import 'test_helper.dart';
 

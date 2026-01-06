@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:music_tag_editor/services/database_service.dart';
+import 'package:music_hub/core/services/database_service.dart';
 
 class ListeningStats {
   final int totalTracks;

@@ -4,10 +4,10 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/local_duo_service.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/widgets/duo_matching_dialog.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/services/local_duo_service.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/widgets/duo_matching_dialog.dart';
 
 class FakeLocalDuoService extends Fake implements LocalDuoService {
   @override

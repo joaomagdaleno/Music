@@ -3,7 +3,7 @@ import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter/material.dart';
 import 'package:system_tray/system_tray.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:music_tag_editor/services/startup_logger.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
 
 class DesktopIntegrationService {
   static DesktopIntegrationService _instance =

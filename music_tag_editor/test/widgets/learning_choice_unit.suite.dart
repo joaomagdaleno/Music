@@ -4,7 +4,7 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_tag_editor/widgets/learning_dialog.dart';
+import 'package:music_hub/widgets/learning_dialog.dart';
 
 void main() {
   group('LearningChoice', () {

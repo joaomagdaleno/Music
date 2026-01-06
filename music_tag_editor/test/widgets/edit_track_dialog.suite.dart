@@ -3,8 +3,8 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_tag_editor/models/search_models.dart';
-import 'package:music_tag_editor/widgets/edit_track_dialog.dart';
+import 'package:music_hub/models/search_models.dart';
+import 'package:music_hub/widgets/edit_track_dialog.dart';
 
 void main() {
   testWidgets('EditTrackDialog renders properly and returns updated track',

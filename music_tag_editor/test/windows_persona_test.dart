@@ -2,11 +2,11 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/app_shell.dart';
+import 'package:music_hub/views/app_shell.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
-import 'package:music_tag_editor/services/persona_service.dart';
-import 'package:music_tag_editor/models/persona_model.dart';
-import 'package:music_tag_editor/models/filename_format.dart';
+import 'package:music_hub/services/persona_service.dart';
+import 'package:music_hub/models/persona_model.dart';
+import 'package:music_hub/models/filename_format.dart';
 import 'test_helper.dart';
 
 void main() {

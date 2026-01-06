@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
-import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/utils/rate_limiter.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/utils/rate_limiter.dart';
 
 /// Discogs API adapter for album art, labels, and release info.
 class DiscogsApi {

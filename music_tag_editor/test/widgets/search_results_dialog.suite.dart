@@ -3,7 +3,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_tag_editor/widgets/search_results_dialog.dart';
+import 'package:music_hub/widgets/search_results_dialog.dart';
 
 void main() {
   testWidgets('SearchResultsDialog renders list and returns selection',

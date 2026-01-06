@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
-import 'package:music_tag_editor/services/local_duo_service.dart';
+import 'package:music_hub/services/local_duo_service.dart';
 
 class DuoChatDialog extends StatefulWidget {
   const DuoChatDialog({super.key});

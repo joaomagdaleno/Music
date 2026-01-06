@@ -6,4 +6,4 @@ OutputBaseFilename=MusicTest.exe
 Compression=lzma
 SolidCompression=yes
 [Files]
-Source: "music_tag_editor\build\windows\x64\runner\Release\music_tag_editor.exe"; DestDir: "{app}"
+Source: "music_hub\build\windows\x64\runner\Release\music_hub.exe"; DestDir: "{app}"

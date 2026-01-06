@@ -1,5 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:music_tag_editor/models/persona_model.dart';
+import 'package:music_hub/models/persona_model.dart';
 
 class FluentAppShell extends StatelessWidget {
   final Widget body;

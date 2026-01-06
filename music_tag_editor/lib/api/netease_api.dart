@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/services/lyrics_service.dart';
-import 'package:music_tag_editor/utils/rate_limiter.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/features/player/services/lyrics_service.dart';
+import 'package:music_hub/utils/rate_limiter.dart';
 
 /// NetEase Cloud Music API adapter for synced lyrics (excellent for Asian music).
 class NeteaseApi {

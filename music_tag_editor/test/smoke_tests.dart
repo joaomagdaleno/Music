@@ -6,22 +6,22 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:media_kit/media_kit.dart';
 import 'test_helper.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/theme_service.dart';
-import 'package:music_tag_editor/screens/home/home_screen.dart';
-import 'package:music_tag_editor/screens/library/mood_explorer_screen.dart';
-import 'package:music_tag_editor/screens/library/smart_library_screen.dart';
-import 'package:music_tag_editor/screens/stats/listening_stats_screen.dart';
-import 'package:music_tag_editor/screens/disco/disco_mode_screen.dart';
-import 'package:music_tag_editor/services/search_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/services/listening_stats_service.dart';
-import 'package:music_tag_editor/screens/search/search_screen.dart';
-import 'package:music_tag_editor/screens/library/local_sources_screen.dart';
-import 'package:music_tag_editor/screens/tracks/my_tracks_screen.dart';
-import 'package:music_tag_editor/services/metadata_service.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/core/services/theme_service.dart';
+import 'package:music_hub/screens/home/home_screen.dart';
+import 'package:music_hub/features/library/screens/mood_explorer_screen.dart';
+import 'package:music_hub/features/library/screens/smart_library_screen.dart';
+import 'package:music_hub/screens/stats/listening_stats_screen.dart';
+import 'package:music_hub/features/party_mode/disco_mode_screen.dart';
+import 'package:music_hub/features/discovery/services/search_service.dart';
+import 'package:music_hub/features/discovery/services/download_service.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/services/listening_stats_service.dart';
+import 'package:music_hub/features/discovery/screens/search_screen.dart';
+import 'package:music_hub/features/library/screens/local_sources_screen.dart';
+import 'package:music_hub/features/library/screens/my_tracks_screen.dart';
+import 'package:music_hub/features/library/services/metadata_service.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
 

@@ -2,12 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
-import 'package:music_tag_editor/services/local_duo_service.dart';
-import 'package:music_tag_editor/screens/library/remote_library_screen.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/models/search_models.dart';
-import 'package:music_tag_editor/screens/disco/party_queue_screen.dart';
+import 'package:music_hub/services/local_duo_service.dart';
+import 'package:music_hub/features/library/screens/remote_library_screen.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/models/search_models.dart';
+import 'package:music_hub/features/party_mode/party_queue_screen.dart';
 
 class DuoMatchingDialog extends StatefulWidget {
   const DuoMatchingDialog({super.key});

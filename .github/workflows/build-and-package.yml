@@ -28,8 +28,8 @@ jobs:
         env:
           FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
         run: |
-          mkdir -p music_tag_editor/lib
-          echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
+          mkdir -p music_hub/lib
+          echo "$FIREBASE_OPTIONS_DART" > music_hub/lib/firebase_options.dart
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -43,7 +43,7 @@ jobs:
         shell: bash
         run: |
           # Robust extraction ignoring comments and empty space
-          VERSION=$(grep -m 1 "^version:" music_tag_editor/pubspec.yaml | awk '{print $2}' | sed 's/[^0-9.]*//g')
+          VERSION=$(grep -m 1 "^version:" music_hub/pubspec.yaml | awk '{print $2}' | sed 's/[^0-9.]*//g')
           if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
             FULL_VERSION="${{ github.ref_name }}"
           elif [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
@@ -52,12 +52,12 @@ jobs:
             FULL_VERSION="${VERSION}-local.${GITHUB_RUN_NUMBER}"
           fi
 
-          sed -i "s/^version:.*/version: $FULL_VERSION/" music_tag_editor/pubspec.yaml
-          echo "$FULL_VERSION" > music_tag_editor/version.txt
+          sed -i "s/^version:.*/version: $FULL_VERSION/" music_hub/pubspec.yaml
+          echo "$FULL_VERSION" > music_hub/version.txt
           echo "full_version=$FULL_VERSION" >> $GITHUB_OUTPUT
 
       - name: Flutter Pub Get
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: flutter pub get
 
       - name: Configure Android Firebase
@@ -65,7 +65,7 @@ jobs:
         env:
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: |
-          echo "$GOOGLE_SERVICES_JSON" > music_tag_editor/android/app/google-services.json
+          echo "$GOOGLE_SERVICES_JSON" > music_hub/android/app/google-services.json
 
       - name: Setup Android Signing
         env:
@@ -74,14 +74,14 @@ jobs:
           UPLOAD_KEY_PASSWORD: ${{ secrets.UPLOAD_KEY_PASSWORD }}
           UPLOAD_KEY_ALIAS: ${{ secrets.UPLOAD_KEY_ALIAS }}
         run: |
-          echo $UPLOAD_SIGNING_KEY | base64 --decode > music_tag_editor/android/app/upload-keystore.jks
-          echo "storePassword=$UPLOAD_STORE_PASSWORD" > music_tag_editor/android/key.properties
-          echo "keyPassword=$UPLOAD_KEY_PASSWORD" >> music_tag_editor/android/key.properties
-          echo "keyAlias=$UPLOAD_KEY_ALIAS" >> music_tag_editor/android/key.properties
-          echo "storeFile=../app/upload-keystore.jks" >> music_tag_editor/android/key.properties
+          echo $UPLOAD_SIGNING_KEY | base64 --decode > music_hub/android/app/upload-keystore.jks
+          echo "storePassword=$UPLOAD_STORE_PASSWORD" > music_hub/android/key.properties
+          echo "keyPassword=$UPLOAD_KEY_PASSWORD" >> music_hub/android/key.properties
+          echo "keyAlias=$UPLOAD_KEY_ALIAS" >> music_hub/android/key.properties
+          echo "storeFile=../app/upload-keystore.jks" >> music_hub/android/key.properties
 
       - name: Flutter Build APK
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: |
           mkdir -p debug-info
           # Only obfuscate on tags for speed in dev
@@ -94,7 +94,7 @@ jobs:
           $BUILD_COMMAND | tee size_analysis.log
 
       - name: The Cartographer 🗺️ (Size Analysis Summary)
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: |
           echo "### 🗺️ Size Cartography: Top Contributors" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
@@ -105,17 +105,17 @@ jobs:
 
       - name: Flutter Build App Bundle (AAB)
         if: startsWith(github.ref, 'refs/tags/v')
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: |
           flutter build appbundle --release --obfuscate --split-debug-info=debug-info
 
       - name: Find and Audit APK 🤖
         run: |
           # Search anywhere in build/app/outputs for .apk
-          APK_PATH=$(find music_tag_editor/build/app/outputs -name "*.apk" | head -n 1)
+          APK_PATH=$(find music_hub/build/app/outputs -name "*.apk" | head -n 1)
           if [ -z "$APK_PATH" ]; then
             echo "::error::APK not found! Listing build directory for diagnostics:"
-            find music_tag_editor/build -maxdepth 4
+            find music_hub/build -maxdepth 4
             exit 1
           fi
           echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
@@ -137,7 +137,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: android-aab
-          path: music_tag_editor/build/app/outputs/bundle/release/app-release.aab
+          path: music_hub/build/app/outputs/bundle/release/app-release.aab
 
       - name: Generate Job Summary
         run: |
@@ -147,8 +147,8 @@ jobs:
           echo "- **Version**: ${{ steps.generate_version.outputs.full_version }}" >> $GITHUB_STEP_SUMMARY
           echo "- **APK Size**: $APK_SIZE_MB MB" >> $GITHUB_STEP_SUMMARY
           
-          if [ -f music_tag_editor/build/app/outputs/bundle/release/app-release.aab ]; then
-            AAB_SIZE=$(stat -c%s music_tag_editor/build/app/outputs/bundle/release/app-release.aab)
+          if [ -f music_hub/build/app/outputs/bundle/release/app-release.aab ]; then
+            AAB_SIZE=$(stat -c%s music_hub/build/app/outputs/bundle/release/app-release.aab)
             AAB_SIZE_MB=$(echo "scale=2; $AAB_SIZE / 1048576" | bc)
             echo "- **AAB Size**: $AAB_SIZE_MB MB (Store Ready 🚀)" >> $GITHUB_STEP_SUMMARY
           fi
@@ -194,7 +194,7 @@ jobs:
         id: generate_version
         shell: bash
         run: |
-          VERSION=$(grep "version:" music_tag_editor/pubspec.yaml | sed 's/version: //' | xargs)
+          VERSION=$(grep "version:" music_hub/pubspec.yaml | sed 's/version: //' | xargs)
           if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
             FULL_VERSION="${{ github.ref_name }}"
           elif [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
@@ -209,11 +209,11 @@ jobs:
         env:
           FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
         run: |
-          mkdir -p music_tag_editor/lib
-          echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
+          mkdir -p music_hub/lib
+          echo "$FIREBASE_OPTIONS_DART" > music_hub/lib/firebase_options.dart
 
       - name: Flutter Build Windows
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: flutter build windows --release
 
       - name: Install Inno Setup
@@ -265,7 +265,7 @@ jobs:
         id: generate_version
         shell: bash
         run: |
-          VERSION=$(grep "version:" music_tag_editor/pubspec.yaml | sed 's/version: //' | xargs)
+          VERSION=$(grep "version:" music_hub/pubspec.yaml | sed 's/version: //' | xargs)
           if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
             FULL_VERSION="${{ github.ref_name }}"
           elif [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
@@ -280,8 +280,8 @@ jobs:
         env:
           FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
         run: |
-          mkdir -p music_tag_editor/lib
-          echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
+          mkdir -p music_hub/lib
+          echo "$FIREBASE_OPTIONS_DART" > music_hub/lib/firebase_options.dart
 
       - name: Install dependencies
         run: |
@@ -289,21 +289,21 @@ jobs:
           sudo apt-get install -y libgtk-3-dev liblzma-dev libstdc++-12-dev
 
       - name: Flutter Build Linux
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: flutter build linux --release
 
       - name: Compress Linux Build
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: |
           FULL_VERSION="${{ steps.generate_version.outputs.full_version }}"
           cd build/linux/x64/release/bundle
-          tar -czf ../../../../../music_tag_editor-linux-v$FULL_VERSION.tar.gz .
+          tar -czf ../../../../../music_hub-linux-v$FULL_VERSION.tar.gz .
 
       - name: Upload Linux Artifact
         uses: actions/upload-artifact@v6
         with:
           name: linux-bundle
-          path: music_tag_editor/music_tag_editor-linux-v*.tar.gz
+          path: music_hub/music_hub-linux-v*.tar.gz
 
   telemetry-aggregation:
     name: Telemetry Aggregation 📊

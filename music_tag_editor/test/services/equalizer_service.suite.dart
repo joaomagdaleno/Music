@@ -4,7 +4,7 @@ library;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:music_tag_editor/services/equalizer_service.dart';
+import 'package:music_hub/features/player/services/equalizer_service.dart';
 
 class MockAndroidEqualizer extends Mock implements AndroidEqualizer {}
 

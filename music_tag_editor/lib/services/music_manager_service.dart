@@ -1,9 +1,9 @@
-import 'package:music_tag_editor/models/search_models.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/startup_logger.dart';
-import 'package:music_tag_editor/services/youtube_streamer_service.dart';
-import 'package:music_tag_editor/services/offline_download_service.dart';
-import 'package:music_tag_editor/services/database_service.dart'; // For saving download status
+import 'package:music_hub/models/search_models.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
+import 'package:music_hub/features/discovery/services/youtube_streamer_service.dart';
+import 'package:music_hub/features/discovery/services/offline_download_service.dart';
+import 'package:music_hub/core/services/database_service.dart'; // For saving download status
 
 import 'package:rxdart/rxdart.dart';
 

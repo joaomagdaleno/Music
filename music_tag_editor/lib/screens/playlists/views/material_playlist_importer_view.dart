@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_hub/models/search_models.dart';
 
 /// Material Design view for PlaylistImporterScreen
 class MaterialPlaylistImporterView extends StatelessWidget {

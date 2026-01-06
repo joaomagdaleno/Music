@@ -6,7 +6,7 @@ import 'package:network_info_plus/network_info_plus.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_static/shelf_static.dart';
 import 'package:flutter/foundation.dart';
-import 'package:music_tag_editor/services/startup_logger.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
 
 class CastDevice {
   final String name;

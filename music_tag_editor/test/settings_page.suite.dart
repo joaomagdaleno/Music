@@ -4,14 +4,14 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/models/filename_format.dart';
-import 'package:music_tag_editor/screens/settings/settings_screen.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/theme_service.dart';
-import 'package:music_tag_editor/services/auth_service.dart';
-import 'package:music_tag_editor/services/firebase_sync_service.dart';
-import 'package:music_tag_editor/services/metadata_cleanup_service.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
+import 'package:music_hub/models/filename_format.dart';
+import 'package:music_hub/screens/settings/settings_screen.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/core/services/theme_service.dart';
+import 'package:music_hub/services/auth_service.dart';
+import 'package:music_hub/services/firebase_sync_service.dart';
+import 'package:music_hub/features/library/services/metadata_cleanup_service.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
 

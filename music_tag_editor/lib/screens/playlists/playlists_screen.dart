@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/screens/playlists/views/fluent_playlists_view.dart';
-import 'package:music_tag_editor/screens/playlists/views/material_playlists_view.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/screens/playlists/views/fluent_playlists_view.dart';
+import 'package:music_hub/screens/playlists/views/material_playlists_view.dart';
 
 /// PlaylistsScreen controller - platform-adaptive
 class PlaylistsScreen extends StatefulWidget {

@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 // import 'package:just_audio/just_audio.dart'; // Removed
 import 'package:audio_service/audio_service.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/models/search_models.dart';
 import 'test_helper.dart';
 
 // Mocks are now sourced from test_helper.dart

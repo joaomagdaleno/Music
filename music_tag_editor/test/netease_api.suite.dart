@@ -2,8 +2,8 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_tag_editor/api/netease_api.dart';
-import 'package:music_tag_editor/services/lyrics_service.dart';
+import 'package:music_hub/api/netease_api.dart';
+import 'package:music_hub/features/player/services/lyrics_service.dart';
 
 void main() {
   group('NeteaseApi', () {

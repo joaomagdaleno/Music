@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:media_kit/media_kit.dart';
-import 'package:music_tag_editor/screens/player/player_screen.dart';
-import 'package:music_tag_editor/services/local_duo_service.dart';
-import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_hub/features/player/screens/player_screen.dart';
+import 'package:music_hub/services/local_duo_service.dart';
+import 'package:music_hub/models/search_models.dart';
 import 'test_helper.dart';
 
 // Custom Fake Stream to allow controlling stream events

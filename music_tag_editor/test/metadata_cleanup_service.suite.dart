@@ -3,10 +3,10 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/services/metadata_cleanup_service.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
-import 'package:music_tag_editor/models/metadata_models.dart';
+import 'package:music_hub/features/library/services/metadata_cleanup_service.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/features/library/services/metadata_aggregator_service.dart';
+import 'package:music_hub/features/library/models/metadata_models.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}
 

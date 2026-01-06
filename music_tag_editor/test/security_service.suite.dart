@@ -3,7 +3,7 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:music_tag_editor/services/security_service.dart';
+import 'package:music_hub/services/security_service.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

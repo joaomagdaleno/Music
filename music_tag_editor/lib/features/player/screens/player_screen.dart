@@ -1,0 +1,164 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:music_hub/features/player/screens/views/fluent_player_view.dart';
+import 'package:music_hub/features/player/screens/views/material_player_view.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/widgets/duo_matching_dialog.dart';
+import 'package:music_hub/core/widgets/cast_dialog.dart';
+import 'package:music_hub/features/player/widgets/queue_sheet.dart';
+
+class PlayerScreen extends StatelessWidget {
+  const PlayerScreen({super.key});
+
+  bool _isFluent(BuildContext context) {
+    final platform = defaultTargetPlatform;
+    return platform == TargetPlatform.windows ||
+        platform == TargetPlatform.linux ||
+        platform == TargetPlatform.macOS;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isFluent(context)) {
+      return FluentPlayerView(
+        onShowSleepTimer: _showSleepTimerDialog,
+        onShowQueue: _showQueueSheet,
+        onShowDuoMatching: _showDuoMatchingDialog,
+        onShowCast: _showCastDialog,
+      );
+    }
+
+    return MaterialPlayerView(
+      onShowSleepTimer: _showSleepTimerDialog,
+      onShowQueue: _showQueueSheet,
+      onShowDuoMatching: _showDuoMatchingDialog,
+      onShowCast: _showCastDialog,
+    );
+  }
+
+  void _showSleepTimerDialog(BuildContext context) {
+    if (_isFluent(context)) {
+      fluent.showDialog(
+        context: context,
+        builder: (context) => fluent.ContentDialog(
+          title: const Text('Temporizador (Sleep Timer)'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              fluent.ListTile(
+                title: const Text('Desligar'),
+                onPressed: () {
+                  PlaybackService.instance.cancelSleepTimer();
+                  Navigator.pop(context);
+                },
+              ),
+              fluent.ListTile(
+                title: const Text('15 minutos'),
+                onPressed: () {
+                  PlaybackService.instance
+                      .setSleepTimer(const Duration(minutes: 15));
+                  Navigator.pop(context);
+                },
+              ),
+              fluent.ListTile(
+                title: const Text('30 minutos'),
+                onPressed: () {
+                  PlaybackService.instance
+                      .setSleepTimer(const Duration(minutes: 30));
+                  Navigator.pop(context);
+                },
+              ),
+              fluent.ListTile(
+                title: const Text('60 minutos'),
+                onPressed: () {
+                  PlaybackService.instance
+                      .setSleepTimer(const Duration(minutes: 60));
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+          actions: [
+            fluent.Button(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancelar'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Temporizador (Sleep Timer)'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                  title: const Text('Desligar'),
+                  onTap: () {
+                    PlaybackService.instance.cancelSleepTimer();
+                    Navigator.pop(context);
+                  }),
+              ListTile(
+                  title: const Text('15 minutos'),
+                  onTap: () {
+                    PlaybackService.instance
+                        .setSleepTimer(const Duration(minutes: 15));
+                    Navigator.pop(context);
+                  }),
+              ListTile(
+                  title: const Text('30 minutos'),
+                  onTap: () {
+                    PlaybackService.instance
+                        .setSleepTimer(const Duration(minutes: 30));
+                    Navigator.pop(context);
+                  }),
+              ListTile(
+                  title: const Text('60 minutos'),
+                  onTap: () {
+                    PlaybackService.instance
+                        .setSleepTimer(const Duration(minutes: 60));
+                    Navigator.pop(context);
+                  }),
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
+  void _showQueueSheet(BuildContext context) {
+    if (_isFluent(context)) {
+      showDialog(
+        context: context,
+        builder: (context) => fluent.ContentDialog(
+          title: const Text('Fila de Reprodução'),
+          content: const SizedBox(
+            height: 400,
+            width: 350,
+            child: QueueSheet(),
+          ),
+          actions: [
+            fluent.Button(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Fechar'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      showModalBottomSheet(
+          context: context, builder: (_) => const QueueSheet());
+    }
+  }
+
+  void _showDuoMatchingDialog(BuildContext context) {
+    showDialog(context: context, builder: (_) => const DuoMatchingDialog());
+  }
+
+  void _showCastDialog(BuildContext context) {
+    showDialog(context: context, builder: (_) => const CastDialog());
+  }
+}

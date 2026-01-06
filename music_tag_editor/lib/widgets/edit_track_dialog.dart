@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
-import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_hub/models/search_models.dart';
 
 class EditTrackDialog extends StatefulWidget {
   final SearchResult track;

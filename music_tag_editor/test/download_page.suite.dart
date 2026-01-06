@@ -4,9 +4,9 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/views/download_page.dart';
-import 'package:music_tag_editor/models/download_models.dart';
-import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_hub/views/download_page.dart';
+import 'package:music_hub/models/download_models.dart';
+import 'package:music_hub/models/search_models.dart';
 import 'test_helper.dart';
 
 void main() {

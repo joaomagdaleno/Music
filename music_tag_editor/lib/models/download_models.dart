@@ -1,4 +1,4 @@
-import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_hub/models/search_models.dart';
 
 /// Available audio/video format for download.
 class DownloadFormat {

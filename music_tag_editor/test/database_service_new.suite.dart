@@ -2,9 +2,9 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/models/filename_format.dart'; // For FilenameFormat
-import 'package:music_tag_editor/widgets/learning_dialog.dart'; // For LearningChoice
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/models/filename_format.dart'; // For FilenameFormat
+import 'package:music_hub/widgets/learning_dialog.dart'; // For LearningChoice
 
 void main() {
   group('DatabaseService', () {

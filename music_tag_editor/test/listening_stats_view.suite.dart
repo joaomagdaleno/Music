@@ -4,9 +4,9 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/screens/stats/listening_stats_screen.dart';
-import 'package:music_tag_editor/services/listening_stats_service.dart';
-import 'package:music_tag_editor/services/theme_service.dart';
+import 'package:music_hub/screens/stats/listening_stats_screen.dart';
+import 'package:music_hub/services/listening_stats_service.dart';
+import 'package:music_hub/core/services/theme_service.dart';
 
 class MockListeningStatsService extends Mock implements ListeningStatsService {}
 

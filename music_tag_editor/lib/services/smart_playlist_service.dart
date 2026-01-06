@@ -1,6 +1,6 @@
 import 'dart:math';
-import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/models/search_models.dart';
 
 /// Service for generating smart playlists based on natural language criteria.
 class SmartPlaylistService {

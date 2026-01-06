@@ -4,8 +4,8 @@ library;
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_tag_editor/api/slavart_api.dart';
-import 'package:music_tag_editor/services/hifi_download_service.dart';
+import 'package:music_hub/api/slavart_api.dart';
+import 'package:music_hub/services/hifi_download_service.dart';
 
 class MockSlavArtApi extends Mock implements SlavArtApi {}
 
