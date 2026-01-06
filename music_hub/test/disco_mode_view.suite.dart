@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_hub/features/party_mode/disco_mode_screen.dart';
+import 'package:music_hub/features/party_mode/disco/disco_mode_screen.dart';
 
 import 'package:music_hub/features/player/services/playback_service.dart';
 import 'package:music_hub/core/services/theme_service.dart';

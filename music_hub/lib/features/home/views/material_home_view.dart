@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:music_hub/features/library/screens/mood_explorer_screen.dart';
 import 'package:music_hub/features/library/screens/smart_library_screen.dart';
-import 'package:music_hub/screens/stats/listening_stats_screen.dart';
-import 'package:music_hub/features/party_mode/disco_mode_screen.dart';
-import 'package:music_hub/core/services/persona_service.dart';
-import 'package:music_hub/features/library/models/persona_model.dart';
+import 'package:music_hub/features/library/stats/listening_stats_screen.dart';
+import 'package:music_hub/features/party_mode/disco/disco_mode_screen.dart';
+import 'package:music_hub/features/discovery/screens/discovery_screen.dart';
+import 'package:music_hub/features/settings/screens/settings_screen.dart';
 
 class MaterialHomeView extends StatelessWidget {
   final bool isLoading;
@@ -42,11 +42,11 @@ class MaterialHomeView extends StatelessWidget {
                   children: [
                     _buildGreetingWidget(context),
                     const SizedBox(height: 32),
-                    const Text('Minhas Personas',
+                    const Text('Atalhos Rápidos',
                         style: TextStyle(
                             fontSize: 22, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 16),
-                    _buildPersonaGrid(context),
+                    _buildShortcutGrid(context),
                     const SizedBox(height: 32),
                     const Text('Explore por Vibe',
                         style: TextStyle(
@@ -126,27 +126,27 @@ class MaterialHomeView extends StatelessWidget {
         ),
       );
 
-  Widget _buildPersonaGrid(BuildContext context) {
-    final personas = [
+  Widget _buildShortcutGrid(BuildContext context) {
+    final shortcuts = [
       {
-        'label': 'Bibliotecário',
+        'label': 'Biblioteca',
         'desc': 'Tags e Organização',
-        'icon': Icons.library_books,
-        'persona': AppPersona.librarian,
+        'icon': Icons.library_music,
+        'action': () {},
         'color': Colors.blue
       },
       {
-        'label': 'Anfitrião',
+        'label': 'Busca',
         'desc': 'Festa e Karaoke',
-        'icon': Icons.celebration,
-        'persona': AppPersona.host,
+        'icon': Icons.search,
+        'action': () => Navigator.push(context, MaterialPageRoute(builder: (_) => const DiscoveryScreen())),
         'color': Colors.purple
       },
       {
-        'label': 'Artesão',
-        'desc': 'Cofre e Utilidades',
-        'icon': Icons.architecture,
-        'persona': AppPersona.artisan,
+        'label': 'Ajustes',
+        'desc': 'Configurações do App',
+        'icon': Icons.settings,
+        'action': () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen())),
         'color': Colors.orange
       },
     ];
@@ -157,33 +157,32 @@ class MaterialHomeView extends StatelessWidget {
       crossAxisCount: 1,
       mainAxisSpacing: 12,
       childAspectRatio: 4,
-      children: personas
-          .map((p) => InkWell(
-                onTap: () => PersonaService.instance
-                    .setPersona(p['persona'] as AppPersona),
+      children: shortcuts
+          .map((s) => InkWell(
+                onTap: s['action'] as VoidCallback,
                 borderRadius: BorderRadius.circular(16),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
-                    color: (p['color'] as Color).withValues(alpha: 0.1),
+                    color: (s['color'] as Color).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: (p['color'] as Color).withValues(alpha: 0.2),
+                      color: (s['color'] as Color).withValues(alpha: 0.2),
                     ),
                   ),
                   child: Row(
                     children: [
-                      Icon(p['icon'] as IconData,
-                          color: p['color'] as Color, size: 32),
+                      Icon(s['icon'] as IconData,
+                          color: s['color'] as Color, size: 32),
                       const SizedBox(width: 16),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(p['label'] as String,
+                          Text(s['label'] as String,
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16)),
-                          Text(p['desc'] as String,
+                          Text(s['desc'] as String,
                               style: const TextStyle(
                                   fontSize: 12, color: Colors.grey)),
                         ],

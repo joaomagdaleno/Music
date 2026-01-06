@@ -7,7 +7,7 @@ import 'package:music_hub/features/library/screens/remote_library_screen.dart';
 import 'package:music_hub/core/services/database_service.dart';
 import 'package:music_hub/features/player/services/playback_service.dart';
 import 'package:music_hub/features/library/models/search_models.dart';
-import 'package:music_hub/features/party_mode/party_queue_screen.dart';
+import 'package:music_hub/features/party_mode/disco/party_queue_screen.dart';
 
 class DuoMatchingDialog extends StatefulWidget {
   const DuoMatchingDialog({super.key});

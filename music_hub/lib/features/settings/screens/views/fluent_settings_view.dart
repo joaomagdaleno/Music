@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:music_hub/core/services/theme_service.dart';
-import 'package:music_hub/screens/backup/backup_screen.dart';
+import 'package:music_hub/features/library/backup/backup_screen.dart';
 import 'package:music_hub/features/library/models/filename_format.dart';
 
 class FluentSettingsView extends StatefulWidget {

@@ -22,8 +22,8 @@ import 'package:music_hub/core/services/dependency_manager.dart';
 import 'package:music_hub/features/discovery/services/search_service.dart';
 import 'package:music_hub/features/discovery/services/download_service.dart';
 import 'package:music_hub/features/library/models/filename_format.dart';
-import 'package:music_hub/views/app_shell.dart';
-import 'package:music_hub/screens/login/login_screen.dart';
+import 'package:music_hub/features/core/screens/app_shell.dart';
+import 'package:music_hub/features/core/login/login_screen.dart';
 
 class MockAuthService extends Mock implements AuthService {}
 

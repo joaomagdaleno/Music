@@ -1,10 +1,10 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:music_hub/features/library/screens/mood_explorer_screen.dart';
 import 'package:music_hub/features/library/screens/smart_library_screen.dart';
-import 'package:music_hub/screens/stats/listening_stats_screen.dart';
-import 'package:music_hub/features/party_mode/disco_mode_screen.dart';
-import 'package:music_hub/core/services/persona_service.dart';
-import 'package:music_hub/features/library/models/persona_model.dart';
+import 'package:music_hub/features/library/stats/listening_stats_screen.dart';
+import 'package:music_hub/features/party_mode/disco/disco_mode_screen.dart';
+import 'package:music_hub/features/discovery/screens/discovery_screen.dart';
+import 'package:music_hub/features/settings/screens/settings_screen.dart';
 
 class FluentHomeView extends StatelessWidget {
   final bool isLoading;
@@ -54,10 +54,10 @@ class FluentHomeView extends StatelessWidget {
                   children: [
                     _buildGreetingWidget(context),
                     const SizedBox(height: 24),
-                    Text('Minhas Personas',
+                    Text('Atalhos Rápidos',
                         style: FluentTheme.of(context).typography.subtitle),
                     const SizedBox(height: 12),
-                    _buildPersonaWidgets(context),
+                    _buildShortcutWidgets(context),
                     const SizedBox(height: 24),
                     Text('Explore por Vibe',
                         style: FluentTheme.of(context).typography.subtitle),
@@ -121,27 +121,27 @@ class FluentHomeView extends StatelessWidget {
         ),
       );
 
-  Widget _buildPersonaWidgets(BuildContext context) {
-    final personas = [
+  Widget _buildShortcutWidgets(BuildContext context) {
+    final shortcuts = [
       {
-        'label': 'Bibliotecário',
+        'label': 'Biblioteca',
         'desc': 'Organize sua música',
         'icon': FluentIcons.library,
-        'persona': AppPersona.librarian,
+        'action': () {}, 
         'color': Colors.blue
       },
       {
-        'label': 'Anfitrião',
-        'desc': 'Modo Festa e Karaoke',
-        'icon': FluentIcons.party_leader,
-        'persona': AppPersona.host,
+        'label': 'Busca',
+        'desc': 'Encontre novas faixas',
+        'icon': FluentIcons.search,
+        'action': () => Navigator.push(context, FluentPageRoute(builder: (_) => const DiscoveryScreen())),
         'color': Colors.purple
       },
       {
-        'label': 'Artesão',
-        'desc': 'Cofre e Ferramentas',
-        'icon': FluentIcons.developer_tools,
-        'persona': AppPersona.artisan,
+        'label': 'Ajustes',
+        'desc': 'Configure o app',
+        'icon': FluentIcons.settings,
+        'action': () => Navigator.push(context, FluentPageRoute(builder: (_) => const SettingsScreen())),
         'color': Colors.orange
       },
     ];
@@ -149,31 +149,30 @@ class FluentHomeView extends StatelessWidget {
     return Wrap(
       spacing: 12,
       runSpacing: 12,
-      children: personas
-          .map((p) => HoverButton(
-                onPressed: () => PersonaService.instance
-                    .setPersona(p['persona'] as AppPersona),
+      children: shortcuts
+          .map((s) => HoverButton(
+                onPressed: s['action'] as VoidCallback,
                 builder: (context, states) => Card(
                   backgroundColor: states.isHovered
-                      ? (p['color'] as AccentColor).withValues(alpha: 0.1)
+                      ? (s['color'] as AccentColor).withValues(alpha: 0.1)
                       : null,
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(p['icon'] as IconData,
-                            color: p['color'] as AccentColor, size: 32),
+                        Icon(s['icon'] as IconData,
+                            color: s['color'] as AccentColor, size: 32),
                         const SizedBox(width: 12),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(p['label'] as String,
+                            Text(s['label'] as String,
                                 style: FluentTheme.of(context)
                                     .typography
                                     .bodyStrong),
-                            Text(p['desc'] as String,
+                            Text(s['desc'] as String,
                                 style:
                                     FluentTheme.of(context).typography.caption),
                           ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:music_hub/features/party_mode/views/fluent_party_queue_view.dart';
-import 'package:music_hub/features/party_mode/views/material_party_queue_view.dart';
+import 'package:music_hub/features/party_mode/disco/views/fluent_party_queue_view.dart';
+import 'package:music_hub/features/party_mode/disco/views/material_party_queue_view.dart';
 import 'package:music_hub/core/services/notification_service.dart';
 
 /// PartyQueueScreen controller - platform-adaptive

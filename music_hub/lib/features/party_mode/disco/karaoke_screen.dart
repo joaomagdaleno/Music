@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:music_hub/features/player/services/playback_service.dart';
 
-import 'package:music_hub/features/party_mode/views/fluent_karaoke_view.dart';
-import 'package:music_hub/features/party_mode/views/material_karaoke_view.dart';
+import 'package:music_hub/features/party_mode/disco/views/fluent_karaoke_view.dart';
+import 'package:music_hub/features/party_mode/disco/views/material_karaoke_view.dart';
 
 /// KaraokeScreen controller - platform-adaptive
 class KaraokeScreen extends StatefulWidget {

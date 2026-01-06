@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:file_picker/file_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:music_hub/services/backup_service.dart';
-import 'package:music_hub/screens/backup/views/fluent_backup_view.dart';
-import 'package:music_hub/screens/backup/views/material_backup_view.dart';
+import 'package:music_hub/core/services/backup_service.dart';
+import 'package:music_hub/features/library/backup/views/fluent_backup_view.dart';
+import 'package:music_hub/features/library/backup/views/material_backup_view.dart';
 
 /// BackupScreen controller - platform-adaptive
 class BackupScreen extends StatefulWidget {

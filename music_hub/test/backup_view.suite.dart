@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_hub/screens/backup/backup_screen.dart';
+import 'package:music_hub/features/library/backup/backup_screen.dart';
 import 'package:music_hub/core/services/backup_service.dart';
 
 class MockBackupService extends Mock implements BackupService {}

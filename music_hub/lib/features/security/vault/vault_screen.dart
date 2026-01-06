@@ -5,8 +5,8 @@ import 'package:music_hub/features/library/models/search_models.dart';
 import 'package:music_hub/core/services/security_service.dart';
 import 'package:music_hub/features/player/services/playback_service.dart';
 import 'package:music_hub/core/services/database_service.dart';
-import 'package:music_hub/features/security/views/fluent_vault_view.dart';
-import 'package:music_hub/features/security/views/material_vault_view.dart';
+import 'package:music_hub/features/security/vault/views/fluent_vault_view.dart';
+import 'package:music_hub/features/security/vault/views/material_vault_view.dart';
 
 /// VaultScreen controller - platform-adaptive
 class VaultScreen extends StatefulWidget {

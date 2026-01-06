@@ -9,7 +9,7 @@ import 'package:music_hub/core/services/database_service.dart';
 import 'package:music_hub/core/services/firebase_sync_service.dart';
 import 'package:music_hub/features/library/services/metadata_cleanup_service.dart';
 import 'package:music_hub/features/player/services/playback_service.dart';
-import 'package:music_hub/screens/login/login_screen.dart';
+import 'package:music_hub/features/core/login/login_screen.dart';
 import 'package:music_hub/core/services/notification_service.dart';
 
 class SettingsScreen extends StatefulWidget {

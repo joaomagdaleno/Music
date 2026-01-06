@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_hub/core/services/theme_service.dart';
-import 'package:music_hub/screens/backup/backup_screen.dart';
+import 'package:music_hub/features/library/backup/backup_screen.dart';
 import 'package:music_hub/features/library/models/filename_format.dart';
 
 class MaterialSettingsView extends StatefulWidget {

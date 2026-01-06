@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_hub/screens/stats/listening_stats_screen.dart';
+import 'package:music_hub/features/library/stats/listening_stats_screen.dart';
 import 'package:music_hub/core/services/listening_stats_service.dart';
 import 'package:music_hub/core/services/theme_service.dart';
 

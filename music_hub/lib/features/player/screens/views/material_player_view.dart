@@ -4,7 +4,7 @@ import 'package:music_hub/core/services/local_duo_service.dart';
 import 'package:music_hub/core/widgets/duo_chat_dialog.dart';
 import 'package:music_hub/features/player/widgets/visualizer_widget.dart';
 import 'package:music_hub/features/player/services/lyrics_service.dart';
-import 'package:music_hub/features/party_mode/karaoke_screen.dart';
+import 'package:music_hub/features/party_mode/disco/karaoke_screen.dart';
 import 'package:music_hub/core/services/music_manager_service.dart';
 import 'package:music_hub/features/library/models/search_models.dart';
 

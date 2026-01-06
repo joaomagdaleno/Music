@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:alchemist/alchemist.dart';
 import 'package:mocktail/mocktail.dart';
 import 'golden_helper.dart';
-import 'package:music_hub/features/party_mode/disco_mode_screen.dart';
+import 'package:music_hub/features/party_mode/disco/disco_mode_screen.dart';
 import 'package:music_hub/features/player/services/playback_service.dart';
 import 'package:music_hub/features/discovery/services/download_service.dart'; // For SearchResult
 import 'package:music_hub/features/library/models/search_models.dart';

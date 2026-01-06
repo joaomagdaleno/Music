@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:alchemist/alchemist.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_hub/screens/login/login_screen.dart';
+import 'package:music_hub/features/core/login/login_screen.dart';
 import 'package:music_hub/core/services/auth_service.dart';
 import 'package:music_hub/core/services/connectivity_service.dart';
 import 'package:music_hub/features/player/services/playback_service.dart';

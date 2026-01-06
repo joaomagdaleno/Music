@@ -5,7 +5,7 @@ import 'package:music_hub/features/library/models/search_models.dart';
 import 'package:music_hub/core/services/database_service.dart';
 import 'package:music_hub/features/player/services/playback_service.dart';
 
-import 'package:music_hub/screens/playlists/playlist_importer_screen.dart';
+import 'package:music_hub/features/library/playlists/playlist_importer_screen.dart';
 import 'package:music_hub/features/library/screens/views/fluent_my_tracks_view.dart';
 import 'package:music_hub/features/library/screens/views/material_my_tracks_view.dart';
 

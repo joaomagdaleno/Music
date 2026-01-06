@@ -14,18 +14,33 @@ def fix_imports(directory):
         (r'package:music_hub/services/theme_service\.dart', r'package:music_hub/core/services/theme_service.dart'),
         (r'package:music_hub/services/notification_service\.dart', r'package:music_hub/core/services/notification_service.dart'),
         (r'package:music_hub/services/music_manager_service\.dart', r'package:music_hub/core/services/music_manager_service.dart'),
-        (r'package:music_hub/services/backup_service\.dart', r'package:music_hub/core/services/backup_service.dart'),
-        (r'package:music_hub/services/cast_service\.dart', r'package:music_hub/core/services/cast_service.dart'),
+        # Sub-view mappings
+        (r'package:music_hub/screens/playlists/views/', r'package:music_hub/features/library/playlists/views/'),
+        (r'package:music_hub/screens/playlists/', r'package:music_hub/features/library/playlists/'),
+        (r'package:music_hub/screens/stats/views/', r'package:music_hub/features/library/stats/views/'),
+        (r'package:music_hub/screens/stats/', r'package:music_hub/features/library/stats/'),
+        (r'package:music_hub/screens/backup/', r'package:music_hub/features/library/backup/'),
+        (r'package:music_hub/screens/login/views/', r'package:music_hub/features/core/login/views/'),
+        (r'package:music_hub/screens/login/', r'package:music_hub/features/core/login/'),
         
-        (r'package:music_hub/widgets/', r'package:music_hub/core/widgets/'),
-        (r'package:music_hub/models/', r'package:music_hub/features/library/models/'),
-        (r'package:music_hub/services/', r'package:music_hub/core/services/'),
+        # Features screens/views
+        (r'package:music_hub/features/party_mode/views/', r'package:music_hub/features/party_mode/disco/views/'),
+        (r'package:music_hub/features/party_mode/(\w+)_screen\.dart', r'package:music_hub/features/party_mode/disco/\1_screen.dart'),
+        (r'package:music_hub/features/security/views/', r'package:music_hub/features/security/vault/views/'),
+        (r'package:music_hub/features/security/(\w+)_screen\.dart', r'package:music_hub/features/security/vault/\1_screen.dart'),
         
-        # General patterns for features
+        # Library views
+        (r'package:music_hub/features/library/screens/views/', r'package:music_hub/features/library/screens/views/'),
+        
+        # Discovery
+        (r'package:music_hub/features/discovery/screens/views/', r'package:music_hub/features/discovery/screens/views/'),
+        
+        # General patterns for features (fallback)
         (r'package:music_hub/screens/library/', r'package:music_hub/features/library/screens/'),
         (r'package:music_hub/screens/player/', r'package:music_hub/features/player/screens/'),
         (r'package:music_hub/screens/edit/', r'package:music_hub/features/library/screens/'),
         (r'package:music_hub/screens/home/', r'package:music_hub/features/home/'),
+        (r'package:music_hub/screens/settings/views/', r'package:music_hub/features/settings/screens/views/'),
         (r'package:music_hub/screens/settings/', r'package:music_hub/features/settings/screens/'),
         
         # Discovery specific
@@ -34,6 +49,7 @@ def fix_imports(directory):
         (r'package:music_hub/screens/search/', r'package:music_hub/features/discovery/screens/'),
         (r'SearchScreen', r'DiscoveryScreen'),
         (r'package:music_hub/features/discovery/screens/search_screen\.dart', r'package:music_hub/features/discovery/screens/discovery_screen.dart'),
+        (r'package:music_hub/views/app_shell\.dart', r'package:music_hub/features/core/screens/app_shell.dart'),
     ]
 
     for root, dirs, files in os.walk(directory):

@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:music_hub/features/player/services/playback_service.dart';
 import 'package:music_hub/core/services/theme_service.dart';
 
-import 'package:music_hub/features/party_mode/views/fluent_disco_view.dart';
-import 'package:music_hub/features/party_mode/views/material_disco_view.dart';
+import 'package:music_hub/features/party_mode/disco/views/fluent_disco_view.dart';
+import 'package:music_hub/features/party_mode/disco/views/material_disco_view.dart';
 
 /// DiscoModeScreen controller - platform-adaptive
 class DiscoModeScreen extends StatefulWidget {

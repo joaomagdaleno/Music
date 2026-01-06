@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:music_hub/core/services/listening_stats_service.dart';
-import 'package:music_hub/screens/stats/views/fluent_listening_stats_view.dart';
-import 'package:music_hub/screens/stats/views/material_listening_stats_view.dart';
+import 'package:music_hub/features/library/stats/views/fluent_listening_stats_view.dart';
+import 'package:music_hub/features/library/stats/views/material_listening_stats_view.dart';
 
 /// ListeningStatsScreen controller - platform-adaptive
 class ListeningStatsScreen extends StatefulWidget {

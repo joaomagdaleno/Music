@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:music_hub/core/services/database_service.dart';
 import 'package:music_hub/features/player/services/playback_service.dart';
 import 'package:music_hub/features/library/models/search_models.dart';
-import 'package:music_hub/screens/playlists/views/fluent_playlist_detail_view.dart';
-import 'package:music_hub/screens/playlists/views/material_playlist_detail_view.dart';
+import 'package:music_hub/features/library/playlists/views/fluent_playlist_detail_view.dart';
+import 'package:music_hub/features/library/playlists/views/material_playlist_detail_view.dart';
 import 'package:music_hub/core/services/notification_service.dart';
 
 /// PlaylistDetailScreen controller - platform-adaptive

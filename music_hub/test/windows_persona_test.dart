@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_hub/views/app_shell.dart';
+import 'package:music_hub/features/core/screens/app_shell.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:music_hub/core/services/persona_service.dart';
 import 'package:music_hub/features/library/models/persona_model.dart';
