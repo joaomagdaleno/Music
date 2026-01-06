@@ -18,6 +18,7 @@ class NeteaseApi {
             RateLimiter(maxRequests: 20, interval: const Duration(minutes: 1));
 
   Future<List<LyricLine>> fetchSyncedLyrics(String title, String artist) async {
+    if (title.isEmpty || artist.isEmpty) return [];
     try {
       // Search for the song first
       await _rateLimiter.wait();

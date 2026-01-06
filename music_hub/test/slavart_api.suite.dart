@@ -71,6 +71,14 @@ void main() {
         expect(result!.path, contains('song.flac'));
       }, createFile: (path) => _MockFile(path));
     });
+
+    test('downloadFlac handles server error', () async {
+      when(() => mockClient.send(any())).thenAnswer(
+          (_) async => http.StreamedResponse(Stream.fromIterable([]), 500));
+
+      final result = await api.downloadFlac('http://dl', '/dir');
+      expect(result, isNull);
+    });
   });
 }
 
