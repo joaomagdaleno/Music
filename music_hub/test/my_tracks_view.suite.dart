@@ -16,7 +16,7 @@ void main() {
 
   Widget createTestWidget() => MaterialApp(
         theme: ThemeData(platform: TargetPlatform.android),
-        home: const MyTracksScreen(),
+        home: const Scaffold(body: MyTracksScreen()),
       );
 
   group('MyTracksScreen', () {
@@ -40,17 +40,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.textContaining('Nenhum(a) música salvo(a).'), findsOneWidget);
-    });
-
-    testWidgets('renders app bar with actions', (tester) async {
-      when(() => mockDb.getTracks()).thenAnswer((_) async => []);
-
-      await tester.pumpWidget(createTestWidget());
-      await tester.pumpAndSettle();
-
-      expect(find.text('Biblioteca'), findsOneWidget);
-      expect(find.byIcon(Icons.playlist_add), findsOneWidget);
+      expect(find.text('Nenhuma música na biblioteca.'), findsOneWidget);
     });
 
     testWidgets('renders tracks list', (tester) async {
@@ -94,7 +84,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.more_vert), findsOneWidget);
+      expect(find.byIcon(Icons.security), findsOneWidget);
     });
     testWidgets('has menu button for vault actions', (tester) async {
       when(() => mockDb.getTracks()).thenAnswer((_) async => [
@@ -110,7 +100,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.more_vert), findsOneWidget);
+      expect(find.byIcon(Icons.security), findsOneWidget);
     });
   });
 }

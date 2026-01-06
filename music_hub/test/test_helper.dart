@@ -20,6 +20,10 @@ import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:audio_service/audio_service.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
+import 'package:music_hub/features/library/services/metadata_aggregator_service.dart';
+import 'package:music_hub/features/library/models/metadata_models.dart';
 
 Future<void> setupSqflite() async {
   if (!_sqfliteInitialized) {
@@ -55,6 +59,8 @@ class MockEqualizerService extends Mock implements EqualizerService {}
 
 class MockPlayer extends Mock implements AudioPlayer {}
 
+class MockMetadataAggregatorService extends Mock implements MetadataAggregatorService {}
+
 // Global mock instances for easy access
 late MockAuthService mockAuth;
 late MockDatabaseService mockDb;
@@ -68,6 +74,7 @@ late MockPlayer mockPlayer;
 late MockDependencyManager mockDeps;
 late MockLyricsService mockLyrics;
 late MockEqualizerService mockEqualizer;
+late MockMetadataAggregatorService mockMetadataAggregator;
 
 Future<void> setupMusicTest({
   bool mockAuthInstance = true,
@@ -96,6 +103,7 @@ Future<void> setupMusicTest({
     ));
     registerFallbackValue(MediaPlatform.youtube);
     registerFallbackValue(LoopMode.off);
+    registerFallbackValue(AudioSource.uri(Uri.parse('http://test.com')));
     _registerFallbackValueWasCalled = true;
   }
 
@@ -127,7 +135,11 @@ Future<void> setupMusicTest({
   mockPlayer = MockPlayer();
   mockDeps = MockDependencyManager();
   mockLyrics = MockLyricsService();
+  mockPlayer = MockPlayer();
+  mockDeps = MockDependencyManager();
+  mockLyrics = MockLyricsService();
   mockEqualizer = MockEqualizerService();
+  mockMetadataAggregator = MockMetadataAggregatorService();
 
   if (mockAuthInstance) AuthService.instance = mockAuth;
   if (mockDbInstance) DatabaseService.instance = mockDb;
@@ -139,15 +151,23 @@ Future<void> setupMusicTest({
   if (mockThemeInstance) ThemeService.instance = mockTheme;
   if (mockDepsInstance) DependencyManager.instance = mockDeps;
   LyricsService.instance = mockLyrics;
+  LyricsService.instance = mockLyrics;
   EqualizerService.instance = mockEqualizer;
+  MetadataAggregatorService.instance = mockMetadataAggregator;
 
   // Default stubs to avoid common Null errors
   when(() => mockDb.getTracks(includeVault: any(named: 'includeVault')))
       .thenAnswer((_) async => []);
   when(() => mockDb.getRecentlyPlayed(limit: any(named: 'limit')))
       .thenAnswer((_) async => []);
+  when(() => mockMetadataAggregator.aggregateMetadata(
+        any(),
+        any(),
+        durationMs: any(named: 'durationMs'),
+      )).thenAnswer((_) async => AggregatedMetadata());
   when(() => mockDb.saveSetting(any(), any())).thenAnswer((_) async {});
   when(() => mockDb.getSetting(any())).thenAnswer((_) async => null);
+  when(() => mockDb.checkpoint()).thenAnswer((_) async {});
   when(() => mockDb.loadCrossfadeDuration()).thenAnswer((_) async => 3);
   // Removed getSpotifyCredentials stub as it's no longer used
   when(() => mockDb.getDownloadedUrls())
@@ -185,12 +205,26 @@ Future<void> setupMusicTest({
   when(() => mockDuo.role).thenReturn(DuoRole.none);
 
   // Wire up MockPlayer properties
-  when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(PlayerState(false, ProcessingState.idle)));
-  when(() => mockPlayer.positionStream).thenAnswer((_) => Stream.value(Duration.zero));
-  when(() => mockPlayer.bufferedPositionStream).thenAnswer((_) => Stream.value(Duration.zero));
+  when(() => mockPlayer.playerStateStream).thenAnswer(
+      (_) => Stream.value(PlayerState(false, ProcessingState.idle)));
+  when(() => mockPlayer.positionStream)
+      .thenAnswer((_) => Stream.value(Duration.zero));
+  when(() => mockPlayer.bufferedPositionStream)
+      .thenAnswer((_) => Stream.value(Duration.zero));
   when(() => mockPlayer.playingStream).thenAnswer((_) => Stream.value(false));
   when(() => mockPlayer.durationStream).thenAnswer((_) => Stream.value(null));
-  when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => const Stream.empty());
+  when(() => mockPlayer.sequenceStateStream)
+      .thenAnswer((_) => const Stream.empty());
+
+  when(() => mockPlayer.position).thenReturn(Duration.zero);
+  when(() => mockPlayer.bufferedPosition).thenReturn(Duration.zero);
+  when(() => mockPlayer.duration).thenReturn(null);
+  when(() => mockPlayer.volume).thenReturn(1.0);
+  when(() => mockPlayer.speed).thenReturn(1.0);
+  when(() => mockPlayer.loopMode).thenReturn(LoopMode.off);
+  when(() => mockPlayer.shuffleModeEnabled).thenReturn(false);
+  when(() => mockPlayer.processingState).thenReturn(ProcessingState.idle);
+  when(() => mockPlayer.playing).thenReturn(false);
 
   // Note: No need to stub mockPlayerStreams getters as they are now real implementation
 
@@ -199,8 +233,9 @@ Future<void> setupMusicTest({
   when(() => mockPlayer.pause()).thenAnswer((_) async {});
   when(() => mockPlayer.stop()).thenAnswer((_) async {});
   when(() => mockPlayer.seek(any())).thenAnswer((_) async {});
-  when(() => mockPlayer.setAudioSource(any(), initialPosition: any(named: 'initialPosition'), preload: any(named: 'preload')))
-      .thenAnswer((_) async => null);
+  when(() => mockPlayer.setAudioSource(any(),
+      initialPosition: any(named: 'initialPosition'),
+      preload: any(named: 'preload'))).thenAnswer((_) async => null);
   when(() => mockPlayer.setLoopMode(any())).thenAnswer((_) async {});
   when(() => mockPlayer.setShuffleModeEnabled(any())).thenAnswer((_) async {});
 
@@ -212,6 +247,9 @@ Future<void> setupMusicTest({
   });
   when(() => mockDeps.areAllDependenciesInstalled())
       .thenAnswer((_) async => true);
+  when(() => mockDeps.client).thenReturn(MockClient((request) async {
+    return http.Response('{}', 200);
+  }));
 }
 
 bool _registerFallbackValueWasCalled = false;
@@ -267,6 +305,15 @@ class _MockHttpClientResponse extends Mock implements HttpClientResponse {
   @override
   HttpClientResponseCompressionState get compressionState =>
       HttpClientResponseCompressionState.notCompressed;
+
+  @override
+  bool get isRedirect => false;
+
+  @override
+  bool get persistentConnection => false;
+
+  @override
+  String get reasonPhrase => 'OK';
 
   @override
   StreamSubscription<List<int>> listen(void Function(List<int> event)? onData,

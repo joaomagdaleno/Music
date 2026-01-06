@@ -13,7 +13,6 @@ import 'package:music_hub/features/library/models/search_models.dart';
 import 'package:rxdart/rxdart.dart';
 import 'test_helper.dart';
 
-
 void main() {
   group('MiniPlayer Widget Tests', () {
     BehaviorSubject<bool> playingSubject = BehaviorSubject.seeded(false);
@@ -22,16 +21,24 @@ void main() {
       await setupMusicTest();
       // No platform override, uses Windows (Fluent)
 
-      when(() => mockPlayer.playingStream).thenAnswer((_) => playingSubject.stream);
-      when(() => mockPlayer.positionStream).thenAnswer((_) => Stream.value(Duration.zero));
-      when(() => mockPlayer.bufferedPositionStream).thenAnswer((_) => Stream.value(Duration.zero));
-      when(() => mockPlayer.durationStream).thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockPlayer.playingStream)
+          .thenAnswer((_) => playingSubject.stream);
+      when(() => mockPlayer.positionStream)
+          .thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockPlayer.bufferedPositionStream)
+          .thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockPlayer.durationStream)
+          .thenAnswer((_) => Stream.value(Duration.zero));
       when(() => mockPlayer.volumeStream).thenAnswer((_) => Stream.value(1.0));
-      when(() => mockPlayer.loopModeStream).thenAnswer((_) => Stream.value(LoopMode.off));
-      when(() => mockPlayer.shuffleModeEnabledStream).thenAnswer((_) => Stream.value(false));
-      when(() => mockPlayer.playerStateStream).thenAnswer((_) => playingSubject.stream
+      when(() => mockPlayer.loopModeStream)
+          .thenAnswer((_) => Stream.value(LoopMode.off));
+      when(() => mockPlayer.shuffleModeEnabledStream)
+          .thenAnswer((_) => Stream.value(false));
+      when(() => mockPlayer.playerStateStream).thenAnswer((_) => playingSubject
+          .stream
           .map((p) => PlayerState(p, ProcessingState.ready)));
-      when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => const Stream.empty());
+      when(() => mockPlayer.sequenceStateStream)
+          .thenAnswer((_) => const Stream.empty());
 
       // Explicitly stub currentTrackStream as empty (so startWith(currentTrack) is the only value)
       when(() => mockPlayback.currentTrackStream)
@@ -40,7 +47,6 @@ void main() {
 
     tearDown(() {
       playingSubject.close();
-      debugDefaultTargetPlatformOverride = null;
     });
 
     testWidgets('MiniPlayer renders track info', (tester) async {

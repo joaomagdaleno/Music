@@ -3,15 +3,15 @@ library;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_test/flutter_test.dart';
 import 'package:music_hub/features/player/services/lyrics_service.dart';
-
-class MockHttpClient extends Mock implements http.Client {}
+import 'test_helper.dart';
 
 void main() {
   group('LyricsService', () {
-    setUp(() {
-      LyricsService.resetInstance();
+    setUp(() async {
+      await setupMusicTest();
+      LyricsService.instance = LyricsService.instance; // Ensure singleton
     });
 
     test('fetchLyrics returns empty list on network error', () async {

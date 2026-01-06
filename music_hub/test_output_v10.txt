@@ -1,0 +1,130 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ♿
+00:01 +1: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ♿
+00:01 +2: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ♿
+00:02 +2: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease handles errors gracefully
+❌ DiscogsApi Error: Exception: Network error
+00:02 +3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/accessibility_test.dart: The Oracle's Whisper: Accessibility Audit ♿
+00:02 +4: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong returns parsed data on success
+00:02 +5: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong returns null on empty hits
+00:02 +6: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong handles errors gracefully
+❌ GeniusApi Error: Exception: Network error
+00:02 +7: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo returns parsed data on success
+00:02 +8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo returns null on error
+❌ LastFmApi Error: Exception: Network error
+00:02 +9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo returns null on 404
+00:02 +10: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi searchMetadata returns parsed recordings
+00:02 +11: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi searchMetadata returns empty list on error response
+00:03 +12: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease returns null on empty query
+00:03 +13: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease handles network errors gracefully
+00:04 +14: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi DiscogsApi can be instantiated
+00:04 +15: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong returns null on empty query
+00:04 +16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong handles network errors gracefully
+00:04 +17: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi GeniusApi can be instantiated
+00:05 +18: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo returns null when API key is placeholder
+⚠️ LastFmApi: API Key not configured.
+00:05 +19: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo handles empty strings
+⚠️ LastFmApi: API Key not configured.
+00:05 +20: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi LastFmApi can be instantiated
+00:05 +21: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi (setUpAll)
+00:05 +21: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi searchRecording returns map on query
+00:05 +22: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi searchRecording handles empty strings
+00:05 +23: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi MusicBrainzApi can be instantiated
+00:05 +24: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi (tearDownAll)
+00:05 +24: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:07 +25: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics handles empty strings
+00:08 +26: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: NeteaseApi NeteaseApi can be instantiated
+00:08 +27: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: SlavArtApi search returns parsed results on success
+00:08 +28: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: SlavArtApi getDownloadUrl returns URL on success
+00:08 +29: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: SlavArtApi downloadFlac streams content to file
+00:10 +30 -1: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: test/test_helper.dart:160:66: Error: Expected ';' after this.
+    when(() => mockDb.getRecentlyPlayed(limit: any(named: 'limit')))
+                                                                   ^
+  test/test_helper.dart:167:34: Error: Method not found: 'AggregatedMetadata'.
+        )).thenAnswer((_) async => AggregatedMetadata());
+                                   ^^^^^^^^^^^^^^^^^^
+  .
+00:26 +30 -2: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: test/test_helper.dart:160:66: Error: Expected ';' after this.
+    when(() => mockDb.getRecentlyPlayed(limit: any(named: 'limit')))
+                                                                   ^
+  test/test_helper.dart:167:34: Error: Method not found: 'AggregatedMetadata'.
+        )).thenAnswer((_) async => AggregatedMetadata());
+                                   ^^^^^^^^^^^^^^^^^^
+  .
+00:42 +30 -3: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: test/test_helper.dart:160:66: Error: Expected ';' after this.
+    when(() => mockDb.getRecentlyPlayed(limit: any(named: 'limit')))
+                                                                   ^
+  test/test_helper.dart:167:34: Error: Method not found: 'AggregatedMetadata'.
+        )).thenAnswer((_) async => AggregatedMetadata());
+                                   ^^^^^^^^^^^^^^^^^^
+  .
+00:50 +30 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: (setUpAll)
+00:51 +30 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Settings save and load filename format
+00:51 +31 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Settings save and load crossfade duration
+00:51 +32 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Settings save and load age bypass
+00:51 +33 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Tracks save and retrieve tracks
+00:51 +34 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Tracks toggle vault
+00:51 +35 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Tracks trackPlay increments count and sets lastPlayed
+00:51 +36 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Playlists create playlist and add tracks
+00:51 +37 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Duo save guest and add session tracks
+00:51 +38 -3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Moods getTracksByMood returns matching genres
+00:51 +38 -4: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Moods getTracksByMood returns matching genres [E]
+  Expected: <true>
+    Actual: <false>
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test\database_service_test.dart 132:7               main.<fn>.<fn>
+  
+00:51 +38 -4: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: Learning Rules save and get learning rules
+00:51 +39 -4: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/database_service_test.dart: (tearDownAll)
+01:00 +39 -5: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: test/test_helper.dart:161:66: Error: Expected ';' after this.
+    when(() => mockDb.getRecentlyPlayed(limit: any(named: 'limit')))
+                                                                   ^
+  .
+01:26 +39 -6: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart: test/test_helper.dart:161:66: Error: Expected ';' after this.
+    when(() => mockDb.getRecentlyPlayed(limit: any(named: 'limit')))
+                                                                   ^
+  .
+01:45 +39 -7: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/playback_service_test.dart: test/test_helper.dart:161:66: Error: Expected ';' after this.
+    when(() => mockDb.getRecentlyPlayed(limit: any(named: 'limit')))
+                                                                   ^
+  .
+02:10 +39 -8: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart [E]
+  Failed to load "C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart":
+  Compilation failed for testPath=C:/Users/joaom/Documents/GitHub/Music/music_hub/test/settings_page_test.dart: test/test_helper.dart:161:66: Error: Expected ';' after this.
+    when(() => mockDb.getRecentlyPlayed(limit: any(named: 'limit')))
+                                                                   ^
+  .
+02:15 +39 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.cleanMetadata should remove (Official Video) suffixes
+02:15 +40 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.cleanMetadata should remove (Music Video) suffixes
+02:15 +41 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.cleanMetadata should remove (Video) and [Video] suffixes
+02:15 +42 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.cleanMetadata should remove (Lyrics) and [Lyrics] suffixes
+02:15 +43 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.cleanMetadata should preserve (feat. X) and (Live at Wembley)
+02:15 +44 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.cleanMetadata should clean trailing " - YouTube"
+02:15 +45 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.cleanMetadata should trim whitespace after removal
+02:15 +46 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.toMatchKey (Normalization) should normalize diacritics
+02:15 +47 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.toMatchKey (Normalization) should lowercase and trim
+02:15 +48 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/models/search_models_test.dart: SearchResult.toMatchKey (Normalization) should handle mixed diacritics and casing
+02:16 +49 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/utils/file_utils_test.dart: sanitizeFilename should replace colons with underscores
+02:16 +50 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/utils/file_utils_test.dart: sanitizeFilename should replace forward and backward slashes
+02:16 +51 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/utils/file_utils_test.dart: sanitizeFilename should replace angle brackets
+02:17 +52 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/utils/file_utils_test.dart: sanitizeFilename should replace other reserved characters (*, ?, ", |)
+02:17 +53 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/utils/file_utils_test.dart: sanitizeFilename should handle nested paths by flattening them
+02:17 +54 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/unit/utils/file_utils_test.dart: sanitizeFilename should return same string if no illegal characters
+02:23 +55 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/widget/tag_editor_test.dart: TagEditorScreen shows original metadata
+02:26 +56 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/widget/tag_editor_test.dart: Auto-fill updates controllers with mock data
+02:27 +57 -8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/widget/tag_editor_test.dart: Save button is disabled when title is empty
+02:28 +58 -8: Some tests failed.

@@ -35,8 +35,10 @@ void main() {
 
     when(() => mockPlayback.player).thenReturn(mockPlayer);
     // Stub position if needed, or removing if test doesn't use it.
-    when(() => mockPlayer.positionStream).thenAnswer((_) => Stream.value(Duration.zero));
-    when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(PlayerState(false, ProcessingState.idle)));
+    when(() => mockPlayer.positionStream)
+        .thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockPlayer.playerStateStream).thenAnswer(
+        (_) => Stream.value(PlayerState(false, ProcessingState.idle)));
 
     when(() => mockPlayback.currentLyrics).thenReturn([]);
     when(() => mockPlayback.lyricsStream).thenAnswer((_) => Stream.value([]));

@@ -94,6 +94,7 @@ class _MockIOSink extends Fake implements IOSink {
   Future<void> addStream(Stream<List<int>> stream) async {
     await stream.listen((_) {}).asFuture();
   }
+
   @override
   Future<void> flush() async {}
   @override

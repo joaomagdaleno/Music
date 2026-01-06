@@ -1,0 +1,11 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_test.dart
+00:00 +0: MusicHubApp renders MaterialApp
+00:05 +1: MusicHubApp shows HomeScreen in AppShell when not authenticated (Guest Mode)
+00:05 +2: MusicHubApp uses theme color from ThemeService
+00:06 +3: LibraryScreen renders with title
+00:07 +4: LibraryScreen has DefaultTabController
+00:07 +5: LibraryScreen renders tab bar with tabs
+00:08 +6: LibraryScreen has settings button in app bar
+00:08 +7: LibraryScreen has download button in app bar
+00:09 +8: LibraryScreen shows empty folder message
+00:09 +9: All tests passed!

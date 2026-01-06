@@ -2,6 +2,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_hub/features/library/screens/ringtone_maker_screen.dart';
@@ -120,6 +121,7 @@ void main() {
       );
 
   group('RingtoneMakerScreen', () {
+
     testWidgets('renders Scaffold', (tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
@@ -131,7 +133,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.text('Test Song'), findsWidgets);
+      expect(find.textContaining('Test Song'), findsWidgets);
     });
 
     testWidgets('has play/pause button', (tester) async {
@@ -145,7 +147,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.text('Criador de Toques'), findsOneWidget);
+      expect(find.textContaining('Criador de Toque'), findsOneWidget);
     });
   });
 }

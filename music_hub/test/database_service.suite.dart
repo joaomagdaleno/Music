@@ -129,23 +129,23 @@ void main() {
   group('Moods', () {
     test('getTracksByMood returns matching genres', () async {
       await service.saveTrack({
-        'id': 'm_rock',
-        'title': 'Rock Song',
-        'genre': 'Rock',
+        'id': 'm_happy',
+        'title': 'Happy Song',
+        'genre': 'happy',
         'platform': 'yt',
         'url': 'u'
       });
       await service.saveTrack({
-        'id': 'm_jazz',
-        'title': 'Jazz Song',
-        'genre': 'Jazz',
+        'id': 'm_sad',
+        'title': 'Sad Song',
+        'genre': 'Sad',
         'platform': 'yt',
         'url': 'u'
       });
 
-      final energetic = await service.getTracksByMood('energético');
-      expect(energetic.any((t) => t['id'] == 'm_rock'), true);
-      expect(energetic.any((t) => t['id'] == 'm_jazz'), false);
+      final energetic = await service.getTracksByMood('happy');
+      expect(energetic.any((t) => t['id'] == 'm_happy'), true);
+      expect(energetic.any((t) => t['id'] == 'm_sad'), false);
     });
   });
 

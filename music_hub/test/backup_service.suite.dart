@@ -27,6 +27,7 @@ void main() {
     when(() => mockDb.getAllSettings()).thenAnswer((_) async => {});
     when(() => mockDb.saveTrack(any())).thenAnswer((_) async {});
     when(() => mockDb.savePlaylist(any())).thenAnswer((_) async {});
+    when(() => mockDb.checkpoint()).thenAnswer((_) async {});
   });
 
   tearDown(() async {

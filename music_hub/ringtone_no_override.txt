@@ -1,0 +1,8 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/ringtone_maker_view.suite.dart
+00:00 +0: (setUpAll)
+00:00 +0: RingtoneMakerScreen renders Scaffold
+00:04 +1: RingtoneMakerScreen displays track title
+00:04 +2: RingtoneMakerScreen has play/pause button
+00:04 +3: RingtoneMakerScreen has app bar with title
+00:05 +4: (tearDownAll)
+00:05 +4: All tests passed!
