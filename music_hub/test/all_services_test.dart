@@ -17,7 +17,6 @@ import 'lyrics_service.suite.dart' as lyrics;
 import 'metadata_aggregator_service.suite.dart' as metadata_agg;
 import 'metadata_cleanup_service.suite.dart' as metadata_clean;
 import 'metadata_service.suite.dart' as metadata;
-import 'persona_service.suite.dart' as persona_svc;
 import 'playback_service.suite.dart' as playback;
 import 'search_service.suite.dart' as search;
 import 'security_service.suite.dart' as security;
@@ -45,7 +44,6 @@ void main() {
   group('MetadataAggregator', () => metadata_agg.main());
   group('MetadataCleanup', () => metadata_clean.main());
   group('MetadataService', () => metadata.main());
-  group('PersonaService', () => persona_svc.main());
   group('PlaybackService', () => playback.main());
   group('SearchService', () => search.main());
   group('SecurityService', () => security.main());

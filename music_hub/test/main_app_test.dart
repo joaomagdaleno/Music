@@ -7,7 +7,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:media_kit/media_kit.dart';
+import 'package:just_audio/just_audio.dart';
 import 'test_helper.dart';
 import 'package:music_hub/main.dart';
 import 'package:music_hub/features/library/screens/library_screen.dart';
@@ -139,9 +139,11 @@ void main() {
     when(() => mockTheme.removeListener(any())).thenReturn(null);
 
     when(() => mockPlayback.player).thenReturn(mockPlayer);
-    when(() => mockPlayer.stream)
-        .thenReturn(FakePlayerStream()); // Wire up streams
-    when(() => mockPlayer.state).thenReturn(const PlayerState());
+    when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(PlayerState(false, ProcessingState.idle)));
+    when(() => mockPlayer.positionStream).thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockPlayer.bufferedPositionStream).thenAnswer((_) => Stream.value(Duration.zero));
+    when(() => mockPlayer.playingStream).thenAnswer((_) => Stream.value(false));
+    when(() => mockPlayer.durationStream).thenAnswer((_) => Stream.value(null));
 
     when(() => mockPlayback.currentTrack).thenReturn(null);
     when(() => mockPlayback.currentTrackStream)
@@ -155,7 +157,7 @@ void main() {
   });
 
   testWidgets(
-      'MusicTagEditorApp shows AppShell when not authenticated (Guest Mode)',
+      'MusicHubApp shows AppShell when not authenticated (Guest Mode)',
       (tester) async {
     when(() => mockDb.loadFilenameFormat())
         .thenAnswer((_) async => FilenameFormat.artistTitle);
@@ -163,7 +165,7 @@ void main() {
     when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
 
     await tester
-        .pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
+        .pumpWidget(const MusicHubApp());
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -171,7 +173,7 @@ void main() {
     expect(find.byType(LoginScreen), findsNothing);
   });
 
-  testWidgets('MusicTagEditorApp shows AppShell when authenticated',
+  testWidgets('MusicHubApp shows AppShell when authenticated',
       (tester) async {
     when(() => mockAuth.isAuthenticated).thenReturn(true);
 
@@ -182,7 +184,7 @@ void main() {
     when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
 
     await tester
-        .pumpWidget(const MusicTagEditorApp(platform: TargetPlatform.android));
+        .pumpWidget(const MusicHubApp());
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 200));
 

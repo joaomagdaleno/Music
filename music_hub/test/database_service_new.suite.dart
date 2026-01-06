@@ -4,7 +4,7 @@ library;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:music_hub/core/services/database_service.dart';
 import 'package:music_hub/features/library/models/filename_format.dart'; // For FilenameFormat
-import 'package:music_hub/core/widgets/learning_dialog.dart'; // For LearningChoice
+import 'package:music_hub/features/library/models/learning_enums.dart'; 
 
 void main() {
   group('DatabaseService', () {

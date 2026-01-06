@@ -6,6 +6,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:music_hub/core/services/database_service.dart';
 import 'package:music_hub/features/library/models/filename_format.dart';
 import 'package:music_hub/features/library/models/database_models.dart';
+import 'package:music_hub/features/library/models/learning_enums.dart';
 import 'package:music_hub/core/widgets/learning_dialog.dart';
 import 'test_helper.dart';
 

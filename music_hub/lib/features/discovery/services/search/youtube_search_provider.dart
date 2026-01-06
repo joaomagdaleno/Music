@@ -345,8 +345,9 @@ class YouTubeSearchProvider extends BaseYouTubeSearchProvider {
           if (seenIds.contains(video.id.value)) continue;
 
           // Duration Filter: Ignore short clips (< 60s)
-          if (video.duration != null && video.duration!.inSeconds < 60)
+          if (video.duration != null && video.duration!.inSeconds < 60) {
             continue;
+          }
 
           final res =
               parseYouTubeVideo(video, platform, allowExplicit: allowExplicit);
@@ -396,7 +397,9 @@ class YouTubeMusicSearchProvider extends BaseYouTubeSearchProvider {
         if (seenIds.contains(video.id.value)) continue;
 
         // Duration Filter: Ignore short clips (< 60s)
-        if (video.duration != null && video.duration!.inSeconds < 60) continue;
+        if (video.duration != null && video.duration!.inSeconds < 60) {
+          continue;
+        }
 
         final res =
             parseYouTubeVideo(video, platform, allowExplicit: allowExplicit);

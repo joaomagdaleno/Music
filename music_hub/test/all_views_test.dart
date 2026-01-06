@@ -17,7 +17,6 @@ import 'mini_player.suite.dart' as mini_player;
 import 'mood_explorer_view.suite.dart' as mood_explorer;
 import 'my_tracks_view.suite.dart' as my_tracks;
 import 'party_queue_view.suite.dart' as party_queue;
-import 'personas_widget.suite.dart' as personas_widget;
 import 'player_screen.suite.dart' as player;
 import 'playlist_detail_screen.suite.dart' as playlist_detail;
 import 'playlist_importer_view.suite.dart' as playlist_importer;
@@ -45,7 +44,6 @@ void main() {
   group('MoodExplorer', () => mood_explorer.main());
   group('MyTracks', () => my_tracks.main());
   group('PartyQueue', () => party_queue.main());
-  group('PersonasWidget', () => personas_widget.main());
   group('PlayerScreen', () => player.main());
   group('PlaylistDetail', () => playlist_detail.main());
   group('PlaylistImporter', () => playlist_importer.main());

@@ -6,42 +6,33 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:media_kit/media_kit.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:music_hub/core/widgets/mini_player.dart';
 
 import 'package:music_hub/features/library/models/search_models.dart';
 import 'package:rxdart/rxdart.dart';
 import 'test_helper.dart';
 
-// MockPlayerStream defined locally or in test_helper (not in test_helper yet, but MockPlayer is)
-class MockPlayerStream extends Mock implements PlayerStream {}
 
 void main() {
   group('MiniPlayer Widget Tests', () {
     late MockPlayerStream mockStream;
-    late BehaviorSubject<bool> playingSubject;
+    BehaviorSubject<bool> playingSubject = BehaviorSubject.seeded(false);
 
     setUp(() async {
       await setupMusicTest();
       // No platform override, uses Windows (Fluent)
 
-      mockStream = MockPlayerStream();
-      playingSubject = BehaviorSubject.seeded(false);
-
-      when(() => mockPlayer.stream).thenReturn(mockStream);
-      when(() => mockPlayer.state).thenReturn(const PlayerState());
-
-      when(() => mockStream.playing).thenAnswer((_) => playingSubject.stream);
-      when(() => mockStream.position)
-          .thenAnswer((_) => Stream.value(Duration.zero));
-      when(() => mockStream.duration)
-          .thenAnswer((_) => Stream.value(Duration.zero));
-      when(() => mockStream.buffer)
-          .thenAnswer((_) => Stream.value(Duration.zero));
-      when(() => mockStream.volume).thenAnswer((_) => Stream.value(100.0));
-      when(() => mockStream.playlistMode)
-          .thenAnswer((_) => Stream.value(PlaylistMode.none));
-      when(() => mockStream.shuffle).thenAnswer((_) => Stream.value(false));
+      when(() => mockPlayer.playingStream).thenAnswer((_) => playingSubject.stream);
+      when(() => mockPlayer.positionStream).thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockPlayer.bufferedPositionStream).thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockPlayer.durationStream).thenAnswer((_) => Stream.value(Duration.zero));
+      when(() => mockPlayer.volumeStream).thenAnswer((_) => Stream.value(1.0));
+      when(() => mockPlayer.loopModeStream).thenAnswer((_) => Stream.value(LoopMode.off));
+      when(() => mockPlayer.shuffleModeEnabledStream).thenAnswer((_) => Stream.value(false));
+      when(() => mockPlayer.playerStateStream).thenAnswer((_) => playingSubject.stream
+          .map((p) => PlayerState(p, ProcessingState.ready)));
+      when(() => mockPlayer.sequenceStateStream).thenAnswer((_) => const Stream.empty());
 
       // Explicitly stub currentTrackStream as empty (so startWith(currentTrack) is the only value)
       when(() => mockPlayback.currentTrackStream)
