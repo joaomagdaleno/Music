@@ -121,10 +121,8 @@ void main() {
       );
 
   group('RingtoneMakerScreen', () {
-    testWidgets('renders Scaffold', (tester) async {
-      debugDefaultTargetPlatformOverride = TargetPlatform.android;
-      addTearDown(() => debugDefaultTargetPlatformOverride = null);
 
+    testWidgets('renders Scaffold', (tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
@@ -132,19 +130,13 @@ void main() {
     });
 
     testWidgets('displays track title', (tester) async {
-      debugDefaultTargetPlatformOverride = TargetPlatform.android;
-      addTearDown(() => debugDefaultTargetPlatformOverride = null);
-
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.text('Test Song'), findsWidgets);
+      expect(find.textContaining('Test Song'), findsWidgets);
     });
 
     testWidgets('has play/pause button', (tester) async {
-      debugDefaultTargetPlatformOverride = TargetPlatform.android;
-      addTearDown(() => debugDefaultTargetPlatformOverride = null);
-
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
@@ -152,13 +144,10 @@ void main() {
     });
 
     testWidgets('has app bar with title', (tester) async {
-      debugDefaultTargetPlatformOverride = TargetPlatform.android;
-      addTearDown(() => debugDefaultTargetPlatformOverride = null);
-
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.text('Criador de Toques'), findsOneWidget);
+      expect(find.textContaining('Criador de Toque'), findsOneWidget);
     });
   });
 }

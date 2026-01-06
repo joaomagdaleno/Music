@@ -78,10 +78,8 @@ void main() {
   });
 
   group('MusicHubApp', () {
-    testWidgets('renders MaterialApp', (tester) async {
-      debugDefaultTargetPlatformOverride = TargetPlatform.android;
-      addTearDown(() => debugDefaultTargetPlatformOverride = null);
 
+    testWidgets('renders MaterialApp', (tester) async {
       await tester.pumpWidget(const MusicHubApp());
       await tester.pump(const Duration(milliseconds: 100));
 
@@ -91,9 +89,6 @@ void main() {
     testWidgets(
         'shows HomeScreen in AppShell when not authenticated (Guest Mode)',
         (tester) async {
-      debugDefaultTargetPlatformOverride = TargetPlatform.android;
-      addTearDown(() => debugDefaultTargetPlatformOverride = null);
-
       when(() => mockAuth.isAuthenticated).thenReturn(false);
 
       await tester.pumpWidget(const MusicHubApp());

@@ -1,0 +1,141 @@
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart
+00:00 +0: AppShell AppShell Widget Tests Global Rail switches Personas
+00:05 +1: BackupView BackupScreen renders app bar
+00:06 +2: BackupView BackupScreen renders create backup card
+00:06 +3: BackupView BackupScreen renders restore backup card
+00:06 +4: BackupView BackupScreen shows backup size estimate
+00:06 +5: DiscoMode DiscoModeScreen renders with no track playing
+00:06 +6: DiscoMode DiscoModeScreen renders with track playing
+00:06 +7: DiscoMode DiscoModeScreen tap closes the view
+00:07 +8: DiscoMode DiscoModeScreen visualizer bars animate
+00:07 +9: DiscoMode DiscoModeScreen rotation animation runs
+00:07 +10: DownloadPage DownloadPage renders initial UI
+00:08 +11: DownloadPage DownloadPage shows paste button
+00:08 +12: DownloadPage DownloadPage has dropdown selector after search
+00:09 +13: DownloadPage DownloadPage button bar is present
+00:09 +14: DownloadPage DownloadPage url input accepts text
+00:09 +15: DownloadPage DownloadPage scaffold renders
+00:09 +16: HomeView HomeScreen renders greeting
+00:09 +17: HomeView HomeScreen renders smart library cards
+00:10 +18: HomeView HomeScreen renders moods section
+00:10 +19: HomeView HomeScreen renders disco mode button
+00:10 +20: HomeView HomeScreen renders recents list with tracks
+00:10 +21: HomeView HomeScreen scaffold renders correctly
+00:11 +22: KaraokeView KaraokeScreen renders track title
+00:11 +23: KaraokeView KaraokeScreen renders close button
+00:11 +24: KaraokeView KaraokeScreen shows no lyrics message when empty
+00:11 +25: KaraokeView KaraokeScreen renders play button
+00:11 +26: KaraokeView KaraokeScreen scaffold has black background
+00:11 +27: KaraokeView KaraokeScreen tapping play button calls resume
+00:11 +28: ListeningStats ListeningStatsScreen renders all sections when data is available
+00:11 +29: ListeningStats ListeningStatsScreen shows loading state and clears timers
+00:11 +30: LoginPage LoginScreen renders Scaffold
+00:11 +31: LoginPage LoginScreen has email and password fields
+00:12 +32: LoginPage LoginScreen has login button
+00:12 +33: LoginPage LoginScreen can toggle to register mode
+00:12 +34: LoginPage LoginScreen calls login on button press
+[LoginScreen] Starting LOGIN process for: test@test.com
+[LoginScreen] Auth process finished. Result: SUCCESS
+00:13 +35: MiniPlayer MiniPlayer Widget Tests MiniPlayer renders track info
+00:13 +36: MoodExplorer (setUpAll)
+00:13 +36: MoodExplorer MoodExplorerScreen renders mood sections
+00:13 +37: MoodExplorer MoodExplorerScreen shows loading indicator
+00:13 +38: MoodExplorer MoodExplorerScreen displays empty state message
+00:13 +39: MoodExplorer (tearDownAll)
+00:13 +39: MyTracks MyTracksScreen renders loading state
+00:13 +40: MyTracks MyTracksScreen renders empty state
+00:13 +41: MyTracks MyTracksScreen renders tracks list
+00:13 +42: MyTracks MyTracksScreen shows menu button for each track
+00:13 +43: MyTracks MyTracksScreen has menu button for vault actions
+00:13 +44: PartyQueue (setUpAll)
+00:13 +44: PartyQueue PartyQueueScreen renders app bar
+00:13 +45: PartyQueue PartyQueueScreen renders start party UI
+00:14 +46: PartyQueue PartyQueueScreen renders description text
+00:14 +47: PartyQueue PartyQueueScreen has generate QR button
+00:14 +48: PartyQueue PartyQueueScreen has scan button
+00:14 +49: PartyQueue PartyQueueScreen tapping generate shows QR code
+00:14 +50: PartyQueue PartyQueueScreen tapping end party returns to initial state
+00:14 +51: PartyQueue (tearDownAll)
+00:14 +51: PlayerScreen PlayerScreen Widget Tests Shows empty state when no track is playing
+00:14 +52: PlayerScreen PlayerScreen Widget Tests Shows track info when playing
+00:14 +53: PlayerScreen PlayerScreen Widget Tests Toggles play/pause
+00:15 +54: PlayerScreen PlayerScreen Widget Tests Shows Duo chat button when in Duo mode
+00:15 +55: PlaylistDetail (setUpAll)
+00:15 +55: PlaylistDetail PlaylistDetailScreen shows loading indicator initially
+00:15 +56: PlaylistDetail PlaylistDetailScreen displays playlist name in app bar
+00:15 +57: PlaylistDetail PlaylistDetailScreen shows empty state when no tracks
+00:15 +58: PlaylistDetail PlaylistDetailScreen shows track list when tracks exist
+00:15 +59: PlaylistDetail PlaylistDetailScreen has play button for each track
+00:15 +60: PlaylistDetail PlaylistDetailScreen calls playSearchResult on play button tap
+[PlaylistDetail] Track data: {id: 1, title: Song 1, artist: Artist 1, url: http://1, platform: MediaPlatform.youtube}
+[PlaylistDetail] Playing: Song 1 - http://1 - MediaPlatform.unknown
+00:15 +61: PlaylistDetail (tearDownAll)
+00:15 +61: PlaylistImporter (setUpAll)
+00:15 +61: PlaylistImporter PlaylistImporterScreen renders correctly
+00:15 +62: PlaylistImporter PlaylistImporterScreen has text field for URL
+00:15 +63: PlaylistImporter PlaylistImporterScreen shows placeholder text
+00:15 +64: PlaylistImporter PlaylistImporterScreen has scan icon button
+00:15 +65: PlaylistImporter PlaylistImporterScreen text field accepts input
+00:16 +66: PlaylistImporter (tearDownAll)
+00:16 +66: PlaylistsView PlaylistsScreen renders empty state
+00:16 +67: PlaylistsView PlaylistsScreen renders playlists list
+00:16 +68: PlaylistsView PlaylistsScreen shows FAB for creating playlists
+00:16 +69: PlaylistsView PlaylistsScreen FAB opens create playlist dialog
+00:16 +70: PlaylistsView PlaylistsScreen cancel dialog closes without creating
+00:17 +71: PlaylistsView PlaylistsScreen playlist items have correct icons
+00:17 +72: PlaylistsView PlaylistsScreen app bar renders correctly
+00:17 +73: RemoteLibrary (setUpAll)
+00:17 +73: RemoteLibrary RemoteLibraryScreen shows loading indicator initially
+00:17 +74: RemoteLibrary RemoteLibraryScreen has refresh button in app bar
+00:17 +75: RemoteLibrary RemoteLibraryScreen displays correct app bar title
+00:17 +76: RemoteLibrary RemoteLibraryScreen has scaffold
+00:17 +77: RemoteLibrary (tearDownAll)
+00:17 +77: RingtoneMaker (setUpAll)
+00:17 +77: RingtoneMaker RingtoneMakerScreen renders Scaffold
+00:17 +78: RingtoneMaker RingtoneMakerScreen displays track title
+00:18 +79: RingtoneMaker RingtoneMakerScreen has play/pause button
+00:18 +80: RingtoneMaker RingtoneMakerScreen has app bar with title
+00:18 +81: RingtoneMaker (tearDownAll)
+00:18 +81: SearchPage Shows initialization progress then content
+[2026-01-06T15:37:05.356463] [DiscoveryScreen] Initializing dependencies...
+[2026-01-06T15:37:05.395458] [DiscoveryScreen] Dependencies initialized successfully
+00:18 +82: SearchPage Performs search and displays results
+[2026-01-06T15:37:05.478597] [DiscoveryScreen] Initializing dependencies...
+[2026-01-06T15:37:05.507601] [DiscoveryScreen] Dependencies initialized successfully
+[2026-01-06T15:37:05.598143] [DiscoveryScreen] Starting search #1 for: "test query"
+[2026-01-06T15:37:05.600139] [DiscoveryScreen] Search returned 2 results
+00:19 +83: SearchPage Handles play track interaction
+[2026-01-06T15:37:05.839408] [DiscoveryScreen] Initializing dependencies...
+[2026-01-06T15:37:05.865951] [DiscoveryScreen] Dependencies initialized successfully
+[2026-01-06T15:37:05.932225] [DiscoveryScreen] Starting search #1 for: "test"
+[2026-01-06T15:37:05.933222] [DiscoveryScreen] Search returned 1 results
+[2026-01-06T15:37:06.033735] [DiscoveryScreen] Playing track (Instant): 1
+[2026-01-06T15:37:06.033735] [MusicManager] Instant play requested for: Song 1
+[2026-01-06T15:37:06.035773] [YouTubeStreamer] Searching stream for: Artist 1 - Song 1
+[2026-01-06T15:37:06.064319] [YouTubeStreamer] Erro ao extrair stream YouTube: type 'Null' is not a subtype of type 'List<RedirectInfo>'
+[2026-01-06T15:37:06.064319] [MusicManager] Streamer failed, falling back to standard playback
+[2026-01-06T15:37:06.065840] [DiscoveryScreen] Playback started for 1
+00:19 +84: SearchPage Shows no results message
+[2026-01-06T15:37:06.372318] [DiscoveryScreen] Initializing dependencies...
+[2026-01-06T15:37:06.393647] [DiscoveryScreen] Dependencies initialized successfully
+[2026-01-06T15:37:06.456274] [DiscoveryScreen] Starting search #1 for: "unknown"
+[2026-01-06T15:37:06.457255] [DiscoveryScreen] Search returned 0 results
+[2026-01-06T15:37:06.458262] [DiscoveryScreen] No results found for query: "unknown"
+00:19 +85: SearchPage Shows error message on initialization failure
+[2026-01-06T15:37:06.737637] [DiscoveryScreen] Initializing dependencies...
+[2026-01-06T15:37:06.739032] ÔØî Dependency initialization FAILED: Init failed
+00:20 +86: SettingsPage SettingsScreen renders Scaffold
+00:20 +87: SettingsPage SettingsScreen loads settings on init
+00:20 +88: SmartLibrary (setUpAll)
+00:20 +88: SmartLibrary SmartLibraryScreen renders tab bar
+00:20 +89: SmartLibrary SmartLibraryScreen shows loading indicator
+00:20 +90: SmartLibrary SmartLibraryScreen shows empty top hits message
+00:20 +91: SmartLibrary SmartLibraryScreen shows top hits list
+00:20 +92: SmartLibrary (tearDownAll)
+00:20 +92: VaultView (setUpAll)
+00:20 +92: VaultView VaultScreen renders locked state
+00:20 +93: VaultView VaultScreen has password field
+00:21 +94: VaultView VaultScreen has unlock button
+00:21 +95: VaultView VaultScreen calls unlockVault on button press
+00:21 +96: VaultView (tearDownAll)
+00:21 +96: All tests passed!

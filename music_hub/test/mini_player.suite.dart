@@ -47,7 +47,6 @@ void main() {
 
     tearDown(() {
       playingSubject.close();
-      debugDefaultTargetPlatformOverride = null;
     });
 
     testWidgets('MiniPlayer renders track info', (tester) async {
