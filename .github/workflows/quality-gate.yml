@@ -6,7 +6,7 @@ on:
       min_coverage:
         description: 'Minimum code coverage percentage'
         required: false
-        default: '45'
+        default: '50'
         type: string
 
 jobs:

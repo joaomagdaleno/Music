@@ -1,5 +1,5 @@
-name: music_tag_editor
-description: "A new Flutter project."
+name: music_hub
+description: "Um player de música completo com download, reprodução e edição de tags."
 publish_to: 'none'
 
 version: 1.0.0+1

@@ -34,10 +34,18 @@ class _TagEditorScreenState extends State<TagEditorScreen> {
     _albumController = TextEditingController(text: widget.track.album ?? '');
     _genreController = TextEditingController(text: widget.track.genre ?? '');
     _yearController = TextEditingController(text: ''); 
+    
+    // Add listener to rebuild when title changes (for Save button state)
+    _titleController.addListener(_onTitleChanged);
+  }
+
+  void _onTitleChanged() {
+    setState(() {});
   }
 
   @override
   void dispose() {
+    _titleController.removeListener(_onTitleChanged);
     _titleController.dispose();
     _artistController.dispose();
     _albumController.dispose();
@@ -129,7 +137,7 @@ class _TagEditorScreenState extends State<TagEditorScreen> {
                 fluent.CommandBarButton(
                   icon: const Icon(fluent.FluentIcons.save),
                   label: const Text('Salvar Alterações'),
-                  onPressed: _save,
+                  onPressed: _titleController.text.trim().isEmpty ? null : _save,
                 ),
               ],
             ),
@@ -178,7 +186,7 @@ class _TagEditorScreenState extends State<TagEditorScreen> {
             ),
             IconButton(
               icon: const Icon(Icons.save),
-              onPressed: _save,
+              onPressed: _titleController.text.trim().isEmpty ? null : _save,
             ),
           ],
         ),

@@ -874,7 +874,7 @@ on:
       min_coverage:
         description: 'Minimum code coverage percentage'
         required: false
-        default: '45'
+        default: '50'
         type: string
 
 jobs:
@@ -4535,10 +4535,18 @@ class _TagEditorScreenState extends State<TagEditorScreen> {
     _albumController = TextEditingController(text: widget.track.album ?? '');
     _genreController = TextEditingController(text: widget.track.genre ?? '');
     _yearController = TextEditingController(text: ''); 
+    
+    // Add listener to rebuild when title changes (for Save button state)
+    _titleController.addListener(_onTitleChanged);
+  }
+
+  void _onTitleChanged() {
+    setState(() {});
   }
 
   @override
   void dispose() {
+    _titleController.removeListener(_onTitleChanged);
     _titleController.dispose();
     _artistController.dispose();
     _albumController.dispose();
@@ -4630,7 +4638,7 @@ class _TagEditorScreenState extends State<TagEditorScreen> {
                 fluent.CommandBarButton(
                   icon: const Icon(fluent.FluentIcons.save),
                   label: const Text('Salvar Alterações'),
-                  onPressed: _save,
+                  onPressed: _titleController.text.trim().isEmpty ? null : _save,
                 ),
               ],
             ),
@@ -4679,7 +4687,7 @@ class _TagEditorScreenState extends State<TagEditorScreen> {
             ),
             IconButton(
               icon: const Icon(Icons.save),
-              onPressed: _save,
+              onPressed: _titleController.text.trim().isEmpty ? null : _save,
             ),
           ],
         ),
@@ -20016,12 +20024,16 @@ import 'package:path/path.dart' as p;
 /// Shared utility for filename sanitization to prevent path traversal
 /// and ensure cross-platform compatibility.
 String sanitizeFilename(String filename) {
-  // Use basename to prevent directory traversal
-  final base = p.basename(filename);
+  // Replace slashes first to preserve segments if they were intended as part of the filename
+  // (e.g. "AC/DC.flac") while still preventing them from being interpreted as paths.
+  final sanitizedPath = filename.replaceAll(RegExp(r'[\\/]'), '_');
   
-  // Replace characters that are reserved/illegal on various OS:
-  // / \ : * ? " < > |
-  return base.replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
+  // Use basename as a safety measure against any lingering path traversal attempts
+  final base = p.basename(sanitizedPath);
+  
+  // Replace other characters that are reserved/illegal on various OS:
+  // : * ? " < > |
+  return base.replaceAll(RegExp(r'[:*?"<>|]'), '_');
 }
 
 
@@ -31104,6 +31116,24 @@ void main() {
 }
 
 
+--- FILE: C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\test\mocks\mock_api_client.dart ---
+import 'package:mocktail/mocktail.dart';
+import 'package:http/http.dart';
+
+class MockHttpClient extends Mock implements Client {}
+
+void setupMockSuccess(MockHttpClient client, String body, {int statusCode = 200}) {
+  when(() => client.get(any())).thenAnswer((_) async => 
+    Response(body, statusCode)
+  );
+}
+
+void setupMockPostSuccess(MockHttpClient client, String body, {int statusCode = 200}) {
+  when(() => client.post(any(), body: any(named: 'body'), headers: any(named: 'headers')))
+      .thenAnswer((_) async => Response(body, statusCode));
+}
+
+
 --- FILE: C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\test\services\cast_service.suite.dart ---
 @Tags(['unit'])
 library;
@@ -31754,6 +31784,199 @@ void main() {
 
       expect(service.primaryColor, Colors.green);
     });
+  });
+}
+
+
+--- FILE: C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\test\unit\models\search_models_test.dart ---
+import 'package:flutter_test/flutter_test.dart';
+import 'package:music_tag_editor/models/search_models.dart';
+
+void main() {
+  group('SearchResult.cleanMetadata', () {
+    test('should remove (Official Video) suffixes', () {
+      expect(SearchResult.cleanMetadata('Song (Official Video)'), 'Song');
+      expect(SearchResult.cleanMetadata('Song [Official Video]'), 'Song');
+    });
+
+    test('should remove (Music Video) suffixes', () {
+      expect(SearchResult.cleanMetadata('Song (Music Video)'), 'Song');
+      expect(SearchResult.cleanMetadata('Song [Music Video]'), 'Song');
+    });
+
+    test('should remove (Video) and [Video] suffixes', () {
+      expect(SearchResult.cleanMetadata('Song (Video)'), 'Song');
+      expect(SearchResult.cleanMetadata('Song [Video]'), 'Song');
+    });
+
+    test('should remove (Lyrics) and [Lyrics] suffixes', () {
+      expect(SearchResult.cleanMetadata('Song (Lyrics)'), 'Song');
+      expect(SearchResult.cleanMetadata('Song [Lyrics]'), 'Song');
+    });
+
+    test('should preserve (feat. X) and (Live at Wembley)', () {
+      expect(SearchResult.cleanMetadata('Song (feat. Artist)'), 'Song (feat. Artist)');
+      expect(SearchResult.cleanMetadata('Song (Live at Wembley)'), 'Song (Live at Wembley)');
+    });
+
+    test('should clean trailing " - YouTube"', () {
+      expect(SearchResult.cleanMetadata('Song Trailer - YouTube'), 'Song Trailer');
+    });
+
+    test('should trim whitespace after removal', () {
+      expect(SearchResult.cleanMetadata('  Song (Official Video)  '), 'Song');
+    });
+  });
+
+  group('SearchResult.toMatchKey (Normalization)', () {
+    test('should normalize diacritics', () {
+      expect(SearchResult.toMatchKey('Café'), 'cafe');
+      expect(SearchResult.toMatchKey('Árbol'), 'arbol');
+      expect(SearchResult.toMatchKey('Niño'), 'nino');
+    });
+
+    test('should lowercase and trim', () {
+      expect(SearchResult.toMatchKey('  TITLE  '), 'title');
+    });
+
+    test('should handle mixed diacritics and casing', () {
+      expect(SearchResult.toMatchKey('ÀñGèL (Remix)'), 'angel (remix)');
+    });
+  });
+}
+
+
+--- FILE: C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\test\unit\utils\file_utils_test.dart ---
+import 'package:flutter_test/flutter_test.dart';
+import 'package:music_tag_editor/utils/file_utils.dart';
+
+void main() {
+  group('sanitizeFilename', () {
+    test('should replace colons with underscores', () {
+      expect(sanitizeFilename('01: Intro.flac'), '01_ Intro.flac');
+    });
+
+    test('should replace forward and backward slashes', () {
+      expect(sanitizeFilename('AC/DC.flac'), 'AC_DC.flac');
+      expect(sanitizeFilename(r'Metal\Rock.mp3'), 'Metal_Rock.mp3');
+    });
+
+    test('should replace angle brackets', () {
+      expect(sanitizeFilename('<Music>.mp3'), '_Music_.mp3');
+    });
+
+    test('should replace other reserved characters (*, ?, ", |)', () {
+      expect(sanitizeFilename('what?.mp3'), 'what_.mp3');
+      expect(sanitizeFilename('star*.flac'), 'star_.flac');
+      expect(sanitizeFilename('"quotes".mp3'), '_quotes_.mp3');
+      expect(sanitizeFilename('pipe|symbol.mp3'), 'pipe_symbol.mp3');
+    });
+
+    test('should handle nested paths by flattening them', () {
+      expect(sanitizeFilename('path/to/my:song.mp3'), 'path_to_my_song.mp3');
+    });
+
+    test('should return same string if no illegal characters', () {
+      expect(sanitizeFilename('perfect_filename.mp3'), 'perfect_filename.mp3');
+    });
+  });
+}
+
+
+--- FILE: C:\Users\joaom\Documents\GitHub\Music\music_tag_editor\test\widget\tag_editor_test.dart ---
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:music_tag_editor/models/search_models.dart';
+import 'package:music_tag_editor/models/metadata_models.dart';
+import 'package:music_tag_editor/screens/edit/tag_editor_screen.dart';
+import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
+import 'package:music_tag_editor/services/database_service.dart';
+
+class MockMetadataService extends Mock implements MetadataAggregatorService {}
+class MockDatabaseService extends Mock implements DatabaseService {}
+
+void main() {
+  late MockMetadataService mockMetadataService;
+  late MockDatabaseService mockDatabaseService;
+  late SearchResult testTrack;
+
+  setUp(() {
+    mockMetadataService = MockMetadataService();
+    mockDatabaseService = MockDatabaseService();
+    MetadataAggregatorService.instance = mockMetadataService;
+    DatabaseService.instance = mockDatabaseService;
+
+    testTrack = SearchResult(
+      id: '123',
+      title: 'Original Title',
+      artist: 'Original Artist',
+      url: 'https://example.com',
+      platform: MediaPlatform.youtube,
+    );
+
+    // Default mock behavior
+    when(() => mockMetadataService.aggregateMetadata(any(), any()))
+        .thenAnswer((_) async => AggregatedMetadata(
+              title: 'New Title',
+              artist: 'New Artist',
+              album: 'New Album',
+              allGenres: ['Pop', 'Rock'],
+              year: 2024,
+            ));
+  });
+
+  Widget createTestableWidget(Widget child) {
+    return MaterialApp(
+      theme: ThemeData(platform: TargetPlatform.android),
+      home: child,
+    );
+  }
+
+  testWidgets('TagEditorScreen shows original metadata', (WidgetTester tester) async {
+    await tester.pumpWidget(createTestableWidget(TagEditorScreen(track: testTrack)));
+
+    // On Material, title is in AppBar and potentially an EditableText/TextField
+    expect(find.text('Original Title'), findsAtLeastNWidgets(1));
+    expect(find.text('Original Artist'), findsOneWidget);
+  });
+
+  testWidgets('Auto-fill updates controllers with mock data', (WidgetTester tester) async {
+    await tester.pumpWidget(createTestableWidget(TagEditorScreen(track: testTrack)));
+
+    // Find and tap Auto-fill button (Material icon auto_awesome)
+    final autoFillBtn = find.byIcon(Icons.auto_awesome);
+    expect(autoFillBtn, findsOneWidget);
+    await tester.tap(autoFillBtn);
+    await tester.pumpAndSettle();
+
+    verify(() => mockMetadataService.aggregateMetadata('Original Title', 'Original Artist')).called(1);
+
+    expect(find.text('New Title'), findsOneWidget);
+    expect(find.text('New Artist'), findsOneWidget);
+    expect(find.text('New Album'), findsOneWidget);
+    expect(find.text('Pop, Rock'), findsOneWidget);
+    expect(find.text('2024'), findsOneWidget);
+  });
+
+  testWidgets('Save button is disabled when title is empty', (WidgetTester tester) async {
+    await tester.pumpWidget(createTestableWidget(TagEditorScreen(track: testTrack)));
+
+    // Find the save button IconButton
+    final saveBtnFinder = find.ancestor(
+      of: find.byIcon(Icons.save),
+      matching: find.byType(IconButton),
+    );
+    
+    expect(tester.widget<IconButton>(saveBtnFinder).onPressed, isNotNull);
+
+    // Clear title
+    final titleField = find.widgetWithText(TextField, 'Title');
+    await tester.enterText(titleField, '');
+    await tester.pump();
+
+    // Verify button is disabled
+    expect(tester.widget<IconButton>(saveBtnFinder).onPressed, isNull);
   });
 }
 
