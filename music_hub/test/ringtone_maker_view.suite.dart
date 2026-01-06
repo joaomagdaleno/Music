@@ -121,7 +121,6 @@ void main() {
       );
 
   group('RingtoneMakerScreen', () {
-
     testWidgets('renders Scaffold', (tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();

@@ -34,8 +34,8 @@ void main() {
     await setupMusicTest();
 
     // Re-initialize PlaybackService with mocks for this suite
-    PlaybackService.resetInstance(); 
-    
+    PlaybackService.resetInstance();
+
     mockAudioHandler = MockBaseAudioHandler();
 
     // Wire up MockPlayer properties - relying on test_helper defaults for basics

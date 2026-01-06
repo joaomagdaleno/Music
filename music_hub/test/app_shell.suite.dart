@@ -30,7 +30,6 @@ void main() {
       when(() => mockAuth.isAuthenticated).thenReturn(true);
     });
 
-
     testWidgets('Global Rail switches Personas', (tester) async {
       tester.view.physicalSize = const Size(400, 800);
       tester.view.devicePixelRatio = 1.0;
@@ -57,7 +56,7 @@ void main() {
 
       // Should now show Library tabs
       expect(find.text('Minha Biblioteca'), findsAtLeastNWidgets(1));
-      
+
       // "Início" might still be in the BottomNavigationBar, but should NOT be in the AppBar anymore
       expect(
         find.descendant(of: find.byType(AppBar), matching: find.text('Início')),
@@ -67,6 +66,5 @@ void main() {
       tester.view.resetPhysicalSize();
       tester.view.resetDevicePixelRatio();
     });
-
   });
 }
