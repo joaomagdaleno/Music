@@ -16,7 +16,6 @@ import 'test_helper.dart';
 
 void main() {
   group('MiniPlayer Widget Tests', () {
-    late MockPlayerStream mockStream;
     BehaviorSubject<bool> playingSubject = BehaviorSubject.seeded(false);
 
     setUp(() async {

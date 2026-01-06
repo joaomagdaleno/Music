@@ -53,22 +53,7 @@ class MockLocalDuoService extends Mock implements LocalDuoService {}
 
 class MockEqualizerService extends Mock implements EqualizerService {}
 
-class MockPlayer extends Mock implements AudioPlayer {
-  @override
-  Stream<bool> get playingStream => Stream.value(false);
-  @override
-  Stream<Duration> get positionStream => Stream.value(Duration.zero);
-  @override
-  Stream<Duration?> get durationStream => Stream.value(Duration.zero);
-  @override
-  Stream<PlayerState> get playerStateStream => Stream.value(PlayerState(false, ProcessingState.idle));
-  @override
-  Stream<double> get volumeStream => Stream.value(1.0);
-  @override
-  Stream<LoopMode> get loopModeStream => Stream.value(LoopMode.off);
-  @override
-  Stream<bool> get shuffleModeEnabledStream => Stream.value(false);
-}
+class MockPlayer extends Mock implements AudioPlayer {}
 
 // Global mock instances for easy access
 late MockAuthService mockAuth;

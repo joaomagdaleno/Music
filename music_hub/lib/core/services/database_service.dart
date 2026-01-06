@@ -203,7 +203,7 @@ class DatabaseService {
     ''');
 
     await db.execute('''
-      CREATE TABLE guests(
+      CREATE TABLE duo_guests(
         id TEXT PRIMARY KEY,
         name TEXT,
         last_connected INTEGER
@@ -227,10 +227,11 @@ class DatabaseService {
     await db.execute('''
       CREATE TABLE learning_rules(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        pattern TEXT,
-        replacement TEXT,
-        is_regex INTEGER,
-        priority INTEGER
+        artist TEXT,
+        field TEXT,
+        originalValue TEXT,
+        correctedValue TEXT,
+        choice TEXT
       )
     ''');
   }

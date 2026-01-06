@@ -1,4 +1,4 @@
-rootProject.name = "music_player_android"
+rootProject.name = "music_hub"
 
 pluginManagement {
     val flutterSdkPath =

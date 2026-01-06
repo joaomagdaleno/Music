@@ -103,7 +103,7 @@ void main() {
 
       // Initially paused
       playingController.add(false);
-      when(() => mockPlayer.playerState).thenReturn(const PlayerState(false, ProcessingState.ready));
+      when(() => mockPlayer.playerState).thenReturn(PlayerState(false, ProcessingState.ready));
 
       await tester.pump();
 
@@ -116,7 +116,7 @@ void main() {
       // Simulate playing state update
       playingController.add(true);
       // Update state mock to reflect playing
-      when(() => mockPlayer.playerState).thenReturn(const PlayerState(true, ProcessingState.ready));
+      when(() => mockPlayer.playerState).thenReturn(PlayerState(true, ProcessingState.ready));
 
       await tester.pump();
 
