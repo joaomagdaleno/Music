@@ -171,7 +171,7 @@ void main() {
     when(() =>
             mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
         .thenAnswer((_) async {});
-    
+
     when(() => mockDeps.client).thenReturn(MockClient((request) async {
       return http.Response('{}', 200);
     }));

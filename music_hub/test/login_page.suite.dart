@@ -59,14 +59,15 @@ class MockLyricsService extends Mock implements LyricsService {}
 void main() {
   setUp(() async {
     await setupMusicTest();
-    
+
     // Additional login-specific stubs
     final isOffline = ValueNotifier<bool>(false);
     when(() => mockConnectivity.isOffline).thenReturn(isOffline);
     when(() => mockPlayback.currentTrack).thenReturn(null);
     when(() => mockEqualizer.equalizer).thenReturn(MockAndroidEqualizer());
-    
-    when(() => mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
+
+    when(() =>
+            mockDeps.ensureDependencies(onProgress: any(named: 'onProgress')))
         .thenAnswer((_) async => {});
     when(() => mockDuo.role).thenReturn(DuoRole.none);
     when(() => mockDb.getTracks()).thenAnswer((_) async => []);
@@ -74,11 +75,11 @@ void main() {
 
     when(() => mockAuth.login(any(), any())).thenAnswer((_) async => true);
     when(() => mockAuth.register(any(), any())).thenAnswer((_) async => true);
-    
+
     // Ensure mockPlayer is returned (crucial fix)
     when(() => mockPlayback.player).thenReturn(mockPlayer);
   });
-  
+
   // Helper for tests
   Widget createTestWidget() => MaterialApp(
         theme: ThemeData(platform: TargetPlatform.android),

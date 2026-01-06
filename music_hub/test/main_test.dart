@@ -78,7 +78,6 @@ void main() {
   });
 
   group('MusicHubApp', () {
-
     testWidgets('renders MaterialApp', (tester) async {
       await tester.pumpWidget(const MusicHubApp());
       await tester.pump(const Duration(milliseconds: 100));

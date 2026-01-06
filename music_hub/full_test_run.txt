@@ -1,0 +1,335 @@
+
+ÔöîÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÉ
+Ôöé A new version of Flutter is available!                  Ôöé
+Ôöé                                                         Ôöé
+Ôöé To update to the latest version, run "flutter upgrade". Ôöé
+ÔööÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÿ
+00:00 +0: loading C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart
+00:00 +0: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease returns parsed data on success
+00:00 +1: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease returns null on empty results
+00:00 +2: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease handles errors gracefully
+ÔØî DiscogsApi Error: Exception: Network error
+00:00 +3: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong returns parsed data on success
+00:00 +4: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong returns null on empty hits
+00:00 +5: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong handles errors gracefully
+ÔØî GeniusApi Error: Exception: Network error
+00:00 +6: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo returns parsed data on success
+00:00 +7: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo returns null on error
+ÔØî LastFmApi Error: Exception: Network error
+00:00 +8: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo returns null on 404
+00:00 +9: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi searchMetadata returns parsed recordings
+00:00 +10: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi searchMetadata returns empty list on error response
+00:01 +11: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease returns null on empty query
+00:02 +12: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi searchRelease handles network errors gracefully
+00:03 +13: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: DiscogsApi DiscogsApi can be instantiated
+00:03 +14: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong returns null on empty query
+00:04 +15: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi searchSong handles network errors gracefully
+00:04 +16: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: GeniusApi GeniusApi can be instantiated
+00:04 +17: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo returns null when API key is placeholder
+ÔÜá´©Å LastFmApi: API Key not configured.
+00:04 +18: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi getTrackInfo handles empty strings
+ÔÜá´©Å LastFmApi: API Key not configured.
+00:04 +19: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: LastFmApi LastFmApi can be instantiated
+00:04 +20: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi (setUpAll)
+00:04 +20: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi searchRecording returns map on query
+00:04 +21: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi searchRecording handles empty strings
+00:04 +22: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi MusicBrainzApi can be instantiated
+00:04 +23: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: MusicBrainzApi (tearDownAll)
+00:04 +23: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics returns list on query
+00:07 +24: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: NeteaseApi fetchSyncedLyrics handles empty strings
+00:08 +25: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: NeteaseApi NeteaseApi can be instantiated
+00:08 +26: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: SlavArtApi search returns parsed results on success
+00:08 +27: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: SlavArtApi getDownloadUrl returns URL on success
+00:08 +28: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_api_test.dart: SlavArtApi downloadFlac streams content to file
+00:10 +29: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: AppShell AppShell Widget Tests Global Rail switches Personas
+00:12 +29: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: AuthService AuthService login success returns true
+[2026-01-06T16:53:05.527963] [AuthService] Attempting login for: test@test.com
+[2026-01-06T16:53:05.555788] [AuthService] Login SUCCESS for: test@test.com
+00:12 +30: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: AppShell AppShell Widget Tests Global Rail switches Personas
+00:12 +30: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: AuthService AuthService login failure returns false
+[2026-01-06T16:53:05.652588] [AuthService] Attempting login for: test@test.com
+[2026-01-06T16:53:05.654613] [AuthService] Login FAILED for test@test.com: [firebase_auth/user-not-found] null
+00:12 +31: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: AppShell AppShell Widget Tests Global Rail switches Personas
+00:12 +31: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: AuthService AuthService register success returns true
+[2026-01-06T16:53:05.683163] [AuthService] Attempting registration for: test@test.com
+[2026-01-06T16:53:05.683163] [AuthService] Registration SUCCESS for: test@test.com
+00:12 +32: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: AppShell AppShell Widget Tests Global Rail switches Personas
+00:12 +33: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: AppShell AppShell Widget Tests Global Rail switches Personas
+00:13 +34: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: AppShell AppShell Widget Tests Global Rail switches Personas
+00:13 +35: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: AppShell AppShell Widget Tests Global Rail switches Personas
+00:14 +36: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: AppShell AppShell Widget Tests Global Rail switches Personas
+00:14 +37: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: AppShell AppShell Widget Tests Global Rail switches Personas
+00:14 +38: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: AppShell AppShell Widget Tests Global Rail switches Personas
+00:14 +39: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: AppShell AppShell Widget Tests Global Rail switches Personas
+00:15 +40: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: AppShell AppShell Widget Tests Global Rail switches Personas
+00:17 +41: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:18 +42: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:18 +43: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:18 +44: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:18 +45: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:18 +46: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:18 +47: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:19 +48: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:19 +49: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:19 +50: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:19 +51: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:20 +52: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:20 +53: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:20 +54: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog displays title and loading state
+00:20 +55: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: DownloadPage DownloadPage shows paste button
+00:20 +56: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: DatabaseService Settings save and load age bypass
+00:20 +57: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog lists discovered devices
+00:21 +58: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog lists discovered devices
+00:21 +59: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog lists discovered devices
+00:21 +60: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog lists discovered devices
+00:21 +61: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog lists discovered devices
+00:22 +62: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: CastDialog lists discovered devices
+00:22 +63: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: DatabaseService Tracks toggle vault
+00:22 +64: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: Tapping device calls castFile if track is local
+00:22 +65: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: Tapping device calls castFile if track is local
+00:23 +66: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: Tapping device calls castFile if track is local
+00:23 +67: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:23 +68: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:23 +69: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:23 +70: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:23 +71: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:24 +72: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:24 +73: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:24 +74: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:24 +75: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:24 +76: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:24 +77: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:24 +78: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:24 +79: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:24 +80: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:24 +81: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:24 +82: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:24 +83: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:24 +84: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:25 +85: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:25 +86: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:25 +87: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:25 +88: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:25 +89: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:25 +90: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:25 +91: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:25 +92: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:25 +93: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:25 +94: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:25 +95: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:26 +96: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when not authenticated (Guest Mode)
+00:26 +97: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: EditTrackDialog renders properly and returns updated track
+00:26 +98: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: EditTrackDialog renders properly and returns updated track
+00:26 +99: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: DownloadService DownloadService - Platform Detection detects YouTube Music correctly
+00:26 +100: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when authenticated
+00:26 +101: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when authenticated
+00:26 +102: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when authenticated
+00:27 +103: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when authenticated
+00:27 +104: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: MusicHubApp shows AppShell when authenticated
+00:27 +105: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen renders track title
+00:27 +106: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: SearchResultsDialog cancels correctly
+00:27 +107: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: SearchResultsDialog cancels correctly
+00:27 +108: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_widgets_test.dart: SearchResultsDialog cancels correctly
+00:27 +109: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: LibraryScreen displays initial empty state
+00:27 +110: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: LibraryScreen displays initial empty state
+00:27 +111: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: LibraryScreen displays initial empty state
+00:27 +112: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: LibraryScreen displays initial empty state
+00:27 +113: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: LibraryScreen displays initial empty state
+00:27 +114: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: LibraryScreen displays initial empty state
+00:27 +115: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen renders play button
+00:27 +116: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen renders play button
+00:27 +117: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen renders play button
+00:27 +118: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen renders play button
+00:27 +119: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen renders play button
+00:27 +120: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen renders play button
+00:27 +121: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen renders play button
+00:27 +122: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen renders play button
+00:27 +123: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen renders play button
+00:27 +124: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen renders play button
+00:27 +125: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen renders play button
+00:27 +126: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen renders play button
+00:27 +127: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/main_app_test.dart: FilenameFormat functional tests artistTitle format
+00:27 +128: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: MetadataAggregator aggregateMetadata aggregates results correctly with majority vote
+00:27 +129: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: MetadataAggregator aggregateMetadata handles empty results and falls back to input
+00:27 +130: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: MetadataAggregator fetchSyncedLyrics returns lyrics from LrcLib if found and valid
+00:27 +131: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen scaffold has black background
+00:27 +132: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen scaffold has black background
+00:27 +133: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen scaffold has black background
+00:27 +134: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen scaffold has black background
+00:27 +135: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen scaffold has black background
+00:27 +136: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen scaffold has black background
+00:28 +137: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen scaffold has black background
+00:28 +138: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: KaraokeView KaraokeScreen scaffold has black background
+00:28 +139: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: MetadataService MetadataService Tests Read and Write Metadata
+00:28 +140: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: MetadataService MetadataService Tests Read and Write Metadata
+00:28 +141: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: ListeningStats ListeningStatsScreen renders all sections when data is available
+00:28 +142: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: ListeningStats ListeningStatsScreen renders all sections when data is available
+00:28 +143: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: ListeningStats ListeningStatsScreen renders all sections when data is available
+00:28 +144: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: ListeningStats ListeningStatsScreen renders all sections when data is available
+00:28 +145: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: ListeningStats ListeningStatsScreen renders all sections when data is available
+00:28 +145: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: PlaybackService PlaybackService Tests playSearchResult opens media and updates queue
+[2026-01-06T16:53:21.528459] [PlaybackService] Playing search result: Title (MediaPlatform.youtube)
+[2026-01-06T16:53:21.530455] [PlaybackService] Fetching stream URL for: url
+[2026-01-06T16:53:21.533460] [PlaybackService] Stream URL obtained successfully
+[2026-01-06T16:53:21.536461] [PlaybackService] Metadata enrichment failed: type 'Null' is not a subtype of type 'Future<void>'
+00:28 +146: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: ListeningStats ListeningStatsScreen renders all sections when data is available
+00:28 +147: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: PlaybackService PlaybackService Tests pause pauses player
+00:28 +148: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: PlaybackService PlaybackService Tests resume plays player
+00:28 +149: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: ListeningStats ListeningStatsScreen shows loading state and clears timers
+00:28 +150: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: ListeningStats ListeningStatsScreen shows loading state and clears timers
+00:28 +150: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: SearchService searchAll calls provider and updates status
+[2026-01-06T16:53:21.631625] [SearchService] Executing youtube search...
+[2026-01-06T16:53:21.632138] [SearchService] youtube search finished with 0 results
+00:28 +151: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: ListeningStats ListeningStatsScreen shows loading state and clears timers
+00:28 +151: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: SearchService searchAll returns results from provider
+[2026-01-06T16:53:21.646163] [SearchService] Executing youtube search...
+[2026-01-06T16:53:21.647158] [SearchService] youtube search finished with 1 results
+00:28 +152: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: ListeningStats ListeningStatsScreen shows loading state and clears timers
+00:28 +153: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: ListeningStats ListeningStatsScreen shows loading state and clears timers
+00:28 +154: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: ListeningStats ListeningStatsScreen shows loading state and clears timers
+00:28 +155: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: SecurityService SecurityService instance is accessible
+00:28 +156: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen renders Scaffold
+00:28 +157: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen renders Scaffold
+00:28 +158: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen renders Scaffold
+00:28 +159: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen renders Scaffold
+00:28 +160: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen renders Scaffold
+00:28 +161: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen renders Scaffold
+00:28 +162: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen renders Scaffold
+00:28 +163: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen renders Scaffold
+00:28 +164: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen renders Scaffold
+00:28 +165: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: ThemeRoot ThemeService setCustomColor updates color
+00:28 +166: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has email and password fields
+00:28 +167: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has email and password fields
+00:28 +168: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has email and password fields
+00:28 +169: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has email and password fields
+00:28 +170: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has email and password fields
+00:28 +171: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has email and password fields
+00:28 +172: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has email and password fields
+00:28 +173: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: DesktopIntegration init calls initialization methods
+[2026-01-06T16:53:21.997260] Desktop: ensuring WindowManager initialized
+[2026-01-06T16:53:22.001261] Desktop: initializing SystemTray
+[2026-01-06T16:53:22.002263] Desktop: creating menu
+[2026-01-06T16:53:22.003262] Desktop: setting context menu
+[2026-01-06T16:53:22.004262] Desktop: waiting for WindowManager ready
+[2026-01-06T16:53:22.006288] Desktop: init complete
+00:28 +174: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:28 +175: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:28 +176: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:28 +177: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:28 +178: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:28 +179: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:28 +180: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:28 +181: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:28 +182: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen has login button
+00:28 +183: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_services_test.dart: ListeningStats ListeningStatsService getStats identifies top items correctly
+00:28 +184: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen can toggle to register mode
+00:28 +185: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen can toggle to register mode
+00:28 +186: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen can toggle to register mode
+00:28 +187: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen can toggle to register mode
+00:28 +188: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen can toggle to register mode
+00:29 +189: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: LoginPage LoginScreen calls login on button press
+[LoginScreen] Starting LOGIN process for: test@test.com
+[LoginScreen] Auth process finished. Result: SUCCESS
+00:29 +190: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: MiniPlayer MiniPlayer Widget Tests MiniPlayer renders track info
+00:29 +191: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: MoodExplorer (setUpAll)
+00:29 +191: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: MoodExplorer MoodExplorerScreen renders mood sections
+00:29 +192: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: MoodExplorer MoodExplorerScreen shows loading indicator
+00:29 +193: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: MoodExplorer MoodExplorerScreen displays empty state message
+00:29 +194: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: MoodExplorer (tearDownAll)
+00:29 +194: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: MyTracks MyTracksScreen renders loading state
+00:30 +195: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: MyTracks MyTracksScreen renders empty state
+00:30 +196: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: MyTracks MyTracksScreen renders tracks list
+00:30 +197: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: MyTracks MyTracksScreen shows menu button for each track
+00:30 +198: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: MyTracks MyTracksScreen has menu button for vault actions
+00:30 +199: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PartyQueue (setUpAll)
+00:30 +199: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PartyQueue PartyQueueScreen renders app bar
+00:30 +200: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PartyQueue PartyQueueScreen renders start party UI
+00:30 +201: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PartyQueue PartyQueueScreen renders description text
+00:30 +202: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PartyQueue PartyQueueScreen has generate QR button
+00:30 +203: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PartyQueue PartyQueueScreen has scan button
+00:30 +204: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PartyQueue PartyQueueScreen tapping generate shows QR code
+00:31 +205: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PartyQueue PartyQueueScreen tapping end party returns to initial state
+00:31 +206: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PartyQueue (tearDownAll)
+00:31 +206: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlayerScreen PlayerScreen Widget Tests Shows empty state when no track is playing
+00:31 +207: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlayerScreen PlayerScreen Widget Tests Shows track info when playing
+00:31 +208: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlayerScreen PlayerScreen Widget Tests Toggles play/pause
+00:31 +209: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlayerScreen PlayerScreen Widget Tests Shows Duo chat button when in Duo mode
+00:32 +210: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistDetail (setUpAll)
+00:32 +210: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen shows loading indicator initially
+00:32 +211: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen displays playlist name in app bar
+00:32 +212: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen shows empty state when no tracks
+00:32 +213: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen shows track list when tracks exist
+00:32 +214: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen has play button for each track
+00:32 +215: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistDetail PlaylistDetailScreen calls playSearchResult on play button tap
+[PlaylistDetail] Track data: {id: 1, title: Song 1, artist: Artist 1, url: http://1, platform: MediaPlatform.youtube}
+[PlaylistDetail] Playing: Song 1 - http://1 - MediaPlatform.unknown
+00:32 +216: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistDetail (tearDownAll)
+00:32 +216: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistImporter (setUpAll)
+00:32 +216: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistImporter PlaylistImporterScreen renders correctly
+00:32 +217: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistImporter PlaylistImporterScreen has text field for URL
+00:32 +218: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistImporter PlaylistImporterScreen shows placeholder text
+00:32 +219: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistImporter PlaylistImporterScreen has scan icon button
+00:33 +220: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistImporter PlaylistImporterScreen text field accepts input
+00:33 +221: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistImporter (tearDownAll)
+00:33 +221: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistsView PlaylistsScreen renders empty state
+00:33 +222: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistsView PlaylistsScreen renders playlists list
+00:33 +223: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistsView PlaylistsScreen shows FAB for creating playlists
+00:33 +224: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistsView PlaylistsScreen FAB opens create playlist dialog
+00:33 +225: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistsView PlaylistsScreen cancel dialog closes without creating
+00:34 +226: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistsView PlaylistsScreen playlist items have correct icons
+00:34 +227: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: PlaylistsView PlaylistsScreen app bar renders correctly
+00:34 +228: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: RemoteLibrary (setUpAll)
+00:34 +228: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: RemoteLibrary RemoteLibraryScreen shows loading indicator initially
+00:34 +229: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: RemoteLibrary RemoteLibraryScreen has refresh button in app bar
+00:34 +230: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: RemoteLibrary RemoteLibraryScreen displays correct app bar title
+00:34 +231: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: RemoteLibrary RemoteLibraryScreen has scaffold
+00:34 +232: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: RemoteLibrary (tearDownAll)
+00:34 +232: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: RingtoneMaker (setUpAll)
+00:34 +232: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: RingtoneMaker RingtoneMakerScreen renders Scaffold
+00:34 +233: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: RingtoneMaker RingtoneMakerScreen displays track title
+00:35 +234: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: RingtoneMaker RingtoneMakerScreen has play/pause button
+00:35 +235: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: RingtoneMaker RingtoneMakerScreen has app bar with title
+00:35 +236: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: RingtoneMaker (tearDownAll)
+00:35 +236: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: SearchPage Shows initialization progress then content
+[2026-01-06T16:53:28.672610] [DiscoveryScreen] Initializing dependencies...
+[2026-01-06T16:53:28.718887] [DiscoveryScreen] Dependencies initialized successfully
+00:35 +237: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: SearchPage Performs search and displays results
+[2026-01-06T16:53:28.802990] [DiscoveryScreen] Initializing dependencies...
+[2026-01-06T16:53:28.824901] [DiscoveryScreen] Dependencies initialized successfully
+[2026-01-06T16:53:28.902627] [DiscoveryScreen] Starting search #1 for: "test query"
+[2026-01-06T16:53:28.904629] [DiscoveryScreen] Search returned 2 results
+00:35 +238: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: SearchPage Handles play track interaction
+[2026-01-06T16:53:29.138549] [DiscoveryScreen] Initializing dependencies...
+[2026-01-06T16:53:29.162658] [DiscoveryScreen] Dependencies initialized successfully
+[2026-01-06T16:53:29.246353] [DiscoveryScreen] Starting search #1 for: "test"
+[2026-01-06T16:53:29.249380] [DiscoveryScreen] Search returned 1 results
+[2026-01-06T16:53:29.346526] [DiscoveryScreen] Playing track (Instant): 1
+[2026-01-06T16:53:29.348041] [MusicManager] Instant play requested for: Song 1
+[2026-01-06T16:53:29.351103] [YouTubeStreamer] Searching stream for: Artist 1 - Song 1
+[2026-01-06T16:53:29.387209] [YouTubeStreamer] Erro ao extrair stream YouTube: type 'Null' is not a subtype of type 'List<RedirectInfo>'
+[2026-01-06T16:53:29.387722] [MusicManager] Streamer failed, falling back to standard playback
+[2026-01-06T16:53:29.388734] [DiscoveryScreen] Playback started for 1
+00:36 +239: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: SearchPage Shows no results message
+[2026-01-06T16:53:29.482597] [DiscoveryScreen] Initializing dependencies...
+[2026-01-06T16:53:29.503514] [DiscoveryScreen] Dependencies initialized successfully
+[2026-01-06T16:53:29.578638] [DiscoveryScreen] Starting search #1 for: "unknown"
+[2026-01-06T16:53:29.579659] [DiscoveryScreen] Search returned 0 results
+[2026-01-06T16:53:29.579659] [DiscoveryScreen] No results found for query: "unknown"
+00:36 +240: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: SearchPage Shows error message on initialization failure
+[2026-01-06T16:53:29.673613] [DiscoveryScreen] Initializing dependencies...
+[2026-01-06T16:53:29.675628] ÔØî Dependency initialization FAILED: Init failed
+00:36 +241: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: SettingsPage SettingsScreen renders Scaffold
+00:36 +242: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: SettingsPage SettingsScreen loads settings on init
+00:37 +243: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: SmartLibrary (setUpAll)
+00:37 +243: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: SmartLibrary SmartLibraryScreen renders tab bar
+00:37 +244: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: SmartLibrary SmartLibraryScreen shows loading indicator
+00:37 +245: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: SmartLibrary SmartLibraryScreen shows empty top hits message
+00:37 +246: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: SmartLibrary SmartLibraryScreen shows top hits list
+00:37 +247: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: SmartLibrary (tearDownAll)
+00:37 +247: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: VaultView (setUpAll)
+00:37 +247: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: VaultView VaultScreen renders locked state
+00:37 +248: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: VaultView VaultScreen has password field
+00:37 +249: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: VaultView VaultScreen has unlock button
+00:37 +250: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: VaultView VaultScreen calls unlockVault on button press
+00:38 +251: C:/Users/joaom/Documents/GitHub/Music/music_hub/test/all_views_test.dart: VaultView (tearDownAll)
+00:38 +251: All tests passed!

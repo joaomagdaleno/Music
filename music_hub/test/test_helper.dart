@@ -59,7 +59,8 @@ class MockEqualizerService extends Mock implements EqualizerService {}
 
 class MockPlayer extends Mock implements AudioPlayer {}
 
-class MockMetadataAggregatorService extends Mock implements MetadataAggregatorService {}
+class MockMetadataAggregatorService extends Mock
+    implements MetadataAggregatorService {}
 
 // Global mock instances for easy access
 late MockAuthService mockAuth;
@@ -106,9 +107,6 @@ Future<void> setupMusicTest({
     registerFallbackValue(AudioSource.uri(Uri.parse('http://test.com')));
     _registerFallbackValueWasCalled = true;
   }
-
-  // Ensure global debug variables are reset
-  debugDefaultTargetPlatformOverride = null;
 
   // Reset ALL core singletons
   AuthService.resetInstance();
