@@ -1,0 +1,70 @@
+name: music_hub
+description: "Um player de música completo com download, reprodução e edição de tags."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  dart_tags: ^0.4.1
+  file_picker: ^8.0.7
+  http: ^1.2.1
+  sqflite: ^2.3.3
+  path: ^1.9.0
+  archive: ^3.6.1
+  just_audio: ^0.10.5
+  just_audio_windows: ^0.2.1
+  audio_session: ^0.1.21
+  # Removed media_kit
+  # Removed media_kit_libs_windows_audio
+  nearby_connections: ^4.3.0
+  permission_handler: ^12.0.1
+  shared_preferences: ^2.2.3
+  system_tray: ^2.0.3
+  window_manager: ^0.5.1
+  audio_service: ^0.18.18
+  shelf: ^1.4.2
+  shelf_static: ^1.1.3
+  network_info_plus: ^7.0.0
+  xml: ^6.5.0
+  firebase_core: ^4.3.0
+  cloud_firestore: ^6.1.1
+  firebase_auth: ^6.1.3
+  firebase_analytics: ^12.1.0
+  firebase_crashlytics: ^5.0.6
+  encrypt: ^5.0.3
+  flutter_secure_storage: ^9.2.2
+  local_auth: ^3.0.0
+  connectivity_plus: ^6.1.1
+  palette_generator_master: ^1.0.1
+  meta: ^1.11.0
+  rxdart: ^0.27.7
+  fluent_ui: ^4.13.0
+  path_provider: ^2.1.5
+  sqflite_common_ffi: ^2.3.3
+  flutter_acrylic: ^1.1.4
+  youtube_explode_dart: ^3.0.5
+  wakelock_plus: ^1.2.8
+  ffmpeg_kit_flutter: ^6.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
+  flutter_lints: ^6.0.0
+  alchemist: ^0.13.0
+
+
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+

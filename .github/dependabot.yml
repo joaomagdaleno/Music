@@ -12,7 +12,7 @@ updates:
           - "softprops/*"
 
   - package-ecosystem: "pub"
-    directory: "/music_tag_editor"
+    directory: "/music_hub"
     schedule:
       interval: "weekly"
     allow:

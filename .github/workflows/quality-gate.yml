@@ -6,7 +6,7 @@ on:
       min_coverage:
         description: 'Minimum code coverage percentage'
         required: false
-        default: '45'
+        default: '50'
         type: string
 
 jobs:
@@ -31,9 +31,9 @@ jobs:
         env:
           FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
         run: |
-          mkdir -p music_tag_editor/lib
-          echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
-          dart format music_tag_editor/lib/firebase_options.dart
+          mkdir -p music_hub/lib
+          echo "$FIREBASE_OPTIONS_DART" > music_hub/lib/firebase_options.dart
+          dart format music_hub/lib/firebase_options.dart
 
       - name: Cache Pub Dependencies
         uses: actions/cache@v5
@@ -45,26 +45,26 @@ jobs:
             ${{ runner.os }}-pub-
 
       - name: Flutter Pub Get
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: flutter pub get
 
       - name: The Inventory 🧪 (Dependency Tree)
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: |
           mkdir -p ../artifacts
           flutter pub deps > ../artifacts/dependency_tree.txt
           echo "### 🧪 The Inventory: Dependency tree exported to artifacts" >> $GITHUB_STEP_SUMMARY
 
       - name: Check Formatting
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: dart format --set-exit-if-changed .
 
       - name: Run Flutter Analyzer
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
 
       - name: Security Bastion 🛡️
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: |
           grep -rE "AIza[0-9A-Za-z_-]{35}|[0-9a-f]{32}|ghp_[0-9A-Za-z]{36}" . --exclude="firebase_options.dart" --exclude="*.log" || true
           
@@ -79,7 +79,7 @@ jobs:
           fi
 
       - name: Architecture Guard 🏛️
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: |
           echo "## Architecture Guard 🏛️" >> $GITHUB_STEP_SUMMARY
           LARGE_FILES=$(find lib -name "*.dart" | xargs wc -l | awk '$1 > 600' | grep -v "total" || true)
@@ -101,11 +101,11 @@ jobs:
           scan-args: |-
             --recursive
             --require-hashes
-            ./music_tag_editor
+            ./music_hub
         continue-on-error: true
 
       - name: The Chronicler's Archive 📜 (API Documentation)
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: |
           dart doc .
           mkdir -p ../artifacts/docs
@@ -142,9 +142,9 @@ jobs:
         env:
           FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
         run: |
-          mkdir -p music_tag_editor/lib
-          echo "$FIREBASE_OPTIONS_DART" > music_tag_editor/lib/firebase_options.dart
-          dart format music_tag_editor/lib/firebase_options.dart
+          mkdir -p music_hub/lib
+          echo "$FIREBASE_OPTIONS_DART" > music_hub/lib/firebase_options.dart
+          dart format music_hub/lib/firebase_options.dart
 
       - name: Cache Pub Dependencies
         uses: actions/cache@v5
@@ -156,18 +156,18 @@ jobs:
             ${{ runner.os }}-pub-
 
       - name: Flutter Pub Get
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: flutter pub get
 
       - name: Run Tests with Auditing 🔦
-        working-directory: music_tag_editor
+        working-directory: music_hub
         id: test_run
         run: |
           # Use JSON reporter to capture durations while still showing output
           (flutter test --coverage --reporter json | tee test_results.json) || (echo "TEST_FAILED=true" >> $GITHUB_ENV)
           
       - name: The Ghost Hunter's Audit 🔦
-        working-directory: music_tag_editor
+        working-directory: music_hub
         if: always() && steps.test_run.outcome != 'skipped'
         run: |
           echo "### 🔦 The Ghost Hunter's Lantern: Test Performance Audit" >> $GITHUB_STEP_SUMMARY
@@ -195,7 +195,7 @@ jobs:
           fi
 
       - name: Dependency Hygiene 🧼
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: |
           echo "## Dependency Hygiene 🧼" >> $GITHUB_STEP_SUMMARY
           OUTDATED=$(flutter pub outdated --no-dev-dependencies)
@@ -209,7 +209,7 @@ jobs:
           fi
 
       - name: Generate HTML coverage report
-        working-directory: music_tag_editor
+        working-directory: music_hub
         run: |
           sudo apt-get update
           sudo apt-get install -y lcov
@@ -218,8 +218,8 @@ jobs:
       - name: Calculate code coverage
         id: coverage
         run: |
-          HIT=$(grep "^LH:" music_tag_editor/coverage/lcov.info | awk '{s+=$2} END {print s}' FS=":")
-          FOUND=$(grep "^LF:" music_tag_editor/coverage/lcov.info | awk '{s+=$2} END {print s}' FS=":")
+          HIT=$(grep "^LH:" music_hub/coverage/lcov.info | awk '{s+=$2} END {print s}' FS=":")
+          FOUND=$(grep "^LF:" music_hub/coverage/lcov.info | awk '{s+=$2} END {print s}' FS=":")
           if [ "$FOUND" -eq 0 ]; then
             COVERAGE="0.0"
           else
@@ -251,13 +251,13 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: test-results
-          path: music_tag_editor/test_results.json
+          path: music_hub/test_results.json
 
       - name: Upload Coverage
         uses: actions/upload-artifact@v6
         with:
           name: coverage-report
-          path: music_tag_editor/coverage/html
+          path: music_hub/coverage/html
 
   pr-proclamation:
     name: Hermes' Proclamation 📣

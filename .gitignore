@@ -73,3 +73,4 @@ linux/flutter/ephemeral/
 # Firebase options
 music_tag_editor/lib/firebase_options.dart
 music_tag_editor/android/app/google-services.json
+music_tag_editor/lib/config/api_keys.dart

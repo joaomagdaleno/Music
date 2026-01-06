@@ -1,15 +1,15 @@
 # Label PRs based on paths changed
 "area: music-engine":
-  - music_tag_editor/lib/services/playback_service.dart
-  - music_tag_editor/lib/services/search_service.dart
+  - music_hub/lib/services/playback_service.dart
+  - music_hub/lib/services/search_service.dart
 
 "area: ui-mobile":
-  - music_tag_editor/lib/widgets/material/**
-  - music_tag_editor/lib/screens/material/**
+  - music_hub/lib/widgets/material/**
+  - music_hub/lib/screens/material/**
 
 "area: ui-desktop":
-  - music_tag_editor/lib/widgets/fluent/**
-  - music_tag_editor/lib/screens/fluent/**
+  - music_hub/lib/widgets/fluent/**
+  - music_hub/lib/screens/fluent/**
 
 "type: ci-cd":
   - .github/workflows/**

@@ -1,0 +1,190 @@
+@Tags(['unit'])
+library;
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:music_hub/core/services/firebase_sync_service.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/features/library/models/database_models.dart';
+import 'package:music_hub/core/widgets/learning_dialog.dart';
+
+class MockFirebaseAuth extends Mock implements FirebaseAuth {}
+
+class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
+
+class MockDatabaseService extends Mock implements DatabaseService {}
+
+class MockUser extends Mock implements User {}
+
+class MockUserCredential extends Mock implements UserCredential {}
+
+// ignore: subtype_of_sealed_class
+class MockCollectionReference extends Mock
+    implements CollectionReference<Map<String, dynamic>> {}
+
+// ignore: subtype_of_sealed_class
+class MockDocumentReference extends Mock
+    implements DocumentReference<Map<String, dynamic>> {}
+
+// ignore: subtype_of_sealed_class
+class MockQuerySnapshot extends Mock
+    implements QuerySnapshot<Map<String, dynamic>> {}
+
+// ignore: subtype_of_sealed_class
+class MockQueryDocumentSnapshot extends Mock
+    implements QueryDocumentSnapshot<Map<String, dynamic>> {}
+
+class MockWriteBatch extends Mock implements WriteBatch {}
+
+void main() {
+  late FirebaseSyncService service;
+  late MockFirebaseAuth mockAuth;
+  late MockFirebaseFirestore mockFirestore;
+  late MockDatabaseService mockDb;
+  late MockUser mockUser;
+
+  setUpAll(() {
+    registerFallbackValue(MockDocumentReference());
+    registerFallbackValue(SetOptions(merge: true));
+    registerFallbackValue({}); // for data map
+    registerFallbackValue(LearningRule(
+      field: '',
+      originalValue: '',
+      correctedValue: '',
+      choice: LearningChoice.justThisOnce,
+    ));
+  });
+
+  setUp(() {
+    FirebaseSyncService.resetInstance();
+    mockAuth = MockFirebaseAuth();
+    mockFirestore = MockFirebaseFirestore();
+    mockDb = MockDatabaseService();
+    mockUser = MockUser();
+
+    service = FirebaseSyncService.instance;
+    service.setDependencies(
+      auth: mockAuth,
+      firestore: mockFirestore,
+      db: mockDb,
+    );
+
+    // Default auth setup
+    when(() => mockAuth.signInAnonymously())
+        .thenAnswer((_) async => MockUserCredential());
+    when(() => mockUser.uid).thenReturn('test_uid');
+
+    // Default Firestore setup (chaining)
+    final mockCollection = MockCollectionReference();
+    final mockDoc = MockDocumentReference();
+    when(() => mockFirestore.collection(any())).thenReturn(mockCollection);
+    when(() => mockCollection.doc(any())).thenReturn(mockDoc);
+    final mockSnapshot = MockQuerySnapshot();
+    when(() => mockSnapshot.docs).thenReturn([]);
+    when(() => mockCollection.get()).thenAnswer((_) async => mockSnapshot);
+    when(() => mockDoc.set(any(), any())).thenAnswer((_) async {});
+    final mockBatch = MockWriteBatch();
+    when(() => mockFirestore.batch()).thenReturn(mockBatch);
+    when(() => mockBatch.commit()).thenAnswer((_) async {});
+    when(() => mockBatch.set(any(), any(), any())).thenReturn(null);
+
+    // Default DB Stubs to prevent crashes in _startSync
+    when(() => mockDb.getTracks()).thenAnswer((_) async => []);
+    when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
+    when(() => mockDb.getLearningRules()).thenAnswer((_) async => []);
+    when(() => mockDb.getAllSettings()).thenAnswer((_) async => {});
+    when(() => mockDb.getPlaylistTracks(any())).thenAnswer((_) async => []);
+    when(() => mockDb.saveLearningRule(any())).thenAnswer((_) async {});
+    when(() => mockDb.createPlaylist(any(),
+        description: any(named: 'description'))).thenAnswer((_) async => 1);
+    when(() => mockDb.addTrackToPlaylist(any(), any()))
+        .thenAnswer((_) async {});
+  });
+
+  group('enableSync', () {
+    test('signs in anonymously if not signed in', () async {
+      when(() => mockAuth.currentUser).thenReturn(null);
+      // Simulate auth state change
+      when(() => mockAuth.authStateChanges())
+          .thenAnswer((_) => Stream.value(mockUser));
+
+      // Need to avoid _startSync crashing on mocks
+      when(() => mockDb.getTracks()).thenAnswer((_) async => []);
+      when(() => mockDb.getPlaylists()).thenAnswer((_) async => []);
+      when(() => mockDb.getLearningRules()).thenAnswer((_) async => []);
+      when(() => mockDb.getAllSettings()).thenAnswer((_) async => {});
+
+      // We manually set _currentUser in startSync via listen, but enableSync calls it.
+      // Actually enableSync calls signInAnonymously, which triggers authStateChanges.
+      // But we need to mock the internals.
+
+      // For this test, we just inspect enableSync behavior mostly
+      await service.enableSync();
+
+      verify(() => mockAuth.signInAnonymously()).called(1);
+    });
+  });
+
+  group('pullFromCloud', () {
+    test('pulls tracks and playlists', () async {
+      // Note: service.currentUser is read from _currentUser field which is set in init() via stream.
+
+      // Mock specific collection paths
+      final usersCollection = MockCollectionReference();
+      final userDoc = MockDocumentReference();
+      final tracksCollection = MockCollectionReference();
+      final playlistsCollection = MockCollectionReference();
+      final rulesCollection = MockCollectionReference();
+
+      when(() => mockFirestore.collection('users')).thenReturn(usersCollection);
+      when(() => usersCollection.doc('test_uid')).thenReturn(userDoc);
+      when(() => userDoc.collection('tracks')).thenReturn(tracksCollection);
+      when(() => userDoc.collection('playlists'))
+          .thenReturn(playlistsCollection);
+      when(() => userDoc.collection('learning_rules'))
+          .thenReturn(rulesCollection);
+
+      // Mock Firestore data
+      final mockTracksSnapshot = MockQuerySnapshot();
+      final mockTrackDoc = MockQueryDocumentSnapshot();
+      when(() => mockTrackDoc.data())
+          .thenReturn({'id': 'track1', 'title': 'Track 1'});
+      when(() => mockTracksSnapshot.docs).thenReturn([mockTrackDoc]);
+
+      final mockPlaylistsSnapshot = MockQuerySnapshot();
+      when(() => mockPlaylistsSnapshot.docs).thenReturn([]);
+
+      final mockRulesSnapshot = MockQuerySnapshot();
+      when(() => mockRulesSnapshot.docs).thenReturn([]);
+
+      when(() => tracksCollection.get())
+          .thenAnswer((_) async => mockTracksSnapshot);
+      when(() => playlistsCollection.get())
+          .thenAnswer((_) async => mockPlaylistsSnapshot);
+      when(() => rulesCollection.get())
+          .thenAnswer((_) async => mockRulesSnapshot);
+
+      when(() => mockDb.saveTrack(any())).thenAnswer((_) async => 1);
+
+      // Prevent automatic restore in init() by making library non-empty
+      when(() => mockDb.getTracks()).thenAnswer((_) async => [
+            {'id': 'existing'}
+          ]);
+
+      // Trigger init after mocks are ready
+      when(() => mockAuth.authStateChanges())
+          .thenAnswer((_) => Stream.value(mockUser));
+      await service.init();
+
+      // Allow current event loop to process stream
+      await Future.delayed(Duration.zero);
+
+      await service.pullFromCloud();
+
+      verify(() => mockDb.saveTrack({'id': 'track1', 'title': 'Track 1'}))
+          .called(1);
+    });
+  });
+}

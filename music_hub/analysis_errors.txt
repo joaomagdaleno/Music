@@ -1,0 +1,57 @@
+Analyzing music_tag_editor...                                   
+
+  error - Target of URI doesn't exist: 'package:music_hub/screens/home/views/fluent_home_view.dart' - lib\features\home\home_screen.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:music_hub/screens/home/views/material_home_view.dart' - lib\features\home\home_screen.dart:3:8 - uri_does_not_exist
+  error - The method 'FluentHomeView' isn't defined for the type '_HomeScreenState' - lib\features\home\home_screen.dart:53:14 - undefined_method
+  error - The method 'MaterialHomeView' isn't defined for the type '_HomeScreenState' - lib\features\home\home_screen.dart:60:12 - undefined_method
+  error - Target of URI doesn't exist: 'package:music_hub/features/party_mode/disco_mode_screen.dart' - lib\features\home\views\fluent_home_view.dart:5:8 - uri_does_not_exist
+  error - The name 'DiscoModeScreen' isn't a class - lib\features\home\views\fluent_home_view.dart:42:57 - creation_with_non_type
+  error - Target of URI doesn't exist: 'package:music_hub/features/party_mode/disco_mode_screen.dart' - lib\features\home\views\material_home_view.dart:5:8 - uri_does_not_exist
+  error - The name 'DiscoModeScreen' isn't a class - lib\features\home\views\material_home_view.dart:30:57 - creation_with_non_type
+  error - Target of URI doesn't exist: 'package:music_hub/features/library/screens/views/fluent_my_tracks_view.dart' - lib\features\library\screens\my_tracks_screen.dart:9:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:music_hub/features/library/screens/views/material_my_tracks_view.dart' - lib\features\library\screens\my_tracks_screen.dart:10:8 - uri_does_not_exist
+  error - The method 'FluentMyTracksView' isn't defined for the type '_MyTracksScreenState' - lib\features\library\screens\my_tracks_screen.dart:94:20 - undefined_method
+  error - The method 'MaterialMyTracksView' isn't defined for the type '_MyTracksScreenState' - lib\features\library\screens\my_tracks_screen.dart:103:20 - undefined_method
+  error - Target of URI doesn't exist: 'package:music_hub/features/library/screens/views/fluent_ringtone_maker_view.dart' - lib\features\library\screens\ringtone_maker_screen.dart:6:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:music_hub/features/library/screens/views/material_ringtone_maker_view.dart' - lib\features\library\screens\ringtone_maker_screen.dart:7:8 - uri_does_not_exist
+  error - The method 'FluentRingtoneMakerView' isn't defined for the type '_RingtoneMakerScreenState' - lib\features\library\screens\ringtone_maker_screen.dart:98:16 - undefined_method
+  error - The method 'MaterialRingtoneMakerView' isn't defined for the type '_RingtoneMakerScreenState' - lib\features\library\screens\ringtone_maker_screen.dart:108:16 - undefined_method
+  error - Target of URI doesn't exist: 'package:music_hub/features/discovery/screens/search_screen.dart' - lib\features\library\screens\views\fluent_library_view.dart:6:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:music_hub/screens/settings/settings_screen.dart' - lib\features\library\screens\views\fluent_library_view.dart:7:8 - uri_does_not_exist
+  error - The name 'SearchScreen' isn't a class - lib\features\library\screens\views\fluent_library_view.dart:77:65 - creation_with_non_type
+  error - The name 'SettingsScreen' isn't a class - lib\features\library\screens\views\fluent_library_view.dart:88:53 - creation_with_non_type
+  error - Target of URI doesn't exist: 'package:music_hub/features/discovery/screens/search_screen.dart' - lib\features\library\screens\views\material_library_view.dart:6:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:music_hub/screens/settings/settings_screen.dart' - lib\features\library\screens\views\material_library_view.dart:7:8 - uri_does_not_exist
+  error - The name 'SearchScreen' isn't a class - lib\features\library\screens\views\material_library_view.dart:64:53 - creation_with_non_type
+  error - The name 'SettingsScreen' isn't a class - lib\features\library\screens\views\material_library_view.dart:75:53 - creation_with_non_type
+  error - Target of URI doesn't exist: 'package:music_hub/features/party_mode/views/fluent_disco_view.dart' - lib\features\party_mode\disco\disco_mode_screen.dart:8:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:music_hub/features/party_mode/views/material_disco_view.dart' - lib\features\party_mode\disco\disco_mode_screen.dart:9:8 - uri_does_not_exist
+  error - The method 'FluentDiscoModeView' isn't defined for the type '_DiscoModeScreenState' - lib\features\party_mode\disco\disco_mode_screen.dart:58:16 - undefined_method
+  error - The method 'MaterialDiscoModeView' isn't defined for the type '_DiscoModeScreenState' - lib\features\party_mode\disco\disco_mode_screen.dart:64:16 - undefined_method
+  error - Target of URI doesn't exist: 'package:music_hub/features/party_mode/views/fluent_karaoke_view.dart' - lib\features\party_mode\disco\karaoke_screen.dart:6:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:music_hub/features/party_mode/views/material_karaoke_view.dart' - lib\features\party_mode\disco\karaoke_screen.dart:7:8 - uri_does_not_exist
+  error - The method 'FluentKaraokeView' isn't defined for the type '_KaraokeScreenState' - lib\features\party_mode\disco\karaoke_screen.dart:71:16 - undefined_method
+  error - The method 'MaterialKaraokeView' isn't defined for the type '_KaraokeScreenState' - lib\features\party_mode\disco\karaoke_screen.dart:79:16 - undefined_method
+  error - Target of URI doesn't exist: 'package:music_hub/features/party_mode/views/fluent_party_queue_view.dart' - lib\features\party_mode\disco\party_queue_screen.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:music_hub/features/party_mode/views/material_party_queue_view.dart' - lib\features\party_mode\disco\party_queue_screen.dart:4:8 - uri_does_not_exist
+  error - The method 'FluentPartyQueueView' isn't defined for the type '_PartyQueueScreenState' - lib\features\party_mode\disco\party_queue_screen.dart:37:16 - undefined_method
+  error - The method 'MaterialPartyQueueView' isn't defined for the type '_PartyQueueScreenState' - lib\features\party_mode\disco\party_queue_screen.dart:43:16 - undefined_method
+  error - Target of URI doesn't exist: 'package:music_hub/features/party_mode/karaoke_screen.dart' - lib\features\player\screens\views\material_player_view.dart:7:8 - uri_does_not_exist
+  error - The method 'KaraokeScreen' isn't defined for the type 'MaterialPlayerView' - lib\features\player\screens\views\material_player_view.dart:271:41 - undefined_method
+  error - Target of URI doesn't exist: 'package:music_hub/features/security/views/fluent_vault_view.dart' - lib\features\security\vault\vault_screen.dart:8:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:music_hub/features/security/views/material_vault_view.dart' - lib\features\security\vault\vault_screen.dart:9:8 - uri_does_not_exist
+  error - The method 'FluentVaultView' isn't defined for the type '_VaultScreenState' - lib\features\security\vault\vault_screen.dart:81:16 - undefined_method
+  error - The method 'MaterialVaultView' isn't defined for the type '_VaultScreenState' - lib\features\security\vault\vault_screen.dart:90:16 - undefined_method
+  error - Target of URI doesn't exist: 'package:music_hub/screens/settings/views/fluent_settings_view.dart' - lib\features\settings\screens\settings_screen.dart:5:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:music_hub/screens/settings/views/material_settings_view.dart' - lib\features\settings\screens\settings_screen.dart:6:8 - uri_does_not_exist
+  error - The method 'FluentSettingsView' isn't defined for the type '_SettingsScreenState' - lib\features\settings\screens\settings_screen.dart:139:14 - undefined_method
+  error - The method 'MaterialSettingsView' isn't defined for the type '_SettingsScreenState' - lib\features\settings\screens\settings_screen.dart:163:12 - undefined_method
+  error - Target of URI doesn't exist: 'package:music_hub/views/app_shell.dart' - lib\screens\login\login_screen.dart:5:8 - uri_does_not_exist
+  error - The name 'AppShell' isn't a class - lib\screens\login\login_screen.dart:40:53 - creation_with_non_type
+  error - Target of URI doesn't exist: 'database_service.dart' - lib\services\persona_service.dart:3:8 - uri_does_not_exist
+  error - Undefined name 'DatabaseService' - lib\services\persona_service.dart:15:15 - undefined_identifier
+  error - Undefined name 'DatabaseService' - lib\services\persona_service.dart:32:5 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:music_hub/features/party_mode/party_queue_screen.dart' - lib\widgets\duo_matching_dialog.dart:10:8 - uri_does_not_exist
+  error - The name 'PartyQueueScreen' isn't a class - lib\widgets\duo_matching_dialog.dart:163:57 - creation_with_non_type
+  error - The name 'PartyQueueScreen' isn't a class - lib\widgets\duo_matching_dialog.dart:297:57 - creation_with_non_type
+

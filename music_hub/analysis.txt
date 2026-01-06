@@ -1,0 +1,10 @@
+Analyzing music_hub...                                          
+
+  error - Undefined name 'PersonaService' - lib\features\home\views\fluent_home_view.dart:154:34 - undefined_identifier
+  error - Undefined name 'PersonaService' - lib\features\home\views\material_home_view.dart:162:30 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:music_hub/services/backup_service.dart' - lib\features\library\backup\backup_screen.dart:7:8 - uri_does_not_exist
+  error - Undefined name 'BackupService' - lib\features\library\backup\backup_screen.dart:48:30 - undefined_identifier
+  error - Undefined name 'BackupService' - lib\features\library\backup\backup_screen.dart:68:15 - undefined_identifier
+   info - Unnecessary use of a block function body - lib\features\library\screens\views\fluent_ringtone_maker_view.dart:28:38 - prefer_expression_function_bodies
+   info - Unnecessary use of a block function body - lib\features\library\screens\views\material_ringtone_maker_view.dart:27:38 - prefer_expression_function_bodies
+

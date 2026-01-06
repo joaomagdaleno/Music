@@ -1,0 +1,4 @@
+Analyzing music_tag_editor...                                   
+
+   info - Unnecessary use of a block function body - lib\api\musicbrainz_api.dart:17:34 - prefer_expression_function_bodies
+
