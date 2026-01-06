@@ -193,6 +193,16 @@ Future<void> setupMusicTest({
   when(() => mockLyrics.fetchLyrics(any(), any())).thenAnswer((_) async => []);
   when(() => mockDuo.sendMessage(any())).thenAnswer((_) async {});
   when(() => mockDb.trackPlay(any())).thenAnswer((_) async {});
+  when(() => mockDb.saveTrack(any())).thenAnswer((_) async {});
+  when(() => mockDb.toggleVault(any(), any())).thenAnswer((_) async {});
+  when(() => mockDb.updateTrackMetadata(any(), any(), any(), any()))
+      .thenAnswer((_) async {});
+  when(() => mockDb.savePlaylist(any())).thenAnswer((_) async {});
+  when(() => mockDb.addTrackToPlaylist(any(), any())).thenAnswer((_) async {});
+  when(() => mockDb.deleteTrack(any())).thenAnswer((_) async {});
+  when(() => mockDb.saveGuest(any(), any())).thenAnswer((_) async {});
+  when(() => mockDb.addTrackToDuoSession(any(), any()))
+      .thenAnswer((_) async {});
 
   // Fixed signature for getStreamUrl
   when(() => mockSearch.getStreamUrl(
