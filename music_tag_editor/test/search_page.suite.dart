@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_hub/features/discovery/screens/search_screen.dart';
+import 'package:music_hub/features/discovery/screens/discovery_screen.dart';
 
 import 'package:music_hub/models/search_models.dart';
 import 'test_helper.dart';
@@ -37,7 +37,7 @@ void main() {
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(platform: TargetPlatform.android),
-      home: const SearchScreen(),
+      home: const DiscoveryScreen(),
     ));
 
     await tester.pump(); // Start init
@@ -76,7 +76,7 @@ void main() {
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(platform: TargetPlatform.android),
-      home: const SearchScreen(),
+      home: const DiscoveryScreen(),
     ));
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -110,7 +110,7 @@ void main() {
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(platform: TargetPlatform.android),
-      home: const SearchScreen(),
+      home: const DiscoveryScreen(),
     ));
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -135,7 +135,7 @@ void main() {
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(platform: TargetPlatform.android),
-      home: const SearchScreen(),
+      home: const DiscoveryScreen(),
     ));
     await tester.pump(const Duration(milliseconds: 200));
 
@@ -154,7 +154,7 @@ void main() {
 
     await tester.pumpWidget(MaterialApp(
       theme: ThemeData(platform: TargetPlatform.android),
-      home: const SearchScreen(),
+      home: const DiscoveryScreen(),
     ));
     await tester.pump(const Duration(milliseconds: 200));
 

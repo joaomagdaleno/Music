@@ -3,7 +3,7 @@ import 'package:music_hub/models/search_models.dart';
 import 'package:music_hub/features/library/screens/mood_explorer_screen.dart';
 import 'package:music_hub/features/library/screens/my_tracks_screen.dart';
 import 'package:music_hub/features/library/screens/ringtone_maker_screen.dart';
-import 'package:music_hub/features/discovery/screens/search_screen.dart';
+import 'package:music_hub/features/discovery/screens/discovery_screen.dart';
 import 'package:music_hub/screens/settings/settings_screen.dart';
 import 'package:music_hub/features/library/screens/smart_library_screen.dart';
 
@@ -74,7 +74,7 @@ class _FluentLibraryViewState extends State<FluentLibraryView> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    FluentPageRoute(builder: (context) => const SearchScreen()),
+                    FluentPageRoute(builder: (context) => const DiscoveryScreen()),
                   );
                 },
               ),

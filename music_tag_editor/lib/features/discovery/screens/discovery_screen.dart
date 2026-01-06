@@ -96,7 +96,7 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
   }
 
   Future<void> _initDependencies() async {
-    StartupLogger.log('[SearchScreen] Initializing dependencies...');
+    StartupLogger.log('[DiscoveryScreen] Initializing dependencies...');
     try {
       await DependencyManager.instance.ensureDependencies(
         onProgress: (status, progress) {
@@ -106,7 +106,7 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
           });
         },
       );
-      StartupLogger.log('[SearchScreen] Dependencies initialized successfully');
+      StartupLogger.log('[DiscoveryScreen] Dependencies initialized successfully');
       setState(() => _isInitializing = false);
     } catch (e, stack) {
       StartupLogger.logError('Dependency initialization FAILED', e, stack);
@@ -138,7 +138,7 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
 
     final searchId = ++_currentSearchId;
     StartupLogger.log(
-        '[SearchScreen] Starting search #$searchId for: "$query"');
+        '[DiscoveryScreen] Starting search #$searchId for: "$query"');
 
     setState(() {
       _isLoading = true;
@@ -154,14 +154,14 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
       final results =
           await _searchService.searchAll(query, onStatusUpdate: (p, s) {
         if (mounted && searchId == _currentSearchId) {
-          StartupLogger.log('[SearchScreen] Status update for $p: $s');
+          StartupLogger.log('[DiscoveryScreen] Status update for $p: $s');
           setState(() => _platformStatuses[p] = s);
         }
       });
 
       if (mounted && searchId == _currentSearchId) {
         StartupLogger.log(
-            '[SearchScreen] Search returned ${results.length} results');
+            '[DiscoveryScreen] Search returned ${results.length} results');
         await _refreshDownloadedStatus();
 
         final filtered = results;
@@ -183,12 +183,12 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
 
       if (mounted && searchId == _currentSearchId && _searchResults.isEmpty) {
         StartupLogger.log(
-            '[SearchScreen] No results found for query: "$query"');
+            '[DiscoveryScreen] No results found for query: "$query"');
         setState(() => _errorMessage =
             'Nenhuma música encontrada nas plataformas selecionadas.');
       }
     } catch (e, stack) {
-      StartupLogger.log('[SearchScreen] Error during search: $e\n$stack');
+      StartupLogger.log('[DiscoveryScreen] Error during search: $e\n$stack');
       if (mounted && searchId == _currentSearchId) {
         setState(() => _errorMessage = 'Erro ao buscar: $e');
       }
@@ -201,9 +201,9 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
 
   Future<void> loadFormats(SearchResult result) async {
     StartupLogger.log(
-        '[SearchScreen] Loading formats for ${result.id} (${result.platform})');
+        '[DiscoveryScreen] Loading formats for ${result.id} (${result.platform})');
     if (_formatsCache.containsKey(result.url)) {
-      StartupLogger.log('[SearchScreen] Using cached formats for ${result.id}');
+      StartupLogger.log('[DiscoveryScreen] Using cached formats for ${result.id}');
       setState(() =>
           _isExpanding[result.url] = !(_isExpanding[result.url] ?? false));
       return;
@@ -218,7 +218,7 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
       final formats =
           await _searchService.getFormats(result.url, result.platform);
       StartupLogger.log(
-          '[SearchScreen] Retrived ${formats.length} formats for ${result.id}');
+          '[DiscoveryScreen] Retrived ${formats.length} formats for ${result.id}');
       if (mounted) {
         setState(() {
           _formatsCache[result.url] = formats;
@@ -229,7 +229,7 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
         });
       }
     } catch (e, stack) {
-      StartupLogger.log('[SearchScreen] Error loading formats: $e\n$stack');
+      StartupLogger.log('[DiscoveryScreen] Error loading formats: $e\n$stack');
       if (mounted) {
         // showSnackBar('Erro ao carregar formatos: $e'); // Removed as per request
         setState(() => _loadingFormatsStatus.remove(result.url));
@@ -240,7 +240,7 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
   Future<void> startDownload(SearchResult result) async {
     final selectedFormat = _selectedFormats[result.url];
     StartupLogger.log(
-        '[SearchScreen] Starting download for ${result.id} with format: ${selectedFormat?.formatId}');
+        '[DiscoveryScreen] Starting download for ${result.id} with format: ${selectedFormat?.formatId}');
     if (selectedFormat == null) {
       return;
     }
@@ -252,7 +252,7 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
 
     try {
       final musicDir = '${Platform.environment['USERPROFILE']}\\Music';
-      StartupLogger.log('[SearchScreen] Target directory: $musicDir');
+      StartupLogger.log('[DiscoveryScreen] Target directory: $musicDir');
 
       final path = await _downloadService.download(
         result.url,
@@ -271,7 +271,7 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
       );
 
       StartupLogger.log(
-          '[SearchScreen] Download COMPLETED for ${result.id} at $path');
+          '[DiscoveryScreen] Download COMPLETED for ${result.id} at $path');
 
       result.localPath = path;
       await DatabaseService.instance.saveTrack(result.toJson());
@@ -279,7 +279,7 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
       await _refreshDownloadedStatus();
       // showSnackBar('Download de "${result.title}" concluído!'); // Removed redundant snackbar
     } catch (e, stack) {
-      StartupLogger.log('[SearchScreen] Download FAILED: $e\n$stack');
+      StartupLogger.log('[DiscoveryScreen] Download FAILED: $e\n$stack');
       if (mounted) {
         showSnackBar('Erro no download: $e');
       }
@@ -294,7 +294,7 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
   }
 
   Future<void> addToPlaylist(SearchResult result) async {
-    debugPrint('[SearchScreen] Adding ${result.id} to playlist');
+    debugPrint('[DiscoveryScreen] Adding ${result.id} to playlist');
     final db = DatabaseService.instance;
     final playlistsList = await db.getPlaylists();
 
@@ -308,22 +308,22 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
     final selectedPlaylistId = await showPlaylistDialog(playlistsList);
 
     if (selectedPlaylistId != null) {
-      debugPrint('[SearchScreen] Selected playlist ID: $selectedPlaylistId');
+      debugPrint('[DiscoveryScreen] Selected playlist ID: $selectedPlaylistId');
       await db.saveTrack(result.toJson());
 
       await db.addTrackToPlaylist(selectedPlaylistId, result.id);
       await _refreshDownloadedStatus();
-      debugPrint('[SearchScreen] Track added to playlist successfully');
+      debugPrint('[DiscoveryScreen] Track added to playlist successfully');
     }
   }
 
   Future<void> playTrack(SearchResult result) async {
-    StartupLogger.log('[SearchScreen] Playing track (Instant): ${result.id}');
+    StartupLogger.log('[DiscoveryScreen] Playing track (Instant): ${result.id}');
     try {
       await _musicManager.playInstant(result);
-      StartupLogger.log('[SearchScreen] Playback started for ${result.id}');
+      StartupLogger.log('[DiscoveryScreen] Playback started for ${result.id}');
     } catch (e, stack) {
-      StartupLogger.logError('Playback FAILED in SearchScreen', e, stack);
+      StartupLogger.logError('Playback FAILED in DiscoveryScreen', e, stack);
       if (mounted) {
         showSnackBar('Erro ao reproduzir: $e', isError: true);
       }
@@ -331,7 +331,7 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
   }
 
   Future<void> instantDownload(SearchResult result) async {
-    StartupLogger.log('[SearchScreen] Requesting instant download for: ${result.id}');
+    StartupLogger.log('[DiscoveryScreen] Requesting instant download for: ${result.id}');
     try {
       showSnackBar('Iniciando download de "${result.title}" em background...');
       await _musicManager.downloadTrack(result);
@@ -344,7 +344,7 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
   }
 
   void openFullPlayer() {
-    StartupLogger.log('[SearchScreen] Opening player');
+    StartupLogger.log('[DiscoveryScreen] Opening player');
     if (_isFluent(context)) {
       fluent.Navigator.push(
         context,
@@ -360,7 +360,7 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
 
   void showSnackBar(String message, {bool isError = false}) {
     if (_isFluent(context)) {
-      StartupLogger.log('[SearchScreen][SnackBar/Fluent] $message');
+      StartupLogger.log('[DiscoveryScreen][SnackBar/Fluent] $message');
       fluent.displayInfoBar(
         context,
         builder: (context, close) => fluent.InfoBar(
@@ -566,7 +566,7 @@ class _DiscoveryScreenState extends material.State<DiscoveryScreen>
       }
     } catch (e) {
       StartupLogger.log(
-          '[SearchScreen] Error refreshing downloaded status: $e');
+          '[DiscoveryScreen] Error refreshing downloaded status: $e');
     }
   }
 

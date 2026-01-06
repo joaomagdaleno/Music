@@ -48,6 +48,8 @@ def migrate_files(directory):
         (r'package:music_hub/services/search/', r'package:music_hub/features/discovery/services/search/'),
         (r'package:music_hub/services/download/', r'package:music_hub/features/discovery/services/download/'),
         (r'package:music_hub/screens/search/', r'package:music_hub/features/discovery/screens/'),
+        (r'SearchScreen', r'DiscoveryScreen'),
+        (r'package:music_hub/features/discovery/screens/search_screen.dart', r'package:music_hub/features/discovery/screens/discovery_screen.dart'),
         
         # Extras
         (r'package:music_hub/screens/disco/', r'package:music_hub/features/party_mode/'),

@@ -18,7 +18,7 @@ import 'package:music_hub/features/discovery/services/search_service.dart';
 import 'package:music_hub/features/discovery/services/download_service.dart';
 import 'package:music_hub/core/services/dependency_manager.dart';
 import 'package:music_hub/services/listening_stats_service.dart';
-import 'package:music_hub/features/discovery/screens/search_screen.dart';
+import 'package:music_hub/features/discovery/screens/discovery_screen.dart';
 import 'package:music_hub/features/library/screens/local_sources_screen.dart';
 import 'package:music_hub/features/library/screens/my_tracks_screen.dart';
 import 'package:music_hub/features/library/services/metadata_service.dart';
@@ -189,7 +189,7 @@ void main() {
   });
 
   testWidgets('SearchPage smoke test', (tester) async {
-    await tester.pumpWidget(createTestWidget(const SearchScreen()));
+    await tester.pumpWidget(createTestWidget(const DiscoveryScreen()));
     await tester.pump();
     expect(find.text('Busca de Músicas'), findsOneWidget);
   });
