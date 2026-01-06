@@ -21,6 +21,7 @@ class DiscogsApi {
 
   Future<Map<String, dynamic>?> searchRelease(
       String title, String artist) async {
+    if (title.isEmpty || artist.isEmpty) return null;
     try {
       await _rateLimiter.wait();
       final query = Uri.encodeComponent('$artist $title');
