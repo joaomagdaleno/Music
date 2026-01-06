@@ -38,9 +38,10 @@ void main() {
         final uri = invocation.positionalArguments[0] as Uri;
         if (uri.path.contains('search')) {
           return http.Response(jsonEncode(mockResponse), 200);
-        } else {
+        } else if (uri.path.contains('lyric')) {
           return http.Response(jsonEncode(mockLyricsResponse), 200);
         }
+        return http.Response('Not Found', 404);
       });
 
       final result = await api.fetchSyncedLyrics('test', 'test');
