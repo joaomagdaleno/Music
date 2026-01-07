@@ -1,15 +1,15 @@
 import os
 
 def consolidate():
-    extensions = ('.dart', '.py', '.yml', '.yaml', '.iss')
-    exclude_dirs = ('node_modules', '.git', 'build')
+    extensions = ('.dart', '.py', '.yml', '.yaml', '.iss', '.gradle', '.properties', '.xml', '.sh', '.ps1', '.md')
+    exclude_dirs = ('node_modules', '.git', 'build', '.dart_tool', '.idea', '.vscode')
     output_path = os.path.join('projeto music', 'codigo_projeto_music.txt')
     
     if not os.path.exists('projeto music'):
         os.makedirs('projeto music')
         
     with open(output_path, 'w', encoding='utf-8') as outfile:
-        outfile.write("--- CONSOLIDATED PROJECT CODE (STAGE 8) ---\n\n")
+        outfile.write("--- CONSOLIDATED PROJECT CODE (LATEST AUDIT) ---\n\n")
         for root, dirs, files in os.walk('.'):
             # Skip excluded directories
             dirs[:] = [d for d in dirs if d not in exclude_dirs]
