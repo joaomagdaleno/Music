@@ -67,10 +67,10 @@ class DependencyManager {
   String _getBinDirectorySync() {
     if (Platform.isWindows) {
       final appData = Platform.environment['APPDATA']!;
-      return p.join(appData, 'music_tag_editor', 'bin');
+      return p.join(appData, 'music_x', 'bin');
     } else if (Platform.isLinux || Platform.isMacOS) {
       final home = Platform.environment['HOME']!;
-      return p.join(home, '.local', 'share', 'music_tag_editor', 'bin');
+      return p.join(home, '.local', 'share', 'music_x', 'bin');
     }
     throw UnsupportedError('Unsupported platform');
   }

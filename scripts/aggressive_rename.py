@@ -1,7 +1,7 @@
 import os
 import time
 
-old_name = "music_tag_editor"
+old_name = "music_x"
 new_name = "music_hub"
 
 for i in range(5):

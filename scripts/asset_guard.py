@@ -3,7 +3,7 @@ import re
 import sys
 
 def get_unused_assets():
-    project_root = "music_tag_editor"
+    project_root = "music_x"
     assets_dir = os.path.join(project_root, "assets")
     lib_dir = os.path.join(project_root, "lib")
     
