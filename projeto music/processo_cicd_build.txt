@@ -1,0 +1,3043 @@
+================================================================================
+PROCESS AUDIT: processo_cicd_build.txt
+DATE: 2026-01-08 15:23:23
+FILE COUNT: 51
+================================================================================
+
+---------- FILE: .github\dependabot.yml ----------
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      actions:
+        patterns:
+          - "actions/*"
+          - "subosito/*"
+          - "softprops/*"
+
+  - package-ecosystem: "pub"
+    directory: "/music_hub"
+    schedule:
+      interval: "weekly"
+    allow:
+      - dependency-type: "direct"
+
+
+---------- FILE: .github\labeler.yml ----------
+# Label PRs based on paths changed
+"area: music-engine":
+  - music_hub/lib/services/playback_service.dart
+  - music_hub/lib/services/search_service.dart
+
+"area: ui-mobile":
+  - music_hub/lib/widgets/material/**
+  - music_hub/lib/screens/material/**
+
+"area: ui-desktop":
+  - music_hub/lib/widgets/fluent/**
+  - music_hub/lib/screens/fluent/**
+
+"type: ci-cd":
+  - .github/workflows/**
+  - .jules/**
+
+"type: documentation":
+  - "**.md"
+  - docs/**
+
+
+---------- FILE: .github\workflows\build-and-package.yml ----------
+name: Build and Package
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build-android:
+    name: Android 🤖
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      APK_PATH: ""
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.2'
+          cache: true
+
+      - name: Configure Firebase
+        shell: bash
+        env:
+          FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
+        run: |
+          mkdir -p music_hub/lib
+          echo "$FIREBASE_OPTIONS_DART" > music_hub/lib/firebase_options.dart
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Generate Version Info
+        id: generate_version
+        shell: bash
+        run: |
+          # Robust extraction ignoring comments and empty space
+          VERSION=$(grep -m 1 "^version:" music_hub/pubspec.yaml | awk '{print $2}' | sed 's/[^0-9.]*//g')
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            FULL_VERSION="${{ github.ref_name }}"
+          elif [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
+            FULL_VERSION="${VERSION}-dev.${GITHUB_RUN_NUMBER}"
+          else
+            FULL_VERSION="${VERSION}-local.${GITHUB_RUN_NUMBER}"
+          fi
+
+          sed -i "s/^version:.*/version: $FULL_VERSION/" music_hub/pubspec.yaml
+          echo "$FULL_VERSION" > music_hub/version.txt
+          echo "full_version=$FULL_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Flutter Pub Get
+        working-directory: music_hub
+        run: flutter pub get
+
+      - name: Configure Android Firebase
+        shell: bash
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          echo "$GOOGLE_SERVICES_JSON" > music_hub/android/app/google-services.json
+
+      - name: Setup Android Signing
+        env:
+          UPLOAD_SIGNING_KEY: ${{ secrets.UPLOAD_SIGNING_KEY }}
+          UPLOAD_STORE_PASSWORD: ${{ secrets.UPLOAD_STORE_PASSWORD }}
+          UPLOAD_KEY_PASSWORD: ${{ secrets.UPLOAD_KEY_PASSWORD }}
+          UPLOAD_KEY_ALIAS: ${{ secrets.UPLOAD_KEY_ALIAS }}
+        run: |
+          echo $UPLOAD_SIGNING_KEY | base64 --decode > music_hub/android/app/upload-keystore.jks
+          echo "storePassword=$UPLOAD_STORE_PASSWORD" > music_hub/android/key.properties
+          echo "keyPassword=$UPLOAD_KEY_PASSWORD" >> music_hub/android/key.properties
+          echo "keyAlias=$UPLOAD_KEY_ALIAS" >> music_hub/android/key.properties
+          echo "storeFile=../app/upload-keystore.jks" >> music_hub/android/key.properties
+
+      - name: Flutter Build APK
+        working-directory: music_hub
+        run: |
+          mkdir -p debug-info
+          # Only obfuscate on tags for speed in dev
+          BUILD_COMMAND="flutter build apk --release --split-per-abi --target-platform=android-arm64"
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            BUILD_COMMAND="$BUILD_COMMAND --obfuscate --split-debug-info=debug-info"
+          fi
+          # Ensure we catch errors from build even with tee
+          set -o pipefail
+          $BUILD_COMMAND | tee size_analysis.log
+
+      - name: The Cartographer 🗺️ (Size Analysis Summary)
+        working-directory: music_hub
+        run: |
+          echo "### 🗺️ Size Cartography: Top Contributors" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          # Extract the table between the horizontal lines in the analyze-size output
+          grep -A 20 "Dart SDK" size_analysis.log | head -n 25 >> $GITHUB_STEP_SUMMARY || echo "Size analysis table not found" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "Detailed analysis available in [DevTools](https://docs.flutter.dev/perf/app-size#using-the-app-size-tool)." >> $GITHUB_STEP_SUMMARY
+
+      - name: Flutter Build App Bundle (AAB)
+        if: startsWith(github.ref, 'refs/tags/v')
+        working-directory: music_hub
+        run: |
+          flutter build appbundle --release --obfuscate --split-debug-info=debug-info
+
+      - name: Find and Audit APK 🤖
+        run: |
+          # Search anywhere in build/app/outputs for .apk
+          APK_PATH=$(find music_hub/build/app/outputs -name "*.apk" | head -n 1)
+          if [ -z "$APK_PATH" ]; then
+            echo "::error::APK not found! Listing build directory for diagnostics:"
+            find music_hub/build -maxdepth 4
+            exit 1
+          fi
+          echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
+          APK_SIZE=$(stat -c%s "$APK_PATH")
+          THRESHOLD=80000000 # 80MB
+          echo "APK Size: $APK_SIZE bytes"
+          if [ "$APK_SIZE" -gt "$THRESHOLD" ]; then
+            echo "::warning title=Hermes 📦 Alert::APK size ($APK_SIZE bytes) exceeds the 80MB threshold!"
+          fi
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: android-apk
+          path: ${{ env.APK_PATH }}
+
+      - name: Upload AAB Artifact
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/upload-artifact@v6
+        with:
+          name: android-aab
+          path: music_hub/build/app/outputs/bundle/release/app-release.aab
+
+      - name: Generate Job Summary
+        run: |
+          APK_SIZE=$(stat -c%s "${{ env.APK_PATH }}")
+          APK_SIZE_MB=$(echo "scale=2; $APK_SIZE / 1048576" | bc)
+          echo "## Android Build Summary 📦" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ steps.generate_version.outputs.full_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **APK Size**: $APK_SIZE_MB MB" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f music_hub/build/app/outputs/bundle/release/app-release.aab ]; then
+            AAB_SIZE=$(stat -c%s music_hub/build/app/outputs/bundle/release/app-release.aab)
+            AAB_SIZE_MB=$(echo "scale=2; $AAB_SIZE / 1048576" | bc)
+            echo "- **AAB Size**: $AAB_SIZE_MB MB (Store Ready 🚀)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "$APK_SIZE" -gt 80000000 ]; then echo "- **Health**: WARNING ⚠️ (APK > 80MB)" >> $GITHUB_STEP_SUMMARY
+          else echo "- **Health**: Optimal ✅" >> $GITHUB_STEP_SUMMARY; fi
+
+      - name: Record Build Metrics ⏱️
+        run: |
+          mkdir -p metrics
+          APK_SIZE=$(stat -c%s "${{ env.APK_PATH }}")
+          echo "{
+            \"platform\": \"android\",
+            \"version\": \"${{ steps.generate_version.outputs.full_version }}\",
+            \"apk_size_bytes\": $APK_SIZE,
+            \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",
+            \"commit\": \"${{ github.sha }}\"
+          }" > metrics/android_telemetry.json
+
+      - name: Upload Telemetry
+        uses: actions/upload-artifact@v6
+        with:
+          name: android-telemetry
+          path: metrics/android_telemetry.json
+
+  build-windows:
+    name: Windows 🪟
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.2'
+          cache: true
+
+      - name: Generate Version Info
+        id: generate_version
+        shell: bash
+        run: |
+          VERSION=$(grep "version:" music_hub/pubspec.yaml | sed 's/version: //' | xargs)
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            FULL_VERSION="${{ github.ref_name }}"
+          elif [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
+            FULL_VERSION="1.1.0-dev.${GITHUB_RUN_NUMBER}"
+          else
+            FULL_VERSION="$VERSION-local.${GITHUB_RUN_NUMBER}"
+          fi
+          echo "full_version=$FULL_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Configure Firebase
+        shell: bash
+        env:
+          FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
+        run: |
+          mkdir -p music_hub/lib
+          echo "$FIREBASE_OPTIONS_DART" > music_hub/lib/firebase_options.dart
+
+      - name: Flutter Build Windows
+        working-directory: music_hub
+        run: flutter build windows --release
+
+      - name: Install Inno Setup
+        run: choco install innosetup -y
+
+      - name: Package Windows Installer
+        run: |
+          iscc /DMyAppVersion="${{ steps.generate_version.outputs.full_version }}" installer.iss
+
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: windows-installer
+          path: Output/MusicTagEditorSetup-${{ steps.generate_version.outputs.full_version }}.exe
+
+      - name: Record Windows Metrics ⏱️
+        shell: bash
+        run: |
+          mkdir -p metrics
+          echo "{
+            \"platform\": \"windows\",
+            \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",
+            \"commit\": \"${{ github.sha }}\"
+          }" > metrics/windows_telemetry.json
+
+      - name: Upload Telemetry
+        uses: actions/upload-artifact@v6
+        with:
+          name: windows-telemetry
+          path: metrics/windows_telemetry.json
+
+  build-linux:
+    name: Linux 🐧
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.2'
+          cache: true
+
+      - name: Generate Version Info
+        id: generate_version
+        shell: bash
+        run: |
+          VERSION=$(grep "version:" music_hub/pubspec.yaml | sed 's/version: //' | xargs)
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            FULL_VERSION="${{ github.ref_name }}"
+          elif [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
+            FULL_VERSION="1.1.0-dev.${GITHUB_RUN_NUMBER}"
+          else
+            FULL_VERSION="$VERSION-local.${GITHUB_RUN_NUMBER}"
+          fi
+          echo "full_version=$FULL_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Configure Firebase
+        shell: bash
+        env:
+          FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
+        run: |
+          mkdir -p music_hub/lib
+          echo "$FIREBASE_OPTIONS_DART" > music_hub/lib/firebase_options.dart
+
+      - name: Install dependencies
+        run: |
+          # Only install what is strictly necessary and missing
+          sudo apt-get install -y libgtk-3-dev liblzma-dev libstdc++-12-dev
+
+      - name: Flutter Build Linux
+        working-directory: music_hub
+        run: flutter build linux --release
+
+      - name: Compress Linux Build
+        working-directory: music_hub
+        run: |
+          FULL_VERSION="${{ steps.generate_version.outputs.full_version }}"
+          cd build/linux/x64/release/bundle
+          tar -czf ../../../../../music_hub-linux-v$FULL_VERSION.tar.gz .
+
+      - name: Upload Linux Artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: linux-bundle
+          path: music_hub/music_hub-linux-v*.tar.gz
+
+  telemetry-aggregation:
+    name: Telemetry Aggregation 📊
+    needs: [build-android, build-windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Telemetry
+        uses: actions/download-artifact@v6
+        with:
+          path: incoming-telemetry
+
+      - name: Protosync 🔄
+        run: |
+          mkdir -p artifacts
+          echo "Aggregating telemetry..."
+          cat incoming-telemetry/android-telemetry/android_telemetry.json >> artifacts/global_telemetry.json
+          cat incoming-telemetry/windows-telemetry/windows_telemetry.json >> artifacts/global_telemetry.json
+
+      - name: Upload Global Telemetry
+        uses: actions/upload-artifact@v6
+        with:
+          name: global-telemetry
+          path: artifacts/global_telemetry.json
+
+
+---------- FILE: .github\workflows\build.yml ----------
+name: Build, Test & Release
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - beta
+    tags:
+      - 'v*'
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - 'LICENSE'
+      - 'docs/**'
+  pull_request:
+    branches:
+      - main
+      - dev
+      - beta
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - 'LICENSE'
+      - 'docs/**'
+  schedule:
+    - cron: '0 0 * * *' # Daily at midnight UTC
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: write
+
+env:
+  ACTIONS_STEP_DEBUG: true
+
+jobs:
+  quality_gate:
+    name: Quality Gate
+    uses: ./.github/workflows/quality-gate.yml
+    permissions:
+      contents: write
+      pull-requests: write
+    secrets: inherit
+
+  build:
+    name: Build & Package
+    needs: quality_gate
+    if: github.event_name == 'push'
+    permissions:
+      pull-requests: write
+    uses: ./.github/workflows/build-and-package.yml
+    secrets: inherit
+
+  archive_telemetry:
+    name: The Librarian's Index 📚
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout data branch
+        uses: actions/checkout@v6
+        with:
+          ref: coverage-data
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download all telemetry
+        uses: actions/download-artifact@v6
+        with:
+          path: incoming-telemetry
+
+      - name: Process & Archive 📚
+        run: |
+          mkdir -p history/metrics
+          TIMESTAMP=$(date -u +%Y%m%d_%H%M%SZ)
+          echo "### 📚 The Librarian's Index & The Harbinger's Vigil" >> $GITHUB_STEP_SUMMARY
+          
+          # The Harbinger: Regression Tracking Logic
+          check_regression() {
+            PLATFORM=$1
+            CURRENT_SIZE=$2
+            LAST_FILE=$(ls -t history/metrics/${PLATFORM}_telemetry_*.json 2>/dev/null | head -n 1)
+            
+            if [ -n "$LAST_FILE" ]; then
+              LAST_SIZE=$(cat "$LAST_FILE" | jq -r '.binary_size_bytes // .apk_size_bytes')
+              DELTA=$((CURRENT_SIZE - LAST_SIZE))
+              DELTA_KB=$((DELTA / 1024))
+              
+              if [ $DELTA -gt 102400 ]; then # > 100KB
+                echo "⚠️ **$PLATFORM Regression Detected!** Size increased by **${DELTA_KB}KB**" >> $GITHUB_STEP_SUMMARY
+              elif [ $DELTA -lt -102400 ]; then
+                echo "✅ **$PLATFORM Optimization Detected!** Size decreased by **${DELTA_KB#-}KB**" >> $GITHUB_STEP_SUMMARY
+              else
+                echo "ℹ️ $PLATFORM size stability: ${DELTA_KB}KB change." >> $GITHUB_STEP_SUMMARY
+              fi
+            else
+              echo "🆕 First telemetry for $PLATFORM established." >> $GITHUB_STEP_SUMMARY
+            fi
+          }
+
+          # Archive coverage (from quality_gate)
+          if [ -d "incoming-telemetry/coverage-lcov" ]; then
+            sudo apt-get update && sudo apt-get install -y rename jq
+            npx lcov-parse incoming-telemetry/coverage-lcov/lcov.info > coverage.json
+            cp coverage.json history/metrics/coverage_$TIMESTAMP.json
+          fi
+          
+          # Process Android
+          if [ -f "incoming-telemetry/telemetry-android/android_telemetry.json" ]; then
+            A_SIZE=$(cat incoming-telemetry/telemetry-android/android_telemetry.json | jq -r .apk_size_bytes)
+            check_regression "android" $A_SIZE
+            cp incoming-telemetry/telemetry-android/android_telemetry.json history/metrics/android_telemetry_$TIMESTAMP.json
+          fi
+
+          # Process Windows
+          if [ -f "incoming-telemetry/telemetry-windows/windows_telemetry.json" ]; then
+            W_SIZE=$(cat incoming-telemetry/telemetry-windows/windows_telemetry.json | jq -r .binary_size_bytes)
+            check_regression "windows" $W_SIZE
+            cp incoming-telemetry/telemetry-windows/windows_telemetry.json history/metrics/windows_telemetry_$TIMESTAMP.json
+          fi
+          
+          echo "Historical metrics archived in \`coverage-data\` branch." >> $GITHUB_STEP_SUMMARY
+          
+          # The Scribe: Visual Chronology Generation
+          generate_scribe_report() {
+            echo "# 📜 Hermes: The Scribe's Chronology" > README.md
+            echo "Visual record of the project's technical evolution." >> README.md
+            echo "" >> README.md
+            echo "## 📊 Binary Size Trends (Last 10 Builds)" >> README.md
+            echo '```mermaid' >> README.md
+            echo 'xychart-beta' >> README.md
+            echo '    title "Binary Size Evolution (MB)"' >> README.md
+            
+            # Extract labels (timestamps)
+            LABELS=$(ls -t history/metrics/android_telemetry_*.json | head -n 10 | tac | xargs -I{} basename {} .json | cut -d'_' -f3 | cut -c7-11 | jq -R . | jq -s -c .)
+            echo "    x-axis $LABELS" >> README.md
+            
+            # Extract Android values
+            A_VALS=$(ls -t history/metrics/android_telemetry_*.json | head -n 10 | tac | xargs -I{} jq -r '.apk_size_bytes / 1024 / 1024' {} | jq -s -c .)
+            echo "    y-axis \"Size (MB)\" 0 -> 100" >> README.md
+            echo "    line $A_VALS" >> README.md
+            echo '```' >> README.md
+            echo "" >> README.md
+            echo "## 🛡️ Coverage Stability" >> README.md
+            echo '```mermaid' >> README.md
+            echo 'xychart-beta' >> README.md
+            echo '    title "Code Coverage Percentage"' >> README.md
+            C_LABELS=$(ls -t history/metrics/coverage_*.json | head -n 10 | tac | xargs -I{} basename {} .json | cut -d'_' -f2 | cut -c7-11 | jq -R . | jq -s -c .)
+            echo "    x-axis $C_LABELS" >> README.md
+            C_VALS=$(ls -t history/metrics/coverage_*.json | head -n 10 | tac | xargs -I{} jq -r '.["total-percentage"]' {} | jq -s -c .)
+            echo "    y-axis \"Coverage (%)\" 0 -> 100" >> README.md
+            echo "    bar $C_VALS" >> README.md
+            echo '```' >> README.md
+            echo "" >> README.md
+            echo "Last updated: $(date -u)" >> README.md
+          }
+          
+          generate_scribe_report
+          
+          # Archive Documentation (The Chronicler)
+          if [ -d "incoming-telemetry/quality-inventory/docs" ]; then
+            mkdir -p docs
+            cp -r incoming-telemetry/quality-inventory/docs/* docs/
+            echo "API Documentation archived in \`coverage-data\` branch." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          if ! git diff --staged --quiet; then
+            git commit -m "docs: Archive CI telemetry and coverage [skip ci]"
+            git push
+          fi
+
+  pre_release:
+    name: Pre-release
+    needs: build
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/beta')
+    uses: ./.github/workflows/prerelease.yml
+    permissions:
+      contents: write
+    secrets: inherit
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v6
+        with:
+          path: artifacts
+
+      - name: Create Release and Upload Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          body: |
+            ## Produção 🚀
+            Esta é a versão oficial estável. Verifique o changelog gerado abaixo.
+          files: |
+            artifacts/windows-installer/MusicTagEditorSetup-*.exe
+            artifacts/android-apk/music_hub-v*.apk
+            artifacts/linux-release/music_hub-linux-v*.tar.gz
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  cleanup-cache:
+    name: 🗑️ Cleanup Old Caches
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: 🧹 Delete caches older than 1 day
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const caches = await github.rest.actions.listActionsCaches({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+
+            const oneDayMs = 24 * 60 * 60 * 1000;
+            const oneDayAgo = Date.now() - oneDayMs;
+
+            for (const cache of caches.data.actions_caches) {
+              const createdAt = new Date(cache.created_at).getTime();
+
+              if (createdAt < oneDayAgo) {
+                console.log(`Deleting cache ${cache.key} (ID: ${cache.id}) created at ${cache.created_at}`);
+                await github.rest.actions.deleteActionsCache({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                });
+              } else {
+                console.log(`Keeping cache ${cache.key} (recent: ${cache.created_at})`);
+              }
+            }
+
+
+---------- FILE: .github\workflows\dashboard.yml ----------
+name: Quality Dashboard
+on:
+  workflow_run:
+    workflows: ["Build, Test & Release"]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: coverage-data
+
+      - name: Update History
+        run: |
+          DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          if [ ! -f coverage_history.json ]; then echo "[]" > coverage_history.json; fi
+          PERCENTAGE=$(jq '.percentage' coverage.json)
+          jq ". += [{\"timestamp\": \"$DATE\", \"percentage\": $PERCENTAGE}]" coverage_history.json > temp.json && mv temp.json coverage_history.json
+
+      - name: Generate Dashboard
+        run: |
+          git checkout main -- scripts/generate_dashboard.py
+          python3 scripts/generate_dashboard.py coverage_history.json index.html
+
+      - name: Commit and Push History
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add coverage_history.json index.html
+          git diff --staged --quiet || git commit -m "docs: Update coverage history and dashboard [skip ci]"
+          git push
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+
+
+---------- FILE: .github\workflows\label.yml ----------
+name: "Pull Request Labeler"
+on:
+  - pull_request_target
+
+jobs:
+  label:
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/labeler@v5
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          configuration-path: .github/labeler.yml
+          sync-labels: true
+
+
+---------- FILE: .github\workflows\prerelease.yml ----------
+name: Pre-release
+
+on:
+  workflow_call:
+
+jobs:
+  pre-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Download Windows Installer
+        uses: actions/download-artifact@v6
+        with:
+          name: windows-installer
+          path: artifacts/windows-installer
+      - name: Download Android APK
+        uses: actions/download-artifact@v6
+        with:
+          name: android-apk
+          path: artifacts/android-apk
+      - name: Download Version Artifact
+        uses: actions/download-artifact@v6
+        with:
+          name: version-info
+          path: artifacts/version-info
+      
+      - name: Read version
+        id: version
+        run: |
+          VERSION=$(find artifacts -type f -name "version.txt" | head -n 1 | xargs cat || echo "0.0.0-unknown")
+          echo "full_version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          # Fetch changes since last push or last 10 commits if fresh
+          CHANGES=$(git log --oneline -n 10 --no-merges | sed 's/^/- /')
+          echo "changes<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Create Dev Release (Update Existing)
+        if: github.ref == 'refs/heads/dev'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: dev-latest
+          name: Development Build (Dev)
+          body: |
+            ## O que mudou? 🛠️
+            ${{ steps.changelog.outputs.changes }}
+
+            ---
+            **Metadados do Build 📦**
+            - Versão: `${{ steps.version.outputs.full_version }}`
+            - Commit: `${{ github.sha }}`
+            - Ambiente: `Development`
+          prerelease: true
+          generate_release_notes: false
+          files: |
+            artifacts/windows-installer/*.exe
+            artifacts/android-apk/*.apk
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_unmatched_files: true
+
+      - name: Create Beta Release (Update Existing)
+        if: github.ref == 'refs/heads/beta'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: beta-latest
+          name: Beta Release
+          body: |
+            ## O que mudou? ✨
+            ${{ steps.changelog.outputs.changes }}
+
+            ---
+            **Metadados do Build 📦**
+            - Versão: `${{ steps.version.outputs.full_version }}`
+            - Commit: `${{ github.sha }}`
+            - Ambiente: `Beta`
+          prerelease: true
+          generate_release_notes: false
+          files: |
+            artifacts/windows-installer/*.exe
+            artifacts/android-apk/*.apk
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_unmatched_files: true
+
+      - name: Update latest tag
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git tag -f ${{ github.ref_name }}-latest
+          git push -f origin ${{ github.ref_name }}-latest
+
+
+---------- FILE: .github\workflows\quality-gate.yml ----------
+name: Quality Gate
+
+on:
+  workflow_call:
+    inputs:
+      min_coverage:
+        description: 'Minimum code coverage percentage'
+        required: false
+        default: '50'
+        type: string
+
+jobs:
+  lint:
+    name: Lint & Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2 # v2.16.0
+        with:
+          flutter-version: '3.38.2'
+          cache: true
+
+      - name: Flutter Pub Get
+        working-directory: music_hub
+        run: flutter pub get
+
+      - name: Configure Firebase
+        shell: bash
+        env:
+          FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
+        run: |
+          mkdir -p music_hub/lib
+          echo "$FIREBASE_OPTIONS_DART" > music_hub/lib/firebase_options.dart
+          # dart format is handled in a separate step below
+
+      - name: The Inventory 🧪 (Dependency Tree)
+        working-directory: music_hub
+        run: |
+          mkdir -p ../artifacts
+          flutter pub deps > ../artifacts/dependency_tree.txt
+          echo "### 🧪 The Inventory: Dependency tree exported to artifacts" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check Formatting
+        working-directory: music_hub
+        run: dart format --set-exit-if-changed .
+
+      - name: Run Flutter Analyzer
+        working-directory: music_hub
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Security Bastion 🛡️
+        working-directory: music_hub
+        run: |
+          grep -rE "AIza[0-9A-Za-z_-]{35}|[0-9a-f]{32}|ghp_[0-9A-Za-z]{36}" . --exclude="firebase_options.dart" --exclude="*.log" || true
+          
+          echo "### 🛡️ The Shield: Manifest Security Check" >> $GITHUB_STEP_SUMMARY
+          MANIFEST="android/app/src/main/AndroidManifest.xml"
+          if [ -f "$MANIFEST" ]; then
+            if grep -q 'android:allowBackup="true"' "$MANIFEST"; then
+              echo "- ⚠️ **Warning**: \`android:allowBackup=\"true\"\` detected in Manifest. Consider setting to false for higher security." >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- ✅ Manifest: \`allowBackup\` is secure." >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
+
+      - name: Architecture Guard 🏛️
+        working-directory: music_hub
+        run: |
+          echo "## Architecture Guard 🏛️" >> $GITHUB_STEP_SUMMARY
+          LARGE_FILES=$(find lib -name "*.dart" | xargs wc -l | awk '$1 > 600' | grep -v "total" || true)
+          if [ -z "$LARGE_FILES" ]; then
+            echo "✅ No critical file bloat detected." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ **Alert: Large Files Detected (> 600 lines)**" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "$LARGE_FILES" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: The Alchemist's Brew 🧪 (Asset Audit)
+        run: python scripts/asset_guard.py >> $GITHUB_STEP_SUMMARY || true
+
+      - name: The Inquisitor's Eye 🔦 (Vulnerability Scan)
+        uses: google/osv-scanner-action/osv-scanner-action@v2.3.1
+        with:
+          scan-args: |-
+            --recursive
+            --require-hashes
+            ./music_hub
+        continue-on-error: true
+
+      - name: The Chronicler's Archive 📜 (API Documentation)
+        working-directory: music_hub
+        run: |
+          dart doc .
+          mkdir -p ../artifacts/docs
+          cp -r doc/api/* ../artifacts/docs/
+          echo "### 📜 The Chronicler: API Documentation generated" >> $GITHUB_STEP_SUMMARY
+
+      - name: The Warden's Patrol ⚖️ (License Audit)
+        run: python scripts/license_warden.py >> $GITHUB_STEP_SUMMARY || true
+
+      - name: Upload Quality Artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: quality-inventory
+          path: artifacts/
+
+  test:
+    name: Unit Tests & Coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2 # v2.16.0
+        with:
+          flutter-version: '3.38.2'
+          cache: true
+
+      - name: Flutter Pub Get
+        working-directory: music_hub
+        run: flutter pub get
+
+      - name: Configure Firebase
+        shell: bash
+        env:
+          FIREBASE_OPTIONS_DART: ${{ secrets.FIREBASE_OPTIONS_DART }}
+        run: |
+          mkdir -p music_hub/lib
+          echo "$FIREBASE_OPTIONS_DART" > music_hub/lib/firebase_options.dart
+
+      - name: Run Tests with Auditing 🔦
+        working-directory: music_hub
+        id: test_run
+        run: |
+          # Use JSON reporter to capture durations while still showing output
+          (flutter test --coverage --reporter json | tee test_results.json) || (echo "TEST_FAILED=true" >> $GITHUB_ENV)
+          
+      - name: The Ghost Hunter's Audit 🔦
+        working-directory: music_hub
+        if: always() && steps.test_run.outcome != 'skipped'
+        run: |
+          echo "### 🔦 The Ghost Hunter's Lantern: Test Performance Audit" >> $GITHUB_STEP_SUMMARY
+          if [ -f "test_results.json" ]; then
+            echo "| Test Name | Duration (ms) | Result |" >> $GITHUB_STEP_SUMMARY
+            echo "| :--- | :--- | :--- |" >> $GITHUB_STEP_SUMMARY
+            
+            # Extract top 5 slowest successful tests
+            # We filter for testDone events and join with their names from testStart
+            # Note: jq is used to bridge the gap between IDs and names
+            cat test_results.json | grep '"type":"testDone"' | \
+            jq -r 'select(.hidden == false) | [.time, .testID] | @tsv' | \
+            sort -rn | head -n 5 | while read -r time testid; do
+              name=$(grep "\"type\":\"testStart\"" test_results.json | jq -r "select(.test.id == $testid) | .test.name")
+              echo "| $name | $time | ✅ |" >> $GITHUB_STEP_SUMMARY
+            done
+          else
+            echo "⚠️ No test results JSON found for auditing." >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Finalize exit status
+          if [ "$TEST_FAILED" = "true" ]; then
+            echo "::error title=Hermes 📦 Alert::Tests failed!"
+            exit 1
+          fi
+
+      - name: Dependency Hygiene 🧼
+        working-directory: music_hub
+        run: |
+          echo "## Dependency Hygiene 🧼" >> $GITHUB_STEP_SUMMARY
+          OUTDATED=$(flutter pub outdated --no-dev-dependencies)
+          if echo "$OUTDATED" | grep -q "Upgradeable"; then
+            echo "### ⚠️ Updates Available" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "$OUTDATED" | grep "Upgradeable" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ✅ All dependencies are up to date!" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Generate HTML coverage report
+        working-directory: music_hub
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov
+          genhtml coverage/lcov.info -o coverage/html
+
+      - name: Calculate code coverage
+        id: coverage
+        run: |
+          HIT=$(grep "^LH:" music_hub/coverage/lcov.info | awk '{s+=$2} END {print s}' FS=":")
+          FOUND=$(grep "^LF:" music_hub/coverage/lcov.info | awk '{s+=$2} END {print s}' FS=":")
+          if [ "$FOUND" -eq 0 ]; then
+            COVERAGE="0.0"
+          else
+            COVERAGE=$(echo "scale=2; 100 * $HIT / $FOUND" | bc)
+          fi
+          echo "percentage=${COVERAGE}" >> $GITHUB_OUTPUT
+
+      - name: Final Quality Report 📜
+        run: |
+          echo "## Quality Gate Evidence 📜" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "| :--- | :--- |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Linter & Formatting** | ✅ (See Lint Job) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Architecture Guard** | ✅ Scan Complete |" >> $GITHUB_STEP_SUMMARY
+          echo "| **The Inventory** | ✅ Dependencies Exported |" >> $GITHUB_STEP_SUMMARY
+          echo "| **The Inquisitor** | ✅ Vulnerability Scan Run |" >> $GITHUB_STEP_SUMMARY
+          echo "| **The Chronicler** | ✅ API Docs Generated |" >> $GITHUB_STEP_SUMMARY
+          echo "| **The Warden** | ✅ License Audit Run |" >> $GITHUB_STEP_SUMMARY
+          echo "| **The Oracle** | ✅ Accessibility Scan |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Tests** | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Line Coverage** | ${{ steps.coverage.outputs.percentage }}% |" >> $GITHUB_STEP_SUMMARY
+          
+          if (( $(echo "${{ steps.coverage.outputs.percentage }} < ${{ inputs.min_coverage }}" | bc -l) )); then
+            echo "### ❌ Quality Gate Failed: Coverage below ${{ inputs.min_coverage }}%" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v6
+        with:
+          name: test-results
+          path: music_hub/test_results.json
+
+      - name: Upload Coverage
+        uses: actions/upload-artifact@v6
+        with:
+          name: coverage-report
+          path: music_hub/coverage/html
+
+  pr-proclamation:
+    name: Hermes' Proclamation 📣
+    needs: [lint, test]
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Post PR Comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} --body "## 📦 Hermes: Proclamação do Arauto
+          O seu build passou pelo **Portão de Qualidade** com sucesso! ✨
+          
+          | Job | Status |
+          | :--- | :--- |
+          | **Analysis & Formatting** | ✅ Passou |
+          | **The Inquisitor** | ✅ Protegido |
+          | **The Warden** | ✅ Legal |
+          | **The Oracle** | ✅ Acessível |
+          | **The Chronicler** | ✅ Documentado |
+          | **Security Bastion** | ✅ Seguro |
+          | **Architecture Guard** | ✅ Integrado |
+          | **The Inventory** | ✅ Mapeado |
+          | **Unit Tests** | ✅ Verificado |
+          
+          Verifique o [Job Summary](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) para detalhes de cobertura, bloat e inventário."
+
+
+---------- FILE: .lefthook.yml ----------
+# Lefthook configuration
+# Refer to https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md
+
+pre-commit:
+  commands:
+    analyze:
+      root: music_hub/
+      glob: "*.dart"
+      run: flutter analyze
+    test:
+      root: music_hub/
+      glob: "{lib,test}/**/*.dart"
+      run: flutter test
+
+
+---------- FILE: README.md ----------
+# Music
+
+## Firebase Setup for Local Development
+
+To set up your local environment for Firebase, follow these steps:
+
+1. **Create `google-services.json`:**
+    * Navigate to `music_x/android/app/`.
+    * Copy `google-services.json.template` and rename it to `google-services.json`.
+    * Replace the placeholder values in `google-services.json` with your actual Firebase project's configuration. You can download this file from the Firebase console.
+
+2. **Create `firebase_options.dart`:**
+    * Navigate to `music_x/lib/`.
+    * Copy `firebase_options.dart.template` and rename it to `firebase_options.dart`.
+    * Replace the placeholder values in `firebase_options.dart` with your actual Firebase project's configuration. You can get this from the Firebase console.
+
+
+---------- FILE: installer.iss ----------
+#define MyAppName "Music Hub"
+#ifndef MyAppVersion
+#define MyAppVersion "1.0.0"
+#endif
+#define MyAppPublisher "João Magdaleno"
+#define MyAppExeName "music_hub.exe"
+
+[Setup]
+AppId={{B8F4D9E2-6E8C-4863-9E5B-3F1A7C6F9A1B}
+AppName={#MyAppName}
+AppVersion={#MyAppVersion}
+AppPublisher={#MyAppPublisher}
+DefaultDirName={autopf}\{#MyAppName}
+DisableProgramGroupPage=yes
+OutputBaseFilename=MusicHubSetup-{#MyAppVersion}
+OutputDir=Output
+Compression=lzma
+SolidCompression=yes
+ArchitecturesInstallIn64BitMode=x64
+
+[Files]
+Source: "music_hub\build\windows\x64\runner\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[Icons]
+Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+
+[Tasks]
+Name: desktopicon; Description: "Create a desktop shortcut"; GroupDescription: "Additional icons:"; Flags: unchecked
+
+[Run]
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall shellexec
+
+[UninstallDelete]
+Type: filesandordirs; Name: "{userappdata}\music_hub"
+Type: filesandordirs; Name: "{userappdata}\com.example\music_hub"
+Type: files; Name: "{userdocs}\startup_log.txt"
+
+
+---------- FILE: music_x\README.md ----------
+# music_tag_editor
+
+A new Flutter project.
+
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
+
+
+---------- FILE: music_x\analysis_options.yaml ----------
+# This file configures the analyzer, which statically analyzes Dart code to
+# check for errors, warnings, and lints.
+#
+# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
+# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
+# invoked from the command line by running `flutter analyze`.
+
+# The following line activates a set of recommended lints for Flutter apps,
+# packages, and plugins designed to encourage good coding practices.
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - packages/**
+    - test/**
+  errors:
+    avoid_print: error
+    prefer_single_quotes: warning
+    always_declare_return_types: warning
+    todo: info
+
+linter:
+  # The lint rules applied to this project can be customized in the
+  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
+  # included above or to enable additional rules. A list of all available lints
+  # and their documentation is published at https://dart.dev/lints.
+  #
+  # Instead of disabling a lint rule for the entire project in the
+  # section below, it can also be suppressed for a single line of code
+  # or a specific dart file by using the `// ignore: name_of_lint` and
+  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
+  # producing the lint.
+  rules:
+    avoid_print: true
+    prefer_single_quotes: true
+    always_declare_return_types: true
+    cancel_subscriptions: true
+    close_sinks: true
+    noop_primitive_operations: true
+    prefer_final_locals: true
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    prefer_is_empty: true
+    prefer_is_not_empty: true
+    sized_box_for_whitespace: true
+    use_key_in_widget_constructors: true
+    avoid_unnecessary_containers: true
+    unnecessary_const: true
+    unnecessary_new: true
+    prefer_expression_function_bodies: true
+    annotate_overrides: true
+    avoid_returning_null_for_void: true
+    prefer_interpolation_to_compose_strings: true
+    unnecessary_string_interpolations: true
+
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options
+
+
+---------- FILE: music_x\android\app\build.gradle.kts ----------
+import java.util.Properties
+import java.io.FileInputStream
+
+plugins {
+    id("com.android.application")
+    // START: FlutterFire Configuration
+    id("com.google.gms.google-services")
+    // END: FlutterFire Configuration
+    id("org.jetbrains.kotlin.android")
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id("dev.flutter.flutter-gradle-plugin")
+    id("com.google.firebase.crashlytics")
+}
+
+android {
+    namespace = "com.joaomagdaleno.music_hub"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+    // Load signing data if present
+    val keystoreProps = Properties()
+    val keystorePropsFile = rootProject.file("key.properties")
+    if (keystorePropsFile.exists()) {
+        keystoreProps.load(FileInputStream(keystorePropsFile))
+    }
+
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProps.getProperty("keyAlias")
+            keyPassword = keystoreProps.getProperty("keyPassword")
+            storeFile = if (keystoreProps.getProperty("storeFile") != null) file(keystoreProps.getProperty("storeFile")) else null
+            storePassword = keystoreProps.getProperty("storePassword")
+        }
+    }
+
+    defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId = "com.joaomagdaleno.music_hub"
+        // You can update the following values to match your application needs.
+        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+
+---------- FILE: music_x\android\app\src\main\AndroidManifest.xml ----------
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.joaomagdaleno.music_hub">
+    <!-- Background audio permissions -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application android:label="Music Hub" android:name="${applicationName}" android:icon="@mipmap/ic_launcher">
+        <activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTop" android:taskAffinity="" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize">
+            <!-- Specifies an Android theme to apply to this Activity as soon as
+                 the Android process has started. This theme is visible to the user
+                 while the Flutter UI initializes. After that, this theme continues
+                 to determine the Window background behind the Flutter UI. -->
+            <meta-data android:name="io.flutter.embedding.android.NormalTheme" android:resource="@style/NormalTheme" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Audio Service for background playback and notification controls -->
+        <service android:name="com.ryanheise.audioservice.AudioService" android:foregroundServiceType="mediaPlayback" android:exported="true">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService"/>
+            </intent-filter>
+        </service>
+
+        <receiver android:name="com.ryanheise.audioservice.MediaButtonReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- Don't delete the meta-data below.
+             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+        <meta-data android:name="flutterEmbedding" android:value="2" />
+    </application>
+    <!-- Required to query activities that can process text, see:
+         https://developer.android.com/training/package-visibility and
+         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+
+         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+    </queries>
+</manifest>
+
+
+---------- FILE: music_x\android\app\src\main\java\io\flutter\plugins\GeneratedPluginRegistrant.java ----------
+package io.flutter.plugins;
+
+import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
+import io.flutter.Log;
+
+import io.flutter.embedding.engine.FlutterEngine;
+
+/**
+ * Generated file. Do not edit.
+ * This file is generated by the Flutter tool based on the
+ * plugins that support the Android platform.
+ */
+@Keep
+public final class GeneratedPluginRegistrant {
+  private static final String TAG = "GeneratedPluginRegistrant";
+  public static void registerWith(@NonNull FlutterEngine flutterEngine) {
+    try {
+      flutterEngine.getPlugins().add(new com.ryanheise.audioservice.AudioServicePlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin audio_service, com.ryanheise.audioservice.AudioServicePlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new com.ryanheise.audio_session.AudioSessionPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin audio_session, com.ryanheise.audio_session.AudioSessionPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new io.flutter.plugins.firebase.firestore.FlutterFirebaseFirestorePlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin cloud_firestore, io.flutter.plugins.firebase.firestore.FlutterFirebaseFirestorePlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new dev.fluttercommunity.plus.connectivity.ConnectivityPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin connectivity_plus, dev.fluttercommunity.plus.connectivity.ConnectivityPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new com.arthenica.ffmpegkit.flutter.FFmpegKitFlutterPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin ffmpeg_kit_flutter, com.arthenica.ffmpegkit.flutter.FFmpegKitFlutterPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new com.mr.flutter.plugin.filepicker.FilePickerPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin file_picker, com.mr.flutter.plugin.filepicker.FilePickerPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new io.flutter.plugins.firebase.analytics.FlutterFirebaseAnalyticsPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin firebase_analytics, io.flutter.plugins.firebase.analytics.FlutterFirebaseAnalyticsPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new io.flutter.plugins.firebase.auth.FlutterFirebaseAuthPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin firebase_auth, io.flutter.plugins.firebase.auth.FlutterFirebaseAuthPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new io.flutter.plugins.firebase.core.FlutterFirebaseCorePlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin firebase_core, io.flutter.plugins.firebase.core.FlutterFirebaseCorePlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new io.flutter.plugins.firebase.crashlytics.FlutterFirebaseCrashlyticsPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin firebase_crashlytics, io.flutter.plugins.firebase.crashlytics.FlutterFirebaseCrashlyticsPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new io.flutter.plugins.flutter_plugin_android_lifecycle.FlutterAndroidLifecyclePlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin flutter_plugin_android_lifecycle, io.flutter.plugins.flutter_plugin_android_lifecycle.FlutterAndroidLifecyclePlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new com.it_nomads.fluttersecurestorage.FlutterSecureStoragePlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin flutter_secure_storage, com.it_nomads.fluttersecurestorage.FlutterSecureStoragePlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new com.ryanheise.just_audio.JustAudioPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin just_audio, com.ryanheise.just_audio.JustAudioPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new io.flutter.plugins.localauth.LocalAuthPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin local_auth_android, io.flutter.plugins.localauth.LocalAuthPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new com.pkmnapps.nearby_connections.NearbyConnectionsPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin nearby_connections, com.pkmnapps.nearby_connections.NearbyConnectionsPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new dev.fluttercommunity.plus.network_info.NetworkInfoPlusPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin network_info_plus, dev.fluttercommunity.plus.network_info.NetworkInfoPlusPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new dev.fluttercommunity.plus.packageinfo.PackageInfoPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin package_info_plus, dev.fluttercommunity.plus.packageinfo.PackageInfoPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new io.flutter.plugins.pathprovider.PathProviderPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin path_provider_android, io.flutter.plugins.pathprovider.PathProviderPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new com.baseflow.permissionhandler.PermissionHandlerPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin permission_handler_android, com.baseflow.permissionhandler.PermissionHandlerPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin shared_preferences_android, io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new com.tekartik.sqflite.SqflitePlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin sqflite_android, com.tekartik.sqflite.SqflitePlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new dev.fluttercommunity.plus.wakelock.WakelockPlusPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin wakelock_plus, dev.fluttercommunity.plus.wakelock.WakelockPlusPlugin", e);
+    }
+  }
+}
+
+
+---------- FILE: music_x\android\app\src\main\kotlin\com\joaomagdaleno\music_hub\MainActivity.kt ----------
+package com.joaomagdaleno.music_hub
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity()
+
+
+---------- FILE: music_x\android\app\src\main\res\drawable-v21\launch_background.xml ----------
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modify this file to customize your launch splash screen -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="?android:colorBackground" />
+
+    <!-- You can insert your own image assets here -->
+    <!-- <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/launch_image" />
+    </item> -->
+</layer-list>
+
+
+---------- FILE: music_x\android\app\src\main\res\drawable\launch_background.xml ----------
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modify this file to customize your launch splash screen -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@android:color/white" />
+
+    <!-- You can insert your own image assets here -->
+    <!-- <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/launch_image" />
+    </item> -->
+</layer-list>
+
+
+---------- FILE: music_x\android\app\src\main\res\values-night\styles.xml ----------
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is on -->
+    <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <!-- Show a splash screen on the activity. Automatically removed when
+             the Flutter engine draws its first frame -->
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <!-- Theme applied to the Android Window as soon as the process has started.
+         This theme determines the color of the Android Window while your
+         Flutter UI initializes, as well as behind your Flutter UI while its
+         running.
+
+         This Theme is only used starting with V2 of Flutter's Android embedding. -->
+    <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+</resources>
+
+
+---------- FILE: music_x\android\app\src\main\res\values\styles.xml ----------
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is off -->
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <!-- Show a splash screen on the activity. Automatically removed when
+             the Flutter engine draws its first frame -->
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <!-- Theme applied to the Android Window as soon as the process has started.
+         This theme determines the color of the Android Window while your
+         Flutter UI initializes, as well as behind your Flutter UI while its
+         running.
+
+         This Theme is only used starting with V2 of Flutter's Android embedding. -->
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+</resources>
+
+
+---------- FILE: music_x\android\build.gradle.kts ----------
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+        maven { url = uri("https://www.jitpack.io") }
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.7.3")
+    }
+}
+
+allprojects {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+        maven { url = uri("https://www.jitpack.io") }
+    }
+    configurations.all {
+        resolutionStrategy {
+            force("androidx.core:core:1.15.0")
+            force("androidx.core:core-ktx:1.15.0")
+            // Resolve Kotlin version mismatch by forcing stable 2.1.0
+            force("org.jetbrains.kotlin:kotlin-stdlib:2.1.0")
+            force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.0")
+            force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0")
+        }
+    }
+}
+
+subprojects {
+    // Inject properties for stability
+    project.extensions.extraProperties.set("flutter.compileSdkVersion", 35)
+    project.extensions.extraProperties.set("flutter.minSdkVersion", 21)
+    project.extensions.extraProperties.set("flutter.targetSdkVersion", 35)
+}
+
+tasks.register<Delete>("clean") {
+    delete(rootProject.layout.buildDirectory)
+}
+
+
+---------- FILE: music_x\android\gradle.properties ----------
+org.gradle.jvmargs=-Xmx4G -XX:MaxMetaspaceSize=1G -XX:ReservedCodeCacheSize=256m
+android.useAndroidX=true
+android.enableJetifier=true
+org.gradle.daemon=false
+org.gradle.vfs.watch=false
+
+
+---------- FILE: music_x\android\gradle\wrapper\gradle-wrapper.properties ----------
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+distributionUrl=https://services.gradle.org/distributions/gradle-8.11.1-all.zip
+
+
+---------- FILE: music_x\android\key.properties ----------
+storePassword=AndroidMusicApp2025
+keyPassword=AndroidMusicApp2025
+keyAlias=upload
+storeFile=app/execution-keystore.jks
+
+
+---------- FILE: music_x\android\local.properties ----------
+sdk.dir=C:\\Android\\Sdk
+flutter.sdk=C:\\Flutter\\flutter
+flutter.buildMode=debug
+flutter.versionName=1.0.0
+flutter.versionCode=1
+flutter.minSdkVersion=21
+flutter.targetSdkVersion=36
+flutter.compileSdkVersion=36
+
+flutter.ndkVersion=28.2.13676358
+
+
+---------- FILE: music_x\android\settings.gradle.kts ----------
+rootProject.name = "music_hub"
+
+pluginManagement {
+    val flutterSdkPath =
+        run {
+            val properties = java.util.Properties()
+            file("local.properties").inputStream().use { properties.load(it) }
+            val flutterSdkPath = properties.getProperty("flutter.sdk")
+            require(flutterSdkPath != null) { "flutter.sdk not set in local.properties" }
+            flutterSdkPath
+        }
+
+    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+
+plugins {
+    id("dev.flutter.flutter-plugin-loader") version "1.0.0"
+    id("com.android.application") version "8.7.3" apply false
+    // START: FlutterFire Configuration
+    id("com.google.gms.google-services") version "4.4.2" apply false
+    // END: FlutterFire Configuration
+    id("org.jetbrains.kotlin.android") version "2.1.0" apply false
+    id("com.google.firebase.crashlytics") version "3.0.2" apply false
+}
+
+include(":app")
+
+
+---------- FILE: music_x\linux\flutter\generated_plugin_registrant.cc ----------
+//
+//  Generated file. Do not edit.
+//
+
+// clang-format off
+
+#include "generated_plugin_registrant.h"
+
+#include <flutter_acrylic/flutter_acrylic_plugin.h>
+#include <flutter_secure_storage_linux/flutter_secure_storage_linux_plugin.h>
+#include <screen_retriever_linux/screen_retriever_linux_plugin.h>
+#include <system_tray/system_tray_plugin.h>
+#include <window_manager/window_manager_plugin.h>
+
+void fl_register_plugins(FlPluginRegistry* registry) {
+  g_autoptr(FlPluginRegistrar) flutter_acrylic_registrar =
+      fl_plugin_registry_get_registrar_for_plugin(registry, "FlutterAcrylicPlugin");
+  flutter_acrylic_plugin_register_with_registrar(flutter_acrylic_registrar);
+  g_autoptr(FlPluginRegistrar) flutter_secure_storage_linux_registrar =
+      fl_plugin_registry_get_registrar_for_plugin(registry, "FlutterSecureStorageLinuxPlugin");
+  flutter_secure_storage_linux_plugin_register_with_registrar(flutter_secure_storage_linux_registrar);
+  g_autoptr(FlPluginRegistrar) screen_retriever_linux_registrar =
+      fl_plugin_registry_get_registrar_for_plugin(registry, "ScreenRetrieverLinuxPlugin");
+  screen_retriever_linux_plugin_register_with_registrar(screen_retriever_linux_registrar);
+  g_autoptr(FlPluginRegistrar) system_tray_registrar =
+      fl_plugin_registry_get_registrar_for_plugin(registry, "SystemTrayPlugin");
+  system_tray_plugin_register_with_registrar(system_tray_registrar);
+  g_autoptr(FlPluginRegistrar) window_manager_registrar =
+      fl_plugin_registry_get_registrar_for_plugin(registry, "WindowManagerPlugin");
+  window_manager_plugin_register_with_registrar(window_manager_registrar);
+}
+
+
+---------- FILE: music_x\linux\flutter\generated_plugin_registrant.h ----------
+//
+//  Generated file. Do not edit.
+//
+
+// clang-format off
+
+#ifndef GENERATED_PLUGIN_REGISTRANT_
+#define GENERATED_PLUGIN_REGISTRANT_
+
+#include <flutter_linux/flutter_linux.h>
+
+// Registers Flutter plugins.
+void fl_register_plugins(FlPluginRegistry* registry);
+
+#endif  // GENERATED_PLUGIN_REGISTRANT_
+
+
+---------- FILE: music_x\linux\flutter\generated_plugins.cmake ----------
+#
+# Generated file, do not edit.
+#
+
+list(APPEND FLUTTER_PLUGIN_LIST
+  flutter_acrylic
+  flutter_secure_storage_linux
+  screen_retriever_linux
+  system_tray
+  window_manager
+)
+
+list(APPEND FLUTTER_FFI_PLUGIN_LIST
+)
+
+set(PLUGIN_BUNDLED_LIBRARIES)
+
+foreach(plugin ${FLUTTER_PLUGIN_LIST})
+  add_subdirectory(flutter/ephemeral/.plugin_symlinks/${plugin}/linux plugins/${plugin})
+  target_link_libraries(${BINARY_NAME} PRIVATE ${plugin}_plugin)
+  list(APPEND PLUGIN_BUNDLED_LIBRARIES $<TARGET_FILE:${plugin}_plugin>)
+  list(APPEND PLUGIN_BUNDLED_LIBRARIES ${${plugin}_bundled_libraries})
+endforeach(plugin)
+
+foreach(ffi_plugin ${FLUTTER_FFI_PLUGIN_LIST})
+  add_subdirectory(flutter/ephemeral/.plugin_symlinks/${ffi_plugin}/linux plugins/${ffi_plugin})
+  list(APPEND PLUGIN_BUNDLED_LIBRARIES ${${ffi_plugin}_bundled_libraries})
+endforeach(ffi_plugin)
+
+
+---------- FILE: music_x\linux\runner\main.cc ----------
+#include "my_application.h"
+
+int main(int argc, char** argv) {
+  g_autoptr(MyApplication) app = my_application_new();
+  return g_application_run(G_APPLICATION(app), argc, argv);
+}
+
+
+---------- FILE: music_x\linux\runner\my_application.cc ----------
+#include "my_application.h"
+
+#include <flutter_linux/flutter_linux.h>
+#ifdef GDK_WINDOWING_X11
+#include <gdk/gdkx.h>
+#endif
+
+#include "flutter/generated_plugin_registrant.h"
+
+struct _MyApplication {
+  GtkApplication parent_instance;
+  char** dart_entrypoint_arguments;
+};
+
+G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
+
+// Called when first Flutter frame received.
+static void first_frame_cb(MyApplication* self, FlView *view)
+{
+  gtk_widget_show(gtk_widget_get_toplevel(GTK_WIDGET(view)));
+}
+
+// Implements GApplication::activate.
+static void my_application_activate(GApplication* application) {
+  MyApplication* self = MY_APPLICATION(application);
+  GtkWindow* window =
+      GTK_WINDOW(gtk_application_window_new(GTK_APPLICATION(application)));
+
+  // Use a header bar when running in GNOME as this is the common style used
+  // by applications and is the setup most users will be using (e.g. Ubuntu
+  // desktop).
+  // If running on X and not using GNOME then just use a traditional title bar
+  // in case the window manager does more exotic layout, e.g. tiling.
+  // If running on Wayland assume the header bar will work (may need changing
+  // if future cases occur).
+  gboolean use_header_bar = TRUE;
+#ifdef GDK_WINDOWING_X11
+  GdkScreen* screen = gtk_window_get_screen(window);
+  if (GDK_IS_X11_SCREEN(screen)) {
+    const gchar* wm_name = gdk_x11_screen_get_window_manager_name(screen);
+    if (g_strcmp0(wm_name, "GNOME Shell") != 0) {
+      use_header_bar = FALSE;
+    }
+  }
+#endif
+  if (use_header_bar) {
+    GtkHeaderBar* header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
+    gtk_widget_show(GTK_WIDGET(header_bar));
+    gtk_header_bar_set_title(header_bar, "music_x");
+    gtk_header_bar_set_show_close_button(header_bar, TRUE);
+    gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
+  } else {
+    gtk_window_set_title(window, "music_x");
+  }
+
+  gtk_window_set_default_size(window, 1280, 720);
+
+  g_autoptr(FlDartProject) project = fl_dart_project_new();
+  fl_dart_project_set_dart_entrypoint_arguments(project, self->dart_entrypoint_arguments);
+
+  FlView* view = fl_view_new(project);
+  GdkRGBA background_color;
+  // Background defaults to black, override it here if necessary, e.g. #00000000 for transparent.
+  gdk_rgba_parse(&background_color, "#000000");
+  fl_view_set_background_color(view, &background_color);
+  gtk_widget_show(GTK_WIDGET(view));
+  gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(view));
+
+  // Show the window when Flutter renders.
+  // Requires the view to be realized so we can start rendering.
+  g_signal_connect_swapped(view, "first-frame", G_CALLBACK(first_frame_cb), self);
+  gtk_widget_realize(GTK_WIDGET(view));
+
+  fl_register_plugins(FL_PLUGIN_REGISTRY(view));
+
+  gtk_widget_grab_focus(GTK_WIDGET(view));
+}
+
+// Implements GApplication::local_command_line.
+static gboolean my_application_local_command_line(GApplication* application, gchar*** arguments, int* exit_status) {
+  MyApplication* self = MY_APPLICATION(application);
+  // Strip out the first argument as it is the binary name.
+  self->dart_entrypoint_arguments = g_strdupv(*arguments + 1);
+
+  g_autoptr(GError) error = nullptr;
+  if (!g_application_register(application, nullptr, &error)) {
+     g_warning("Failed to register: %s", error->message);
+     *exit_status = 1;
+     return TRUE;
+  }
+
+  g_application_activate(application);
+  *exit_status = 0;
+
+  return TRUE;
+}
+
+// Implements GApplication::startup.
+static void my_application_startup(GApplication* application) {
+  //MyApplication* self = MY_APPLICATION(object);
+
+  // Perform any actions required at application startup.
+
+  G_APPLICATION_CLASS(my_application_parent_class)->startup(application);
+}
+
+// Implements GApplication::shutdown.
+static void my_application_shutdown(GApplication* application) {
+  //MyApplication* self = MY_APPLICATION(object);
+
+  // Perform any actions required at application shutdown.
+
+  G_APPLICATION_CLASS(my_application_parent_class)->shutdown(application);
+}
+
+// Implements GObject::dispose.
+static void my_application_dispose(GObject* object) {
+  MyApplication* self = MY_APPLICATION(object);
+  g_clear_pointer(&self->dart_entrypoint_arguments, g_strfreev);
+  G_OBJECT_CLASS(my_application_parent_class)->dispose(object);
+}
+
+static void my_application_class_init(MyApplicationClass* klass) {
+  G_APPLICATION_CLASS(klass)->activate = my_application_activate;
+  G_APPLICATION_CLASS(klass)->local_command_line = my_application_local_command_line;
+  G_APPLICATION_CLASS(klass)->startup = my_application_startup;
+  G_APPLICATION_CLASS(klass)->shutdown = my_application_shutdown;
+  G_OBJECT_CLASS(klass)->dispose = my_application_dispose;
+}
+
+static void my_application_init(MyApplication* self) {}
+
+MyApplication* my_application_new() {
+  // Set the program name to the application ID, which helps various systems
+  // like GTK and desktop environments map this running application to its
+  // corresponding .desktop file. This ensures better integration by allowing
+  // the application to be recognized beyond its binary name.
+  g_set_prgname(APPLICATION_ID);
+
+  return MY_APPLICATION(g_object_new(my_application_get_type(),
+                                     "application-id", APPLICATION_ID,
+                                     "flags", G_APPLICATION_NON_UNIQUE,
+                                     nullptr));
+}
+
+
+---------- FILE: music_x\linux\runner\my_application.h ----------
+#ifndef FLUTTER_MY_APPLICATION_H_
+#define FLUTTER_MY_APPLICATION_H_
+
+#include <gtk/gtk.h>
+
+G_DECLARE_FINAL_TYPE(MyApplication, my_application, MY, APPLICATION,
+                     GtkApplication)
+
+/**
+ * my_application_new:
+ *
+ * Creates a new Flutter-based application.
+ *
+ * Returns: a new #MyApplication.
+ */
+MyApplication* my_application_new();
+
+#endif  // FLUTTER_MY_APPLICATION_H_
+
+
+---------- FILE: music_x\pubspec.yaml ----------
+name: music_hub
+description: "Um player de música completo com download, reprodução e edição de tags."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  dart_tags: ^0.4.1
+  file_picker: ^8.0.7
+  http: ^1.2.1
+  sqflite: ^2.3.3
+  path: ^1.9.0
+  archive: ^3.6.1
+  just_audio: ^0.10.5
+  just_audio_windows: ^0.2.1
+  audio_session: ^0.1.21
+  # Removed media_kit
+  # Removed media_kit_libs_windows_audio
+  nearby_connections: ^4.3.0
+  permission_handler: ^12.0.1
+  shared_preferences: ^2.2.3
+  system_tray: ^2.0.3
+  window_manager: ^0.5.1
+  audio_service: ^0.18.18
+  shelf: ^1.4.2
+  shelf_static: ^1.1.3
+  network_info_plus: ^7.0.0
+  xml: ^6.5.0
+  firebase_core: ^4.3.0
+  cloud_firestore: ^6.1.1
+  firebase_auth: ^6.1.3
+  firebase_analytics: ^12.1.0
+  firebase_crashlytics: ^5.0.6
+  encrypt: ^5.0.3
+  flutter_secure_storage: ^9.2.2
+  local_auth: ^3.0.0
+  connectivity_plus: ^6.1.1
+  palette_generator_master: ^1.0.1
+  meta: ^1.11.0
+  rxdart: ^0.27.7
+  fluent_ui: ^4.13.0
+  path_provider: ^2.1.5
+  sqflite_common_ffi: ^2.3.3
+  flutter_acrylic: ^1.1.4
+  youtube_explode_dart: ^3.0.5
+  wakelock_plus: ^1.2.8
+  ffmpeg_kit_flutter: ^6.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
+  flutter_lints: ^6.0.0
+  alchemist: ^0.13.0
+
+
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+
+
+
+---------- FILE: music_x\windows\flutter\generated_plugin_registrant.cc ----------
+//
+//  Generated file. Do not edit.
+//
+
+// clang-format off
+
+#include "generated_plugin_registrant.h"
+
+#include <cloud_firestore/cloud_firestore_plugin_c_api.h>
+#include <connectivity_plus/connectivity_plus_windows_plugin.h>
+#include <firebase_auth/firebase_auth_plugin_c_api.h>
+#include <firebase_core/firebase_core_plugin_c_api.h>
+#include <flutter_acrylic/flutter_acrylic_plugin.h>
+#include <flutter_secure_storage_windows/flutter_secure_storage_windows_plugin.h>
+#include <just_audio_windows/just_audio_windows_plugin.h>
+#include <local_auth_windows/local_auth_plugin.h>
+#include <permission_handler_windows/permission_handler_windows_plugin.h>
+#include <screen_retriever_windows/screen_retriever_windows_plugin_c_api.h>
+#include <system_tray/system_tray_plugin.h>
+#include <window_manager/window_manager_plugin.h>
+
+void RegisterPlugins(flutter::PluginRegistry* registry) {
+  CloudFirestorePluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("CloudFirestorePluginCApi"));
+  ConnectivityPlusWindowsPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("ConnectivityPlusWindowsPlugin"));
+  FirebaseAuthPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("FirebaseAuthPluginCApi"));
+  FirebaseCorePluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("FirebaseCorePluginCApi"));
+  FlutterAcrylicPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("FlutterAcrylicPlugin"));
+  FlutterSecureStorageWindowsPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("FlutterSecureStorageWindowsPlugin"));
+  JustAudioWindowsPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("JustAudioWindowsPlugin"));
+  LocalAuthPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("LocalAuthPlugin"));
+  PermissionHandlerWindowsPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("PermissionHandlerWindowsPlugin"));
+  ScreenRetrieverWindowsPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("ScreenRetrieverWindowsPluginCApi"));
+  SystemTrayPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("SystemTrayPlugin"));
+  WindowManagerPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("WindowManagerPlugin"));
+}
+
+
+---------- FILE: music_x\windows\flutter\generated_plugin_registrant.h ----------
+//
+//  Generated file. Do not edit.
+//
+
+// clang-format off
+
+#ifndef GENERATED_PLUGIN_REGISTRANT_
+#define GENERATED_PLUGIN_REGISTRANT_
+
+#include <flutter/plugin_registry.h>
+
+// Registers Flutter plugins.
+void RegisterPlugins(flutter::PluginRegistry* registry);
+
+#endif  // GENERATED_PLUGIN_REGISTRANT_
+
+
+---------- FILE: music_x\windows\flutter\generated_plugins.cmake ----------
+#
+# Generated file, do not edit.
+#
+
+list(APPEND FLUTTER_PLUGIN_LIST
+  cloud_firestore
+  connectivity_plus
+  firebase_auth
+  firebase_core
+  flutter_acrylic
+  flutter_secure_storage_windows
+  just_audio_windows
+  local_auth_windows
+  permission_handler_windows
+  screen_retriever_windows
+  system_tray
+  window_manager
+)
+
+list(APPEND FLUTTER_FFI_PLUGIN_LIST
+)
+
+set(PLUGIN_BUNDLED_LIBRARIES)
+
+foreach(plugin ${FLUTTER_PLUGIN_LIST})
+  add_subdirectory(flutter/ephemeral/.plugin_symlinks/${plugin}/windows plugins/${plugin})
+  target_link_libraries(${BINARY_NAME} PRIVATE ${plugin}_plugin)
+  list(APPEND PLUGIN_BUNDLED_LIBRARIES $<TARGET_FILE:${plugin}_plugin>)
+  list(APPEND PLUGIN_BUNDLED_LIBRARIES ${${plugin}_bundled_libraries})
+endforeach(plugin)
+
+foreach(ffi_plugin ${FLUTTER_FFI_PLUGIN_LIST})
+  add_subdirectory(flutter/ephemeral/.plugin_symlinks/${ffi_plugin}/windows plugins/${ffi_plugin})
+  list(APPEND PLUGIN_BUNDLED_LIBRARIES ${${ffi_plugin}_bundled_libraries})
+endforeach(ffi_plugin)
+
+
+---------- FILE: music_x\windows\runner\Runner.rc ----------
+// Microsoft Visual C++ generated resource script.
+//
+#pragma code_page(65001)
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_APP_ICON            ICON                    "resources\\app_icon.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+#if defined(FLUTTER_VERSION_MAJOR) && defined(FLUTTER_VERSION_MINOR) && defined(FLUTTER_VERSION_PATCH) && defined(FLUTTER_VERSION_BUILD)
+#define VERSION_AS_NUMBER FLUTTER_VERSION_MAJOR,FLUTTER_VERSION_MINOR,FLUTTER_VERSION_PATCH,FLUTTER_VERSION_BUILD
+#else
+#define VERSION_AS_NUMBER 1,0,0,0
+#endif
+
+#if defined(FLUTTER_VERSION)
+#define VERSION_AS_STRING FLUTTER_VERSION
+#else
+#define VERSION_AS_STRING "1.0.0"
+#endif
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION VERSION_AS_NUMBER
+ PRODUCTVERSION VERSION_AS_NUMBER
+ FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+#ifdef _DEBUG
+ FILEFLAGS VS_FF_DEBUG
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS VOS__WINDOWS32
+ FILETYPE VFT_APP
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "com.example" "\0"
+            VALUE "FileDescription", "music_x" "\0"
+            VALUE "FileVersion", VERSION_AS_STRING "\0"
+            VALUE "InternalName", "music_x" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
+            VALUE "OriginalFilename", "music_x.exe" "\0"
+            VALUE "ProductName", "music_x" "\0"
+            VALUE "ProductVersion", VERSION_AS_STRING "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
+
+---------- FILE: music_x\windows\runner\flutter_window.cpp ----------
+#include "flutter_window.h"
+
+#include <optional>
+
+#include "flutter/generated_plugin_registrant.h"
+
+FlutterWindow::FlutterWindow(const flutter::DartProject& project)
+    : project_(project) {}
+
+FlutterWindow::~FlutterWindow() {}
+
+bool FlutterWindow::OnCreate() {
+  if (!Win32Window::OnCreate()) {
+    return false;
+  }
+
+  RECT frame = GetClientArea();
+
+  // The size here must match the window dimensions to avoid unnecessary surface
+  // creation / destruction in the startup path.
+  flutter_controller_ = std::make_unique<flutter::FlutterViewController>(
+      frame.right - frame.left, frame.bottom - frame.top, project_);
+  // Ensure that basic setup of the controller was successful.
+  if (!flutter_controller_->engine() || !flutter_controller_->view()) {
+    return false;
+  }
+  RegisterPlugins(flutter_controller_->engine());
+  SetChildContent(flutter_controller_->view()->GetNativeWindow());
+
+  flutter_controller_->engine()->SetNextFrameCallback([&]() {
+    this->Show();
+  });
+
+  // Flutter can complete the first frame before the "show window" callback is
+  // registered. The following call ensures a frame is pending to ensure the
+  // window is shown. It is a no-op if the first frame hasn't completed yet.
+  flutter_controller_->ForceRedraw();
+
+  return true;
+}
+
+void FlutterWindow::OnDestroy() {
+  if (flutter_controller_) {
+    flutter_controller_ = nullptr;
+  }
+
+  Win32Window::OnDestroy();
+}
+
+LRESULT
+FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
+                              WPARAM const wparam,
+                              LPARAM const lparam) noexcept {
+  // Give Flutter, including plugins, an opportunity to handle window messages.
+  if (flutter_controller_) {
+    std::optional<LRESULT> result =
+        flutter_controller_->HandleTopLevelWindowProc(hwnd, message, wparam,
+                                                      lparam);
+    if (result) {
+      return *result;
+    }
+  }
+
+  switch (message) {
+    case WM_FONTCHANGE:
+      flutter_controller_->engine()->ReloadSystemFonts();
+      break;
+  }
+
+  return Win32Window::MessageHandler(hwnd, message, wparam, lparam);
+}
+
+
+---------- FILE: music_x\windows\runner\flutter_window.h ----------
+#ifndef RUNNER_FLUTTER_WINDOW_H_
+#define RUNNER_FLUTTER_WINDOW_H_
+
+#include <flutter/dart_project.h>
+#include <flutter/flutter_view_controller.h>
+
+#include <memory>
+
+#include "win32_window.h"
+
+// A window that does nothing but host a Flutter view.
+class FlutterWindow : public Win32Window {
+ public:
+  // Creates a new FlutterWindow hosting a Flutter view running |project|.
+  explicit FlutterWindow(const flutter::DartProject& project);
+  virtual ~FlutterWindow();
+
+ protected:
+  // Win32Window:
+  bool OnCreate() override;
+  void OnDestroy() override;
+  LRESULT MessageHandler(HWND window, UINT const message, WPARAM const wparam,
+                         LPARAM const lparam) noexcept override;
+
+ private:
+  // The project to run.
+  flutter::DartProject project_;
+
+  // The Flutter instance hosted by this window.
+  std::unique_ptr<flutter::FlutterViewController> flutter_controller_;
+};
+
+#endif  // RUNNER_FLUTTER_WINDOW_H_
+
+
+---------- FILE: music_x\windows\runner\main.cpp ----------
+#include <flutter/dart_project.h>
+#include <flutter/flutter_view_controller.h>
+#include <windows.h>
+
+#include "flutter_window.h"
+#include "utils.h"
+
+int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
+                      _In_ wchar_t *command_line, _In_ int show_command) {
+  // Attach to console when present (e.g., 'flutter run') or create a
+  // new console when running with a debugger.
+  if (!::AttachConsole(ATTACH_PARENT_PROCESS) && ::IsDebuggerPresent()) {
+    CreateAndAttachConsole();
+  }
+
+  // Initialize COM, so that it is available for use in the library and/or
+  // plugins.
+  ::CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+
+  flutter::DartProject project(L"data");
+
+  std::vector<std::string> command_line_arguments =
+      GetCommandLineArguments();
+
+  project.set_dart_entrypoint_arguments(std::move(command_line_arguments));
+
+  FlutterWindow window(project);
+  Win32Window::Point origin(10, 10);
+  Win32Window::Size size(1280, 720);
+  if (!window.Create(L"music_x", origin, size)) {
+    return EXIT_FAILURE;
+  }
+  window.SetQuitOnClose(true);
+
+  ::MSG msg;
+  while (::GetMessage(&msg, nullptr, 0, 0)) {
+    ::TranslateMessage(&msg);
+    ::DispatchMessage(&msg);
+  }
+
+  ::CoUninitialize();
+  return EXIT_SUCCESS;
+}
+
+
+---------- FILE: music_x\windows\runner\resource.h ----------
+//{{NO_DEPENDENCIES}}
+// Microsoft Visual C++ generated include file.
+// Used by Runner.rc
+//
+#define IDI_APP_ICON                    101
+
+// Next default values for new objects
+//
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        102
+#define _APS_NEXT_COMMAND_VALUE         40001
+#define _APS_NEXT_CONTROL_VALUE         1001
+#define _APS_NEXT_SYMED_VALUE           101
+#endif
+#endif
+
+
+---------- FILE: music_x\windows\runner\utils.cpp ----------
+#include "utils.h"
+
+#include <flutter_windows.h>
+#include <io.h>
+#include <stdio.h>
+#include <windows.h>
+
+#include <iostream>
+
+void CreateAndAttachConsole() {
+  if (::AllocConsole()) {
+    FILE *unused;
+    if (freopen_s(&unused, "CONOUT$", "w", stdout)) {
+      _dup2(_fileno(stdout), 1);
+    }
+    if (freopen_s(&unused, "CONOUT$", "w", stderr)) {
+      _dup2(_fileno(stdout), 2);
+    }
+    std::ios::sync_with_stdio();
+    FlutterDesktopResyncOutputStreams();
+  }
+}
+
+std::vector<std::string> GetCommandLineArguments() {
+  // Convert the UTF-16 command line arguments to UTF-8 for the Engine to use.
+  int argc;
+  wchar_t** argv = ::CommandLineToArgvW(::GetCommandLineW(), &argc);
+  if (argv == nullptr) {
+    return std::vector<std::string>();
+  }
+
+  std::vector<std::string> command_line_arguments;
+
+  // Skip the first argument as it's the binary name.
+  for (int i = 1; i < argc; i++) {
+    command_line_arguments.push_back(Utf8FromUtf16(argv[i]));
+  }
+
+  ::LocalFree(argv);
+
+  return command_line_arguments;
+}
+
+std::string Utf8FromUtf16(const wchar_t* utf16_string) {
+  if (utf16_string == nullptr) {
+    return std::string();
+  }
+  unsigned int target_length = ::WideCharToMultiByte(
+      CP_UTF8, WC_ERR_INVALID_CHARS, utf16_string,
+      -1, nullptr, 0, nullptr, nullptr)
+    -1; // remove the trailing null character
+  int input_length = (int)wcslen(utf16_string);
+  std::string utf8_string;
+  if (target_length == 0 || target_length > utf8_string.max_size()) {
+    return utf8_string;
+  }
+  utf8_string.resize(target_length);
+  int converted_length = ::WideCharToMultiByte(
+      CP_UTF8, WC_ERR_INVALID_CHARS, utf16_string,
+      input_length, utf8_string.data(), target_length, nullptr, nullptr);
+  if (converted_length == 0) {
+    return std::string();
+  }
+  return utf8_string;
+}
+
+
+---------- FILE: music_x\windows\runner\utils.h ----------
+#ifndef RUNNER_UTILS_H_
+#define RUNNER_UTILS_H_
+
+#include <string>
+#include <vector>
+
+// Creates a console for the process, and redirects stdout and stderr to
+// it for both the runner and the Flutter library.
+void CreateAndAttachConsole();
+
+// Takes a null-terminated wchar_t* encoded in UTF-16 and returns a std::string
+// encoded in UTF-8. Returns an empty std::string on failure.
+std::string Utf8FromUtf16(const wchar_t* utf16_string);
+
+// Gets the command line arguments passed in as a std::vector<std::string>,
+// encoded in UTF-8. Returns an empty std::vector<std::string> on failure.
+std::vector<std::string> GetCommandLineArguments();
+
+#endif  // RUNNER_UTILS_H_
+
+
+---------- FILE: music_x\windows\runner\win32_window.cpp ----------
+#include "win32_window.h"
+
+#include <dwmapi.h>
+#include <flutter_windows.h>
+
+#include "resource.h"
+
+namespace {
+
+/// Window attribute that enables dark mode window decorations.
+///
+/// Redefined in case the developer's machine has a Windows SDK older than
+/// version 10.0.22000.0.
+/// See: https://docs.microsoft.com/windows/win32/api/dwmapi/ne-dwmapi-dwmwindowattribute
+#ifndef DWMWA_USE_IMMERSIVE_DARK_MODE
+#define DWMWA_USE_IMMERSIVE_DARK_MODE 20
+#endif
+
+constexpr const wchar_t kWindowClassName[] = L"FLUTTER_RUNNER_WIN32_WINDOW";
+
+/// Registry key for app theme preference.
+///
+/// A value of 0 indicates apps should use dark mode. A non-zero or missing
+/// value indicates apps should use light mode.
+constexpr const wchar_t kGetPreferredBrightnessRegKey[] =
+  L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize";
+constexpr const wchar_t kGetPreferredBrightnessRegValue[] = L"AppsUseLightTheme";
+
+// The number of Win32Window objects that currently exist.
+static int g_active_window_count = 0;
+
+using EnableNonClientDpiScaling = BOOL __stdcall(HWND hwnd);
+
+// Scale helper to convert logical scaler values to physical using passed in
+// scale factor
+int Scale(int source, double scale_factor) {
+  return static_cast<int>(source * scale_factor);
+}
+
+// Dynamically loads the |EnableNonClientDpiScaling| from the User32 module.
+// This API is only needed for PerMonitor V1 awareness mode.
+void EnableFullDpiSupportIfAvailable(HWND hwnd) {
+  HMODULE user32_module = LoadLibraryA("User32.dll");
+  if (!user32_module) {
+    return;
+  }
+  auto enable_non_client_dpi_scaling =
+      reinterpret_cast<EnableNonClientDpiScaling*>(
+          GetProcAddress(user32_module, "EnableNonClientDpiScaling"));
+  if (enable_non_client_dpi_scaling != nullptr) {
+    enable_non_client_dpi_scaling(hwnd);
+  }
+  FreeLibrary(user32_module);
+}
+
+}  // namespace
+
+// Manages the Win32Window's window class registration.
+class WindowClassRegistrar {
+ public:
+  ~WindowClassRegistrar() = default;
+
+  // Returns the singleton registrar instance.
+  static WindowClassRegistrar* GetInstance() {
+    if (!instance_) {
+      instance_ = new WindowClassRegistrar();
+    }
+    return instance_;
+  }
+
+  // Returns the name of the window class, registering the class if it hasn't
+  // previously been registered.
+  const wchar_t* GetWindowClass();
+
+  // Unregisters the window class. Should only be called if there are no
+  // instances of the window.
+  void UnregisterWindowClass();
+
+ private:
+  WindowClassRegistrar() = default;
+
+  static WindowClassRegistrar* instance_;
+
+  bool class_registered_ = false;
+};
+
+WindowClassRegistrar* WindowClassRegistrar::instance_ = nullptr;
+
+const wchar_t* WindowClassRegistrar::GetWindowClass() {
+  if (!class_registered_) {
+    WNDCLASS window_class{};
+    window_class.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    window_class.lpszClassName = kWindowClassName;
+    window_class.style = CS_HREDRAW | CS_VREDRAW;
+    window_class.cbClsExtra = 0;
+    window_class.cbWndExtra = 0;
+    window_class.hInstance = GetModuleHandle(nullptr);
+    window_class.hIcon =
+        LoadIcon(window_class.hInstance, MAKEINTRESOURCE(IDI_APP_ICON));
+    window_class.hbrBackground = 0;
+    window_class.lpszMenuName = nullptr;
+    window_class.lpfnWndProc = Win32Window::WndProc;
+    RegisterClass(&window_class);
+    class_registered_ = true;
+  }
+  return kWindowClassName;
+}
+
+void WindowClassRegistrar::UnregisterWindowClass() {
+  UnregisterClass(kWindowClassName, nullptr);
+  class_registered_ = false;
+}
+
+Win32Window::Win32Window() {
+  ++g_active_window_count;
+}
+
+Win32Window::~Win32Window() {
+  --g_active_window_count;
+  Destroy();
+}
+
+bool Win32Window::Create(const std::wstring& title,
+                         const Point& origin,
+                         const Size& size) {
+  Destroy();
+
+  const wchar_t* window_class =
+      WindowClassRegistrar::GetInstance()->GetWindowClass();
+
+  const POINT target_point = {static_cast<LONG>(origin.x),
+                              static_cast<LONG>(origin.y)};
+  HMONITOR monitor = MonitorFromPoint(target_point, MONITOR_DEFAULTTONEAREST);
+  UINT dpi = FlutterDesktopGetDpiForMonitor(monitor);
+  double scale_factor = dpi / 96.0;
+
+  HWND window = CreateWindow(
+      window_class, title.c_str(), WS_OVERLAPPEDWINDOW,
+      Scale(origin.x, scale_factor), Scale(origin.y, scale_factor),
+      Scale(size.width, scale_factor), Scale(size.height, scale_factor),
+      nullptr, nullptr, GetModuleHandle(nullptr), this);
+
+  if (!window) {
+    return false;
+  }
+
+  UpdateTheme(window);
+
+  return OnCreate();
+}
+
+bool Win32Window::Show() {
+  return ShowWindow(window_handle_, SW_SHOWNORMAL);
+}
+
+// static
+LRESULT CALLBACK Win32Window::WndProc(HWND const window,
+                                      UINT const message,
+                                      WPARAM const wparam,
+                                      LPARAM const lparam) noexcept {
+  if (message == WM_NCCREATE) {
+    auto window_struct = reinterpret_cast<CREATESTRUCT*>(lparam);
+    SetWindowLongPtr(window, GWLP_USERDATA,
+                     reinterpret_cast<LONG_PTR>(window_struct->lpCreateParams));
+
+    auto that = static_cast<Win32Window*>(window_struct->lpCreateParams);
+    EnableFullDpiSupportIfAvailable(window);
+    that->window_handle_ = window;
+  } else if (Win32Window* that = GetThisFromHandle(window)) {
+    return that->MessageHandler(window, message, wparam, lparam);
+  }
+
+  return DefWindowProc(window, message, wparam, lparam);
+}
+
+LRESULT
+Win32Window::MessageHandler(HWND hwnd,
+                            UINT const message,
+                            WPARAM const wparam,
+                            LPARAM const lparam) noexcept {
+  switch (message) {
+    case WM_DESTROY:
+      window_handle_ = nullptr;
+      Destroy();
+      if (quit_on_close_) {
+        PostQuitMessage(0);
+      }
+      return 0;
+
+    case WM_DPICHANGED: {
+      auto newRectSize = reinterpret_cast<RECT*>(lparam);
+      LONG newWidth = newRectSize->right - newRectSize->left;
+      LONG newHeight = newRectSize->bottom - newRectSize->top;
+
+      SetWindowPos(hwnd, nullptr, newRectSize->left, newRectSize->top, newWidth,
+                   newHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+
+      return 0;
+    }
+    case WM_SIZE: {
+      RECT rect = GetClientArea();
+      if (child_content_ != nullptr) {
+        // Size and position the child window.
+        MoveWindow(child_content_, rect.left, rect.top, rect.right - rect.left,
+                   rect.bottom - rect.top, TRUE);
+      }
+      return 0;
+    }
+
+    case WM_ACTIVATE:
+      if (child_content_ != nullptr) {
+        SetFocus(child_content_);
+      }
+      return 0;
+
+    case WM_DWMCOLORIZATIONCOLORCHANGED:
+      UpdateTheme(hwnd);
+      return 0;
+  }
+
+  return DefWindowProc(window_handle_, message, wparam, lparam);
+}
+
+void Win32Window::Destroy() {
+  OnDestroy();
+
+  if (window_handle_) {
+    DestroyWindow(window_handle_);
+    window_handle_ = nullptr;
+  }
+  if (g_active_window_count == 0) {
+    WindowClassRegistrar::GetInstance()->UnregisterWindowClass();
+  }
+}
+
+Win32Window* Win32Window::GetThisFromHandle(HWND const window) noexcept {
+  return reinterpret_cast<Win32Window*>(
+      GetWindowLongPtr(window, GWLP_USERDATA));
+}
+
+void Win32Window::SetChildContent(HWND content) {
+  child_content_ = content;
+  SetParent(content, window_handle_);
+  RECT frame = GetClientArea();
+
+  MoveWindow(content, frame.left, frame.top, frame.right - frame.left,
+             frame.bottom - frame.top, true);
+
+  SetFocus(child_content_);
+}
+
+RECT Win32Window::GetClientArea() {
+  RECT frame;
+  GetClientRect(window_handle_, &frame);
+  return frame;
+}
+
+HWND Win32Window::GetHandle() {
+  return window_handle_;
+}
+
+void Win32Window::SetQuitOnClose(bool quit_on_close) {
+  quit_on_close_ = quit_on_close;
+}
+
+bool Win32Window::OnCreate() {
+  // No-op; provided for subclasses.
+  return true;
+}
+
+void Win32Window::OnDestroy() {
+  // No-op; provided for subclasses.
+}
+
+void Win32Window::UpdateTheme(HWND const window) {
+  DWORD light_mode;
+  DWORD light_mode_size = sizeof(light_mode);
+  LSTATUS result = RegGetValue(HKEY_CURRENT_USER, kGetPreferredBrightnessRegKey,
+                               kGetPreferredBrightnessRegValue,
+                               RRF_RT_REG_DWORD, nullptr, &light_mode,
+                               &light_mode_size);
+
+  if (result == ERROR_SUCCESS) {
+    BOOL enable_dark_mode = light_mode == 0;
+    DwmSetWindowAttribute(window, DWMWA_USE_IMMERSIVE_DARK_MODE,
+                          &enable_dark_mode, sizeof(enable_dark_mode));
+  }
+}
+
+
+---------- FILE: music_x\windows\runner\win32_window.h ----------
+#ifndef RUNNER_WIN32_WINDOW_H_
+#define RUNNER_WIN32_WINDOW_H_
+
+#include <windows.h>
+
+#include <functional>
+#include <memory>
+#include <string>
+
+// A class abstraction for a high DPI-aware Win32 Window. Intended to be
+// inherited from by classes that wish to specialize with custom
+// rendering and input handling
+class Win32Window {
+ public:
+  struct Point {
+    unsigned int x;
+    unsigned int y;
+    Point(unsigned int x, unsigned int y) : x(x), y(y) {}
+  };
+
+  struct Size {
+    unsigned int width;
+    unsigned int height;
+    Size(unsigned int width, unsigned int height)
+        : width(width), height(height) {}
+  };
+
+  Win32Window();
+  virtual ~Win32Window();
+
+  // Creates a win32 window with |title| that is positioned and sized using
+  // |origin| and |size|. New windows are created on the default monitor. Window
+  // sizes are specified to the OS in physical pixels, hence to ensure a
+  // consistent size this function will scale the inputted width and height as
+  // as appropriate for the default monitor. The window is invisible until
+  // |Show| is called. Returns true if the window was created successfully.
+  bool Create(const std::wstring& title, const Point& origin, const Size& size);
+
+  // Show the current window. Returns true if the window was successfully shown.
+  bool Show();
+
+  // Release OS resources associated with window.
+  void Destroy();
+
+  // Inserts |content| into the window tree.
+  void SetChildContent(HWND content);
+
+  // Returns the backing Window handle to enable clients to set icon and other
+  // window properties. Returns nullptr if the window has been destroyed.
+  HWND GetHandle();
+
+  // If true, closing this window will quit the application.
+  void SetQuitOnClose(bool quit_on_close);
+
+  // Return a RECT representing the bounds of the current client area.
+  RECT GetClientArea();
+
+ protected:
+  // Processes and route salient window messages for mouse handling,
+  // size change and DPI. Delegates handling of these to member overloads that
+  // inheriting classes can handle.
+  virtual LRESULT MessageHandler(HWND window,
+                                 UINT const message,
+                                 WPARAM const wparam,
+                                 LPARAM const lparam) noexcept;
+
+  // Called when CreateAndShow is called, allowing subclass window-related
+  // setup. Subclasses should return false if setup fails.
+  virtual bool OnCreate();
+
+  // Called when Destroy is called.
+  virtual void OnDestroy();
+
+ private:
+  friend class WindowClassRegistrar;
+
+  // OS callback called by message pump. Handles the WM_NCCREATE message which
+  // is passed when the non-client area is being created and enables automatic
+  // non-client DPI scaling so that the non-client area automatically
+  // responds to changes in DPI. All other messages are handled by
+  // MessageHandler.
+  static LRESULT CALLBACK WndProc(HWND const window,
+                                  UINT const message,
+                                  WPARAM const wparam,
+                                  LPARAM const lparam) noexcept;
+
+  // Retrieves a class instance pointer for |window|
+  static Win32Window* GetThisFromHandle(HWND const window) noexcept;
+
+  // Update the window frame's theme to match the system theme.
+  static void UpdateTheme(HWND const window);
+
+  bool quit_on_close_ = false;
+
+  // window handle for top level window.
+  HWND window_handle_ = nullptr;
+
+  // window handle for hosted content.
+  HWND child_content_ = nullptr;
+};
+
+#endif  // RUNNER_WIN32_WINDOW_H_
+
+
+---------- FILE: scripts\consolidate_project.ps1 ----------
+$files = Get-ChildItem -Path . -Recurse -File -Include *.dart, *.py, *.yml, *.yaml, *.iss -Exclude *node_modules*, *.git*, *analysis_results.txt*
+$output = "projeto music\codigo_projeto_music.txt"
+if (!(Test-Path "projeto music")) { New-Item -ItemType Directory "projeto music" }
+"--- CONSOLIDATED PROJECT CODE (STAGE 8) ---" | Out-File $output -Encoding utf8
+foreach ($file in $files) {
+    "--- FILE: $($file.FullName) ---" | Out-File $output -Append -Encoding utf8
+    Get-Content $file.FullName | Out-File $output -Append -Encoding utf8
+    "`n" | Out-File $output -Append -Encoding utf8
+}
+Write-Host "Consolidation complete: $output"
+
+
+---------- FILE: scripts\hermes_gate.ps1 ----------
+# Hermes 📦 Local Sentinel - Windows (PowerShell)
+# Logic parity with .github/workflows/quality-gate.yml
+
+$ErrorActionPreference = "Stop"
+
+Write-Host "`n📦 Hermes: Iniciando Portão de Qualidade Local...`n" -ForegroundColor Cyan
+
+Set-Location -Path "music_tag_editor"
+
+Write-Host "🧼 [1/3] Limpeza e Dependências..." -ForegroundColor Yellow
+flutter pub get
+
+Write-Host "✨ [2/3] Verificando Formatação e Análise..." -ForegroundColor Yellow
+dart format --set-exit-if-changed .
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ Erro de Formatação detectado! Execute 'dart format .' para corrigir." -ForegroundColor Red
+    exit 1
+}
+
+flutter analyze --no-fatal-infos --no-fatal-warnings
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ Erro de Análise (Linter) detectado!" -ForegroundColor Red
+    exit 1
+}
+
+Write-Host "🧪 [3/3] Executando Testes Unitários..." -ForegroundColor Yellow
+flutter test
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ Falha nos Testes!" -ForegroundColor Red
+    exit 1
+}
+
+Write-Host "`n✅ Portão de Qualidade Local: PASSOU! O código está pronto para o Hermes 📦`n" -ForegroundColor Green
+exit 0
+
+
+---------- FILE: scripts\hermes_gate.sh ----------
+#!/bin/bash
+# Hermes 📦 Local Sentinel - Bash
+# Logic parity with .github/workflows/quality-gate.yml
+
+set -e
+
+echo -e "\n📦 Hermes: Iniciando Portão de Qualidade Local...\n"
+
+cd music_tag_editor
+
+echo "🧼 [1/3] Limpeza e Dependências..."
+flutter pub get
+
+echo "✨ [2/3] Verificando Formatação e Análise..."
+if ! dart format --set-exit-if-changed . ; then
+    echo -e "\n❌ Erro de Formatação detectado! Execute 'dart format .' para corrigir."
+    exit 1
+fi
+
+flutter analyze --no-fatal-infos --no-fatal-warnings
+
+echo "🧪 [3/3] Executando Testes Unitários..."
+flutter test
+
+echo -e "\n✅ Portão de Qualidade Local: PASSOU! O código está pronto para o Hermes 📦\n"
+exit 0
+
+
+---------- FILE: scripts\hermes_status.ps1 ----------
+Write-Host "🏰 Hermes: The Architect's Citadel - Status Check" -ForegroundColor Cyan
+Write-Host "==================================================" -ForegroundColor Gray
+
+function Verify-Component ($Path, $Name) {
+    if (Test-Path $Path) {
+        Write-Host "✅ $Name found ($Path)" -ForegroundColor Green
+    }
+    else {
+        Write-Host "❌ $Name MISSING! ($Path)" -ForegroundColor Red
+        exit 1
+    }
+}
+
+Verify-Component "scripts/hermes_gate.sh" "The Sentinel (Web/Linux)"
+Verify-Component "scripts/hermes_gate.ps1" "The Sentinel (Windows)"
+Verify-Component "scripts/asset_guard.py" "The Alchemist (Asset Guard)"
+Verify-Component "scripts/license_warden.py" "The Warden (License Check)"
+
+Verify-Component ".github/workflows/quality-gate.yml" "The Gate (Workflow)"
+Verify-Component ".github/workflows/build-and-package.yml" "The Factory (Workflow)"
+Verify-Component ".jules/hermes.md" "The Journal"
+
+Write-Host "==================================================" -ForegroundColor Gray
+Write-Host "✨ All Systems Operational. The Citadel is Secure." -ForegroundColor Cyan
+
+
+---------- FILE: scripts\hermes_status.sh ----------
+#!/bin/bash
+
+echo "🏰 Hermes: The Architect's Citadel - Status Check"
+echo "=================================================="
+
+# Check for critical scripts
+verify_component() {
+  if [ -f "$1" ]; then
+    echo "✅ $2 found ($1)"
+  else
+    echo "❌ $2 MISSING! ($1)"
+    exit 1
+  fi
+}
+
+verify_component "scripts/hermes_gate.sh" "The Sentinel (Web/Linux)"
+verify_component "scripts/hermes_gate.ps1" "The Sentinel (Windows)"
+verify_component "scripts/asset_guard.py" "The Alchemist (Asset Guard)"
+verify_component "scripts/license_warden.py" "The Warden (License Check)"
+
+# Check for configuration files
+verify_component ".github/workflows/quality-gate.yml" "The Gate (Workflow)"
+verify_component ".github/workflows/build-and-package.yml" "The Factory (Workflow)"
+verify_component ".jules/hermes.md" "The Journal"
+
+echo "=================================================="
+echo "✨ All Systems Operational. The Citadel is Secure."
+
+

@@ -1,0 +1,664 @@
+================================================================================
+PROCESS AUDIT: processo_login_seguranca.txt
+DATE: 2026-01-08 15:23:23
+FILE COUNT: 7
+================================================================================
+
+---------- FILE: music_x\android\app\google-services.json ----------
+{
+  "project_info": {
+    "project_number": "823653472108",
+    "project_id": "app-music-2000",
+    "storage_bucket": "app-music-2000.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823653472108:android:2ec67221497e990930c549",
+        "android_client_info": {
+          "package_name": "com.example.music_player"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7cVQ7MZGDVSyCkBzb2GfADpN4EGryE3k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823653472108:android:e0f65720ed60d44e30c549",
+        "android_client_info": {
+          "package_name": "com.example.music_tag_editor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7cVQ7MZGDVSyCkBzb2GfADpN4EGryE3k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
+
+---------- FILE: music_x\lib\core\services\auth_service.dart ----------
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:music_hub/core/services/security_service.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
+
+class AuthService extends ChangeNotifier {
+  static AuthService? _instance;
+  static AuthService get instance => _instance ??= AuthService._internal();
+
+  @visibleForTesting
+  static set instance(AuthService mock) => _instance = mock;
+
+  @visibleForTesting
+  static void resetInstance() {
+    _instance = null;
+  }
+
+  AuthService._internal({FirebaseAuth? auth, SecurityService? securityService})
+      : _authOverride = auth,
+        _securityService = securityService ?? SecurityService.instance;
+
+  @visibleForTesting
+  factory AuthService.test(
+          {FirebaseAuth? auth, SecurityService? securityService}) =>
+      AuthService._internal(auth: auth, securityService: securityService);
+
+  final FirebaseAuth? _authOverride;
+  FirebaseAuth get _auth => _authOverride ?? FirebaseAuth.instance;
+  final SecurityService _securityService;
+  User? _user;
+
+  User? get user => _user;
+  bool get isAuthenticated => _user != null;
+
+  void init() {
+    _auth.authStateChanges().listen((User? user) {
+      _user = user;
+      notifyListeners();
+    });
+  }
+
+  Future<bool> login(String email, String password) async {
+    StartupLogger.log('[AuthService] Attempting login for: $email');
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      StartupLogger.log('[AuthService] Login SUCCESS for: $email');
+      return true;
+    } catch (e) {
+      StartupLogger.log('[AuthService] Login FAILED for $email: $e');
+      return false;
+    }
+  }
+
+  Future<bool> register(String email, String password) async {
+    StartupLogger.log('[AuthService] Attempting registration for: $email');
+    try {
+      await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      StartupLogger.log('[AuthService] Registration SUCCESS for: $email');
+      return true;
+    } catch (e) {
+      StartupLogger.log('[AuthService] Registration FAILED for $email: $e');
+      return false;
+    }
+  }
+
+  Future<void> logout() async {
+    await _auth.signOut();
+  }
+
+  Future<bool> sendPasswordReset(String email) async {
+    StartupLogger.log('[AuthService] Attempting password reset for: $email');
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      StartupLogger.log('[AuthService] Password reset email SENT to: $email');
+      return true;
+    } catch (e) {
+      StartupLogger.log('[AuthService] Password reset FAILED for $email: $e');
+      return false;
+    }
+  }
+
+  Future<bool> recoverVaultAccess(String email, String newVaultPassword) async {
+    if (_user == null || _user!.email != email) {
+      return false;
+    }
+
+    try {
+      await _securityService.resetVaultPassword(newVaultPassword);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+}
+
+
+---------- FILE: music_x\lib\core\services\security_service.dart ----------
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
+import 'dart:convert';
+import 'dart:math';
+
+class SecurityService {
+  static SecurityService? _instance;
+  static SecurityService get instance =>
+      _instance ??= SecurityService._internal();
+  static set instance(SecurityService value) => _instance = value;
+  static void resetInstance() => _instance = null;
+
+  SecurityService._internal();
+
+  final _storage = const FlutterSecureStorage();
+
+  // Cache for the master key to avoid repeated secure storage reads
+  encrypt.Key? _masterKey;
+
+  Future<void> init() async {
+    await _getOrCreateMasterKey();
+  }
+
+  Future<encrypt.Key> _getOrCreateMasterKey() async {
+    if (_masterKey != null) {
+      return _masterKey!;
+    }
+
+    String? keyString = await _storage.read(key: 'master_encryption_key');
+    if (keyString == null) {
+      // Generate a new 32-byte key
+      final random = Random.secure();
+      final values = List<int>.generate(32, (i) => random.nextInt(256));
+      keyString = base64Url.encode(values);
+      await _storage.write(key: 'master_encryption_key', value: keyString);
+    }
+
+    _masterKey = encrypt.Key.fromBase64(keyString);
+    return _masterKey!;
+  }
+
+  /// Encrypts a string (e.g. for database fields)
+  Future<String> encryptString(String plainText) async {
+    final key = await _getOrCreateMasterKey();
+    final iv = encrypt.IV.fromLength(16);
+    final encrypter = encrypt.Encrypter(encrypt.AES(key));
+
+    final encrypted = encrypter.encrypt(plainText, iv: iv);
+    // Combine IV and encrypted data for storage
+    return '${iv.base64}:${encrypted.base64}';
+  }
+
+  /// Decrypts a string
+  Future<String> decryptString(String encryptedData) async {
+    try {
+      final parts = encryptedData.split(':');
+      if (parts.length != 2) {
+        return encryptedData;
+      }
+
+      final key = await _getOrCreateMasterKey();
+      final iv = encrypt.IV.fromBase64(parts[0]);
+      final encrypter = encrypt.Encrypter(encrypt.AES(key));
+
+      return encrypter.decrypt64(parts[1], iv: iv);
+    } catch (e) {
+      return encryptedData; // Return original if decryption fails
+    }
+  }
+
+  /// Specialized key for the Vault (can be reset via 2FA)
+  Future<void> setupVaultPassword(String password) async {
+    // We derive a key from the password or simply store the password securely
+    // For simplicity in recovery, we'll store the vault key encrypted by the master key
+    // but protected by the user's knowledge of the password.
+    final vaultKey = encrypt.Key.fromSecureRandom(32).base64;
+    await _storage.write(key: 'vault_internal_key', value: vaultKey);
+    await _storage.write(
+        key: 'vault_password_hash', value: _hashPassword(password));
+  }
+
+  String _hashPassword(String password) {
+    // Simple hash for demo, in production use stronger KDF like Argon2
+    final hash = base64Url.encode(utf8.encode(password));
+    return hash.length > 20 ? hash.substring(0, 20) : hash;
+  }
+
+  Future<bool> unlockVault(String password) async {
+    final storedHash = await _storage.read(key: 'vault_password_hash');
+    return storedHash == _hashPassword(password);
+  }
+
+  Future<void> resetVaultPassword(String newPassword) async {
+    // This would be called after a successful 2FA recovery flow
+    await _storage.write(
+        key: 'vault_password_hash', value: _hashPassword(newPassword));
+  }
+
+  Future<void> logout() async {
+    _masterKey = null;
+    await _storage.deleteAll();
+  }
+}
+
+
+---------- FILE: music_x\lib\features\security\vault\vault_screen.dart ----------
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:music_hub/features/library/models/search_models.dart';
+import 'package:music_hub/core/services/security_service.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/features/security/vault/views/fluent_vault_view.dart';
+import 'package:music_hub/features/security/vault/views/material_vault_view.dart';
+
+/// VaultScreen controller - platform-adaptive
+class VaultScreen extends StatefulWidget {
+  const VaultScreen({super.key});
+
+  @override
+  State<VaultScreen> createState() => _VaultScreenState();
+}
+
+class _VaultScreenState extends State<VaultScreen> {
+  final _passwordController = TextEditingController();
+  bool _isUnlocked = false;
+  List<SearchResult> _tracks = [];
+
+  Future<void> _unlock() async {
+    final password = _passwordController.text;
+    final success = await SecurityService.instance.unlockVault(password);
+    if (success) {
+      _loadTracks();
+    } else {
+      _showError('Senha incorreta.');
+    }
+  }
+
+  Future<void> _loadTracks() async {
+    final allTracks = await DatabaseService.instance.getAllTracks();
+    if (mounted) {
+      setState(() {
+        _isUnlocked = true;
+        _tracks = allTracks.where((t) => t.isVault).toList();
+      });
+    }
+  }
+
+  void _lock() => setState(() {
+        _isUnlocked = false;
+        _tracks.clear();
+        _passwordController.clear();
+      });
+
+  void _playTrack(SearchResult track) =>
+      PlaybackService.instance.playSearchResult(track);
+
+  void _removeFromVault(SearchResult track) async {
+    await DatabaseService.instance.toggleVault(track.id, false);
+    _loadTracks();
+  }
+
+  void _showError(String message) {
+    final platform = defaultTargetPlatform;
+    if (platform == TargetPlatform.windows ||
+        platform == TargetPlatform.macOS ||
+        platform == TargetPlatform.linux) {
+      fluent.displayInfoBar(context,
+          builder: (_, close) => fluent.InfoBar(
+              title: Text(message),
+              severity: fluent.InfoBarSeverity.error,
+              onClose: close));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final platform = defaultTargetPlatform;
+    switch (platform) {
+      case TargetPlatform.windows:
+      case TargetPlatform.macOS:
+      case TargetPlatform.linux:
+        return FluentVaultView(
+            isUnlocked: _isUnlocked,
+            tracks: _tracks,
+            passwordController: _passwordController,
+            onUnlock: _unlock,
+            onLock: _lock,
+            onPlayTrack: _playTrack,
+            onRemoveFromVault: _removeFromVault);
+      default:
+        return MaterialVaultView(
+            isUnlocked: _isUnlocked,
+            tracks: _tracks,
+            passwordController: _passwordController,
+            onUnlock: _unlock,
+            onLock: _lock,
+            onPlayTrack: _playTrack,
+            onRemoveFromVault: _removeFromVault);
+    }
+  }
+}
+
+
+---------- FILE: music_x\lib\features\security\vault\views\fluent_vault_view.dart ----------
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+
+/// Fluent UI view for VaultScreen - WinUI 3 styling
+class FluentVaultView extends StatelessWidget {
+  final bool isUnlocked;
+  final List<SearchResult> tracks;
+  final TextEditingController passwordController;
+  final VoidCallback onUnlock;
+  final VoidCallback onLock;
+  final void Function(SearchResult) onPlayTrack;
+  final void Function(SearchResult) onRemoveFromVault;
+
+  const FluentVaultView({
+    super.key,
+    required this.isUnlocked,
+    required this.tracks,
+    required this.passwordController,
+    required this.onUnlock,
+    required this.onLock,
+    required this.onPlayTrack,
+    required this.onRemoveFromVault,
+  });
+
+  @override
+  Widget build(BuildContext context) => ScaffoldPage(
+        header: PageHeader(
+          title: const Text('Cofre Privado'),
+          leading: Navigator.canPop(context)
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: IconButton(
+                    icon: const Icon(FluentIcons.back),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                )
+              : null,
+          commandBar: isUnlocked
+              ? CommandBar(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  primaryItems: [
+                      CommandBarButton(
+                          icon: const Icon(FluentIcons.lock),
+                          label: const Text('Bloquear'),
+                          onPressed: onLock),
+                    ])
+              : null,
+        ),
+        content: !isUnlocked
+            ? _buildUnlockView(context)
+            : _buildVaultContent(context),
+      );
+
+  Widget _buildUnlockView(BuildContext context) => Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 400),
+          child: Card(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(FluentIcons.shield_alert,
+                    size: 64, color: fluent.Colors.orange),
+                const SizedBox(height: 16),
+                Text('Cofre Bloqueado',
+                    style: FluentTheme.of(context).typography.title),
+                const SizedBox(height: 8),
+                const Text('Digite sua senha para acessar músicas privadas.'),
+                const SizedBox(height: 24),
+                PasswordBox(
+                    controller: passwordController, placeholder: 'Senha'),
+                const SizedBox(height: 16),
+                FilledButton(
+                    onPressed: onUnlock,
+                    child: const Padding(
+                        padding: EdgeInsets.all(12),
+                        child: Text('Desbloquear'))),
+              ],
+            ),
+          ),
+        ),
+      );
+
+  Widget _buildVaultContent(BuildContext context) {
+    if (tracks.isEmpty) {
+      return Center(
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+        Icon(FluentIcons.folder,
+            size: 64, color: FluentTheme.of(context).inactiveColor),
+        const SizedBox(height: 16),
+        const Text('Seu cofre está vazio.')
+      ]));
+    }
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: tracks.length,
+      itemBuilder: (context, index) {
+        final track = tracks[index];
+        return Card(
+          margin: const EdgeInsets.only(bottom: 8),
+          child: ListTile(
+            leading: Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                    color: Colors.purple.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(8)),
+                child: track.thumbnail != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(track.thumbnail!,
+                            fit: BoxFit.cover, cacheWidth: 150))
+                    : const Icon(FluentIcons.music_note)),
+            title: Text(track.title,
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text(track.artist),
+            trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+              IconButton(
+                  icon: const Icon(FluentIcons.play),
+                  onPressed: () => onPlayTrack(track)),
+              IconButton(
+                  icon: const Icon(FluentIcons.lock),
+                  onPressed: () => onRemoveFromVault(track)),
+            ]),
+          ),
+        );
+      },
+    );
+  }
+}
+
+
+---------- FILE: music_x\lib\features\security\vault\views\material_vault_view.dart ----------
+import 'package:flutter/material.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+
+/// Material Design view for VaultScreen
+class MaterialVaultView extends StatelessWidget {
+  final bool isUnlocked;
+  final List<SearchResult> tracks;
+  final TextEditingController passwordController;
+  final VoidCallback onUnlock;
+  final VoidCallback onLock;
+  final void Function(SearchResult) onPlayTrack;
+  final void Function(SearchResult) onRemoveFromVault;
+
+  const MaterialVaultView({
+    super.key,
+    required this.isUnlocked,
+    required this.tracks,
+    required this.passwordController,
+    required this.onUnlock,
+    required this.onLock,
+    required this.onPlayTrack,
+    required this.onRemoveFromVault,
+  });
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Cofre Privado'),
+          actions: isUnlocked
+              ? [IconButton(icon: const Icon(Icons.lock), onPressed: onLock)]
+              : null,
+        ),
+        body: !isUnlocked
+            ? _buildUnlockView(context)
+            : _buildVaultContent(context),
+      );
+
+  Widget _buildUnlockView(BuildContext context) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.lock, size: 64, color: Colors.amber),
+              const SizedBox(height: 24),
+              const Text('Cofre Bloqueado',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 32),
+              TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                      labelText: 'Senha do Cofre',
+                      border: OutlineInputBorder())),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                  onPressed: onUnlock, child: const Text('Desbloquear')),
+            ],
+          ),
+        ),
+      );
+
+  Widget _buildVaultContent(BuildContext context) {
+    if (tracks.isEmpty) {
+      return const Center(child: Text('Nenhuma música no cofre'));
+    }
+    return ListView.builder(
+      itemCount: tracks.length,
+      itemBuilder: (context, index) {
+        final track = tracks[index];
+        return ListTile(
+          leading: track.thumbnail != null
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: Image.network(track.thumbnail!,
+                      width: 40,
+                      height: 40,
+                      fit: BoxFit.cover,
+                      cacheWidth: 120))
+              : const Icon(Icons.music_note),
+          title: Text(track.title),
+          subtitle: Text(track.artist),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                  icon: const Icon(Icons.play_arrow),
+                  onPressed: () => onPlayTrack(track)),
+              IconButton(
+                  icon: const Icon(Icons.lock_open),
+                  onPressed: () => onRemoveFromVault(track)),
+            ],
+          ),
+          onTap: () => onPlayTrack(track),
+        );
+      },
+    );
+  }
+}
+
+
+---------- FILE: music_x\lib\firebase_options.dart ----------
+// File generated by FlutterFire CLI.
+// ignore_for_file: lines_longer_than_80_chars, avoid_classes_with_only_static_members
+import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, kIsWeb, TargetPlatform;
+
+/// Default [FirebaseOptions] for use with your Firebase apps.
+///
+/// Example:
+/// ```dart
+/// import 'firebase_options.dart';
+/// // ...
+/// await Firebase.initializeApp(
+///   options: DefaultFirebaseOptions.currentPlatform,
+/// );
+/// ```
+class DefaultFirebaseOptions {
+  static FirebaseOptions get currentPlatform {
+    if (kIsWeb) {
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
+    }
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        return android;
+      case TargetPlatform.iOS:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.macOS:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.windows:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.linux:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for linux - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      default:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions are not supported for this platform.',
+        );
+    }
+  }
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'mock-api-key',
+    appId: 'mock-app-id',
+    messagingSenderId: 'mock-sender-id',
+    projectId: 'mock-project-id',
+    storageBucket: 'mock-storage-bucket',
+  );
+}
+
+

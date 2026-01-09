@@ -1,0 +1,3567 @@
+================================================================================
+PROCESS AUDIT: processo_busca_discovery.txt
+DATE: 2026-01-08 15:23:23
+FILE COUNT: 19
+================================================================================
+
+---------- FILE: music_x\lib\api\discogs_api.dart ----------
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/utils/rate_limiter.dart';
+
+/// Discogs API adapter for album art, labels, and release info.
+class DiscogsApi {
+  // Note: For production, use your own Discogs API key.
+  // For now, we use the public search which has rate limits.
+  static const String _baseUrl = 'https://api.discogs.com';
+  static const String _userAgent = 'MusicTagEditor/1.0';
+
+  final http.Client _client;
+  final RateLimiter _rateLimiter;
+
+  DiscogsApi({http.Client? client})
+      : _client = client ?? DependencyManager.instance.client,
+        _rateLimiter =
+            RateLimiter(maxRequests: 20, interval: const Duration(minutes: 1));
+
+  Future<Map<String, dynamic>?> searchRelease(
+      String title, String artist) async {
+    if (title.isEmpty || artist.isEmpty) return null;
+    try {
+      await _rateLimiter.wait();
+      final query = Uri.encodeComponent('$artist $title');
+      final url = Uri.parse('$_baseUrl/database/search?q=$query&type=release');
+
+      final response = await _client.get(url, headers: {
+        'User-Agent': _userAgent,
+      });
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final results = data['results'] as List? ?? [];
+
+        if (results.isNotEmpty) {
+          final best = results.first;
+          return {
+            'title': best['title'],
+            'year': best['year'],
+            'label': (best['label'] as List?)?.firstOrNull,
+            'genre': (best['genre'] as List?)?.firstOrNull,
+            'style': (best['style'] as List?)?.firstOrNull,
+            'thumbnail': best['thumb'],
+            'cover': best['cover_image'],
+          };
+        }
+      }
+    } catch (e) {
+      debugPrint('❌ DiscogsApi Error: $e');
+    }
+    return null;
+  }
+}
+
+
+---------- FILE: music_x\lib\api\genius_api.dart ----------
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/utils/rate_limiter.dart';
+import 'package:music_hub/config/api_keys.dart';
+
+/// Genius API adapter for song metadata and plain lyrics.
+class GeniusApi {
+  // Note: Genius requires an access token for full API access.
+  // For now, we use public search endpoint.
+  static const String _baseUrl = 'https://api.genius.com';
+
+  final http.Client _client;
+  final RateLimiter _rateLimiter;
+
+  GeniusApi({http.Client? client})
+      : _client = client ?? DependencyManager.instance.client,
+        _rateLimiter =
+            RateLimiter(maxRequests: 20, interval: const Duration(minutes: 1));
+
+  Future<Map<String, dynamic>?> searchSong(String title, String artist) async {
+    try {
+      await _rateLimiter.wait();
+      // Genius public search (limited without token)
+      final query = Uri.encodeComponent('$artist $title');
+      final url = Uri.parse('$_baseUrl/search?q=$query');
+
+      // Without access token, we can only get limited results
+      // For full support, user would need to provide their own token
+      final response = await _client.get(url, headers: {
+        'User-Agent': 'MusicTagEditor/1.0',
+        'Authorization': 'Bearer ${ApiKeys.geniusAccessToken}',
+      });
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final hits = data['response']?['hits'] as List? ?? [];
+
+        if (hits.isNotEmpty) {
+          final song = hits.first['result'];
+          return {
+            'id': song['id'],
+            'title': song['title'],
+            'artist': song['primary_artist']?['name'],
+            'thumbnail': song['song_art_image_thumbnail_url'],
+            'url': song['url'],
+          };
+        }
+      }
+    } catch (e) {
+      debugPrint('❌ GeniusApi Error: $e');
+    }
+    return null;
+  }
+}
+
+
+---------- FILE: music_x\lib\api\lastfm_api.dart ----------
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/utils/rate_limiter.dart';
+import 'package:music_hub/config/api_keys.dart';
+
+class LastFmApi {
+  static const String _baseUrl = 'http://ws.audioscrobbler.com/2.0/';
+  final http.Client _client;
+  final String _apiKey;
+  final RateLimiter _rateLimiter;
+
+  LastFmApi({http.Client? client, String apiKey = ApiKeys.lastFmApiKey})
+      : _client = client ?? DependencyManager.instance.client,
+        _apiKey = apiKey,
+        _rateLimiter =
+            RateLimiter(maxRequests: 30, interval: const Duration(minutes: 1));
+
+  Future<Map<String, dynamic>?> getTrackInfo(
+      String title, String artist) async {
+    if (_apiKey == 'YOUR_LASTFM_API_KEY') {
+      debugPrint('⚠️ LastFmApi: API Key not configured.');
+      return null;
+    }
+
+    await _rateLimiter.wait();
+
+    final url = Uri.parse(
+        '$_baseUrl?method=track.getInfo&api_key=$_apiKey&artist=${Uri.encodeComponent(artist)}&track=${Uri.encodeComponent(title)}&format=json');
+
+    try {
+      final response = await _client.get(url);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['track'] != null) {
+          final track = data['track'];
+          final toptags = track['toptags']?['tag'] as List? ?? [];
+          final genres = toptags.map((t) => t['name'].toString()).toList();
+
+          return {
+            'title': track['name'],
+            'artist': track['artist']?['name'],
+            'album': track['album']?['title'],
+            'genres': genres,
+          };
+        }
+      }
+    } catch (e) {
+      debugPrint('❌ LastFmApi Error: $e');
+    }
+    return null;
+  }
+}
+
+
+---------- FILE: music_x\lib\api\musicbrainz_api.dart ----------
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/utils/rate_limiter.dart';
+
+class MusicBrainzApi {
+  static const String _baseUrl = 'https://musicbrainz.org/ws/2/';
+
+  final http.Client _client;
+  final RateLimiter _rateLimiter;
+
+  MusicBrainzApi({http.Client? client})
+      : _client = client ?? DependencyManager.instance.client,
+        _rateLimiter = RateLimiter(
+            maxRequests: 1,
+            interval: const Duration(seconds: 1)); // Strict 1 req/sec
+
+  /// Escapes Lucene special characters in a query string.
+  String _escapeLucene(String s) => s.replaceAllMapped(
+        // Lucene special characters: + - && || ! ( ) { } [ ] ^ " ~ * ? : \ /
+        RegExp(r'([+\-&|!(){}\[\]^"~*?:\\/])'),
+        (m) => '\\${m.group(1)}',
+      );
+
+  Future<Map<String, dynamic>> searchRecording({
+    required String artist,
+    required String title,
+  }) async {
+    await _rateLimiter.wait();
+    final safeArtist = _escapeLucene(artist);
+    final safeTitle = _escapeLucene(title);
+    final query = 'artist:"$safeArtist" AND recording:"$safeTitle"';
+    final url = Uri.parse(
+        '${_baseUrl}recording?query=${Uri.encodeComponent(query)}&fmt=json');
+
+    final response = await _client.get(
+      url,
+      headers: {
+        'User-Agent': 'MusicTagEditor/1.0.0 ( contact@musictageditor.app )'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load data from MusicBrainz API');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> searchMetadata(
+      String title, String artist) async {
+    final results = await _executeSearch(title, artist);
+
+    // Fallback: If no results with Artist + Title, try Title only
+    if (results.isEmpty && artist.isNotEmpty) {
+      return await _executeSearch(title, '');
+    }
+
+    return results;
+  }
+
+  Future<List<Map<String, dynamic>>> _executeSearch(
+      String title, String artist) async {
+    await _rateLimiter.wait();
+
+    String query;
+    if (artist.isNotEmpty) {
+      final safeArtist = _escapeLucene(artist);
+      final safeTitle = _escapeLucene(title);
+      query = 'artist:"$safeArtist" AND recording:"$safeTitle"';
+    } else {
+      final safeTitle = _escapeLucene(title);
+      query = 'recording:"$safeTitle"';
+    }
+
+    final url = Uri.parse(
+        '${_baseUrl}recording?query=${Uri.encodeComponent(query)}&fmt=json');
+
+    final response = await _client.get(
+      url,
+      headers: {
+        'User-Agent': 'MusicTagEditor/1.0.0 ( contact@musictageditor.app )'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final recordings = data['recordings'] as List? ?? [];
+
+      return recordings.map((rec) {
+        final tags = rec['tags'] as List? ?? [];
+        final genres = tags.map((t) => t['name'].toString()).toList();
+
+        // Robust artist parsing
+        String artistName = '';
+        final artistCredit = rec['artist-credit'] as List?;
+        if (artistCredit != null) {
+          final buffer = StringBuffer();
+          for (final part in artistCredit) {
+            if (part is Map) {
+              buffer.write(part['name'] ?? '');
+              buffer.write(part['joinphrase'] ?? '');
+            }
+          }
+          artistName = buffer.toString();
+        }
+
+        return {
+          'id': rec['id'],
+          'title': rec['title'],
+          'artist': artistName.isNotEmpty
+              ? artistName
+              : (rec['artist-credit']?[0]?['name'] ?? ''),
+          'album': rec['releases']?[0]?['title'] ?? '',
+          'genres': genres,
+        };
+      }).toList();
+    } else {
+      return [];
+    }
+  }
+}
+
+
+---------- FILE: music_x\lib\api\netease_api.dart ----------
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/features/player/services/lyrics_service.dart';
+import 'package:music_hub/utils/rate_limiter.dart';
+
+/// NetEase Cloud Music API adapter for synced lyrics (excellent for Asian music).
+class NeteaseApi {
+  static const String _baseUrl = 'https://music.163.com/api';
+
+  final http.Client _client;
+  final RateLimiter _rateLimiter;
+
+  NeteaseApi({http.Client? client})
+      : _client = client ?? DependencyManager.instance.client,
+        _rateLimiter =
+            RateLimiter(maxRequests: 20, interval: const Duration(minutes: 1));
+
+  Future<List<LyricLine>> fetchSyncedLyrics(String title, String artist) async {
+    if (title.isEmpty || artist.isEmpty) return [];
+    try {
+      // Search for the song first
+      await _rateLimiter.wait();
+      final searchUrl = Uri.parse(
+          '$_baseUrl/search/get?s=${Uri.encodeComponent("$artist $title")}&type=1&limit=5');
+
+      final searchResponse = await _client.get(searchUrl, headers: {
+        'Referer': 'https://music.163.com',
+        'User-Agent': 'Mozilla/5.0',
+      });
+
+      if (searchResponse.statusCode == 200) {
+        final searchData = json.decode(searchResponse.body);
+        final songs = searchData['result']?['songs'] as List? ?? [];
+
+        if (songs.isNotEmpty) {
+          final songId = songs.first['id'];
+
+          // Fetch lyrics for the song
+          await _rateLimiter.wait();
+          final lyricsUrl = Uri.parse('$_baseUrl/song/lyric?id=$songId&lv=1');
+          final lyricsResponse = await _client.get(lyricsUrl, headers: {
+            'Referer': 'https://music.163.com',
+            'User-Agent': 'Mozilla/5.0',
+          });
+
+          if (lyricsResponse.statusCode == 200) {
+            final lyricsData = json.decode(lyricsResponse.body);
+            final lrc = lyricsData['lrc']?['lyric'] as String?;
+
+            if (lrc != null && lrc.isNotEmpty) {
+              return _parseLrc(lrc);
+            }
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('❌ NeteaseApi Error: $e');
+    }
+    return [];
+  }
+
+  List<LyricLine> _parseLrc(String lrc) {
+    final List<LyricLine> lines = [];
+    // Support [mm:ss.xx], [mm:ss,xx], and [hh:mm:ss.xx] formats
+    // Group 1: optional hours, Group 2: minutes, Group 3: seconds with decimals
+    final regExp = RegExp(r'\[(?:(\d+):)?(\d+):(\d+[.,]?\d*)\](.*)');
+
+    for (var line in lrc.split('\n')) {
+      final match = regExp.firstMatch(line);
+      if (match != null) {
+        try {
+          final hours = match.group(1) != null ? int.parse(match.group(1)!) : 0;
+          final minutes = int.parse(match.group(2)!);
+          // Normalize comma to dot for parsing
+          final secondsStr = match.group(3)!.replaceAll(',', '.');
+          final seconds = double.parse(secondsStr);
+          final duration = Duration(
+            hours: hours,
+            minutes: minutes,
+            seconds: seconds.toInt(),
+            milliseconds: ((seconds - seconds.toInt()) * 1000).toInt(),
+          );
+          final text = match.group(4)!.trim();
+          if (text.isNotEmpty) {
+            lines.add(LyricLine(time: duration, text: text));
+          }
+        } catch (e) {
+          // Skip malformed lines instead of crashing
+          debugPrint('⚠️ Skipping malformed LRC line: $line');
+        }
+      }
+    }
+    return lines;
+  }
+}
+
+
+---------- FILE: music_x\lib\api\slavart_api.dart ----------
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as p;
+import 'package:flutter/foundation.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/utils/rate_limiter.dart';
+import 'package:music_hub/utils/file_utils.dart';
+
+/// SlavArt Divolt API for FLAC downloads from Tidal/Qobuz/Deezer.
+class SlavArtApi {
+  static const String _baseUrl = 'https://slavart.gamesdrive.net';
+  static const String _downloadBase = 'https://slavart-api.gamesdrive.net';
+
+  final http.Client _client;
+  final bool _isTestClient;
+  final RateLimiter _rateLimiter;
+
+  SlavArtApi({http.Client? client})
+      : _client = client ?? DependencyManager.instance.client,
+        _isTestClient = client != null,
+        _rateLimiter =
+            RateLimiter(maxRequests: 30, interval: const Duration(minutes: 1));
+
+  /// Search for a track across all Hi-Fi platforms.
+  Future<List<SlavArtResult>> search(String query) async {
+    try {
+      await _rateLimiter.wait();
+      // SlavArt uses a simple search endpoint
+      final uri = Uri.parse('$_baseUrl/api/search').replace(
+        queryParameters: {'q': query},
+      );
+
+      final response = await _client.get(uri).timeout(
+            const Duration(seconds: 15),
+          );
+
+      if (response.statusCode != 200) {
+        return [];
+      }
+
+      final data = jsonDecode(response.body);
+      final results = <SlavArtResult>[];
+
+      // Parse results from different sources with defensive structure handling
+      for (final source in ['qobuz', 'tidal', 'deezer']) {
+        final sourceData = data[source];
+        List<dynamic> items;
+
+        // Handle both direct list and nested { "results": [...] } structures
+        if (sourceData is List) {
+          items = sourceData;
+        } else if (sourceData is Map && sourceData['results'] is List) {
+          items = sourceData['results'] as List;
+        } else {
+          items = [];
+        }
+
+        for (final item in items) {
+          if (item is Map<String, dynamic>) {
+            results.add(SlavArtResult.fromJson(item, source));
+          }
+        }
+      }
+
+      return results;
+    } catch (e) {
+      debugPrint('❌ SlavArt Search Error: $e');
+      return [];
+    }
+  }
+
+  /// Get download URL for a track.
+  Future<String?> getDownloadUrl(String trackUrl) async {
+    try {
+      final uri = Uri.parse('$_downloadBase/api/download').replace(
+        queryParameters: {'url': trackUrl},
+      );
+
+      final response = await _client.get(uri).timeout(
+            const Duration(seconds: 30),
+          );
+
+      if (response.statusCode != 200) {
+        return null;
+      }
+
+      final data = jsonDecode(response.body);
+      return data['download_url'] as String?;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Download FLAC file to specified directory.
+  Future<File?> downloadFlac(
+    String downloadUrl,
+    String outputDir, {
+    void Function(double progress)? onProgress,
+  }) async {
+    IOSink? sink;
+    try {
+      // SSRF Protection: Strictly validate URL scheme
+      final uri = Uri.parse(downloadUrl);
+      if (uri.scheme != 'http' && uri.scheme != 'https') {
+        debugPrint('❌ SlavArt: Invalid or dangerous URL scheme: ${uri.scheme}');
+        return null;
+      }
+
+      final request = http.Request('GET', uri);
+      final streamedResponse = await _client.send(request);
+
+      if (streamedResponse.statusCode != 200) {
+        return null;
+      }
+
+      // Get filename from headers or generate one
+      final contentDisposition =
+          streamedResponse.headers['content-disposition'];
+      String filename =
+          'download_${DateTime.now().millisecondsSinceEpoch}.flac';
+
+      if (contentDisposition != null) {
+        final match =
+            RegExp(r'filename="?([^"]+)"?').firstMatch(contentDisposition);
+        if (match != null) {
+          final rawName = match.group(1)!;
+          // Use shared utility for sanitization
+          var cleanName = sanitizeFilename(rawName);
+
+          // Enforce extension
+          if (!cleanName.toLowerCase().endsWith('.flac') &&
+              !cleanName.toLowerCase().endsWith('.mp3')) {
+            cleanName += '.flac';
+          }
+
+          filename = cleanName;
+        }
+      }
+
+      final outputFile = File(p.join(outputDir, filename));
+      sink = outputFile.openWrite();
+
+      final totalBytes = streamedResponse.contentLength ?? 0;
+
+      // Non-blocking: Use addStream to avoid UI freezes during large downloads.
+      // Progress reporting is sacrificed for performance; use onDone callback instead.
+      if (onProgress != null && totalBytes > 0) {
+        // If progress is needed, we have to use the manual loop, but we'll
+        // do it in a way that yields to the event loop more often.
+        int receivedBytes = 0;
+        await for (final chunk in streamedResponse.stream) {
+          sink.add(chunk);
+          receivedBytes += chunk.length;
+          onProgress(receivedBytes / totalBytes);
+          // Yield to event loop every 1MB to prevent jank
+          if (receivedBytes % (1024 * 1024) < chunk.length) {
+            await Future<void>.delayed(Duration.zero);
+          }
+        }
+      } else {
+        // Optimal: No progress callback, use efficient addStream
+        await sink.addStream(streamedResponse.stream);
+      }
+
+      await sink.flush();
+      return outputFile;
+    } catch (e) {
+      debugPrint('❌ SlavArt Download Error: $e');
+      return null;
+    } finally {
+      await sink?.close();
+    }
+  }
+
+  void dispose() {
+    // IMPORTANT: Never close the shared client from DependencyManager.
+    // Only close if we own a test client.
+    if (_isTestClient) {
+      _client.close();
+    }
+  }
+}
+
+/// Result from SlavArt search.
+class SlavArtResult {
+  final String id;
+  final String title;
+  final String artist;
+  final String? album;
+  final String? thumbnail;
+  final int? duration;
+  final String source; // 'qobuz', 'tidal', 'deezer'
+  final String url;
+  final String? quality; // e.g. '24-bit/96kHz', 'FLAC'
+
+  SlavArtResult({
+    required this.id,
+    required this.title,
+    required this.artist,
+    this.album,
+    this.thumbnail,
+    this.duration,
+    required this.source,
+    required this.url,
+    this.quality,
+  });
+
+  factory SlavArtResult.fromJson(Map<String, dynamic> json, String source) =>
+      SlavArtResult(
+        id: json['id']?.toString() ?? '',
+        title: json['title'] ?? json['name'] ?? 'Unknown',
+        artist: _extractArtist(json),
+        album: json['album']?['title'] ?? json['album']?['name'],
+        thumbnail: json['cover'] ?? json['album']?['cover'] ?? json['image'],
+        duration: json['duration'] as int?,
+        source: source,
+        url: json['url'] ?? json['link'] ?? '',
+        quality: _parseQuality(json, source),
+      );
+
+  static String? _parseQuality(Map<String, dynamic> json, String source) {
+    switch (source) {
+      case 'qobuz':
+        final bits = json['maximum_bit_depth'];
+        final rate = json['maximum_sampling_rate'];
+        if (bits != null && rate != null) {
+          return '$bits-bit/${rate}kHz';
+        }
+        return 'FLAC';
+      case 'tidal':
+        final quality = json['audioQuality'];
+        if (quality == 'HI_RES') {
+          return 'MQA 24-bit';
+        }
+        if (quality == 'LOSSLESS') {
+          return 'FLAC 16-bit';
+        }
+        return quality;
+      case 'deezer':
+        return 'FLAC 16-bit';
+      default:
+        return null;
+    }
+  }
+
+  static String _extractArtist(Map<String, dynamic> json) {
+    if (json['artist'] is Map) {
+      return (json['artist'] as Map)['name']?.toString() ?? 'Unknown';
+    }
+    if (json['artists'] is List && (json['artists'] as List).isNotEmpty) {
+      final first = (json['artists'] as List).first;
+      if (first is Map) {
+        return first['name']?.toString() ?? 'Unknown';
+      }
+      if (first is String) {
+        return first;
+      }
+    }
+    if (json['performer'] is Map) {
+      return (json['performer'] as Map)['name']?.toString() ?? 'Unknown';
+    }
+    return json['artist']?.toString() ?? 'Unknown';
+  }
+
+  /// Get quality badge color based on source.
+  String get qualityBadge {
+    switch (source) {
+      case 'qobuz':
+        return '🟣 Qobuz';
+      case 'tidal':
+        return '🔵 Tidal';
+      case 'deezer':
+        return '🟢 Deezer';
+      default:
+        return source;
+    }
+  }
+}
+
+
+---------- FILE: music_x\lib\features\discovery\screens\discovery_screen.dart ----------
+import 'dart:io';
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart' as material;
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/features/discovery/services/download_service.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/features/discovery/services/search_service.dart';
+import 'package:music_hub/features/player/screens/player_screen.dart';
+import 'package:music_hub/features/discovery/screens/views/material_search_view.dart';
+import 'package:music_hub/features/discovery/screens/views/fluent_search_view.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
+import 'package:music_hub/core/services/music_manager_service.dart';
+import 'package:music_hub/features/library/models/download_models.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+
+class DiscoveryScreen extends material.StatefulWidget {
+  const DiscoveryScreen({super.key});
+
+  @override
+  material.State<DiscoveryScreen> createState() => _DiscoveryScreenState();
+}
+
+class _DiscoveryScreenState extends material.State<DiscoveryScreen>
+    with material.AutomaticKeepAliveClientMixin {
+  final _searchController = material.TextEditingController();
+  final _searchService = SearchService.instance;
+  final _downloadService = DownloadService.instance;
+  final _playbackService = PlaybackService.instance;
+  final _musicManager = MusicManagerService.instance;
+
+  final List<SearchResult> _searchResults = [];
+  bool _isLoading = false;
+  String? _errorMessage;
+  final Map<MediaPlatform, SearchStatus> _platformStatuses = {};
+  int _currentSearchId = 0;
+  String? _currentlyPlayingUrl;
+  StreamSubscription? _playbackSubscription;
+  StreamSubscription? _managerProgressSubscription;
+
+  @override
+  bool get wantKeepAlive => true;
+
+  final Map<String, List<DownloadFormat>> _formatsCache = {};
+  final Map<String, DownloadFormat?> _selectedFormats = {};
+  final Map<String, bool> _isExpanding = {};
+  final Map<String, double> _downloadingProgress = {};
+  final Map<String, String> _downloadingStatus = {};
+  final Map<String, String> _loadingFormatsStatus = {};
+  bool _isInitializing = true;
+  String _initStatus = 'Iniciando ferramentas...';
+  double _initProgress = 0;
+  Set<String> _downloadedUrls = {};
+  Set<String> _localMetadataKeys = {}; // artist:title
+
+  bool _isFluent(material.BuildContext context) {
+    if (kIsWeb) return false;
+    final platform = material.Theme.of(context).platform;
+    return platform == TargetPlatform.windows ||
+        platform == TargetPlatform.linux ||
+        platform == TargetPlatform.macOS;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initDependencies();
+    _setupPlaybackListener();
+    _setupManagerListener();
+  }
+
+  void _setupManagerListener() {
+    _managerProgressSubscription =
+        _musicManager.progressStream.listen((progressMap) {
+      if (mounted) {
+        setState(() {
+          for (final entry in progressMap.entries) {
+            _downloadingProgress[entry.key] = entry.value.progress;
+            _downloadingStatus[entry.key] = entry.value.status;
+          }
+        });
+      }
+    });
+  }
+
+  void _setupPlaybackListener() {
+    _playbackSubscription = _playbackService.currentTrackStream.listen((track) {
+      if (mounted) {
+        setState(() {
+          _currentlyPlayingUrl = track?.url;
+        });
+      }
+    });
+  }
+
+  Future<void> _initDependencies() async {
+    StartupLogger.log('[DiscoveryScreen] Initializing dependencies...');
+    try {
+      await DependencyManager.instance.ensureDependencies(
+        onProgress: (status, progress) {
+          setState(() {
+            _initStatus = status;
+            _initProgress = progress;
+          });
+        },
+      );
+      StartupLogger.log(
+          '[DiscoveryScreen] Dependencies initialized successfully');
+      setState(() => _isInitializing = false);
+    } catch (e, stack) {
+      StartupLogger.logError('Dependency initialization FAILED', e, stack);
+      if (mounted) {
+        setState(() {
+          _errorMessage = 'Erro ao inicializar: $e';
+          _isInitializing = false;
+        });
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _playbackSubscription?.cancel();
+    _managerProgressSubscription?.cancel();
+    super.dispose();
+  }
+
+  void _onSearch(String query) async {
+    if (query.trim().isEmpty) {
+      setState(() {
+        _searchResults.clear();
+        _platformStatuses.clear();
+      });
+      return;
+    }
+
+    final searchId = ++_currentSearchId;
+    StartupLogger.log(
+        '[DiscoveryScreen] Starting search #$searchId for: "$query"');
+
+    setState(() {
+      _isLoading = true;
+      _errorMessage = '';
+      _searchResults.clear();
+      _platformStatuses.clear();
+      _formatsCache.clear();
+      _selectedFormats.clear();
+      _isExpanding.clear();
+    });
+
+    try {
+      final results =
+          await _searchService.searchAll(query, onStatusUpdate: (p, s) {
+        if (mounted && searchId == _currentSearchId) {
+          StartupLogger.log('[DiscoveryScreen] Status update for $p: $s');
+          setState(() => _platformStatuses[p] = s);
+        }
+      });
+
+      if (mounted && searchId == _currentSearchId) {
+        StartupLogger.log(
+            '[DiscoveryScreen] Search returned ${results.length} results');
+        await _refreshDownloadedStatus();
+
+        final filtered = results;
+
+        final Set<String> updatedDownloaded = Set.from(_downloadedUrls);
+        for (final res in filtered) {
+          final key =
+              '${SearchResult.toMatchKey(res.artist)}:${SearchResult.toMatchKey(res.title)}';
+          if (_localMetadataKeys.contains(key)) {
+            updatedDownloaded.add(res.url);
+          }
+        }
+
+        setState(() {
+          _downloadedUrls = updatedDownloaded;
+          _searchResults.addAll(filtered);
+        });
+      }
+
+      if (mounted && searchId == _currentSearchId && _searchResults.isEmpty) {
+        StartupLogger.log(
+            '[DiscoveryScreen] No results found for query: "$query"');
+        setState(() => _errorMessage =
+            'Nenhuma música encontrada nas plataformas selecionadas.');
+      }
+    } catch (e, stack) {
+      StartupLogger.log('[DiscoveryScreen] Error during search: $e\n$stack');
+      if (mounted && searchId == _currentSearchId) {
+        setState(() => _errorMessage = 'Erro ao buscar: $e');
+      }
+    } finally {
+      if (mounted && searchId == _currentSearchId) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> loadFormats(SearchResult result) async {
+    StartupLogger.log(
+        '[DiscoveryScreen] Loading formats for ${result.id} (${result.platform})');
+    if (_formatsCache.containsKey(result.url)) {
+      StartupLogger.log(
+          '[DiscoveryScreen] Using cached formats for ${result.id}');
+      setState(() =>
+          _isExpanding[result.url] = !(_isExpanding[result.url] ?? false));
+      return;
+    }
+
+    setState(() {
+      _isExpanding[result.url] = true;
+      _loadingFormatsStatus[result.url] = 'Obtendo formatos...';
+    });
+
+    try {
+      final formats =
+          await _searchService.getFormats(result.url, result.platform);
+      StartupLogger.log(
+          '[DiscoveryScreen] Retrived ${formats.length} formats for ${result.id}');
+      if (mounted) {
+        setState(() {
+          _formatsCache[result.url] = formats;
+          if (formats.isNotEmpty) {
+            _selectedFormats[result.url] = formats.first;
+          }
+          _loadingFormatsStatus.remove(result.url);
+        });
+      }
+    } catch (e, stack) {
+      StartupLogger.log('[DiscoveryScreen] Error loading formats: $e\n$stack');
+      if (mounted) {
+        // showSnackBar('Erro ao carregar formatos: $e'); // Removed as per request
+        setState(() => _loadingFormatsStatus.remove(result.url));
+      }
+    }
+  }
+
+  Future<void> startDownload(SearchResult result) async {
+    final selectedFormat = _selectedFormats[result.url];
+    StartupLogger.log(
+        '[DiscoveryScreen] Starting download for ${result.id} with format: ${selectedFormat?.formatId}');
+    if (selectedFormat == null) {
+      return;
+    }
+
+    setState(() {
+      _downloadingProgress[result.url] = 0;
+      _downloadingStatus[result.url] = 'Buscando metadados ideais...';
+    });
+
+    try {
+      final musicDir = '${Platform.environment['USERPROFILE']}\\Music';
+      StartupLogger.log('[DiscoveryScreen] Target directory: $musicDir');
+
+      final path = await _downloadService.download(
+        result.url,
+        selectedFormat,
+        musicDir,
+        title: result.title,
+        artist: result.artist,
+        onProgress: (progress, status) {
+          if (mounted) {
+            setState(() {
+              _downloadingProgress[result.url] = progress;
+              _downloadingStatus[result.url] = status;
+            });
+          }
+        },
+      );
+
+      StartupLogger.log(
+          '[DiscoveryScreen] Download COMPLETED for ${result.id} at $path');
+
+      result.localPath = path;
+      await DatabaseService.instance.saveTrack(result.toJson());
+
+      await _refreshDownloadedStatus();
+      // showSnackBar('Download de "${result.title}" concluído!'); // Removed redundant snackbar
+    } catch (e, stack) {
+      StartupLogger.log('[DiscoveryScreen] Download FAILED: $e\n$stack');
+      if (mounted) {
+        showSnackBar('Erro no download: $e');
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _downloadingProgress.remove(result.url);
+          _downloadingStatus.remove(result.url);
+        });
+      }
+    }
+  }
+
+  Future<void> addToPlaylist(SearchResult result) async {
+    debugPrint('[DiscoveryScreen] Adding ${result.id} to playlist');
+    final db = DatabaseService.instance;
+    final playlistsList = await db.getPlaylists();
+
+    if (!mounted) return;
+
+    if (playlistsList.isEmpty) {
+      showSnackBar('Crie uma playlist primeiro na aba "Playlists"');
+      return;
+    }
+
+    final selectedPlaylistId = await showPlaylistDialog(playlistsList);
+
+    if (selectedPlaylistId != null) {
+      debugPrint('[DiscoveryScreen] Selected playlist ID: $selectedPlaylistId');
+      await db.saveTrack(result.toJson());
+
+      await db.addTrackToPlaylist(selectedPlaylistId, result.id);
+      await _refreshDownloadedStatus();
+      debugPrint('[DiscoveryScreen] Track added to playlist successfully');
+    }
+  }
+
+  Future<void> playTrack(SearchResult result) async {
+    StartupLogger.log(
+        '[DiscoveryScreen] Playing track (Instant): ${result.id}');
+    try {
+      await _musicManager.playInstant(result);
+      StartupLogger.log('[DiscoveryScreen] Playback started for ${result.id}');
+    } catch (e, stack) {
+      StartupLogger.logError('Playback FAILED in DiscoveryScreen', e, stack);
+      if (mounted) {
+        showSnackBar('Erro ao reproduzir: $e', isError: true);
+      }
+    }
+  }
+
+  Future<void> instantDownload(SearchResult result) async {
+    StartupLogger.log(
+        '[DiscoveryScreen] Requesting instant download for: ${result.id}');
+    try {
+      showSnackBar('Iniciando download de "${result.title}" em background...');
+      await _musicManager.downloadTrack(result);
+    } catch (e, stack) {
+      StartupLogger.logError('Instant download FAILED', e, stack);
+      if (mounted) {
+        showSnackBar('Erro ao iniciar download: $e', isError: true);
+      }
+    }
+  }
+
+  void openFullPlayer() {
+    StartupLogger.log('[DiscoveryScreen] Opening player');
+    if (_isFluent(context)) {
+      fluent.Navigator.push(
+        context,
+        fluent.FluentPageRoute(builder: (context) => const PlayerScreen()),
+      );
+    } else {
+      material.Navigator.push(
+        context,
+        material.MaterialPageRoute(builder: (context) => const PlayerScreen()),
+      );
+    }
+  }
+
+  void showSnackBar(String message, {bool isError = false}) {
+    if (_isFluent(context)) {
+      StartupLogger.log('[DiscoveryScreen][SnackBar/Fluent] $message');
+      fluent.displayInfoBar(
+        context,
+        builder: (context, close) => fluent.InfoBar(
+          title: fluent.Text(isError ? 'Erro' : 'Sucesso'),
+          content: fluent.Text(message),
+          action: fluent.IconButton(
+            icon: const fluent.Icon(fluent.FluentIcons.clear),
+            onPressed: close,
+          ),
+          severity: isError
+              ? fluent.InfoBarSeverity.error
+              : fluent.InfoBarSeverity.success,
+        ),
+      );
+    } else {
+      material.ScaffoldMessenger.of(context).showSnackBar(
+        material.SnackBar(
+          content: material.Text(message),
+          backgroundColor: isError ? material.Colors.red : null,
+        ),
+      );
+    }
+  }
+
+  Future<int?> showPlaylistDialog(List<Map<String, dynamic>> playlistsList) {
+    if (_isFluent(context)) {
+      return fluent.showDialog<int?>(
+        context: context,
+        builder: (context) => fluent.ContentDialog(
+          title: const fluent.Text('Adicionar à Playlist'),
+          content: fluent.SizedBox(
+            width: double.maxFinite,
+            child: fluent.ListView.builder(
+              shrinkWrap: true,
+              itemCount: playlistsList.length,
+              itemBuilder: (context, index) {
+                final p = playlistsList[index];
+                return fluent.ListTile(
+                  title: fluent.Text(p['name']),
+                  onPressed: () => fluent.Navigator.pop(context, p['id']),
+                );
+              },
+            ),
+          ),
+          actions: [
+            fluent.Button(
+              onPressed: () => fluent.Navigator.pop(context),
+              child: const fluent.Text('Cancelar'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return material.showDialog<int?>(
+        context: context,
+        builder: (context) => material.AlertDialog(
+          title: const material.Text('Adicionar à Playlist'),
+          content: material.SizedBox(
+            width: double.maxFinite,
+            child: material.ListView.builder(
+              shrinkWrap: true,
+              itemCount: playlistsList.length,
+              itemBuilder: (context, index) {
+                final p = playlistsList[index];
+                return material.ListTile(
+                  title: material.Text(p['name']),
+                  onTap: () => material.Navigator.pop(context, p['id']),
+                );
+              },
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
+  @override
+  material.Widget build(material.BuildContext context) {
+    super.build(context);
+    if (_isInitializing) {
+      if (_isFluent(context)) {
+        return fluent.ScaffoldPage(
+          header:
+              const fluent.PageHeader(title: fluent.Text('Busca de Músicas')),
+          content: fluent.Center(
+            child: fluent.Padding(
+              padding: const fluent.EdgeInsets.all(32),
+              child: fluent.Column(
+                mainAxisSize: fluent.MainAxisSize.min,
+                children: [
+                  const fluent.ProgressRing(),
+                  const fluent.SizedBox(height: 24),
+                  fluent.Text(_initStatus),
+                  const fluent.SizedBox(height: 16),
+                  fluent.ProgressBar(value: _initProgress),
+                ],
+              ),
+            ),
+          ),
+        );
+      } else {
+        return material.Scaffold(
+          appBar:
+              material.AppBar(title: const material.Text('Busca de Músicas')),
+          body: material.Center(
+            child: material.Padding(
+              padding: const material.EdgeInsets.all(32),
+              child: material.Column(
+                mainAxisSize: material.MainAxisSize.min,
+                children: [
+                  const material.CircularProgressIndicator(),
+                  const material.SizedBox(height: 24),
+                  material.Text(_initStatus),
+                  const material.SizedBox(height: 16),
+                  material.LinearProgressIndicator(value: _initProgress),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+    }
+
+    void handleFormatSelected(SearchResult result, String? val) {
+      setState(() {
+        _selectedFormats[result.url] =
+            _formatsCache[result.url]!.firstWhere((f) => f.formatId == val);
+      });
+    }
+
+    void handleToggleExpand(SearchResult result) {
+      loadFormats(result);
+    }
+
+    if (_isFluent(context)) {
+      return FluentSearchView(
+        searchController: _searchController,
+        isLoading: _isLoading,
+        errorMessage: _errorMessage,
+        results: _searchResults,
+        platformStatuses: _platformStatuses,
+        isExpanding: _isExpanding,
+        formatsCache: _formatsCache,
+        selectedFormats: _selectedFormats,
+        downloadingProgress: _downloadingProgress,
+        downloadingStatus: _downloadingStatus,
+        loadingFormatsStatus: _loadingFormatsStatus,
+        downloadedUrls: _downloadedUrls,
+        onSearch: () => _onSearch(_searchController.text),
+        onPlay: playTrack,
+        onAddToPlaylist: addToPlaylist,
+        onLoadFormats: loadFormats,
+        onDownload: startDownload,
+        onInstantDownload: instantDownload,
+        onFormatSelected: handleFormatSelected,
+        onToggleExpand: handleToggleExpand,
+        onOpenFullPlayer: openFullPlayer,
+        currentlyPlayingUrl: _currentlyPlayingUrl,
+      );
+    }
+
+    return MaterialSearchView(
+      searchController: _searchController,
+      isLoading: _isLoading,
+      errorMessage: _errorMessage,
+      results: _searchResults,
+      platformStatuses: _platformStatuses,
+      isExpanding: _isExpanding,
+      formatsCache: _formatsCache,
+      selectedFormats: _selectedFormats,
+      downloadingProgress: _downloadingProgress,
+      downloadingStatus: _downloadingStatus,
+      onSearch: () => _onSearch(_searchController.text),
+      onPlay: playTrack,
+      onAddToPlaylist: addToPlaylist,
+      onLoadFormats: loadFormats,
+      onDownload: startDownload,
+      onInstantDownload: instantDownload,
+      onFormatSelected: handleFormatSelected,
+      onToggleExpand: handleToggleExpand,
+      onOpenFullPlayer: openFullPlayer,
+      downloadedUrls: _downloadedUrls,
+      currentlyPlayingUrl: _currentlyPlayingUrl,
+    );
+  }
+
+  Future<void> _refreshDownloadedStatus() async {
+    try {
+      final downloadedData = await DatabaseService.instance.getDownloadedUrls();
+      final verifiedUrls = await _verifyFiles(downloadedData);
+
+      final allLocalTracks = await DatabaseService.instance.getAllTracks();
+      final metadataKeys = allLocalTracks
+          .map((t) =>
+              '${SearchResult.toMatchKey(t.artist)}:${SearchResult.toMatchKey(t.title)}')
+          .toSet();
+
+      if (mounted) {
+        setState(() {
+          _downloadedUrls = verifiedUrls;
+          _localMetadataKeys = metadataKeys;
+        });
+      }
+    } catch (e) {
+      StartupLogger.log(
+          '[DiscoveryScreen] Error refreshing downloaded status: $e');
+    }
+  }
+
+  Future<Set<String>> _verifyFiles(Map<String, String?> data) async {
+    final Set<String> verified = {};
+    for (final entry in data.entries) {
+      if (entry.value != null && await File(entry.value!).exists()) {
+        verified.add(entry.key);
+      }
+    }
+    return verified;
+  }
+}
+
+
+---------- FILE: music_x\lib\features\discovery\screens\views\fluent_search_view.dart ----------
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:music_hub/core/services/global_navigation_service.dart';
+import 'package:music_hub/features/library/models/persona_model.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+import 'package:music_hub/features/library/models/download_models.dart';
+
+class FluentSearchView extends StatelessWidget {
+  final TextEditingController searchController;
+  final bool isLoading;
+  final String? errorMessage;
+  final List<SearchResult> results;
+  final Map<MediaPlatform, SearchStatus> platformStatuses;
+  // Platform Selection
+  final Map<String, bool> isExpanding;
+  final Map<String, List<DownloadFormat>> formatsCache;
+  final Map<String, DownloadFormat?> selectedFormats;
+  final Map<String, double> downloadingProgress;
+  final Map<String, String> downloadingStatus;
+  final Map<String, String> loadingFormatsStatus;
+  final Set<String> downloadedUrls;
+  final String? currentlyPlayingUrl;
+
+  // Callbacks
+  final VoidCallback onSearch;
+  final Function(SearchResult) onPlay;
+  final Function(SearchResult) onAddToPlaylist;
+  final Function(SearchResult) onLoadFormats;
+  final Function(SearchResult) onDownload;
+  final Function(SearchResult) onInstantDownload;
+  final Function(SearchResult, String?) onFormatSelected;
+  final Function(SearchResult) onToggleExpand;
+  final VoidCallback onOpenFullPlayer;
+
+  const FluentSearchView({
+    super.key,
+    required this.searchController,
+    required this.isLoading,
+    required this.errorMessage,
+    required this.results,
+    required this.platformStatuses,
+    required this.isExpanding,
+    required this.formatsCache,
+    required this.selectedFormats,
+    required this.downloadingProgress,
+    required this.downloadingStatus,
+    required this.loadingFormatsStatus,
+    required this.onSearch,
+    required this.onPlay,
+    required this.onAddToPlaylist,
+    required this.onLoadFormats,
+    required this.onDownload,
+    required this.onInstantDownload,
+    required this.onFormatSelected,
+    required this.onToggleExpand,
+    required this.onOpenFullPlayer,
+    required this.downloadedUrls,
+    this.currentlyPlayingUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) => ScaffoldPage(
+        header: PageHeader(
+          title: const Text('Busca de Músicas'),
+          leading: Navigator.canPop(context)
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: IconButton(
+                    icon: const Icon(FluentIcons.back),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                )
+              : null,
+        ),
+        content: Column(
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextBox(
+                          controller: searchController,
+                          placeholder: 'Digite o nome da música ou artista...',
+                          onSubmitted: (_) => onSearch(),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      FilledButton(
+                        onPressed: isLoading ? null : onSearch,
+                        child: const Text('Buscar'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            if (isLoading) _buildStatusIndicator(context),
+            if (errorMessage != null && errorMessage!.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: InfoBar(
+                  title: const Text('Erro'),
+                  content: Text(errorMessage!),
+                  severity: InfoBarSeverity.error,
+                ),
+              ),
+            _buildFallbackInfo(),
+            Expanded(
+              child: ListView.builder(
+                itemCount: results.length,
+                itemBuilder: (context, index) {
+                  final result = results[index];
+                  final isExpanded = isExpanding[result.url] ?? false;
+                  final isDownloading =
+                      downloadingProgress.containsKey(result.url);
+                  final isDownloaded = downloadedUrls.contains(result.url);
+
+                  final isPlaying = result.url == currentlyPlayingUrl;
+
+                  return Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    child: Card(
+                      backgroundColor: isPlaying
+                          ? FluentTheme.of(context)
+                              .accentColor
+                              .withValues(alpha: 0.15)
+                          : null,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListTile(
+                            onPressed: () => onToggleExpand(result),
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: result.thumbnail != null
+                                  ? GestureDetector(
+                                      onTap: () => onPlay(result),
+                                      child: Image.network(
+                                        result.thumbnail!,
+                                        width: 48,
+                                        height: 48,
+                                        fit: BoxFit.cover,
+                                        cacheWidth:
+                                            150, // ⚡ Bolt: Optimize memory
+                                        errorBuilder: (_, __, ___) =>
+                                            const Icon(FluentIcons.music_note,
+                                                size: 24),
+                                      ),
+                                    )
+                                  : const Icon(FluentIcons.music_note,
+                                      size: 32),
+                            ),
+                            title: Text(
+                              result.title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: isDownloaded
+                                    ? Colors.green.lighter
+                                    : (result.localPath != null
+                                        ? Colors.blue.lighter
+                                        : null),
+                              ),
+                            ),
+                            subtitle: Row(
+                              children: [
+                                Text(
+                                  '${result.artist} • ${result.durationFormatted}',
+                                  style: TextStyle(
+                                    color: isDownloaded
+                                        ? Colors.green.lighter
+                                            .withValues(alpha: 0.8)
+                                        : (result.localPath != null
+                                            ? Colors.blue.lighter
+                                                .withValues(alpha: 0.8)
+                                            : null),
+                                  ),
+                                ),
+                                if (isDownloaded) ...[
+                                  const SizedBox(width: 8),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 6, vertical: 2),
+                                    decoration: BoxDecoration(
+                                      color: Colors.green.lighter
+                                          .withValues(alpha: 0.2),
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(
+                                          color: Colors.green.lighter
+                                              .withValues(alpha: 0.5)),
+                                    ),
+                                    child: Text('Baixada',
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.green)),
+                                  ),
+                                ] else if (result.localPath != null) ...[
+                                  const SizedBox(width: 8),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 6, vertical: 2),
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue.lighter
+                                          .withValues(alpha: 0.2),
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(
+                                          color: Colors.blue.lighter
+                                              .withValues(alpha: 0.5)),
+                                    ),
+                                    child: Text('Na Biblioteca',
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.blue)),
+                                  ),
+                                ],
+                              ],
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _buildPlaybackButtons(context, result),
+                                const SizedBox(width: 8),
+                                Tooltip(
+                                  message: 'Mais Opções',
+                                  child: DropDownButton(
+                                    title: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 4.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text('Opções',
+                                              style: TextStyle(
+                                                  color: FluentTheme.of(context)
+                                                      .accentColor)),
+                                          const SizedBox(width: 4),
+                                          const Icon(FluentIcons.chevron_down,
+                                              size: 8),
+                                        ],
+                                      ),
+                                    ),
+                                    items: [
+                                      MenuFlyoutItem(
+                                        leading: const Icon(FluentIcons.add),
+                                        text:
+                                            const Text('Adicionar à Playlist'),
+                                        onPressed: () =>
+                                            onAddToPlaylist(result),
+                                      ),
+                                      MenuFlyoutItem(
+                                        leading: Icon(isDownloaded
+                                            ? FluentIcons.check_mark
+                                            : FluentIcons.download),
+                                        text: Text(isDownloaded
+                                            ? 'Música Baixada'
+                                            : 'Opções de Download'),
+                                        onPressed: isDownloaded
+                                            ? null
+                                            : () => onLoadFormats(result),
+                                      ),
+                                      if (result.localPath != null)
+                                        MenuFlyoutItem(
+                                          leading:
+                                              const Icon(FluentIcons.library),
+                                          text: const Text('Ver na Biblioteca'),
+                                          onPressed: () {
+                                            GlobalNavigationService.instance
+                                                .navigateToPersonaTab(
+                                                    AppPersona.librarian, 1);
+                                          },
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                _getPlatformLogo(result.platform,
+                                    hifiSource: result.hifiSource),
+                              ],
+                            ),
+                          ),
+                          if (isExpanded)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  const Divider(),
+                                  const SizedBox(height: 12),
+                                  if (loadingFormatsStatus
+                                      .containsKey(result.url))
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const ProgressRing(strokeWidth: 2),
+                                          const SizedBox(width: 12),
+                                          Text(loadingFormatsStatus[
+                                              result.url]!),
+                                        ],
+                                      ),
+                                    )
+                                  else if (!formatsCache
+                                      .containsKey(result.url))
+                                    const Center(child: ProgressRing())
+                                  else ...[
+                                    Row(
+                                      children: [
+                                        const Text('Formato: '),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: ComboBox<String>(
+                                            isExpanded: true,
+                                            value: selectedFormats[result.url]
+                                                ?.formatId,
+                                            items: formatsCache[result.url]!
+                                                .map((f) =>
+                                                    ComboBoxItem<String>(
+                                                      value: f.formatId,
+                                                      child:
+                                                          Text(f.displayName),
+                                                    ))
+                                                .toList(),
+                                            onChanged: (val) =>
+                                                onFormatSelected(result, val),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 16),
+                                    if (isDownloading)
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ProgressBar(
+                                              value: (downloadingProgress[
+                                                          result.url] ??
+                                                      0) *
+                                                  100,
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              downloadingStatus[result.url] ??
+                                                  'Baixando...',
+                                              style: TextStyle(
+                                                color: Colors.blue.lighter,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    else
+                                      Button(
+                                        onPressed: () => onDownload(result),
+                                        child: const Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(FluentIcons.download),
+                                            SizedBox(width: 8),
+                                            Text('Download'),
+                                          ],
+                                        ),
+                                      ),
+                                  ],
+                                ],
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget _buildPlaybackButtons(BuildContext context, SearchResult result) =>
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Tooltip(
+            message: 'Tocar Instantaneamente',
+            child: IconButton(
+              icon: const Icon(FluentIcons.play, size: 20),
+              onPressed: () => onPlay(result),
+            ),
+          ),
+          const SizedBox(width: 4),
+          Tooltip(
+            message: 'Salvar na Biblioteca (MP3 320kbps)',
+            child: IconButton(
+              icon: const Icon(FluentIcons.save, size: 20),
+              onPressed: () => onInstantDownload(result),
+            ),
+          ),
+        ],
+      );
+
+  Widget _buildStatusIndicator(BuildContext context) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        child: Center(
+          child: Column(
+            children: [
+              const SizedBox(
+                width: 300,
+                child: ProgressBar(),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Buscando nas plataformas...',
+                style: TextStyle(
+                  color: FluentTheme.of(context)
+                      .typography
+                      .body
+                      ?.color
+                      ?.withValues(alpha: 0.7),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  // Simplified: No longer needing complex cross-platform fallback messages.
+  Widget _buildFallbackInfo() => const SizedBox.shrink();
+
+  Widget _getPlatformLogo(MediaPlatform platform, {String? hifiSource}) {
+    switch (platform) {
+      case MediaPlatform.youtube:
+        return Image.network(
+          'https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png',
+          width: 24,
+          height: 24,
+          errorBuilder: (_, __, ___) =>
+              Icon(FluentIcons.play, color: Colors.red),
+        );
+      case MediaPlatform.youtubeMusic:
+        return Image.network(
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Youtube_Music_icon.svg/1024px-Youtube_Music_icon.svg.png',
+          width: 24,
+          height: 24,
+          errorBuilder: (_, __, ___) =>
+              Icon(FluentIcons.music_note, color: Colors.red),
+        );
+      case MediaPlatform.hifi:
+        return _getHiFiLogo(hifiSource);
+      case MediaPlatform.local:
+        return const Icon(FluentIcons.folder_list, size: 20);
+      case MediaPlatform.unknown:
+        return const Icon(FluentIcons.unknown, color: Colors.grey);
+    }
+  }
+
+  Widget _getHiFiLogo(String? source) {
+    // Reusing the same logic as Material but wrapped in Fluent-safe containers if needed.
+    // Basic Images work fine.
+    switch (source) {
+      case 'qobuz':
+        return Image.network(
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Qobuz_Logo.svg/512px-Qobuz_Logo.svg.png',
+            width: 24,
+            height: 24,
+            errorBuilder: (_, __, ___) => const Text('Q'));
+      case 'tidal':
+        return Image.network(
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Tidal_logo.svg/512px-Tidal_logo.svg.png',
+            width: 24,
+            height: 24,
+            errorBuilder: (_, __, ___) => const Text('T'));
+      case 'deezer':
+        return Image.network(
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Deezer_Logo.svg/512px-Deezer_Logo.svg.png',
+            width: 24,
+            height: 24,
+            errorBuilder: (_, __, ___) => const Text('D'));
+      default:
+        return Icon(FluentIcons.diamond, color: Colors.purple);
+    }
+  }
+}
+
+
+---------- FILE: music_x\lib\features\discovery\screens\views\material_search_view.dart ----------
+import 'package:flutter/material.dart';
+import 'package:music_hub/features/library/models/download_models.dart';
+import 'package:music_hub/core/services/global_navigation_service.dart';
+import 'package:music_hub/features/library/models/persona_model.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+
+class MaterialSearchView extends StatelessWidget {
+  final TextEditingController searchController;
+  final bool isLoading;
+  final String? errorMessage;
+  final List<SearchResult> results;
+  final Map<MediaPlatform, SearchStatus> platformStatuses;
+  final Map<String, bool> isExpanding;
+  final Map<String, List<DownloadFormat>> formatsCache;
+  final Map<String, DownloadFormat?> selectedFormats;
+  final Map<String, double> downloadingProgress;
+  final Map<String, String> downloadingStatus;
+  final Set<String> downloadedUrls;
+  final String? currentlyPlayingUrl;
+
+  // Callbacks
+  final VoidCallback onSearch;
+  final Function(SearchResult) onPlay;
+  final Function(SearchResult) onAddToPlaylist;
+  final Function(SearchResult) onLoadFormats;
+  final Function(SearchResult) onDownload;
+  final Function(SearchResult) onInstantDownload;
+  final Function(SearchResult, String?) onFormatSelected;
+  final Function(SearchResult) onToggleExpand;
+  final VoidCallback onOpenFullPlayer;
+
+  const MaterialSearchView({
+    super.key,
+    required this.searchController,
+    required this.isLoading,
+    required this.errorMessage,
+    required this.results,
+    required this.platformStatuses,
+    required this.isExpanding,
+    required this.formatsCache,
+    required this.selectedFormats,
+    required this.downloadingProgress,
+    required this.downloadingStatus,
+    required this.onSearch,
+    required this.onPlay,
+    required this.onAddToPlaylist,
+    required this.onLoadFormats,
+    required this.onDownload,
+    required this.onInstantDownload,
+    required this.onFormatSelected,
+    required this.onToggleExpand,
+    required this.onOpenFullPlayer,
+    required this.downloadedUrls,
+    this.currentlyPlayingUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Busca de Músicas'),
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: searchController,
+                      decoration: const InputDecoration(
+                        hintText: 'Digite o nome da música ou artista...',
+                        border: OutlineInputBorder(),
+                      ),
+                      onSubmitted: (_) => onSearch(),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  FilledButton(
+                    onPressed: isLoading ? null : onSearch,
+                    child: const Text('Buscar'),
+                  ),
+                ],
+              ),
+            ),
+            if (isLoading) _buildStatusIndicator(context),
+            if (errorMessage != null)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(errorMessage!,
+                    style: const TextStyle(color: Colors.red)),
+              ),
+            _buildFallbackInfo(),
+            Expanded(
+              child: ListView.builder(
+                itemCount: results.length,
+                itemBuilder: (context, index) {
+                  final result = results[index];
+                  final isExpanded = isExpanding[result.url] ?? false;
+                  final isDownloading =
+                      downloadingProgress.containsKey(result.url);
+
+                  final isPlaying = result.url == currentlyPlayingUrl;
+
+                  return Card(
+                    color: isPlaying
+                        ? Theme.of(context)
+                            .colorScheme
+                            .primaryContainer
+                            .withValues(alpha: 0.7)
+                        : null,
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: result.thumbnail != null
+                              ? Image.network(result.thumbnail!,
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.cover,
+                                  cacheWidth: 150, // ⚡ Bolt: Optimize memory
+                                  errorBuilder: (_, __, ___) =>
+                                      const Icon(Icons.music_note))
+                              : const Icon(Icons.music_note),
+                          title: Text(
+                            result.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: downloadedUrls.contains(result.url)
+                                  ? Colors.green
+                                  : (result.localPath != null
+                                      ? Colors.blue
+                                      : null),
+                              fontWeight:
+                                  (downloadedUrls.contains(result.url) ||
+                                          result.localPath != null)
+                                      ? FontWeight.bold
+                                      : null,
+                            ),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${result.artist} • ${result.durationFormatted}',
+                                style: TextStyle(
+                                  color: downloadedUrls.contains(result.url)
+                                      ? Colors.green.withValues(alpha: 0.7)
+                                      : (result.localPath != null
+                                          ? Colors.blue.withValues(alpha: 0.7)
+                                          : null),
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  if (downloadedUrls.contains(result.url))
+                                    _buildBadge('Baixada', Colors.green),
+                                  if (result.localPath != null &&
+                                      !downloadedUrls.contains(result.url))
+                                    _buildBadge('Na Biblioteca', Colors.blue),
+                                ],
+                              ),
+                            ],
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.play_arrow,
+                                    color: Colors.blue),
+                                tooltip: 'Tocar Instantaneamente',
+                                onPressed: () => onPlay(result),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.save_alt,
+                                    color: Colors.green),
+                                tooltip: 'Salvar na Biblioteca (MP3 320kbps)',
+                                onPressed: () => onInstantDownload(result),
+                              ),
+                              _buildOptionsButton(context, result),
+                              _getPlatformLogo(result.platform,
+                                  hifiSource: result.hifiSource),
+                            ],
+                          ),
+                        ),
+                        if (isExpanded)
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                const Divider(),
+                                if (!formatsCache.containsKey(result.url))
+                                  const Center(
+                                      child: CircularProgressIndicator())
+                                else ...[
+                                  Row(
+                                    children: [
+                                      const Text('Formato: '),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: DropdownButton<String>(
+                                          isExpanded: true,
+                                          value: selectedFormats[result.url]
+                                              ?.formatId,
+                                          items: formatsCache[result.url]!
+                                              .map((f) =>
+                                                  DropdownMenuItem<String>(
+                                                    value: f.formatId,
+                                                    child: Text(f.displayName),
+                                                  ))
+                                              .toList(),
+                                          onChanged: (val) =>
+                                              onFormatSelected(result, val),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  if (isDownloading)
+                                    Column(
+                                      children: [
+                                        LinearProgressIndicator(
+                                            value: downloadingProgress[
+                                                result.url]),
+                                        const SizedBox(height: 4),
+                                        Text(downloadingStatus[result.url] ??
+                                            ''),
+                                      ],
+                                    )
+                                  else
+                                    FilledButton.icon(
+                                      onPressed: () => onDownload(result),
+                                      icon: const Icon(Icons.download),
+                                      label: const Text('Download'),
+                                    ),
+                                ],
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget _buildStatusIndicator(BuildContext context) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        color: Theme.of(context)
+            .colorScheme
+            .surfaceContainerHighest
+            .withValues(alpha: 0.5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _platformStatusChip(MediaPlatform.youtube, 'Busca'),
+          ],
+        ),
+      );
+
+  Widget _platformStatusChip(MediaPlatform platform, String label) {
+    final status = platformStatuses[platform];
+    if (status == null) {
+      return const SizedBox.shrink();
+    }
+
+    IconData icon;
+    Color color;
+    bool spin = false;
+
+    switch (status) {
+      case SearchStatus.searching:
+        icon = Icons.sync;
+        color = Colors.blue;
+        spin = true;
+        break;
+      case SearchStatus.completed:
+        icon = Icons.check_circle;
+        color = Colors.green;
+        break;
+      case SearchStatus.noResults:
+        icon = Icons.info_outline;
+        color = Colors.orange;
+        break;
+      case SearchStatus.failed:
+        icon = Icons.error_outline;
+        color = Colors.red;
+        break;
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (spin)
+          const SizedBox(
+            width: 12,
+            height: 12,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          )
+        else
+          Icon(icon, size: 16, color: color),
+        const SizedBox(width: 4),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            color: color.withValues(alpha: 0.8),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFallbackInfo() => const SizedBox.shrink();
+
+  Widget _getPlatformLogo(MediaPlatform platform, {String? hifiSource}) {
+    switch (platform) {
+      case MediaPlatform.youtube:
+        return Image.network(
+          'https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png',
+          width: 24,
+          height: 24,
+          errorBuilder: (_, __, ___) =>
+              const Icon(Icons.play_circle, color: Colors.red),
+        );
+      case MediaPlatform.youtubeMusic:
+        return Image.network(
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Youtube_Music_icon.svg/1024px-Youtube_Music_icon.svg.png',
+          width: 24,
+          height: 24,
+          errorBuilder: (_, __, ___) =>
+              const Icon(Icons.music_note, color: Colors.red),
+        );
+      case MediaPlatform.hifi:
+        return _getHiFiLogo(hifiSource);
+      case MediaPlatform.local:
+        return const Icon(Icons.folder, color: Colors.brown);
+      case MediaPlatform.unknown:
+        return const Icon(Icons.help_outline, color: Colors.grey);
+    }
+  }
+
+  Widget _getHiFiLogo(String? source) {
+    switch (source) {
+      case 'qobuz':
+        return Image.network(
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Qobuz_Logo.svg/512px-Qobuz_Logo.svg.png',
+          width: 24,
+          height: 24,
+          errorBuilder: (_, __, ___) => Container(
+            width: 24,
+            height: 24,
+            decoration: const BoxDecoration(
+                color: Color(0xFF1A237E), shape: BoxShape.circle),
+            child: const Center(
+              child: Text('Q',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold)),
+            ),
+          ),
+        );
+      case 'tidal':
+        return Image.network(
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Tidal_logo.svg/512px-Tidal_logo.svg.png',
+          width: 24,
+          height: 24,
+          errorBuilder: (_, __, ___) => Container(
+            width: 24,
+            height: 24,
+            decoration: const BoxDecoration(
+                color: Colors.black, shape: BoxShape.circle),
+            child: const Center(
+              child: Text('T',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold)),
+            ),
+          ),
+        );
+      case 'deezer':
+        return Image.network(
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Deezer_Logo.svg/512px-Deezer_Logo.svg.png',
+          width: 24,
+          height: 24,
+          errorBuilder: (_, __, ___) => Container(
+            width: 24,
+            height: 24,
+            decoration: const BoxDecoration(
+                color: Color(0xFFFF0092), shape: BoxShape.circle),
+            child: const Center(
+              child: Text('D',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold)),
+            ),
+          ),
+        );
+      default:
+        return const Icon(Icons.high_quality, color: Colors.purple);
+    }
+  }
+
+  Widget _buildBadge(String label, Color color) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+              color: color, fontSize: 10, fontWeight: FontWeight.bold),
+        ),
+      );
+
+  Widget _buildOptionsButton(BuildContext context, SearchResult result) {
+    final isDownloaded = downloadedUrls.contains(result.url);
+
+    return PopupMenuButton<String>(
+      tooltip: 'Mais Opções',
+      onSelected: (val) {
+        if (val == 'playlist') {
+          onAddToPlaylist(result);
+        }
+        if (val == 'download') {
+          onLoadFormats(result);
+        }
+      },
+      child: OutlinedButton.icon(
+        onPressed: null, // PopupMenuButton handles the tap
+        icon: const Icon(Icons.keyboard_arrow_down, size: 16),
+        label: const Text('Opções'),
+        style: OutlinedButton.styleFrom(
+          visualDensity: VisualDensity.compact,
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          side: BorderSide(
+              color:
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.5)),
+        ),
+      ),
+      itemBuilder: (context) => [
+        const PopupMenuItem(
+          value: 'playlist',
+          child: ListTile(
+            leading: Icon(Icons.playlist_add),
+            title: Text('Adicionar à Playlist'),
+          ),
+        ),
+        PopupMenuItem(
+          value: 'download',
+          enabled: !isDownloaded,
+          child: ListTile(
+            leading: Icon(isDownloaded ? Icons.check_circle : Icons.download),
+            title: Text(isDownloaded ? 'Música Baixada' : 'Opções de Download'),
+          ),
+        ),
+        if (result.localPath != null)
+          PopupMenuItem(
+            value: 'library',
+            onTap: () {
+              GlobalNavigationService.instance
+                  .navigateToPersonaTab(AppPersona.librarian, 1);
+            },
+            child: const ListTile(
+              leading: Icon(Icons.library_music),
+              title: Text('Ver na Biblioteca'),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+
+---------- FILE: music_x\lib\features\discovery\services\download\download_provider.dart ----------
+import 'package:music_hub/features/library/models/download_models.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+
+/// Base interface for platform-specific download providers.
+abstract class DownloadProvider {
+  /// Check if this provider supports the given URL and platform.
+  bool supports(String url, MediaPlatform platform);
+
+  /// Get media information for the given URL.
+  Future<MediaInfo> getInfo(String url);
+
+  /// Download the media from the given URL.
+  /// Returns the path to the downloaded file.
+  Future<String> download(
+    String url,
+    DownloadFormat format, {
+    void Function(double progress)? onProgress,
+  });
+}
+
+
+---------- FILE: music_x\lib\features\discovery\services\download\metadata_embedder.dart ----------
+import 'dart:io';
+import 'package:path/path.dart' as p;
+import 'package:music_hub/features/library/models/metadata_models.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
+
+class MetadataEmbedder {
+  final _deps = DependencyManager.instance;
+
+  /// Embed metadata into an audio file using FFmpeg.
+  Future<bool> embed(
+    String audioPath,
+    AggregatedMetadata metadata, {
+    String? lyrics,
+    String? artworkPath,
+    bool convertToMp3 = false,
+  }) async {
+    try {
+      final ext = convertToMp3 ? '.mp3' : p.extension(audioPath);
+      final dir = p.dirname(audioPath);
+      final base = p.basenameWithoutExtension(audioPath);
+      final tempPath = p.join(dir, '${base}_tagged$ext');
+
+      final args = <String>[
+        '-y',
+        '-i',
+        audioPath,
+      ];
+
+      if (artworkPath != null && await File(artworkPath).exists()) {
+        args.addAll(['-i', artworkPath]);
+        // Map audio from first input and image from second input
+        args.addAll(['-map', '0:a', '-map', '1:0']);
+      } else {
+        // Just audio
+        args.addAll(['-map', '0:a']);
+      }
+
+      if (convertToMp3) {
+        args.addAll(['-c:a', 'libmp3lame', '-b:a', '320k']);
+      } else {
+        args.addAll(['-c', 'copy']);
+      }
+
+      // Add metadata tags
+      if (metadata.title != null) {
+        args.addAll(['-metadata', 'title=${metadata.title}']);
+      }
+      if (metadata.artist != null) {
+        args.addAll(['-metadata', 'artist=${metadata.artist}']);
+      }
+      if (metadata.album != null) {
+        args.addAll(['-metadata', 'album=${metadata.album}']);
+      }
+      if (metadata.genre != null) {
+        args.addAll(['-metadata', 'genre=${metadata.genre}']);
+      }
+      if (metadata.year != null) {
+        args.addAll(['-metadata', 'date=${metadata.year}']);
+      }
+
+      if (lyrics != null) {
+        // Embed USLT (Unsynchronized Lyrics)
+        args.addAll(['-metadata', 'lyrics=$lyrics']);
+      }
+
+      if (artworkPath != null) {
+        // Tagging for cover art
+        args.addAll(['-id3v2_version', '3']);
+        args.addAll(['-metadata:s:v', 'title=Album cover']);
+        args.addAll(['-metadata:s:v', 'comment=Cover (front)']);
+      }
+
+      args.add(tempPath);
+
+      StartupLogger.log(
+          '[MetadataEmbedder] Running FFmpeg for: $base (Target: $ext)');
+      final result = await Process.run(_deps.ffmpegPath, args);
+
+      if (result.exitCode == 0) {
+        // If we converted, the original file might be different format (e.g. .webm)
+        // so we delete original and rename temp to the new final path if needed,
+        // but here we follow the original logic of replacing the original file
+        // IF the extension matches. If it doesn't match, we might need a more
+        // sophisticated cleanup/renaming logic for the caller.
+        // For simplicity in the instant download flow, the caller will handle the final path.
+
+        final originalFile = File(audioPath);
+        if (await originalFile.exists()) {
+          await originalFile.delete();
+        }
+
+        // If extension changed (e.g. webm -> mp3), the audioPath is no longer correct
+        // but the caller of DownloadService expects the file to be at audioPath.
+        // We should probably rename tempPath to a path with the original name but new extension
+        // or just let the caller decide.
+        // Revised: Return the final path in the result or rename to audioPath
+        // but audioPath's extension might be wrong.
+
+        final finalFinalPath = p.join(dir, '$base$ext');
+        await File(tempPath).rename(finalFinalPath);
+
+        return true;
+      }
+
+      StartupLogger.log('[MetadataEmbedder] FFmpeg failed: ${result.stderr}');
+
+      // Clean up temp file if it exists
+      final tempFile = File(tempPath);
+      if (await tempFile.exists()) {
+        await tempFile.delete();
+      }
+
+      return false;
+    } catch (e) {
+      StartupLogger.log('[MetadataEmbedder] Error: $e');
+      return false;
+    }
+  }
+}
+
+
+---------- FILE: music_x\lib\features\discovery\services\download\youtube_download_provider.dart ----------
+import 'dart:io';
+import 'dart:convert';
+import 'package:music_hub/features/library/models/download_models.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+import 'package:music_hub/features/discovery/services/download/download_provider.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
+
+typedef ProcessRunner = Future<ProcessResult> Function(
+  String executable,
+  List<String> arguments, {
+  String? workingDirectory,
+  Map<String, String>? environment,
+  bool includeParentEnvironment,
+  bool runInShell,
+  Encoding? stdoutEncoding,
+  Encoding? stderrEncoding,
+});
+
+class YouTubeDownloadProvider implements DownloadProvider {
+  final _deps = DependencyManager.instance;
+  final ProcessRunner _processRunner;
+
+  YouTubeDownloadProvider({ProcessRunner? processRunner})
+      : _processRunner = processRunner ?? Process.run;
+
+  @override
+  bool supports(String url, MediaPlatform platform) =>
+      platform == MediaPlatform.youtube ||
+      platform == MediaPlatform.youtubeMusic;
+
+  @override
+  Future<MediaInfo> getInfo(String url) async {
+    final platform = _detectPlatform(url);
+    final result = await _processRunner(_deps.ytDlpPath, [
+      '--dump-json',
+      '--flat-playlist',
+      url,
+    ]);
+
+    if (result.exitCode != 0) {
+      throw Exception('Failed to get YouTube info: ${result.stderr}');
+    }
+
+    final json = jsonDecode(result.stdout);
+    final formats = <DownloadFormat>[];
+
+    if (json['formats'] != null) {
+      for (var f in json['formats']) {
+        final formatId = f['format_id'] as String?;
+        final ext = f['ext'] as String?;
+        final quality =
+            f['format_note'] as String? ?? f['resolution'] as String?;
+        final filesize = f['filesize'] as int? ?? f['filesize_approx'] as int?;
+
+        if (formatId == null || ext == null) continue;
+
+        formats.add(DownloadFormat(
+          formatId: formatId,
+          extension: ext,
+          quality: quality ?? 'Unknown',
+          isAudioOnly: f['vcodec'] == 'none',
+          filesize: filesize,
+        ));
+      }
+    }
+
+    // Add best audio options
+    formats.insert(
+        0,
+        DownloadFormat(
+          formatId: 'bestaudio[ext=m4a]/bestaudio',
+          extension: 'm4a',
+          quality: 'Best Audio',
+          isAudioOnly: true,
+        ));
+    formats.insert(
+        0,
+        DownloadFormat(
+          formatId: 'bestaudio/best',
+          extension: 'mp3',
+          quality: 'Best Audio (MP3)',
+          isAudioOnly: true,
+        ));
+
+    return MediaInfo(
+      title: json['title'] as String? ?? 'Unknown',
+      artist: json['artist'] as String? ??
+          json['uploader'] as String? ??
+          json['channel'] as String?,
+      album: json['album'] as String?,
+      thumbnail: json['thumbnail'] as String?,
+      duration: json['duration'] as int?,
+      platform: platform,
+      formats: formats,
+      url: url,
+    );
+  }
+
+  @override
+  Future<String> download(
+    String url,
+    DownloadFormat format, {
+    void Function(double progress)? onProgress,
+  }) async {
+    final title = 'download_${DateTime.now().millisecondsSinceEpoch}';
+    final outputPath =
+        '${Directory.systemTemp.path}/$title.${format.extension}';
+
+    final args = [
+      '-f',
+      format.formatId,
+      '-o',
+      outputPath,
+      url,
+    ];
+
+    final process = await Process.start(_deps.ytDlpPath, args);
+
+    process.stdout.transform(utf8.decoder).listen((data) {
+      // Basic progress parsing logic if needed
+      StartupLogger.log('[YouTubeProvider] $data');
+    });
+
+    final exitCode = await process.exitCode;
+    if (exitCode != 0) {
+      throw Exception('YouTube download failed with exit code $exitCode');
+    }
+
+    return outputPath;
+  }
+
+  MediaPlatform _detectPlatform(String url) {
+    if (url.contains('music.youtube.com')) {
+      return MediaPlatform.youtubeMusic;
+    }
+    return MediaPlatform.youtube;
+  }
+}
+
+
+---------- FILE: music_x\lib\features\discovery\services\download_service.dart ----------
+import 'dart:io';
+import 'package:music_hub/features/library/models/search_models.dart';
+import 'package:music_hub/features/library/models/download_models.dart';
+import 'package:music_hub/features/library/models/metadata_models.dart';
+import 'package:music_hub/features/discovery/services/download/download_provider.dart';
+import 'package:music_hub/features/discovery/services/download/youtube_download_provider.dart';
+import 'package:music_hub/features/discovery/services/download/metadata_embedder.dart';
+import 'package:music_hub/features/library/services/metadata_aggregator_service.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
+import 'package:path/path.dart' as p;
+
+/// Service for downloading music from various platforms.
+class DownloadService {
+  static DownloadService? _instance;
+  static DownloadService get instance =>
+      _instance ??= DownloadService._internal();
+  static set instance(DownloadService value) => _instance = value;
+  static void resetInstance() => _instance = null;
+
+  DownloadService._internal();
+
+  final List<DownloadProvider> _providers = [
+    YouTubeDownloadProvider(),
+  ];
+
+  final MetadataEmbedder _embedder = MetadataEmbedder();
+
+  /// Detect platform from URL.
+  static MediaPlatform detectPlatform(String url) {
+    if (url.contains('youtube.com') || url.contains('youtu.be')) {
+      if (url.contains('music.youtube.com')) {
+        return MediaPlatform.youtubeMusic;
+      }
+      return MediaPlatform.youtube;
+    } else if (url.contains('tidal.com') ||
+        url.contains('deezer.com') ||
+        url.contains('qobuz.com')) {
+      return MediaPlatform.hifi;
+    }
+    return MediaPlatform.unknown;
+  }
+
+  /// Get media info and available formats.
+  Future<MediaInfo> getMediaInfo(String url) async {
+    final platform = detectPlatform(url);
+    for (var provider in _providers) {
+      if (provider.supports(url, platform)) {
+        return await provider.getInfo(url);
+      }
+    }
+    throw Exception('No provider found for URL: $url');
+  }
+
+  /// Download media with selected format.
+  Future<String> download(
+    String url,
+    DownloadFormat format,
+    String outputDir, {
+    void Function(double progress, String status)? onProgress,
+    String? overrideThumbnailUrl,
+    String? title,
+    String? artist,
+  }) async {
+    final platform = detectPlatform(url);
+
+    for (var provider in _providers) {
+      if (provider.supports(url, platform)) {
+        // Enforce metadata enrichment before download if possible
+        AggregatedMetadata? enriched;
+        if (title != null && artist != null) {
+          onProgress?.call(0.05, 'Buscando metadados oficiais...');
+          try {
+            enriched = await MetadataAggregatorService.instance
+                .aggregateMetadata(title, artist);
+          } catch (e) {
+            StartupLogger.log('[DownloadService] Enrichment failed: $e');
+          }
+        }
+
+        onProgress?.call(0.1, 'Descarregando áudio...');
+        final downloadedPath = await provider.download(url, format,
+            onProgress: (p) => onProgress?.call(p, 'Baixando...'));
+
+        onProgress?.call(0.8, 'Organizando arquivos...');
+        final ext = p.extension(downloadedPath);
+        final safeTitle = (enriched?.title ?? title ?? 'Unknown')
+            .replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
+        final safeArtist = (enriched?.artist ?? artist ?? 'Unknown')
+            .replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
+
+        final finalFileName = '$safeArtist - $safeTitle$ext';
+        final finalPath = p.join(outputDir, finalFileName);
+
+        // Copy and ensure path exists
+        final targetFile = File(finalPath);
+        if (!await targetFile.parent.exists()) {
+          await targetFile.parent.create(recursive: true);
+        }
+        await File(downloadedPath).copy(finalPath);
+        await File(downloadedPath).delete();
+
+        if (enriched != null) {
+          onProgress?.call(0.9, 'Embutindo capa e tags...');
+          await embedMetadata(finalPath, enriched);
+        }
+
+        onProgress?.call(1.0, 'Concluído!');
+        return finalPath;
+      }
+    }
+    throw Exception('No provider found for URL: $url');
+  }
+
+  /// Helper to embed metadata using extracted embedder.
+  Future<bool> embedMetadata(String audioPath, AggregatedMetadata metadata,
+          {String? lyrics}) async =>
+      await _embedder.embed(audioPath, metadata, lyrics: lyrics);
+}
+
+
+---------- FILE: music_x\lib\features\discovery\services\offline_download_service.dart ----------
+import 'dart:io';
+import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter/return_code.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:music_hub/features/library/models/search_models.dart' as model;
+import 'package:music_hub/core/services/startup_logger.dart';
+import 'package:path/path.dart' as p;
+
+class OfflineDownloadService {
+  final YoutubeExplode _yt = YoutubeExplode();
+
+  /// Baixa e converte a música para MP3 em background.
+  /// [searchResult] é o modelo que você já tem no seu projeto.
+  Future<bool> downloadAndConvert(
+      model.SearchResult searchResult, String? coverUrl) async {
+    try {
+      StartupLogger.log(
+          '[OfflineDownload] Starting download for: ${searchResult.title}');
+
+      // 1. Prepara caminhos
+      final tempDir = await getTemporaryDirectory();
+      final docDir = await getApplicationDocumentsDirectory();
+      final downloadsDir = Directory(p.join(docDir.path, 'Downloads'));
+      if (!await downloadsDir.exists()) {
+        await downloadsDir.create(recursive: true);
+      }
+
+      // Nome limpo do arquivo
+      final safeTitle = _sanitizeFilename(searchResult.title);
+      final safeArtist = _sanitizeFilename(searchResult.artist);
+      final fileName = '$safeArtist - $safeTitle.mp3';
+      final finalFile = File(p.join(downloadsDir.path, fileName));
+
+      // Arquivo temporário (formato nativo WebM do YouTube)
+      final tempWebM = File(p.join(tempDir.path, '${searchResult.id}.webm'));
+      // Arquivo temporário da capa
+      final tempCover =
+          File(p.join(tempDir.path, '${searchResult.id}_cover.jpg'));
+
+      // 2. Baixa o áudio nativo
+      StartupLogger.log('[OfflineDownload] Downloading native audio...');
+      final manifest =
+          await _yt.videos.streamsClient.getManifest(searchResult.id);
+      final audioStream = manifest.audioOnly.withHighestBitrate();
+      final sink = tempWebM.openWrite();
+      await _yt.videos.streamsClient.get(audioStream).pipe(sink);
+      await sink.close();
+
+      // 3. Baixa a Capa (Se fornecida ou usa placeholder)
+      // final coverPath = tempCover.path; // Unused
+      if (coverUrl != null && coverUrl.isNotEmpty) {
+        StartupLogger.log('[OfflineDownload] Downloading cover art...');
+        final response = await http.get(Uri.parse(coverUrl));
+        await tempCover.writeAsBytes(response.bodyBytes);
+      } else {
+        // Se não tiver capa, tenta usar do próprio YouTube se disponivel
+        if (searchResult.thumbnail != null) {
+          final ytThumbResponse =
+              await http.get(Uri.parse(searchResult.thumbnail!));
+          await tempCover.writeAsBytes(ytThumbResponse.bodyBytes);
+        }
+      }
+
+      // 4. Conversão FFmpeg (Background - Não trava o app)
+      StartupLogger.log('[OfflineDownload] Starting FFmpeg conversion...');
+
+      final command = [
+        '-y', // Sobrescreve se existir
+        '-i', '"${tempWebM.path}"', // Entrada (WebM)
+        '-i', '"${tempCover.path}"', // Entrada (Capa)
+        '-map', '0:a', // Seleciona apenas áudio do WebM
+        '-map', '1:0', // Seleciona a capa
+        '-c:a', 'libmp3lame', // Codec MP3
+        '-b:a', '320k', // Bitrate Alta
+        '-id3v2_version', '3', // Tags ID3 Compatíveis
+        '-metadata', 'title="${searchResult.title}"',
+        '-metadata', 'artist="${searchResult.artist}"',
+        '-metadata:s:v', 'title="Album cover"',
+        '-metadata:s:v', 'comment="Cover (front)"',
+        '"${finalFile.path}"' // Saída
+      ].join(' ');
+
+      // Wrap in executeAsync to not block UI
+      final session = await FFmpegKit.execute(command);
+      final returnCode = await session.getReturnCode();
+
+      if (ReturnCode.isSuccess(returnCode)) {
+        StartupLogger.log('[OfflineDownload] ✅ SUCCESS: ${finalFile.path}');
+
+        // Limpeza
+        if (await tempWebM.exists()) await tempWebM.delete();
+        if (await tempCover.exists()) await tempCover.delete();
+
+        return true;
+      } else {
+        StartupLogger.log('[OfflineDownload] ❌ FFmpeg failed. Logs:');
+        final logs = await session.getLogs();
+        for (final log in logs) {
+          StartupLogger.log(log.getMessage());
+        }
+
+        if (await tempWebM.exists()) await tempWebM.delete();
+        if (await tempCover.exists()) await tempCover.delete();
+        return false;
+      }
+    } catch (e) {
+      StartupLogger.log('[OfflineDownload] Fatal error: $e');
+      return false;
+    }
+  }
+
+  String _sanitizeFilename(String name) =>
+      name.replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
+
+  void dispose() => _yt.close();
+}
+
+
+---------- FILE: music_x\lib\features\discovery\services\search\search_provider.dart ----------
+import 'package:music_hub/features/library/models/download_models.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+
+/// Contract for music search providers.
+abstract class SearchProvider {
+  /// Unique identifier for this provider.
+  MediaPlatform get platform;
+
+  /// Search for tracks on this platform.
+  Future<List<SearchResult>> search(String query);
+
+  /// Get available download formats for a specific URL.
+  Future<List<DownloadFormat>> getFormats(String url);
+
+  /// Get direct streaming URL for audio.
+  Future<String?> getStreamUrl(String url);
+
+  /// Import a playlist from a URL.
+  Future<List<SearchResult>> importPlaylist(String url);
+
+  /// Whether this provider supports the given URL.
+  bool supports(String url);
+}
+
+
+---------- FILE: music_x\lib\features\discovery\services\search\slavart_search_provider.dart ----------
+import 'package:music_hub/features/library/models/download_models.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+import 'package:music_hub/core/services/hifi_download_service.dart';
+import 'package:music_hub/features/discovery/services/search/search_provider.dart';
+
+/// Provider for Hi-Fi search (Tidal, Qobuz, Deezer) via SlavArt.
+class SlavArtSearchProvider implements SearchProvider {
+  @override
+  MediaPlatform get platform => MediaPlatform.hifi;
+
+  @override
+  Future<List<SearchResult>> search(String query) async {
+    try {
+      final hifiService = HiFiDownloadService.instance;
+      final results = await hifiService.search(query);
+
+      return results
+          .map((r) => SearchResult(
+                id: r.id,
+                title: r.title,
+                artist: r.artist,
+                album: r.album,
+                thumbnail: r.thumbnail,
+                duration: r.duration,
+                url: r.sourceUrl,
+                platform: MediaPlatform.hifi,
+                hifiSource: r.source.name, // 'qobuz', 'tidal', 'deezer'
+                hifiQuality: r.quality, // e.g. '24-bit/96kHz'
+              ))
+          .toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  @override
+  Future<List<DownloadFormat>> getFormats(String url) async => [];
+
+  @override
+  Future<String?> getStreamUrl(String url) async {
+    // For SlavArt, the search URL is already a direct streamable link or API endpoint.
+    if (url.startsWith('http') && url.contains('.slavart-api.')) {
+      return url;
+    }
+    return null;
+  }
+
+  @override
+  Future<List<SearchResult>> importPlaylist(String url) async => [];
+
+  @override
+  bool supports(String url) => url.contains('.slavart-api.');
+}
+
+
+---------- FILE: music_x\lib\features\discovery\services\search\youtube_search_provider.dart ----------
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:music_hub/features/library/models/download_models.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/features/discovery/services/search/search_provider.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
+
+/// Base for YouTube-based search providers.
+abstract class BaseYouTubeSearchProvider implements SearchProvider {
+  final DependencyManager _deps = DependencyManager.instance;
+  final yt.YoutubeExplode ytExplode = yt.YoutubeExplode();
+
+  @override
+  bool supports(String url) =>
+      url.contains('youtube.com') || url.contains('youtu.be');
+
+  @protected
+  SearchResult parseYouTubeVideo(yt.Video video, MediaPlatform platform,
+      {bool allowExplicit = false}) {
+    String title = video.title;
+    String artist = video.author.replaceAll(' - Topic', '').trim();
+
+    // Scoring Heuristics
+    int score = 0;
+    final bool isTopic = video.author.toLowerCase().contains('topic');
+    final bool isOfficialAudio =
+        video.title.toLowerCase().contains('official audio');
+    final bool isMusicVideo =
+        video.title.toLowerCase().contains('official music video');
+    final bool isExplicit = video.title.toLowerCase().contains('explicit') ||
+        video.title.toLowerCase().contains('uncensored');
+    final bool isClean = video.title.toLowerCase().contains('clean') ||
+        video.title.toLowerCase().contains('radio edit') ||
+        video.title.toLowerCase().contains('censored');
+    final bool isInstrumental =
+        video.title.toLowerCase().contains('instrumental');
+
+    if (isTopic) score += 100;
+    if (isOfficialAudio) score += 50;
+    if (isMusicVideo) score -= 50;
+    if (isInstrumental) score -= 200;
+
+    if (allowExplicit) {
+      if (isExplicit) score += 80;
+    } else {
+      if (isClean) score += 80;
+      if (isExplicit) score -= 1000;
+    }
+
+    final bool isOfficial = isTopic || isOfficialAudio || isMusicVideo;
+
+    title = SearchResult.cleanMetadata(title);
+    // ... rest of metadata cleaning logic ...
+    if (video.title.contains(' - ')) {
+      final parts = video.title.split(' - ');
+      if (parts.length >= 2) {
+        final potentialArtist = SearchResult.cleanMetadata(parts[0]);
+        final potentialTitle =
+            SearchResult.cleanMetadata(parts.sublist(1).join(' - '));
+
+        final genericAuthors = [
+          '7clouds',
+          'proximity',
+          'trap nation',
+          'official music',
+          'official',
+          'vevo',
+          'lyrics',
+          'audio',
+          'music',
+          'videos',
+          'records',
+          'entertainment'
+        ];
+        final bool isGeneric =
+            genericAuthors.any((g) => artist.toLowerCase().contains(g)) ||
+                video.author.toLowerCase().contains('topic');
+        final bool authorMatchesTitle = SearchResult.toMatchKey(artist)
+                .contains(SearchResult.toMatchKey(potentialArtist)) ||
+            SearchResult.toMatchKey(potentialArtist)
+                .contains(SearchResult.toMatchKey(artist));
+
+        if (isGeneric || !authorMatchesTitle) {
+          artist = potentialArtist;
+          title = potentialTitle;
+        }
+      }
+    }
+
+    title = title
+        .replaceAll(RegExp(r'ft\..*$', caseSensitive: false), '')
+        .replaceAll(RegExp(r'feat\..*$', caseSensitive: false), '')
+        .trim();
+
+    final result = SearchResult(
+      id: video.id.value,
+      title: title,
+      artist: artist,
+      thumbnail: video.thumbnails.highResUrl,
+      duration: video.duration?.inSeconds,
+      url: video.url,
+      platform: platform,
+    );
+    result.isOfficial = isOfficial;
+    result.priorityScore = score; // We'll add this field to the model next
+    return result;
+  }
+
+  @protected
+  Future<List<SearchResult>> searchWithYtDlp(
+      String query, MediaPlatform platform) async {
+    try {
+      final results = <SearchResult>[];
+      final args = [
+        '--dump-json',
+        '--flat-playlist',
+        '--no-playlist',
+        '--cookies-from-browser',
+        'all',
+        'ytsearch10:$query',
+      ];
+
+      final result = await Process.run(
+        _deps.ytDlpPath,
+        args,
+        stdoutEncoding: utf8,
+        stderrEncoding: utf8,
+      );
+
+      if (result.exitCode == 0) {
+        final lines = (result.stdout as String).split('\n');
+        for (final line in lines) {
+          if (line.trim().isEmpty) continue;
+          try {
+            final json = jsonDecode(line);
+            results.add(SearchResult(
+              id: json['id'] as String? ?? '',
+              title: SearchResult.cleanMetadata(
+                  json['title'] as String? ?? 'Unknown'),
+              artist: (json['uploader'] as String? ??
+                      json['channel'] as String? ??
+                      'Unknown')
+                  .replaceAll(' - Topic', '')
+                  .trim(),
+              thumbnail: json['thumbnail'] as String?,
+              duration: (json['duration'] as num?)?.toInt(),
+              url: 'https://www.youtube.com/watch?v=${json['id']}',
+              platform: platform,
+            ));
+          } catch (_) {}
+        }
+      }
+      results.sort((a, b) {
+        if (a.isOfficial && !b.isOfficial) return -1;
+        if (!a.isOfficial && b.isOfficial) return 1;
+        return 0;
+      });
+      return results;
+    } catch (e) {
+      StartupLogger.log(
+          '[YouTubeSearchProvider] yt-dlp search fallback failed: $e');
+      return [];
+    }
+  }
+
+  @override
+  Future<List<DownloadFormat>> getFormats(String url) async {
+    try {
+      final result = await Process.run(
+        _deps.ytDlpPath,
+        ['--dump-json', '--no-download', '--cookies-from-browser', 'all', url],
+        stdoutEncoding: utf8,
+        stderrEncoding: utf8,
+      );
+
+      if (result.exitCode != 0) {
+        return _defaultFormats();
+      }
+
+      final json = jsonDecode(result.stdout as String);
+      final formats = <DownloadFormat>[];
+
+      formats.add(DownloadFormat(
+          formatId: 'bestaudio/best',
+          quality: 'Best Audio (MP3)',
+          extension: 'mp3',
+          isAudioOnly: true));
+      formats.add(DownloadFormat(
+          formatId: 'bestaudio[ext=m4a]/bestaudio',
+          quality: 'Best Audio (M4A)',
+          extension: 'm4a',
+          isAudioOnly: true));
+
+      final formatsList = json['formats'] as List? ?? [];
+      for (final f in formatsList) {
+        final formatId = f['format_id'] as String? ?? '';
+        final ext = f['ext'] as String? ?? '';
+        final vcodec = f['vcodec'] as String? ?? 'none';
+        final acodec = f['acodec'] as String? ?? 'none';
+        final abr = f['abr'] as num?;
+
+        final isAudioOnly = vcodec == 'none' && acodec != 'none';
+
+        if (isAudioOnly && abr != null) {
+          formats.add(DownloadFormat(
+            formatId: formatId,
+            quality: '${abr.toInt()}kbps',
+            extension: ext,
+            isAudioOnly: true,
+          ));
+        }
+      }
+
+      return formats;
+    } catch (e) {
+      return _defaultFormats();
+    }
+  }
+
+  List<DownloadFormat> _defaultFormats() => [
+        DownloadFormat(
+            formatId: 'bestaudio/best',
+            quality: 'Best Audio (MP3)',
+            extension: 'mp3',
+            isAudioOnly: true),
+        DownloadFormat(
+            formatId: 'bestaudio[ext=m4a]/bestaudio',
+            quality: 'Best Audio (M4A)',
+            extension: 'm4a',
+            isAudioOnly: true),
+      ];
+
+  @override
+  Future<String?> getStreamUrl(String url) async {
+    try {
+      final videoId = yt.VideoId.parseVideoId(url);
+      if (videoId != null) {
+        final manifest =
+            await ytExplode.videos.streamsClient.getManifest(videoId);
+        final audioStream = manifest.audioOnly.withHighestBitrate();
+        return audioStream.url.toString();
+      }
+    } catch (e) {
+      StartupLogger.log(
+          '[YouTubeSearchProvider] Native extraction failed, fallback to yt-dlp: $e');
+    }
+
+    // Fallback to yt-dlp
+    try {
+      final args = [
+        '--get-url',
+        '-f',
+        'bestaudio',
+        '--cookies-from-browser',
+        'all',
+        url
+      ];
+      final result = await Process.run(_deps.ytDlpPath, args);
+      if (result.exitCode == 0) {
+        return (result.stdout as String).trim();
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  @override
+  Future<List<SearchResult>> importPlaylist(String url) async {
+    try {
+      final result = await Process.run(
+        _deps.ytDlpPath,
+        [
+          '--dump-json',
+          '--flat-playlist',
+          '--no-download',
+          '--cookies-from-browser',
+          'all',
+          url,
+        ],
+        stdoutEncoding: utf8,
+        stderrEncoding: utf8,
+      );
+
+      if (result.exitCode != 0) {
+        return [];
+      }
+
+      final results = <SearchResult>[];
+      final lines = (result.stdout as String).split('\n');
+
+      for (final line in lines) {
+        if (line.trim().isEmpty) continue;
+        try {
+          final json = jsonDecode(line);
+          results.add(SearchResult(
+            id: json['id'] as String? ?? '',
+            title: json['title'] as String? ?? 'Unknown',
+            artist: json['uploader'] as String? ??
+                json['channel'] as String? ??
+                'Unknown',
+            thumbnail: json['thumbnail'] as String?,
+            duration: (json['duration'] as num?)?.toInt(),
+            url: 'https://www.youtube.com/watch?v=${json['id']}',
+            platform: MediaPlatform.youtube,
+          ));
+        } catch (_) {}
+      }
+      return results;
+    } catch (e) {
+      return [];
+    }
+  }
+}
+
+class YouTubeSearchProvider extends BaseYouTubeSearchProvider {
+  @override
+  MediaPlatform get platform => MediaPlatform.youtube;
+
+  @override
+  Future<List<SearchResult>> search(String query) async {
+    try {
+      final results = <SearchResult>[];
+      final seenIds = <String>{};
+      final seenMeta = <String>{};
+
+      // Fetch allowExplicit preference
+      final allowExplicit = await DatabaseService.instance.loadAgeBypass();
+
+      // Search Cascade
+      final searchTerms = [
+        query, // Primary
+        '$query topic', // Studio Master fallback
+        '$query official audio', // Audio fallback
+      ];
+
+      for (var term in searchTerms) {
+        if (results.length >= 10) break;
+        StartupLogger.log('[YouTubeSearchProvider] Trying cascade: $term');
+        final searchList = await ytExplode.search.search(term);
+
+        for (final video in searchList) {
+          if (seenIds.contains(video.id.value)) continue;
+
+          // Duration Filter: Ignore short clips (< 60s)
+          if (video.duration != null && video.duration!.inSeconds < 60) {
+            continue;
+          }
+
+          final res =
+              parseYouTubeVideo(video, platform, allowExplicit: allowExplicit);
+          final metaKey =
+              '${SearchResult.toMatchKey(res.artist)}:${SearchResult.toMatchKey(res.title)}';
+
+          if (seenMeta.contains(metaKey)) continue;
+
+          results.add(res);
+          seenIds.add(video.id.value);
+          seenMeta.add(metaKey);
+
+          if (results.length >= 15) break; // Fetch a healthy pool
+        }
+      }
+
+      // Rank by priority score
+      results.sort(
+          (a, b) => (b.priorityScore ?? 0).compareTo(a.priorityScore ?? 0));
+
+      return results.take(12).toList();
+    } catch (e, stack) {
+      StartupLogger.logError('YouTube Search Provider Error', e, stack);
+      return searchWithYtDlp(query, platform);
+    }
+  }
+}
+
+class YouTubeMusicSearchProvider extends BaseYouTubeSearchProvider {
+  @override
+  MediaPlatform get platform => MediaPlatform.youtubeMusic;
+
+  @override
+  Future<List<SearchResult>> search(String query) async {
+    try {
+      final results = <SearchResult>[];
+      final seenIds = <String>{};
+      final seenMeta = <String>{};
+
+      // Fetch allowExplicit preference
+      final allowExplicit = await DatabaseService.instance.loadAgeBypass();
+
+      // YouTube Music Search is already specialized
+      final searchList = await ytExplode.search.search('$query topic');
+
+      for (final video in searchList) {
+        if (seenIds.contains(video.id.value)) continue;
+
+        // Duration Filter: Ignore short clips (< 60s)
+        if (video.duration != null && video.duration!.inSeconds < 60) {
+          continue;
+        }
+
+        final res =
+            parseYouTubeVideo(video, platform, allowExplicit: allowExplicit);
+        final metaKey =
+            '${SearchResult.toMatchKey(res.artist)}:${SearchResult.toMatchKey(res.title)}';
+
+        if (seenMeta.contains(metaKey)) continue;
+
+        results.add(res);
+        seenIds.add(video.id.value);
+        seenMeta.add(metaKey);
+      }
+
+      // Rank by priority score
+      results.sort(
+          (a, b) => (b.priorityScore ?? 0).compareTo(a.priorityScore ?? 0));
+
+      return results.take(12).toList();
+    } catch (e, stack) {
+      StartupLogger.logError('YouTube Music Search Provider Error', e, stack);
+      return searchWithYtDlp('$query topic', platform);
+    }
+  }
+
+  @override
+  Future<List<SearchResult>> importPlaylist(String url) async =>
+      (await super.importPlaylist(url))
+          .map((r) => SearchResult(
+                id: r.id,
+                title: r.title,
+                artist: r.artist,
+                album: r.album,
+                thumbnail: r.thumbnail,
+                duration: r.duration,
+                url: r.url,
+                platform: MediaPlatform.youtubeMusic,
+              ))
+          .toList();
+}
+
+
+---------- FILE: music_x\lib\features\discovery\services\search_service.dart ----------
+import 'package:flutter/foundation.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
+import 'package:music_hub/features/library/models/download_models.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+import 'package:music_hub/features/discovery/services/search/search_provider.dart';
+import 'package:music_hub/features/discovery/services/search/youtube_search_provider.dart';
+import 'package:music_hub/features/discovery/services/search/slavart_search_provider.dart';
+
+/// Service for searching music across platforms.
+/// Refactored to use modular providers and focus exclusively on audio.
+class SearchService {
+  static SearchService? _instance;
+  static SearchService get instance => _instance ??= SearchService._internal();
+  static set instance(SearchService value) => _instance = value;
+  static void resetInstance() => _instance = null;
+
+  SearchService._internal() {
+    _providers = [
+      YouTubeSearchProvider(),
+      YouTubeMusicSearchProvider(),
+      SlavArtSearchProvider(),
+    ];
+  }
+
+  late List<SearchProvider> _providers;
+
+  @visibleForTesting
+  void setProviders(List<SearchProvider> providers) {
+    _providers = providers;
+  }
+
+  /// Initialize and load settings.
+  Future<void> init() async {
+    // No initialization needed currently
+  }
+
+  /// Search across all platforms with status updates.
+  Future<List<SearchResult>> searchAll(
+    String query, {
+    void Function(MediaPlatform platform, SearchStatus status)? onStatusUpdate,
+  }) async {
+    final results = <SearchResult>[];
+
+    // Get downloaded tracks for deduplication
+    final downloadedTracks = await DatabaseService.instance.getDownloadedUrls();
+
+    // Initial status: all searching
+    for (var p in _providers) {
+      onStatusUpdate?.call(p.platform, SearchStatus.searching);
+    }
+
+    // Run searches in parallel
+    final futures = _providers.map((p) => _searchWithStatus(
+          p.platform,
+          () => p.search(query),
+          onStatusUpdate,
+        ));
+
+    final lists = await Future.wait(futures);
+
+    // Get all local tracks for metadata matching
+    final allLocalTracks = await DatabaseService.instance.getAllTracks();
+    final Map<String, String> metadataToPath = {};
+    for (var track in allLocalTracks) {
+      if (track.localPath != null) {
+        final key =
+            '${SearchResult.toMatchKey(track.artist)}:${SearchResult.toMatchKey(track.title)}';
+        metadataToPath[key] = track.localPath!;
+      }
+    }
+
+    for (final list in lists) {
+      for (var item in list) {
+        // 1. URL Deduplication
+        if (downloadedTracks.containsKey(item.url)) {
+          item.localPath = downloadedTracks[item.url];
+        }
+        // 2. Metadata Deduplication
+        else {
+          final itemKey =
+              '${SearchResult.toMatchKey(item.artist)}:${SearchResult.toMatchKey(item.title)}';
+          if (metadataToPath.containsKey(itemKey)) {
+            item.localPath = metadataToPath[itemKey];
+          }
+        }
+        results.add(item);
+      }
+    }
+
+    // 3. Global Ranking: Prioritize results based on priorityScore and official status
+    results.sort((a, b) {
+      if (a.priorityScore != null || b.priorityScore != null) {
+        return (b.priorityScore ?? 0).compareTo(a.priorityScore ?? 0);
+      }
+      if (a.isOfficial && !b.isOfficial) return -1;
+      if (!a.isOfficial && b.isOfficial) return 1;
+      return 0;
+    });
+
+    return results;
+  }
+
+  Future<List<SearchResult>> _searchWithStatus(
+    MediaPlatform platform,
+    Future<List<SearchResult>> Function() searchFn,
+    void Function(MediaPlatform platform, SearchStatus status)? onStatusUpdate,
+  ) async {
+    try {
+      StartupLogger.log('[SearchService] Executing ${platform.name} search...');
+      final results = await searchFn();
+      StartupLogger.log(
+          '[SearchService] ${platform.name} search finished with ${results.length} results');
+      if (results.isEmpty) {
+        onStatusUpdate?.call(platform, SearchStatus.noResults);
+      } else {
+        onStatusUpdate?.call(platform, SearchStatus.completed);
+      }
+      return results;
+    } catch (e, stack) {
+      StartupLogger.logError('${platform.name} search FAILED', e, stack);
+      onStatusUpdate?.call(platform, SearchStatus.failed);
+      return [];
+    }
+  }
+
+  Future<List<DownloadFormat>> getFormats(
+      String url, MediaPlatform platform) async {
+    final provider = _providers.firstWhere(
+      (p) => p.platform == platform || p.supports(url),
+      orElse: () => _providers.first,
+    );
+    return provider.getFormats(url);
+  }
+
+  /// Get direct streaming URL for a given media URL.
+  Future<String?> getStreamUrl(
+    String url, {
+    MediaPlatform? platform,
+  }) async {
+    // 0. Direct Link Detection
+    if (url.startsWith('http') &&
+        (url.contains('.slavart-api.') ||
+            url.endsWith('.flac') ||
+            url.endsWith('.mp3'))) {
+      return url;
+    }
+
+    final provider = _providers.firstWhere(
+      (p) => p.platform == platform || p.supports(url),
+      orElse: () => _providers.first,
+    );
+    return provider.getStreamUrl(url);
+  }
+
+  /// Import a playlist from URL.
+  Future<List<SearchResult>> importPlaylist(String url) async {
+    final provider = _providers.firstWhere(
+      (p) => p.supports(url),
+      orElse: () => _providers.first,
+    );
+    return provider.importPlaylist(url);
+  }
+
+  /// Backwards compatibility dummy or internal use
+  SearchService() : this._internal();
+}
+
+
+---------- FILE: music_x\lib\features\discovery\services\youtube_streamer_service.dart ----------
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
+
+class YouTubeStreamerService {
+  final YoutubeExplode _yt = YoutubeExplode();
+
+  /// Busca o melhor ID de vídeo priorizando áudio limpo de estúdio.
+  /// Retorna a URL direta de streaming para ser usada no just_audio.
+  Future<String?> getStreamUrl(String query,
+      {bool allowExplicit = false}) async {
+    try {
+      // Estratégia de busca em cascata
+      // final searchTerms = [
+      //   '$query topic',           // 1. Áudio do álbum (Melhor)
+      //   allowExplicit ? '$query explicit' : '$query official audio', // 2. Audio Oficial
+      //   '$query music video'          // 3. Último recurso (tem intro de vídeo)
+      // ];
+
+      // Tenta buscar o melhor candidato
+      // Por enquanto simplificado para usar o primeiro termo de busca que é o mais forte
+      StartupLogger.log('[YouTubeStreamer] Searching stream for: $query');
+      final results = await _yt.search.search('$query topic');
+      final videoId = await _filterBestVideo(results);
+
+      if (videoId == null) {
+        StartupLogger.log('[YouTubeStreamer] No valid video found for: $query');
+        return null;
+      }
+
+      StartupLogger.log('[YouTubeStreamer] Found video ID: $videoId');
+
+      // Obtém manifesto e extrai o áudio de maior qualidade
+      final manifest = await _yt.videos.streamsClient.getManifest(videoId);
+      final streamInfo = manifest.audioOnly.withHighestBitrate();
+
+      // Retorna a URL de streaming
+      return streamInfo.url.toString();
+    } catch (e) {
+      StartupLogger.log('[YouTubeStreamer] Erro ao extrair stream YouTube: $e');
+      return null;
+    }
+  }
+
+  /// Filtra os resultados para pegar apenas "Topic" ou Oficiais
+  Future<String?> _filterBestVideo(List<Video> results) async {
+    for (final video in results) {
+      if (video.duration == null || video.duration!.inSeconds < 60) continue;
+
+      final channel = video.author.toLowerCase();
+      final title = video.title.toLowerCase();
+
+      // Prioridade 1: Topic (Áudio Puro)
+      if (channel.endsWith(' - topic')) {
+        return video.id.value;
+      }
+
+      // Prioridade 2: Official Audio
+      if (title.contains('official audio') && !title.contains('lyrics')) {
+        return video.id.value;
+      }
+    }
+
+    // Fallback: Retorna o primeiro resultado se não for muito curto
+    if (results.isNotEmpty) {
+      return results.first.id.value;
+    }
+
+    // Retorna null se não achar nada satisfatório
+    return null;
+  }
+
+  void dispose() => _yt.close();
+}
+
+

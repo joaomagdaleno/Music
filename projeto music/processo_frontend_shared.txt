@@ -1,0 +1,2816 @@
+================================================================================
+PROCESS AUDIT: processo_frontend_shared.txt
+DATE: 2026-01-08 15:23:23
+FILE COUNT: 14
+================================================================================
+
+---------- FILE: music_x\lib\core\services\global_navigation_service.dart ----------
+import 'package:flutter/material.dart';
+import 'package:music_hub/features/library/models/persona_model.dart';
+
+class GlobalNavigationService extends ChangeNotifier {
+  static GlobalNavigationService _instance = GlobalNavigationService._();
+  static GlobalNavigationService get instance => _instance;
+
+  static void resetInstance() {
+    // _instance.dispose(); // ChangeNotifier.dispose renders it unusable, do not dispose before replacement if possible, or just replace.
+    // Actually, if we dispose the old one, any listeners attached to it might complain if they try to use it?
+    // But resetInstance is for tests.
+    _instance = GlobalNavigationService._();
+  }
+
+  GlobalNavigationService._();
+
+  int _mainIndex = 0;
+  int get mainIndex => _mainIndex;
+
+  final Map<AppPersona, int> _personaSubIndices = {
+    AppPersona.librarian: 0,
+    AppPersona.host: 0,
+    AppPersona.artisan: 0,
+  };
+
+  int getSubIndex(AppPersona persona) => _personaSubIndices[persona] ?? 0;
+
+  void setMainIndex(int index) {
+    if (_mainIndex == index) return;
+    _mainIndex = index;
+    notifyListeners();
+  }
+
+  void setSubIndex(AppPersona persona, int subIndex) {
+    if (_personaSubIndices[persona] == subIndex) return;
+    _personaSubIndices[persona] = subIndex;
+    notifyListeners();
+  }
+
+  /// Helper to navigate to a specific persona and tab.
+  void navigateToPersonaTab(AppPersona persona, int tabIndex) {
+    // 2 is typically the base index for personas in AppShell (Bibliotecário)
+    // but we should probably use a more robust logic since personas are dynamic.
+    // Index 2 = Librarian, 3 = Host, 4 = Artisan in current AppShell structure.
+    int mainIdx = 0;
+    switch (persona) {
+      case AppPersona.librarian:
+        mainIdx = 2;
+        break;
+      case AppPersona.host:
+        mainIdx = 3;
+        break;
+      case AppPersona.artisan:
+        mainIdx = 4;
+        break;
+    }
+
+    setSubIndex(persona, tabIndex);
+    setMainIndex(mainIdx);
+  }
+}
+
+
+---------- FILE: music_x\lib\core\services\notification_service.dart ----------
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+
+class NotificationService {
+  NotificationService._();
+  static final NotificationService instance = NotificationService._();
+
+  /// Shows a notification appropriate for the current platform.
+  /// [context] is required to find the overlay or scaffold.
+  /// [message] is the text to display.
+  /// [severity] maps to Fluent UI severities (info, warning, error, success).
+  void show(
+    BuildContext context,
+    String message, {
+    NotificationSeverity severity = NotificationSeverity.info,
+  }) {
+    final isFluent = _isFluentPlatform;
+
+    if (isFluent) {
+      _showFluent(context, message, severity);
+    } else {
+      _showMaterial(context, message, severity);
+    }
+  }
+
+  bool get _isFluentPlatform {
+    final platform = defaultTargetPlatform;
+    return platform == TargetPlatform.windows ||
+        platform == TargetPlatform.linux ||
+        platform == TargetPlatform.macOS;
+  }
+
+  void _showFluent(
+      BuildContext context, String message, NotificationSeverity severity) {
+    fluent.displayInfoBar(context,
+        builder: (context, close) => fluent.InfoBar(
+              title: Text(message),
+              severity: _mapSeverityToFluent(severity),
+              onClose: close,
+            ));
+  }
+
+  void _showMaterial(
+      BuildContext context, String message, NotificationSeverity severity) {
+    // Check if ScaffoldMessenger is available
+    final messenger = ScaffoldMessenger.of(context);
+
+    Color? backgroundColor;
+    switch (severity) {
+      case NotificationSeverity.error:
+        backgroundColor = Colors.red;
+        break;
+      case NotificationSeverity.success:
+        backgroundColor = Colors.green;
+        break;
+      case NotificationSeverity.warning:
+        backgroundColor = Colors.orange;
+        break;
+      case NotificationSeverity.info:
+        backgroundColor = null; // Default theme
+    }
+
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: backgroundColor,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  fluent.InfoBarSeverity _mapSeverityToFluent(NotificationSeverity severity) {
+    switch (severity) {
+      case NotificationSeverity.info:
+        return fluent.InfoBarSeverity.info;
+      case NotificationSeverity.warning:
+        return fluent.InfoBarSeverity.warning;
+      case NotificationSeverity.error:
+        return fluent.InfoBarSeverity.error;
+      case NotificationSeverity.success:
+        return fluent.InfoBarSeverity.success;
+    }
+  }
+}
+
+enum NotificationSeverity {
+  info,
+  warning,
+  error,
+  success,
+}
+
+
+---------- FILE: music_x\lib\core\services\theme_service.dart ----------
+import 'package:flutter/material.dart';
+import 'package:palette_generator_master/palette_generator_master.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
+
+class ThemeService extends ChangeNotifier {
+  static ThemeService? _instance;
+  static ThemeService get instance => _instance ??= ThemeService._internal();
+
+  @visibleForTesting
+  static set instance(ThemeService mock) => _instance = mock;
+
+  @visibleForTesting
+  static void resetInstance() => _instance = null;
+
+  ThemeService._internal();
+
+  Color _primaryColor = Colors.blue;
+  Color? _customColor;
+  bool _useCustomColor = false;
+
+  /// For testing: allows mocking palette generation
+  @visibleForTesting
+  Future<PaletteGeneratorMaster> Function(
+    ImageProvider imageProvider, {
+    int maximumColorCount,
+    Size? size,
+    Rect? region,
+    List<PaletteFilterMaster> filters,
+    List<PaletteTargetMaster> targets,
+  }) paletteGenerator = PaletteGeneratorMaster.fromImageProvider;
+
+  Color get primaryColor =>
+      _useCustomColor && _customColor != null ? _customColor! : _primaryColor;
+
+  bool get useCustomColor => _useCustomColor;
+  Color? get customColor => _customColor;
+
+  // Preset colors for quick selection
+  static const List<Color> presetColors = [
+    Colors.purple,
+    Colors.blue,
+    Colors.teal,
+    Colors.green,
+    Colors.orange,
+    Colors.pink,
+    Colors.red,
+    Colors.indigo,
+    Colors.cyan,
+    Colors.amber,
+  ];
+
+  Future<void> init() async {
+    final colorValue = await DatabaseService.instance.getSetting('customColor');
+    final useCustom =
+        await DatabaseService.instance.getSetting('useCustomColor');
+
+    if (colorValue != null) {
+      _customColor = Color(int.parse(colorValue));
+    }
+    _useCustomColor = useCustom == 'true';
+    notifyListeners();
+  }
+
+  Future<void> setCustomColor(Color color) async {
+    _customColor = color;
+    _useCustomColor = true;
+    await DatabaseService.instance
+        .saveSetting('customColor', color.toARGB32().toString());
+    await DatabaseService.instance.saveSetting('useCustomColor', 'true');
+    notifyListeners();
+  }
+
+  Future<void> setAutoMode() async {
+    _useCustomColor = false;
+    await DatabaseService.instance.saveSetting('useCustomColor', 'false');
+    notifyListeners();
+  }
+
+  Future<void> updateThemeFromImage(String? imageUrl) async {
+    // Only update if in auto mode
+    if (_useCustomColor) {
+      return;
+    }
+
+    if (imageUrl == null) {
+      _primaryColor = Colors.blue;
+      notifyListeners();
+      return;
+    }
+
+    try {
+      final palette = await paletteGenerator(
+        NetworkImage(imageUrl),
+        maximumColorCount: 10,
+      );
+
+      _primaryColor = palette.dominantColor?.color ?? Colors.blue;
+      notifyListeners();
+    } catch (e) {
+      StartupLogger.log('Error extracting palette: $e');
+      _primaryColor = Colors.blue;
+      notifyListeners();
+    }
+  }
+}
+
+
+---------- FILE: music_x\lib\core\widgets\cast_dialog.dart ----------
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' as material;
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:music_hub/core/services/cast_service.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+
+class CastDialog extends StatefulWidget {
+  const CastDialog({super.key});
+
+  @override
+  State<CastDialog> createState() => _CastDialogState();
+}
+
+class _CastDialogState extends State<CastDialog> {
+  final _service = CastService.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _service.startDiscovery();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (defaultTargetPlatform == TargetPlatform.windows) {
+      return _buildFluent(context);
+    }
+    return _buildMaterial(context);
+  }
+
+  Widget _buildFluent(BuildContext context) => fluent.ContentDialog(
+        title: const Text('Transmitir para Dispositivo (DLNA)'),
+        content: SizedBox(
+          width: 350,
+          height: 300,
+          child: Column(
+            children: [
+              const fluent.ProgressBar(),
+              const SizedBox(height: 16),
+              Expanded(
+                child: StreamBuilder<List<CastDevice>>(
+                  stream: _service.devicesStream,
+                  initialData: const [],
+                  builder: (context, snapshot) {
+                    final devices = snapshot.data ?? [];
+                    if (devices.isEmpty) {
+                      return const Center(
+                          child: Text('Procurando dispositivos...'));
+                    }
+                    return ListView.builder(
+                      itemCount: devices.length,
+                      itemBuilder: (context, index) {
+                        final device = devices[index];
+                        return fluent.ListTile(
+                          leading: const Icon(fluent.FluentIcons.t_v_monitor),
+                          title: Text(device.name),
+                          subtitle: Text(device.host),
+                          onPressed: () => _handleCast(context, device),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          fluent.Button(
+            onPressed: () {
+              _service.stopCasting();
+              Navigator.pop(context);
+            },
+            child: const Text('Parar Transmissão'),
+          ),
+          fluent.Button(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+        ],
+      );
+
+  Widget _buildMaterial(BuildContext context) => material.AlertDialog(
+        title: const Text('Transmitir para Dispositivo (DLNA)'),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 300,
+          child: Column(
+            children: [
+              const material.LinearProgressIndicator(),
+              const SizedBox(height: 16),
+              Expanded(
+                child: StreamBuilder<List<CastDevice>>(
+                  stream: _service.devicesStream,
+                  initialData: const [],
+                  builder: (context, snapshot) {
+                    final devices = snapshot.data ?? [];
+                    if (devices.isEmpty) {
+                      return const Center(
+                          child: Text('Procurando dispositivos...'));
+                    }
+                    return ListView.builder(
+                      itemCount: devices.length,
+                      itemBuilder: (context, index) {
+                        final device = devices[index];
+                        return material.ListTile(
+                          leading: const Icon(material.Icons.tv),
+                          title: Text(device.name),
+                          subtitle: Text(device.host),
+                          onTap: () => _handleCast(context, device),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          material.TextButton(
+            onPressed: () {
+              _service.stopCasting();
+              Navigator.pop(context);
+            },
+            child: const Text('Parar Transmissão'),
+          ),
+          material.TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+        ],
+      );
+
+  Future<void> _handleCast(BuildContext context, CastDevice device) async {
+    final track = PlaybackService.instance.currentTrack;
+    if (track != null && track.localPath != null) {
+      await _service.castFile(track.localPath!, device);
+      if (context.mounted) {
+        Navigator.pop(context);
+        // Using ScaffoldMessenger from Material as it works globally often content of correct app wrapper
+        // But for Fluent we might need displayInfoBar if strictly fluent.
+        // Assuming ScaffoldMessenger works since we have MaterialApp/FluentApp wrappers usually
+        // But in FluentApp, ScaffoldMessenger might not be present.
+        // Let's safe check or use simple print/toast if possible.
+        // Ideally we should use the proper feedback mechanism.
+        // For now, I'll allow ScaffoldMessenger but wrap in try-catch or check platform?
+        // Actually, let's just stick to ScaffoldMessenger.
+        material.ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+          material.SnackBar(content: Text('Transmitindo para ${device.name}')),
+        );
+      }
+    } else {
+      material.ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+        const material.SnackBar(
+            content: Text('Apenas arquivos locais podem ser transmitidos.')),
+      );
+    }
+  }
+}
+
+
+---------- FILE: music_x\lib\core\widgets\duo_chat_dialog.dart ----------
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' as material;
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:music_hub/core/services/local_duo_service.dart';
+
+class DuoChatDialog extends StatefulWidget {
+  const DuoChatDialog({super.key});
+
+  @override
+  State<DuoChatDialog> createState() => _DuoChatDialogState();
+}
+
+class _DuoChatDialogState extends State<DuoChatDialog> {
+  final _service = LocalDuoService.instance;
+  final _controller = TextEditingController();
+  final List<String> _messages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _service.onMessageReceived = (msg) {
+      if (mounted) {
+        setState(() {
+          _messages.add('Amigo: $msg');
+        });
+      }
+    };
+  }
+
+  @override
+  void dispose() {
+    _service.onMessageReceived = null;
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _sendMessage() {
+    if (_controller.text.isEmpty) {
+      return;
+    }
+    _service.sendChatMessage(_controller.text);
+    setState(() {
+      _messages.add('Você: ${_controller.text}');
+      _controller.clear();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Platform check
+    if (defaultTargetPlatform == TargetPlatform.windows) {
+      return _buildFluent(context);
+    }
+    return _buildMaterial(context);
+  }
+
+  Widget _buildFluent(BuildContext context) => fluent.ContentDialog(
+        title: const Text('Chat Duo (Offline)'),
+        content: SizedBox(
+          width: 400, // Fixed width for consistent look
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Text('Envie mensagens via Bluetooth/Wi-Fi Direct',
+                  style: TextStyle(fontSize: 12, color: fluent.Colors.grey)),
+              const SizedBox(height: 12),
+              Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: fluent.FluentTheme.of(context)
+                          .resources
+                          .dividerStrokeColorDefault),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  shrinkWrap: true,
+                  itemCount: _messages.length,
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(_messages[index]),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: fluent.TextBox(
+                      controller: _controller,
+                      onSubmitted: (_) => _sendMessage(),
+                      placeholder: 'Digite uma mensagem...',
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  fluent.IconButton(
+                    icon: const Icon(fluent.FluentIcons.send),
+                    onPressed: _sendMessage,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          fluent.Button(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fechar'),
+          ),
+        ],
+      );
+
+  Widget _buildMaterial(BuildContext context) => material.AlertDialog(
+        title: const Text('Chat Duo (Offline)'),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Envie mensagens via Bluetooth/Wi-Fi Direct',
+                  style: TextStyle(fontSize: 12, color: material.Colors.grey)),
+              const material.Divider(),
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _messages.length,
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(_messages[index]),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: material.TextField(
+                      controller: _controller,
+                      onSubmitted: (_) => _sendMessage(),
+                      decoration: const material.InputDecoration(
+                          hintText: 'Digite uma mensagem...'),
+                    ),
+                  ),
+                  material.IconButton(
+                    icon: const Icon(material.Icons.send),
+                    onPressed: _sendMessage,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          material.TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fechar'),
+          ),
+        ],
+      );
+}
+
+
+---------- FILE: music_x\lib\core\widgets\duo_matching_dialog.dart ----------
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' as material;
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:music_hub/core/services/local_duo_service.dart';
+import 'package:music_hub/features/library/screens/remote_library_screen.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+import 'package:music_hub/features/party_mode/disco/party_queue_screen.dart';
+
+class DuoMatchingDialog extends StatefulWidget {
+  const DuoMatchingDialog({super.key});
+
+  @override
+  State<DuoMatchingDialog> createState() => _DuoMatchingDialogState();
+}
+
+class _DuoMatchingDialogState extends State<DuoMatchingDialog> {
+  final _service = LocalDuoService.instance;
+  bool _isHosting = false;
+  bool _isDiscovering = false;
+  String? _status;
+  final List<String> _foundDevices = [];
+  final Map<String, String> _connectedGuests = {};
+  List<Map<String, dynamic>> _guestHistory = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadHistory();
+    _service.onDeviceFound = (name) {
+      if (mounted) {
+        setState(() {
+          if (!_foundDevices.contains(name)) _foundDevices.add(name);
+        });
+      }
+    };
+    _service.onConnected = (id) async {
+      if (mounted) {
+        final guestName = _service.getDiscoveredName(id) ?? 'Convidado';
+        setState(() {
+          _connectedGuests[id] = guestName;
+          _status = 'Amigos Conectados: ${_connectedGuests.length}';
+          _isHosting = _service.role == DuoRole.host;
+          _isDiscovering = _service.role == DuoRole.guest;
+        });
+
+        if (_connectedGuests.length == 1) {
+          final tracks = await DatabaseService.instance.getDuoSessionTracks(id);
+          for (var t in tracks) {
+            final result = SearchResult.fromJson(t);
+            PlaybackService.instance.addToQueue(result);
+          }
+        }
+      }
+    };
+    _service.onDisconnected = () {
+      if (mounted) {
+        _loadConnectedGuests();
+      }
+    };
+  }
+
+  void _loadConnectedGuests() {
+    setState(() {
+      _connectedGuests.clear();
+      for (var id in _service.connectedEndpoints) {
+        _connectedGuests[id] = _service.getDiscoveredName(id) ?? 'Convidado';
+      }
+      if (_connectedGuests.isEmpty) {
+        _status = null;
+      } else {
+        _status = 'Amigos Conectados: ${_connectedGuests.length}';
+      }
+    });
+  }
+
+  Future<void> _loadHistory() async {
+    final history = await DatabaseService.instance.getGuestHistory();
+    setState(() => _guestHistory = history);
+  }
+
+  Future<void> _startHost() async {
+    final granted = await _service.requestPermissions();
+    if (!granted) {
+      return;
+    }
+
+    setState(() {
+      _isHosting = true;
+      _status = 'Aguardando amigo...';
+    });
+    await _service.startHost('Usuário ${DateTime.now().millisecond}');
+  }
+
+  Future<void> _startDiscovery() async {
+    final granted = await _service.requestPermissions();
+    if (!granted) {
+      return;
+    }
+
+    setState(() {
+      _isDiscovering = true;
+      _status = 'Procurando amigos...';
+    });
+    await _service.startDiscovery('Usuário ${DateTime.now().millisecond}');
+  }
+
+  @override
+  void dispose() {
+    _service.onDeviceFound = null;
+    _service.onConnected = null;
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (defaultTargetPlatform == TargetPlatform.windows) {
+      return _buildFluent(context);
+    }
+    return _buildMaterial(context);
+  }
+
+  Widget _buildFluent(BuildContext context) => fluent.ContentDialog(
+        title: const Text('Modo Duo (Sincronizar)'),
+        content: SizedBox(
+          width: 400,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Text('Escute a mesma música com um amigo próximo.'),
+              const SizedBox(height: 20),
+              if (!_isHosting && !_isDiscovering) ...[
+                fluent.Button(
+                  onPressed: _startHost,
+                  child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(fluent.FluentIcons.wifi),
+                        SizedBox(width: 8),
+                        Text('Hospedar Sessão')
+                      ]),
+                ),
+                const SizedBox(height: 10),
+                fluent.Button(
+                  onPressed: _startDiscovery,
+                  child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(fluent.FluentIcons.search),
+                        SizedBox(width: 8),
+                        Text('Entrar na Sessão')
+                      ]),
+                ),
+                const SizedBox(height: 10),
+                fluent.HyperlinkButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        fluent.FluentPageRoute(
+                            builder: (context) => const PartyQueueScreen()));
+                  },
+                  child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(fluent.FluentIcons.q_r_code),
+                        SizedBox(width: 8),
+                        Text('Fila de Festa (QR)')
+                      ]),
+                ),
+              ] else ...[
+                if (_connectedGuests.isNotEmpty) ...[
+                  Center(
+                      child: Icon(fluent.FluentIcons.group,
+                          size: 48, color: fluent.Colors.green)),
+                  const SizedBox(height: 10),
+                  Text('Broadcast Ativo (${_connectedGuests.length})',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 10),
+                  ..._connectedGuests.entries.map((e) => fluent.ListTile(
+                        leading: const Icon(fluent.FluentIcons.people),
+                        title: Text(e.value),
+                        trailing: Icon(fluent.FluentIcons.check_mark,
+                            color: fluent.Colors.green),
+                      )),
+                  const SizedBox(height: 20),
+                  fluent.FilledButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          fluent.FluentPageRoute(
+                              builder: (context) =>
+                                  const RemoteLibraryScreen()));
+                    },
+                    child: const Text('Ver Músicas dos Amigos'),
+                  ),
+                ] else ...[
+                  const fluent.ProgressRing(),
+                  const SizedBox(height: 10),
+                  Text(_status ?? '', textAlign: TextAlign.center),
+                ],
+                if (_isDiscovering &&
+                    _foundDevices.isEmpty &&
+                    _status != 'Conectado!')
+                  const Text('\nNenhum dispositivo encontrado ainda...',
+                      style: TextStyle(fontSize: 12, color: fluent.Colors.grey),
+                      textAlign: TextAlign.center),
+                if (_status != 'Conectado!')
+                  ..._foundDevices.map((d) => fluent.ListTile(
+                        title: Text(d),
+                        trailing: const Icon(fluent.FluentIcons.link),
+                        onPressed: () {},
+                      )),
+                const SizedBox(height: 20),
+                fluent.Button(
+                  onPressed: () {
+                    _service.stopAll();
+                    setState(() {
+                      _isHosting = false;
+                      _isDiscovering = false;
+                      _foundDevices.clear();
+                      _status = null;
+                    });
+                  },
+                  child: Text(
+                      _status == 'Conectado!' ? 'Desconectar' : 'Cancelar'),
+                )
+              ],
+              if (!_isHosting &&
+                  !_isDiscovering &&
+                  _guestHistory.isNotEmpty) ...[
+                const fluent.Divider(),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text('Histórico de Convidados',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                SizedBox(
+                  height: 150,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _guestHistory.length,
+                    itemBuilder: (context, index) {
+                      final guest = _guestHistory[index];
+                      return fluent.ListTile(
+                        leading: const Icon(fluent.FluentIcons.people),
+                        title: Text(guest['name']),
+                        subtitle: Text(
+                            'Última conexão: ${_formatDate(guest['last_connected'])}'),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+        actions: [
+          fluent.Button(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fechar'),
+          ),
+        ],
+      );
+
+  Widget _buildMaterial(BuildContext context) => material.AlertDialog(
+        title: const Text('Modo Duo (Sincronizar)'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Escute a mesma música com um amigo próximo.'),
+              const SizedBox(height: 20),
+              if (!_isHosting && !_isDiscovering) ...[
+                material.ElevatedButton.icon(
+                  icon: const Icon(material.Icons.wifi_tethering),
+                  label: const Text('Hospedar Sessão'),
+                  onPressed: _startHost,
+                ),
+                const SizedBox(height: 10),
+                material.ElevatedButton.icon(
+                  icon: const Icon(material.Icons.search),
+                  label: const Text('Entrar na Sessão'),
+                  onPressed: _startDiscovery,
+                ),
+                const SizedBox(height: 10),
+                material.OutlinedButton.icon(
+                  icon: const Icon(material.Icons.qr_code_scanner),
+                  label: const Text('Fila de Festa (QR)'),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        material.MaterialPageRoute(
+                            builder: (context) => const PartyQueueScreen()));
+                  },
+                ),
+              ] else ...[
+                if (_connectedGuests.isNotEmpty) ...[
+                  const Icon(material.Icons.group,
+                      color: material.Colors.green, size: 48),
+                  const SizedBox(height: 10),
+                  Text('Broadcast Ativo (${_connectedGuests.length})',
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 10),
+                  ..._connectedGuests.entries.map((e) => material.ListTile(
+                        leading: const Icon(material.Icons.person, size: 20),
+                        title: Text(e.value),
+                        trailing: const Icon(material.Icons.check,
+                            color: material.Colors.green),
+                      )),
+                  const SizedBox(height: 20),
+                  material.ElevatedButton.icon(
+                    icon: const Icon(material.Icons.library_music),
+                    label: const Text('Ver Músicas dos Amigos'),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          material.MaterialPageRoute(
+                              builder: (context) =>
+                                  const RemoteLibraryScreen()));
+                    },
+                  ),
+                ] else ...[
+                  const material.CircularProgressIndicator(),
+                  const SizedBox(height: 10),
+                  Text(_status ?? ''),
+                ],
+                if (_isDiscovering &&
+                    _foundDevices.isEmpty &&
+                    _status != 'Conectado!')
+                  const Text('\nNenhum dispositivo encontrado ainda...',
+                      style:
+                          TextStyle(fontSize: 12, color: material.Colors.grey)),
+                if (_status != 'Conectado!')
+                  ..._foundDevices.map((d) => material.ListTile(
+                        title: Text(d),
+                        trailing: const Icon(material.Icons.link),
+                        onTap: () {},
+                      )),
+                const SizedBox(height: 20),
+                material.TextButton(
+                  onPressed: () {
+                    _service.stopAll();
+                    setState(() {
+                      _isHosting = false;
+                      _isDiscovering = false;
+                      _foundDevices.clear();
+                      _status = null;
+                    });
+                  },
+                  child: Text(
+                      _status == 'Conectado!' ? 'Desconectar' : 'Cancelar'),
+                )
+              ],
+              if (!_isHosting &&
+                  !_isDiscovering &&
+                  _guestHistory.isNotEmpty) ...[
+                const material.Divider(),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text('Histórico de Convidados',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                SizedBox(
+                  height: 150,
+                  width: double.maxFinite,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _guestHistory.length,
+                    itemBuilder: (context, index) {
+                      final guest = _guestHistory[index];
+                      return material.ListTile(
+                        leading: const Icon(material.Icons.person_outline),
+                        title: Text(guest['name']),
+                        subtitle: Text(
+                            'Última conexão: ${_formatDate(guest['last_connected'])}'),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+        actions: [
+          material.TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fechar'),
+          ),
+        ],
+      );
+
+  String _formatDate(int timestamp) {
+    final date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    return "${date.day}/${date.month} ${date.hour}:${date.minute.toString().padLeft(2, '0')}";
+  }
+}
+
+
+---------- FILE: music_x\lib\core\widgets\edit_track_dialog.dart ----------
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' as material;
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:music_hub/features/library/models/search_models.dart';
+
+class EditTrackDialog extends StatefulWidget {
+  final SearchResult track;
+
+  const EditTrackDialog({super.key, required this.track});
+
+  @override
+  State<EditTrackDialog> createState() => _EditTrackDialogState();
+}
+
+class _EditTrackDialogState extends State<EditTrackDialog> {
+  late TextEditingController _titleController;
+  late TextEditingController _artistController;
+  late TextEditingController _albumController;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.track.title);
+    _artistController = TextEditingController(text: widget.track.artist);
+    _albumController = TextEditingController(text: widget.track.album ?? '');
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _artistController.dispose();
+    _albumController.dispose();
+    super.dispose();
+  }
+
+  void _save() {
+    final updatedTrack = SearchResult(
+      id: widget.track.id,
+      title: _titleController.text,
+      artist: _artistController.text,
+      album: _albumController.text,
+      url: widget.track.url,
+      platform: widget.track.platform,
+      thumbnail: widget.track.thumbnail,
+      localPath: widget.track.localPath,
+      genre: widget.track.genre,
+      isVault: widget.track.isVault,
+      isDownloaded: widget.track.isDownloaded,
+      isOfficial: widget.track.isOfficial,
+    );
+    Navigator.of(context).pop(updatedTrack);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (defaultTargetPlatform == TargetPlatform.windows) {
+      return _buildFluent(context);
+    }
+    return _buildMaterial(context);
+  }
+
+  Widget _buildFluent(BuildContext context) => fluent.ContentDialog(
+        title: const Text('Editar Informações'),
+        content: SizedBox(
+          width: 350,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              fluent.InfoLabel(
+                label: 'Título',
+                child: fluent.TextBox(controller: _titleController),
+              ),
+              const SizedBox(height: 8),
+              fluent.InfoLabel(
+                label: 'Artista',
+                child: fluent.TextBox(controller: _artistController),
+              ),
+              const SizedBox(height: 8),
+              fluent.InfoLabel(
+                label: 'Álbum',
+                child: fluent.TextBox(controller: _albumController),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          fluent.Button(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancelar'),
+          ),
+          fluent.FilledButton(
+            onPressed: _save,
+            child: const Text('Salvar'),
+          ),
+        ],
+      );
+
+  Widget _buildMaterial(BuildContext context) => material.AlertDialog(
+        title: const Text('Edit Track Info'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              material.TextField(
+                controller: _titleController,
+                decoration: const material.InputDecoration(labelText: 'Title'),
+              ),
+              material.TextField(
+                controller: _artistController,
+                decoration: const material.InputDecoration(labelText: 'Artist'),
+              ),
+              material.TextField(
+                controller: _albumController,
+                decoration: const material.InputDecoration(labelText: 'Album'),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          material.TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          material.TextButton(
+            onPressed: _save,
+            child: const Text('Save'),
+          ),
+        ],
+      );
+}
+
+
+---------- FILE: music_x\lib\core\widgets\floating_mini_player.dart ----------
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:window_manager/window_manager.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+
+class FloatingMiniPlayer extends StatefulWidget {
+  const FloatingMiniPlayer({super.key});
+
+  @override
+  State<FloatingMiniPlayer> createState() => _FloatingMiniPlayerState();
+}
+
+class _FloatingMiniPlayerState extends State<FloatingMiniPlayer> {
+  final PlaybackService _playback = PlaybackService.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupWindow();
+  }
+
+  Future<void> _setupWindow() async {
+    if (!Platform.isWindows) {
+      return;
+    }
+
+    await windowManager.ensureInitialized();
+    await windowManager.setSize(const Size(320, 100));
+    await windowManager.setAlwaysOnTop(true);
+    await windowManager.setResizable(false);
+    await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
+    await windowManager.setSkipTaskbar(true);
+    await windowManager.show();
+  }
+
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: Colors.black.withValues(alpha: 0.9),
+        ),
+        home: Scaffold(
+          body: GestureDetector(
+            onPanUpdate: (details) async {
+              if (Platform.isWindows) {
+                await windowManager.startDragging();
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.95),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.white24),
+              ),
+              child: StreamBuilder<SearchResult?>(
+                stream: _playback.currentTrackStream,
+                builder: (context, snapshot) {
+                  final track = snapshot.data ?? _playback.currentTrack;
+
+                  return Row(
+                    children: [
+                      // Album Art
+                      ClipRRect(
+                        borderRadius: const BorderRadius.horizontal(
+                            left: Radius.circular(12)),
+                        child: track?.thumbnail != null
+                            ? Image.network(
+                                track!.thumbnail!,
+                                width: 80,
+                                height: 80,
+                                fit: BoxFit.cover,
+                                cacheWidth:
+                                    240, // ⚡ Bolt: Optimize memory (80px * 3x)
+                              )
+                            : Container(
+                                width: 80,
+                                height: 80,
+                                color: Colors.grey[800],
+                                child: const Icon(Icons.music_note,
+                                    color: Colors.white54),
+                              ),
+                      ),
+                      // Track Info & Controls
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                track?.title ?? 'Sem música',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                track?.artist ?? '',
+                                style: const TextStyle(
+                                  color: Colors.white54,
+                                  fontSize: 12,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // Playback Controls
+                      StreamBuilder<bool>(
+                        stream: _playback.player.playingStream,
+                        builder: (context, snapshot) {
+                          final isPlaying = snapshot.data ?? false;
+                          return Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.skip_previous,
+                                    color: Colors.white70, size: 20),
+                                onPressed: () => _playback.previous(),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  isPlaying ? Icons.pause : Icons.play_arrow,
+                                  color: Colors.white,
+                                  size: 28,
+                                ),
+                                onPressed: () {
+                                  if (isPlaying) {
+                                    _playback.pause();
+                                  } else {
+                                    _playback.resume();
+                                  }
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.skip_next,
+                                    color: Colors.white70, size: 20),
+                                onPressed: () => _playback.next(),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.close,
+                                    color: Colors.white54, size: 18),
+                                onPressed: () async {
+                                  await windowManager.close();
+                                },
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      );
+}
+
+/// Opens the floating mini player in a separate window.
+Future<void> openFloatingMiniPlayer() async {
+  // Note: Flutter doesn't natively support multi-window.
+  // This would require platform-specific implementation or a separate process.
+  // For now, this is a placeholder that could be enhanced with flutter_multi_window or similar.
+  // The widget above is designed to be run as the main widget of a secondary window.
+
+  // One approach on Windows is to spawn a separate Flutter process with a flag.
+  // For simplicity, we'll document this as a future enhancement.
+}
+
+
+---------- FILE: music_x\lib\core\widgets\learning_dialog.dart ----------
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart' as material;
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+
+import 'package:music_hub/features/library/models/learning_enums.dart';
+
+class LearningDialog extends StatelessWidget {
+  const LearningDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    if (defaultTargetPlatform == TargetPlatform.windows) {
+      return _buildFluent(context);
+    }
+    return _buildMaterial(context);
+  }
+
+  Widget _buildFluent(BuildContext context) => fluent.ContentDialog(
+        title: const Text('Como devo aprender?'),
+        content: const Text(
+            'Você editou as tags manualmente. Como devo aplicar essa correção no futuro?'),
+        actions: [
+          fluent.Button(
+            onPressed: () =>
+                Navigator.of(context).pop(LearningChoice.forThisArtist),
+            child: const Text('Para este artista'),
+          ),
+          fluent.Button(
+            onPressed: () => Navigator.of(context).pop(LearningChoice.forAll),
+            child: const Text('Para todos'),
+          ),
+          fluent.Button(
+            onPressed: () =>
+                Navigator.of(context).pop(LearningChoice.justThisOnce),
+            child: const Text('Só desta vez'),
+          ),
+        ],
+      );
+
+  Widget _buildMaterial(BuildContext context) => material.AlertDialog(
+        title: const Text('How should I learn from this?'),
+        content: const Text(
+            'You\'ve manually edited the tags. How should I apply this correction in the future?'),
+        actions: [
+          material.TextButton(
+            onPressed: () =>
+                Navigator.of(context).pop(LearningChoice.forThisArtist),
+            child: const Text('For this artist'),
+          ),
+          material.TextButton(
+            onPressed: () => Navigator.of(context).pop(LearningChoice.forAll),
+            child: const Text('For all tracks'),
+          ),
+          material.TextButton(
+            onPressed: () =>
+                Navigator.of(context).pop(LearningChoice.justThisOnce),
+            child: const Text('Just this once'),
+          ),
+        ],
+      );
+}
+
+
+---------- FILE: music_x\lib\core\widgets\mini_player.dart ----------
+import 'package:just_audio/just_audio.dart'; // media_kit removed
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+import 'package:rxdart/rxdart.dart';
+
+class MiniPlayer extends StatelessWidget {
+  const MiniPlayer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    if (!kIsWeb &&
+        (defaultTargetPlatform == TargetPlatform.windows ||
+            defaultTargetPlatform == TargetPlatform.linux ||
+            defaultTargetPlatform == TargetPlatform.macOS)) {
+      return const _FluentMiniPlayer();
+    }
+    return const _MaterialMiniPlayer();
+  }
+}
+
+class _FluentMiniPlayer extends StatefulWidget {
+  const _FluentMiniPlayer();
+
+  @override
+  State<_FluentMiniPlayer> createState() => _FluentMiniPlayerState();
+}
+
+class _FluentMiniPlayerState extends State<_FluentMiniPlayer> {
+  double _volume = 100.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final playback = PlaybackService.instance;
+    final theme = fluent.FluentTheme.of(context);
+
+    return StreamBuilder<bool>(
+      stream: playback.player.playingStream,
+      builder: (context, playingSnapshot) {
+        final playing = playingSnapshot.data ?? false;
+
+        return StreamBuilder<SearchResult?>(
+          stream: playback.currentTrackStream.startWith(playback.currentTrack),
+          builder: (context, trackSnapshot) {
+            final track = trackSnapshot.data;
+            if (track == null) return const SizedBox.shrink();
+
+            return GestureDetector(
+              onTap: () {
+                // Navigation to PlayerScreen disabled for Pure Music
+              },
+              child: Container(
+                height: 84,
+                decoration: BoxDecoration(
+                  color: theme.cardColor,
+                  border: Border(
+                    top: BorderSide(
+                      color: theme.resources.dividerStrokeColorDefault,
+                      width: 1,
+                    ),
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    // LEFT: Track Info
+                    Expanded(
+                      flex: 3,
+                      child: Row(
+                        children: [
+                          if (track.thumbnail != null)
+                            Hero(
+                              tag: 'player_art',
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(4),
+                                child: Image.network(
+                                  track.thumbnail!,
+                                  width: 56,
+                                  height: 56,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, __, ___) => Container(
+                                    width: 56,
+                                    height: 56,
+                                    color: theme.menuColor,
+                                    child: const Icon(
+                                        fluent.FluentIcons.music_note),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          const SizedBox(width: 12),
+                          Flexible(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  track.title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  track.artist,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: theme.typography.caption?.color,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          fluent.IconButton(
+                            icon: Icon(
+                              track.isVault
+                                  ? fluent.FluentIcons.heart_fill
+                                  : fluent.FluentIcons.heart,
+                              color: track.isVault ? fluent.Colors.red : null,
+                            ),
+                            onPressed: () => playback.toggleFavorite(),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // CENTER: Controls & Progress
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Controls Row
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              StreamBuilder<bool>(
+                                stream:
+                                    playback.player.shuffleModeEnabledStream,
+                                builder: (context, snapshot) {
+                                  final isShuffle = snapshot.data ?? false;
+                                  return fluent.IconButton(
+                                    icon: Icon(
+                                      Icons.shuffle,
+                                      color:
+                                          isShuffle ? theme.accentColor : null,
+                                    ),
+                                    onPressed: () => playback.toggleShuffle(),
+                                  );
+                                },
+                              ),
+                              const SizedBox(width: 8),
+                              fluent.IconButton(
+                                icon: const Icon(fluent.FluentIcons.previous),
+                                onPressed: () => playback.previous(),
+                              ),
+                              const SizedBox(width: 16),
+                              Container(
+                                width: 32,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                  color: theme.accentColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: fluent.IconButton(
+                                  icon: Icon(
+                                    playing
+                                        ? fluent.FluentIcons.pause
+                                        : fluent.FluentIcons.play,
+                                    color: Colors.white,
+                                    size: 14,
+                                  ),
+                                  onPressed: () => playing
+                                      ? playback.pause()
+                                      : playback.resume(),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              fluent.IconButton(
+                                icon: const Icon(fluent.FluentIcons.next),
+                                onPressed: () => playback.next(),
+                              ),
+                              const SizedBox(width: 8),
+                              StreamBuilder<LoopMode>(
+                                stream: playback.player.loopModeStream,
+                                builder: (context, snapshot) {
+                                  final mode = snapshot.data ?? LoopMode.off;
+                                  IconData icon;
+                                  Color? color;
+                                  if (mode == LoopMode.one) {
+                                    icon = Icons.repeat_one;
+                                    color = theme.accentColor;
+                                  } else if (mode == LoopMode.all) {
+                                    icon = Icons.repeat;
+                                    color = theme.accentColor;
+                                  } else {
+                                    icon = Icons.repeat;
+                                    color = null;
+                                  }
+                                  return fluent.IconButton(
+                                    icon: Icon(icon, color: color),
+                                    onPressed: () => playback.toggleRepeat(),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          // Progress Bar
+                          StreamBuilder<Duration>(
+                            stream: playback.player.positionStream,
+                            builder: (context, posSnapshot) {
+                              final position =
+                                  posSnapshot.data ?? Duration.zero;
+                              final duration =
+                                  playback.player.duration ?? Duration.zero;
+                              final max = duration.inMilliseconds.toDouble();
+                              final value = position.inMilliseconds
+                                  .toDouble()
+                                  .clamp(0.0, max > 0 ? max : 1.0);
+
+                              return RepaintBoundary(
+                                // ⚡ Bolt: Isolate progress bar
+                                child: SizedBox(
+                                  width: 400,
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        _formatDuration(position),
+                                        style: TextStyle(
+                                            fontSize: 11,
+                                            color: theme
+                                                .typography.caption?.color),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: fluent.Slider(
+                                          value: value,
+                                          max: max > 0 ? max : 1.0,
+                                          onChanged: (val) {
+                                            playback.seek(Duration(
+                                                milliseconds: val.toInt()));
+                                          },
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        _formatDuration(duration),
+                                        style: TextStyle(
+                                            fontSize: 11,
+                                            color: theme
+                                                .typography.caption?.color),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // RIGHT: Volume & Extras
+                    Expanded(
+                      flex: 3,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          fluent.IconButton(
+                            icon: const Icon(fluent.FluentIcons.playlist_music),
+                            onPressed: () {
+                              // Show Queue
+                            },
+                          ),
+                          const SizedBox(width: 12),
+                          SizedBox(
+                            width: 100,
+                            child: Row(
+                              children: [
+                                const Icon(fluent.FluentIcons.volume2,
+                                    size: 16),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: fluent.Slider(
+                                    value: _volume,
+                                    max: 100,
+                                    onChanged: (v) {
+                                      setState(() => _volume = v);
+                                      playback.player.setVolume(v);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          fluent.IconButton(
+                            icon: const fluent.Icon(
+                                fluent.FluentIcons.chrome_close),
+                            onPressed: () => playback.stop(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  String _formatDuration(Duration d) {
+    final minutes = d.inMinutes;
+    final seconds = d.inSeconds % 60;
+    return '$minutes:${seconds.toString().padLeft(2, '0')}';
+  }
+}
+
+class _MaterialMiniPlayer extends StatelessWidget {
+  const _MaterialMiniPlayer();
+
+  @override
+  Widget build(BuildContext context) {
+    final playback = PlaybackService.instance;
+
+    return StreamBuilder<bool>(
+      stream: playback.player.playingStream,
+      builder: (context, playingSnapshot) {
+        final playing = playingSnapshot.data ?? false;
+        return StreamBuilder<SearchResult?>(
+          stream: playback.currentTrackStream.startWith(playback.currentTrack),
+          builder: (context, trackSnapshot) {
+            final track = trackSnapshot.data;
+            if (track == null) return const SizedBox.shrink();
+
+            return Container(
+              margin: const EdgeInsets.all(8),
+              height: 72,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainer,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 8,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: InkWell(
+                onTap: () {
+                  // Navigation to PlayerScreen disabled for Pure Music
+                },
+                borderRadius: BorderRadius.circular(12),
+                child: Column(
+                  children: [
+                    // Progress Indicator (Thin line at top)
+                    RepaintBoundary(
+                      // ⚡ Bolt: Isolate progress bar
+                      child: StreamBuilder<Duration>(
+                          stream: playback.player.positionStream,
+                          builder: (context, posSnapshot) {
+                            final position = posSnapshot.data ?? Duration.zero;
+                            final duration =
+                                playback.player.duration ?? Duration.zero;
+                            final progress = duration.inMilliseconds > 0
+                                ? position.inMilliseconds /
+                                    duration.inMilliseconds
+                                : 0.0;
+                            return LinearProgressIndicator(
+                              value: progress,
+                              minHeight: 2,
+                              backgroundColor: Colors.transparent,
+                              valueColor: AlwaysStoppedAnimation(
+                                Theme.of(context).colorScheme.primary,
+                              ),
+                            );
+                          }),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Row(
+                          children: [
+                            // Art
+                            if (track.thumbnail != null)
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  track.thumbnail!,
+                                  width: 48,
+                                  height: 48,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, __, ___) =>
+                                      const Icon(Icons.music_note),
+                                ),
+                              ),
+                            const SizedBox(width: 12),
+                            // Info
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    track.title,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    track.artist,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Controls
+                            // Controls
+                            IconButton(
+                              icon: Icon(track.isVault
+                                  ? Icons.favorite
+                                  : Icons.favorite_border),
+                              color: track.isVault ? Colors.red : null,
+                              onPressed: () => playback.toggleFavorite(),
+                            ),
+                            const SizedBox(width: 8),
+                            // Shuffle
+                            StreamBuilder<bool>(
+                              stream: playback.player.shuffleModeEnabledStream,
+                              builder: (context, snapshot) {
+                                final isShuffle = snapshot.data ?? false;
+                                return IconButton(
+                                  icon: const Icon(Icons.shuffle),
+                                  color: isShuffle
+                                      ? Theme.of(context).colorScheme.primary
+                                      : null,
+                                  onPressed: () => playback.toggleShuffle(),
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.skip_previous),
+                              onPressed: () => playback.previous(),
+                            ),
+                            IconButton(
+                              icon: Icon(playing
+                                  ? Icons.pause_circle_filled
+                                  : Icons.play_circle_filled),
+                              iconSize: 40,
+                              color: Theme.of(context).colorScheme.primary,
+                              onPressed: () => playing
+                                  ? playback.pause()
+                                  : playback.resume(),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.skip_next),
+                              onPressed: () => playback.next(),
+                            ),
+                            // Repeat
+                            StreamBuilder<LoopMode>(
+                              stream: playback.player.loopModeStream,
+                              builder: (context, snapshot) {
+                                final mode = snapshot.data ?? LoopMode.off;
+                                IconData icon;
+                                Color? color;
+                                if (mode == LoopMode.one) {
+                                  icon = Icons.repeat_one;
+                                  color = Theme.of(context).colorScheme.primary;
+                                } else if (mode == LoopMode.all) {
+                                  icon = Icons.repeat;
+                                  color = Theme.of(context).colorScheme.primary;
+                                } else {
+                                  icon = Icons.repeat;
+                                  color = null;
+                                }
+                                return IconButton(
+                                  icon: Icon(icon),
+                                  color: color,
+                                  onPressed: () => playback.toggleRepeat(),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+
+---------- FILE: music_x\lib\core\widgets\search_results_dialog.dart ----------
+import 'package:flutter/material.dart';
+
+class SearchResultsDialog extends StatelessWidget {
+  final List<dynamic> recordings;
+
+  const SearchResultsDialog({super.key, required this.recordings});
+
+  @override
+  Widget build(BuildContext context) => AlertDialog(
+        title: const Text('Select the correct track'),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: ListView.builder(
+            itemCount: recordings.length,
+            itemBuilder: (context, index) {
+              final recording = recordings[index];
+              final title = recording['title'] ?? 'No title';
+              // The artist information is a bit nested.
+              final artist =
+                  recording['artist-credit']?[0]?['name'] ?? 'No artist';
+
+              return ListTile(
+                title: Text(title),
+                subtitle: Text(artist),
+                onTap: () {
+                  // Return the selected recording to the previous screen.
+                  Navigator.of(context).pop(recording);
+                },
+              );
+            },
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+}
+
+
+---------- FILE: music_x\lib\features\home\home_screen.dart ----------
+import 'package:flutter/material.dart';
+import 'package:music_hub/features/home/views/fluent_home_view.dart';
+import 'package:music_hub/features/home/views/material_home_view.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final DatabaseService _dbService = DatabaseService.instance;
+  final PlaybackService _playbackService = PlaybackService.instance;
+  List<Map<String, dynamic>> _recentTracks = [];
+  bool _isLoading = true;
+
+  bool _isFluent(BuildContext context) {
+    final platform = Theme.of(context).platform;
+    return platform == TargetPlatform.windows ||
+        platform == TargetPlatform.linux ||
+        platform == TargetPlatform.macOS;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final tracks = await _dbService.getTracks();
+    final sorted = List<Map<String, dynamic>>.from(tracks);
+    if (mounted) {
+      setState(() {
+        _recentTracks = sorted.reversed.take(5).toList();
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _playTrack(Map<String, dynamic> trackData) {
+    final result = SearchResult.fromJson(trackData);
+    _playbackService.playSearchResult(result);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isFluent(context)) {
+      return FluentHomeView(
+        isLoading: _isLoading,
+        recentTracks: _recentTracks,
+        onPlayTrack: _playTrack,
+      );
+    }
+
+    return MaterialHomeView(
+      isLoading: _isLoading,
+      recentTracks: _recentTracks,
+      onPlayTrack: _playTrack,
+    );
+  }
+}
+
+
+---------- FILE: music_x\lib\features\home\views\fluent_home_view.dart ----------
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:music_hub/features/library/screens/mood_explorer_screen.dart';
+import 'package:music_hub/features/library/screens/smart_library_screen.dart';
+import 'package:music_hub/features/library/stats/listening_stats_screen.dart';
+import 'package:music_hub/features/party_mode/disco/disco_mode_screen.dart';
+import 'package:music_hub/features/discovery/screens/discovery_screen.dart';
+import 'package:music_hub/features/settings/screens/settings_screen.dart';
+
+class FluentHomeView extends StatelessWidget {
+  final bool isLoading;
+  final List<Map<String, dynamic>> recentTracks;
+  final void Function(Map<String, dynamic>) onPlayTrack;
+
+  const FluentHomeView({
+    super.key,
+    required this.isLoading,
+    required this.recentTracks,
+    required this.onPlayTrack,
+  });
+
+  @override
+  Widget build(BuildContext context) => ScaffoldPage(
+        header: PageHeader(
+          title: const Text('Início'),
+          leading: Navigator.canPop(context)
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: IconButton(
+                    icon: const Icon(FluentIcons.back),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                )
+              : null,
+          commandBar: CommandBar(
+            mainAxisAlignment: MainAxisAlignment.end,
+            primaryItems: [
+              CommandBarButton(
+                icon: const Icon(FluentIcons.auto_enhance_on),
+                label: const Text('Modo Disco'),
+                onPressed: () => Navigator.push(
+                  context,
+                  FluentPageRoute(builder: (_) => const DiscoModeScreen()),
+                ),
+              ),
+            ],
+          ),
+        ),
+        content: isLoading
+            ? const Center(child: ProgressRing())
+            : SingleChildScrollView(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildGreetingWidget(context),
+                    const SizedBox(height: 24),
+                    Text('Atalhos Rápidos',
+                        style: FluentTheme.of(context).typography.subtitle),
+                    const SizedBox(height: 12),
+                    _buildShortcutWidgets(context),
+                    const SizedBox(height: 24),
+                    Text('Explore por Vibe',
+                        style: FluentTheme.of(context).typography.subtitle),
+                    const SizedBox(height: 12),
+                    _buildMoodsWidget(context),
+                    const SizedBox(height: 24),
+                    Text('Biblioteca Inteligente',
+                        style: FluentTheme.of(context).typography.subtitle),
+                    const SizedBox(height: 12),
+                    _buildSmartLibraryCards(context),
+                    const SizedBox(height: 24),
+                    Text('Adicionados Recentemente',
+                        style: FluentTheme.of(context).typography.subtitle),
+                    const SizedBox(height: 12),
+                    _buildRecentsList(context),
+                  ],
+                ),
+              ),
+      );
+
+  Widget _buildGreetingWidget(BuildContext context) => Card(
+        backgroundColor:
+            FluentTheme.of(context).accentColor.withValues(alpha: 0.1),
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Bem-vindo de volta!',
+                      style: FluentTheme.of(context).typography.title,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Que tal continuar de onde parou?',
+                      style: FluentTheme.of(context).typography.body,
+                    ),
+                  ],
+                ),
+              ),
+              FilledButton(
+                onPressed: () {
+                  if (recentTracks.isNotEmpty) {
+                    onPlayTrack(recentTracks.first);
+                  }
+                },
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(FluentIcons.play),
+                    SizedBox(width: 8),
+                    Text('Tocar Algo'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  Widget _buildShortcutWidgets(BuildContext context) {
+    final shortcuts = [
+      {
+        'label': 'Biblioteca',
+        'desc': 'Organize sua música',
+        'icon': FluentIcons.library,
+        'action': () {},
+        'color': Colors.blue
+      },
+      {
+        'label': 'Busca',
+        'desc': 'Encontre novas faixas',
+        'icon': FluentIcons.search,
+        'action': () => Navigator.push(
+            context, FluentPageRoute(builder: (_) => const DiscoveryScreen())),
+        'color': Colors.purple
+      },
+      {
+        'label': 'Ajustes',
+        'desc': 'Configure o app',
+        'icon': FluentIcons.settings,
+        'action': () => Navigator.push(
+            context, FluentPageRoute(builder: (_) => const SettingsScreen())),
+        'color': Colors.orange
+      },
+    ];
+
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
+      children: shortcuts
+          .map((s) => HoverButton(
+                onPressed: s['action'] as VoidCallback,
+                builder: (context, states) => Card(
+                  backgroundColor: states.isHovered
+                      ? (s['color'] as AccentColor).withValues(alpha: 0.1)
+                      : null,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(s['icon'] as IconData,
+                            color: s['color'] as AccentColor, size: 32),
+                        const SizedBox(width: 12),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(s['label'] as String,
+                                style: FluentTheme.of(context)
+                                    .typography
+                                    .bodyStrong),
+                            Text(s['desc'] as String,
+                                style:
+                                    FluentTheme.of(context).typography.caption),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ))
+          .toList(),
+    );
+  }
+
+  Widget _buildMoodsWidget(BuildContext context) {
+    final moods = [
+      {'label': 'Foco', 'icon': FluentIcons.bullseye, 'color': Colors.blue},
+      {'label': 'Treino', 'icon': FluentIcons.running, 'color': Colors.red},
+      {
+        'label': 'Festa',
+        'icon': FluentIcons.music_note,
+        'color': Colors.purple
+      },
+      {'label': 'Viagem', 'icon': FluentIcons.car, 'color': Colors.green},
+    ];
+
+    return SizedBox(
+      height: 90,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: moods.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 16),
+        itemBuilder: (context, index) {
+          final m = moods[index];
+          return Column(
+            children: [
+              HoverButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      FluentPageRoute(
+                          builder: (_) => const MoodExplorerScreen()));
+                },
+                builder: (context, states) => Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: (m['color'] as AccentColor)
+                        .withValues(alpha: states.isHovered ? 0.2 : 0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(m['icon'] as IconData,
+                      color: m['color'] as AccentColor),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(m['label'] as String,
+                  style: FluentTheme.of(context).typography.caption),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildSmartLibraryCards(BuildContext context) => Wrap(
+        spacing: 12,
+        runSpacing: 12,
+        children: [
+          _FluentSmartCard(
+            title: 'Top Hits',
+            icon: FluentIcons.trending12,
+            color: Colors.orange,
+            onTap: () => Navigator.push(context,
+                FluentPageRoute(builder: (_) => const SmartLibraryScreen())),
+          ),
+          _FluentSmartCard(
+            title: 'Relax',
+            icon: FluentIcons.heart,
+            color: Colors.teal,
+            onTap: () => Navigator.push(context,
+                FluentPageRoute(builder: (_) => const MoodExplorerScreen())),
+          ),
+          _FluentSmartCard(
+            title: 'Stats',
+            icon: FluentIcons.chart,
+            color: Colors.purple,
+            onTap: () => Navigator.push(context,
+                FluentPageRoute(builder: (_) => const ListeningStatsScreen())),
+          ),
+        ],
+      );
+
+  Widget _buildRecentsList(BuildContext context) {
+    if (recentTracks.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Text('Nenhuma música recente.'),
+      );
+    }
+    return SizedBox(
+      height: 140,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: recentTracks.length,
+        itemBuilder: (context, index) {
+          final track = recentTracks[index];
+          return Container(
+            width: 120,
+            margin: const EdgeInsets.only(right: 12),
+            child: HoverButton(
+              onPressed: () => onPlayTrack(track),
+              builder: (context, states) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        track['thumbnail'] ?? 'https://via.placeholder.com/150',
+                        fit: BoxFit.cover,
+                        cacheWidth: 360, // ⚡ Bolt: Optimize memory (120px * 3x)
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: Colors.grey[100],
+                          child: const Icon(FluentIcons.music_note,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    track['title'],
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: FluentTheme.of(context).typography.bodyStrong,
+                  ),
+                  Text(
+                    track['artist'] ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: FluentTheme.of(context).typography.caption,
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _FluentSmartCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final AccentColor color;
+  final VoidCallback onTap;
+
+  const _FluentSmartCard({
+    required this.title,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) => HoverButton(
+        onPressed: onTap,
+        builder: (context, states) => Card(
+          backgroundColor:
+              states.isHovered ? color.withValues(alpha: 0.1) : null,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(icon, color: color),
+                ),
+                const SizedBox(width: 12),
+                Text(title,
+                    style: FluentTheme.of(context).typography.bodyStrong),
+              ],
+            ),
+          ),
+        ),
+      );
+}
+
+
+---------- FILE: music_x\lib\features\home\views\material_home_view.dart ----------
+import 'package:flutter/material.dart';
+import 'package:music_hub/features/library/screens/mood_explorer_screen.dart';
+import 'package:music_hub/features/library/screens/smart_library_screen.dart';
+import 'package:music_hub/features/library/stats/listening_stats_screen.dart';
+import 'package:music_hub/features/party_mode/disco/disco_mode_screen.dart';
+import 'package:music_hub/features/discovery/screens/discovery_screen.dart';
+import 'package:music_hub/features/settings/screens/settings_screen.dart';
+
+class MaterialHomeView extends StatelessWidget {
+  final bool isLoading;
+  final List<Map<String, dynamic>> recentTracks;
+  final void Function(Map<String, dynamic>) onPlayTrack;
+
+  const MaterialHomeView({
+    super.key,
+    required this.isLoading,
+    required this.recentTracks,
+    required this.onPlayTrack,
+  });
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Início'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.auto_awesome),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const DiscoModeScreen()),
+              ),
+              tooltip: 'Modo Disco',
+            ),
+          ],
+        ),
+        body: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildGreetingWidget(context),
+                    const SizedBox(height: 32),
+                    const Text('Atalhos Rápidos',
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 16),
+                    _buildShortcutGrid(context),
+                    const SizedBox(height: 32),
+                    const Text('Explore por Vibe',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 12),
+                    const _MoodsWidget(),
+                    const SizedBox(height: 24),
+                    const Text('Biblioteca Inteligente',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 12),
+                    _buildSmartLibraryCards(context),
+                    const SizedBox(height: 24),
+                    const Text('Adicionados Recentemente',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 12),
+                    _buildRecentsList(context),
+                  ],
+                ),
+              ),
+      );
+
+  Widget _buildGreetingWidget(BuildContext context) => Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.tertiary,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color:
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Bem-vindo de volta!',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Que tal continuar de onde parou?',
+              style: TextStyle(color: Colors.white70),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: () {
+                if (recentTracks.isNotEmpty) {
+                  onPlayTrack(recentTracks.first);
+                }
+              },
+              icon: const Icon(Icons.play_arrow),
+              label: const Text('Tocar Algo'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget _buildShortcutGrid(BuildContext context) {
+    final shortcuts = [
+      {
+        'label': 'Biblioteca',
+        'desc': 'Tags e Organização',
+        'icon': Icons.library_music,
+        'action': () {},
+        'color': Colors.blue
+      },
+      {
+        'label': 'Busca',
+        'desc': 'Festa e Karaoke',
+        'icon': Icons.search,
+        'action': () => Navigator.push(context,
+            MaterialPageRoute(builder: (_) => const DiscoveryScreen())),
+        'color': Colors.purple
+      },
+      {
+        'label': 'Ajustes',
+        'desc': 'Configurações do App',
+        'icon': Icons.settings,
+        'action': () => Navigator.push(
+            context, MaterialPageRoute(builder: (_) => const SettingsScreen())),
+        'color': Colors.orange
+      },
+    ];
+
+    return GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 1,
+      mainAxisSpacing: 12,
+      childAspectRatio: 4,
+      children: shortcuts
+          .map((s) => InkWell(
+                onTap: s['action'] as VoidCallback,
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: (s['color'] as Color).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: (s['color'] as Color).withValues(alpha: 0.2),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(s['icon'] as IconData,
+                          color: s['color'] as Color, size: 32),
+                      const SizedBox(width: 16),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(s['label'] as String,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16)),
+                          Text(s['desc'] as String,
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.grey)),
+                        ],
+                      ),
+                      const Spacer(),
+                      const Icon(Icons.chevron_right, color: Colors.grey),
+                    ],
+                  ),
+                ),
+              ))
+          .toList(),
+    );
+  }
+
+  Widget _buildSmartLibraryCards(BuildContext context) => LayoutBuilder(
+        builder: (context, constraints) {
+          final isNarrow = constraints.maxWidth < 600;
+          final cards = [
+            _SmartCard(
+              title: 'Top Hits',
+              icon: Icons.trending_up,
+              color: Colors.orange,
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const SmartLibraryScreen())),
+            ),
+            _SmartCard(
+              title: 'Relax',
+              icon: Icons.spa,
+              color: Colors.teal,
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const MoodExplorerScreen())),
+            ),
+            _SmartCard(
+              title: 'Stats',
+              icon: Icons.bar_chart,
+              color: Colors.deepPurple,
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const ListeningStatsScreen())),
+            ),
+          ];
+
+          if (isNarrow) {
+            return Column(
+              children: cards
+                  .map((c) => Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: c,
+                      ))
+                  .toList(),
+            );
+          }
+
+          return Row(
+            children: cards
+                .map((c) => Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: c,
+                      ),
+                    ))
+                .toList(),
+          );
+        },
+      );
+
+  Widget _buildRecentsList(BuildContext context) {
+    if (recentTracks.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Text('Nenhuma música recente.'),
+      );
+    }
+    return SizedBox(
+      height: 140,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: recentTracks.length,
+        itemBuilder: (context, index) {
+          final track = recentTracks[index];
+          return Container(
+            width: 120,
+            margin: const EdgeInsets.only(right: 12),
+            child: GestureDetector(
+              onTap: () => onPlayTrack(track),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        track['thumbnail'] ?? 'https://via.placeholder.com/150',
+                        fit: BoxFit.cover,
+                        cacheWidth: 360, // ⚡ Bolt: Optimize memory (120px * 3x)
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: Colors.grey[900],
+                          child: const Icon(Icons.music_note,
+                              color: Colors.white54),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    track['title'],
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    track['artist'] ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _MoodsWidget extends StatelessWidget {
+  const _MoodsWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    final moods = [
+      {
+        'label': 'Foco',
+        'icon': Icons.center_focus_strong,
+        'color': Colors.blue
+      },
+      {'label': 'Treino', 'icon': Icons.fitness_center, 'color': Colors.red},
+      {'label': 'Festa', 'icon': Icons.celebration, 'color': Colors.purple},
+      {'label': 'Viagem', 'icon': Icons.directions_car, 'color': Colors.green},
+    ];
+
+    return SizedBox(
+      height: 90,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: moods.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 16),
+        itemBuilder: (context, index) {
+          final m = moods[index];
+          return Column(
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const MoodExplorerScreen()));
+                },
+                borderRadius: BorderRadius.circular(50),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: (m['color'] as Color).withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child:
+                      Icon(m['icon'] as IconData, color: m['color'] as Color),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(m['label'] as String, style: const TextStyle(fontSize: 12)),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _SmartCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _SmartCard({
+    required this.title,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          height: 80,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(icon, color: color),
+              ),
+              const SizedBox(width: 12),
+              Text(title,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16)),
+            ],
+          ),
+        ),
+      );
+}
+
+

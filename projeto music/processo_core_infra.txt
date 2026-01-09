@@ -1,0 +1,1250 @@
+================================================================================
+PROCESS AUDIT: processo_core_infra.txt
+DATE: 2026-01-08 15:23:23
+FILE COUNT: 9
+================================================================================
+
+---------- FILE: music_x\lib\config\api_keys.dart ----------
+/// Centralized API key configuration.
+///
+/// ⚠️ SECURITY WARNING:
+/// - Do NOT commit real API keys to version control!
+/// - For production, use environment variables or platform-specific secure storage:
+///   - Android: EncryptedSharedPreferences or Android Keystore
+///   - iOS: Keychain
+///   - Windows: Windows Credential Manager
+///   - Web: Environment variables at build time (--dart-define)
+///
+/// Example using dart-define:
+/// ```bash
+/// flutter build apk --dart-define=LASTFM_KEY=your_key_here
+/// ```
+/// Then access via: `const String.fromEnvironment('LASTFM_KEY')`
+class ApiKeys {
+  // Get your key at: https://www.last.fm/api/account/create
+  static const String lastFmApiKey = 'YOUR_LASTFM_API_KEY';
+
+  // Get your token at: https://genius.com/api-clients
+  static const String geniusAccessToken = 'YOUR_GENIUS_ACCESS_TOKEN';
+}
+
+
+---------- FILE: music_x\lib\core\services\connectivity_service.dart ----------
+import 'dart:async';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
+
+class ConnectivityService {
+  static ConnectivityService? _instance;
+  static ConnectivityService get instance =>
+      _instance ??= ConnectivityService._internal();
+
+  @visibleForTesting
+  static set instance(ConnectivityService mock) => _instance = mock;
+
+  @visibleForTesting
+  static void resetInstance() => _instance = null;
+
+  final Connectivity _connectivity;
+  final ValueNotifier<bool> isOffline = ValueNotifier<bool>(false);
+  StreamSubscription<List<ConnectivityResult>>? _subscription;
+
+  ConnectivityService._internal({Connectivity? connectivity})
+      : _connectivity = connectivity ?? Connectivity();
+
+  @visibleForTesting
+  factory ConnectivityService.test({Connectivity? connectivity}) =>
+      ConnectivityService._internal(connectivity: connectivity);
+
+  Future<void> init() async {
+    final results = await _connectivity.checkConnectivity();
+    _updateStatus(results);
+
+    _subscription = _connectivity.onConnectivityChanged.listen(_updateStatus);
+  }
+
+  void _updateStatus(List<ConnectivityResult> results) {
+    // If results is empty or contains only 'none'
+    bool offline = results.isEmpty ||
+        (results.length == 1 && results.first == ConnectivityResult.none);
+
+    // Check if truly offline (sometimes multiple results include something and none)
+    if (results.contains(ConnectivityResult.mobile) ||
+        results.contains(ConnectivityResult.wifi) ||
+        results.contains(ConnectivityResult.ethernet) ||
+        results.contains(ConnectivityResult.vpn)) {
+      offline = false;
+    }
+
+    if (isOffline.value != offline) {
+      isOffline.value = offline;
+    }
+  }
+
+  void dispose() {
+    _subscription?.cancel();
+  }
+}
+
+
+---------- FILE: music_x\lib\core\services\firebase_sync_service.dart ----------
+import 'dart:async';
+import 'package:meta/meta.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:music_hub/core/services/database_service.dart';
+
+import 'package:music_hub/features/library/models/learning_enums.dart';
+import 'package:music_hub/features/library/models/database_models.dart';
+
+/// Service for syncing library data to Firebase Cloud.
+class FirebaseSyncService {
+  static FirebaseSyncService? _instance;
+  static FirebaseSyncService get instance =>
+      _instance ??= FirebaseSyncService._internal();
+  static set instance(FirebaseSyncService value) => _instance = value;
+  static void resetInstance() => _instance = null;
+
+  FirebaseSyncService._internal();
+
+  FirebaseFirestore? _firestoreOverride;
+  FirebaseAuth? _authOverride;
+  DatabaseService? _dbOverride;
+
+  FirebaseFirestore get _firestore =>
+      _firestoreOverride ?? FirebaseFirestore.instance;
+  FirebaseAuth get _auth => _authOverride ?? FirebaseAuth.instance;
+  DatabaseService get _db => _dbOverride ?? DatabaseService.instance;
+
+  @visibleForTesting
+  void setDependencies({
+    FirebaseFirestore? firestore,
+    FirebaseAuth? auth,
+    DatabaseService? db,
+  }) {
+    _firestoreOverride = firestore;
+    _authOverride = auth;
+    _dbOverride = db;
+  }
+
+  bool _syncEnabled = false;
+  User? _currentUser;
+  StreamSubscription? _authSubscription;
+
+  /// Whether cloud sync is enabled.
+  bool get syncEnabled => _syncEnabled;
+
+  /// Current signed-in user.
+  User? get currentUser => _currentUser;
+
+  /// Initialize the sync service.
+  Future<void> init() async {
+    _authSubscription = _auth.authStateChanges().listen((user) async {
+      _currentUser = user;
+      if (user != null) {
+        if (_syncEnabled) {
+          _startSync();
+        }
+        await _checkAndRestore();
+      }
+    });
+  }
+
+  /// Check if library is empty and restore from cloud if so.
+  Future<void> _checkAndRestore() async {
+    if (_currentUser == null) return;
+
+    final tracks = await _db.getTracks();
+    if (tracks.isEmpty) {
+      await pullFromCloud();
+    }
+  }
+
+  /// Enable cloud sync with anonymous sign-in.
+  Future<bool> enableSync() async {
+    try {
+      // Sign in anonymously if not already signed in
+      if (_currentUser == null) {
+        await _auth.signInAnonymously();
+      }
+      _syncEnabled = true;
+      await _startSync();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Disable cloud sync.
+  Future<void> disableSync() async {
+    _syncEnabled = false;
+  }
+
+  /// Sync all local data to cloud.
+  Future<void> _startSync() async {
+    if (_currentUser == null) {
+      return;
+    }
+
+    await _syncTracks();
+    await _syncPlaylists();
+    await _syncSettings();
+    await _syncLearningRules();
+  }
+
+  /// Sync learning rules to Firestore.
+  Future<void> _syncLearningRules() async {
+    if (_currentUser == null) return;
+
+    final userId = _currentUser!.uid;
+    final rules = await _db.getLearningRules();
+
+    final batch = _firestore.batch();
+    final rulesRef =
+        _firestore.collection('users').doc(userId).collection('learning_rules');
+
+    for (final rule in rules) {
+      final docId = '${rule.field}_${rule.originalValue.hashCode}';
+      batch.set(
+        rulesRef.doc(docId),
+        {
+          'artist': rule.artist,
+          'field': rule.field,
+          'originalValue': rule.originalValue,
+          'correctedValue': rule.correctedValue,
+          'choice': rule.choice.toString(),
+          'updatedAt': FieldValue.serverTimestamp(),
+        },
+        SetOptions(merge: true),
+      );
+    }
+    await batch.commit();
+  }
+
+  /// Sync tracks to Firestore.
+  Future<void> _syncTracks() async {
+    if (_currentUser == null) {
+      return;
+    }
+
+    final userId = _currentUser!.uid;
+    final tracks = await _db.getTracks();
+
+    final batch = _firestore.batch();
+    final tracksRef =
+        _firestore.collection('users').doc(userId).collection('tracks');
+
+    for (final track in tracks) {
+      final docRef = tracksRef.doc(track['id']);
+      batch.set(
+          docRef,
+          {
+            ...track,
+            'updatedAt': FieldValue.serverTimestamp(),
+          },
+          SetOptions(merge: true));
+    }
+
+    await batch.commit();
+  }
+
+  /// Sync playlists to Firestore.
+  Future<void> _syncPlaylists() async {
+    if (_currentUser == null) {
+      return;
+    }
+
+    final userId = _currentUser!.uid;
+    final playlists = await _db.getPlaylists();
+
+    final batch = _firestore.batch();
+    final playlistsRef =
+        _firestore.collection('users').doc(userId).collection('playlists');
+
+    for (final playlist in playlists) {
+      final docRef = playlistsRef.doc(playlist['id'].toString());
+      final tracks = await _db.getPlaylistTracks(playlist['id']);
+
+      batch.set(
+          docRef,
+          {
+            ...playlist,
+            'trackIds': tracks.map((t) => t['id']).toList(),
+            'updatedAt': FieldValue.serverTimestamp(),
+          },
+          SetOptions(merge: true));
+    }
+
+    await batch.commit();
+  }
+
+  /// Sync settings to Firestore.
+  Future<void> _syncSettings() async {
+    if (_currentUser == null) {
+      return;
+    }
+
+    final userId = _currentUser!.uid;
+    final settings = await _db.getAllSettings();
+
+    await _firestore.collection('users').doc(userId).set({
+      'settings': settings,
+      'updatedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+  }
+
+  /// Pull data from cloud to local.
+  Future<int> pullFromCloud() async {
+    if (_currentUser == null) {
+      return 0;
+    }
+
+    final userId = _currentUser!.uid;
+    int syncedCount = 0;
+
+    // Pull tracks
+    final tracksSnapshot = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('tracks')
+        .get();
+
+    for (final doc in tracksSnapshot.docs) {
+      await _db.saveTrack(doc.data());
+      syncedCount++;
+    }
+
+    // Pull learning rules
+    final rulesSnapshot = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('learning_rules')
+        .get();
+
+    for (final doc in rulesSnapshot.docs) {
+      final data = doc.data();
+      await _db.saveLearningRule(LearningRule(
+        artist: data['artist'],
+        field: data['field'],
+        originalValue: data['originalValue'],
+        correctedValue: data['correctedValue'],
+        choice: LearningChoice.values.firstWhere(
+          (e) => e.toString() == data['choice'],
+          orElse: () => LearningChoice.justThisOnce,
+        ),
+      ));
+      syncedCount++;
+    }
+
+    // Pull playlists
+    final playlistsSnapshot = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('playlists')
+        .get();
+
+    for (final doc in playlistsSnapshot.docs) {
+      final data = doc.data();
+      final playlistId = await _db.createPlaylist(
+        data['name'],
+        description: data['description'],
+      );
+
+      final trackIds = data['trackIds'] as List? ?? [];
+      for (final trackId in trackIds) {
+        await _db.addTrackToPlaylist(playlistId, trackId);
+      }
+      syncedCount++;
+    }
+
+    return syncedCount;
+  }
+
+  /// Get sync status.
+  Future<Map<String, dynamic>> getSyncStatus() async {
+    if (_currentUser == null) {
+      return {'status': 'not_signed_in'};
+    }
+
+    final userId = _currentUser!.uid;
+    final userDoc = await _firestore.collection('users').doc(userId).get();
+
+    if (!userDoc.exists) {
+      return {'status': 'no_data'};
+    }
+
+    return {
+      'status': 'synced',
+      'lastSync': userDoc.data()?['updatedAt'],
+      'userId': userId,
+    };
+  }
+
+  /// Sign out and clear sync.
+  Future<void> signOut() async {
+    _syncEnabled = false;
+    await _auth.signOut();
+  }
+
+  void dispose() {
+    _authSubscription?.cancel();
+  }
+}
+
+
+---------- FILE: music_x\lib\core\services\local_duo_service.dart ----------
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:nearby_connections/nearby_connections.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:meta/meta.dart';
+
+enum DuoRole { host, guest, none }
+
+class LocalDuoService {
+  static LocalDuoService? _instance;
+  static LocalDuoService get instance =>
+      _instance ??= LocalDuoService._internal();
+
+  @visibleForTesting
+  static void resetInstance() => _instance = null;
+
+  @visibleForTesting
+  @visibleForTesting
+  static set instance(LocalDuoService mock) => _instance = mock;
+
+  LocalDuoService._internal() : _nearby = Nearby();
+
+  @visibleForTesting
+  LocalDuoService.forTesting({Nearby? nearby}) : _nearby = nearby ?? Nearby();
+
+  final Nearby _nearby;
+  final Strategy strategy = Strategy.P2P_STAR;
+  final Set<String> _connectedEndpoints = {};
+  DuoRole role = DuoRole.none;
+  final Map<String, String> _discoveredNames = {};
+
+  Function(String)? onDeviceFound;
+  Function(String)? onConnected;
+  Function()? onDisconnected;
+
+  Set<String> get connectedEndpoints => _connectedEndpoints;
+  String? getDiscoveredName(String id) => _discoveredNames[id];
+
+  SearchResult? _pendingTrack;
+  Function(List<SearchResult>)? onLibraryReceived;
+  Function(String)? onMessageReceived;
+
+  Future<bool> requestPermissions() async {
+    final Map<Permission, PermissionStatus> statuses = await [
+      Permission.location,
+      Permission.bluetooth,
+      Permission.bluetoothScan,
+      Permission.bluetoothAdvertise,
+      Permission.bluetoothConnect,
+      Permission.nearbyWifiDevices,
+    ].request();
+
+    return statuses.values.every((status) => status.isGranted);
+  }
+
+  Future<void> startHost(String username) async {
+    role = DuoRole.host;
+    try {
+      await _nearby.startAdvertising(
+        username,
+        strategy,
+        onConnectionInitiated: _onConnectionInitiated,
+        onConnectionResult: _onConnectionResult,
+        onDisconnected: _onDisconnected,
+      );
+    } catch (e) {
+      role = DuoRole.none;
+    }
+  }
+
+  Future<void> startDiscovery(String username) async {
+    role = DuoRole.guest;
+    try {
+      await _nearby.startDiscovery(
+        username,
+        strategy,
+        onEndpointFound: (id, name, serviceId) {
+          _discoveredNames[id] = name;
+          onDeviceFound?.call(name);
+          _nearby.requestConnection(
+            username,
+            id,
+            onConnectionInitiated: _onConnectionInitiated,
+            onConnectionResult: _onConnectionResult,
+            onDisconnected: _onDisconnected,
+          );
+        },
+        onEndpointLost: (id) {},
+      );
+    } catch (e) {
+      role = DuoRole.none;
+    }
+  }
+
+  void _onConnectionInitiated(String id, ConnectionInfo info) {
+    _nearby.acceptConnection(id, onPayLoadRecieved: (id, payload) {
+      if (payload.type == PayloadType.BYTES) {
+        final str = String.fromCharCodes(payload.bytes!);
+        _handleIncomingMessage(id, jsonDecode(str));
+      } else if (payload.type == PayloadType.FILE) {
+        if (_pendingTrack != null && payload.uri != null) {
+          PlaybackService.instance.playLocalFile(payload.uri!, _pendingTrack!);
+          _pendingTrack = null;
+        }
+      }
+    });
+  }
+
+  void _onConnectionResult(String id, Status status) {
+    if (status == Status.CONNECTED) {
+      _connectedEndpoints.add(id);
+      onConnected?.call(id);
+      final name = _discoveredNames[id] ?? 'Convidado';
+      DatabaseService.instance.saveGuest(id, name);
+      if (role == DuoRole.guest) {
+        _nearby.stopDiscovery();
+      }
+    }
+  }
+
+  void _onDisconnected(String id) {
+    _connectedEndpoints.remove(id);
+    if (_connectedEndpoints.isEmpty) {
+      role = DuoRole.none;
+    }
+    onDisconnected?.call();
+  }
+
+  void sendMessage(Map<String, dynamic> msg) {
+    final payload = Uint8List.fromList(jsonEncode(msg).codeUnits);
+    for (var id in _connectedEndpoints) {
+      _nearby.sendBytesPayload(id, payload);
+    }
+  }
+
+  Future<void> sendFile(String path) async {
+    for (var id in _connectedEndpoints) {
+      await _nearby.sendFilePayload(id, path);
+    }
+  }
+
+  void _handleIncomingMessage(String id, Map<String, dynamic> msg) {
+    final type = msg['type'];
+    final data = msg['data'];
+    (data); // Avoid unused warning
+
+    switch (type) {
+      case 'play':
+        final pos = Duration(milliseconds: msg['positionMs']);
+        PlaybackService.instance.playFromRemote(pos);
+        break;
+      case 'pause':
+        PlaybackService.instance.pauseFromRemote();
+        break;
+      case 'seek':
+        final pos = Duration(milliseconds: msg['positionMs']);
+        PlaybackService.instance.seek(pos);
+        break;
+      case 'track':
+        final result = SearchResult.fromJson(msg['track']);
+        if (result.localPath != null) {
+          _pendingTrack = result;
+        } else {
+          PlaybackService.instance.playSearchResult(result, fromRemote: true);
+        }
+        break;
+      case 'request_library':
+        _sendLocalLibrary();
+        break;
+      case 'library_data':
+        final List<dynamic> list = msg['library'];
+        final tracks = list.map((json) => SearchResult.fromJson(json)).toList();
+        onLibraryReceived?.call(tracks);
+        for (var track in tracks) {
+          DatabaseService.instance.saveTrack(track.toJson());
+          DatabaseService.instance.addTrackToDuoSession(id, track.id);
+        }
+        break;
+      case 'add_to_queue':
+        final track = SearchResult.fromJson(msg['track']);
+        PlaybackService.instance.addToQueue(track, fromRemote: true);
+        break;
+      case 'chat':
+        onMessageReceived?.call(msg['message']);
+        break;
+    }
+  }
+
+  void sendChatMessage(String message) {
+    sendMessage({
+      'type': 'chat',
+      'message': message,
+    });
+  }
+
+  Future<void> _sendLocalLibrary() async {
+    final tracksData = await DatabaseService.instance.getTracks();
+    final List<Map<String, dynamic>> tracks = [];
+
+    for (var trackData in tracksData) {
+      final result = SearchResult(
+        id: trackData['id'],
+        title: trackData['title'],
+        artist: trackData['artist'] ?? '',
+        thumbnail: trackData['thumbnail'],
+        duration: trackData['duration'],
+        url: trackData['url'],
+        platform: MediaPlatform.values.firstWhere(
+          (e) => e.toString() == trackData['platform'],
+          orElse: () => MediaPlatform.unknown,
+        ),
+        localPath: trackData['local_path'],
+      );
+      tracks.add(result.toJson());
+    }
+
+    sendMessage({
+      'type': 'library_data',
+      'library': tracks,
+    });
+  }
+
+  void requestRemoteLibrary() {
+    sendMessage({'type': 'request_library'});
+  }
+
+  void stopAll() {
+    _nearby.stopAllEndpoints();
+    _nearby.stopAdvertising();
+    _nearby.stopDiscovery();
+    _connectedEndpoints.clear();
+    role = DuoRole.none;
+  }
+}
+
+
+---------- FILE: music_x\lib\core\services\startup_logger.dart ----------
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
+
+/// A simple logger to record startup events to a file.
+/// This is useful for debugging issues that occur before the UI is rendered.
+class StartupLogger {
+  static File? _logFile;
+  static final StringBuffer _buffer = StringBuffer();
+  static bool _initialized = false;
+  static Future<void> _lock = Future.value();
+
+  /// Initializes the logger by creating or clearing the log file.
+  static Future<void> init() async {
+    try {
+      if (_initialized) return;
+
+      final docsDir = await getApplicationDocumentsDirectory();
+      _logFile = File(
+        '${docsDir.path}${Platform.pathSeparator}startup_log.txt',
+      );
+
+      // Clear previous logs or start fresh
+      if (_logFile!.existsSync()) {
+        try {
+          _logFile!.deleteSync();
+        } on Exception catch (e) {
+          debugPrint('⚠️ Could not delete old log file: $e');
+        }
+      }
+
+      _initialized = true;
+      await log('🚀 StartupLogger initialized at ${docsDir.path}');
+    } on Exception catch (e) {
+      debugPrint('❌ Failed to initialize StartupLogger: $e');
+    }
+  }
+
+  /// Logs an error with optional stack trace.
+  static Future<void> logError(String message,
+      [dynamic error, StackTrace? stack]) async {
+    String msg = '❌ $message';
+    if (error != null) msg += ': $error';
+
+    // In tests, we usually don't want the full stack trace dumping into logs
+    // unless it's a real unexpected failure. GitHub Actions also truncate long logs.
+    final isTest = Platform.environment.containsKey('FLUTTER_TEST');
+
+    if (stack != null && !isTest) {
+      msg += '\n$stack';
+    }
+
+    return log(msg);
+  }
+
+  /// Logs a message to the file and console.
+  static Future<void> log(String message) async {
+    final timestamp = DateTime.now().toIso8601String();
+    final logMessage = '[$timestamp] $message';
+
+    // Print to console (always safe)
+    debugPrint(logMessage);
+
+    // Buffer locally (always safe)
+    _buffer.writeln(logMessage);
+
+    // Enqueue file write to ensure sequential, non-overlapping access
+    return _lock = _lock.then((_) async {
+      if (_initialized && _logFile != null) {
+        try {
+          await _logFile!.writeAsString(
+            '$logMessage\n',
+            mode: FileMode.append,
+            flush: true,
+          );
+        } on Exception catch (e) {
+          debugPrint('❌ Failed to write to log file: $e');
+        }
+      }
+    }).catchError((dynamic e) {
+      debugPrint('⚠️ StartupLogger queue error: $e');
+    });
+  }
+
+  /// Gets the full log content.
+  static String getLogs() => _buffer.toString();
+
+  /// Gets the path to the log file.
+  static String get logFilePath =>
+      _logFile?.path ?? 'Unknown (Log not initialized)';
+}
+
+
+---------- FILE: music_x\lib\core\services\telemetry_service.dart ----------
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
+import 'package:music_hub/firebase_options.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
+
+/// A service for handling telemetry and error reporting in the Music project.
+class TelemetryService {
+  static final TelemetryService instance = TelemetryService._();
+  TelemetryService._();
+
+  bool _initialized = false;
+
+  /// Initializes Firebase and Crashlytics.
+  Future<void> init() async {
+    if (_initialized) return;
+
+    try {
+      // Initialize with platform-specific options (required for Windows)
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+
+      if (!kIsWeb &&
+          (defaultTargetPlatform == TargetPlatform.android ||
+              defaultTargetPlatform == TargetPlatform.iOS)) {
+        await FirebaseCrashlytics.instance
+            .setCrashlyticsCollectionEnabled(!kDebugMode);
+
+        FlutterError.onError = (errorDetails) {
+          FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+        };
+
+        PlatformDispatcher.instance.onError = (error, stack) {
+          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+          return true;
+        };
+      }
+
+      _initialized = true;
+      StartupLogger.log('TelemetryService initialized');
+    } catch (e) {
+      StartupLogger.log('Failed to initialize TelemetryService: $e');
+      // Do not rethrow, allow app to run without telemetry
+    }
+  }
+
+  /// Logs a custom event.
+  Future<void> logEvent(String name, {Map<String, Object>? parameters}) async {
+    if (!_initialized) return;
+    await FirebaseAnalytics.instance
+        .logEvent(name: name, parameters: parameters);
+  }
+
+  /// Records a non-fatal error.
+  Future<void> recordError(dynamic exception, StackTrace? stack,
+      {dynamic reason}) async {
+    if (!kIsWeb &&
+        (defaultTargetPlatform == TargetPlatform.android ||
+            defaultTargetPlatform == TargetPlatform.iOS)) {
+      await FirebaseCrashlytics.instance
+          .recordError(exception, stack, reason: reason);
+    } else {
+      StartupLogger.log('Error: $exception');
+    }
+  }
+}
+
+
+---------- FILE: music_x\lib\main.dart ----------
+import 'dart:async';
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:music_hub/firebase_options.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:music_hub/core/services/auth_service.dart';
+import 'package:music_hub/core/services/dependency_manager.dart';
+import 'package:music_hub/core/services/connectivity_service.dart';
+import 'package:music_hub/core/services/desktop_integration_service.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/core/services/security_service.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
+import 'package:music_hub/core/services/telemetry_service.dart';
+import 'package:music_hub/core/services/theme_service.dart';
+import 'package:music_hub/core/widgets/mini_player.dart';
+import 'package:music_hub/features/core/screens/app_shell.dart';
+// Removed media_kit
+
+final GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runZonedGuarded(
+    () async {
+      ErrorWidget.builder = (FlutterErrorDetails details) {
+        if (!kIsWeb && Platform.isWindows) {
+          return fluent.FluentApp(
+            home: fluent.ScaffoldPage(
+              header: const fluent.PageHeader(title: Text('Error')),
+              content: Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    details.exceptionAsString(),
+                    style: const TextStyle(
+                        color: fluent.Colors.white, fontSize: 16),
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+        return MaterialApp(
+          home: Scaffold(
+            // Accessibility: Use muted dark color instead of aggressive red
+            // Avoids photosensitivity issues and is easier for colorblind users
+            backgroundColor: const Color(0xFF424242), // Grey 800
+            body: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  details.exceptionAsString(),
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+          ),
+        );
+      };
+
+      if (!kIsWeb &&
+          (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
+        sqfliteFfiInit();
+        databaseFactory = databaseFactoryFfi;
+      }
+
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+
+      runApp(const AppBootstrap());
+    },
+    (error, stack) {
+      StartupLogger.log('🔥 [FATAL] Global error: $error');
+      StartupLogger.log(stack.toString());
+      try {
+        TelemetryService.instance.recordError(error, stack);
+      } catch (e) {
+        debugPrint('Fallback recordError failed: $e');
+        StartupLogger.log('❌ Fallback recordError failed: $e');
+      }
+    },
+  );
+}
+
+// ... (imports)
+
+/// Bootstrap widget that handles async initialization and shows a splash
+/// screen.
+class AppBootstrap extends StatefulWidget {
+  /// Creates a new instance of [AppBootstrap].
+  const AppBootstrap({super.key});
+
+  @override
+  State<AppBootstrap> createState() => _AppBootstrapState();
+}
+
+class _AppBootstrapState extends State<AppBootstrap> {
+  bool _isInitialized = false;
+  String? _errorMessage;
+  String _currentStep = 'Starting...';
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    try {
+      // 1. Initialize Logger (Critical for debugging)
+      await StartupLogger.init();
+      await StartupLogger.log('🚀 App initialization started');
+
+      // 2. Non-Critical Services (Fail safe)
+      _updateStep('Initializing Telemetry...');
+      try {
+        await TelemetryService.instance.init();
+        StartupLogger.log('✅ TelemetryService initialized');
+      } catch (e) {
+        StartupLogger.log('⚠️ Telemetry init failed (Non-critical): $e');
+      }
+
+      // 3. Critical Services (Must succeed)
+      _updateStep('Initializing Core Services...');
+
+      await StartupLogger.log('Initializing SecurityService...');
+      await SecurityService.instance.init();
+
+      await StartupLogger.log('Initializing DependencyManager...');
+      await DependencyManager.instance.ensureDependencies();
+
+      await StartupLogger.log('Initializing AuthService...');
+      AuthService.instance.init();
+
+      await StartupLogger.log('Initializing ConnectivityService...');
+      await ConnectivityService.instance.init();
+
+      await StartupLogger.log('Initializing ThemeService...');
+      await ThemeService.instance.init();
+
+      // Desktop Integration is platform specific but usually safe to fail if wrapped,
+      // but we'll treat as non-critical or semi-critical. Let's keep it here for now.
+      await StartupLogger.log('Initializing DesktopIntegrationService...');
+      await DesktopIntegrationService.instance.init();
+
+      // Creating a boundary for PlaybackService as it interacts with hardware
+      StartupLogger.log('Initializing PlaybackService...');
+      try {
+        await PlaybackService.instance.init();
+      } catch (e) {
+        // If playback fails, the app is useless as a music player.
+        // Rethrow to trigger fatal error screen.
+        StartupLogger.log('❌ PlaybackService failed (CRITICAL): $e');
+        throw Exception('Audio Engine failed to initialize: $e');
+      }
+
+      await StartupLogger.log('✅ Core services initialized successfully');
+
+      await StartupLogger.log('🚀 App initialization complete, launching UI');
+
+      if (mounted) {
+        setState(() {
+          _isInitialized = true;
+        });
+      }
+    } catch (e, stack) {
+      await StartupLogger.log('🔥 FATAL: App initialization failed: $e');
+      await StartupLogger.log(stack.toString());
+
+      if (mounted) {
+        setState(() {
+          _errorMessage =
+              'Critical Initialization Failed:\n$e\n\nPlease check logs at:\n${StartupLogger.logFilePath}';
+        });
+      }
+    }
+  }
+
+  void _updateStep(String step) {
+    if (mounted) {
+      setState(() {
+        _currentStep = step;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_errorMessage != null) {
+      if (!kIsWeb && Platform.isWindows) {
+        return fluent.FluentApp(
+          debugShowCheckedModeBanner: false,
+          home: fluent.ScaffoldPage(
+            header:
+                const fluent.PageHeader(title: Text('Initialization Error')),
+            content: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    fluent.Icon(fluent.FluentIcons.error,
+                        size: 64, color: fluent.Colors.red),
+                    const SizedBox(height: 16),
+                    Text(
+                      _errorMessage!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 24),
+                    fluent.FilledButton(
+                      onPressed: () {
+                        setState(() {
+                          _errorMessage = null;
+                          _isInitialized = false;
+                          _currentStep = 'Retrying...';
+                        });
+                        _initializeApp();
+                      },
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      }
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Music Hub - Error',
+        home: Scaffold(
+          body: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text(
+                    _errorMessage!,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        _errorMessage = null;
+                        _isInitialized = false;
+                        _currentStep = 'Retrying...';
+                      });
+                      _initializeApp();
+                    },
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (!_isInitialized) {
+      if (!kIsWeb && Platform.isWindows) {
+        return fluent.FluentApp(
+          debugShowCheckedModeBanner: false,
+          home: fluent.ScaffoldPage(
+            content: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const fluent.ProgressBar(),
+                  const SizedBox(height: 24),
+                  Text(_currentStep, style: const TextStyle(fontSize: 16)),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Music Hub - Loading',
+        home: Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CircularProgressIndicator(),
+                const SizedBox(height: 24),
+                Text(_currentStep, style: const TextStyle(fontSize: 16)),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return const MusicHubApp();
+  }
+}
+
+class MusicHubApp extends StatelessWidget {
+  const MusicHubApp({super.key});
+
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+        animation: ThemeService.instance,
+        builder: (context, child) {
+          final primaryColor = ThemeService.instance.primaryColor;
+          final isFluent =
+              !kIsWeb && defaultTargetPlatform == TargetPlatform.windows;
+          if (isFluent) {
+            return fluent.FluentApp(
+              title: 'Music Hub',
+              themeMode: fluent.ThemeMode.system,
+              darkTheme: fluent.FluentThemeData(
+                brightness: fluent.Brightness.dark,
+                accentColor: fluent.Colors.blue,
+                scaffoldBackgroundColor: const fluent.Color(0xFF1E1E1E),
+              ),
+              theme: fluent.FluentThemeData(
+                brightness: fluent.Brightness.light,
+                accentColor: fluent.Colors.blue,
+                scaffoldBackgroundColor: fluent.Colors.white,
+              ),
+              home: const AppShell(),
+              navigatorKey: appNavigatorKey,
+              builder: (context, child) => Stack(
+                children: [
+                  child ?? const SizedBox.shrink(),
+                  const Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: MiniPlayer(),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          return MaterialApp(
+            title: 'Music Hub',
+            theme: ThemeData(
+              useMaterial3: true,
+              scaffoldBackgroundColor: Colors.white,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: primaryColor,
+                brightness: Brightness.light,
+              ),
+            ),
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              scaffoldBackgroundColor: Colors.black,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: primaryColor,
+                brightness: Brightness.dark,
+              ),
+            ),
+            home: const AppShell(),
+            navigatorKey: appNavigatorKey,
+            builder: (context, child) => Material(
+              child: Stack(
+                children: [
+                  child ?? const SizedBox.shrink(),
+                  const Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: MiniPlayer(),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+}
+
+
+---------- FILE: music_x\lib\utils\file_utils.dart ----------
+import 'package:path/path.dart' as p;
+
+/// Shared utility for filename sanitization to prevent path traversal
+/// and ensure cross-platform compatibility.
+String sanitizeFilename(String filename) {
+  // Replace slashes first to preserve segments if they were intended as part of the filename
+  // (e.g. "AC/DC.flac") while still preventing them from being interpreted as paths.
+  final sanitizedPath = filename.replaceAll(RegExp(r'[\\/]'), '_');
+
+  // Use basename as a safety measure against any lingering path traversal attempts
+  final base = p.basename(sanitizedPath);
+
+  // Replace other characters that are reserved/illegal on various OS:
+  // : * ? " < > |
+  return base.replaceAll(RegExp(r'[:*?"<>|]'), '_');
+}
+
+
+---------- FILE: music_x\lib\utils\rate_limiter.dart ----------
+import 'dart:async';
+
+/// A simple Rate Limiter using Token Bucket algorithm.
+class RateLimiter {
+  final int maxRequests;
+  final Duration interval;
+
+  int _tokens;
+  Timer? _replenishTimer;
+
+  RateLimiter({
+    required this.maxRequests,
+    required this.interval,
+  }) : _tokens = maxRequests {
+    _startReplenish();
+  }
+
+  void _startReplenish() {
+    _replenishTimer = Timer.periodic(interval, (_) {
+      if (_tokens < maxRequests) {
+        _tokens++;
+      }
+    });
+  }
+
+  /// Wait for a token to be available.
+  Future<void> wait() async {
+    while (_tokens <= 0) {
+      await Future.delayed(const Duration(milliseconds: 200));
+    }
+    _tokens--;
+  }
+
+  void dispose() {
+    _replenishTimer?.cancel();
+  }
+}
+
+

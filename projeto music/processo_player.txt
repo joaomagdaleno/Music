@@ -1,0 +1,3436 @@
+================================================================================
+PROCESS AUDIT: processo_player.txt
+DATE: 2026-01-08 15:23:23
+FILE COUNT: 20
+================================================================================
+
+---------- FILE: music_x\lib\core\services\cast_service.dart ----------
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:network_info_plus/network_info_plus.dart';
+import 'package:shelf/shelf_io.dart' as shelf_io;
+import 'package:shelf_static/shelf_static.dart';
+import 'package:flutter/foundation.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
+
+class CastDevice {
+  final String name;
+  final String controlUrl;
+  final String host;
+
+  CastDevice(
+      {required this.name, required this.controlUrl, required this.host});
+
+  @override
+  bool operator ==(Object other) =>
+      other is CastDevice && other.controlUrl == controlUrl;
+
+  @override
+  int get hashCode => controlUrl.hashCode;
+}
+
+class CastService {
+  static CastService? _instance;
+  static CastService get instance => _instance ??= CastService._internal();
+
+  @visibleForTesting
+  static set instance(CastService mock) => _instance = mock;
+
+  final http.Client _client;
+  final NetworkInfo _networkInfo;
+
+  CastService._internal({http.Client? client, NetworkInfo? networkInfo})
+      : _client = client ?? http.Client(),
+        _networkInfo = networkInfo ?? NetworkInfo();
+
+  @visibleForTesting
+  factory CastService.test({http.Client? client, NetworkInfo? networkInfo}) =>
+      CastService._internal(client: client, networkInfo: networkInfo);
+
+  @visibleForTesting
+  static void reset() {
+    _instance = null;
+  }
+
+  final List<CastDevice> _devices = [];
+  final StreamController<List<CastDevice>> _devicesController =
+      StreamController.broadcast();
+  Stream<List<CastDevice>> get devicesStream => _devicesController.stream;
+
+  HttpServer? _server;
+  String? _localIp;
+
+  Future<void> startDiscovery() async {
+    _devices.clear();
+    _devicesController.add([]);
+
+    try {
+      final socket = await RawDatagramSocket.bind(InternetAddress.anyIPv4, 0);
+      socket.broadcastEnabled = true;
+
+      socket.listen((event) {
+        if (event == RawSocketEvent.read) {
+          final datagram = socket.receive();
+          if (datagram != null) {
+            final msg = utf8.decode(datagram.data);
+            parseSsdpResponse(msg);
+          }
+        }
+      });
+
+      const discoveryMsg = 'M-SEARCH * HTTP/1.1\r\n'
+          'HOST: 239.255.255.250:1900\r\n'
+          'MAN: "ssdp:discover"\r\n'
+          'MX: 3\r\n'
+          'ST: urn:schemas-upnp-org:service:AVTransport:1\r\n'
+          '\r\n';
+
+      socket.send(
+          utf8.encode(discoveryMsg), InternetAddress('239.255.255.250'), 1900);
+
+      // Stop listening after 5 seconds
+      Future.delayed(const Duration(seconds: 5), () {
+        socket.close();
+      });
+    } catch (e) {
+      StartupLogger.log('SSDP Discovery Error: $e');
+    }
+  }
+
+  @visibleForTesting
+  Future<void> parseSsdpResponse(String response) async {
+    final lines = response.split('\r\n');
+    String? location;
+    for (var line in lines) {
+      if (line.toUpperCase().startsWith('LOCATION:')) {
+        location = line.substring(9).trim();
+        break;
+      }
+    }
+
+    if (location != null) {
+      try {
+        final resp = await _client.get(Uri.parse(location));
+        if (resp.statusCode == 200) {
+          final xml = resp.body;
+          final nameReg = RegExp(r'<friendlyName>(.*?)</friendlyName>');
+          final name = nameReg.firstMatch(xml)?.group(1) ?? 'Unknown Device';
+
+          if (xml.contains('urn:schemas-upnp-org:service:AVTransport:1')) {
+            final serviceBlock =
+                xml.split('urn:schemas-upnp-org:service:AVTransport:1')[1];
+            final controlUrlReg = RegExp(r'<controlURL>(.*?)</controlURL>');
+            final match = controlUrlReg.firstMatch(serviceBlock);
+            var controlUrl = match?.group(1);
+
+            if (controlUrl != null) {
+              if (!controlUrl.startsWith('http')) {
+                final uri = Uri.parse(location);
+                if (controlUrl.startsWith('/')) {
+                  controlUrl =
+                      '${uri.scheme}://${uri.host}:${uri.port}$controlUrl';
+                } else {
+                  controlUrl =
+                      '${uri.scheme}://${uri.host}:${uri.port}/$controlUrl';
+                }
+              }
+
+              final device = CastDevice(
+                  name: name,
+                  controlUrl: controlUrl,
+                  host: Uri.parse(location).host);
+              if (!_devices.contains(device)) {
+                _devices.add(device);
+                _devicesController.add(_devices);
+              }
+            }
+          }
+        }
+      } catch (e) {
+        // Ignore parsing errors
+      }
+    }
+  }
+
+  Future<void> castFile(String filePath, CastDevice device) async {
+    await stopCasting();
+
+    _localIp = await _networkInfo.getWifiIP() ?? '127.0.0.1';
+
+    final handler = createStaticHandler(File(filePath).parent.path,
+        defaultDocument: File(filePath).uri.pathSegments.last);
+
+    _server = await shelf_io.serve(handler, _localIp ?? '0.0.0.0', 0);
+    final fileUrl =
+        'http://$_localIp:${_server!.port}/${File(filePath).uri.pathSegments.last}';
+
+    StartupLogger.log('Hosting at $fileUrl');
+
+    await _setAvTransportUri(device.controlUrl, fileUrl);
+    await _play(device.controlUrl);
+  }
+
+  Future<void> stopCasting() async {
+    await _server?.close(force: true);
+    _server = null;
+  }
+
+  // SOAP Actions
+  Future<void> _setAvTransportUri(String controlUrl, String currentUri) async {
+    final body = '''
+      <?xml version="1.0" encoding="utf-8"?>
+      <s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+        <s:Body>
+          <u:SetAVTransportURI xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+            <InstanceID>0</InstanceID>
+            <CurrentURI>$currentUri</CurrentURI>
+            <CurrentURIMetaData></CurrentURIMetaData>
+          </u:SetAVTransportURI>
+        </s:Body>
+      </s:Envelope>
+    ''';
+    await sendSoap(controlUrl, 'SetAVTransportURI', body);
+  }
+
+  Future<void> _play(String controlUrl) async {
+    const body = '''
+      <?xml version="1.0" encoding="utf-8"?>
+      <s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+        <s:Body>
+          <u:Play xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+            <InstanceID>0</InstanceID>
+            <Speed>1</Speed>
+          </u:Play>
+        </s:Body>
+      </s:Envelope>
+    ''';
+    await sendSoap(controlUrl, 'Play', body);
+  }
+
+  @visibleForTesting
+  Future<void> sendSoap(String url, String action, String body) async {
+    try {
+      await _client.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'text/xml; charset="utf-8"',
+          'SOAPAction': '"urn:schemas-upnp-org:service:AVTransport:1#$action"',
+        },
+        body: body,
+      );
+    } catch (e) {
+      StartupLogger.log('SOAP Error ($action): $e');
+    }
+  }
+}
+
+
+---------- FILE: music_x\lib\core\services\hifi_audio_service.dart ----------
+import 'dart:io';
+import 'package:path/path.dart' as p;
+
+/// Service for handling Hi-Fi audio formats (FLAC, ALAC, DSD).
+class HiFiAudioService {
+  static final HiFiAudioService instance = HiFiAudioService._internal();
+  HiFiAudioService._internal();
+
+  /// Supported Hi-Fi formats with their metadata.
+  static const Map<String, HiFiFormat> supportedFormats = {
+    '.flac': HiFiFormat(
+      name: 'FLAC',
+      description: 'Free Lossless Audio Codec',
+      maxBitDepth: 32,
+      maxSampleRate: 384000,
+      isLossless: true,
+    ),
+    '.alac': HiFiFormat(
+      name: 'ALAC',
+      description: 'Apple Lossless Audio Codec',
+      maxBitDepth: 32,
+      maxSampleRate: 384000,
+      isLossless: true,
+    ),
+    '.m4a': HiFiFormat(
+      name: 'AAC/ALAC',
+      description: 'MPEG-4 Audio (may be lossless)',
+      maxBitDepth: 24,
+      maxSampleRate: 96000,
+      isLossless: false, // M4A can be AAC or ALAC
+    ),
+    '.dsf': HiFiFormat(
+      name: 'DSD',
+      description: 'Direct Stream Digital',
+      maxBitDepth: 1,
+      maxSampleRate: 11289600, // DSD256
+      isLossless: true,
+    ),
+    '.dff': HiFiFormat(
+      name: 'DFF',
+      description: 'DSD Interchange File Format',
+      maxBitDepth: 1,
+      maxSampleRate: 11289600,
+      isLossless: true,
+    ),
+    '.wav': HiFiFormat(
+      name: 'WAV',
+      description: 'Waveform Audio File',
+      maxBitDepth: 32,
+      maxSampleRate: 384000,
+      isLossless: true,
+    ),
+    '.aiff': HiFiFormat(
+      name: 'AIFF',
+      description: 'Audio Interchange File Format',
+      maxBitDepth: 32,
+      maxSampleRate: 384000,
+      isLossless: true,
+    ),
+  };
+
+  /// Check if a file is a Hi-Fi format.
+  bool isHiFiFormat(String filePath) {
+    final ext = p.extension(filePath).toLowerCase();
+    return supportedFormats.containsKey(ext);
+  }
+
+  /// Get format info for a file.
+  HiFiFormat? getFormatInfo(String filePath) {
+    final ext = p.extension(filePath).toLowerCase();
+    return supportedFormats[ext];
+  }
+
+  /// Analyze audio file quality using FFprobe.
+  Future<AudioQualityInfo?> analyzeQuality(String filePath) async {
+    try {
+      final result = await Process.run('ffprobe', [
+        '-v',
+        'quiet',
+        '-print_format',
+        'json',
+        '-show_streams',
+        '-select_streams',
+        'a:0',
+        filePath,
+      ]);
+
+      if (result.exitCode != 0) {
+        return null;
+      }
+
+      final output = result.stdout as String;
+      // Parse basic info from ffprobe output
+      final sampleRateMatch =
+          RegExp(r'"sample_rate":\s*"(\d+)"').firstMatch(output);
+      final bitsMatch =
+          RegExp(r'"bits_per_raw_sample":\s*"(\d+)"').firstMatch(output);
+      final bitrateMatch = RegExp(r'"bit_rate":\s*"(\d+)"').firstMatch(output);
+      final channelsMatch = RegExp(r'"channels":\s*(\d+)').firstMatch(output);
+
+      return AudioQualityInfo(
+        sampleRate: sampleRateMatch != null
+            ? int.tryParse(sampleRateMatch.group(1)!) ?? 0
+            : 0,
+        bitDepth:
+            bitsMatch != null ? int.tryParse(bitsMatch.group(1)!) ?? 16 : 16,
+        bitrate: bitrateMatch != null
+            ? int.tryParse(bitrateMatch.group(1)!) ?? 0
+            : 0,
+        channels: channelsMatch != null
+            ? int.tryParse(channelsMatch.group(1)!) ?? 2
+            : 2,
+        format: getFormatInfo(filePath),
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Get quality tier label for display.
+  String getQualityTier(AudioQualityInfo info) {
+    if (info.sampleRate >= 96000 && info.bitDepth >= 24) {
+      return 'Hi-Res';
+    } else if (info.format?.isLossless == true) {
+      return 'Lossless';
+    } else if (info.bitrate >= 256000) {
+      return 'High Quality';
+    } else {
+      return 'Standard';
+    }
+  }
+}
+
+/// Metadata for a Hi-Fi audio format.
+class HiFiFormat {
+  final String name;
+  final String description;
+  final int maxBitDepth;
+  final int maxSampleRate;
+  final bool isLossless;
+
+  const HiFiFormat({
+    required this.name,
+    required this.description,
+    required this.maxBitDepth,
+    required this.maxSampleRate,
+    required this.isLossless,
+  });
+}
+
+/// Quality information for an audio file.
+class AudioQualityInfo {
+  final int sampleRate;
+  final int bitDepth;
+  final int bitrate;
+  final int channels;
+  final HiFiFormat? format;
+
+  const AudioQualityInfo({
+    required this.sampleRate,
+    required this.bitDepth,
+    required this.bitrate,
+    required this.channels,
+    this.format,
+  });
+
+  String get sampleRateDisplay =>
+      '${(sampleRate / 1000).toStringAsFixed(1)} kHz';
+  String get bitDepthDisplay => '$bitDepth-bit';
+  String get bitrateDisplay => '${(bitrate / 1000).round()} kbps';
+  String get channelsDisplay => channels == 2 ? 'Stereo' : '$channels ch';
+}
+
+
+---------- FILE: music_x\lib\features\party_mode\disco\disco_mode_screen.dart ----------
+import 'dart:async';
+import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/core/services/theme_service.dart';
+
+import 'package:music_hub/features/party_mode/disco/views/fluent_disco_view.dart';
+import 'package:music_hub/features/party_mode/disco/views/material_disco_view.dart';
+
+/// DiscoModeScreen controller - platform-adaptive
+class DiscoModeScreen extends StatefulWidget {
+  const DiscoModeScreen({super.key});
+
+  @override
+  State<DiscoModeScreen> createState() => _DiscoModeScreenState();
+}
+
+class _DiscoModeScreenState extends State<DiscoModeScreen> {
+  final Random _random = Random();
+  final List<double> _bars = List.generate(20, (i) => 0.3);
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startAnimation();
+  }
+
+  void _startAnimation() {
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (_) {
+      if (mounted) {
+        setState(() {
+          for (int i = 0; i < _bars.length; i++) {
+            _bars[i] = 0.2 + _random.nextDouble() * 0.8;
+          }
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final track = PlaybackService.instance.currentTrack;
+    final primaryColor = ThemeService.instance.primaryColor;
+    final platform = defaultTargetPlatform;
+
+    switch (platform) {
+      case TargetPlatform.windows:
+      case TargetPlatform.macOS:
+      case TargetPlatform.linux:
+        return FluentDiscoModeView(
+            currentTrack: track,
+            bars: _bars,
+            primaryColor: primaryColor,
+            onTap: () => Navigator.pop(context));
+      default:
+        return MaterialDiscoModeView(
+            currentTrack: track,
+            bars: _bars,
+            primaryColor: primaryColor,
+            onTap: () => Navigator.pop(context));
+    }
+  }
+}
+
+
+---------- FILE: music_x\lib\features\party_mode\disco\karaoke_screen.dart ----------
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+
+import 'package:music_hub/features/party_mode/disco/views/fluent_karaoke_view.dart';
+import 'package:music_hub/features/party_mode/disco/views/material_karaoke_view.dart';
+
+/// KaraokeScreen controller - platform-adaptive
+class KaraokeScreen extends StatefulWidget {
+  final Map<String, dynamic> track;
+  const KaraokeScreen({super.key, required this.track});
+
+  @override
+  State<KaraokeScreen> createState() => _KaraokeScreenState();
+}
+
+class _KaraokeScreenState extends State<KaraokeScreen> {
+  final _scrollController = ScrollController();
+  int _activeLineIndex = -1;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTracking();
+  }
+
+  void _startTracking() {
+    _timer = Timer.periodic(const Duration(milliseconds: 200), (_) {
+      if (!mounted) return;
+      final pos = PlaybackService.instance.player.position.inMilliseconds;
+      final lyrics = PlaybackService.instance.currentLyrics;
+      int index = -1;
+      for (int i = 0; i < lyrics.length; i++) {
+        if (lyrics[i].time.inMilliseconds <= pos) {
+          index = i;
+        } else {
+          break;
+        }
+      }
+      if (index != _activeLineIndex && index != -1) {
+        setState(() => _activeLineIndex = index);
+        _scrollToActive();
+      }
+    });
+  }
+
+  void _scrollToActive() {
+    if (_activeLineIndex != -1 && _scrollController.hasClients) {
+      _scrollController.animateTo(_activeLineIndex * 80.0,
+          duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final lyrics = PlaybackService.instance.currentLyrics;
+    final platform = defaultTargetPlatform;
+    switch (platform) {
+      case TargetPlatform.windows:
+      case TargetPlatform.macOS:
+      case TargetPlatform.linux:
+        return FluentKaraokeView(
+            track: widget.track,
+            lyrics: lyrics,
+            activeLineIndex: _activeLineIndex,
+            scrollController: _scrollController,
+            onResume: () => PlaybackService.instance.resume(),
+            onClose: () => Navigator.pop(context));
+      default:
+        return MaterialKaraokeView(
+            track: widget.track,
+            lyrics: lyrics,
+            activeLineIndex: _activeLineIndex,
+            scrollController: _scrollController,
+            onResume: () => PlaybackService.instance.resume(),
+            onClose: () => Navigator.pop(context));
+    }
+  }
+}
+
+
+---------- FILE: music_x\lib\features\party_mode\disco\party_queue_screen.dart ----------
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:music_hub/features/party_mode/disco/views/fluent_party_queue_view.dart';
+import 'package:music_hub/features/party_mode/disco/views/material_party_queue_view.dart';
+import 'package:music_hub/core/services/notification_service.dart';
+
+/// PartyQueueScreen controller - platform-adaptive
+class PartyQueueScreen extends StatefulWidget {
+  const PartyQueueScreen({super.key});
+
+  @override
+  State<PartyQueueScreen> createState() => _PartyQueueScreenState();
+}
+
+class _PartyQueueScreenState extends State<PartyQueueScreen> {
+  bool _isSharing = false;
+  final String _qrData = 'DUO_PARTY_SESSION_7788';
+
+  void _toggleSharing() => setState(() => _isSharing = !_isSharing);
+
+  void _scan() {
+    _showNotification('Abrindo câmera para escanear...');
+  }
+
+  void _showNotification(String message) {
+    NotificationService.instance.show(context, message);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final platform = defaultTargetPlatform;
+    switch (platform) {
+      case TargetPlatform.windows:
+      case TargetPlatform.macOS:
+      case TargetPlatform.linux:
+        return FluentPartyQueueView(
+            isSharing: _isSharing,
+            qrData: _qrData,
+            onToggleSharing: _toggleSharing,
+            onScan: _scan);
+      default:
+        return MaterialPartyQueueView(
+            isSharing: _isSharing,
+            qrData: _qrData,
+            onToggleSharing: _toggleSharing,
+            onScan: _scan);
+    }
+  }
+}
+
+
+---------- FILE: music_x\lib\features\party_mode\disco\views\fluent_disco_view.dart ----------
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+
+/// Fluent UI view for DiscoModeScreen - WinUI 3 styling
+class FluentDiscoModeView extends StatelessWidget {
+  final SearchResult? currentTrack;
+  final List<double> bars;
+  final Color primaryColor;
+  final VoidCallback onTap;
+
+  const FluentDiscoModeView({
+    super.key,
+    required this.currentTrack,
+    required this.bars,
+    required this.primaryColor,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: onTap,
+        child: Container(
+          color: Colors.black,
+          child: Stack(
+            children: [
+              _buildGlow(),
+              _buildVisualizer(),
+              _buildAlbumArt(),
+              _buildInfo(),
+              _buildCloseHint(),
+            ],
+          ),
+        ),
+      );
+
+  Widget _buildGlow() => Container(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            colors: [
+              primaryColor.withValues(alpha: 0.3),
+              Colors.purple.withValues(alpha: 0.1),
+              Colors.black,
+            ],
+            radius: 1.5,
+          ),
+        ),
+      );
+
+  Widget _buildVisualizer() => Positioned(
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 250,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: bars
+              .map((val) => Expanded(
+                      child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 100),
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    height: val * 200,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [primaryColor, Colors.purple]),
+                      borderRadius: BorderRadius.circular(4),
+                      boxShadow: [
+                        BoxShadow(
+                            color: primaryColor.withValues(alpha: 0.5),
+                            blurRadius: 10)
+                      ],
+                    ),
+                  )))
+              .toList(),
+        ),
+      );
+
+  Widget _buildAlbumArt() => Center(
+        child: Container(
+          width: 300,
+          height: 300,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                  color: primaryColor.withValues(alpha: 0.6),
+                  blurRadius: 40,
+                  spreadRadius: 10)
+            ],
+          ),
+          child: ClipOval(
+            child: currentTrack?.thumbnail != null
+                ? Image.network(currentTrack!.thumbnail!,
+                    fit: BoxFit.cover, cacheWidth: 600)
+                : Container(
+                    color: Colors.grey.withValues(alpha: 0.1),
+                    child: const Icon(FluentIcons.music_note,
+                        size: 100, color: Colors.white)),
+          ),
+        ),
+      );
+
+  Widget _buildInfo() => Positioned(
+        top: 60,
+        left: 40,
+        right: 40,
+        child: Column(
+          children: [
+            Text(currentTrack?.title ?? 'Silêncio...',
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.none)),
+            const SizedBox(height: 12),
+            Text(currentTrack?.artist ?? '',
+                style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.7),
+                    fontSize: 20,
+                    decoration: TextDecoration.none)),
+          ],
+        ),
+      );
+
+  Widget _buildCloseHint() => Positioned(
+      bottom: 260,
+      left: 0,
+      right: 0,
+      child: Center(
+          child: Text('Clique para sair',
+              style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  fontSize: 14,
+                  decoration: TextDecoration.none))));
+}
+
+
+---------- FILE: music_x\lib\features\party_mode\disco\views\fluent_karaoke_view.dart ----------
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:music_hub/features/player/services/lyrics_service.dart';
+
+/// Fluent UI view for KaraokeScreen - WinUI 3 styling
+class FluentKaraokeView extends StatelessWidget {
+  final Map<String, dynamic> track;
+  final List<LyricLine> lyrics;
+  final int activeLineIndex;
+  final ScrollController scrollController;
+  final VoidCallback onResume;
+  final VoidCallback onClose;
+
+  const FluentKaraokeView({
+    super.key,
+    required this.track,
+    required this.lyrics,
+    required this.activeLineIndex,
+    required this.scrollController,
+    required this.onResume,
+    required this.onClose,
+  });
+
+  @override
+  Widget build(BuildContext context) => Container(
+        color: Colors.black,
+        child: Stack(
+          children: [
+            _buildGlow(context),
+            _buildHeader(),
+            _buildLyrics(context),
+            _buildControls(),
+          ],
+        ),
+      );
+
+  Widget _buildGlow(BuildContext context) => Container(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            center: const Alignment(0, -0.5),
+            radius: 1.5,
+            colors: [
+              FluentTheme.of(context).accentColor.withValues(alpha: 0.3),
+              Colors.black
+            ],
+          ),
+        ),
+      );
+
+  Widget _buildHeader() => Positioned(
+        top: 40,
+        left: 24,
+        right: 24,
+        child: Row(
+          children: [
+            IconButton(
+                icon: const Icon(FluentIcons.chrome_close, color: Colors.white),
+                onPressed: onClose),
+            const SizedBox(width: 16),
+            Expanded(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                  Text(track['title'] ?? 'Karaoke',
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          decoration: TextDecoration.none)),
+                  Text(track['artist'] ?? '',
+                      style: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.7),
+                          fontSize: 14,
+                          decoration: TextDecoration.none)),
+                ])),
+          ],
+        ),
+      );
+
+  Widget _buildLyrics(BuildContext context) {
+    if (lyrics.isEmpty) {
+      return Center(
+          child: Text('Letras não sincronizadas...',
+              style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.5),
+                  decoration: TextDecoration.none)));
+    }
+
+    return ListView.builder(
+      controller: scrollController,
+      itemExtent: 100.0, // ⚡ Bolt: Fixed extent for efficient scrolling
+      padding: const EdgeInsets.symmetric(vertical: 400, horizontal: 48),
+      itemCount: lyrics.length,
+      itemBuilder: (context, index) {
+        final isActive = index == activeLineIndex;
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          height: 100,
+          alignment: Alignment.center,
+          child: Text(
+            lyrics[index].text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: isActive ? 40 : 28,
+              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+              color:
+                  isActive ? Colors.white : Colors.white.withValues(alpha: 0.3),
+              decoration: TextDecoration.none,
+              shadows: isActive
+                  ? [
+                      Shadow(
+                          color: FluentTheme.of(context).accentColor,
+                          blurRadius: 15)
+                    ]
+                  : null,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildControls() => Positioned(
+        bottom: 40,
+        left: 0,
+        right: 0,
+        child: Center(
+          child: IconButton(
+            icon: const Icon(FluentIcons.play, size: 48, color: Colors.white),
+            onPressed: onResume,
+          ),
+        ),
+      );
+}
+
+
+---------- FILE: music_x\lib\features\party_mode\disco\views\fluent_party_queue_view.dart ----------
+import 'package:fluent_ui/fluent_ui.dart';
+
+/// Fluent UI view for PartyQueueScreen - WinUI 3 styling
+class FluentPartyQueueView extends StatelessWidget {
+  final bool isSharing;
+  final String qrData;
+  final VoidCallback onToggleSharing;
+  final VoidCallback onScan;
+
+  const FluentPartyQueueView({
+    super.key,
+    required this.isSharing,
+    required this.qrData,
+    required this.onToggleSharing,
+    required this.onScan,
+  });
+
+  @override
+  Widget build(BuildContext context) => ScaffoldPage(
+        header: PageHeader(
+          title: const Text('Fila de Festa (Party Queue)'),
+          leading: Navigator.canPop(context)
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: IconButton(
+                    icon: const Icon(FluentIcons.back),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                )
+              : null,
+        ),
+        content: SingleChildScrollView(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(48.0),
+              child: Column(
+                children: [
+                  Icon(FluentIcons.contact_card,
+                      size: 100, color: Colors.purple),
+                  const SizedBox(height: 24),
+                  Text('Comece uma Festa',
+                      style: FluentTheme.of(context).typography.title),
+                  const SizedBox(height: 12),
+                  const Text(
+                      'Deixe seus amigos escanearem para adicionar músicas à fila em tempo real!',
+                      textAlign: TextAlign.center),
+                  const SizedBox(height: 48),
+                  if (!isSharing)
+                    FilledButton(
+                        onPressed: onToggleSharing,
+                        child: const Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 12),
+                            child: Text('Gerar QR Code da Festa')))
+                  else
+                    _buildSharingView(context),
+                  const SizedBox(height: 48),
+                  Button(
+                      onPressed: onScan,
+                      child: const Text('Escanear QR de Amigo')),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+  Widget _buildSharingView(BuildContext context) => Column(
+        children: [
+          Card(
+            padding: const EdgeInsets.all(16),
+            child: Image.network(
+              'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=$qrData',
+              width: 200,
+              height: 200,
+              errorBuilder: (_, __, ___) =>
+                  const Icon(FluentIcons.contact_card, size: 100),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text('Código da Sessão: $qrData',
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.purple)),
+          const SizedBox(height: 32),
+          Button(
+              onPressed: onToggleSharing, child: const Text('Encerrar Festa')),
+        ],
+      );
+}
+
+
+---------- FILE: music_x\lib\features\party_mode\disco\views\material_disco_view.dart ----------
+import 'package:flutter/material.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+
+/// Material Design view for DiscoModeScreen
+class MaterialDiscoModeView extends StatelessWidget {
+  final SearchResult? currentTrack;
+  final List<double> bars;
+  final Color primaryColor;
+  final VoidCallback onTap;
+
+  const MaterialDiscoModeView({
+    super.key,
+    required this.currentTrack,
+    required this.bars,
+    required this.primaryColor,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: Colors.black,
+        body: GestureDetector(
+          onTap: onTap,
+          child: Stack(
+            children: [
+              _buildGlow(),
+              _buildVisualizer(),
+              _buildAlbumArt(),
+              _buildInfo(),
+              _buildCloseHint(),
+            ],
+          ),
+        ),
+      );
+
+  Widget _buildGlow() => Container(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            colors: [
+              primaryColor.withValues(alpha: 0.4),
+              Colors.black,
+            ],
+            radius: 1.2,
+          ),
+        ),
+      );
+
+  Widget _buildVisualizer() => Positioned(
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 200,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: bars
+              .map((val) => Expanded(
+                      child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 100),
+                    margin: const EdgeInsets.symmetric(horizontal: 2),
+                    height: val * 180,
+                    color: primaryColor,
+                  )))
+              .toList(),
+        ),
+      );
+
+  Widget _buildAlbumArt() => Center(
+        child: Container(
+          width: 250,
+          height: 250,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                  color: primaryColor.withValues(alpha: 0.5), blurRadius: 30)
+            ],
+          ),
+          child: ClipOval(
+            child: currentTrack?.thumbnail != null
+                ? Image.network(currentTrack!.thumbnail!,
+                    fit: BoxFit.cover, cacheWidth: 600)
+                : Container(
+                    color: Colors.grey[900],
+                    child: const Icon(Icons.music_note,
+                        size: 80, color: Colors.white54)),
+          ),
+        ),
+      );
+
+  Widget _buildInfo() => Positioned(
+        top: 80,
+        left: 20,
+        right: 20,
+        child: Column(
+          children: [
+            Text(currentTrack?.title ?? 'No Track',
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text(currentTrack?.artist ?? '',
+                style: const TextStyle(color: Colors.white70, fontSize: 18)),
+          ],
+        ),
+      );
+
+  Widget _buildCloseHint() => const Positioned(
+      bottom: 220,
+      left: 0,
+      right: 0,
+      child: Center(
+          child: Text('Toque para sair',
+              style: TextStyle(color: Colors.white38, fontSize: 14))));
+}
+
+
+---------- FILE: music_x\lib\features\party_mode\disco\views\material_karaoke_view.dart ----------
+import 'package:flutter/material.dart';
+import 'package:music_hub/features/player/services/lyrics_service.dart';
+
+/// Material Design view for KaraokeScreen
+class MaterialKaraokeView extends StatelessWidget {
+  final Map<String, dynamic> track;
+  final List<LyricLine> lyrics;
+  final int activeLineIndex;
+  final ScrollController scrollController;
+  final VoidCallback onResume;
+  final VoidCallback onClose;
+
+  const MaterialKaraokeView({
+    super.key,
+    required this.track,
+    required this.lyrics,
+    required this.activeLineIndex,
+    required this.scrollController,
+    required this.onResume,
+    required this.onClose,
+  });
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: Colors.black,
+        body: Stack(
+          children: [
+            _buildGlow(context),
+            SafeArea(
+              child: Column(
+                children: [
+                  _buildHeader(),
+                  Expanded(child: _buildLyrics(context)),
+                  _buildControls(),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget _buildGlow(BuildContext context) => Container(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            center: const Alignment(0, -0.5),
+            radius: 1.5,
+            colors: [
+              Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+              Colors.black
+            ],
+          ),
+        ),
+      );
+
+  Widget _buildHeader() => Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            IconButton(
+                icon: const Icon(Icons.close, color: Colors.white),
+                onPressed: onClose),
+            const SizedBox(width: 8),
+            Expanded(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                  Text(track['title'] ?? 'Karaoke',
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
+                  Text(track['artist'] ?? '',
+                      style:
+                          const TextStyle(color: Colors.white70, fontSize: 12)),
+                ])),
+          ],
+        ),
+      );
+
+  Widget _buildLyrics(BuildContext context) {
+    if (lyrics.isEmpty) {
+      return const Center(
+          child: Text('Letras não sincronizadas...',
+              style: TextStyle(color: Colors.white54)));
+    }
+    return ListView.builder(
+      controller: scrollController,
+      itemExtent: 80.0, // ⚡ Bolt: Fixed extent for efficient scrolling
+      padding: const EdgeInsets.symmetric(vertical: 300, horizontal: 32),
+      itemCount: lyrics.length,
+      itemBuilder: (context, index) {
+        final isActive = index == activeLineIndex;
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          height: 80,
+          alignment: Alignment.center,
+          child: Text(
+            lyrics[index].text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: isActive ? 32 : 24,
+              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+              color: isActive ? Colors.white : Colors.white38,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildControls() => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 24),
+        child: IconButton(
+            iconSize: 48,
+            icon: const Icon(Icons.play_circle_filled, color: Colors.white),
+            onPressed: onResume),
+      );
+}
+
+
+---------- FILE: music_x\lib\features\party_mode\disco\views\material_party_queue_view.dart ----------
+import 'package:flutter/material.dart';
+
+/// Material Design view for PartyQueueScreen
+class MaterialPartyQueueView extends StatelessWidget {
+  final bool isSharing;
+  final String qrData;
+  final VoidCallback onToggleSharing;
+  final VoidCallback onScan;
+
+  const MaterialPartyQueueView({
+    super.key,
+    required this.isSharing,
+    required this.qrData,
+    required this.onToggleSharing,
+    required this.onScan,
+  });
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(title: const Text('Party Queue')),
+        body: SingleChildScrollView(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.qr_code_2,
+                      size: 80, color: Colors.deepPurple),
+                  const SizedBox(height: 24),
+                  Text('Comece uma Festa',
+                      style: Theme.of(context).textTheme.headlineMedium),
+                  const SizedBox(height: 12),
+                  const Text('Escaneie para adicionar músicas!',
+                      textAlign: TextAlign.center),
+                  const SizedBox(height: 48),
+                  if (!isSharing)
+                    ElevatedButton(
+                        onPressed: onToggleSharing,
+                        child: const Text('Gerar QR Code'))
+                  else
+                    _buildSharingView(),
+                  const SizedBox(height: 32),
+                  OutlinedButton(
+                      onPressed: onScan, child: const Text('Escanear Amigo')),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+  Widget _buildSharingView() => Column(
+        children: [
+          Image.network(
+              'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=$qrData',
+              width: 150),
+          const SizedBox(height: 16),
+          Text('Sessão: $qrData',
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 16),
+          TextButton(
+              onPressed: onToggleSharing,
+              child:
+                  const Text('Encerrar', style: TextStyle(color: Colors.red))),
+        ],
+      );
+}
+
+
+---------- FILE: music_x\lib\features\player\screens\player_screen.dart ----------
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:music_hub/features/player/screens/views/fluent_player_view.dart';
+import 'package:music_hub/features/player/screens/views/material_player_view.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/core/widgets/duo_matching_dialog.dart';
+import 'package:music_hub/core/widgets/cast_dialog.dart';
+import 'package:music_hub/features/player/widgets/queue_sheet.dart';
+
+class PlayerScreen extends StatelessWidget {
+  const PlayerScreen({super.key});
+
+  bool _isFluent(BuildContext context) {
+    final platform = defaultTargetPlatform;
+    return platform == TargetPlatform.windows ||
+        platform == TargetPlatform.linux ||
+        platform == TargetPlatform.macOS;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isFluent(context)) {
+      return FluentPlayerView(
+        onShowSleepTimer: _showSleepTimerDialog,
+        onShowQueue: _showQueueSheet,
+        onShowDuoMatching: _showDuoMatchingDialog,
+        onShowCast: _showCastDialog,
+      );
+    }
+
+    return MaterialPlayerView(
+      onShowSleepTimer: _showSleepTimerDialog,
+      onShowQueue: _showQueueSheet,
+      onShowDuoMatching: _showDuoMatchingDialog,
+      onShowCast: _showCastDialog,
+    );
+  }
+
+  void _showSleepTimerDialog(BuildContext context) {
+    if (_isFluent(context)) {
+      fluent.showDialog(
+        context: context,
+        builder: (context) => fluent.ContentDialog(
+          title: const Text('Temporizador (Sleep Timer)'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              fluent.ListTile(
+                title: const Text('Desligar'),
+                onPressed: () {
+                  PlaybackService.instance.cancelSleepTimer();
+                  Navigator.pop(context);
+                },
+              ),
+              fluent.ListTile(
+                title: const Text('15 minutos'),
+                onPressed: () {
+                  PlaybackService.instance
+                      .setSleepTimer(const Duration(minutes: 15));
+                  Navigator.pop(context);
+                },
+              ),
+              fluent.ListTile(
+                title: const Text('30 minutos'),
+                onPressed: () {
+                  PlaybackService.instance
+                      .setSleepTimer(const Duration(minutes: 30));
+                  Navigator.pop(context);
+                },
+              ),
+              fluent.ListTile(
+                title: const Text('60 minutos'),
+                onPressed: () {
+                  PlaybackService.instance
+                      .setSleepTimer(const Duration(minutes: 60));
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+          actions: [
+            fluent.Button(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancelar'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Temporizador (Sleep Timer)'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                  title: const Text('Desligar'),
+                  onTap: () {
+                    PlaybackService.instance.cancelSleepTimer();
+                    Navigator.pop(context);
+                  }),
+              ListTile(
+                  title: const Text('15 minutos'),
+                  onTap: () {
+                    PlaybackService.instance
+                        .setSleepTimer(const Duration(minutes: 15));
+                    Navigator.pop(context);
+                  }),
+              ListTile(
+                  title: const Text('30 minutos'),
+                  onTap: () {
+                    PlaybackService.instance
+                        .setSleepTimer(const Duration(minutes: 30));
+                    Navigator.pop(context);
+                  }),
+              ListTile(
+                  title: const Text('60 minutos'),
+                  onTap: () {
+                    PlaybackService.instance
+                        .setSleepTimer(const Duration(minutes: 60));
+                    Navigator.pop(context);
+                  }),
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
+  void _showQueueSheet(BuildContext context) {
+    if (_isFluent(context)) {
+      showDialog(
+        context: context,
+        builder: (context) => fluent.ContentDialog(
+          title: const Text('Fila de Reprodução'),
+          content: const SizedBox(
+            height: 400,
+            width: 350,
+            child: QueueSheet(),
+          ),
+          actions: [
+            fluent.Button(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Fechar'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      showModalBottomSheet(
+          context: context, builder: (_) => const QueueSheet());
+    }
+  }
+
+  void _showDuoMatchingDialog(BuildContext context) {
+    showDialog(context: context, builder: (_) => const DuoMatchingDialog());
+  }
+
+  void _showCastDialog(BuildContext context) {
+    showDialog(context: context, builder: (_) => const CastDialog());
+  }
+}
+
+
+---------- FILE: music_x\lib\features\player\screens\views\fluent_player_view.dart ----------
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:just_audio/just_audio.dart'; // media_kit removed
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/features/player/services/lyrics_service.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+import 'package:music_hub/features/player/widgets/visualizer_widget.dart';
+import 'package:music_hub/core/services/music_manager_service.dart';
+
+class FluentPlayerView extends StatelessWidget {
+  final void Function(BuildContext) onShowSleepTimer;
+  final void Function(BuildContext) onShowQueue;
+  final void Function(BuildContext) onShowDuoMatching;
+  final void Function(BuildContext) onShowCast;
+
+  const FluentPlayerView({
+    super.key,
+    required this.onShowSleepTimer,
+    required this.onShowQueue,
+    required this.onShowDuoMatching,
+    required this.onShowCast,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final playback = PlaybackService.instance;
+
+    return ScaffoldPage(
+      header: PageHeader(
+        title: const Text('Tocando Agora'),
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: IconButton(
+                  icon: const Icon(FluentIcons.back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
+        commandBar: CommandBar(
+          mainAxisAlignment: MainAxisAlignment.end,
+          primaryItems: [
+            CommandBarButton(
+                icon: const Icon(FluentIcons.timer),
+                label: const Text('Timer'),
+                onPressed: () => onShowSleepTimer(context)),
+            CommandBarButton(
+                icon: const Icon(FluentIcons.playlist_music),
+                label: const Text('Fila'),
+                onPressed: () => onShowQueue(context)),
+            CommandBarButton(
+                icon: const Icon(FluentIcons.people),
+                label: const Text('Duo'),
+                onPressed: () => onShowDuoMatching(context)),
+            CommandBarButton(
+                icon: const Icon(FluentIcons.air_tickets),
+                label: const Text('Cast'),
+                onPressed: () => onShowCast(context)),
+          ],
+        ),
+      ),
+      content: StreamBuilder<SearchResult?>(
+        stream: playback.currentTrackStream,
+        builder: (context, snapshot) {
+          final track = snapshot.data;
+          if (track == null) {
+            return const Center(child: Text('Nenhuma música tocando'));
+          }
+
+          return Column(
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    // Album Art and Title
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (track.thumbnail != null)
+                            Container(
+                              width: 300,
+                              height: 300,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.3),
+                                    blurRadius: 20,
+                                    offset: const Offset(0, 10),
+                                  ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.network(
+                                  track.thumbnail!,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          const SizedBox(height: 32),
+                          StreamBuilder<bool>(
+                            stream: playback.player.playingStream,
+                            builder: (context, playingSnapshot) {
+                              final playing = playingSnapshot.data ?? false;
+                              return VisualizerWidget(
+                                isPlaying: playing,
+                                color: FluentTheme.of(context).accentColor,
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 24),
+                          Text(
+                            track.title,
+                            style: FluentTheme.of(context).typography.subtitle,
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            track.artist,
+                            style: FluentTheme.of(context).typography.body,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Lyrics View
+                    const Expanded(
+                      flex: 6,
+                      child: Padding(
+                        padding: EdgeInsets.all(32.0),
+                        child: FluentLyricsView(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Playback Controls
+              Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Column(
+                  children: [
+                    FluentProgressBar(player: playback.player),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: const Icon(FluentIcons.previous, size: 24),
+                          onPressed: () => playback.previous(),
+                        ),
+                        const SizedBox(width: 32),
+                        StreamBuilder<bool>(
+                          stream: playback.player.playingStream,
+                          builder: (context, playingSnapshot) {
+                            final playing = playingSnapshot.data ?? false;
+                            return Button(
+                              onPressed: () => playing
+                                  ? playback.pause()
+                                  : playback.resume(),
+                              style: ButtonStyle(
+                                padding: WidgetStateProperty.all(
+                                    const EdgeInsets.all(12)),
+                                shape: WidgetStateProperty.all(
+                                    const CircleBorder()),
+                              ),
+                              child: Icon(
+                                playing ? FluentIcons.pause : FluentIcons.play,
+                                size: 32,
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(width: 32),
+                        IconButton(
+                          icon: const Icon(FluentIcons.next, size: 24),
+                          onPressed: () => playback.next(),
+                        ),
+                        const SizedBox(width: 32),
+                        StreamBuilder<SearchResult?>(
+                          stream: playback.currentTrackStream,
+                          builder: (context, snapshot) {
+                            final current = snapshot.data;
+                            final isFavorite = current?.isVault ?? false;
+                            return Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Icon(
+                                    isFavorite
+                                        ? FluentIcons.favorite_star_fill
+                                        : FluentIcons.favorite_star,
+                                    color: isFavorite ? Colors.orange : null,
+                                    size: 24,
+                                  ),
+                                  onPressed: () => playback.toggleFavorite(),
+                                ),
+                                if (current != null &&
+                                    !current.isDownloaded) ...[
+                                  const SizedBox(width: 16),
+                                  IconButton(
+                                    icon:
+                                        const Icon(FluentIcons.save, size: 24),
+                                    onPressed: () => MusicManagerService
+                                        .instance
+                                        .downloadTrack(current),
+                                  ),
+                                ],
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class FluentProgressBar extends StatelessWidget {
+  final AudioPlayer player;
+  const FluentProgressBar({super.key, required this.player});
+
+  @override
+  Widget build(BuildContext context) => StreamBuilder<Duration>(
+        stream: player.positionStream,
+        builder: (context, snapshot) {
+          final position = snapshot.data ?? Duration.zero;
+          final duration = player.duration ?? Duration.zero;
+          final maxVal =
+              duration.inMilliseconds.toDouble().clamp(1.0, double.infinity);
+
+          return Column(
+            children: [
+              Slider(
+                value: position.inMilliseconds.toDouble().clamp(0, maxVal),
+                max: maxVal,
+                onChanged: (val) => PlaybackService.instance
+                    .seek(Duration(milliseconds: val.toInt())),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(_formatDuration(position)),
+                  Text(_formatDuration(duration)),
+                ],
+              ),
+            ],
+          );
+        },
+      );
+
+  String _formatDuration(Duration d) =>
+      '${d.inMinutes}:${(d.inSeconds % 60).toString().padLeft(2, '0')}';
+}
+
+class FluentLyricsView extends StatelessWidget {
+  const FluentLyricsView({super.key});
+
+  @override
+  Widget build(BuildContext context) => StreamBuilder<List<LyricLine>>(
+        stream: PlaybackService.instance.lyricsStream,
+        builder: (context, snapshot) {
+          final lyrics = snapshot.data ?? [];
+          if (lyrics.isEmpty) {
+            return Center(
+                child: Text('Buscando letras...',
+                    style: FluentTheme.of(context).typography.caption));
+          }
+
+          return StreamBuilder<Duration>(
+            stream: PlaybackService.instance.player.positionStream,
+            builder: (context, posSnapshot) {
+              final position = posSnapshot.data ?? Duration.zero;
+              return ListView.builder(
+                itemCount: lyrics.length,
+                itemBuilder: (context, index) {
+                  final line = lyrics[index];
+                  final isCurrent = index < lyrics.length - 1
+                      ? position >= line.time &&
+                          position < lyrics[index + 1].time
+                      : position >= line.time;
+
+                  return AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 300),
+                    textAlign: TextAlign.center,
+                    style: isCurrent
+                        ? (FluentTheme.of(context).typography.bodyLarge ??
+                                const TextStyle())
+                            .copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: FluentTheme.of(context).accentColor)
+                        : (FluentTheme.of(context).typography.body ??
+                            const TextStyle()),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12.0, horizontal: 24),
+                      child: Text(line.text),
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
+      );
+}
+
+
+---------- FILE: music_x\lib\features\player\screens\views\material_player_view.dart ----------
+import 'package:flutter/material.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+import 'package:music_hub/core/services/local_duo_service.dart';
+import 'package:music_hub/core/widgets/duo_chat_dialog.dart';
+import 'package:music_hub/features/player/widgets/visualizer_widget.dart';
+import 'package:music_hub/features/player/services/lyrics_service.dart';
+import 'package:music_hub/features/party_mode/disco/karaoke_screen.dart';
+import 'package:music_hub/core/services/music_manager_service.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+
+class MaterialPlayerView extends StatelessWidget {
+  final void Function(BuildContext) onShowSleepTimer;
+  final void Function(BuildContext) onShowQueue;
+  final void Function(BuildContext) onShowDuoMatching;
+  final void Function(BuildContext) onShowCast;
+
+  const MaterialPlayerView({
+    super.key,
+    required this.onShowSleepTimer,
+    required this.onShowQueue,
+    required this.onShowDuoMatching,
+    required this.onShowCast,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final playback = PlaybackService.instance;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Tocando Agora'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          StreamBuilder<Duration?>(
+            stream: PlaybackService.instance.sleepTimerStream,
+            builder: (context, snapshot) {
+              final timeLeft = snapshot.data;
+              if (timeLeft == null) return const SizedBox.shrink();
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Text(
+                    '${timeLeft.inMinutes}:${(timeLeft.inSeconds % 60).toString().padLeft(2, '0')}',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.blue),
+                  ),
+                ),
+              );
+            },
+          ),
+          if (LocalDuoService.instance.role != DuoRole.none)
+            IconButton(
+              icon: const Icon(Icons.chat_bubble_outline),
+              onPressed: () => showDialog(
+                  context: context, builder: (_) => const DuoChatDialog()),
+              tooltip: 'Chat Duo',
+            ),
+          IconButton(
+              icon: const Icon(Icons.timer_outlined),
+              onPressed: () => onShowSleepTimer(context),
+              tooltip: 'Sleep Timer'),
+          IconButton(
+              icon: const Icon(Icons.queue_music),
+              onPressed: () => onShowQueue(context),
+              tooltip: 'Fila Compartilhada'),
+          IconButton(
+              icon: const Icon(Icons.people_alt),
+              onPressed: () => onShowDuoMatching(context),
+              tooltip: 'Modo Duo'),
+          IconButton(
+              icon: const Icon(Icons.cast),
+              onPressed: () => onShowCast(context),
+              tooltip: 'Transmitir (DLNA)'),
+        ],
+      ),
+      extendBodyBehindAppBar: true,
+      body: StreamBuilder<bool>(
+        stream: playback.player.playingStream,
+        builder: (context, snapshot) {
+          final track = playback.currentTrack;
+          if (track == null) {
+            return const Center(child: Text('Nenhuma música tocando'));
+          }
+
+          final playing = snapshot.data ?? false;
+
+          return Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Theme.of(context).colorScheme.primaryContainer,
+                  Theme.of(context).colorScheme.surface,
+                ],
+              ),
+            ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth > 800) {
+                  return _buildWideLayout(context, track, playing, playback);
+                }
+                return _buildMobileLayout(context, track, playing, playback);
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildWideLayout(BuildContext context, dynamic track, bool playing,
+          PlaybackService playback) =>
+      Row(
+        children: [
+          Expanded(
+            flex: 5,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (track.thumbnail != null)
+                  Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Card(
+                      elevation: 8,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Image.network(track.thumbnail!,
+                            width: 300,
+                            height: 300,
+                            fit: BoxFit.cover,
+                            cacheWidth: 600),
+                      ),
+                    ),
+                  ),
+                VisualizerWidget(
+                    isPlaying: playing,
+                    color: Theme.of(context).colorScheme.primary),
+                const SizedBox(height: 16),
+                Text(track.title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center),
+                Text(track.artist,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(color: Colors.grey)),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 48),
+                const RepaintBoundary(
+                    child: ProgressBar()), // ⚡ Bolt: Isolate frequent updates
+                const SizedBox(height: 32),
+                _buildControlButtons(context, playing, playback, track),
+                const SizedBox(height: 32),
+                const Expanded(
+                    child: RepaintBoundary(
+                        child:
+                            LyricsView())), // ⚡ Bolt: Isolate lyrics repaints
+              ],
+            ),
+          ),
+        ],
+      );
+
+  Widget _buildMobileLayout(BuildContext context, dynamic track, bool playing,
+          PlaybackService playback) =>
+      Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (track.thumbnail != null)
+              Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Card(
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.network(track.thumbnail!,
+                        width: 250,
+                        height: 250,
+                        fit: BoxFit.cover,
+                        cacheWidth: 500),
+                  ),
+                ),
+              ),
+            Text(track.title,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center),
+            Text(track.artist,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(color: Colors.grey)),
+            const SizedBox(height: 32),
+            const ProgressBar(),
+            const SizedBox(height: 16),
+            _buildControlButtons(context, playing, playback, track),
+            const Expanded(child: LyricsView()),
+          ],
+        ),
+      );
+
+  Widget _buildControlButtons(BuildContext context, bool playing,
+          PlaybackService playback, dynamic track,
+          {bool showKaraoke = false}) =>
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+              iconSize: 48,
+              icon: const Icon(Icons.skip_previous),
+              onPressed: () {}),
+          const SizedBox(width: 16),
+          CircleAvatar(
+            radius: 36,
+            child: IconButton(
+              iconSize: 48,
+              icon: Icon(playing ? Icons.pause : Icons.play_arrow),
+              onPressed: () => playing ? playback.pause() : playback.resume(),
+            ),
+          ),
+          const SizedBox(width: 16),
+          IconButton(
+              iconSize: 48,
+              icon: const Icon(Icons.skip_next),
+              onPressed: () {}),
+          IconButton(
+            iconSize: 32,
+            icon: Icon(track.isVault ? Icons.favorite : Icons.favorite_border),
+            color: track.isVault ? Colors.red : null,
+            onPressed: () => playback.toggleFavorite(),
+          ),
+          const SizedBox(width: 16),
+          if (track is SearchResult && !track.isDownloaded)
+            IconButton(
+              iconSize: 32,
+              icon: const Icon(Icons.save_alt),
+              tooltip: 'Salvar na Biblioteca',
+              onPressed: () =>
+                  MusicManagerService.instance.downloadTrack(track),
+            ),
+          if (showKaraoke) ...[
+            const SizedBox(width: 16),
+            IconButton(
+              iconSize: 32,
+              icon: const Icon(Icons.mic_external_on),
+              tooltip: 'Modo Karaoke',
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => KaraokeScreen(track: {
+                              'id': track.id,
+                              'title': track.title,
+                              'artist': track.artist
+                            })));
+              },
+            ),
+          ],
+        ],
+      );
+}
+
+class ProgressBar extends StatelessWidget {
+  const ProgressBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final player = PlaybackService.instance.player;
+    return StreamBuilder<Duration>(
+      stream: player.positionStream,
+      builder: (context, snapshot) {
+        final position = snapshot.data ?? Duration.zero;
+        final duration = player.duration ?? Duration.zero;
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32.0),
+          child: Column(
+            children: [
+              Slider(
+                value: position.inMilliseconds.toDouble(),
+                max: duration.inMilliseconds
+                    .toDouble()
+                    .clamp(position.inMilliseconds.toDouble(), double.infinity),
+                onChanged: (val) => PlaybackService.instance
+                    .seek(Duration(milliseconds: val.toInt())),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(_formatDuration(position)),
+                  Text(_formatDuration(duration))
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  String _formatDuration(Duration d) =>
+      '${d.inMinutes}:${(d.inSeconds % 60).toString().padLeft(2, '0')}';
+}
+
+class LyricsView extends StatelessWidget {
+  const LyricsView({super.key});
+
+  @override
+  Widget build(BuildContext context) => StreamBuilder<List<LyricLine>>(
+        stream: PlaybackService.instance.lyricsStream,
+        builder: (context, snapshot) {
+          final lyrics = snapshot.data ?? [];
+          if (lyrics.isEmpty) {
+            return const Center(
+              child: Text(
+                'Letras não encontradas',
+                style:
+                    TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+              ),
+            );
+          }
+
+          return StreamBuilder<Duration>(
+            stream: PlaybackService.instance.player.positionStream,
+            builder: (context, posSnapshot) {
+              final position = posSnapshot.data ?? Duration.zero;
+              return ListView.builder(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                itemCount: lyrics.length,
+                itemBuilder: (context, index) {
+                  final line = lyrics[index];
+                  final isCurrent = index < lyrics.length - 1
+                      ? position >= line.time &&
+                          position < lyrics[index + 1].time
+                      : position >= line.time;
+
+                  return AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 300),
+                    style: TextStyle(
+                      fontSize: isCurrent ? 24 : 18,
+                      fontWeight:
+                          isCurrent ? FontWeight.bold : FontWeight.normal,
+                      color: isCurrent
+                          ? Colors.white
+                          : Colors.white.withValues(alpha: 0.5),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12.0, horizontal: 32),
+                      child: Text(
+                        line.text,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
+      );
+}
+
+
+---------- FILE: music_x\lib\features\player\services\equalizer_service.dart ----------
+import 'package:flutter/foundation.dart';
+import 'dart:math' as math;
+import 'package:just_audio/just_audio.dart';
+
+class EqualizerService {
+  static EqualizerService? _instance;
+  static EqualizerService get instance =>
+      _instance ??= EqualizerService._internal();
+
+  @visibleForTesting
+  static void resetInstance() => _instance = null;
+
+  @visibleForTesting
+  static set instance(EqualizerService mock) => _instance = mock;
+
+  final AndroidEqualizer? _equalizer;
+  bool _isAutoMode = true;
+  bool _normalizationEnabled = false;
+  double _targetLoudness = -14.0; // LUFS (Spotify standard)
+
+  EqualizerService._internal({AndroidEqualizer? equalizer})
+      : _equalizer = equalizer ??
+            (!kIsWeb && defaultTargetPlatform == TargetPlatform.android
+                ? AndroidEqualizer()
+                : null);
+
+  @visibleForTesting
+  factory EqualizerService.test({AndroidEqualizer? equalizer}) =>
+      EqualizerService._internal(equalizer: equalizer);
+
+  AndroidEqualizer get equalizer => _equalizer!;
+  bool get isAutoMode => _isAutoMode;
+  bool get normalizationEnabled => _normalizationEnabled;
+  double get targetLoudness => _targetLoudness;
+
+  void setAutoMode(bool enabled) {
+    _isAutoMode = enabled;
+  }
+
+  Future<void> applyPresetForGenre(String? genre) async {
+    if (!_isAutoMode || _equalizer == null) {
+      return;
+    }
+
+    final parameters = await _equalizer.parameters;
+    final bands = parameters.bands;
+
+    // Default: Flat
+    for (var band in bands) {
+      await band.setGain(0.0);
+    }
+
+    if (genre == null) {
+      return;
+    }
+
+    final g = genre.toLowerCase();
+
+    if (g.contains('rock') || g.contains('metal')) {
+      // Bass and Treble boost
+      if (bands.isNotEmpty) {
+        await bands.first.setGain(3.0);
+      }
+      if (bands.length > 4) {
+        await bands.last.setGain(3.0);
+      }
+    } else if (g.contains('pop') || g.contains('dance')) {
+      // V-shaped but milder
+      if (bands.isNotEmpty) {
+        await bands.first.setGain(2.0);
+      }
+      if (bands.length > 2) {
+        await bands[bands.length ~/ 2].setGain(-1.0);
+      }
+      if (bands.isNotEmpty) {
+        await bands.last.setGain(2.0);
+      }
+    } else if (g.contains('jazz') || g.contains('classical')) {
+      // Mid focus for clarity
+      if (bands.length > 2) {
+        await bands[bands.length ~/ 2].setGain(2.0);
+      }
+    } else if (g.contains('bass') || g.contains('hip hop')) {
+      // Bass focus
+      if (bands.isNotEmpty) {
+        await bands.first.setGain(5.0);
+      }
+      if (bands.length > 1) {
+        await bands[1].setGain(3.0);
+      }
+    }
+  }
+
+  Future<void> setCustomBand(int index, double gain) async {
+    if (_equalizer == null) return;
+    _isAutoMode = false;
+    final parameters = await _equalizer.parameters;
+    if (index < parameters.bands.length) {
+      await parameters.bands[index].setGain(gain);
+    }
+  }
+
+  /// Enable/disable volume normalization.
+  void setNormalization(bool enabled) {
+    _normalizationEnabled = enabled;
+  }
+
+  /// Set target loudness for normalization.
+  void setTargetLoudness(double lufs) {
+    _targetLoudness = lufs.clamp(-24.0, 0.0);
+  }
+
+  /// Calculate volume adjustment for a track.
+  /// In a real implementation, you'd analyze the file's LUFS with FFmpeg.
+  /// For now, this returns 1.0 (no change) as a placeholder.
+  double calculateNormalizedVolume(double? trackLufs) {
+    if (!_normalizationEnabled || trackLufs == null) {
+      return 1.0;
+    }
+
+    final adjustment = _targetLoudness - trackLufs;
+    // Convert dB to linear scale
+    return _dbToLinear(adjustment).clamp(0.1, 2.0);
+  }
+
+  double _dbToLinear(double db) => math.pow(10.0, db / 20.0).toDouble();
+}
+
+
+---------- FILE: music_x\lib\features\player\services\lyrics_service.dart ----------
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'package:music_hub/core/services/startup_logger.dart';
+
+class LyricsService {
+  static LyricsService? _instance;
+  static LyricsService get instance => _instance ??= LyricsService._internal();
+
+  @visibleForTesting
+  static void resetInstance() => _instance = null;
+
+  @visibleForTesting
+  @visibleForTesting
+  static set instance(LyricsService mock) => _instance = mock;
+
+  LyricsService._internal();
+
+  Future<List<LyricLine>> fetchLyrics(String title, String artist) async {
+    final lrc = await fetchRawLyrics(title, artist);
+    if (lrc != null) {
+      return parseLrc(lrc);
+    }
+    return [];
+  }
+
+  Future<String?> fetchRawLyrics(String title, String artist) async {
+    try {
+      final url = Uri.parse(
+          'https://lrclib.net/api/get?artist=${Uri.encodeComponent(artist)}&track=${Uri.encodeComponent(title)}');
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['syncedLyrics'] as String? ??
+            data['plainLyrics'] as String?;
+      }
+    } catch (e) {
+      StartupLogger.log('Error fetching raw lyrics: $e');
+    }
+    return null;
+  }
+
+  List<LyricLine> parseLrc(String lrc) {
+    final List<LyricLine> lines = [];
+    final regExp = RegExp(r'\[(\d+):(\d+\.\d+)\](.*)');
+
+    for (var line in lrc.split('\n')) {
+      final match = regExp.firstMatch(line);
+      if (match != null) {
+        final minutes = int.parse(match.group(1)!);
+        final seconds = double.parse(match.group(2)!);
+        final duration = Duration(
+          minutes: minutes,
+          seconds: seconds.toInt(),
+          milliseconds: ((seconds - seconds.toInt()) * 1000).toInt(),
+        );
+        lines.add(LyricLine(time: duration, text: match.group(3)!.trim()));
+      }
+    }
+    return lines;
+  }
+}
+
+class LyricLine {
+  final Duration time;
+  final String text;
+
+  LyricLine({required this.time, required this.text});
+}
+
+
+---------- FILE: music_x\lib\features\player\services\playback_service.dart ----------
+import 'package:just_audio/just_audio.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
+import 'package:flutter/foundation.dart';
+import 'package:audio_session/audio_session.dart';
+import 'package:audio_service/audio_service.dart';
+import 'package:music_hub/features/discovery/services/search_service.dart';
+import 'package:music_hub/features/library/models/search_models.dart';
+import 'package:music_hub/core/services/local_duo_service.dart';
+import 'package:music_hub/features/player/services/equalizer_service.dart';
+import 'package:music_hub/core/services/theme_service.dart';
+import 'package:music_hub/core/services/database_service.dart';
+import 'package:music_hub/features/player/services/lyrics_service.dart';
+import 'package:music_hub/features/library/services/metadata_service.dart';
+import 'package:music_hub/features/library/services/metadata_aggregator_service.dart';
+import 'package:music_hub/core/services/startup_logger.dart';
+import 'package:rxdart/rxdart.dart';
+import 'dart:async';
+
+class PlaybackService {
+  static PlaybackService? _instance;
+  static PlaybackService get instance =>
+      _instance ??= PlaybackService._internal();
+  static set instance(PlaybackService value) => _instance = value;
+  static void resetInstance() => _instance = null;
+
+  PlaybackService._internal() {
+    _player = AudioPlayer();
+  }
+
+  @visibleForTesting
+  PlaybackService.forTesting({
+    AudioPlayer? player,
+    BaseAudioHandler? handler,
+  }) {
+    _player = player ?? AudioPlayer();
+    if (handler != null) {
+      _audioHandler = handler;
+    }
+  }
+
+  late final AudioPlayer _player;
+  final SearchService _searchService = SearchService.instance;
+
+  SearchResult? _currentTrack;
+  final List<SearchResult> _queue = [];
+  // ignore: unused_field
+  Duration _crossfadeDuration = const Duration(seconds: 2);
+  List<LyricLine> _currentLyrics = [];
+  Timer? _sleepTimer;
+  StreamSubscription? _selfHealingSubscription;
+  final _sleepTimerController = StreamController<Duration?>.broadcast();
+  final _lyricsController = StreamController<List<LyricLine>>.broadcast();
+  final _trackController = BehaviorSubject<SearchResult?>();
+  Duration? _sleepTimeLeft;
+
+  SearchResult? get currentTrack => _currentTrack;
+  List<SearchResult> get queue => List.unmodifiable(_queue);
+  List<LyricLine> get currentLyrics => _currentLyrics;
+  AudioPlayer get player => _player;
+  Stream<Duration?> get sleepTimerStream => _sleepTimerController.stream;
+  Stream<List<LyricLine>> get lyricsStream => _lyricsController.stream;
+  Stream<SearchResult?> get currentTrackStream => _trackController.stream;
+  Duration? get sleepTimeLeft => _sleepTimeLeft;
+
+  Future<void> init() async {
+    _audioHandler = await AudioService.init(
+      builder: () => MusicAudioHandler(this),
+      config: const AudioServiceConfig(
+        androidNotificationChannelId: 'com.music.app.channel.audio',
+        androidNotificationChannelName: 'Music Playback',
+        androidNotificationOngoing: true,
+      ),
+    );
+
+    final session = await AudioSession.instance;
+    await session.configure(const AudioSessionConfiguration.music());
+
+    // Initialize wakelock state
+    WakelockPlus.enable(); // Keep awake during init/prep
+
+    // Load crossfade duration
+    final savedDuration =
+        await DatabaseService.instance.loadCrossfadeDuration();
+    _crossfadeDuration = Duration(seconds: savedDuration);
+
+    _player.playerStateStream.listen((state) {
+      _updatePlaybackState();
+    });
+
+    _player.positionStream.listen((position) {
+      _updatePlaybackState();
+    });
+
+    _player.bufferedPositionStream.listen((buffer) {
+      _updatePlaybackState();
+    });
+
+    _player.playbackEventStream.listen((event) {
+      // Logic for events if needed
+    }, onError: (Object e, StackTrace st) {
+      StartupLogger.logError('[PlaybackService] Player Error', e, st);
+    });
+
+    // Restore last played track
+    try {
+      final history = await DatabaseService.instance.getPlayHistory();
+      if (history.isNotEmpty) {
+        final lastTrackData = history.first;
+        final lastTrack = SearchResult.fromJson(lastTrackData);
+        _currentTrack = lastTrack;
+        _trackController.add(lastTrack);
+
+        StartupLogger.log(
+            '[PlaybackService] Restored last track metadata: ${lastTrack.title}');
+
+        _restoreAudioSource(lastTrack);
+      }
+    } catch (e) {
+      StartupLogger.log('[PlaybackService] Failed to restore last track: $e');
+    }
+  }
+
+  late BaseAudioHandler _audioHandler;
+
+  Future<void> _restoreAudioSource(SearchResult track) async {
+    try {
+      _queue.clear();
+      _queue.add(track);
+
+      final source = await _createSource(track);
+      if (source != null) {
+        await _player.setAudioSource(AudioSource.uri(Uri.parse(source)),
+            preload: false);
+      }
+
+      _audioHandler.mediaItem.add(MediaItem(
+        id: track.id,
+        album: track.album ?? 'Unknown Album',
+        title: track.title,
+        artist: track.artist,
+        duration:
+            track.duration != null ? Duration(seconds: track.duration!) : null,
+        artUri: track.thumbnail != null ? Uri.parse(track.thumbnail!) : null,
+      ));
+      StartupLogger.log('[PlaybackService] Source restored and ready');
+    } catch (e) {
+      StartupLogger.log('[PlaybackService] Failed to restore source: $e');
+    }
+  }
+
+  void _updatePlaybackState() {
+    final playing = _player.playing;
+
+    // Manage wakelock based on playback state
+    if (playing) {
+      WakelockPlus.enable();
+    } else {
+      WakelockPlus.disable();
+    }
+
+    _audioHandler.playbackState.add(PlaybackState(
+      controls: [
+        MediaControl.skipToPrevious,
+        if (playing) MediaControl.pause else MediaControl.play,
+        MediaControl.stop,
+        MediaControl.skipToNext,
+      ],
+      systemActions: const {
+        MediaAction.seek,
+        MediaAction.seekForward,
+        MediaAction.seekBackward,
+        MediaAction.skipToNext,
+        MediaAction.skipToPrevious,
+      },
+      androidCompactActionIndices: const [0, 1, 3],
+      processingState: _mapProcessingState(),
+      playing: playing,
+      updatePosition: _player.position,
+      bufferedPosition: _player.bufferedPosition,
+      speed: _player.speed,
+    ));
+  }
+
+  AudioProcessingState _mapProcessingState() {
+    switch (_player.processingState) {
+      case ProcessingState.idle:
+        return AudioProcessingState.idle;
+      case ProcessingState.loading:
+        return AudioProcessingState.loading;
+      case ProcessingState.buffering:
+        return AudioProcessingState.buffering;
+      case ProcessingState.ready:
+        return AudioProcessingState.ready;
+      case ProcessingState.completed:
+        return AudioProcessingState.completed;
+    }
+  }
+
+  void _onTrackChanged(SearchResult track) {
+    _currentTrack = track;
+    _trackController.add(track);
+    EqualizerService.instance.applyPresetForGenre(track.genre);
+    ThemeService.instance.updateThemeFromImage(track.thumbnail);
+    DatabaseService.instance.trackPlay(track.id);
+    _fetchLyrics(track);
+
+    _audioHandler.mediaItem.add(MediaItem(
+      id: track.id,
+      album: track.album ?? 'Unknown Album',
+      title: track.title,
+      artist: track.artist,
+      duration:
+          track.duration != null ? Duration(seconds: track.duration!) : null,
+      artUri: track.thumbnail != null ? Uri.parse(track.thumbnail!) : null,
+    ));
+  }
+
+  Future<void> toggleFavorite() async {
+    if (_currentTrack == null) return;
+    final newState = !_currentTrack!.isVault;
+    _currentTrack!.isVault = newState;
+    await DatabaseService.instance.toggleVault(_currentTrack!.id, newState);
+    _trackController.add(_currentTrack);
+  }
+
+  Future<void> playSearchResult(SearchResult result,
+      {bool fromRemote = false}) async {
+    StartupLogger.log(
+        '[PlaybackService] Playing search result: ${result.title} (${result.platform})');
+    _currentTrack = result;
+
+    _queue.clear();
+    _queue.add(result);
+
+    // Parallelize stream extraction and metadata enrichment for faster start
+    final extractionFuture = _createSource(result);
+    final enrichmentFuture = _enrichMetadata(result);
+
+    final extractionResults =
+        await Future.wait([extractionFuture, enrichmentFuture]);
+    String? source = extractionResults[0] as String?;
+
+    if (source == null && result.platform == MediaPlatform.youtube) {
+      StartupLogger.log(
+          '[PlaybackService] Primary source failed. Attempting Ultimate Recovery Loop...');
+      // Ultimate Recovery Loop: Search for candidates
+      final query = '${result.artist} ${result.title}';
+      final candidates = await SearchService.instance.searchAll(query);
+
+      for (final candidate in candidates.take(5)) {
+        if (candidate.id == result.id) continue;
+        StartupLogger.log(
+            '[PlaybackService] Trying alternate candidate: ${candidate.title} (${candidate.id})');
+        source = await _createSource(candidate);
+        if (source != null) {
+          result = candidate; // Update current track to the working candidate
+          _currentTrack = result;
+          break;
+        }
+      }
+    }
+
+    if (source != null) {
+      try {
+        // just_audio supports setting headers via LockCachingAudioSource or just as a map in some cases,
+        // but for a simple Uri source, it's safer to use the factory.
+        final headers = source.startsWith('http')
+            ? {
+                'User-Agent':
+                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+                'Referer': 'https://www.youtube.com/'
+              }
+            : null;
+
+        await _player.setAudioSource(
+          AudioSource.uri(Uri.parse(source), headers: headers),
+        );
+        await _player.play();
+        _onTrackChanged(result);
+        _setupSelfHealing(result.id);
+      } catch (e) {
+        StartupLogger.logError(
+            '[PlaybackService] Failed to open player', e, StackTrace.current);
+      }
+    } else {
+      StartupLogger.log('[PlaybackService] CRITICAL: No playable source found');
+    }
+
+    if (!fromRemote) {
+      LocalDuoService.instance.sendMessage({
+        'type': 'track',
+        'track': result.toJson(),
+      });
+      if (result.localPath != null) {
+        LocalDuoService.instance.sendFile(result.localPath!);
+      }
+    }
+  }
+
+  /// Plays a direct stream URL (e.g. from YouTubeStreamerService) with associated metadata.
+  Future<void> playStream(String streamUrl, SearchResult track) async {
+    StartupLogger.log(
+        '[PlaybackService] Playing direct stream for: ${track.title}');
+    _currentTrack = track;
+    _queue.clear();
+    _queue.add(track);
+
+    try {
+      final headers = streamUrl.startsWith('http')
+          ? {
+              'User-Agent':
+                  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+              'Referer': 'https://www.youtube.com/'
+            }
+          : null;
+
+      await _player.setAudioSource(
+        AudioSource.uri(Uri.parse(streamUrl), headers: headers),
+      );
+      await _player.play();
+      _onTrackChanged(track);
+      _setupSelfHealing(track.id);
+
+      // Enrich metadata in background
+      _enrichMetadata(track);
+    } catch (e) {
+      StartupLogger.logError('[PlaybackService] Failed to play direct stream',
+          e, StackTrace.current);
+    }
+  }
+
+  void _setupSelfHealing(String trackId) {
+    _selfHealingSubscription?.cancel();
+    // Listen for unexpected stops (mid-track idling)
+    _selfHealingSubscription = _player.playerStateStream.listen((state) async {
+      final isPlaying = state.playing;
+      final processingState = state.processingState;
+
+      if (!isPlaying &&
+          _player.position > Duration.zero &&
+          processingState != ProcessingState.completed &&
+          _currentTrack?.id == trackId) {
+        StartupLogger.log(
+            '[PlaybackService] Unexpected pause detected. Checking for stream expiration...');
+        // Wait a bit to see if it's just a buffer lag or a real failure
+        await Future.delayed(const Duration(seconds: 2));
+        if (!_player.playing &&
+            _player.position > Duration.zero &&
+            _player.processingState != ProcessingState.completed) {
+          StartupLogger.log('[PlaybackService] Stream seems dead. Healing...');
+          final lastPos = _player.position;
+          final source = await _createSource(_currentTrack!);
+          if (source != null) {
+            final headers = source.startsWith('http')
+                ? {
+                    'User-Agent':
+                        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+                    'Referer': 'https://www.youtube.com/'
+                  }
+                : null;
+            await _player.setAudioSource(
+              AudioSource.uri(Uri.parse(source), headers: headers),
+              initialPosition: lastPos,
+            );
+            await _player.play();
+            StartupLogger.log('[PlaybackService] Self-healing successful');
+          }
+        }
+      }
+    });
+  }
+
+  Future<void> _enrichMetadata(SearchResult result) async {
+    try {
+      final aggregator = MetadataAggregatorService.instance;
+      final metadata = await aggregator.aggregateMetadata(
+        result.title,
+        result.artist,
+        durationMs: (result.duration ?? 0) * 1000,
+      );
+
+      result.isDownloaded = false; // Reset temporary flags if needed
+      // Prefer official metadata if found
+      final enrichedResult = SearchResult(
+        id: result.id,
+        title: metadata.title ?? result.title,
+        artist: metadata.artist ?? result.artist,
+        album: metadata.album ?? result.album,
+        thumbnail: metadata.thumbnail ?? result.thumbnail,
+        duration: result.duration,
+        url: result.url,
+        platform: result.platform,
+        localPath: result.localPath,
+        genre: metadata.genre ?? result.genre,
+        hifiSource: result.hifiSource,
+        hifiQuality: result.hifiQuality,
+        isVault: result.isVault,
+        isOfficial: result.isOfficial,
+      );
+
+      // Update current track if it's still the same ID
+      if (_currentTrack?.id == result.id) {
+        _currentTrack = enrichedResult;
+        _trackController.add(enrichedResult);
+        DatabaseService.instance.saveTrack(enrichedResult.toJson());
+      }
+    } catch (e) {
+      StartupLogger.log('[PlaybackService] Metadata enrichment failed: $e');
+    }
+  }
+
+  Future<String?> _createSource(SearchResult track) async {
+    if (track.localPath != null) {
+      StartupLogger.log(
+          '[PlaybackService] Playing local file: ${track.localPath}');
+      return track.localPath;
+    }
+    StartupLogger.log(
+        '[PlaybackService] Fetching stream URL for: ${track.url}');
+    // Logic for highest quality resolution should be in search_service
+    final streamUrl = await _searchService.getStreamUrl(
+      track.url,
+      platform: track.platform,
+    );
+    if (streamUrl != null) {
+      StartupLogger.log('[PlaybackService] Stream URL obtained successfully');
+      return streamUrl;
+    }
+    StartupLogger.log(
+        '[PlaybackService] ERROR: Could not get stream URL for ${track.id}');
+    return null;
+  }
+
+  Future<void> pause({bool fromRemote = false}) async {
+    await _player.pause();
+    if (!fromRemote) {
+      LocalDuoService.instance.sendMessage({
+        'type': 'pause',
+        'positionMs': _player.position.inMilliseconds,
+      });
+    }
+  }
+
+  Future<void> resume({bool fromRemote = false}) async {
+    await _player.play();
+    if (!fromRemote) {
+      LocalDuoService.instance.sendMessage({
+        'type': 'play',
+        'positionMs': _player.position.inMilliseconds,
+      });
+    }
+  }
+
+  Future<void> stop() async {
+    await _player.stop();
+    _currentTrack = null;
+    _trackController.add(null);
+  }
+
+  Future<void> seek(Duration position, {bool fromRemote = false}) async {
+    await _player.seek(position);
+    if (!fromRemote) {
+      LocalDuoService.instance.sendMessage({
+        'type': 'seek',
+        'positionMs': position.inMilliseconds,
+      });
+    }
+  }
+
+  Future<void> next() async {
+    if (_queue.isNotEmpty) {
+      final nextTrack = _queue.removeAt(0);
+      await playSearchResult(nextTrack);
+    }
+  }
+
+  Future<void> previous() async {
+    await _player.seek(Duration.zero);
+  }
+
+  Future<void> toggleShuffle() async {
+    await _player.setShuffleModeEnabled(!_player.shuffleModeEnabled);
+  }
+
+  // just_audio uses LoopMode instead of PlaylistMode
+  Future<void> toggleRepeat() async {
+    final mode = _player.loopMode;
+    if (mode == LoopMode.off) {
+      await _player.setLoopMode(LoopMode.all);
+    } else if (mode == LoopMode.all) {
+      await _player.setLoopMode(LoopMode.one);
+    } else {
+      await _player.setLoopMode(LoopMode.off);
+    }
+  }
+
+  void playFromRemote(Duration position) {
+    _player.seek(position);
+    _player.play();
+  }
+
+  void pauseFromRemote() {
+    _player.pause();
+  }
+
+  Future<void> playLocalFile(String path, SearchResult track) async {
+    _currentTrack = track;
+    EqualizerService.instance.applyPresetForGenre(track.genre);
+    await _player.setAudioSource(AudioSource.file(path));
+    await _player.play();
+    _trackController.add(track);
+  }
+
+  Future<void> addToQueue(SearchResult track, {bool fromRemote = false}) async {
+    _queue.add(track);
+    if (!fromRemote) {
+      LocalDuoService.instance.sendMessage({
+        'type': 'add_to_queue',
+        'track': track.toJson(),
+      });
+    }
+  }
+
+  void clearQueue() {
+    _queue.clear();
+  }
+
+  void setSleepTimer(Duration duration) {
+    _sleepTimer?.cancel();
+    _sleepTimeLeft = duration;
+    _sleepTimerController.add(_sleepTimeLeft);
+
+    _sleepTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_sleepTimeLeft != null) {
+        if (_sleepTimeLeft!.inSeconds <= 0) {
+          stop();
+          cancelSleepTimer();
+        } else {
+          _sleepTimeLeft = Duration(seconds: _sleepTimeLeft!.inSeconds - 1);
+          _sleepTimerController.add(_sleepTimeLeft);
+        }
+      }
+    });
+  }
+
+  void cancelSleepTimer() {
+    _sleepTimer?.cancel();
+    _sleepTimer = null;
+    _sleepTimeLeft = null;
+    _sleepTimerController.add(null);
+  }
+
+  Future<void> _fetchLyrics(SearchResult track) async {
+    _currentLyrics = [];
+    _lyricsController.add([]);
+
+    // 1. Try to read from local file if it exists
+    if (track.url.startsWith('/') || track.url.startsWith('file://')) {
+      try {
+        final path = track.url.replaceFirst('file://', '');
+        final metadata = await MetadataService().readMetadata(path);
+        final localLyrics = metadata['lyrics'] as String?;
+        if (localLyrics != null && localLyrics.isNotEmpty) {
+          _currentLyrics = LyricsService.instance.parseLrc(localLyrics);
+          if (_currentLyrics.isNotEmpty) {
+            _lyricsController.add(_currentLyrics);
+            return;
+          }
+        }
+      } catch (e) {
+        debugPrint('Error reading local lyrics: $e');
+      }
+    }
+
+    // 2. Fallback to online fetching
+    final lyrics =
+        await LyricsService.instance.fetchLyrics(track.title, track.artist);
+    _currentLyrics = lyrics;
+    _lyricsController.add(lyrics);
+  }
+
+  void updateCrossfadeDuration(Duration duration) {
+    _crossfadeDuration = duration;
+  }
+
+  void dispose() {
+    _sleepTimer?.cancel();
+    _selfHealingSubscription?.cancel();
+    _sleepTimerController.close();
+    _lyricsController.close();
+    _trackController.close();
+    _player.dispose();
+  }
+}
+
+class MusicAudioHandler extends BaseAudioHandler {
+  final PlaybackService _service;
+
+  MusicAudioHandler(this._service);
+
+  @override
+  Future<void> updateMediaItem(MediaItem mediaItem) async =>
+      this.mediaItem.add(mediaItem);
+  Future<void> updatePlaybackState(PlaybackState state) async =>
+      playbackState.add(state);
+
+  @override
+  Future<void> play() => _service.resume();
+
+  @override
+  Future<void> pause() => _service.pause();
+
+  @override
+  Future<void> stop() => _service.stop();
+
+  @override
+  Future<void> skipToNext() => _service.next();
+
+  @override
+  Future<void> skipToPrevious() => _service.previous();
+
+  @override
+  Future<void> seek(Duration position) => _service.seek(position);
+}
+
+
+---------- FILE: music_x\lib\features\player\widgets\interactive_equalizer_widget.dart ----------
+import 'package:flutter/material.dart';
+import 'package:music_hub/features/player/services/equalizer_service.dart';
+
+class InteractiveEqualizerWidget extends StatefulWidget {
+  const InteractiveEqualizerWidget({super.key});
+
+  @override
+  State<InteractiveEqualizerWidget> createState() =>
+      _InteractiveEqualizerWidgetState();
+}
+
+class _InteractiveEqualizerWidgetState
+    extends State<InteractiveEqualizerWidget> {
+  final EqualizerService _service = EqualizerService.instance;
+  List<double> _gains = [];
+  List<int> _frequencies = [];
+  double _minGain = -12.0;
+  double _maxGain = 12.0;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadParameters();
+  }
+
+  Future<void> _loadParameters() async {
+    try {
+      final params = await _service.equalizer.parameters;
+      _minGain = params.minDecibels;
+      _maxGain = params.maxDecibels;
+
+      _frequencies =
+          params.bands.map((b) => b.centerFrequency.toInt()).toList();
+      _gains = List.filled(params.bands.length, 0.0);
+
+      // Get current gains
+      for (int i = 0; i < params.bands.length; i++) {
+        _gains[i] = params.bands[i].gain;
+      }
+
+      setState(() => _isLoading = false);
+    } catch (e) {
+      // Equalizer not available (probably not Android)
+      setState(() {
+        _isLoading = false;
+        _frequencies = [60, 230, 910, 3600, 14000];
+        _gains = [0, 0, 0, 0, 0];
+      });
+    }
+  }
+
+  String _formatFrequency(int hz) {
+    if (hz >= 1000) {
+      return '${(hz / 1000).toStringAsFixed(1)}k';
+    }
+    return '$hz';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Equalizador',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              Row(
+                children: [
+                  Text(_service.isAutoMode ? 'Auto' : 'Manual'),
+                  Switch(
+                    value: !_service.isAutoMode,
+                    onChanged: (val) {
+                      setState(() {
+                        _service.setAutoMode(!val);
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 200,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: List.generate(
+                  _frequencies.length,
+                  (i) => _EqualizerBand(
+                        frequency: _formatFrequency(_frequencies[i]),
+                        gain: _gains[i],
+                        minGain: _minGain,
+                        maxGain: _maxGain,
+                        enabled: !_service.isAutoMode,
+                        onChanged: (newGain) {
+                          setState(() => _gains[i] = newGain);
+                          _service.setCustomBand(i, newGain);
+                        },
+                      )),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _PresetButton(
+                  label: 'Flat', onTap: () => _applyPreset([0, 0, 0, 0, 0])),
+              _PresetButton(
+                  label: 'Bass', onTap: () => _applyPreset([5, 3, 0, 0, 0])),
+              _PresetButton(
+                  label: 'Rock', onTap: () => _applyPreset([3, 1, -1, 1, 3])),
+              _PresetButton(
+                  label: 'Pop', onTap: () => _applyPreset([2, 0, -1, 0, 2])),
+              _PresetButton(
+                  label: 'Jazz', onTap: () => _applyPreset([0, 0, 2, 1, 0])),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _applyPreset(List<double> preset) {
+    _service.setAutoMode(false);
+    for (int i = 0; i < preset.length && i < _gains.length; i++) {
+      _gains[i] = preset[i];
+      _service.setCustomBand(i, preset[i]);
+    }
+    setState(() {});
+  }
+}
+
+class _EqualizerBand extends StatelessWidget {
+  final String frequency;
+  final double gain;
+  final double minGain;
+  final double maxGain;
+  final bool enabled;
+  final ValueChanged<double> onChanged;
+
+  const _EqualizerBand({
+    required this.frequency,
+    required this.gain,
+    required this.minGain,
+    required this.maxGain,
+    required this.enabled,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final normalizedGain = (gain - minGain) / (maxGain - minGain);
+    final barHeight = 150 * normalizedGain;
+
+    return GestureDetector(
+      onVerticalDragUpdate: enabled
+          ? (details) {
+              final delta = -details.delta.dy / 150 * (maxGain - minGain);
+              final newGain = (gain + delta).clamp(minGain, maxGain);
+              onChanged(newGain);
+            }
+          : null,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            '${gain.toStringAsFixed(0)}dB',
+            style: TextStyle(
+              fontSize: 10,
+              color:
+                  enabled ? Theme.of(context).colorScheme.primary : Colors.grey,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Container(
+            width: 32,
+            height: 150,
+            decoration: BoxDecoration(
+              color: Colors.black12,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 100),
+                width: 32,
+                height: barHeight.clamp(8.0, 150.0),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: enabled
+                        ? [
+                            Theme.of(context).colorScheme.primary,
+                            Theme.of(context).colorScheme.tertiary
+                          ]
+                        : [Colors.grey, Colors.grey.shade400],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            frequency,
+            style: const TextStyle(fontSize: 10),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PresetButton extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+
+  const _PresetButton({required this.label, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+          ),
+        ),
+      );
+}
+
+
+---------- FILE: music_x\lib\features\player\widgets\queue_sheet.dart ----------
+import 'package:flutter/material.dart';
+import 'package:music_hub/features/player/services/playback_service.dart';
+// import 'package:music_hub/features/discovery/services/search_service.dart';
+// For SearchResult if needed
+
+class QueueSheet extends StatelessWidget {
+  const QueueSheet({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final queue = PlaybackService.instance.queue;
+
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text('Fila de Reprodução',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            ),
+            const Divider(height: 1),
+            Expanded(
+              child: queue.isEmpty
+                  ? const Center(child: Text('A fila está vazia.'))
+                  : ListView.builder(
+                      itemExtent:
+                          72.0, // ⚡ Bolt: Fixed extent for faster scrolling
+                      itemCount: queue.length,
+                      itemBuilder: (context, index) {
+                        final track = queue[index];
+                        // Highlight current track if needed
+                        final isCurrent =
+                            PlaybackService.instance.currentTrack == track;
+
+                        return ListTile(
+                          leading: track.thumbnail != null
+                              ? Image.network(
+                                  track.thumbnail!,
+                                  width: 40,
+                                  height: 40,
+                                  fit: BoxFit.cover,
+                                  cacheWidth:
+                                      120, // ⚡ Bolt: Optimize memory (40px * 3x)
+                                  cacheHeight: 120,
+                                )
+                              : const Icon(Icons.music_note),
+                          title: Text(track.title,
+                              maxLines: 1, overflow: TextOverflow.ellipsis),
+                          subtitle: Text(track.artist,
+                              maxLines: 1, overflow: TextOverflow.ellipsis),
+                          trailing: isCurrent
+                              ? const Icon(Icons.equalizer, color: Colors.blue)
+                              : null,
+                          tileColor: isCurrent
+                              ? Colors.blue.withValues(alpha: 0.1)
+                              : null,
+                          onTap: () {
+                            PlaybackService.instance.playSearchResult(track);
+                            Navigator.pop(context);
+                          },
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+---------- FILE: music_x\lib\features\player\widgets\visualizer_widget.dart ----------
+import 'dart:math';
+import 'package:flutter/material.dart';
+
+class VisualizerWidget extends StatefulWidget {
+  final bool isPlaying;
+  final Color color;
+
+  const VisualizerWidget(
+      {super.key, required this.isPlaying, this.color = Colors.blue});
+
+  @override
+  State<VisualizerWidget> createState() => _VisualizerWidgetState();
+}
+
+class _VisualizerWidgetState extends State<VisualizerWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  final List<double> _heights = List.generate(30, (_) => Random().nextDouble());
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 500))
+      ..repeat(reverse: true);
+    if (!widget.isPlaying) {
+      _controller.stop();
+    }
+  }
+
+  @override
+  void didUpdateWidget(VisualizerWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isPlaying) {
+      _controller.repeat(reverse: true);
+    } else {
+      _controller.stop();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) => RepaintBoundary(
+          // ⚡ Bolt: Isolate 60fps paints
+          child: CustomPaint(
+            size: const Size(double.infinity, 50),
+            painter: _VisualizerPainter(
+              heights: _heights,
+              progress: _controller.value,
+              color: widget.color.withValues(alpha: 0.5),
+            ),
+          ),
+        ),
+      );
+}
+
+class _VisualizerPainter extends CustomPainter {
+  final List<double> heights;
+  final double progress;
+  final Color color;
+
+  _VisualizerPainter(
+      {required this.heights, required this.progress, required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 3
+      ..strokeCap = StrokeCap.round;
+
+    final barWidth = size.width / (heights.length * 2);
+
+    for (int i = 0; i < heights.length; i++) {
+      final x = i * barWidth * 2 + barWidth;
+      final h = heights[i] * size.height * (0.5 + 0.5 * progress);
+      canvas.drawLine(
+        Offset(x, size.height / 2 - h / 2),
+        Offset(x, size.height / 2 + h / 2),
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _VisualizerPainter oldDelegate) => true;
+}
+
+
