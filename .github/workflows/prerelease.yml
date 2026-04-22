@@ -39,7 +39,7 @@ jobs:
       
       - name: Create Dev Release (Update Existing)
         if: github.ref == 'refs/heads/dev'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: dev-latest
           name: Development Build (Dev)
@@ -57,7 +57,7 @@ jobs:
 
       - name: Create Beta Release (Update Existing)
         if: github.ref == 'refs/heads/beta'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: beta-latest
           name: Beta Release
