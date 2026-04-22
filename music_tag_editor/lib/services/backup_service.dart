@@ -26,16 +26,12 @@ class BackupService {
 
     // Export database tables
     final tracks = await _db.getTracks();
-    final playlists = await _db.getPlaylists();
-    final playHistory = await _db.getPlayHistory();
-    final settings = await _db.getAllSettings();
+    final settings = await _db.getSetting('filenameFormat') ?? 'FilenameFormat.artistTitle';
 
     final backupData = {
       'version': 1,
       'timestamp': DateTime.now().toIso8601String(),
       'tracks': tracks,
-      'playlists': playlists,
-      'playHistory': playHistory,
       'settings': settings,
     };
 
@@ -97,13 +93,10 @@ class BackupService {
           restoredCount++;
         }
 
-        // Restore playlists
-        final playlists = backupData['playlists'] as List? ?? [];
-        for (var playlist in playlists) {
-          await _db.savePlaylist(playlist);
+        // Restore settings
+        if (backupData['settings'] != null) {
+           await _db.saveSetting('filenameFormat', backupData['settings']);
         }
-
-        // Note: Settings restoration could be added if needed
       }
     } finally {
       await tempDir.delete(recursive: true);
@@ -115,12 +108,10 @@ class BackupService {
   /// Get backup file size estimate (for UI display).
   Future<int> estimateBackupSize() async {
     final tracks = await _db.getTracks();
-    final playlists = await _db.getPlaylists();
 
     // Rough estimate: JSON size
     final data = {
       'tracks': tracks,
-      'playlists': playlists,
     };
 
     return json.encode(data).length;

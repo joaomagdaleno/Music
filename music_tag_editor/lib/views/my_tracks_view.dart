@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/services/database_service.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/views/playlist_importer_view.dart';
-import 'package:music_tag_editor/views/vault_view.dart';
 
 class MyTracksView extends StatefulWidget {
   const MyTracksView({super.key});
@@ -14,7 +11,6 @@ class MyTracksView extends StatefulWidget {
 
 class _MyTracksViewState extends State<MyTracksView> {
   final DatabaseService _dbService = DatabaseService.instance;
-  final PlaybackService _playbackService = PlaybackService.instance;
   List<Map<String, dynamic>> _tracks = [];
   bool _isLoading = true;
 
@@ -32,37 +28,12 @@ class _MyTracksViewState extends State<MyTracksView> {
     });
   }
 
-  void _playTrack(Map<String, dynamic> trackData) {
-    final result = SearchResult(
-      id: trackData['id'],
-      title: trackData['title'],
-      artist: trackData['artist'] ?? '',
-      thumbnail: trackData['thumbnail'],
-      duration: trackData['duration'],
-      url: trackData['url'],
-      platform: MediaPlatform.values.firstWhere(
-        (e) => e.toString() == trackData['platform'],
-        orElse: () => MediaPlatform.unknown,
-      ),
-      localPath: trackData['local_path'],
-    );
-    _playbackService.playSearchResult(result);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Minhas Músicas'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.lock_outline),
-            tooltip: 'Cofre Privado',
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const VaultView()),
-            ),
-          ),
           IconButton(
             icon: const Icon(Icons.playlist_add),
             tooltip: 'Importar Playlist',
@@ -90,33 +61,15 @@ class _MyTracksViewState extends State<MyTracksView> {
                     return ListTile(
                       leading: track['thumbnail'] != null
                           ? Image.network(track['thumbnail'],
-                              width: 40, height: 40)
+                              width: 40, height: 40, errorBuilder: (_, __, ___) => const Icon(Icons.music_note))
                           : const Icon(Icons.music_note),
                       title: Text(track['title']),
                       subtitle: Text(track['artist'] ?? ''),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.lock),
-                            onPressed: () async {
-                              await _dbService.toggleVault(track['id'], true);
-                              _loadTracks();
-                              if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text(
-                                          '${track['title']} movida para o cofre')),
-                                );
-                              }
-                            },
-                            tooltip: 'Mover para Cofre',
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.play_arrow),
-                            onPressed: () => _playTrack(track),
-                          ),
-                        ],
+                      trailing: IconButton(
+                        icon: const Icon(Icons.info_outline),
+                        onPressed: () {
+                          // Could open edit dialog or show info
+                        },
                       ),
                     );
                   },

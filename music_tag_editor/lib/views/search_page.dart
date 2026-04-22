@@ -3,9 +3,6 @@ import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
-import 'package:music_tag_editor/widgets/mini_player.dart';
-import 'package:music_tag_editor/views/player_screen.dart';
 import 'dart:io';
 
 class SearchPage extends StatefulWidget {
@@ -19,7 +16,6 @@ class _SearchPageState extends State<SearchPage> {
   final _searchController = TextEditingController();
   final _searchService = SearchService.instance;
   final _downloadService = DownloadService.instance;
-  final _playbackService = PlaybackService.instance;
 
   List<SearchResult> _results = [];
   bool _isLoading = false;
@@ -194,89 +190,6 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
-  Future<void> _addToPlaylist(SearchResult result) async {
-    final db = DatabaseService.instance;
-    final playlistsList = await db.getPlaylists();
-
-    if (!mounted) {
-      return;
-    }
-
-    if (playlistsList.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Crie uma playlist primeiro na aba "Playlists"')),
-      );
-      return;
-    }
-
-    final selectedPlaylistId = await showDialog<int?>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Adicionar à Playlist'),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: playlistsList.length,
-            itemBuilder: (context, index) {
-              final p = playlistsList[index];
-              return ListTile(
-                title: Text(p['name']),
-                onTap: () => Navigator.pop(context, p['id']),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-
-    if (selectedPlaylistId != null) {
-      // First save the track metadata to the tracks table
-      await db.saveTrack({
-        'id': result.id,
-        'title': result.title,
-        'artist': result.artist,
-        'thumbnail': result.thumbnail,
-        'duration': result.duration,
-        'platform': result.platform.toString(),
-        'url': result.url,
-      });
-
-      await db.addTrackToPlaylist(selectedPlaylistId, result.id);
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('"${result.title}" adicionada à playlist!')),
-        );
-      }
-    }
-  }
-
-  Future<void> _playTrack(SearchResult result) async {
-    try {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Carregando áudio de "${result.title}"...')),
-        );
-      }
-      await _playbackService.playSearchResult(result);
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao reproduzir: $e')),
-        );
-      }
-    }
-  }
-
-  void _openFullPlayer() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const PlayerScreen()),
-    );
-  }
-
   Widget _getPlatformLogo(MediaPlatform platform, {String? hifiSource}) {
     switch (platform) {
       case MediaPlatform.youtube:
@@ -304,79 +217,9 @@ class _SearchPageState extends State<SearchPage> {
               const Icon(Icons.music_note, color: Colors.green),
         );
       case MediaPlatform.hifi:
-        return _getHiFiLogo(hifiSource);
+        return const Icon(Icons.high_quality, color: Colors.purple);
       case MediaPlatform.unknown:
         return const Icon(Icons.help_outline, color: Colors.grey);
-    }
-  }
-
-  Widget _getHiFiLogo(String? source) {
-    switch (source) {
-      case 'qobuz':
-        return Image.network(
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Qobuz_Logo.svg/512px-Qobuz_Logo.svg.png',
-          width: 24,
-          height: 24,
-          errorBuilder: (_, __, ___) => Container(
-            width: 24,
-            height: 24,
-            decoration: const BoxDecoration(
-              color: Color(0xFF1A237E),
-              shape: BoxShape.circle,
-            ),
-            child: const Center(
-              child: Text('Q',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold)),
-            ),
-          ),
-        );
-      case 'tidal':
-        return Image.network(
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Tidal_logo.svg/512px-Tidal_logo.svg.png',
-          width: 24,
-          height: 24,
-          errorBuilder: (_, __, ___) => Container(
-            width: 24,
-            height: 24,
-            decoration: const BoxDecoration(
-              color: Colors.black,
-              shape: BoxShape.circle,
-            ),
-            child: const Center(
-              child: Text('T',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold)),
-            ),
-          ),
-        );
-      case 'deezer':
-        return Image.network(
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Deezer_Logo.svg/512px-Deezer_Logo.svg.png',
-          width: 24,
-          height: 24,
-          errorBuilder: (_, __, ___) => Container(
-            width: 24,
-            height: 24,
-            decoration: const BoxDecoration(
-              color: Color(0xFFFF0092),
-              shape: BoxShape.circle,
-            ),
-            child: const Center(
-              child: Text('D',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold)),
-            ),
-          ),
-        );
-      default:
-        return const Icon(Icons.high_quality, color: Colors.purple);
     }
   }
 
@@ -405,7 +248,7 @@ class _SearchPageState extends State<SearchPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Busca de Músicas'),
+        title: const Text('Busca e Download'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: Column(
@@ -440,7 +283,6 @@ class _SearchPageState extends State<SearchPage> {
               child: Text(_errorMessage!,
                   style: const TextStyle(color: Colors.red)),
             ),
-          _buildFallbackInfo(),
           Expanded(
             child: ListView.builder(
               itemCount: _results.length,
@@ -472,38 +314,10 @@ class _SearchPageState extends State<SearchPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon: const Icon(Icons.play_arrow,
-                                  color: Colors.blue),
-                              onPressed: () => _playTrack(result),
+                              icon: Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
+                              onPressed: () => _loadFormats(result),
                             ),
-                            PopupMenuButton<String>(
-                              onSelected: (val) {
-                                if (val == 'playlist') {
-                                  _addToPlaylist(result);
-                                }
-                                if (val == 'download') {
-                                  _loadFormats(result);
-                                }
-                              },
-                              itemBuilder: (context) => [
-                                const PopupMenuItem(
-                                  value: 'playlist',
-                                  child: ListTile(
-                                    leading: Icon(Icons.playlist_add),
-                                    title: Text('Adicionar à Playlist'),
-                                  ),
-                                ),
-                                const PopupMenuItem(
-                                  value: 'download',
-                                  child: ListTile(
-                                    leading: Icon(Icons.download),
-                                    title: Text('Opções de Download'),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            _getPlatformLogo(result.platform,
-                                hifiSource: result.hifiSource),
+                            _getPlatformLogo(result.platform),
                           ],
                         ),
                       ),
@@ -561,7 +375,7 @@ class _SearchPageState extends State<SearchPage> {
                                   FilledButton.icon(
                                     onPressed: () => _startDownload(result),
                                     icon: const Icon(Icons.download),
-                                    label: const Text('Download'),
+                                    label: const Text('Baixar Músicas'),
                                   ),
                               ],
                             ],
@@ -574,10 +388,6 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: InkWell(
-        onTap: _openFullPlayer,
-        child: const MiniPlayer(),
       ),
     );
   }
@@ -652,38 +462,6 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ],
     );
-  }
-
-  Widget _buildFallbackInfo() {
-    final spotifyStatus = _platformStatuses[MediaPlatform.spotify];
-    final youtubeStatus = _platformStatuses[MediaPlatform.youtube];
-
-    if (spotifyStatus == SearchStatus.noResults &&
-        (youtubeStatus == SearchStatus.completed ||
-            youtubeStatus == SearchStatus.searching)) {
-      return Container(
-        margin: const EdgeInsets.all(16),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Colors.blue.shade50,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.blue.shade200),
-        ),
-        child: Row(
-          children: [
-            Icon(Icons.lightbulb_outline, color: Colors.blue.shade700),
-            const SizedBox(width: 12),
-            const Expanded(
-              child: Text(
-                'Nenhuma correspondência exata no Spotify. Mostrando resultados similares do YouTube.',
-                style: TextStyle(fontSize: 13),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-    return const SizedBox.shrink();
   }
 }
 

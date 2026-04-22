@@ -10,46 +10,26 @@ import 'package:music_tag_editor/widgets/edit_track_dialog.dart';
 import 'package:music_tag_editor/widgets/learning_dialog.dart';
 import 'package:music_tag_editor/services/metadata_service.dart';
 import 'package:music_tag_editor/views/search_page.dart';
-import 'package:music_tag_editor/services/playback_service.dart';
 import 'package:music_tag_editor/views/app_shell.dart';
 import 'package:music_tag_editor/services/theme_service.dart';
 import 'package:music_tag_editor/views/my_tracks_view.dart';
-import 'package:music_tag_editor/views/smart_library_view.dart';
-import 'package:music_tag_editor/views/mood_explorer_view.dart';
 import 'package:music_tag_editor/views/ringtone_maker_view.dart';
 import 'package:music_tag_editor/services/download_service.dart';
 import 'package:music_tag_editor/services/desktop_integration_service.dart';
-import 'package:music_tag_editor/services/connectivity_service.dart';
-import 'package:music_tag_editor/services/security_service.dart';
-import 'package:music_tag_editor/services/auth_service.dart';
-import 'package:music_tag_editor/views/login_page.dart';
-import 'package:music_tag_editor/services/persona_service.dart';
 import 'package:music_tag_editor/models/music_track.dart';
-
-import 'package:music_tag_editor/services/telemetry_service.dart';
 import 'dart:async';
 
 void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    // Initialize Telemetry
-    await TelemetryService.instance.init();
-
     // Initialize Core Services
-    await SecurityService.instance.init();
-    AuthService.instance.init();
-    await ConnectivityService.instance.init();
-    await PersonaService.instance.init();
-
     await ThemeService.instance.init();
     await DesktopIntegrationService.instance.init();
-    await PlaybackService.instance.init();
 
     runApp(const MusicTagEditorApp());
   }, (error, stack) {
     debugPrint('Fatal error: $error');
-    TelemetryService.instance.recordError(error, stack);
   });
 }
 
@@ -64,6 +44,7 @@ class MusicTagEditorApp extends StatelessWidget {
         final primaryColor = ThemeService.instance.primaryColor;
         return MaterialApp(
           title: 'Music Tag Editor',
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
             useMaterial3: true,
             colorScheme: ColorScheme.fromSeed(
@@ -78,9 +59,7 @@ class MusicTagEditorApp extends StatelessWidget {
               brightness: Brightness.dark,
             ),
           ),
-          home: AuthService.instance.isAuthenticated
-              ? const AppShell()
-              : const LoginPage(),
+          home: const AppShell(),
         );
       },
     );
