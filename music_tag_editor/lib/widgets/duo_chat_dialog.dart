@@ -33,7 +33,9 @@ class _DuoChatDialogState extends State<DuoChatDialog> {
   }
 
   void _sendMessage() {
-    if (_controller.text.isEmpty) { return; }
+    if (_controller.text.isEmpty) {
+      return;
+    }
     _service.sendChatMessage(_controller.text);
     setState(() {
       _messages.add("Você: ${_controller.text}");
@@ -92,4 +94,3 @@ class _DuoChatDialogState extends State<DuoChatDialog> {
     );
   }
 }
-

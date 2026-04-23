@@ -26,7 +26,8 @@ class BackupService {
 
     // Export database tables
     final tracks = await _db.getTracks();
-    final settings = await _db.getSetting('filenameFormat') ?? 'FilenameFormat.artistTitle';
+    final settings =
+        await _db.getSetting('filenameFormat') ?? 'FilenameFormat.artistTitle';
 
     final backupData = {
       'version': 1,
@@ -52,9 +53,7 @@ class BackupService {
     }
 
     final zipData = ZipEncoder().encode(archive);
-    if (zipData != null) {
-      await File(zipPath).writeAsBytes(zipData);
-    }
+    await File(zipPath).writeAsBytes(zipData);
 
     // Cleanup temp directory
     await backupDir.delete(recursive: true);
@@ -95,7 +94,7 @@ class BackupService {
 
         // Restore settings
         if (backupData['settings'] != null) {
-           await _db.saveSetting('filenameFormat', backupData['settings']);
+          await _db.saveSetting('filenameFormat', backupData['settings']);
         }
       }
     } finally {

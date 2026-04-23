@@ -17,7 +17,8 @@ class SearchResultsDialog extends StatelessWidget {
             final recording = recordings[index];
             final title = recording['title'] ?? 'No title';
             // The artist information is a bit nested.
-            final artist = recording['artist-credit']?[0]?['name'] ?? 'No artist';
+            final artist =
+                recording['artist-credit']?[0]?['name'] ?? 'No artist';
 
             return ListTile(
               title: Text(title),

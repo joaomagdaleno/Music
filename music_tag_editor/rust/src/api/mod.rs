@@ -1,0 +1,15 @@
+pub mod ast;
+pub mod cleanup;
+pub mod database;
+pub mod duplicates;
+pub mod lyrics;
+pub mod metadata;
+pub mod renamer;
+pub mod simple;
+pub mod snapshots;
+pub mod spectral;
+pub mod sync;
+pub mod transcode;
+pub mod watcher;
+pub mod windows_devices;
+pub mod windows_shell;

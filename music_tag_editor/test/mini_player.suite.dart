@@ -74,7 +74,9 @@ void main() {
       when(() => mockPlayer.playerStateStream).thenAnswer((_) => Stream.value(
             PlayerState(true, ProcessingState.ready),
           ));
-      when(() => mockPlayback.pause()).thenAnswer((_) async {});
+      when(() => mockPlayback.pause()).thenAnswer((_) async {
+        return null;
+      });
 
       await tester
           .pumpWidget(const MaterialApp(home: Scaffold(body: MiniPlayer())));
@@ -85,4 +87,3 @@ void main() {
     });
   });
 }
-

@@ -101,7 +101,7 @@ void main() {
       });
 
       final ffmpegZipBytes = ZipEncoder().encode(Archive()
-        ..addFile(ArchiveFile('ffmpeg.exe', 11, utf8.encode('exe_content'))))!;
+        ..addFile(ArchiveFile('ffmpeg.exe', 11, utf8.encode('exe_content'))));
 
       when(() => mockClient.get(
               any(that: predicate((Uri u) => u.toString().contains('yt-dlp')))))

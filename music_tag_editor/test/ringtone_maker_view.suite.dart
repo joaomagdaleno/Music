@@ -98,10 +98,18 @@ void main() {
     mockPlayer = MockAudioPlayer();
     when(() => mockPlayer.setFilePath(any()))
         .thenAnswer((_) async => const Duration(minutes: 3));
-    when(() => mockPlayer.dispose()).thenAnswer((_) async {});
-    when(() => mockPlayer.play()).thenAnswer((_) async {});
-    when(() => mockPlayer.pause()).thenAnswer((_) async {});
-    when(() => mockPlayer.seek(any())).thenAnswer((_) async {});
+    when(() => mockPlayer.dispose()).thenAnswer((_) async {
+      return null;
+    });
+    when(() => mockPlayer.play()).thenAnswer((_) async {
+      return null;
+    });
+    when(() => mockPlayer.pause()).thenAnswer((_) async {
+      return null;
+    });
+    when(() => mockPlayer.seek(any())).thenAnswer((_) async {
+      return null;
+    });
     when(() => mockPlayer.positionStream)
         .thenAnswer((_) => Stream.value(Duration.zero));
   });

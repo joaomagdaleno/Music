@@ -31,7 +31,9 @@ void main() {
       securityService: mockSecurityService,
     );
 
-    when(() => mockSecurityService.logout()).thenAnswer((_) async {});
+    when(() => mockSecurityService.logout()).thenAnswer((_) async {
+      return null;
+    });
   });
 
   group('AuthService', () {
@@ -70,7 +72,9 @@ void main() {
     });
 
     test('logout calls signOut', () async {
-      when(() => mockAuth.signOut()).thenAnswer((_) async {});
+      when(() => mockAuth.signOut()).thenAnswer((_) async {
+        return null;
+      });
 
       await authService.logout();
 

@@ -40,9 +40,13 @@ void main() {
     PlaybackService.instance = mockPlayback;
 
     when(() => mockSecurity.unlockVault(any())).thenAnswer((_) async => true);
-    when(() => mockSecurity.setupVaultPassword(any())).thenAnswer((_) async {});
+    when(() => mockSecurity.setupVaultPassword(any())).thenAnswer((_) async {
+      return null;
+    });
     when(() => mockDb.getAllTracks()).thenAnswer((_) async => []);
-    when(() => mockDb.toggleVault(any(), any())).thenAnswer((_) async {});
+    when(() => mockDb.toggleVault(any(), any())).thenAnswer((_) async {
+      return null;
+    });
   });
 
   Widget createTestWidget() {

@@ -61,7 +61,10 @@ class _MyTracksViewState extends State<MyTracksView> {
                     return ListTile(
                       leading: track['thumbnail'] != null
                           ? Image.network(track['thumbnail'],
-                              width: 40, height: 40, errorBuilder: (_, __, ___) => const Icon(Icons.music_note))
+                              width: 40,
+                              height: 40,
+                              errorBuilder: (_, __, ___) =>
+                                  const Icon(Icons.music_note))
                           : const Icon(Icons.music_note),
                       title: Text(track['title']),
                       subtitle: Text(track['artist'] ?? ''),
@@ -77,4 +80,3 @@ class _MyTracksViewState extends State<MyTracksView> {
     );
   }
 }
-

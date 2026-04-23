@@ -73,10 +73,14 @@ void main() {
     when(() => mockFirestore.collection(any())).thenReturn(mockCollection);
     when(() => mockCollection.doc(any())).thenReturn(mockDoc);
     when(() => mockDoc.collection(any())).thenReturn(mockCollection);
-    when(() => mockDoc.set(any(), any())).thenAnswer((_) async {});
+    when(() => mockDoc.set(any(), any())).thenAnswer((_) async {
+      return null;
+    });
     final mockBatch = MockWriteBatch();
     when(() => mockFirestore.batch()).thenReturn(mockBatch);
-    when(() => mockBatch.commit()).thenAnswer((_) async {});
+    when(() => mockBatch.commit()).thenAnswer((_) async {
+      return null;
+    });
     when(() => mockBatch.set(any(), any(), any())).thenReturn(null);
 
     // Default DB Stubs to prevent crashes in _startSync
@@ -160,4 +164,3 @@ void main() {
     });
   });
 }
-

@@ -34,9 +34,15 @@ void main() {
     LocalDuoService.instance = mockDuo;
     PlaybackService.instance = mockPlayback;
 
-    when(() => mockDuo.requestRemoteLibrary()).thenAnswer((_) async {});
-    when(() => mockPlayback.playSearchResult(any())).thenAnswer((_) async {});
-    when(() => mockPlayback.addToQueue(any())).thenAnswer((_) async {});
+    when(() => mockDuo.requestRemoteLibrary()).thenAnswer((_) async {
+      return null;
+    });
+    when(() => mockPlayback.playSearchResult(any())).thenAnswer((_) async {
+      return null;
+    });
+    when(() => mockPlayback.addToQueue(any())).thenAnswer((_) async {
+      return null;
+    });
   });
 
   Widget createTestWidget() {

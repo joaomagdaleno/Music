@@ -1,13 +1,10 @@
-import 'package:meta/meta.dart';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/metadata_aggregator_service.dart';
+import 'package:music_tag_editor/src/rust/api/cleanup.dart' as rust;
 
 class MetadataCleanupService {
-  static MetadataCleanupService _instance = MetadataCleanupService._internal();
+  static final MetadataCleanupService _instance = MetadataCleanupService._internal();
   static MetadataCleanupService get instance => _instance;
-
-  @visibleForTesting
-  static set instance(MetadataCleanupService mock) => _instance = mock;
 
   MetadataCleanupService._internal();
 
@@ -16,26 +13,26 @@ class MetadataCleanupService {
       MetadataAggregatorService.instance;
 
   Future<int> cleanupLibrary() async {
-    final tracks = await _db.getTracks();
+    final tracks = await _db.getAllTracks();
     int cleanedCount = 0;
 
-    for (var trackData in tracks) {
+    for (var track in tracks) {
       bool modified = false;
-      String title = trackData['title'];
-      String artist = trackData['artist'] ?? '';
-      String? genre = trackData['genre'];
-      String? album = trackData['album'];
-      String? thumbnail = trackData['thumbnail'];
+      String title = track.title;
+      String artist = track.artist;
+      String? genre = track.genre;
+      String? album = track.album;
+      String? thumbnail = track.thumbnail;
 
-      // 1. Title Cleanup
-      final cleanTitle = _cleanString(title);
+      // 1. Title Cleanup via Rust Regex
+      final cleanTitle = await rust.cleanTag(text: title);
       if (cleanTitle != title) {
         title = cleanTitle;
         modified = true;
       }
 
-      // 2. Artist Cleanup
-      final cleanArtist = _cleanString(artist);
+      // 2. Artist Cleanup via Rust Regex
+      final cleanArtist = await rust.cleanTag(text: artist);
       if (cleanArtist != artist) {
         artist = cleanArtist;
         modified = true;
@@ -66,42 +63,21 @@ class MetadataCleanupService {
       }
 
       if (modified) {
-        final newTrack = Map<String, dynamic>.from(trackData);
-        newTrack['title'] = title;
-        newTrack['artist'] = artist;
-        newTrack['genre'] = genre;
-        newTrack['album'] = album;
-        newTrack['thumbnail'] = thumbnail;
-        await _db.saveTrack(newTrack);
+        // Update track with cleaned metadata
+        // Note: Assuming SearchResult has a way to update or we use _db directly
+        await _db.saveTrack({
+          'id': track.id,
+          'title': title,
+          'artist': artist,
+          'genre': genre,
+          'album': album,
+          'thumbnail': thumbnail,
+          'localPath': track.localPath,
+        });
         cleanedCount++;
       }
     }
 
     return cleanedCount;
-  }
-
-  String _cleanString(String input) {
-    String output = input;
-    final removals = [
-      RegExp(r'\[.*?\]'), // Remove [anything]
-      RegExp(r'\(.*?\)'), // Remove (anything)
-      'OFFICIAL VIDEO',
-      'Official Audio',
-      'HD',
-      '4K',
-      'Lyric Video',
-      'Lyrics',
-      '#',
-    ];
-
-    for (var rem in removals) {
-      if (rem is RegExp) {
-        output = output.replaceAll(rem, '');
-      } else {
-        output = output.replaceAll(rem as String, '');
-      }
-    }
-
-    return output.trim();
   }
 }

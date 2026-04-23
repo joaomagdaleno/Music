@@ -77,4 +77,3 @@ class _EditTrackDialogState extends State<EditTrackDialog> {
     );
   }
 }
-

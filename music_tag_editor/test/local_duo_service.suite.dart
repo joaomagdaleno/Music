@@ -129,8 +129,12 @@ void main() {
     });
 
     test('handleIncomingMessage play/pause/seek', () async {
-      when(() => mockPlayback.playFromRemote(any())).thenAnswer((_) async {});
-      when(() => mockPlayback.pauseFromRemote()).thenAnswer((_) async {});
+      when(() => mockPlayback.playFromRemote(any())).thenAnswer((_) async {
+        return null;
+      });
+      when(() => mockPlayback.pauseFromRemote()).thenAnswer((_) async {
+        return null;
+      });
       when(() => mockPlayback.seek(any())).thenAnswer((_) async => {});
 
       void Function(String, Payload)? captureCallback;

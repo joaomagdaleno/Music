@@ -1,0 +1,25 @@
+WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
+
+/// Expressão principal do motor
+expression = { if_expr | binary_expr | primary }
+
+/// Unidades básicas
+primary = { placeholder | string_literal | "(" ~ expression ~ ")" }
+
+/// Placeholders de metadados (ex: %artist%)
+placeholder = { "%" ~ identifier ~ "%" }
+
+/// Identificadores (nomes de campos)
+identifier = @{ ASCII_ALPHA ~ (ASCII_ALPHANUMERIC | "_")* }
+
+/// Strings entre aspas simples
+string_literal = @{ "'" ~ (!"'" ~ ANY)* ~ "'" }
+
+/// Operações binárias (+ para concatenação, == para comparação)
+binary_expr = { primary ~ (operator ~ primary)+ }
+
+/// Operadores suportados
+operator = { "+" | "==" | "!=" }
+
+/// Lógica condicional
+if_expr = { "if" ~ expression ~ "then" ~ expression ~ "else" ~ expression }

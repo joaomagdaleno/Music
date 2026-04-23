@@ -23,7 +23,9 @@ class _VisualizerWidgetState extends State<VisualizerWidget>
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500))
       ..repeat(reverse: true);
-    if (!widget.isPlaying) { _controller.stop(); }
+    if (!widget.isPlaying) {
+      _controller.stop();
+    }
   }
 
   @override

@@ -87,4 +87,3 @@ class _PlaylistsViewState extends State<PlaylistsView> {
     );
   }
 }
-

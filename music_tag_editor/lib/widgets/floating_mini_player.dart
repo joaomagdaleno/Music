@@ -21,7 +21,9 @@ class _FloatingMiniPlayerState extends State<FloatingMiniPlayer> {
   }
 
   Future<void> _setupWindow() async {
-    if (!Platform.isWindows) { return; }
+    if (!Platform.isWindows) {
+      return;
+    }
 
     await windowManager.ensureInitialized();
     await windowManager.setSize(const Size(320, 100));
@@ -182,4 +184,3 @@ Future<void> openFloatingMiniPlayer() async {
   // One approach on Windows is to spawn a separate Flutter process with a flag.
   // For simplicity, we'll document this as a future enhancement.
 }
-

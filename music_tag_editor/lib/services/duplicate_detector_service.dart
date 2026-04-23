@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'package:music_tag_editor/services/download_service.dart';
+import 'package:music_tag_editor/src/rust/api/duplicates.dart' as rust;
 
-/// Service for detecting duplicate tracks using audio fingerprints.
+/// Service for detecting duplicate tracks using audio fingerprints and Rust hashing.
 class DuplicateDetectorService {
   static final DuplicateDetectorService instance =
       DuplicateDetectorService._internal();
@@ -15,6 +16,42 @@ class DuplicateDetectorService {
 
   // Cache of fingerprints: trackId -> fingerprint hash
   final Map<String, String> _fingerprintCache = {};
+
+  /// Find exact binary duplicates in a folder using Rust hashing.
+  Future<List<DuplicateGroup>> findExactDuplicates(String folderPath) async {
+    try {
+      final duplicatePaths = await rust.findDuplicatesInFolder(folderPath: folderPath);
+      
+      final results = <DuplicateGroup>[];
+      for (final group in duplicatePaths) {
+        final tracks = <SearchResult>[];
+        for (final path in group) {
+          // Try to find track in DB or create a temporary SearchResult
+          final track = await _db.getTrackByPath(path);
+          if (track != null) {
+            tracks.add(track);
+          } else {
+            tracks.add(SearchResult(
+              id: path,
+              title: path.split(Platform.pathSeparator).last,
+              artist: 'Unknown',
+              url: '',
+              platform: MediaPlatform.unknown,
+              thumbnail: '',
+              localPath: path,
+            ));
+          }
+        }
+        results.add(DuplicateGroup(
+          fingerprint: 'hash_group',
+          tracks: tracks,
+        ));
+      }
+      return results;
+    } catch (e) {
+      throw Exception('Failed to find duplicates via Rust: $e');
+    }
+  }
 
   /// Scan library for duplicate tracks.
   Future<List<DuplicateGroup>> findDuplicates({
@@ -74,7 +111,9 @@ class DuplicateDetectorService {
         stdoutEncoding: utf8,
       );
 
-      if (result.exitCode != 0) { return null; }
+      if (result.exitCode != 0) {
+        return null;
+      }
 
       final json = jsonDecode(result.stdout as String);
       final fingerprint = json['fingerprint'] as String?;
@@ -123,7 +162,9 @@ class DuplicateDetectorService {
     DuplicateGroup group, {
     bool keepHighestQuality = true,
   }) async {
-    if (group.tracks.length < 2) { return 0; }
+    if (group.tracks.length < 2) {
+      return 0;
+    }
 
     // Sort by quality (prefer FLAC > M4A > MP3, then by file size)
     final sorted = List<SearchResult>.from(group.tracks);
@@ -135,7 +176,9 @@ class DuplicateDetectorService {
       final aOrder = extOrder[aExt] ?? 99;
       final bOrder = extOrder[bExt] ?? 99;
 
-      if (aOrder != bOrder) { return aOrder.compareTo(bOrder); }
+      if (aOrder != bOrder) {
+        return aOrder.compareTo(bOrder);
+      }
 
       // Compare file sizes (larger = better quality)
       final aSize = a.localPath != null ? File(a.localPath!).lengthSync() : 0;
@@ -183,15 +226,21 @@ class DuplicateGroup {
 
   /// Get the recommended track to keep (highest quality).
   SearchResult get bestTrack {
-    if (tracks.length == 1) { return tracks.first; }
+    if (tracks.length == 1) {
+      return tracks.first;
+    }
 
     // Prefer FLAC, then larger files
     return tracks.reduce((best, current) {
       final bestExt = best.localPath?.split('.').last.toLowerCase() ?? '';
       final currExt = current.localPath?.split('.').last.toLowerCase() ?? '';
 
-      if (currExt == 'flac' && bestExt != 'flac') { return current; }
-      if (bestExt == 'flac' && currExt != 'flac') { return best; }
+      if (currExt == 'flac' && bestExt != 'flac') {
+        return current;
+      }
+      if (bestExt == 'flac' && currExt != 'flac') {
+        return best;
+      }
 
       final bestSize =
           best.localPath != null ? File(best.localPath!).lengthSync() : 0;
@@ -202,5 +251,3 @@ class DuplicateGroup {
     });
   }
 }
-
-

@@ -15,10 +15,13 @@ class _AppShellState extends State<AppShell> {
   int _selectedIndex = 0;
 
   final List<_Destination> _destinations = [
-    const _Destination('Editor de Tags', Icons.edit_note, Icons.edit_note_outlined),
-    const _Destination('Biblioteca', Icons.library_music, Icons.library_music_outlined),
+    const _Destination(
+        'Editor de Tags', Icons.edit_note, Icons.edit_note_outlined),
+    const _Destination(
+        'Biblioteca', Icons.library_music, Icons.library_music_outlined),
     const _Destination('Download', Icons.download, Icons.download_outlined),
-    const _Destination('Configurações', Icons.settings, Icons.settings_outlined),
+    const _Destination(
+        'Configurações', Icons.settings, Icons.settings_outlined),
   ];
 
   final List<Widget> _pages = [

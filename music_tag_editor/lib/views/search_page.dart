@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_tag_editor/services/search_service.dart';
 import 'package:music_tag_editor/services/download_service.dart';
-import 'package:music_tag_editor/services/database_service.dart';
 import 'package:music_tag_editor/services/dependency_manager.dart';
 import 'dart:io';
 
@@ -190,7 +189,7 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
-  Widget _getPlatformLogo(MediaPlatform platform, {String? hifiSource}) {
+  Widget _getPlatformLogo(MediaPlatform platform) {
     switch (platform) {
       case MediaPlatform.youtube:
         return Image.network(
@@ -314,7 +313,9 @@ class _SearchPageState extends State<SearchPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon: Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
+                              icon: Icon(isExpanded
+                                  ? Icons.expand_less
+                                  : Icons.expand_more),
                               onPressed: () => _loadFormats(result),
                             ),
                             _getPlatformLogo(result.platform),
@@ -464,5 +465,3 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 }
-
-

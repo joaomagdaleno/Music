@@ -34,8 +34,12 @@ void main() {
       final bands = [band1, band2];
 
       when(() => mockParameters.bands).thenReturn(bands);
-      when(() => band1.setGain(any())).thenAnswer((_) async {});
-      when(() => band2.setGain(any())).thenAnswer((_) async {});
+      when(() => band1.setGain(any())).thenAnswer((_) async {
+        return null;
+      });
+      when(() => band2.setGain(any())).thenAnswer((_) async {
+        return null;
+      });
 
       await service.applyPresetForGenre('Rock');
 

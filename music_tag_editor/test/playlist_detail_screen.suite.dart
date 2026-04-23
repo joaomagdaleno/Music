@@ -35,7 +35,9 @@ void main() {
     DatabaseService.instance = mockDb;
     PlaybackService.instance = mockPlayback;
 
-    when(() => mockPlayback.playSearchResult(any())).thenAnswer((_) async {});
+    when(() => mockPlayback.playSearchResult(any())).thenAnswer((_) async {
+      return null;
+    });
   });
 
   Widget createTestWidget(

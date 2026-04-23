@@ -137,7 +137,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       title: const Text('Polir Biblioteca'),
                       subtitle: const Text(
                           'Remove lixo dos nomes (ex: [OFFICIAL VIDEO]) e organiza gêneros.'),
-                      leading: const Icon(Icons.auto_fix_high, color: Colors.blue),
+                      leading:
+                          const Icon(Icons.auto_fix_high, color: Colors.blue),
                       onTap: _cleanupLibrary,
                     ),
                     const Divider(height: 32),

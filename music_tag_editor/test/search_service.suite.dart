@@ -207,9 +207,17 @@ void main() {
 
   group('importPlaylist', () {
     test('importYouTubePlaylist parses results correctly', () async {
-      final jsonOutput = '${jsonEncode(
-              {'id': 'v1', 'title': 'T1', 'uploader': 'A1', 'duration': 100})}\n${jsonEncode(
-              {'id': 'v2', 'title': 'T2', 'uploader': 'A2', 'duration': 200})}';
+      final jsonOutput = '${jsonEncode({
+            'id': 'v1',
+            'title': 'T1',
+            'uploader': 'A1',
+            'duration': 100
+          })}\n${jsonEncode({
+            'id': 'v2',
+            'title': 'T2',
+            'uploader': 'A2',
+            'duration': 200
+          })}';
       mockExitCode = 0;
       mockStdout = jsonOutput;
 

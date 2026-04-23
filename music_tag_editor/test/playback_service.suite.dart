@@ -82,8 +82,9 @@ void main() {
 
     // Default stubs
     when(() => mockEqualizer.equalizer).thenReturn(FakeAndroidEqualizer());
-    when(() => mockEqualizer.applyPresetForGenre(any()))
-        .thenAnswer((_) async {});
+    when(() => mockEqualizer.applyPresetForGenre(any())).thenAnswer((_) async {
+      return null;
+    });
     when(() => mockTheme.updateThemeFromImage(any())).thenAnswer((_) async {});
     when(() => mockDuo.role).thenReturn(DuoRole.none);
     when(() => mockDuo.sendMessage(any())).thenReturn(null);
@@ -99,10 +100,18 @@ void main() {
             initialPosition: any(named: 'initialPosition'),
             initialIndex: any(named: 'initialIndex')))
         .thenAnswer((_) async => const Duration(seconds: 0));
-    when(() => mockPlayer.play()).thenAnswer((_) async {});
-    when(() => mockPlayer.pause()).thenAnswer((_) async {});
-    when(() => mockPlayer.stop()).thenAnswer((_) async {});
-    when(() => mockPlayer.seek(any())).thenAnswer((_) async {});
+    when(() => mockPlayer.play()).thenAnswer((_) async {
+      return null;
+    });
+    when(() => mockPlayer.pause()).thenAnswer((_) async {
+      return null;
+    });
+    when(() => mockPlayer.stop()).thenAnswer((_) async {
+      return null;
+    });
+    when(() => mockPlayer.seek(any())).thenAnswer((_) async {
+      return null;
+    });
     when(() => mockPlayer.position).thenReturn(const Duration(seconds: 10));
     when(() => mockPlayer.playing).thenReturn(false);
     when(() => mockPlayer.processingState).thenReturn(ProcessingState.idle);
@@ -110,7 +119,9 @@ void main() {
     when(() => mockSearch.getStreamUrl(any()))
         .thenAnswer((_) async => "http://stream.url");
     when(() => mockDb.loadCrossfadeDuration()).thenAnswer((_) async => 3);
-    when(() => mockDb.trackPlay(any())).thenAnswer((_) async {});
+    when(() => mockDb.trackPlay(any())).thenAnswer((_) async {
+      return null;
+    });
     when(() => mockLyrics.fetchLyrics(any(), any()))
         .thenAnswer((_) async => []);
 

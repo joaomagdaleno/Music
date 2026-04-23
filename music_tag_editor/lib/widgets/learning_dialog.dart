@@ -13,10 +13,12 @@ class LearningDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('How should I learn from this?'),
-      content: const Text('You\'ve manually edited the tags. How should I apply this correction in the future?'),
+      content: const Text(
+          'You\'ve manually edited the tags. How should I apply this correction in the future?'),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(LearningChoice.forThisArtist),
+          onPressed: () =>
+              Navigator.of(context).pop(LearningChoice.forThisArtist),
           child: const Text('For this artist'),
         ),
         TextButton(
@@ -24,7 +26,8 @@ class LearningDialog extends StatelessWidget {
           child: const Text('For all tracks'),
         ),
         TextButton(
-          onPressed: () => Navigator.of(context).pop(LearningChoice.justThisOnce),
+          onPressed: () =>
+              Navigator.of(context).pop(LearningChoice.justThisOnce),
           child: const Text('Just this once'),
         ),
       ],

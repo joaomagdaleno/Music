@@ -81,7 +81,9 @@ void main() {
     when(() => mockDatabaseService.getGuestHistory())
         .thenAnswer((_) async => []);
     when(() => mockDatabaseService.saveGuest(any(), any()))
-        .thenAnswer((_) async {});
+        .thenAnswer((_) async {
+      return null;
+    });
     when(() => mockDatabaseService.getDuoSessionTracks(any()))
         .thenAnswer((_) async => []);
   });
