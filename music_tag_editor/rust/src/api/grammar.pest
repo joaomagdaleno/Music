@@ -4,7 +4,10 @@ WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
 expression = { if_expr | binary_expr | primary }
 
 /// Unidades básicas
-primary = { placeholder | string_literal | "(" ~ expression ~ ")" }
+primary = { function_call | placeholder | string_literal | "(" ~ expression ~ ")" }
+
+/// Chamadas de função
+function_call = { identifier ~ "(" ~ expression ~ ")" }
 
 /// Placeholders de metadados (ex: %artist%)
 placeholder = { "%" ~ identifier ~ "%" }

@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 51859717;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 937372604;
 
 // Section: executor
 
@@ -458,6 +458,39 @@ fn wire__crate__api__duplicates__generate_acoustic_fingerprint_impl(
                 transform_result_sse::<_, String>((move || {
                     let output_ok =
                         crate::api::duplicates::generate_acoustic_fingerprint(api_path)?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__crate__api__fingerprint__generate_fingerprint_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "generate_fingerprint",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_path = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| {
+                transform_result_sse::<_, String>((move || {
+                    let output_ok = crate::api::fingerprint::generate_fingerprint(api_path)?;
                     Ok(output_ok)
                 })())
             }
@@ -1370,6 +1403,18 @@ impl SseDecode for String {
     }
 }
 
+impl SseDecode for crate::api::fingerprint::AcousticFingerprint {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_hash = <String>::sse_decode(deserializer);
+        let mut var_durationSeconds = <f64>::sse_decode(deserializer);
+        return crate::api::fingerprint::AcousticFingerprint {
+            hash: var_hash,
+            duration_seconds: var_durationSeconds,
+        };
+    }
+}
+
 impl SseDecode for crate::api::metadata::AudioMetadata {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1391,6 +1436,13 @@ impl SseDecode for crate::api::metadata::AudioMetadata {
             duration_ms: var_durationMs,
             file_path: var_filePath,
         };
+    }
+}
+
+impl SseDecode for bool {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_u8().unwrap() != 0
     }
 }
 
@@ -1452,10 +1504,32 @@ impl SseDecode for crate::api::ast::Expr {
                     else_branch: var_elseBranch,
                 };
             }
+            4 => {
+                let mut var_name = <String>::sse_decode(deserializer);
+                let mut var_arg = <Box<crate::api::ast::Expr>>::sse_decode(deserializer);
+                return crate::api::ast::Expr::FunctionCall {
+                    name: var_name,
+                    arg: var_arg,
+                };
+            }
             _ => {
                 unimplemented!("");
             }
         }
+    }
+}
+
+impl SseDecode for f32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_f32::<NativeEndian>().unwrap()
+    }
+}
+
+impl SseDecode for f64 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_f64::<NativeEndian>().unwrap()
     }
 }
 
@@ -1532,6 +1606,18 @@ impl SseDecode for Vec<crate::api::database::LearningRule> {
     }
 }
 
+impl SseDecode for Vec<f32> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<f32>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<u8> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1585,13 +1671,28 @@ impl SseDecode for crate::api::ast::Rule {
             0 => crate::api::ast::Rule::WHITESPACE,
             1 => crate::api::ast::Rule::expression,
             2 => crate::api::ast::Rule::primary,
-            3 => crate::api::ast::Rule::placeholder,
-            4 => crate::api::ast::Rule::identifier,
-            5 => crate::api::ast::Rule::string_literal,
-            6 => crate::api::ast::Rule::binary_expr,
-            7 => crate::api::ast::Rule::operator,
-            8 => crate::api::ast::Rule::if_expr,
+            3 => crate::api::ast::Rule::function_call,
+            4 => crate::api::ast::Rule::placeholder,
+            5 => crate::api::ast::Rule::identifier,
+            6 => crate::api::ast::Rule::string_literal,
+            7 => crate::api::ast::Rule::binary_expr,
+            8 => crate::api::ast::Rule::operator,
+            9 => crate::api::ast::Rule::if_expr,
             _ => unreachable!("Invalid variant for Rule: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::spectral::SpectralAnalysisResult {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_qualityStatus = <String>::sse_decode(deserializer);
+        let mut var_isFakeHighRes = <bool>::sse_decode(deserializer);
+        let mut var_frequencyMagnitudes = <Vec<f32>>::sse_decode(deserializer);
+        return crate::api::spectral::SpectralAnalysisResult {
+            quality_status: var_qualityStatus,
+            is_fake_high_res: var_isFakeHighRes,
+            frequency_magnitudes: var_frequencyMagnitudes,
         };
     }
 }
@@ -1619,13 +1720,6 @@ impl SseDecode for usize {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         deserializer.cursor.read_u64::<NativeEndian>().unwrap() as _
-    }
-}
-
-impl SseDecode for bool {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        deserializer.cursor.read_u8().unwrap() != 0
     }
 }
 
@@ -1672,67 +1766,73 @@ fn pde_ffi_dispatcher_primary_impl(
             rust_vec_len,
             data_len,
         ),
-        13 => wire__crate__api__database__get_all_tracks_impl(port, ptr, rust_vec_len, data_len),
-        14 => {
+        13 => wire__crate__api__fingerprint__generate_fingerprint_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        14 => wire__crate__api__database__get_all_tracks_impl(port, ptr, rust_vec_len, data_len),
+        15 => {
             wire__crate__api__transcode__get_audio_details_impl(port, ptr, rust_vec_len, data_len)
         }
-        15 => wire__crate__api__snapshots__get_file_history_impl(port, ptr, rust_vec_len, data_len),
-        16 => {
+        16 => wire__crate__api__snapshots__get_file_history_impl(port, ptr, rust_vec_len, data_len),
+        17 => {
             wire__crate__api__database__get_learning_rules_impl(port, ptr, rust_vec_len, data_len)
         }
-        17 => wire__crate__api__renamer__get_rename_preview_impl(port, ptr, rust_vec_len, data_len),
-        19 => wire__crate__api__simple__init_app_impl(port, ptr, rust_vec_len, data_len),
-        20 => wire__crate__api__database__init_db_impl(port, ptr, rust_vec_len, data_len),
-        21 => wire__crate__api__windows_devices__list_connected_mobile_devices_impl(
+        18 => wire__crate__api__renamer__get_rename_preview_impl(port, ptr, rust_vec_len, data_len),
+        20 => wire__crate__api__simple__init_app_impl(port, ptr, rust_vec_len, data_len),
+        21 => wire__crate__api__database__init_db_impl(port, ptr, rust_vec_len, data_len),
+        22 => wire__crate__api__windows_devices__list_connected_mobile_devices_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        22 => wire__crate__api__windows_devices__open_mobile_folder_in_explorer_impl(
+        23 => wire__crate__api__windows_devices__open_mobile_folder_in_explorer_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        23 => wire__crate__api__ast__parse_to_ast_impl(port, ptr, rust_vec_len, data_len),
-        24 => wire__crate__api__windows_devices__push_to_mobile_device_impl(
+        24 => wire__crate__api__ast__parse_to_ast_impl(port, ptr, rust_vec_len, data_len),
+        25 => wire__crate__api__windows_devices__push_to_mobile_device_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        25 => wire__crate__api__metadata__read_metadata_impl(port, ptr, rust_vec_len, data_len),
-        26 => {
+        26 => wire__crate__api__metadata__read_metadata_impl(port, ptr, rust_vec_len, data_len),
+        27 => {
             wire__crate__api__metadata__read_metadata_batch_impl(port, ptr, rust_vec_len, data_len)
         }
-        27 => wire__crate__api__windows_shell__register_shell_extension_impl(
+        28 => wire__crate__api__windows_shell__register_shell_extension_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        28 => {
+        29 => {
             wire__crate__api__duplicates__repair_file_header_impl(port, ptr, rust_vec_len, data_len)
         }
-        29 => wire__crate__api__ast__rule_all_rules_impl(port, ptr, rust_vec_len, data_len),
-        30 => {
+        30 => wire__crate__api__ast__rule_all_rules_impl(port, ptr, rust_vec_len, data_len),
+        31 => {
             wire__crate__api__database__save_learning_rule_impl(port, ptr, rust_vec_len, data_len)
         }
-        31 => wire__crate__api__database__save_track_impl(port, ptr, rust_vec_len, data_len),
-        32 => wire__crate__api__lyrics__search_lyrics_impl(port, ptr, rust_vec_len, data_len),
-        33 => wire__crate__api__database__search_tracks_impl(port, ptr, rust_vec_len, data_len),
-        34 => wire__crate__api__watcher__start_watcher_impl(port, ptr, rust_vec_len, data_len),
-        35 => {
+        32 => wire__crate__api__database__save_track_impl(port, ptr, rust_vec_len, data_len),
+        33 => wire__crate__api__lyrics__search_lyrics_impl(port, ptr, rust_vec_len, data_len),
+        34 => wire__crate__api__database__search_tracks_impl(port, ptr, rust_vec_len, data_len),
+        35 => wire__crate__api__watcher__start_watcher_impl(port, ptr, rust_vec_len, data_len),
+        36 => {
             wire__crate__api__sync__sync_tags_across_formats_impl(port, ptr, rust_vec_len, data_len)
         }
-        36 => wire__crate__api__windows_shell__unregister_shell_extension_impl(
+        37 => wire__crate__api__windows_shell__unregister_shell_extension_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        37 => wire__crate__api__metadata__write_metadata_impl(port, ptr, rust_vec_len, data_len),
+        38 => wire__crate__api__metadata__write_metadata_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -1745,7 +1845,7 @@ fn pde_ffi_dispatcher_sync_impl(
 ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
-        18 => wire__crate__api__simple__greet_impl(ptr, rust_vec_len, data_len),
+        19 => wire__crate__api__simple__greet_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -1772,6 +1872,27 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<Result<AudioMetadata, String>>
     }
 }
 
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::fingerprint::AcousticFingerprint {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.hash.into_into_dart().into_dart(),
+            self.duration_seconds.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::fingerprint::AcousticFingerprint
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::fingerprint::AcousticFingerprint>
+    for crate::api::fingerprint::AcousticFingerprint
+{
+    fn into_into_dart(self) -> crate::api::fingerprint::AcousticFingerprint {
+        self
+    }
+}
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::metadata::AudioMetadata {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
@@ -1848,6 +1969,12 @@ impl flutter_rust_bridge::IntoDart for crate::api::ast::Expr {
                 else_branch.into_into_dart().into_dart(),
             ]
             .into_dart(),
+            crate::api::ast::Expr::FunctionCall { name, arg } => [
+                4.into_dart(),
+                name.into_into_dart().into_dart(),
+                arg.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
             _ => {
                 unimplemented!("");
             }
@@ -1890,12 +2017,13 @@ impl flutter_rust_bridge::IntoDart for crate::api::ast::Rule {
             Self::WHITESPACE => 0.into_dart(),
             Self::expression => 1.into_dart(),
             Self::primary => 2.into_dart(),
-            Self::placeholder => 3.into_dart(),
-            Self::identifier => 4.into_dart(),
-            Self::string_literal => 5.into_dart(),
-            Self::binary_expr => 6.into_dart(),
-            Self::operator => 7.into_dart(),
-            Self::if_expr => 8.into_dart(),
+            Self::function_call => 3.into_dart(),
+            Self::placeholder => 4.into_dart(),
+            Self::identifier => 5.into_dart(),
+            Self::string_literal => 6.into_dart(),
+            Self::binary_expr => 7.into_dart(),
+            Self::operator => 8.into_dart(),
+            Self::if_expr => 9.into_dart(),
             _ => unreachable!(),
         }
     }
@@ -1903,6 +2031,28 @@ impl flutter_rust_bridge::IntoDart for crate::api::ast::Rule {
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::ast::Rule {}
 impl flutter_rust_bridge::IntoIntoDart<crate::api::ast::Rule> for crate::api::ast::Rule {
     fn into_into_dart(self) -> crate::api::ast::Rule {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::spectral::SpectralAnalysisResult {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.quality_status.into_into_dart().into_dart(),
+            self.is_fake_high_res.into_into_dart().into_dart(),
+            self.frequency_magnitudes.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::spectral::SpectralAnalysisResult
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::spectral::SpectralAnalysisResult>
+    for crate::api::spectral::SpectralAnalysisResult
+{
+    fn into_into_dart(self) -> crate::api::spectral::SpectralAnalysisResult {
         self
     }
 }
@@ -1953,6 +2103,14 @@ impl SseEncode for String {
     }
 }
 
+impl SseEncode for crate::api::fingerprint::AcousticFingerprint {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.hash, serializer);
+        <f64>::sse_encode(self.duration_seconds, serializer);
+    }
+}
+
 impl SseEncode for crate::api::metadata::AudioMetadata {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -1964,6 +2122,13 @@ impl SseEncode for crate::api::metadata::AudioMetadata {
         <Option<String>>::sse_encode(self.genre, serializer);
         <u32>::sse_encode(self.duration_ms, serializer);
         <String>::sse_encode(self.file_path, serializer);
+    }
+}
+
+impl SseEncode for bool {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_u8(self as _).unwrap();
     }
 }
 
@@ -2013,10 +2178,29 @@ impl SseEncode for crate::api::ast::Expr {
                 <Box<crate::api::ast::Expr>>::sse_encode(then_branch, serializer);
                 <Box<crate::api::ast::Expr>>::sse_encode(else_branch, serializer);
             }
+            crate::api::ast::Expr::FunctionCall { name, arg } => {
+                <i32>::sse_encode(4, serializer);
+                <String>::sse_encode(name, serializer);
+                <Box<crate::api::ast::Expr>>::sse_encode(arg, serializer);
+            }
             _ => {
                 unimplemented!("");
             }
         }
+    }
+}
+
+impl SseEncode for f32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_f32::<NativeEndian>(self).unwrap();
+    }
+}
+
+impl SseEncode for f64 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_f64::<NativeEndian>(self).unwrap();
     }
 }
 
@@ -2077,6 +2261,16 @@ impl SseEncode for Vec<crate::api::database::LearningRule> {
     }
 }
 
+impl SseEncode for Vec<f32> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <f32>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<u8> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -2125,18 +2319,28 @@ impl SseEncode for crate::api::ast::Rule {
                 crate::api::ast::Rule::WHITESPACE => 0,
                 crate::api::ast::Rule::expression => 1,
                 crate::api::ast::Rule::primary => 2,
-                crate::api::ast::Rule::placeholder => 3,
-                crate::api::ast::Rule::identifier => 4,
-                crate::api::ast::Rule::string_literal => 5,
-                crate::api::ast::Rule::binary_expr => 6,
-                crate::api::ast::Rule::operator => 7,
-                crate::api::ast::Rule::if_expr => 8,
+                crate::api::ast::Rule::function_call => 3,
+                crate::api::ast::Rule::placeholder => 4,
+                crate::api::ast::Rule::identifier => 5,
+                crate::api::ast::Rule::string_literal => 6,
+                crate::api::ast::Rule::binary_expr => 7,
+                crate::api::ast::Rule::operator => 8,
+                crate::api::ast::Rule::if_expr => 9,
                 _ => {
                     unimplemented!("");
                 }
             },
             serializer,
         );
+    }
+}
+
+impl SseEncode for crate::api::spectral::SpectralAnalysisResult {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.quality_status, serializer);
+        <bool>::sse_encode(self.is_fake_high_res, serializer);
+        <Vec<f32>>::sse_encode(self.frequency_magnitudes, serializer);
     }
 }
 
@@ -2166,13 +2370,6 @@ impl SseEncode for usize {
             .cursor
             .write_u64::<NativeEndian>(self as _)
             .unwrap();
-    }
-}
-
-impl SseEncode for bool {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        serializer.cursor.write_u8(self as _).unwrap();
     }
 }
 

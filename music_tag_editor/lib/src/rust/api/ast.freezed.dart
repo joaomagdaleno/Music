@@ -22,6 +22,7 @@ mixin _$Expr {
     required TResult Function(String field0) placeholder,
     required TResult Function(Expr left, String op, Expr right) binary,
     required TResult Function(Expr cond, Expr thenBranch, Expr elseBranch) if_,
+    required TResult Function(String name, Expr arg) functionCall,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -30,6 +31,7 @@ mixin _$Expr {
     TResult? Function(String field0)? placeholder,
     TResult? Function(Expr left, String op, Expr right)? binary,
     TResult? Function(Expr cond, Expr thenBranch, Expr elseBranch)? if_,
+    TResult? Function(String name, Expr arg)? functionCall,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -38,6 +40,7 @@ mixin _$Expr {
     TResult Function(String field0)? placeholder,
     TResult Function(Expr left, String op, Expr right)? binary,
     TResult Function(Expr cond, Expr thenBranch, Expr elseBranch)? if_,
+    TResult Function(String name, Expr arg)? functionCall,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -47,6 +50,7 @@ mixin _$Expr {
     required TResult Function(Expr_Placeholder value) placeholder,
     required TResult Function(Expr_Binary value) binary,
     required TResult Function(Expr_If value) if_,
+    required TResult Function(Expr_FunctionCall value) functionCall,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -55,6 +59,7 @@ mixin _$Expr {
     TResult? Function(Expr_Placeholder value)? placeholder,
     TResult? Function(Expr_Binary value)? binary,
     TResult? Function(Expr_If value)? if_,
+    TResult? Function(Expr_FunctionCall value)? functionCall,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -63,6 +68,7 @@ mixin _$Expr {
     TResult Function(Expr_Placeholder value)? placeholder,
     TResult Function(Expr_Binary value)? binary,
     TResult Function(Expr_If value)? if_,
+    TResult Function(Expr_FunctionCall value)? functionCall,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -160,6 +166,7 @@ class _$Expr_LiteralImpl extends Expr_Literal {
     required TResult Function(String field0) placeholder,
     required TResult Function(Expr left, String op, Expr right) binary,
     required TResult Function(Expr cond, Expr thenBranch, Expr elseBranch) if_,
+    required TResult Function(String name, Expr arg) functionCall,
   }) {
     return literal(field0);
   }
@@ -171,6 +178,7 @@ class _$Expr_LiteralImpl extends Expr_Literal {
     TResult? Function(String field0)? placeholder,
     TResult? Function(Expr left, String op, Expr right)? binary,
     TResult? Function(Expr cond, Expr thenBranch, Expr elseBranch)? if_,
+    TResult? Function(String name, Expr arg)? functionCall,
   }) {
     return literal?.call(field0);
   }
@@ -182,6 +190,7 @@ class _$Expr_LiteralImpl extends Expr_Literal {
     TResult Function(String field0)? placeholder,
     TResult Function(Expr left, String op, Expr right)? binary,
     TResult Function(Expr cond, Expr thenBranch, Expr elseBranch)? if_,
+    TResult Function(String name, Expr arg)? functionCall,
     required TResult orElse(),
   }) {
     if (literal != null) {
@@ -197,6 +206,7 @@ class _$Expr_LiteralImpl extends Expr_Literal {
     required TResult Function(Expr_Placeholder value) placeholder,
     required TResult Function(Expr_Binary value) binary,
     required TResult Function(Expr_If value) if_,
+    required TResult Function(Expr_FunctionCall value) functionCall,
   }) {
     return literal(this);
   }
@@ -208,6 +218,7 @@ class _$Expr_LiteralImpl extends Expr_Literal {
     TResult? Function(Expr_Placeholder value)? placeholder,
     TResult? Function(Expr_Binary value)? binary,
     TResult? Function(Expr_If value)? if_,
+    TResult? Function(Expr_FunctionCall value)? functionCall,
   }) {
     return literal?.call(this);
   }
@@ -219,6 +230,7 @@ class _$Expr_LiteralImpl extends Expr_Literal {
     TResult Function(Expr_Placeholder value)? placeholder,
     TResult Function(Expr_Binary value)? binary,
     TResult Function(Expr_If value)? if_,
+    TResult Function(Expr_FunctionCall value)? functionCall,
     required TResult orElse(),
   }) {
     if (literal != null) {
@@ -314,6 +326,7 @@ class _$Expr_PlaceholderImpl extends Expr_Placeholder {
     required TResult Function(String field0) placeholder,
     required TResult Function(Expr left, String op, Expr right) binary,
     required TResult Function(Expr cond, Expr thenBranch, Expr elseBranch) if_,
+    required TResult Function(String name, Expr arg) functionCall,
   }) {
     return placeholder(field0);
   }
@@ -325,6 +338,7 @@ class _$Expr_PlaceholderImpl extends Expr_Placeholder {
     TResult? Function(String field0)? placeholder,
     TResult? Function(Expr left, String op, Expr right)? binary,
     TResult? Function(Expr cond, Expr thenBranch, Expr elseBranch)? if_,
+    TResult? Function(String name, Expr arg)? functionCall,
   }) {
     return placeholder?.call(field0);
   }
@@ -336,6 +350,7 @@ class _$Expr_PlaceholderImpl extends Expr_Placeholder {
     TResult Function(String field0)? placeholder,
     TResult Function(Expr left, String op, Expr right)? binary,
     TResult Function(Expr cond, Expr thenBranch, Expr elseBranch)? if_,
+    TResult Function(String name, Expr arg)? functionCall,
     required TResult orElse(),
   }) {
     if (placeholder != null) {
@@ -351,6 +366,7 @@ class _$Expr_PlaceholderImpl extends Expr_Placeholder {
     required TResult Function(Expr_Placeholder value) placeholder,
     required TResult Function(Expr_Binary value) binary,
     required TResult Function(Expr_If value) if_,
+    required TResult Function(Expr_FunctionCall value) functionCall,
   }) {
     return placeholder(this);
   }
@@ -362,6 +378,7 @@ class _$Expr_PlaceholderImpl extends Expr_Placeholder {
     TResult? Function(Expr_Placeholder value)? placeholder,
     TResult? Function(Expr_Binary value)? binary,
     TResult? Function(Expr_If value)? if_,
+    TResult? Function(Expr_FunctionCall value)? functionCall,
   }) {
     return placeholder?.call(this);
   }
@@ -373,6 +390,7 @@ class _$Expr_PlaceholderImpl extends Expr_Placeholder {
     TResult Function(Expr_Placeholder value)? placeholder,
     TResult Function(Expr_Binary value)? binary,
     TResult Function(Expr_If value)? if_,
+    TResult Function(Expr_FunctionCall value)? functionCall,
     required TResult orElse(),
   }) {
     if (placeholder != null) {
@@ -508,6 +526,7 @@ class _$Expr_BinaryImpl extends Expr_Binary {
     required TResult Function(String field0) placeholder,
     required TResult Function(Expr left, String op, Expr right) binary,
     required TResult Function(Expr cond, Expr thenBranch, Expr elseBranch) if_,
+    required TResult Function(String name, Expr arg) functionCall,
   }) {
     return binary(left, op, right);
   }
@@ -519,6 +538,7 @@ class _$Expr_BinaryImpl extends Expr_Binary {
     TResult? Function(String field0)? placeholder,
     TResult? Function(Expr left, String op, Expr right)? binary,
     TResult? Function(Expr cond, Expr thenBranch, Expr elseBranch)? if_,
+    TResult? Function(String name, Expr arg)? functionCall,
   }) {
     return binary?.call(left, op, right);
   }
@@ -530,6 +550,7 @@ class _$Expr_BinaryImpl extends Expr_Binary {
     TResult Function(String field0)? placeholder,
     TResult Function(Expr left, String op, Expr right)? binary,
     TResult Function(Expr cond, Expr thenBranch, Expr elseBranch)? if_,
+    TResult Function(String name, Expr arg)? functionCall,
     required TResult orElse(),
   }) {
     if (binary != null) {
@@ -545,6 +566,7 @@ class _$Expr_BinaryImpl extends Expr_Binary {
     required TResult Function(Expr_Placeholder value) placeholder,
     required TResult Function(Expr_Binary value) binary,
     required TResult Function(Expr_If value) if_,
+    required TResult Function(Expr_FunctionCall value) functionCall,
   }) {
     return binary(this);
   }
@@ -556,6 +578,7 @@ class _$Expr_BinaryImpl extends Expr_Binary {
     TResult? Function(Expr_Placeholder value)? placeholder,
     TResult? Function(Expr_Binary value)? binary,
     TResult? Function(Expr_If value)? if_,
+    TResult? Function(Expr_FunctionCall value)? functionCall,
   }) {
     return binary?.call(this);
   }
@@ -567,6 +590,7 @@ class _$Expr_BinaryImpl extends Expr_Binary {
     TResult Function(Expr_Placeholder value)? placeholder,
     TResult Function(Expr_Binary value)? binary,
     TResult Function(Expr_If value)? if_,
+    TResult Function(Expr_FunctionCall value)? functionCall,
     required TResult orElse(),
   }) {
     if (binary != null) {
@@ -720,6 +744,7 @@ class _$Expr_IfImpl extends Expr_If {
     required TResult Function(String field0) placeholder,
     required TResult Function(Expr left, String op, Expr right) binary,
     required TResult Function(Expr cond, Expr thenBranch, Expr elseBranch) if_,
+    required TResult Function(String name, Expr arg) functionCall,
   }) {
     return if_(cond, thenBranch, elseBranch);
   }
@@ -731,6 +756,7 @@ class _$Expr_IfImpl extends Expr_If {
     TResult? Function(String field0)? placeholder,
     TResult? Function(Expr left, String op, Expr right)? binary,
     TResult? Function(Expr cond, Expr thenBranch, Expr elseBranch)? if_,
+    TResult? Function(String name, Expr arg)? functionCall,
   }) {
     return if_?.call(cond, thenBranch, elseBranch);
   }
@@ -742,6 +768,7 @@ class _$Expr_IfImpl extends Expr_If {
     TResult Function(String field0)? placeholder,
     TResult Function(Expr left, String op, Expr right)? binary,
     TResult Function(Expr cond, Expr thenBranch, Expr elseBranch)? if_,
+    TResult Function(String name, Expr arg)? functionCall,
     required TResult orElse(),
   }) {
     if (if_ != null) {
@@ -757,6 +784,7 @@ class _$Expr_IfImpl extends Expr_If {
     required TResult Function(Expr_Placeholder value) placeholder,
     required TResult Function(Expr_Binary value) binary,
     required TResult Function(Expr_If value) if_,
+    required TResult Function(Expr_FunctionCall value) functionCall,
   }) {
     return if_(this);
   }
@@ -768,6 +796,7 @@ class _$Expr_IfImpl extends Expr_If {
     TResult? Function(Expr_Placeholder value)? placeholder,
     TResult? Function(Expr_Binary value)? binary,
     TResult? Function(Expr_If value)? if_,
+    TResult? Function(Expr_FunctionCall value)? functionCall,
   }) {
     return if_?.call(this);
   }
@@ -779,6 +808,7 @@ class _$Expr_IfImpl extends Expr_If {
     TResult Function(Expr_Placeholder value)? placeholder,
     TResult Function(Expr_Binary value)? binary,
     TResult Function(Expr_If value)? if_,
+    TResult Function(Expr_FunctionCall value)? functionCall,
     required TResult orElse(),
   }) {
     if (if_ != null) {
@@ -803,5 +833,189 @@ abstract class Expr_If extends Expr {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$Expr_IfImplCopyWith<_$Expr_IfImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$Expr_FunctionCallImplCopyWith<$Res> {
+  factory _$$Expr_FunctionCallImplCopyWith(_$Expr_FunctionCallImpl value,
+          $Res Function(_$Expr_FunctionCallImpl) then) =
+      __$$Expr_FunctionCallImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String name, Expr arg});
+
+  $ExprCopyWith<$Res> get arg;
+}
+
+/// @nodoc
+class __$$Expr_FunctionCallImplCopyWithImpl<$Res>
+    extends _$ExprCopyWithImpl<$Res, _$Expr_FunctionCallImpl>
+    implements _$$Expr_FunctionCallImplCopyWith<$Res> {
+  __$$Expr_FunctionCallImplCopyWithImpl(_$Expr_FunctionCallImpl _value,
+      $Res Function(_$Expr_FunctionCallImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Expr
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? arg = null,
+  }) {
+    return _then(_$Expr_FunctionCallImpl(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      arg: null == arg
+          ? _value.arg
+          : arg // ignore: cast_nullable_to_non_nullable
+              as Expr,
+    ));
+  }
+
+  /// Create a copy of Expr
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ExprCopyWith<$Res> get arg {
+    return $ExprCopyWith<$Res>(_value.arg, (value) {
+      return _then(_value.copyWith(arg: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$Expr_FunctionCallImpl extends Expr_FunctionCall {
+  const _$Expr_FunctionCallImpl({required this.name, required this.arg})
+      : super._();
+
+  @override
+  final String name;
+  @override
+  final Expr arg;
+
+  @override
+  String toString() {
+    return 'Expr.functionCall(name: $name, arg: $arg)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Expr_FunctionCallImpl &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.arg, arg) || other.arg == arg));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, name, arg);
+
+  /// Create a copy of Expr
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$Expr_FunctionCallImplCopyWith<_$Expr_FunctionCallImpl> get copyWith =>
+      __$$Expr_FunctionCallImplCopyWithImpl<_$Expr_FunctionCallImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String field0) literal,
+    required TResult Function(String field0) placeholder,
+    required TResult Function(Expr left, String op, Expr right) binary,
+    required TResult Function(Expr cond, Expr thenBranch, Expr elseBranch) if_,
+    required TResult Function(String name, Expr arg) functionCall,
+  }) {
+    return functionCall(name, arg);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String field0)? literal,
+    TResult? Function(String field0)? placeholder,
+    TResult? Function(Expr left, String op, Expr right)? binary,
+    TResult? Function(Expr cond, Expr thenBranch, Expr elseBranch)? if_,
+    TResult? Function(String name, Expr arg)? functionCall,
+  }) {
+    return functionCall?.call(name, arg);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String field0)? literal,
+    TResult Function(String field0)? placeholder,
+    TResult Function(Expr left, String op, Expr right)? binary,
+    TResult Function(Expr cond, Expr thenBranch, Expr elseBranch)? if_,
+    TResult Function(String name, Expr arg)? functionCall,
+    required TResult orElse(),
+  }) {
+    if (functionCall != null) {
+      return functionCall(name, arg);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Expr_Literal value) literal,
+    required TResult Function(Expr_Placeholder value) placeholder,
+    required TResult Function(Expr_Binary value) binary,
+    required TResult Function(Expr_If value) if_,
+    required TResult Function(Expr_FunctionCall value) functionCall,
+  }) {
+    return functionCall(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Expr_Literal value)? literal,
+    TResult? Function(Expr_Placeholder value)? placeholder,
+    TResult? Function(Expr_Binary value)? binary,
+    TResult? Function(Expr_If value)? if_,
+    TResult? Function(Expr_FunctionCall value)? functionCall,
+  }) {
+    return functionCall?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Expr_Literal value)? literal,
+    TResult Function(Expr_Placeholder value)? placeholder,
+    TResult Function(Expr_Binary value)? binary,
+    TResult Function(Expr_If value)? if_,
+    TResult Function(Expr_FunctionCall value)? functionCall,
+    required TResult orElse(),
+  }) {
+    if (functionCall != null) {
+      return functionCall(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Expr_FunctionCall extends Expr {
+  const factory Expr_FunctionCall(
+      {required final String name,
+      required final Expr arg}) = _$Expr_FunctionCallImpl;
+  const Expr_FunctionCall._() : super._();
+
+  String get name;
+  Expr get arg;
+
+  /// Create a copy of Expr
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$Expr_FunctionCallImplCopyWith<_$Expr_FunctionCallImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

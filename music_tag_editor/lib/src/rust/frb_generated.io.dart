@@ -7,6 +7,7 @@ import 'api/ast.dart';
 import 'api/cleanup.dart';
 import 'api/database.dart';
 import 'api/duplicates.dart';
+import 'api/fingerprint.dart';
 import 'api/lyrics.dart';
 import 'api/metadata.dart';
 import 'api/renamer.dart';
@@ -56,7 +57,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String dco_decode_String(dynamic raw);
 
   @protected
+  AcousticFingerprint dco_decode_acoustic_fingerprint(dynamic raw);
+
+  @protected
   AudioMetadata dco_decode_audio_metadata(dynamic raw);
+
+  @protected
+  bool dco_decode_bool(dynamic raw);
 
   @protected
   AudioMetadata dco_decode_box_autoadd_audio_metadata(dynamic raw);
@@ -83,6 +90,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Expr dco_decode_expr(dynamic raw);
 
   @protected
+  double dco_decode_f_32(dynamic raw);
+
+  @protected
+  double dco_decode_f_64(dynamic raw);
+
+  @protected
   int dco_decode_i_32(dynamic raw);
 
   @protected
@@ -103,6 +116,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<LearningRule> dco_decode_list_learning_rule(dynamic raw);
 
   @protected
+  Float32List dco_decode_list_prim_f_32_strict(dynamic raw);
+
+  @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
 
   @protected
@@ -116,6 +132,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Rule dco_decode_rule(dynamic raw);
+
+  @protected
+  SpectralAnalysisResult dco_decode_spectral_analysis_result(dynamic raw);
 
   @protected
   int dco_decode_u_32(dynamic raw);
@@ -150,7 +169,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String sse_decode_String(SseDeserializer deserializer);
 
   @protected
+  AcousticFingerprint sse_decode_acoustic_fingerprint(
+      SseDeserializer deserializer);
+
+  @protected
   AudioMetadata sse_decode_audio_metadata(SseDeserializer deserializer);
+
+  @protected
+  bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
   AudioMetadata sse_decode_box_autoadd_audio_metadata(
@@ -179,6 +205,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Expr sse_decode_expr(SseDeserializer deserializer);
 
   @protected
+  double sse_decode_f_32(SseDeserializer deserializer);
+
+  @protected
+  double sse_decode_f_64(SseDeserializer deserializer);
+
+  @protected
   int sse_decode_i_32(SseDeserializer deserializer);
 
   @protected
@@ -200,6 +232,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  Float32List sse_decode_list_prim_f_32_strict(SseDeserializer deserializer);
+
+  @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
 
   @protected
@@ -215,6 +250,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Rule sse_decode_rule(SseDeserializer deserializer);
 
   @protected
+  SpectralAnalysisResult sse_decode_spectral_analysis_result(
+      SseDeserializer deserializer);
+
+  @protected
   int sse_decode_u_32(SseDeserializer deserializer);
 
   @protected
@@ -225,9 +264,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   BigInt sse_decode_usize(SseDeserializer deserializer);
-
-  @protected
-  bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
   void sse_encode_AnyhowException(
@@ -251,7 +287,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_String(String self, SseSerializer serializer);
 
   @protected
+  void sse_encode_acoustic_fingerprint(
+      AcousticFingerprint self, SseSerializer serializer);
+
+  @protected
   void sse_encode_audio_metadata(AudioMetadata self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_bool(bool self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_audio_metadata(
@@ -280,6 +323,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_expr(Expr self, SseSerializer serializer);
 
   @protected
+  void sse_encode_f_32(double self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_f_64(double self, SseSerializer serializer);
+
+  @protected
   void sse_encode_i_32(int self, SseSerializer serializer);
 
   @protected
@@ -301,6 +350,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<LearningRule> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_prim_f_32_strict(
+      Float32List self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_prim_u_8_strict(
       Uint8List self, SseSerializer serializer);
 
@@ -318,6 +371,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_rule(Rule self, SseSerializer serializer);
 
   @protected
+  void sse_encode_spectral_analysis_result(
+      SpectralAnalysisResult self, SseSerializer serializer);
+
+  @protected
   void sse_encode_u_32(int self, SseSerializer serializer);
 
   @protected
@@ -328,9 +385,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_usize(BigInt self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_bool(bool self, SseSerializer serializer);
 }
 
 // Section: wire_class

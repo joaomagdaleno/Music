@@ -2,6 +2,7 @@ pub mod ast;
 pub mod cleanup;
 pub mod database;
 pub mod duplicates;
+pub mod fingerprint;
 pub mod lyrics;
 pub mod metadata;
 pub mod renamer;

@@ -21,6 +21,8 @@ dependencies:
   window_manager: ^0.5.1
   xml: ^6.6.1
   meta: ^1.11.0
+  palette_generator: any
+  flutter_spinkit: any
   rust_lib_music_tag_editor:
     path: ./rust_builder
 

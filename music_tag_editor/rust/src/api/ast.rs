@@ -19,6 +19,10 @@ enum Expr {
         then_branch: Box<Expr>,
         else_branch: Box<Expr>,
     },
+    FunctionCall {
+        name: String,
+        arg: Box<Expr>,
+    },
 }
 
 /// Converte uma string de regra em uma AST real.
@@ -32,6 +36,15 @@ pub fn parse_to_ast(input: String) -> Result<Expr, String> {
             Rule::placeholder => {
                 let id = pair.into_inner().next().unwrap().as_str();
                 Expr::Placeholder(id.to_string())
+            }
+            Rule::function_call => {
+                let mut inner = pair.into_inner();
+                let name = inner.next().unwrap().as_str().to_string();
+                let arg = parse_pair(inner.next().unwrap());
+                Expr::FunctionCall {
+                    name,
+                    arg: Box::new(arg),
+                }
             }
             Rule::string_literal => {
                 let s = pair.as_str();
@@ -110,6 +123,15 @@ pub fn evaluate_ast(expr: Expr, metadata: crate::api::metadata::AudioMetadata) -
                 evaluate_ast(*then_branch, metadata)
             } else {
                 evaluate_ast(*else_branch, metadata)
+            }
+        }
+        Expr::FunctionCall { name, arg } => {
+            let val = evaluate_ast(*arg, metadata);
+            match name.as_str() {
+                "clean" => crate::api::cleanup::clean_tag(val),
+                "upper" => val.to_uppercase(),
+                "lower" => val.to_lowercase(),
+                _ => val,
             }
         }
     }

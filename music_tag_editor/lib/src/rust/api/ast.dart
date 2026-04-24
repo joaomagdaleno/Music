@@ -48,6 +48,10 @@ sealed class Expr with _$Expr {
     required Expr thenBranch,
     required Expr elseBranch,
   }) = Expr_If;
+  const factory Expr.functionCall({
+    required String name,
+    required Expr arg,
+  }) = Expr_FunctionCall;
 }
 
 enum Rule {
@@ -58,6 +62,9 @@ enum Rule {
 
   ///Unidades básicas
   primary,
+
+  ///Chamadas de função
+  functionCall,
 
   ///Placeholders de metadados (ex: %artist%)
   placeholder,

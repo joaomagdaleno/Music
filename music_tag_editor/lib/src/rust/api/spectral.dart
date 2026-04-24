@@ -6,6 +6,36 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-/// Analisa o espectro de frequências para detectar se um arquivo de alta resolução é "Fake" (Upscaled).
-Future<String> analyzeSpectralQuality({required String path}) =>
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
+
+/// Analisa o espectro de frequências para detectar se um arquivo de alta resolução é "Fake" (Upscaled)
+/// e retorna as magnitudes das frequências para renderização do espectrograma.
+Future<SpectralAnalysisResult> analyzeSpectralQuality({required String path}) =>
     RustLib.instance.api.crateApiSpectralAnalyzeSpectralQuality(path: path);
+
+class SpectralAnalysisResult {
+  final String qualityStatus;
+  final bool isFakeHighRes;
+  final Float32List frequencyMagnitudes;
+
+  const SpectralAnalysisResult({
+    required this.qualityStatus,
+    required this.isFakeHighRes,
+    required this.frequencyMagnitudes,
+  });
+
+  @override
+  int get hashCode =>
+      qualityStatus.hashCode ^
+      isFakeHighRes.hashCode ^
+      frequencyMagnitudes.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SpectralAnalysisResult &&
+          runtimeType == other.runtimeType &&
+          qualityStatus == other.qualityStatus &&
+          isFakeHighRes == other.isFakeHighRes &&
+          frequencyMagnitudes == other.frequencyMagnitudes;
+}
