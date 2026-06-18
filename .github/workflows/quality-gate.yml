@@ -28,7 +28,7 @@ jobs:
           sudo rm -rf "/usr/local/share/boost"
           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -93,7 +93,7 @@ jobs:
 
     steps:
       - name: Checkout coverage-data branch
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: coverage-data
           token: ${{ secrets.GITHUB_TOKEN }}
